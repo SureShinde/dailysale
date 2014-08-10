@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package>
+    <name>Sashas_Ordersuccesspage</name>
+    <version>0.1.0</version>
+    <stability>stable</stability>
+    <license uri="http://opensource.org/licenses/GPL-3.0">GPL-3.0</license>
+    <channel>community</channel>
+    <extends/>
+    <summary>This module shows order information on success page, and allows to print order information</summary>
+    <description>&lt;p&gt;Module adds Order Information on success page. You can print and View Order information&lt;/p&gt;&#xD;
+&#xD;
+&lt;p&gt;&lt;b&gt;Make sure that you have  compilation  disabled before installing extension.  System &gt; Tools &gt; Compilation page and click on Disable button. After Installation you can enable compilation back.&lt;/b&gt;&lt;/p&gt;</description>
+    <notes>Stable Release</notes>
+    <authors><author><name>Aliaksandr Lukyanau</name><user>sashas7777</user><email>cybergomel@gmail.com</email></author></authors>
+    <date>2013-11-08</date>
+    <time>03:54:44</time>
+    <contents><target name="magelocal"><dir name="Sashas"><dir name="Ordersuccesspage"><dir name="Block"><file name="Success.php" hash="fc3b4ac0bd244202a24152db30abe64f"/></dir><dir name="controllers"><file name="OrdersuccesspageController.php" hash="fc5217f0fb02e5b683f7bb7dc056a262"/></dir><dir name="etc"><file name="config.xml" hash="f595045d75be8a57c83deeba388bb1e1"/></dir></dir></dir></target><target name="mageetc"><dir name="modules"><file name="Sashas_Ordersuccesspage.xml" hash="c0974af1d8d8783bed4da0212c37fbba"/></dir></target><target name="magedesign"><dir name="frontend"><dir name="base"><dir name="default"><dir name="template"><dir name="ordersuccesspage"><file name="info.phtml" hash="a5113c357574bdf6978d3e1c600d22aa"/><file name="items.phtml" hash="51cd4fac3d2ed86a70a41918d6224b82"/><file name="print.phtml" hash="b6614ef0a8a074036a08b26e7a0acdc0"/><file name="success.phtml" hash="a901c12f3811d1ceaecba3e407bd905f"/><file name="tax.phtml" hash="712f468646ad8231e7f7ed878ce9d864"/><file name="totals.phtml" hash="58243852fe37ada8f52bf251e27022fb"/></dir></dir></dir></dir></dir></target></contents>
+    <compatible/>
+    <dependencies><required><php><min>5.2.0</min><max>6.0.0</max></php></required></dependencies>
+</package>
