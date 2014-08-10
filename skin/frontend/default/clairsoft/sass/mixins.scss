@@ -1,0 +1,55 @@
+@mixin clairsoft-default-button($width:auto){
+	border: 1px solid shade($main-color, 5%) !important;
+	color: white;
+	text-decoration: none;
+	padding: 12px 15px 12px 15px;
+	@include border-radius(4px, 4px);
+	text-shadow: 1px 1px 0px shade($main-color, 20%);
+	@include background-image(linear-gradient(tint($main-color, 15%), $main-color));
+	width: $width;
+
+	&:hover{
+		@include background-image(linear-gradient(tint($darker-color, 15%), $darker-color));
+		border: 1px solid $darker-color;
+		color: $faint-color;
+		text-shadow: none;
+	}
+}
+
+@mixin clairsoft-light-button(){
+	border: 1px solid $subtle-color !important;
+	color: $dark-color;
+	text-decoration: none;
+	padding: 12px 15px 12px 15px;
+	@include border-radius(4px, 4px);
+	@include background-image(linear-gradient(white, $faint-color));
+
+	&:hover{
+		//background: $main-color image-url("btntrainglelight.png") no-repeat 89% 50%;
+		border: 1px solid $main-color;
+		text-decoration: none;
+		color: white;
+		text-shadow: 1px 1px 0px shade($main-color, 20%);
+		@include background-image(linear-gradient(tint($main-color, 15%), $main-color));
+	}
+}
+
+@mixin clairsoft-inactive-button(){
+	float: right;
+	border: 1px solid $subtle-color !important;
+	color: $dark-color;
+	text-decoration: none;
+	padding: 12px 15px 12px 15px;
+	margin: 25px 10px 0 0;
+	position: relative;
+	@include border-radius(4px, 4px);
+	// @include background-image(linear-gradient(white, $faint-color));
+
+	&:hover{
+		border: 1px solid $main-color;
+		text-decoration: none;
+		color: white;
+		text-shadow: 1px 1px 0px shade($main-color, 20%);
+		@include background-image(linear-gradient(tint($main-color, 15%), $main-color));
+	}
+}

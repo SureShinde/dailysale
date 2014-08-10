@@ -1,0 +1,34 @@
+.cms-page-view{
+	
+	.main-container.col1-layout{
+		background: white;
+		border: 1px solid $subtle-color;
+		margin-top: 2em;
+		margin-bottom: -1em;
+		padding: 2em 3em;
+	}
+	
+	.page-title h1{
+		font-size: 32px;
+		color: $darker-color;
+	}
+
+	dl{
+		dt{
+			color: $main-color;
+			font-size: 18px;
+			margin-bottom: 5px;
+		}
+
+		dd{
+			margin-bottom: 1em;
+			padding-bottom: 8px;
+			border-bottom: 1px dashed $subtle-color;
+			line-height: 150%;
+		}
+
+		dd:last-child{
+			border-bottom: none;
+		}
+	}
+}

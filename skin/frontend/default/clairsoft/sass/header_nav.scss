@@ -1,0 +1,150 @@
+#top-wrapper{
+	display: block;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	// @include background-image(linear-gradient(tint($main-color, 15%), $main-color));
+	background: $main-color;
+	border-bottom: 1px solid shade($main-color, 5%) !important;
+	width: 100%;
+	z-index: 9999;
+	padding: 10px 0;
+	font-size: 13px;
+
+	.empty-cart .top-link-cart, .empty-cart .top-link-checkout{
+		display: none;
+	}
+
+	.top-container{
+		margin: 0 auto;
+		width: 960px;
+		position: relative;
+
+		ul.links{
+			width: auto;
+			float: right;
+			text-align: right;
+			height: 100% !important;
+			line-height: 200%;
+
+			a{
+				margin-left: 8px;
+			}
+
+			a[title="Log In"]{ //login
+				background: url(../images/loginlock.png) no-repeat 0 0;
+				padding-left: 18px !important;
+			}
+
+			a[title="My Account"]{ //login
+				background: url(../images/glyph_crown.png) no-repeat 0 0;
+				padding-left: 18px !important;
+			}
+
+		}
+
+		.form-search{
+			width: 42%;
+			float: left;
+			margin-right: 8px;
+
+			input#search{
+				width: 99%;
+				height: 28px;
+				padding: 4px 70px 4px 8px;
+				@include border-radius(4px, 4px);
+				border: 1px solid shade($main-color, 5%) !important;
+				color: $dark-color;
+				font-size: 14px;
+			}
+
+			button{
+				margin-left: -40px;
+				width: 32px;
+				height: 18px;
+				background: url(../images/glyph_search.png) no-repeat 50% 50%;
+				border-left: 1px solid $subtle-color !important;
+			}
+		}
+
+		.welcome-msg{
+			// float: right;
+			// border: 1px dashed red !important;
+			color: white;
+			// height: 100% !important;
+			line-height: 200%;
+			text-align: center;
+		}
+	}
+
+	a{
+		color: white;
+	}
+}
+
+.header{
+	padding: 0;
+}
+
+.nav-container{
+	position: absolute;
+	top: 14px;
+	left: 335px;
+
+	ul#nav{
+
+		li{
+			margin-left: 1em;
+
+			&:first-child{
+				margin-left: 0;
+			}
+		}
+
+		a{
+				padding: 7px 10px 7px 20px;
+				text-decoration: none;
+				font-size: 16px;
+				color: #898989;
+				//display: block;
+				//border: 1px dotted #ccc;
+				margin-left: 8px;
+
+				&:hover{
+					//border-bottom: 3px solid #1b75bb !important;
+					color: $main-color;
+				}
+			}
+
+		.nav-1{
+			background: url(../images/navicon_men.png) no-repeat 2px 50%;
+		}
+
+		.nav-2{
+			background: url(../images/navicon_women.png) no-repeat 2px 50%;
+
+			a{
+				padding-left: 10px;
+			}
+		}
+
+		.nav-3{
+			background: url(../images/navicon_kids.png) no-repeat 2px 50%;
+		}
+
+		.nav-4{
+			background: url(../images/navicon_electronics.png) no-repeat 2px 50%;
+		}
+
+		.nav-5{
+			background: url(../images/navicon_lifestyle.png) no-repeat 2px 50%;
+			a{
+				padding-left: 12px;
+			}
+		}
+
+		.nav-6{
+			background: url(../images/navicon_jewelry.png) no-repeat 2px 50%;
+		}
+	}
+}

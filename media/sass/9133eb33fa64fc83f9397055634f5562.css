@@ -1,0 +1,67 @@
+/*
+ * apply a natural box layout model to all elements
+ */
+*,
+*:before,
+*:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box; }
+
+html,
+body {
+  background-image: url(http://localhost/dailysale-mage/skin/frontend/default/clairsoft/images/mainbg.jpg); }
+
+* {
+  border: 0px !important; }
+
+.col1-layout .products-grid {
+  margin: 0;
+  width: 960px;
+  padding: 0; }
+
+.category-products ul li {
+  list-style: none; }
+
+.category-products li.item {
+  height: 400px;
+  width: 310px;
+  background: white;
+  margin-right: 28px;
+  margin-bottom: 25px;
+  border: 1px solid grey !important;
+  padding: 0; }
+
+.category-products li.last {
+  margin-right: 0px; }
+
+.col1-layout .products-grid {
+  width: auto; }
+
+.products-grid .product-image {
+  height: 310px;
+  width: 310px; }
+
+a.view-deal-btn {
+    /*
+   * float: right;
+   */
+    /*
+   * display: block;
+   */
+  border: 1px solid #cccccc !important;
+  color: #898989;
+  text-decoration: none;
+    /*
+   * margin: 25px 10px 0 0;
+   */
+  padding: 12px 15px 12px 15px;
+  -webkit-border-radius: 4px 4px;
+  -moz-border-radius: 1px;
+  border-radius: 1px;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, white), color-stop(100%, #eeeeee));
+  background-image: -webkit-linear-gradient(white, #eeeeee);
+  background-image: -moz-linear-gradient(white, #eeeeee);
+  background-image: -o-linear-gradient(white, #eeeeee);
+  background-image: linear-gradient(white, #eeeeee); }
+

@@ -1,0 +1,240 @@
+.category-products{
+
+	#dealcountdown{display: none;}
+
+	ul li{
+		list-style: none;
+	}
+
+	li.item{
+		height: 435px;
+		width: 300px;
+		background: white;
+		margin-right: 29px;
+		margin-bottom: 25px;
+		border: 1px solid $subtle-color;
+		padding: 0px;
+		@include border-bottom-left-radius(4px);
+		@include border-bottom-right-radius(4px);
+
+		&:hover{
+			margin-top: -3px;
+			border: 1px solid $main-color !important;
+		}
+
+		.products-grid-image-container{
+			position: relative;
+			// height: 300px;
+			// width: 300px;
+			// border: 1px solid red !important;
+
+			ul.alerts-container{
+				// text-align: right;
+				position: absolute;
+				right: -1px;
+				bottom: 0;
+				margin-bottom: 1px;
+				padding-left: 0;
+				 // border: 1px solid blue !important;
+
+				li.alert-banner{
+				//position: absolute;
+				display: table;
+				padding: 6px 12px 6px 14px;
+				margin-bottom: 0px;
+				text-transform: uppercase;
+				//font-family: arial black;
+				font-weight: bold;
+				font-size: 12px;
+				float: right;
+				clear: right;
+				color: white;
+				//cursor: default;
+				// display: none;
+			}
+
+			.soldout{
+				background: #6c6c6c;
+			}
+
+			.hotitem{
+				background: #f26522;
+
+			}
+
+			.newitem{
+				background: #ed1c24;
+			}
+
+			.info{
+				background: $main-color;
+			}
+
+			}
+		}
+
+		.product-image{
+			//margin-bottom: 0;
+			width: 299px;
+			height: 299px;
+			border-bottom: 1px solid $subtle-color !important;
+		}
+	}
+
+	li.last{
+		margin-right: 0px;
+	}
+
+	.product-index-description-container{
+		height: 35px;
+		overflow: hidden;
+		//border: 1px solid green;
+		margin-top: 5px;
+		padding: 0px 10px 0 12px;
+		color: $dark-color;
+		font-size: 14px;
+		position: absolute;
+		width: 298px;
+		// border: 1px solid blue !important;
+	}
+
+	.price-box{
+
+		display: block;
+		height: 70px;
+		// border: 1px solid green !important;
+		position: relative;
+		margin-bottom: 0;
+
+		.special-price{
+			// display: block;
+			font-size: 35px;
+			font-weight: bold;
+			color: $dark-color;
+			position: absolute;
+			padding: 0;
+			margin: 3px 0 0 -5px;
+			width: 100%;
+			text-align: center;
+		}
+
+		.old-price{
+			font-size: 14px;
+			color: $main-color;
+			position: absolute;
+			width: 100%;
+			top: 40px;
+			text-align: center;
+			font-style: italic;
+			margin: 3px 0 0 -5px;
+
+			.price{
+				font-weight: normal;
+			}
+
+		}
+
+		.percent-off{
+			background: url(../images/percentoffbg.png) no-repeat;
+			width: 100px;
+			height: 60px;
+			margin: 0px 0 0 -9px;
+			color: white !important;
+			// float: left;
+			//padding-left: 15px;
+			position: absolute;
+			//display: none;
+
+			span{
+				display: block;
+				text-align: center;
+				width: 90px;
+				//border: 1px solid red !important;
+			}
+
+			span:first-child{
+				padding-top: 1.4em;
+				padding-bottom: 0;
+				margin-bottom: -5px;
+				font-size: 11px;
+			}
+
+			span:nth-child(2){
+				font-size: 26px;
+				padding-top: 0;
+				margin-top: 0;
+			}
+		}
+	}
+
+	.actions{
+		// background: red;
+		position: relative;
+		// padding: 14px 10px 0 0;
+		//right: 10px;
+		// width: auto;
+		// height: auto;
+
+		a.view-deal-btn{
+			float: right;
+			// display: inline;
+			//width: 100px;
+			//height: 35px;
+			border: 1px solid $subtle-color !important;
+			color: $dark-color;
+			text-decoration: none;
+			padding: 12px 15px 12px 15px;
+			@include border-radius(4px, 4px);
+			@include background-image(linear-gradient(white, $faint-color));
+			// float: right;
+			margin: 25px 10px 0 0;
+			position: relative;
+			z-index: 999;
+
+			&:hover{
+				//background: $main-color image-url("btntrainglelight.png") no-repeat 89% 50%;
+				border: 1px solid $main-color;
+				text-decoration: none;
+				color: white;
+				text-shadow: 1px 1px 0px shade($main-color, 20%);
+				@include background-image(linear-gradient(tint($main-color, 15%), $main-color));
+			}
+		}
+
+		a.soldout-btn{
+			@include clairsoft-inactive-button;
+		}
+	}
+}
+
+
+.col1-layout .products-grid{
+  margin:0;
+  width:960px;
+  padding: 0;
+
+	.product-image{
+		height: 310px;
+		width: 310px;
+	}
+
+}
+
+.category-title {
+	// background: white;
+	border-bottom: 1px solid $subtle-color !important;
+	padding-bottom: 0px;
+	margin-bottom: 12px;
+
+		h1{
+			font-size: 30px;
+			// text-transform: uppercase;
+			// background: $subtle-color;
+			border-bottom: 3px solid $subtle-color !important;
+			color: $dark-color;
+			width: 300px;
+			display: block;
+			height: 100%;
+			padding: 8px 0 6px 40px;
+		}
+}

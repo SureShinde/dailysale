@@ -1,0 +1,95 @@
+@include sticky-footer(350px, "#main-wrapper","#sticky-footer-push","#footer");
+
+footer{
+	color: $subtle-color;
+	background: $secondary-color;
+	border-top: 5px solid $subtle-color !important;
+	font-size: 15px;
+
+	#footer-container{
+		height: 250px;
+		width: 960px;
+		margin: 0 auto;
+		padding-top: 60px;
+		// border-top: 1px solid $faint-color !important;
+
+		#footer-content-left{
+			width: 320px;
+			//margin-right: 10px;
+			border-right: 1px solid $dark-color !important;
+			float: left;
+			height: 100%;
+			display: block;
+			padding-right: 0px;
+			text-align: left;
+
+			ul{
+				float: left;
+				list-style: none;
+				width: 135px;
+				padding: 0;
+				margin: 0;
+
+				h3{
+					margin: 0 0 10px 0;
+					color: white;
+				}
+
+				li{
+					//height: 30px;
+
+					a{
+						text-decoration: none;
+						color: $subtle-color;
+						border-bottom: 1px dashed $dark-color;
+						padding: 14px 0px 8px 0;
+						display: block;
+
+					&:hover{
+						border-bottom: 1px solid $subtle-color;
+						color: white;
+					}
+					}
+				}
+			}
+
+			ul:first-child{
+				margin-right: 20px;
+				width: 115px;
+			}
+		}
+
+		#footer-content-center{
+			width: 320px;
+			border-right: 1px solid $dark-color !important;
+			//margin-right: 10px;
+			float: left;
+			height: 100%;
+			padding: 0 20px;
+		}
+
+		#footer-content-right{
+			width: 320px;
+			float: left;
+			height: 100%;
+			padding-left: 40px;
+
+			.socialicons{
+				display: inline-block;
+				padding: 5px 10px 0 0;
+			}
+		}
+	}
+
+	#copyright{
+			width: 100%;
+			text-align: center;
+			margin-top: 50px;
+			display: block;
+			color: $dark-color;
+
+			a{
+				color: $subtle-color;
+			}
+		}
+}

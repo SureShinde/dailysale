@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<layout>
+    <default>
+
+        <!-- Remove callouts and rarely used stuff -->
+        <remove name="right.poll"/>
+        <remove name="right.permanent.callout"/>
+        <remove name="left.permanent.callout"/>
+        <remove name="paypal.partner.right.logo"/>
+        <remove name="breadcrumbs" />
+
+        <!-- add the local stylesheet -->
+        <reference name="head">
+            <action method="addCss"><stylesheet>css/local.css</stylesheet></action>
+            <action method="addItem"><type>skin_js</type><script>js/local.js</script></action>
+            <action method="addItem"><type>js</type><name>prototype/window.js</name></action>
+            <action method="addItem"><type>js_css</type><name>prototype/windows/themes/default.css</name></action>
+            <action method="addCss"><name>lib/prototype/windows/themes/magento.css</name></action>
+        </reference>
+
+        <action method="unsetChild"><name>product.info.options</name></action>
+
+    </default>
+
+    <customer_logged_in>
+        <remove name="sale.reorder.sidebar"></remove>
+    </customer_logged_in>
+
+    <customer_logged_out>
+        <reference name="top.links">
+
+            <action method="addLink" translate="label title" module="customer">
+                <label>Sign Up</label>
+                <url helper="customer/getRegisterUrl"/>
+                <title>Sign Up</title>
+                <prepare/>
+                <urlParams/>
+                <position>100</position>
+            </action>
+
+             <!-- <remove name="checkout_cart_link"/> -->
+            <action method="removeLinkByUrl"><url helper="customer/getLogoutUrl"/></action>
+            <action method="removeLinkByUrl"><url helper="customer/getAccountUrl"/></action>
+        </reference>
+    </customer_logged_out>
+
+</layout>

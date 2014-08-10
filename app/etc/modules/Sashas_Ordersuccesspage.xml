@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <modules>
+        <Sashas_Ordersuccesspage>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Sashas_Ordersuccesspage>
+    </modules>
+</config>

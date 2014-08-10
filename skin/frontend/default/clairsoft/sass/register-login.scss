@@ -1,0 +1,77 @@
+.account-create{
+}
+
+.account-login{
+	button{
+		@include clairsoft-default-button;
+	}
+
+	.registered-users{
+		background: $faint-color;
+	}
+}
+
+.customer-account-login{
+
+	h2{
+		border-bottom: 1px solid $subtle-color;
+		padding-bottom: 5px;
+		margin-bottom: 8px;
+	}
+
+	p{
+		margin: 5px 0;
+	}
+
+	.new-users{
+		//border: 1px solid $subtle-color;
+		//background: white;
+		width: 63% !important;
+		padding: 1em;
+		@include border-radius(4px);
+		min-height: 325px;
+		font-size: 17px;
+		position: relative;
+
+		button{
+			@include clairsoft-default-button(200px);
+			position: absolute;
+			bottom: 20px;
+			right: 20px;
+		}
+	}
+
+	.registered-users{
+		border: 1px solid $subtle-color;
+		width: 36% !important;
+		padding: 1.5em;
+		@include border-radius(4px);
+		min-height: 325px;
+		position: relative;
+
+		label{
+			margin-bottom: 3px;
+			color: $darker-color;
+		}
+
+		input{
+			height: 35px;
+			width: 280px;
+			@include border-radius(4px);
+		}
+
+		button{
+			@include clairsoft-default-button();
+			position: absolute;
+			bottom: 20px;
+			right: 20px;
+		}
+
+		.f-left{
+			font-size: 12px;
+			position: absolute;
+			bottom: 20px;
+			left: 20px;
+		}
+	}
+}

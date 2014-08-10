@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author		Sashas
+ * @category    Sashas
+ * @package     Sashas_OrderSuccessPage
+ * @copyright   Copyright (c) 2013 Sashas IT Support Inc. (http://www.sashas.org)
+ * @license    http://opensource.org/licenses/GPL-3.0  GNU General Public License, version 3 (GPL-3.0)
+ */
+-->
+<config>
+	<modules>
+	    <Sashas_Ordersuccesspage>
+	        <version>0.1.0</version>
+	    </Sashas_Ordersuccesspage>
+	</modules>
+	<global> 
+        <blocks>
+        	<ordersuccesspage><class>Sashas_Ordersuccesspage_Block</class></ordersuccesspage>
+           	<checkout>
+            	<rewrite>
+            		<onepage_success>Sashas_Ordersuccesspage_Block_Success</onepage_success> 
+            	</rewrite>
+           	</checkout>           
+        </blocks>            
+  	</global>  
+    <frontend>
+        <routers>
+            <ordersuccesspage>
+                <use>standard</use>
+                <args>
+                    <module>Sashas_Ordersuccesspage</module>
+                    <frontName>ordersuccesspage</frontName>
+                </args>
+            </ordersuccesspage>
+        </routers>
+    </frontend>  	
+</config>
+
+
+	
