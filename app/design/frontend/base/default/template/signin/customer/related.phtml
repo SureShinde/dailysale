@@ -1,0 +1,26 @@
+<div class="signin">
+	<div class="page-title">
+		<h1><?php echo $this->__('Social Media Login') ?></h1>
+	</div>
+	<?php $links = $this->getLinks();?>
+	<?php if (count($links)):?>
+		<div class="socials-login">
+				<div class="fieldset">
+					<h2 class="legend">Your account linked with:</h2>
+					<?php foreach ($links as $item):?>
+					<a class="btn-<?php echo $item->getSocial()?>-login"><?php echo $this->__( $item->getSocial() )?></a>
+					<?php endforeach;?>
+				</div>
+		</div> 
+	<?php else:?>
+	
+	<p><?php echo $this->__('You have linked social account yet.') ?></p>
+	
+	<?php endif;?>
+	<div class="buttons-set">
+		<p class="back-link">
+			<a href="<?php echo $this->getUrl('customer/account') ?>"><small>&laquo;
+			</small><?php echo $this->__('Back') ?></a>
+		</p>
+	</div>
+</div>

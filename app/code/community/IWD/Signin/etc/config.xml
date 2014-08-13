@@ -1,0 +1,156 @@
+<?xml version="1.0"?>
+<config>
+
+	<modules>
+		<IWD_Signin>
+			<version>1.1.5</version>
+		</IWD_Signin>
+	</modules>
+	
+	
+	<frontend>
+	
+		<routers>
+			<signin>
+				<use>standard</use>
+				<args>
+                    <module>IWD_Signin</module>
+                    <frontName>signin</frontName>
+                </args>
+            </signin>
+        </routers>
+        
+        <layout>
+            <updates>
+                <signin>
+                    <file>iwd_signin.xml</file>
+                </signin>
+            </updates>
+        </layout>
+        
+        <events>
+	        <customer_login>
+	            <observers>
+	                <check_customer_login>
+	                    <type>singleton</type>
+	                    <class>signin/observer</class>
+	                    <method>checkCustomerLogin</method>
+	                </check_customer_login>
+	            </observers>
+	        </customer_login>
+		</events>
+		
+    </frontend>
+	
+	
+	 <admin>
+		<routers>
+			<signin>
+				<use>admin</use>
+				<args>
+					<module>IWD_Signin</module>
+					<frontName>signin</frontName>
+				</args>
+			</signin>
+        </routers>
+    </admin>
+    
+    <adminhtml>
+    
+        <layout>
+            <updates>
+                <signin>
+                    <file>iwd_signin.xml</file>
+                </signin>
+            </updates>
+        </layout>
+        
+        <events>
+	        <controller_action_predispatch>
+	            <observers>
+	                <signin_check_related>
+	                    <type>singleton</type>
+	                    <class>signin/observer</class>
+	                    <method>checkRequiredModules</method>
+	                </signin_check_related>
+	            </observers>
+	        </controller_action_predispatch>
+		</events>
+        
+    </adminhtml>
+    
+    
+     <global>
+     	<blocks>
+            <signin>
+                <class>IWD_Signin_Block</class>
+            </signin>
+	        <customer>
+				<rewrite>
+					<account_dashboard_info>IWD_Signin_Block_Customer_Account_Dashboard_Info</account_dashboard_info>
+				</rewrite>
+			</customer>
+        </blocks>
+        <helpers>
+            <signin>
+                <class>IWD_Signin_Helper</class>
+            </signin>
+        </helpers>
+        
+        <models>
+		
+			<paypal>
+				<rewrite>
+					<api_nvp>IWD_Signin_Model_Api_Nvp</api_nvp>
+				</rewrite>
+			</paypal>
+		
+			<signin>
+				<class>IWD_Signin_Model</class>
+				<resourceModel>signin_mysql4</resourceModel>
+            </signin>
+            
+            
+            
+            <signin_mysql4>
+                <class>IWD_Signin_Model_Mysql4</class>
+               <entities>
+					<customer>
+						<table>paypalauth_customer</table>
+					</customer>
+					<related>
+						<table>iwd_signin_related</table>
+					</related>
+				</entities>
+            </signin_mysql4>
+        </models>
+        
+        
+        <resources>
+            <iwdsignin_setup>
+                <setup>
+                    <module>IWD_Signin</module>
+                    <class>Mage_Catalog_Model_Resource_Eav_Mysql4_Setup</class>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </iwdsignin_setup>
+            <signin_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </signin_write>
+            <signin_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </signin_read>
+        </resources>
+        
+        
+     </global>
+     
+     
+    
+</config>

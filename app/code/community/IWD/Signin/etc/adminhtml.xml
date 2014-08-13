@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<config>
+
+	<acl>
+		<resources>
+			<admin>
+				<children>
+
+
+					<system>
+						<children>
+
+							<config>
+								<children>
+									<signin translate="title" module="signin">
+										<title>IWD Sign In</title>
+										<sort_order>60</sort_order>
+									</signin>
+								</children>
+							</config>
+						</children>
+					</system>
+
+
+				</children>
+			</admin>
+		</resources>
+	</acl>
+
+</config>
