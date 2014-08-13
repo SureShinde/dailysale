@@ -3,3 +3,7 @@ media/downloadable/
 media/import/
 media/xmlconnect/
 media/catalog/product/cache/
+var/cache/
+var/session/
+skin/frontend/default/clairsoft/.sass-cache/
+app/etc/local.xml
