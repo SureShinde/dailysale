@@ -1,0 +1,12 @@
+<?php $logo =  $this->getLogo()?>
+<?php if ($logo):?>
+<div class="login-logo">
+	<img src="<?php echo $logo?>" />
+</div>
+<?php endif;?>
+<?php $html =  $this->getCmsBlock()?>
+<?php if (!empty($html)):?>
+<div class="cms-block">
+	<?php echo $this->getCmsBlock()?>
+</div>
+<?php endif;?>
