@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+<layout>
+	<default>
+
+		<reference name="head">			
+			<action method="addItem"><type>skin_js</type><name>iwd/signin/signin.js</name></action>
+			<action method="addCss"><stylesheet>css/iwd/signin/signin.css</stylesheet></action>
+		</reference>
+		
+		<reference name="before_body_end">
+			<block type="signin/modal" name="signin.modal.dialog" template="signin/modal.phtml">
+					<block type="signin/cms" name="signin.modal.cms" template="signin/cms.phtml" />								
+			</block>
+		</reference>
+		
+		<reference name="after_body_start">
+			<block type="signin/login_abstract" name="signin.login.abstract" template="signin/socials/js.phtml" >
+				<block type="signin/login_facebook" name="signin.login.socials.facebook" template="signin/socials/facebook.phtml" />
+			</block>
+		</reference>
+	</default>
+	
+	
+	<customer_logged_out>      
+        <reference name="top.links">
+            <action method="removeLinkByUrl" module="customer"><url helper="customer/getLoginUrl"/></action>
+            <action method="removeLinkByUrl" module="customer"><url helper="customer/getAccountUrl"/></action>
+        </reference>
+        
+        <reference name="top.links">
+        	<action method="addLink" translate="label title" module="customer"><label>My Account</label><url helper="customer/getAccountUrl"/><title>My Account</title><prepare/><urlParams/><position>10</position><liParams/><aParams>class="signin-modal"</aParams></action>
+            <action method="addLink" translate="label title" module="customer"><label>Log In</label><url helper="customer/getLoginUrl"/><title>Log In</title><prepare/><urlParams/><position>100</position><liParams/><aParams>class="signin-modal"</aParams></action>
+        </reference>
+        
+    </customer_logged_out>
+    
+    
+    
+    <!--  LOGIN FORM -->
+    <signin_customer_login>
+	    <block type="signin/customer_login" template="signin/customer/form/login.phtml" output="toHtml" name="signin.customer.login">
+            <block type="persistent/form_remember" name="persistent.remember.me" template="signin/customer/remember_me.phtml" />
+            <block type="core/template" name="persistent.remember.me.tooltip" template="signin/customer/remember_me_tooltip.phtml" />
+            <block type="signin/social" name="signin.socials" template="signin/socials/links.phtml" />		
+        </block>
+    </signin_customer_login>
+    
+    
+    <!--  REGISTER FORM -->
+    <signin_customer_register>
+	    <block type="signin/customer_register" template="signin/customer/form/register.phtml" output="toHtml" name="signin.customer.register">
+            <block type="persistent/form_remember" name="persistent.remember.me" template="signin/customer/remember_me.phtml" />
+            <block type="core/template" name="persistent.remember.me.tooltip" template="signin/customer/remember_me_tooltip.phtml" />
+            <block type="signin/social" name="signin.socials" template="signin/socials/links.phtml" />		
+        </block>
+    </signin_customer_register>
+    
+    
+    <!--  FORGOT PASSWORD FORM -->
+    <signin_customer_forgotpassword>
+	    <block type="customer/account_forgotpassword" name="signin.customer.forgotpassword" output="toHtml" template="signin/customer/form/forgotpassword.phtml"/>
+    </signin_customer_forgotpassword>
+    
+    
+     <customer_account_index>
+        <!-- Mage_Review -->
+        <reference name="customer_account_dashboard_info">
+            <block type="signin/customer_account_dashboard_info" name="customer_account_dashboard_info_paypalauth_identity" as="paypalauth_dashboard" template="signin/customer/account/dashboard/info.phtml"/>
+        </reference>
+    </customer_account_index>
+    
+    <signin_openidconnect_asklink>
+        <reference name="root">
+            <action method="setTemplate"><template>page/1column.phtml</template></action>
+        </reference>
+         <reference name="content">
+             <block type="signin/customer_account_asklink" name="paypalauth" template="signin/customer/account/asklink.phtml"/>
+         </reference>
+    </signin_openidconnect_asklink>
+    
+    
+    <customer_account_create>
+    	<reference name="customer.form.register.fields.before">
+    		<block type="signin/social" name="signin.socials" as="signin.socials" template="signin/socials/links-external.phtml" />
+    	</reference>
+    </customer_account_create>
+    
+    
+    <customer_account_login>
+        <reference name="customer_form_login">
+            <action method="setTemplate"><template>signin/customer/form/login-original.phtml</template></action>
+            <block type="signin/social" name="signin.socials" template="signin/socials/links-external.phtml" />		
+            <block type="persistent/form_remember" name="persistent.remember.me" template="persistent/remember_me.phtml" />
+            <block type="core/template" name="persistent.remember.me.tooltip" template="persistent/remember_me_tooltip.phtml" />
+        </reference>
+    </customer_account_login>
+    
+    <!-- DEV -->
+    <!-- customer_account>
+    	<reference name="customer_account_navigation">
+    		 <action method="addLink" translate="label" module="signin"><name>signin</name><path>signin/accounts/</path><label>Social Media Login</label></action>
+    	</reference>
+    </customer_account>
+    
+    <signin_accounts_index translate="label">
+    	 <label>Social Media Login</label>
+        <update handle="customer_account"/>	
+    	<reference name="root">
+            <action method="setTemplate"><template>page/2columns-left.phtml</template></action>
+        </reference>
+        <reference name="my.account.wrapper">
+        	<block type="signin/accounts" name="signin.accounts" template="signin/customer/related.phtml"/>
+        </reference>
+        
+    </signin_accounts_index -->
+    
+</layout>

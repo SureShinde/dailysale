@@ -1,0 +1,26 @@
+<div class="signin">
+<?php $_helper = Mage::helper('signin');?>
+ <div class="socials-login">
+    		
+        	<?php if ($_helper->isFacebookLoginEnable()):?>
+        		<a class="btn-facebook-login" onclick="IWD.Signin.loginWithFacebook();return false;"><?php echo $this->__('Facebook')?></a>
+        	<?php endif;?>
+        	
+        	<?php if ($_helper->isGoogleLoginEnable()):?>
+        		<a class="btn-google-login" id="signinButton" href="<?php echo Mage::getModel('signin/google')->getAuthUrl();?>"><?php echo $this->__('Google+')?></a>
+        	<?php endif;?>
+        	
+        	<?php if ($_helper->isTwitterLoginEnable()):?>
+        		<a class="btn-twitter-login"><?php echo $this->__('Twitter')?></a>
+        	<?php endif;?>
+        	
+        	<?php if ($_helper->isYahooLoginEnable()):?>
+        		<a class="btn-yahoo-login"><?php echo $this->__('yahoo')?></a>
+        	<?php endif;?>
+        	
+        	<?php if ($_helper->isPaypalLoginEnable()):?>
+        		<a class="btn-paypal-login" href="<?php echo Mage::helper('signin/paypal')->getPopUpLoginUrl()?>"><?php echo $this->__('PayPal')?></a>
+        	<?php endif?>
+        
+	</div>
+</div>

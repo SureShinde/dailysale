@@ -1,0 +1,346 @@
+<?xml version="1.0"?>
+<config>
+	<tabs>
+        <iwdall>
+            <label>IWD Extensions</label>
+            <sort_order>210</sort_order>
+            <class>iwd-block</class>
+        </iwdall>
+    </tabs>
+    
+	<sections>
+		<signin translate="label" module="signin">
+			<class>separator-top</class>
+			<label>Social Media Login</label>
+			<tab>iwdall</tab>
+			<frontend_type>text</frontend_type>
+			<sort_order>99</sort_order>
+			<show_in_default>1</show_in_default>
+			<show_in_website>1</show_in_website>
+			<show_in_store>0</show_in_store>
+
+			<groups>
+
+				<default>
+					<label>Default Configuration</label>
+					<sort_order>10</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>0</show_in_store>
+					<fields>
+
+						<info>
+							<label>Version</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>0</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<frontend_model>signin/system_config_form_fieldset_extensions
+							</frontend_model>
+						</info>
+
+						<status>
+							<label>Enable Module?</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>10</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<validate>required-entry</validate>
+
+						</status>
+
+
+					</fields>
+				</default>
+
+
+
+				<design>
+					<label>Design</label>
+					<sort_order>30</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>1</show_in_store>
+					<fields>
+						<marker translate="label comment">
+							<label>Logo</label>
+							<comment>Allowed file types: PNG, GIF, JPG, JPEG, APNG. Not all
+								browsers support all these formats!
+							</comment>
+							<frontend_type>image</frontend_type>
+							<backend_model>signin/system_logo</backend_model>
+							<base_url type="media" scope_info="1">signin</base_url>
+							<sort_order>10</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</marker>
+
+						<blockid translate="label">
+							<label>CMS Static Block</label>
+							<comment></comment>
+							<frontend_type>select</frontend_type>
+							<source_model>signin/system_block</source_model>
+							<sort_order>20</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<comment>Information from static block will be shown at the top of popup</comment>
+						</blockid>
+					</fields>
+				</design>
+
+				<facebook>
+
+					<label>Facebook</label>
+					<sort_order>40</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>1</show_in_store>
+
+					<fields>
+						<enable translate="label comment">
+							<label>Enable Facebook Login?</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>10</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<validate>required-entry</validate>
+						</enable>
+
+						<appid translate="label">
+							<label>App ID</label>
+							<comment></comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>20</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<comment><![CDATA[Can be created at <a href="https://developers.facebook.com/apps"> Facebook Developer Page</a>]]></comment>
+						</appid>
+						<secret translate="label">
+							<label>App Secret</label>
+							<comment></comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>30</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<comment><![CDATA[Can be created at <a href="https://developers.facebook.com/apps"> Facebook Developer Page</a>]]></comment>
+						</secret>
+						
+						<sdk translate="label comment">
+							<label>Disable loading of SDK</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>40</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<validate>required-entry</validate>
+							<comment>If you have any Facebook Services integrated, this setting should be disabled</comment>
+						</sdk>
+
+
+
+
+					</fields>
+
+
+				</facebook>
+
+				<google>
+					<label>Google+</label>
+					<sort_order>50</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>1</show_in_store>
+					
+					<fields>
+						<enable translate="label comment">
+							<label>Enable Google+ Login?</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>10</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<validate>required-entry</validate>
+							<comment><![CDATA[To obtain Google access info, please refer to <a href="https://developers.google.com/console/help/#generatingdevkeys">documentation</a>]]></comment>
+						</enable>
+
+						<clientId translate="label">
+							<label>CLIENT ID</label>
+							<comment></comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>20</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							
+						</clientId>
+						<clientSecret translate="label">
+							<label>CLIENT SECRET</label>
+							<comment></comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>30</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</clientSecret>
+						<apiKey translate="label">
+							<label>API KEY</label>
+							<comment></comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>40</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</apiKey>
+
+					</fields>
+				</google>
+				
+				<yahoo>
+					<label>Yahoo</label>
+					<sort_order>51</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>1</show_in_store>
+					<fields>
+						<enable translate="label comment">
+							<label>Enable Yahoo Login?</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>10</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<validate>required-entry</validate>
+							<comment><![CDATA[To obtain Yahoo access info, please refer to <a href="https://developer.yahoo.com/oauth/">documentation</a>]]></comment>
+						</enable>
+						
+						<consumer_key translate="label">
+							<label>Consumer Key</label>
+							<comment></comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>20</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							
+						</consumer_key>
+						<consumer_secret translate="label">
+							<label>Consumer Secret</label>
+							<comment></comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>30</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</consumer_secret>
+						
+						
+					</fields>
+				</yahoo>	
+				
+				
+				<twitter>
+					<label>Twitter</label>
+					<sort_order>52</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>1</show_in_store>
+					<fields>
+						<enable translate="label comment">
+							<label>Enable Twitter Login?</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>10</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<validate>required-entry</validate>
+							<comment><![CDATA[To obtain Twitter access info, please refer to <a href="https://dev.twitter.com/docs/auth/implementing-sign-twitter">documentation</a>]]></comment>
+						</enable>
+						
+						<api_key translate="label">
+							<label>API Key</label>
+							<comment></comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>20</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							
+						</api_key>
+						<api_secret translate="label">
+							<label>API Secret</label>
+							<comment></comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>30</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</api_secret>
+						
+						
+					</fields>
+				</twitter>
+				
+				<paypallogin>
+					<label>Log in with PayPal</label>
+					<sort_order>60</sort_order>
+					<show_in_default>1</show_in_default>
+					<expanded>0</expanded>
+					<fields>
+						<status>
+							<label>Enable Log in with PayPal</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<isrequired>true</isrequired>
+							<sort_order>10</sort_order>
+							<show_in_default>1</show_in_default>
+						</status>
+						
+						<clientid translate="label">
+							<label>Client ID</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>20</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</clientid>
+						
+						<secret translate="label">
+							<label>Secret</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>30</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</secret>
+						
+						<sandbox translate="label">
+							<label>Sandbox</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>40</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</sandbox>
+						
+					</fields>
+				</paypallogin>
+				
+			</groups>
+
+		</signin>
+	</sections>
+</config>

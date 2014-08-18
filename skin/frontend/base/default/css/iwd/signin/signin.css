@@ -1,0 +1,131 @@
+.md-modal{position:absolute;top:50%;left:50%;width:50%;max-width:380px;min-width:320px;height:auto;z-index:10000;visibility:hidden;-webkit-backface-visibility:hidden;-moz-backface-visibility:hidden;backface-visibility:hidden;-webkit-transform:translateX(-50%) translateY(-50%);-moz-transform:translateX(-50%) translateY(-50%);-ms-transform:translateX(-50%) translateY(-50%);transform:translateX(-50%) translateY(-50%)}
+.md-show{visibility:visible}
+.md-overlay{position:fixed;width:100%;height:100%;visibility:hidden;top:0;left:0;z-index:9500;opacity:0;background:rgba(0,0,0,0.6);-webkit-transition:all .3s;-moz-transition:all .3s;transition:all .3s}
+.md-show ~ .md-overlay{opacity:1;visibility:visible}
+.md-content{color:#fff;background:#fff;position:relative;border-radius:3px;margin:0 auto;}
+.md-content-wrapper{padding:0 35px 20px;}
+.md-content h3{text-align:center;font-size:2.4em;font-weight:300;opacity:0.8;background:rgba(0,0,0,0.1);border-radius:3px 3px 0 0;margin:0;padding:.4em}
+.md-effect-7{top:20px;-webkit-transform:translateX(-50%);-moz-transform:translateX(-50%);-ms-transform:translateX(-50%);transform:translateX(-50%)}
+.md-effect-7 .md-content{-webkit-transform:translateY(-200%);-moz-transform:translateY(-200%);-ms-transform:translateY(-200%);transform:translateY(-200%);-webkit-transition:all .3s;-moz-transition:all .3s;transition:all .3s;opacity:0}
+.md-show.md-effect-7 .md-content{-webkit-transform:translateY(0%);-moz-transform:translateY(0%);-ms-transform:translateY(0%);transform:translateY(0%);border-radius:3px;opacity:1}
+.md-modal-footer {  padding: 19px 20px 20px;  margin-top: 15px;  text-align: right;  border-top: 1px solid #e5e5e5;; overflow:hiden;}
+.md-modal-footer .btn + .btn {  margin-bottom: 0;  margin-left: 0;}
+.md-modal-footer .btn-group .btn + .btn {  margin-left: -1px;}
+.md-modal-footer .btn-block + .btn-block {  margin-left: 0;}
+.md-modal-footer  a{font-size:12px;margin-top: 9px; text-decoration:none}
+.md-modal-header h4{padding:20px 35px;color:#4a4a4a; font-weight:400;font-size:38px;text-align: left;margin-bottom: 0;}
+.md-modal-header .close {cursor: pointer;position: absolute;right: 10px;text-decoration: none;top:10px;z-index: 1000;background: url("images/close.png") no-repeat scroll 0 0 transparent;display: block;height: 8px;width: 8px;text-indent: -999em;border:none}
+
+.signin{}
+.signin *{font-family:Helvetica Neue, Arial;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;}
+.signin .clear{clear:both}
+.signin .ajax-loader{ background-color: rgba(0, 0, 0, 0.3);height: 100%;left: 0;margin: 0 auto;position: absolute;top: 0;width: 100%;display:none}
+.signin .login-logo{padding:20px 0;text-align:center;}
+.signin .cms-block{margin-bottom:20px;padding:20px 20px 0;}
+.signin .cms-block p{font-size:14px;margin:0}
+
+/** LOGIN FORM **/
+.signin .login-form{padding:0; text-align:left;}
+.signin .login-form .page-title{border:none}
+.signin .login-form h1{border-bottom:1px solid #787878;color: #020202;font-size: 16px;font-weight: 300;padding-bottom: 10px;}
+.signin .login-input{float:left;width: 100%}
+.signin .login-input label{color: #535353;display: block;font-size: 15px;font-weight: normal;line-height: 1;margin-bottom: 10px;}
+.signin .login-input label em{font-size: 15px;color: #00909e;margin-left: 0;}
+.signin .login-input input[type="text"],
+.signin .login-input input[type="password"]{width: 100%;border: 1px solid #a7a7a7;height: 34px; padding: 0 4px;-webkit-border-radius: 3px;border-radius: 3px;}
+.signin .row{overflow:hidden;}
+.signin .row .login-input{margin-right:0; margin-bottom: 10px;}
+.signin .row .login-input + .login-input{margin-bottom:0}
+
+.signin .remember-me{margin-top:10px;float:left;}
+.signin .f-p{margin-top:10px;float:left;margin-bottom: 20px;}
+.signin .f-p a{color:#559197; font-size:12px; font-weight:normal; text-decoration:none}
+.signin #signin-login{-webkit-border-radius: 3px;border-radius: 3px; height:44px; width:100%; display:block;background-color:#00909e;text-align:center; line-height:44px; color:#fff; font-size:18px;text-shadow: 1px 1px 1px #02484f;text-decoration:none; text-transform:uppercase;cursor:pointer;margin-bottom:5px}
+.signin #signin-login:hover{background-color:#39b9c6;}
+.signin #create-account-singup{-webkit-border-radius: 3px;border-radius: 3px; height:31px; width:100%; display:block;background-color:#999999;text-align:center; line-height:31px; color:#fff; font-size:14px;text-shadow: 1px 1px 1px #5a5a5a;text-decoration:none; text-transform:uppercase;cursor:pointer;}
+.signin #create-account-singup:hover{background-color:#bcbcbc;}
+.signin .signin-btn-small{-webkit-border-radius: 3px;border-radius: 3px; height:31px; width:100%; display:block;background-color:#999999;text-align:center; line-height:31px; color:#fff; font-size:14px;text-shadow: 1px 1px 1px #5a5a5a;text-decoration:none; text-transform:uppercase;cursor:pointer;border:none;}
+.signin .signin-btn-small:hover{background-color:#bcbcbc;}
+.signin .btn-right{float:right; width:50%;}
+
+.signin .signin-actions{border-bottom:1px solid #b6b6b6;padding-bottom:36px;}
+
+/** Create Account **/
+.signin .account-create-signin{padding: 0;text-align: left;}
+.signin .account-create-signin li{margin-bottom:0}
+.signin .account-create-signin {margin-bottom:0}
+.signin .account-create-signin .page-title{border-bottom: 1px solid #787878;}
+.signin .account-create-signin .page-title h1{color: #000;font-size: 16px;font-weight: normal;margin-top: 0;padding-bottom: 8px;text-transform: uppercase;}
+.signin .account-create-signin label{color: #535353;display: block;font-size: 15px;font-weight: normal;line-height: 1;margin-bottom: 10px;}
+.signin .account-create-signin label em{font-size: 15px;color: #00909e;margin-left: 0;}
+.signin .account-create-signin .form-list .field {width:100%;}
+.signin .account-create-signin .form-list .field input{width:100%;}
+.signin .account-create-signin .form-list .input-box{width:100%;margin-bottom: 10px;line-height: 1;}
+.signin .account-create-signin .form-list input.input-text{width: 100%;border: 1px solid #a7a7a7;height: 34px; padding: 0 4px;-webkit-border-radius: 3px;border-radius: 3px;}
+.signin .account-create-signin .extend-input{width:100%;}
+.signin .account-create-signin .remember-me{float:none}
+.signin .account-create-signin .buttons-set{margin: 0;}
+.signin .account-create-signin p.required {float: none;}	
+.signin .account-create-signin .fieldset{background: none repeat scroll 0 0 transparent;border: medium none;padding: 0;margin-top: 0;} 
+.signin .account-create-signin h2{border-bottom: 1px solid #999999;line-height: 1;margin-bottom: 15px;padding-bottom: 10px;color:#4a4a4a; font-weight:normal}
+.signin .account-create-signin .newsletter{}
+.signin .account-create-signin .label{width:auto;}
+.signin .account-create-signin .input-box{ width: auto !important;}
+.signin .account-create-signin .input-box input{margin-top:0}
+.signin .buttons-set .back-link a{color: #559197;font-size: 12px;text-decoration:none}
+
+
+/** Forgot Password */
+.signin .account-forgotpassword{padding: 0;text-align: left;}
+.signin .account-forgotpassword .page-title{border-bottom: 1px solid #787878; margin-bottom: 9px;}
+.signin .account-forgotpassword .page-title h1{color: #000;font-size: 16px;font-weight: normal;margin-top: 0;padding-bottom: 8px;text-transform: uppercase;}
+.signin .account-forgotpassword label{color: #535353;display: block;font-size: 15px;font-weight: normal;line-height: 1;margin-bottom: 10px;}
+.signin .account-forgotpassword .fieldset{padding: 22px 15px 12px;}
+.signin .account-forgotpassword p.required {float: none;}
+.signin .account-forgotpassword .input-box{width:100%}
+.signin .account-forgotpassword .input-box input{width: 100%;border: 1px solid #a7a7a7;height: 34px; padding: 0 4px;-webkit-border-radius: 3px;border-radius: 3px;}
+.signin .account-forgotpassword .input-box #email_address{width:98%}
+.signin .account-forgotpassword .fieldset{background: none repeat scroll 0 0 transparent;border: medium none;padding: 0;margin-top: 0;} 
+.signin .account-forgotpassword  p{color:#000;font-size:14px;}
+
+
+
+.signin .socials-login{margin:20px 0 0 0 ;padding:0;text-align: center;}
+.signin .socials-login h4{color:#4a4a4a; font-size:30px;text-align:left; font-weight:normal;margin-bottom:10px;}
+.signin .socials-login a{margin-bottom:10px;background-image: url("images/sprite.png"); background-color:transparent;background-repeat:no-repeat}
+
+.signin .btn-facebook-login{background-position: 0 0;display: inline-block;;height: 32px;text-indent: -999em;width: 147px;cursor:pointer;}
+.signin .btn-facebook-login:hover{background-position: -1px -148px;}
+
+.signin .btn-google-login{background-position: 0 -49px;display: inline-block;;height: 32px;text-indent: -999em;width: 147px;cursor:pointer;}
+.signin .btn-google-login:hover{background-position: -1px -197px;}
+
+.signin .btn-twitter-login{background-position: -162px 0px;display: inline-block;;height: 32px;text-indent: -999em;width: 147px;cursor:pointer;}
+.signin .btn-twitter-login:hover{background-position: -163px -148px;}
+
+.signin .btn-yahoo-login{background-position: -162px -49px;display: inline-block;;height: 32px;text-indent: -999em;width: 147px;cursor:pointer;}
+.signin .btn-yahoo-login:hover{background-position: -163px -197px;}
+
+.signin .btn-paypal-login{background-position: -82px -98px;display: inline-block;;height: 32px;text-indent: -999em;width: 147px;cursor:pointer;}
+.signin .btn-paypal-login:hover{background-position: -82px -245px;}
+
+.signin .signin-error{ border: 1px dashed #EB340A;margin: 10px 0;padding: 10px;color: #000000;}
+.signin .signin-success{border: 1px dashed #05637B;color: #05637B;font-size: 14px;font-weight: normal;margin: 10px 0 0 6px;padding: 10px;}
+
+
+#floatingCirclesG{position:relative;width:64px;height:64px;-moz-transform:scale(0.6);-webkit-transform:scale(0.6);-ms-transform:scale(0.6);-o-transform:scale(0.6);transform:scale(0.6);top: 20%;margin:0 auto;}
+
+.f_circleG{position:absolute;background-color:#FFFFFF;height:12px;width:12px;-moz-border-radius:6px;-moz-animation-name:f_fadeG;-moz-animation-duration:1.04s;-moz-animation-iteration-count:infinite;-moz-animation-direction:linear;-webkit-border-radius:6px;-webkit-animation-name:f_fadeG;-webkit-animation-duration:1.04s;-webkit-animation-iteration-count:infinite;-webkit-animation-direction:linear;-ms-border-radius:6px;-ms-animation-name:f_fadeG;-ms-animation-duration:1.04s;-ms-animation-iteration-count:infinite;-ms-animation-direction:linear;-o-border-radius:6px;-o-animation-name:f_fadeG;-o-animation-duration:1.04s;-o-animation-iteration-count:infinite;-o-animation-direction:linear;border-radius:6px;animation-name:f_fadeG;animation-duration:1.04s;animation-iteration-count:infinite;animation-direction:linear;}
+#frotateG_01{left:0;top:26px;-moz-animation-delay:0.39s;-webkit-animation-delay:0.39s;-ms-animation-delay:0.39s;-o-animation-delay:0.39s;animation-delay:0.39s;}
+#frotateG_02{left:8px;top:8px;-moz-animation-delay:0.52s;-webkit-animation-delay:0.52s;-ms-animation-delay:0.52s;-o-animation-delay:0.52s;animation-delay:0.52s;}
+#frotateG_03{left:26px;top:0;-moz-animation-delay:0.65s;-webkit-animation-delay:0.65s;-ms-animation-delay:0.65s;-animation-delay:0.65s;animation-delay:0.65s;}
+#frotateG_04{right:8px;top:8px;-moz-animation-delay:0.78s;-webkit-animation-delay:0.78s;-ms-animation-delay:0.78s;-o-animation-delay:0.78s;animation-delay:0.78s;}
+#frotateG_05{right:0;top:26px;-moz-animation-delay:0.91s;-webkit-animation-delay:0.91s;-ms-animation-delay:0.91s;-o-animation-delay:0.91s;animation-delay:0.91s;}
+#frotateG_06{right:8px;bottom:8px;-moz-animation-delay:1.04s;-webkit-animation-delay:1.04s;-ms-animation-delay:1.04s;-o-animation-delay:1.04s;animation-delay:1.04s;}
+#frotateG_07{left:26px;bottom:0;-moz-animation-delay:1.17s;-webkit-animation-delay:1.17s;-ms-animation-delay:1.17s;-o-animation-delay:1.17s;animation-delay:1.17s;}
+#frotateG_08{left:8px;bottom:8px;-moz-animation-delay:1.3s;-webkit-animation-delay:1.3s;-ms-animation-delay:1.3s;-o-animation-delay:1.3s;animation-delay:1.3s;}
+@-moz-keyframes f_fadeG{0%{background-color:#00909e}100%{background-color:#FFFFFF}}
+@-webkit-keyframes f_fadeG{0%{background-color:#00909e}100%{background-color:#FFFFFF}}
+@-ms-keyframes f_fadeG{0%{background-color:#00909e}100%{background-color:#FFFFFF}}
+@-o-keyframes f_fadeG{0%{background-color:#00909e}100%{background-color:#FFFFFF}}
+@keyframes f_fadeG{0%{background-color:#00909e}100%{background-color:#FFFFFF}}
