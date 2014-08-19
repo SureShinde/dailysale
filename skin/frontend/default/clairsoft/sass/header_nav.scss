@@ -88,7 +88,7 @@
 
 .nav-container{
 	position: absolute;
-	top: 14px;
+	top: 27px;
 	left: 335px;
 
 	ul#nav{
@@ -116,35 +116,128 @@
 				}
 			}
 
-		.nav-1{
-			background: url(../images/navicon_men.png) no-repeat 2px 50%;
+		.nav-1 {
+
+			width: 70px;
+
+			a{
+				background: url(../images/sprite_navicons.png) no-repeat 0 0;
+				height: 20px;
+				width: 20px;
+				padding: 0;
+				margin-left: 0;
+
+				&:hover{
+					background: url(../images/sprite_navicons.png) no-repeat -20px 0;
+				}
+			}
+
+			span{
+				margin-left: 23px;
+			}
 		}
 
 		.nav-2{
-			background: url(../images/navicon_women.png) no-repeat 2px 50%;
+
+			width: 95px;
 
 			a{
-				padding-left: 10px;
+				background: url(../images/sprite_navicons.png) no-repeat 0 -20px;
+				height: 20px;
+				width: 20px;
+				padding: 0;
+				margin-left: 0;
+
+				&:hover{
+					background: url(../images/sprite_navicons.png) no-repeat -20px -20px;
+				}
+			}
+
+			span{
+				margin-left: 23px;
 			}
 		}
 
 		.nav-3{
-			background: url(../images/navicon_kids.png) no-repeat 2px 50%;
+			width: 70px;
+
+			a{
+				background: url(../images/sprite_navicons.png) no-repeat 0 -40px;
+				height: 20px;
+				width: 20px;
+				padding: 0;
+				margin-left: 0;
+
+				&:hover{
+					background: url(../images/sprite_navicons.png) no-repeat -20px -40px;
+				}
+			}
+
+			span{
+				margin-left: 26px;
+			}
 		}
 
 		.nav-4{
-			background: url(../images/navicon_electronics.png) no-repeat 2px 50%;
+			width: 120px;
+
+			a{
+				background: url(../images/sprite_navicons.png) no-repeat 0 -60px;
+				height: 20px;
+				width: 20px;
+				padding: 0;
+				margin-left: 0;
+
+				&:hover{
+					background: url(../images/sprite_navicons.png) no-repeat -20px -60px;
+				}
+			}
+
+			span{
+				margin-left: 26px;
+			}
 		}
 
 		.nav-5{
-			background: url(../images/navicon_lifestyle.png) no-repeat 2px 50%;
+
+			width: 95px;
+
 			a{
-				padding-left: 12px;
+				background: url(../images/sprite_navicons.png) no-repeat 0 -80px;
+				height: 20px;
+				width: 20px;
+				padding: 0;
+				margin-left: 0;
+
+				&:hover{
+					background: url(../images/sprite_navicons.png) no-repeat -20px -80px;
+				}
+			}
+
+			span{
+				margin-left: 23px;
 			}
 		}
 
 		.nav-6{
-			background: url(../images/navicon_jewelry.png) no-repeat 2px 50%;
+
+			width: 95px;
+
+			a{
+				background: url(../images/sprite_navicons.png) no-repeat 0 -100px;
+				height: 20px;
+				width: 20px;
+				padding: 0;
+				margin-left: 0;
+
+				&:hover{
+					background: url(../images/sprite_navicons.png) no-repeat -20px -100px;
+				}
+			}
+
+			span{
+				margin-left: 23px;
+			}
 		}
 	}
 }
