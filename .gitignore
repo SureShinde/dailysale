@@ -9,4 +9,4 @@ media/catalog/product/cache/
 /var/*
 !/var/.htaccess
 !/media/.htaccess
-/app/etc/local.xml
+skin/frontend/default/clairsoft/.sass-cache/
