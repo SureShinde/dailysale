@@ -44,4 +44,14 @@
             </updates>
         </layout>
     </adminhtml>
+    <default>
+        <importproducts>
+            <view>
+                <soapclient>http://magentohost/api/v2_soap/?wsdl</soapclient>
+                <apiuser>username</apiuser>
+                <apikey>password</apikey>
+            </view>
+        </importproducts>
+    </default>
+
 </config>

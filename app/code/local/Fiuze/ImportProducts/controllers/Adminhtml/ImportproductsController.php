@@ -9,7 +9,7 @@ class Fiuze_ImportProducts_Adminhtml_ImportproductsController extends Mage_Admin
     /**
      * Init actions
      *
-     * @return Fiuze_Api_Adminhtml_ApiController
+     * @return Fiuze_ImportProducts_Adminhtml_ImportproductsController
      */
     protected function _initAction()
     {
