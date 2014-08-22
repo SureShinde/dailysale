@@ -1,5 +1,6 @@
 .modgit/
 app/etc/local.xml
+app/etc/config.xml
 app/etc/user_cache.ser
 media/downloadable/
 media/import/
