@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Module configuration
+ *
+ * @author Magento
+ */
+-->
+<config>
+    <modules>
+        <Fiuze_ImportProducts>
+            <version>1.0.0.0.1</version>
+        </Fiuze_ImportProducts>
+    </modules>
+    <global>
+        <helpers>
+            <fiuze_importproducts>
+                <class>Fiuze_ImportProducts_Helper</class>
+            </fiuze_importproducts>
+        </helpers>
+        <blocks>
+            <fiuze_importproducts>
+                <class>Fiuze_ImportProducts_Block</class>
+            </fiuze_importproducts>
+        </blocks>
+    </global>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <Fiuze_ImportProducts before="Mage_Adminhtml">Fiuze_ImportProducts_Adminhtml</Fiuze_ImportProducts>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+    <adminhtml>
+        <layout>
+            <updates>
+                <fiuze_importproducts>
+                    <file>fiuze_importproducts.xml</file>
+                </fiuze_importproducts>
+            </updates>
+        </layout>
+    </adminhtml>
+</config>
