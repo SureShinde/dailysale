@@ -6,12 +6,8 @@ media/downloadable/
 media/import/
 media/xmlconnect/
 media/catalog/product/cache/
-<<<<<<< HEAD
-var/
-=======
 /media/*
 /var/*
 !/var/.htaccess
 !/media/.htaccess
 skin/frontend/default/clairsoft/.sass-cache/
->>>>>>> 4ecc638afc458168a9e34868484009b3f5db4ae1
