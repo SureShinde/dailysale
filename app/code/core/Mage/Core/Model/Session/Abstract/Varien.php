@@ -20,7 +20,7 @@
  *
  * @category    Mage
  * @package     Mage_Core
- * @copyright   Copyright (c) 2013 Magento Inc. (http://www.magentocommerce.com)
+ * @copyright   Copyright (c) 2014 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -85,23 +85,23 @@ class Mage_Core_Model_Session_Abstract_Varien extends Varien_Object
         }
 
         // session cookie params
-        // $cookieParams = array(
-        //     'lifetime' => $cookie->getLifetime(),
-        //     'path'     => $cookie->getPath(),
-        //     'domain'   => $cookie->getConfigDomain(),
-        //     'secure'   => $cookie->isSecure(),
-        //     'httponly' => $cookie->getHttponly()
-        // );
+        $cookieParams = array(
+            'lifetime' => $cookie->getLifetime(),
+            'path'     => $cookie->getPath(),
+            'domain'   => $cookie->getConfigDomain(),
+            'secure'   => $cookie->isSecure(),
+            'httponly' => $cookie->getHttponly()
+        );
 
-        // if (!$cookieParams['httponly']) {
-        //     unset($cookieParams['httponly']);
-        //     if (!$cookieParams['secure']) {
-        //         unset($cookieParams['secure']);
-        //         if (!$cookieParams['domain']) {
-        //             unset($cookieParams['domain']);
-        //         }
-        //     }
-        // }
+        if (!$cookieParams['httponly']) {
+            unset($cookieParams['httponly']);
+            if (!$cookieParams['secure']) {
+                unset($cookieParams['secure']);
+                if (!$cookieParams['domain']) {
+                    unset($cookieParams['domain']);
+                }
+            }
+        }
 
         if (isset($cookieParams['domain'])) {
             $cookieParams['domain'] = $cookie->getDomain();

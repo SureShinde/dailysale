@@ -1,0 +1,32 @@
+<config>
+    <api>
+        <resources>
+            <fiuze_importproducts translate="title" module="fiuze_importproducts">
+                <title>catalogProductTypeConfigurableAssign</title>
+                <model>fiuze_importproducts/catalog_product_api</model>
+                <methods>                    
+                    <catalogProductTypeConfigurableAssign translate="title" module="fiuze_importproducts">
+                        <title>catalogProductTypeConfigurableAssign</title>
+                        <acl>catalog/product</acl>
+                    </catalogProductTypeConfigurableAssign>
+                </methods>
+            </fiuze_importproducts>
+        </resources>
+        <v2>
+            <resources_function_prefix>
+                <fiuze_importproducts>CatalogProduct</fiuze_importproducts>
+            </resources_function_prefix>
+        </v2>
+        <acl>
+            <resources>
+                <fiuze_importproducts translate="title" module="fiuze_importproducts">
+                    <title>fiuze_importproducts</title>
+                    <sort_order>2000</sort_order>                    
+                    <catalogProductTypeConfigurableAssign translate="title" module="fiuze_importproducts">
+                        <title>catalogProductTypeConfigurableAssign</title>
+                    </catalogProductTypeConfigurableAssign>  
+                </fiuze_importproducts>
+            </resources>
+        </acl>
+    </api>
+</config>

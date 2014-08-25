@@ -30,26 +30,23 @@
                         <soapclient translate="label">
                             <label>Soap Client</label>
                             <comment>e.g. http://magentohost/api/v2_soap/?wsdl</comment>
-                            <sort_order>30</sort_order>
-                            <depends><enabled>1</enabled></depends>
+                            <sort_order>10</sort_order>                            
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </soapclient>
                         <apiuser translate="label">
                             <label>API User</label>
-                            <comment>Please enter User name for the api</comment>
-                            <sort_order>40</sort_order>
-                            <depends><enabled>1</enabled></depends>
+                            <!--<comment>Please enter User name for the api</comment>-->
+                            <sort_order>30</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </apiuser>
                         <apikey translate="label">
                             <label>API Key</label>
-                            <comment>Please enter Key for the api</comment>
+                            <!--<comment>Please enter Key for the api</comment>-->
                             <sort_order>50</sort_order>
-                            <depends><enabled>1</enabled></depends>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>

@@ -56,7 +56,6 @@ class Fiuze_ImportProducts_Adminhtml_ImportproductsController extends Mage_Admin
         $data = $this->getRequest()->getPost();
         if ($data) {
             //$data = $this->_filterPostData($data);
-
             try {
                 if (isset($_FILES['importfile'][name]) && (file_exists($_FILES['importfile']['tmp_name']))) {
                     $hasError = false;
@@ -64,12 +63,44 @@ class Fiuze_ImportProducts_Adminhtml_ImportproductsController extends Mage_Admin
                     $fileHelper = Mage::helper('fiuze_importproducts/file');
 
                     // upload new file
-                    $importFile = $fileHelper->uploadFile('importfile');
+                    $importContent = $fileHelper->uploadFile('importfile');
+                    
+                    if($importContent) {
+                        try{
 
-                    // display success message
-                    $this->_getSession()->addSuccess(
-                        Mage::helper('fiuze_importproducts')->__('Successfully imported.')
-                    );
+                            $soapclient = Mage::helper('fiuze_importproducts/data')->getSoapClient();
+                            $apiuser = Mage::helper('fiuze_importproducts/data')->getApiUser();
+                            $apikey = Mage::helper('fiuze_importproducts/data')->getApiKey();
+                            
+                            $options = array(
+                                'trace' => true,
+                                'connection_timeout' => 120,
+                                'wsdl_cache' => WSDL_CACHE_NONE,
+                            );
+
+                            $proxy = new SoapClient($soapclient, $options);
+                            $sessionId = $proxy->login($apiuser, $apikey);
+                           
+                            $confSp = 0;
+                                               
+                            foreach($importContent->configProductId as $configurableProductId) {
+
+                                Mage::helper('fiuze_importproducts/api')->linkAssign_v2($proxy, $sessionId, (string)$importContent->operation[$confSp], (string)$configurableProductId, (array)$importContent->configOptions[$confSp]->id);                                            
+                                
+                                $confSp++;             
+                            } 
+                            
+                            
+                        } catch (Exception $e) {
+                            $hasError = true;
+                            
+                            $this->_getSession()->addError($e->getMessage());
+                        }
+                            
+                    } else {
+                        $hasError = true;
+                        $this->_getSession()->addError(Mage::helper('fiuze_importproducts')->__('Loading products is failed'));
+                    }
                 } else {
                     $hasError = true;
                     $this->_getSession()->addError(Mage::helper('fiuze_importproducts')->__('File upload is failed'));
@@ -86,12 +117,18 @@ class Fiuze_ImportProducts_Adminhtml_ImportproductsController extends Mage_Admin
 
             if ($hasError) {
                 $this->_getSession()->setFormData($data);
-                $redirectPath   = '*/*/import';
+                $redirectPath   = '*/*/index';
                 $redirectParams = array('id' => $this->getRequest()->getParam('id'));
+            }
+            else {
+                // display success message
+                $this->_getSession()->addSuccess(
+                    Mage::helper('fiuze_importproducts')->__('Successfully imported.')
+                );
             }
         }
 
-        //$this->_redirect($redirectPath, $redirectParams);
+        $this->_redirect($redirectPath, $redirectParams);
     }
 
     /**

@@ -23,7 +23,14 @@
                 <class>Fiuze_ImportProducts_Block</class>
             </fiuze_importproducts>
         </blocks>
-    </global>
+        <models>
+            <catalog>
+                <rewrite>
+                    <product_api_v2>Fiuze_Importproducts_Model_Catalog_Product_Api_V2</product_api_v2>
+                </rewrite>
+            </catalog>
+        </models>
+        </global>
     <admin>
         <routers>
             <adminhtml>

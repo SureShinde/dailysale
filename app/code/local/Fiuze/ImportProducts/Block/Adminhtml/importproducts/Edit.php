@@ -43,6 +43,10 @@ class Fiuze_ImportProducts_Block_Adminhtml_ImportProducts_Edit extends Mage_Admi
             }
 
             function importFile(){
+                var htmlContent = '<div id=\"messages\"><ul class=\"messages\"><li class=\"message\"><ul><li>Please wait while this process is completed.</span></li></ul></li></ul></div>'
+                if(jQuery('.wait-message').length == 0 && jQuery('#importfile').val().length != 0) {
+                    jQuery('<p class=\'wait-message\'>Please wait ...</p>').insertBefore('.content-header');
+                }
                 editForm.submit();
             }
         ";
