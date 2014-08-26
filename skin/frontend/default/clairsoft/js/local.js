@@ -1,7 +1,7 @@
 var $j = jQuery.noConflict();
 
 $j(document).ready(function(){
-	
+
 	//sticky stuff
 
 	var stickyTop = $j('.wrapper').offset().top + 380; // returns number
@@ -26,11 +26,10 @@ $j(document).ready(function(){
 		return false;
 	});
 
+//popup window with cookie
+
+	//set dialog options
 	$j("#subscribe-pop").hide();
-
-	$j.cookie('subscribe', 'open');
-	var subscribeCookie = "open";
-
 	$j( "#subscribe-pop" ).dialog({
 		height: 275,
 		width: 425,
@@ -44,37 +43,28 @@ $j(document).ready(function(){
 		draggable: false,
 		resizable: false,
 		close: function(){
-			$j.cookie('subscribe', 'closed', { expires: 1, path: '/' });
-			//alert( subscribeCookie );
-			console.log("cookie is now closed");
+			$j.cookie('subscribe', 'closed', { expires: 15, path: '/' });
 		}
-	});
-
-	//$j("#subscribe-pop").dialog("open");
-
-	$j(window).resize(function() {
-    	$j("#subscribe-pop").dialog( "option", "position", { my: "center", at: "center", of: window } );
-    	//$j("#subscribe-pop").dialog("close");
 	});
 
 	//timer script for popup action
 
 	var idleTime = 0;
-
 	function timerIncrement() {
 		idleTime = idleTime + 1;
-
-			//$j("#subscribe-pop").dialog("open");
-
-			//var subscribeCookie = $j.cookie('subscribe');
-			
-			if (subscribeCookie === open)  {
-				//$j("#subscribe-pop").dialog("open");
-				console.log("cookie is open!");
+			if (idleTime > 15 && $j.cookie('subscribe') !== "closed"){
+				$j("#subscribe-pop").dialog("open");
 				idleTime = 0;
-			}}
+			}
+		}
 
 	setInterval(timerIncrement, 1000); // 1 second
+
+	//move subscribe window to center on resize
+	$j(window).resize(function() {
+    	$j("#subscribe-pop").dialog( "option", "position", { my: "center", at: "center", of: window } );
+    	//$j("#subscribe-pop").dialog("close");
+	});
 
 	//main page border hovers
 
