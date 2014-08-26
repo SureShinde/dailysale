@@ -367,6 +367,17 @@
 		"outputPathIsSetByUser": 0,
 		"processed": 0
 		},
+	"\/images\/sprite_navicons.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 5399,
+		"inputAbbreviatedPath": "\/images\/sprite_navicons.png",
+		"outputAbbreviatedPath": "\/images\/sprite_navicons.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
 	"\/js\/local-ck.js": {
 		"fileType": 64,
 		"ignore": 0,

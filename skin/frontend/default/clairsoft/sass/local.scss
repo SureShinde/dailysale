@@ -185,6 +185,48 @@ body{
 	padding-top: 1em;
 }
 
+//subscribe
+
+.dialogSubscribe{
+	background: white;
+	position:fixed;
+	border: 1px solid $subtle-color;
+	@include border-bottom-left-radius(4px);
+	@include border-bottom-right-radius(4px);
+	@include border-top-left-radius(0px);
+	@include border-top-right-radius(0px);
+	padding: 0;
+	margin-left: auto;
+	margin-right: auto;
+
+	a{
+		color: $main-color;
+	}
+}
+
+#subscribe-container{
+	position: fixed;
+	height: 100%;
+	width: 100%;
+	top: 0px;
+	left: 0px;
+	background: rgba(96, 96, 96, 0.92);
+	z-index: 9999;
+	//display: none;
+
+}
+
+#subscribe-pop{
+		background: white;
+		width: 450px;
+		height: 250px;
+		margin: auto;
+		// top: 50%;
+		position: relative;
+		border: 1px solid $subtle-color;
+		padding: 1em;
+	}
+
 /*-------------------------------------------- */
 /*----------- Modular SCSS imports ------------*/
 /*-------------------------------------------- */
