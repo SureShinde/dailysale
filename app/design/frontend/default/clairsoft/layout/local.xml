@@ -32,6 +32,12 @@
 
     </default>
 
+    <catalog_product_view>
+         <reference name="head">
+                <action method="addItem"><type>skin_js</type><script>js/product.js</script></action>
+            </reference>
+     </catalog_product_view>
+
     <customer_logged_in>
         <remove name="sale.reorder.sidebar"></remove>
     </customer_logged_in>

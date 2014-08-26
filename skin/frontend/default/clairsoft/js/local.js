@@ -1,24 +1,6 @@
 var $j = jQuery.noConflict();
 
 $j(document).ready(function(){
-
-	// midnight timer
-
-	function showTimes() {
-		var now = new Date();
-		var hrs = 23-now.getHours();
-			hrs = ("0" + hrs).slice(-2);
-		var mins = 59-now.getMinutes();
-			mins = ("0" + mins).slice(-2);
-		var secs = 59-now.getSeconds();
-			secs = ("0" + secs).slice(-2);
-		var str = '';
-		//str = now.toString();
-		str += hrs+':'+mins+':'+secs+'';
-		document.getElementById('timer').innerHTML = str;
-	}
-
-	setInterval( function(){showTimes();},1000);
 	
 	//sticky stuff
 
@@ -46,8 +28,8 @@ $j(document).ready(function(){
 
 	$j("#subscribe-pop").hide();
 
-	var subscribeCookie = $j.cookie('subscribe', 'open');
-	//var subscribeCookie = "open";
+	$j.cookie('subscribe', 'open');
+	var subscribeCookie = "open";
 
 	$j( "#subscribe-pop" ).dialog({
 		height: 275,
@@ -64,6 +46,7 @@ $j(document).ready(function(){
 		close: function(){
 			$j.cookie('subscribe', 'closed', { expires: 1, path: '/' });
 			//alert( subscribeCookie );
+			console.log("cookie is now closed");
 		}
 	});
 
@@ -81,8 +64,13 @@ $j(document).ready(function(){
 	function timerIncrement() {
 		idleTime = idleTime + 1;
 
-			if (subscribeCookie === "open" && idleTime > 2) {
-				$j("#subscribe-pop").dialog("open");
+			//$j("#subscribe-pop").dialog("open");
+
+			//var subscribeCookie = $j.cookie('subscribe');
+			
+			if (subscribeCookie === open)  {
+				//$j("#subscribe-pop").dialog("open");
+				console.log("cookie is open!");
 				idleTime = 0;
 			}}
 
