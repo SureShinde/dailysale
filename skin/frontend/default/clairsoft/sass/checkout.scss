@@ -1,68 +1,19 @@
-@import "improved-onepage-checkout"; //styles for checkout page
+#signin-modal{
 
-
-//overrides for improved one page checkout
-
-.checkout-onepage-index .main-container{
-
-	button{
+	a{
+		color: $main-color;
+	}
+	#signin-login{
 		@include clairsoft-default-button;
+		padding: 0;
 	}
 
-	.opc{
-		label{
-			font-size: 14px;
-		}
-
-		.allow .step-title {
-
-			.number{
-				background: $main-color;
-			}
-
-			h2{
-				color: $dark-color;
-			}
-		}
-
-		.please-wait{
-			// background: red !important;
-			// padding: 40px;
-			// padding-top: -20px;
-			z-index: 999 !important;
-		}
+	.fieldset{
+		border: 0px !important;
 	}
 
-	.opc-block-progress .block-content{
-
-		div{
-			border: 1px solid $subtle-color !important;
-			margin-bottom: 10px;
-			padding: 1em;
-			font-size: 14px;
-			@include border-radius(4px);
-			// background: white;
-		}
-
-		dt{
-			border-bottom: 1px solid $subtle-color !important;
-			padding-bottom: 5px;
-			margin-bottom: 5px;
-			font-size: 12px;
-
-		}
-
-		dd address{
-			// line-height: 200%;
-		}
-
-		.data-table .product-name{
-			color: red !important;
-		}
+	input{
+		@include border-radius(4px);
 	}
+
 }
-
-//checkout sucess page
-
-@import "checkout_success";
-
