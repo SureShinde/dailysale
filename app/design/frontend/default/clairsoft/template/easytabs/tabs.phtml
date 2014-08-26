@@ -61,13 +61,18 @@
             <!-- JSON encode/decode -->
             <?php
             if($_tab['alias'] === 'custom'){
-                    $jsonData = Mage::helper('core')->jsonDecode($this->getChildHtml($_tab['alias']));
-                    //print_r ($jsonData);
+                $featuresData = $this->getChildHtml($_tab['alias']);
+                //print_r($featuresData);
+                if (strpos($featuresData, "[") !== FALSE){
+                    $jsonData = Mage::helper('core')->jsonDecode($featuresData);
                     foreach ($jsonData as $jsonItem){
                         echo '<li>'.$jsonItem.'</li>';
                     }
+                } else {
+                    echo $this->getChildHtml($_tab['alias']);
+                }
             } else {
-                echo $this->getChildHtml($_tab['alias']);
+                    echo $this->getChildHtml($_tab['alias']);
             }
             ?>
 
