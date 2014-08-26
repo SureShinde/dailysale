@@ -3,13 +3,25 @@
 <layout>
     <default>
 
+        <!-- Remove callouts and rarely used stuff -->
+        <remove name="right.poll"/>
+        <remove name="right.permanent.callout"/>
+        <remove name="left.permanent.callout"/>
+        <remove name="paypal.partner.right.logo"/>
+        <remove name="breadcrumbs" />
+
         <!-- add the local stylesheet -->
         <reference name="head">
             <action method="addCss"><stylesheet>css/local.css</stylesheet></action>
+            <action method="addCss"><stylesheet>css/jquery-ui.css</stylesheet></action>
+            <action method="addCss"><stylesheet>css/jquery-ui.theme.css</stylesheet></action>
+            <!-- <action method="addItem"><type>js</type><name>prototype/window.js</name></action> -->
+            <action method="addItem"><type>skin_js</type><script>js/jquery-1.10.1.min.js</script></action>
+            <action method="addItem"><type>skin_js</type><script>js/jquery-ui.min.js</script></action>
+            <action method="addItem"><type>skin_js</type><script>js/jquery.cookie.js</script></action>
             <action method="addItem"><type>skin_js</type><script>js/local.js</script></action>
-            <action method="addItem"><type>js</type><name>prototype/window.js</name></action>
-            <action method="addItem"><type>js_css</type><name>prototype/windows/themes/default.css</name></action>
-            <action method="addCss"><name>lib/prototype/windows/themes/magento.css</name></action>
+            <!-- <action method="addItem"><type>js_css</type><name>prototype/windows/themes/default.css</name></action> -->
+            <!-- <action method="addCss"><name>lib/prototype/windows/themes/magento.css</name></action> -->
         </reference>
 
         <reference name="subscribepop">
