@@ -60,19 +60,8 @@
             <div id="product_tabs_<?php echo $_tab['alias'] ?>_contents">
             <!-- JSON encode/decode -->
             <?php
-            // if($_tab['alias'] === 'custom'){
-            //         $jsonData = Mage::helper('core')->jsonDecode($this->getChildHtml($_tab['alias']));
-            //         //print_r ($jsonData);
-            //         foreach ($jsonData as $jsonItem){
-            //             echo '<li>'.$jsonItem.'</li>';
-            //         }
-            // } else {
-            //     echo $this->getChildHtml($_tab['alias']);
-            // }
-
             if($_tab['alias'] === 'custom'){
                 $featuresData = $this->getChildHtml($_tab['alias']);
-                //print_r($featuresData);
                 if (strpos($featuresData, "[") !== FALSE){
                     $jsonData = Mage::helper('core')->jsonDecode($featuresData);
                     foreach ($jsonData as $jsonItem){
