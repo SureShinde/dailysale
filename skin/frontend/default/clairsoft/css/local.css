@@ -220,6 +220,29 @@ input:not([type=submit]):not([type=checkbox]):not([type=radio]) {
     font-size: 12px;
     margin-bottom: 8px; }
 
+/* line 253, ../sass/local.scss */
+#generateButton {
+  border: 1px solid #196fb1 !important;
+  color: white;
+  text-decoration: none;
+  padding: 12px 15px 12px 15px;
+  -moz-border-radius: 4px / 4px;
+  -webkit-border-radius: 4px 4px;
+  border-radius: 4px / 4px;
+  text-shadow: 1px 1px 0px #155d95;
+  background-image: -moz-linear-gradient(#3d89c5, #1b75bb);
+  background-image: -webkit-linear-gradient(#3d89c5, #1b75bb);
+  background-image: linear-gradient(#3d89c5, #1b75bb);
+  width: auto; }
+  /* line 11, ../sass/mixins.scss */
+  #generateButton:hover {
+    background-image: -moz-linear-gradient(#6b6b6b, #515252);
+    background-image: -webkit-linear-gradient(#6b6b6b, #515252);
+    background-image: linear-gradient(#6b6b6b, #515252);
+    border: 1px solid #515252;
+    color: #eeeeee;
+    text-shadow: none; }
+
 /*-------------------------------------------- */
 /*----------- Modular SCSS imports ------------*/
 /*-------------------------------------------- */
@@ -1308,7 +1331,7 @@ ul.tabs {
     left: 20px; }
 
 /* line 3, ../sass/checkout.scss */
-#signin-modal a, #signin-modal a.login-trigger {
+#signin-modal .forgot-password {
   color: #1b75bb !important; }
 /* line 6, ../sass/checkout.scss */
 #signin-modal #signin-login {

@@ -250,6 +250,10 @@ input:not([type=submit]):not([type=checkbox]):not([type=radio]){
 		}
 }
 
+#generateButton{
+	@include clairsoft-default-button;
+}
+
 /*-------------------------------------------- */
 /*----------- Modular SCSS imports ------------*/
 /*-------------------------------------------- */
