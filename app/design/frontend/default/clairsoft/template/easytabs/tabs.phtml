@@ -58,24 +58,23 @@
     <?php foreach ($this->getTabs() as $_index => $_tab): ?>
         <?php if($this->getChildHtml($_tab['alias'])): ?>
             <div id="product_tabs_<?php echo $_tab['alias'] ?>_contents">
-            <!-- Array Decode and Display as List -->
+            <!-- JSON encode/decode -->
             <?php
-                if($_tab['alias'] === 'custom'){
-                    $jsonDataInput = $this->getChildHtml($_tab['alias']);
-                    $search =  array('[',']','"');
-                    $convertToArray = str_replace($search, '', $jsonDataInput);
-                    $features = explode(',', $convertToArray);
-                    //echo '<ul>';
-                    foreach ($features as $feature) {
-                        echo '<li>'.$feature.'</li>';
+            if($_tab['alias'] === 'custom'){
+                $featuresData = $this->getChildHtml($_tab['alias']);
+                if (strpos($featuresData, "[") !== FALSE){
+                    $jsonData = Mage::helper('core')->jsonDecode($featuresData);
+                    foreach ($jsonData as $jsonItem){
+                        echo '<li>'.$jsonItem.'</li>';
                     }
-                    //echo '</ul>';
-                    //var_dump($_tab['alias']);
                 } else {
                     echo $this->getChildHtml($_tab['alias']);
                 }
+            } else {
+                    echo $this->getChildHtml($_tab['alias']);
+            }
             ?>
-            <!-- end List Display -->
+
             <?php //echo $this->getChildHtml($_tab['alias']); ?></div>
         <?php endif; ?>
     <?php endforeach; ?>
