@@ -5,7 +5,7 @@ $j(document).ready(function(){
 	//sticky stuff
 
 	var stickyTop = $j('.wrapper').offset().top + 380; // returns number
-
+	$j('#backtotop').hide();
 	$j(window).scroll(function(){ // scroll event
 		var windowTop = $j(window).scrollTop(); // returns number
 
@@ -16,7 +16,7 @@ $j(document).ready(function(){
 	});
 
 	var backtotopEnter = function(){
-		$j(this).stop(true, false).animate({paddingRight: '125px'}, 'fast'); };
+		$j(this).stop(true, false).animate({paddingRight: '135px'}, 'fast'); };
 
 	var backtotopLeave = function(){
 		$j(this).stop(true, false).animate({paddingRight: '0px'}, 'fast'); };
@@ -31,10 +31,10 @@ $j(document).ready(function(){
 	//set dialog options
 	$j("#subscribe-pop").hide();
 	$j( "#subscribe-pop" ).dialog({
-		height: 275,
+		height: 200,
 		width: 425,
 		autoOpen: false,
-		dialogClass: 'dialogSignup',
+		dialogClass: 'dialogSubscribe',
 		modal: true,
 		show: {effect: "drop",
 			direction:"right"},

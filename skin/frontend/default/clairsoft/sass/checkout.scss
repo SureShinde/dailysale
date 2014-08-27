@@ -23,4 +23,9 @@
 	padding: 1em;
 	background: white;
 	@include border-radius(4px);
+
+	input{
+		@include border-radius(4px);
+		height: 30px;
+	}
 }
