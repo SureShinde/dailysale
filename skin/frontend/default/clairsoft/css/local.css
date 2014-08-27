@@ -1280,8 +1280,8 @@ ul.tabs {
     left: 20px; }
 
 /* line 3, ../sass/checkout.scss */
-#signin-modal a {
-  color: #1b75bb; }
+#signin-modal a, #signin-modal a.login-trigger {
+  color: #1b75bb !important; }
 /* line 6, ../sass/checkout.scss */
 #signin-modal #signin-login {
   border: 1px solid #196fb1 !important;
@@ -1310,6 +1310,15 @@ ul.tabs {
   border: 0px !important; }
 /* line 15, ../sass/checkout.scss */
 #signin-modal input {
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px; }
+
+/* line 21, ../sass/checkout.scss */
+.opc-col-left, .shipping-block, .payment-block, .discount-block, .opc-col-right {
+  border: 1px solid #eeeeee;
+  padding: 1em;
+  background: white;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
   border-radius: 4px; }

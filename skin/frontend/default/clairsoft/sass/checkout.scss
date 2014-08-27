@@ -1,7 +1,7 @@
 #signin-modal{
 
-	a{
-		color: $main-color;
+	a, a.login-trigger{
+		color: $main-color !important;
 	}
 	#signin-login{
 		@include clairsoft-default-button;
@@ -16,4 +16,11 @@
 		@include border-radius(4px);
 	}
 
+}
+
+.opc-col-left, .shipping-block, .payment-block, .discount-block, .opc-col-right{
+	border: 1px solid $faint-color;
+	padding: 1em;
+	background: white;
+	@include border-radius(4px);
 }
