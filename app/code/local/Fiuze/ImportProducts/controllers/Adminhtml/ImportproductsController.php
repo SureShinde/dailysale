@@ -85,8 +85,18 @@ class Fiuze_ImportProducts_Adminhtml_ImportproductsController extends Mage_Admin
                                                
                             foreach($importContent->configProductId as $configurableProductId) {
 
-                                Mage::helper('fiuze_importproducts/api')->linkAssign_v2($proxy, $sessionId, (string)$importContent->operation[$confSp], (string)$configurableProductId, (array)$importContent->configOptions[$confSp]->id);                                            
+                                $linkedIds = array();
+
+                                $options = array();
+                                $optionCount = $importContent->configOptions[$confSp]->id->count();
                                 
+                                for($i=0; $i < $optionCount; $i++ ) {
+                                    $linkedIds[$i] = (string)$importContent->configOptions[$confSp]->id[$i];    
+                                } 
+                                $result = Mage::helper('fiuze_importproducts/api')->linkAssign_v2($proxy, $sessionId, (string)$importContent->operation[$confSp], (string)$configurableProductId, $linkedIds);                                            
+                                //$result = Mage::helper('fiuze_importproducts/api')->configurableAssign($sessionId, (string)$importContent->operation[$confSp], (string)$configurableProductId, $linkedIds);                                            
+                                $this->_getSession()->addNotice($result);                                    
+
                                 $confSp++;             
                             } 
                             

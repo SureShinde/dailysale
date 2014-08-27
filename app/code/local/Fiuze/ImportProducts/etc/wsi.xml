@@ -13,15 +13,15 @@
                     <xsd:sequence>
                         <xsd:element minOccurs="1" maxOccurs="1" name="sessionId" type="xsd:string" />
                         <xsd:element minOccurs="1" maxOccurs="1" name="operation" type="xsd:string" />
-                        <xsd:element minOccurs="1" maxOccurs="1" name="configurableProductId" type="xsd:string" />
-                        <xsd:element minOccurs="1" maxOccurs="1" name="linkedProductIds" type="xsd:filters" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="productId" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="linkedIds" type="typens:ArrayOfString" />
                     </xsd:sequence>
                 </xsd:complexType>
             </xsd:element>
             <xsd:element name="catalogProductTypeConfigurableAssignResponseParam">
                 <xsd:complexType>
                     <xsd:sequence>
-                        <xsd:element minOccurs="1" maxOccurs="1" name="result" type="xsd:int" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="result" type="xsd:string" />
                     </xsd:sequence>
                 </xsd:complexType>
             </xsd:element>
@@ -35,7 +35,7 @@
     </wsdl:message>
     <wsdl:portType name="{{var wsdl.handler}}PortType">
         <wsdl:operation name="catalogProductTypeConfigurableAssign">
-            <wsdl:documentation>Allows you to assign a product link (associated) to configurable product.</wsdl:documentation>
+            <wsdl:documentation>Configurable Product Link Assign</wsdl:documentation>
             <wsdl:input message="typens:catalogProductTypeConfigurableAssignRequest" />
             <wsdl:output message="typens:catalogProductTypeConfigurableAssignResponse" />
         </wsdl:operation>
