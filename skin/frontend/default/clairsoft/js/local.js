@@ -47,6 +47,10 @@ $j(document).ready(function(){
 		}
 	});
 
+	$j("#subscribe-pop button").click(function(){
+		$j.cookie('subscribe', 'closed', { expires: 15, path: '/' });
+	});
+
 	//timer script for popup action
 
 	var idleTime = 0;
