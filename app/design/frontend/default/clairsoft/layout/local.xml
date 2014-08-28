@@ -14,7 +14,7 @@
         <reference name="head">
             <action method="addCss"><stylesheet>css/local.css</stylesheet></action>
             <action method="addCss"><stylesheet>css/jquery-ui.css</stylesheet></action>
-            <action method="addCss"><stylesheet>css/jquery-ui.theme.css</stylesheet></action>
+            <!-- <action method="addCss"><stylesheet>css/jquery-ui.theme.css</stylesheet></action> -->
             <!-- <action method="addItem"><type>js</type><name>prototype/window.js</name></action> -->
             <action method="addItem"><type>skin_js</type><script>js/jquery-1.10.1.min.js</script></action>
             <action method="addItem"><type>skin_js</type><script>js/jquery-ui.min.js</script></action>
@@ -31,6 +31,12 @@
         <action method="unsetChild"><name>product.info.options</name></action>
 
     </default>
+
+    <catalog_product_view>
+         <reference name="head">
+                <action method="addItem"><type>skin_js</type><script>js/product.js</script></action>
+            </reference>
+     </catalog_product_view>
 
     <customer_logged_in>
         <remove name="sale.reorder.sidebar"></remove>
