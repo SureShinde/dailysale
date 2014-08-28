@@ -28,11 +28,9 @@
 /**
  * Catalog product link resource model
  *
- * @category    Mage
- * @package     Mage_Catalog
- * @author      Magento Core Team <core@magentocommerce.com>
+ * @author      Mihail
  */
-class Mage_Catalog_Model_Resource_Product_Link extends Mage_Core_Model_Resource_Db_Abstract
+class Fiuze_ImportProducts_Model_Resource_Product_Link extends Mage_Catalog_Model_Resource_Product_Link
 {
     /**
      * Product Link Attributes Table

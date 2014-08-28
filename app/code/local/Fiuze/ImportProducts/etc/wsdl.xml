@@ -10,21 +10,22 @@
                     schemaLocation="http://schemas.xmlsoap.org/soap/encoding/"/>
         </schema>
     </types>
+    
     <message name="catalogProductTypeConfigurableAssignRequest">
         <part name="sessionId" type="xsd:string"/>
         <part name="operation" type="xsd:string"/>
-        <part name="configurableProductId" type="xsd:string"/>
-        <part name="linkedProductIds" type="typens:filters"/>
+        <part name="productId" type="xsd:string"/>
+        <part name="linkedIds" type="typens:ArrayOfString"/>
     </message>
     <message name="catalogProductTypeConfigurableAssignResponse">
         <part name="result" type="xsd:string"/>
     </message>
     <portType name="{{var wsdl.handler}}PortType">
         <operation name="catalogProductTypeConfigurableAssign">
-            <documentation>Allows you to assign a product link (associated) to configurable product.</documentation>
-            <input message="typens:catalogProductTypeConfigurableAssignRequest" />
-            <output message="typens:catalogProductTypeConfigurableAssignResponse" />
-        </operation>        
+            <documentation>Configurable Product Link Assign</documentation>
+            <input message="typens:catalogProductTypeConfigurableAssignRequest"/>
+            <output message="typens:catalogProductTypeConfigurableAssignResponse"/>
+        </operation>
     </portType>
     <binding name="{{var wsdl.handler}}Binding" type="typens:{{var wsdl.handler}}PortType">
         <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>

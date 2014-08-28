@@ -10,6 +10,10 @@
     <modules>
         <Fiuze_ImportProducts>
             <version>1.0.0.0.1</version>
+            <depends>
+                <Mage_Api />
+            </depends>
+            
         </Fiuze_ImportProducts>
     </modules>
     <global>
@@ -26,7 +30,7 @@
         <models>
             <catalog>
                 <rewrite>
-                    <product_api_v2>Fiuze_Importproducts_Model_Catalog_Product_Api_V2</product_api_v2>
+                    <product_link_api_v2>Fiuze_Importproducts_Model_Product_Link_Api_V2</product_link_api_v2>
                 </rewrite>
             </catalog>
         </models>

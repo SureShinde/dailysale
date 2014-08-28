@@ -38,6 +38,178 @@
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
+	"\/css\/images\/ui-bg_diagonals-thick_18_b81900_40x40.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 457,
+		"inputAbbreviatedPath": "\/css\/images\/ui-bg_diagonals-thick_18_b81900_40x40.png",
+		"outputAbbreviatedPath": "\/css\/images\/ui-bg_diagonals-thick_18_b81900_40x40.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/css\/images\/ui-bg_diagonals-thick_20_666666_40x40.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 351,
+		"inputAbbreviatedPath": "\/css\/images\/ui-bg_diagonals-thick_20_666666_40x40.png",
+		"outputAbbreviatedPath": "\/css\/images\/ui-bg_diagonals-thick_20_666666_40x40.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/css\/images\/ui-bg_flat_10_000000_40x100.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 244,
+		"inputAbbreviatedPath": "\/css\/images\/ui-bg_flat_10_000000_40x100.png",
+		"outputAbbreviatedPath": "\/css\/images\/ui-bg_flat_10_000000_40x100.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/css\/images\/ui-bg_glass_100_f6f6f6_1x400.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 301,
+		"inputAbbreviatedPath": "\/css\/images\/ui-bg_glass_100_f6f6f6_1x400.png",
+		"outputAbbreviatedPath": "\/css\/images\/ui-bg_glass_100_f6f6f6_1x400.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/css\/images\/ui-bg_glass_100_fdf5ce_1x400.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 387,
+		"inputAbbreviatedPath": "\/css\/images\/ui-bg_glass_100_fdf5ce_1x400.png",
+		"outputAbbreviatedPath": "\/css\/images\/ui-bg_glass_100_fdf5ce_1x400.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/css\/images\/ui-bg_glass_65_ffffff_1x400.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 246,
+		"inputAbbreviatedPath": "\/css\/images\/ui-bg_glass_65_ffffff_1x400.png",
+		"outputAbbreviatedPath": "\/css\/images\/ui-bg_glass_65_ffffff_1x400.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/css\/images\/ui-bg_gloss-wave_35_f6a828_500x100.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 5854,
+		"inputAbbreviatedPath": "\/css\/images\/ui-bg_gloss-wave_35_f6a828_500x100.png",
+		"outputAbbreviatedPath": "\/css\/images\/ui-bg_gloss-wave_35_f6a828_500x100.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/css\/images\/ui-bg_highlight-soft_100_eeeeee_1x100.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 317,
+		"inputAbbreviatedPath": "\/css\/images\/ui-bg_highlight-soft_100_eeeeee_1x100.png",
+		"outputAbbreviatedPath": "\/css\/images\/ui-bg_highlight-soft_100_eeeeee_1x100.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/css\/images\/ui-bg_highlight-soft_75_ffe45c_1x100.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 367,
+		"inputAbbreviatedPath": "\/css\/images\/ui-bg_highlight-soft_75_ffe45c_1x100.png",
+		"outputAbbreviatedPath": "\/css\/images\/ui-bg_highlight-soft_75_ffe45c_1x100.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/css\/images\/ui-icons_222222_256x240.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 7006,
+		"inputAbbreviatedPath": "\/css\/images\/ui-icons_222222_256x240.png",
+		"outputAbbreviatedPath": "\/css\/images\/ui-icons_222222_256x240.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/css\/images\/ui-icons_228ef1_256x240.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 4599,
+		"inputAbbreviatedPath": "\/css\/images\/ui-icons_228ef1_256x240.png",
+		"outputAbbreviatedPath": "\/css\/images\/ui-icons_228ef1_256x240.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/css\/images\/ui-icons_ef8c08_256x240.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 4599,
+		"inputAbbreviatedPath": "\/css\/images\/ui-icons_ef8c08_256x240.png",
+		"outputAbbreviatedPath": "\/css\/images\/ui-icons_ef8c08_256x240.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/css\/images\/ui-icons_ffd27a_256x240.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 4599,
+		"inputAbbreviatedPath": "\/css\/images\/ui-icons_ffd27a_256x240.png",
+		"outputAbbreviatedPath": "\/css\/images\/ui-icons_ffd27a_256x240.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/css\/images\/ui-icons_ffffff_256x240.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 6468,
+		"inputAbbreviatedPath": "\/css\/images\/ui-icons_ffffff_256x240.png",
+		"outputAbbreviatedPath": "\/css\/images\/ui-icons_ffffff_256x240.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/css\/jquery-ui.css": {
+		"fileType": 16,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/css\/jquery-ui.css",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
+	"\/css\/jquery-ui.theme.css": {
+		"fileType": 16,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/css\/jquery-ui.theme.css",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
 	"\/css\/local.css": {
 		"fileType": 16,
 		"ignore": 1,
@@ -378,6 +550,39 @@
 		"outputPathIsSetByUser": 0,
 		"processed": 0
 		},
+	"\/js\/jquery-1.10.1.min.js": {
+		"fileType": 64,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/js\/jquery-1.10.1.min.js",
+		"outputAbbreviatedPath": "\/js\/min\/jquery-1.10.1.min-ck.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
+	"\/js\/jquery-ui.min.js": {
+		"fileType": 64,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/js\/jquery-ui.min.js",
+		"outputAbbreviatedPath": "\/js\/min\/jquery-ui.min-ck.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
+	"\/js\/jquery.cookie.js": {
+		"fileType": 64,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/js\/jquery.cookie.js",
+		"outputAbbreviatedPath": "\/js\/min\/jquery.cookie-ck.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
 	"\/js\/local-ck.js": {
 		"fileType": 64,
 		"ignore": 0,
@@ -691,8 +896,8 @@
 	},
 "projectAttributes": {
 	"bowerAbbreviatedPath": "",
-	"displayValue": "clairsoft",
-	"displayValueWasSetByUser": 0,
+	"displayValue": "dailysale mage dev",
+	"displayValueWasSetByUser": 1,
 	"iconImageName": "globe_brown"
 	},
 "projectSettings": {
@@ -824,7 +1029,7 @@
 	"coffeeMinifyOutput": 1,
 	"coffeeOutputStyle": 0,
 	"coffeeSyntaxCheckerStyle": 1,
-	"externalServerAddress": "http:\/\/localhost",
+	"externalServerAddress": "http:\/\/localhost\/dailysale-mg\/",
 	"externalServerPreviewPathAddition": "dailysale-mage",
 	"genericWebpageFileExtensionsString": "html, htm, shtml, shtm, xhtml, php, jsp, asp, aspx, erb, ctp",
 	"hamlAutoOutputPathRelativePath": "",
@@ -887,7 +1092,7 @@
 			"flagValue": -1
 			},
 		"devel": {
-			"active": 0,
+			"active": 1,
 			"flagValue": -1
 			},
 		"dojo": {
