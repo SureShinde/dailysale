@@ -4,7 +4,7 @@
  *
  * @author Mihail
  */
-class Fiuze_ImportProducts_Helper_File extends Mage_Core_Helper_Abstract
+class Fiuze_Importproducts_Helper_File extends Mage_Core_Helper_Abstract
 {
     /**
      * Media path to extension files

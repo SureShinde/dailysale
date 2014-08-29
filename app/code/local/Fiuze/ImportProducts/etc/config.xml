@@ -8,13 +8,13 @@
 -->
 <config>
     <modules>
-        <Fiuze_ImportProducts>
+        <Fiuze_Importproducts>
             <version>1.0.0.0.1</version>
             <depends>
                 <Mage_Api />
             </depends>
             
-        </Fiuze_ImportProducts>
+        </Fiuze_Importproducts>
     </modules>
     <global>
         <helpers>
@@ -40,7 +40,7 @@
             <adminhtml>
                 <args>
                     <modules>
-                        <Fiuze_ImportProducts before="Mage_Adminhtml">Fiuze_ImportProducts_Adminhtml</Fiuze_ImportProducts>
+                        <Fiuze_Importproducts before="Mage_Adminhtml">Fiuze_Importproducts_Adminhtml</Fiuze_Importproducts>
                     </modules>
                 </args>
             </adminhtml>
