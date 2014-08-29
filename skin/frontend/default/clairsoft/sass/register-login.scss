@@ -29,15 +29,15 @@
 		width: 63% !important;
 		padding: 1em;
 		@include border-radius(4px);
-		min-height: 325px;
+		//min-height: 325px;
 		font-size: 17px;
 		position: relative;
 
 		button{
 			@include clairsoft-default-button(200px);
-			position: absolute;
-			bottom: 20px;
-			right: 20px;
+			//position: absolute;
+			//bottom: 20px;
+			//right: 20px;
 		}
 	}
 
@@ -45,8 +45,8 @@
 		border: 1px solid $subtle-color;
 		width: 36% !important;
 		padding: 1.5em;
-		@include border-radius(4px);
-		min-height: 325px;
+		//@include border-radius(4px);
+		//min-height: 325px;
 		position: relative;
 
 		label{
