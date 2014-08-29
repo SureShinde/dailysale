@@ -158,7 +158,7 @@ class Fiuze_Importproducts_Adminhtml_ImportproductsController extends Mage_Admin
      */
     public function flushAction()
     {
-        if (Mage::helper('magentostudy_news/image')->flushImagesCache()) {
+        if (Mage::helper('fiuze_importproducts/image')->flushImagesCache()) {
             $this->_getSession()->addSuccess('Cache successfully flushed');
         } else {
             $this->_getSession()->addError('There was error during flushing cache');
