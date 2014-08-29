@@ -8,7 +8,7 @@
 -->
 <layout>
     <adminhtml_importproducts_index>
-		<update handel="editor" />
+		<update handle="editor" />
         <reference name="content">
             <block type="fiuze_importproducts/adminhtml_importproducts_edit" name="importproducts.edit" />
         </reference>
