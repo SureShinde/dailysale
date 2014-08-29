@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<layout version="1.0.4">
+
+    <default>
+        <reference name="before_body_end">
+        	<block type="buysafe/seals" name="buysafe.seal.corner" template="buysafe/cornerseal.phtml" />
+        </reference>
+    </default>
+    
+    <catalog_product_view>
+    	<reference name="alert.urls">
+        	<block type="buysafe/seals" name="buysafe.seal.kicker.top" template="buysafe/kicker.phtml" after="-">
+                <action method="setData"><key>kicker</key><value>19</value></action>
+            </block>
+        </reference>
+    </catalog_product_view>
+    
+    <catalog_category_default>
+    	<reference name="left">
+        	<block type="buysafe/seals" name="buysafe.seal.kicker.sidebar" template="buysafe/kicker.phtml" after="-">
+                <action method="setData"><key>kicker</key><value>24</value></action>
+                <action method="setData"><key>is_sidebar</key><value>true</value></action>
+            </block>    		
+    	</reference>
+    </catalog_category_default>
+    
+    <checkout_cart_index>
+    	<reference name="checkout.cart.methods">    		
+        	<block type="buysafe/seals" name="buysafe.seal.kicker.cart" template="buysafe/kicker.phtml" after="-">
+                <action method="setData"><key>kicker</key><value>19</value></action>
+            </block>    		
+    	</reference>
+    </checkout_cart_index>
+    
+    <checkout_onepage_index>
+    	<reference name="content">
+        	<block type="buysafe/seals" name="buysafe.seal.kicker.checkout" template="buysafe/kicker.phtml" after="-">
+                <action method="setData"><key>kicker</key><value>19</value></action>
+                <action method="setData"><key>class</key><value>f-right</value></action>
+                <action method="setData"><key>style</key><value>padding:10px</value></action>
+            </block>
+    	</reference>
+    </checkout_onepage_index>
+    
+    <checkout_onepage_success>
+    	<reference name="before_body_end">
+        	<block type="buysafe/seals" name="buysafe.seal.guarantee" template="buysafe/guarantee.phtml" after="-"/>
+        </reference>
+    </checkout_onepage_success>
+    
+</layout>
