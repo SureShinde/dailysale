@@ -34,7 +34,7 @@
                 </rewrite>
             </catalog>
         </models>
-        </global>
+    </global>
     <admin>
         <routers>
             <adminhtml>
