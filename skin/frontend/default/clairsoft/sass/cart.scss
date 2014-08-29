@@ -66,7 +66,7 @@
 
 		h2{
 			// border-bottom: 1px solid $dark-color !important;
-			margin-bottom: 10px;
+			margin-bottom: 5px;
 			// padding-bottom: 5px;
 		}
 
@@ -87,6 +87,21 @@
 		.buttons-set{
 			padding: 0;
 			margin-top: 15px;
+		}
+	}
+
+	//credit section
+	
+	.credit-payment.box.discount{
+		height: 120px;
+		margin-bottom: 1em;
+
+		h4, p{
+			margin-bottom: 5px;
+		}
+
+		button{
+			float: right;
 		}
 	}
 

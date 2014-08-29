@@ -1112,7 +1112,7 @@ ul.tabs {
     border-radius: 4px; }
     /* line 67, ../sass/cart.scss */
     .cart .discount h2 {
-      margin-bottom: 10px; }
+      margin-bottom: 5px; }
     /* line 73, ../sass/cart.scss */
     .cart .discount label {
       margin-bottom: 10px;
@@ -1129,6 +1129,16 @@ ul.tabs {
     .cart .discount .buttons-set {
       padding: 0;
       margin-top: 15px; }
+  /* line 95, ../sass/cart.scss */
+  .cart .credit-payment.box.discount {
+    height: 120px;
+    margin-bottom: 1em; }
+    /* line 99, ../sass/cart.scss */
+    .cart .credit-payment.box.discount h4, .cart .credit-payment.box.discount p {
+      margin-bottom: 5px; }
+    /* line 103, ../sass/cart.scss */
+    .cart .credit-payment.box.discount button {
+      float: right; }
 
 /* line 3, ../sass/account.scss */
 .my-account .welcome-msg {

@@ -92,4 +92,12 @@ $j(document).ready(function(){
 
 	$j('.products-grid li.item').hover(borderEnter, borderLeave);
 
+	//remove html tags from customer credit cart section
+	
+	function removeAllHtmlInsideElement(){
+		$j(".credit-payment button").html($j(".credit-payment button").text());
+	}
+
+	removeAllHtmlInsideElement();
+
 });
