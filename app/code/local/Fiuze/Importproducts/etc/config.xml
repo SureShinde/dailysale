@@ -19,12 +19,12 @@
     <global>
         <helpers>
             <fiuze_importproducts>
-                <class>Fiuze_ImportProducts_Helper</class>
+                <class>Fiuze_Importproducts_Helper</class>
             </fiuze_importproducts>
         </helpers>
         <blocks>
             <fiuze_importproducts>
-                <class>Fiuze_ImportProducts_Block</class>
+                <class>Fiuze_Importproducts_Block</class>
             </fiuze_importproducts>
         </blocks>
         <models>
