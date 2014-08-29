@@ -4,7 +4,7 @@
  *
  * @author Mihail
  */
-class Fiuze_ImportProducts_Helper_Data extends Mage_Core_Helper_Data
+class Fiuze_Importproducts_Helper_Data extends Mage_Core_Helper_Data
 {
     /**
      * soap client

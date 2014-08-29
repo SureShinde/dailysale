@@ -1,15 +1,15 @@
 <?php
 /**
- * ImportProducts controller
+ * Importproducts controller
  *
  * @author Mihail
  */
-class Fiuze_ImportProducts_Adminhtml_ImportproductsController extends Mage_Adminhtml_Controller_Action
+class Fiuze_Importproducts_Adminhtml_ImportproductsController extends Mage_Adminhtml_Controller_Action
 {
     /**
      * Init actions
      *
-     * @return Fiuze_ImportProducts_Adminhtml_ImportproductsController
+     * @return Fiuze_Importproducts_Adminhtml_ImportproductsController
      */
     protected function _initAction()
     {
@@ -59,7 +59,7 @@ class Fiuze_ImportProducts_Adminhtml_ImportproductsController extends Mage_Admin
             try {
                 if (isset($_FILES['importfile'][name]) && (file_exists($_FILES['importfile']['tmp_name']))) {
                     $hasError = false;
-                    /* @var $fileHelper Fiuze_ImportProducts_Helper_File */
+                    /* @var $fileHelper Fiuze_Importproducts_Helper_File */
                     $fileHelper = Mage::helper('fiuze_importproducts/file');
 
                     // upload new file

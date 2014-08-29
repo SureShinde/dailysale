@@ -31,7 +31,7 @@
  * @package    Mage_Catalog
  * @author     Magento Core Team <core@magentocommerce.com>
  */
-class Fiuze_ImportProducts_Model_Product_Link_Api_V2 extends Mage_Catalog_Model_Product_Link_Api_V2
+class Fiuze_Importproducts_Model_Product_Link_Api_V2 extends Mage_Catalog_Model_Product_Link_Api_V2
 {
     /**
      * Attach or Unattach some associated products to configurable product

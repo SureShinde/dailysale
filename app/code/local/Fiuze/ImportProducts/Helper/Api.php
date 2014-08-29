@@ -4,7 +4,7 @@
  *
  * @author Mihail
  */
-class Fiuze_ImportProducts_Helper_Api extends Mage_Core_Helper_Abstract
+class Fiuze_Importproducts_Helper_Api extends Mage_Core_Helper_Abstract
 {
     protected $_session_id = '';
     protected $_client = '';

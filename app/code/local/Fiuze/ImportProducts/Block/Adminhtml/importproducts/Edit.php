@@ -4,12 +4,12 @@
  *
  * @author Mihail
  */
-class Fiuze_ImportProducts_Block_Adminhtml_ImportProducts_Edit extends Mage_Adminhtml_Block_Widget_Form_Container
+class Fiuze_Importproducts_Block_Adminhtml_Importproducts_Edit extends Mage_Adminhtml_Block_Widget_Form_Container
 {
     /**
      * Prepare form action
      *
-     * @return Fiuze_ImportProducts_Block_Adminhtml_Container
+     * @return Fiuze_Importproducts_Block_Adminhtml_Container
      */
     public function __construct()
     {
