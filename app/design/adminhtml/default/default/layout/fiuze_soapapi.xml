@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magento backend layout
+ *
+ * @author Mihail
+ */
+-->
+<layout>
+    <adminhtml_soapapi_index>
+        <reference name="content">
+            <block type="fiuze_soapapi/adminhtml_soapapi_edit" name="soapapi.edit" />
+        </reference>
+    </adminhtml_soapapi_index>
+</layout>
