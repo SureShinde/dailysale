@@ -1,0 +1,141 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    Mage
+ * @package     Mage_Catalog
+ * @copyright   Copyright (c) 2014 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+-->
+<config>
+    <modules>
+        <fiuze_soapapi>
+            <version>1.0.0</version>
+        </fiuze_soapapi>
+    </modules>
+    <api>
+        <resources>
+            <fiuze_soapapi_product translate="title" module="fiuze_soapapi">
+                <title>Create configurable product</title>
+                <model>fiuze_soapapi_model_product_api</model>
+                <methods>
+                    <created translate="title" module="fiuze_soapapi">
+                        <title>Create new product</title>
+                        <acl>soapapi/product/created</acl>
+                    </created>
+                </methods>
+                <faults module="fiuze_soapapi">
+                    <store_not_exists>
+                        <code>100</code>
+                        <message>Requested store view not found.</message>
+                    </store_not_exists>
+                    <product_not_exists>
+                        <code>101</code>
+                        <message>Product not exists.</message>
+                    </product_not_exists>
+                    <data_invalid>
+                        <code>102</code>
+                        <message>Invalid data given. Details in error message.</message>
+                    </data_invalid>
+                    <not_deleted>
+                        <code>103</code>
+                        <message>Product not deleted. Details in error message.</message>
+                    </not_deleted>
+                    <product_type_not_exists>
+                        <code>104</code>
+                        <message>Product type is not in allowed types.</message>
+                    </product_type_not_exists>
+                    <product_attribute_set_not_exists>
+                        <code>105</code>
+                        <message>Product attribute set is not existed</message>
+                    </product_attribute_set_not_exists>
+                    <product_attribute_set_not_valid>
+                        <code>106</code>
+                        <message>Product attribute set is not belong catalog product entity type</message>
+                    </product_attribute_set_not_valid>
+                    <multi_update_not_match>
+                        <code>107</code>
+                        <message>Quantity of product IDs and product data should match. No changes made.</message>
+                    </multi_update_not_match>
+                    <partially_updated>
+                        <code>108</code>
+                        <message>There was an error during one or more products update. See error log for details.</message>
+                    </partially_updated>
+                </faults>
+            </fiuze_soapapi_product>
+             <fiuze_soapapi_product_link translate="title" module="fiuze_soapapi">
+                <title>Product links API (associated)</title>
+                <model>fiuze_soapapi_model_product_link_api</model>
+                <methods>
+                    <assigned translate="title" module="fiuze_soapapi">
+                        <title>Assign product link</title>
+                        <acl>soapapi/product_link</acl>
+                    </assigned>
+                </methods>
+                <faults module="fiuze_soapapi">
+                    <type_not_exists>
+                        <code>100</code>
+                        <message>Given invalid link type.</message>
+                    </type_not_exists>
+                    <product_not_exists>
+                        <code>101</code>
+                        <message>Product not exists.</message>
+                    </product_not_exists>
+                    <data_invalid>
+                        <code>102</code>
+                        <message>Invalid data given. Details in error message.</message>
+                    </data_invalid>
+                    <not_removed>
+                        <code>104</code>
+                        <message>Product link not removed.</message>
+                    </not_removed>
+                </faults>
+            </fiuze_soapapi_product_link>
+        </resources>
+        <v2>
+            <resources_function_prefix>
+                <fiuze_soapapi_product>configurableProduct</fiuze_soapapi_product>
+                <fiuze_soapapi_product_link>configurableProductLink</fiuze_soapapi_product_link>
+            </resources_function_prefix>
+        </v2>
+        <acl>
+            <resources>
+                <fiuze_soapapi translate="title" module="fiuze_soapapi">
+                    <title>Fiuze Soap Api</title>
+                    <product translate="title" module="fiuze_soapapi">
+                        <title>Assign links associated to configurable product</title>
+                        <sort_order>101</sort_order>
+                        <created translate="title" module="fiuze_soapapi">
+                            <title>Create</title>
+                        </created>
+                        <link translate="title" module="fiuze_soapapi">
+                            <title>Link (Configurable)</title>
+                            <sort_order>110</sort_order>
+                            <assigned translate="title" module="fiuze_soapapi">
+                                <title>Assign</title>
+                            </assigned>
+                        </link>
+                    </product>
+                </fiuze_soapapi>
+            </resources>
+        </acl>
+    </api>
+</config>

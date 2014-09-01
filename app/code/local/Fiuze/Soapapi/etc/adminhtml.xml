@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+
+<!--/**
+ * Magento admin config
+ *
+ * @author Magento
+ */
+-->
+
+<config>
+    <!--<menu>
+         <fiuze translate="title" module="fiuze_soapapi">
+            <title>Fiuze</title>
+            <sort_order>65</sort_order>
+            <children>
+                <soapapi translate="title" module="fiuze_soapapi">
+                    <title>ImportProducts</title>
+                    <action>adminhtml/soapapi</action>
+                    <sort_order>50</sort_order>
+                </soapapi>
+            </children>
+         </fiuze>
+    </menu>
+
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <fiuze translate="title" module="fiuze_soapapi">
+                        <title>Fiuze</title>
+                        <sort_order>65</sort_order>
+                        <children>
+                            <importproducts translate="title">
+                                <title>ImportProducts</title>
+                                <sort_order>0</sort_order>
+                            </importproducts>
+                        </children>
+                    </fiuze>
+					<system>
+						<children>
+							<config>
+								<children>
+									<soapapi translate="title" module="fiuze_soapapi">
+										<title>Fiuze API Setting</title>
+									</soapapi>
+								</children>
+							</config>
+						</children>
+					</system>
+                </children>
+            </admin>
+        </resources>
+    </acl> -->
+</config>

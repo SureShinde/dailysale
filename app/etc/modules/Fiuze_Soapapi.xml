@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Module initial config
+ *
+ * @author Magento
+ */
+-->
+<config>
+    <modules>
+        <Fiuze_Soapapi>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <Mage_Adminhtml />
+            </depends>
+        </Fiuze_Soapapi>
+    </modules>
+</config>

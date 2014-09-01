@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magento admin configiguration section config
+ *
+ * @author Mihail
+ */
+-->
+
+<config>
+<!--    <sections>
+        <soapapi>
+            <class>separator-top</class>
+            <label>Fiuze API</label>
+            <tab>service</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>500</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+
+            <groups>
+                <view translate="label">
+                    <label>Fiuze API Settings</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <soapclient translate="label">
+                            <label>Soap Client</label>
+                            <comment>e.g. http://magentohost/api/v2_soap/?wsdl</comment>
+                            <sort_order>10</sort_order>                            
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </soapclient>
+                        <apiuser translate="label">
+                            <label>API User</label>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </apiuser>
+                        <apikey translate="label">
+                            <label>API Key</label>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </apikey>
+                    </fields>
+                </view>
+            </groups>
+        </soapapi>
+    </sections> -->
+</config>
+
