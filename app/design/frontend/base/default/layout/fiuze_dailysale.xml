@@ -1,11 +1,6 @@
 <?xml version="1.0"?>
 
 <layout version="1.0.0">
-    <!--<customer_account_existinguser>
-        <reference name="forgotPassword">
-           <action method="setTemplate"><template>customer/form/renewpassword.phtml</template></action>
-        </reference>  
-    </customer_account_existinguser>-->
     <customer_account_existinguser translate="label">
         <label>Customer Forgot Password Form</label>
         <remove name="right"/>
@@ -23,6 +18,4 @@
             <block type="customer/account_forgotpassword" name="existingUser" template="customer/form/renewpassword.phtml" />
         </reference>
     </customer_account_existinguser>
-
-    
 </layout>
