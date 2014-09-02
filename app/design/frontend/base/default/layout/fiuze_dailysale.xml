@@ -1,9 +1,5 @@
 <?xml version="1.0"?>
-<!--
-/**
-Supported layout update handles (action):
-- fiuze_dailysale_account_forgotpassword
--->
+
 <layout version="1.0.0">
     <!--<customer_account_existinguser>
         <reference name="forgotPassword">
