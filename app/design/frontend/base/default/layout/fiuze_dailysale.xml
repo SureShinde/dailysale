@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!--
+/**
+Supported layout update handles (action):
+- fiuze_dailysale_account_forgotpassword
+-->
+<layout version="1.0.0">
+    <customer_account_forgotpassword>
+        <reference name="forgotPassword">
+           <action method="setTemplate"><template>customer/form/renewpassword.phtml</template></action>
+        </reference>  
+    </customer_account_forgotpassword>
+    
+</layout>

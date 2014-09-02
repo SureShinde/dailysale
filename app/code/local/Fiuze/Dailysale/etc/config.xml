@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Module configuration
+ *
+ * @author Magento
+ */
+-->
+<config>
+    <modules>
+        <Fiuze_Dailysale>
+            <version>1.0.0</version>
+        </Fiuze_Dailysale>
+    </modules>
+    
+    <global>
+        <blocks>
+            <fiuze_dailysale>
+                <class>Fiuze_Dailysale_Block</class>
+            </fiuze_dailysale>
+            <customer>
+                <rewrite>                
+                    <account_forgotpassword>Fiuze_Dailysale_Block_Account_Forgotpassword</account_forgotpassword>
+                </rewrite>
+            </customer>
+        </blocks>                
+    </global>
+    
+    <frontend>
+        <routers>
+            <customer>
+                <args>
+                    <modules>
+                        <Fiuze_Dailysale before="Mage_Customer">Fiuze_Dailysale</Fiuze_Dailysale>
+                    </modules>
+                </args>
+            </customer>
+        </routers>
+        <layout>
+            <updates>
+                <fiuze_dailysale>
+                    <file>fiuze_dailysale.xml</file>
+                </fiuze_dailysale>
+            </updates>
+        </layout>
+    </frontend>
+</config>
