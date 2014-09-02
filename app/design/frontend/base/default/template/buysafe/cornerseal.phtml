@@ -1,0 +1,10 @@
+<?php if($this->isEnabled() && $this->hasHash()): ?>
+	<!-- BEGIN: buySAFE Seal -->
+	<script src="https://seal.buysafe.com/private/rollover/rollover.js"></script>
+	<span id="BuySafeSealSpan"></span>
+	<script type="text/javascript">
+		buySAFE.Hash = '<?php echo $this->getHash() ?>';
+		WriteBuySafeSeal("BuySafeSealSpan", "GuaranteedSeal");
+	</script>
+	<!-- END: buySAFE Seal -->
+<?php endif ?>

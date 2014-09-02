@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns:typens="urn:{{var wsdl.name}}" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+             xmlns="http://schemas.xmlsoap.org/wsdl/"
+             name="{{var wsdl.name}}" targetNamespace="urn:{{var wsdl.name}}">
+    <types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:Magento">
+            <import namespace="http://schemas.xmlsoap.org/soap/encoding/"
+                    schemaLocation="http://schemas.xmlsoap.org/soap/encoding/"/>
+            <complexType name="catalogConfigurableProductCreateEntity">
+                <all>
+                    <element name="categories" type="typens:ArrayOfString" minOccurs="0"/>
+                    <element name="websites" type="typens:ArrayOfString" minOccurs="0"/>
+                    <element name="name" type="xsd:string" minOccurs="0"/>
+                    <element name="description" type="xsd:string" minOccurs="0"/>
+                    <element name="short_description" type="xsd:string" minOccurs="0"/>
+                    <element name="weight" type="xsd:string" minOccurs="0"/>
+                    <element name="status" type="xsd:string" minOccurs="0"/>
+                    <element name="url_key" type="xsd:string" minOccurs="0"/>
+                    <element name="url_path" type="xsd:string" minOccurs="0"/>
+                    <element name="visibility" type="xsd:string" minOccurs="0"/>
+                    <element name="category_ids" type="typens:ArrayOfString" minOccurs="0"/>
+                    <element name="website_ids" type="typens:ArrayOfString" minOccurs="0"/>
+                    <element name="has_options" type="xsd:string" minOccurs="0"/>
+                    <element name="gift_message_available" type="xsd:string" minOccurs="0"/>
+                    <element name="price" type="xsd:string" minOccurs="0"/>
+                    <element name="special_price" type="xsd:string" minOccurs="0"/>
+                    <element name="special_from_date" type="xsd:string" minOccurs="0"/>
+                    <element name="special_to_date" type="xsd:string" minOccurs="0"/>
+                    <element name="tax_class_id" type="xsd:string" minOccurs="0"/>
+                    <element name="tier_price" type="typens:catalogProductTierPriceEntityArray" minOccurs="0"/>
+                    <element name="meta_title" type="xsd:string" minOccurs="0"/>
+                    <element name="meta_keyword" type="xsd:string" minOccurs="0"/>
+                    <element name="meta_description" type="xsd:string" minOccurs="0"/>
+                    <element name="custom_design" type="xsd:string" minOccurs="0"/>
+                    <element name="custom_layout_update" type="xsd:string" minOccurs="0"/>
+                    <element name="options_container" type="xsd:string" minOccurs="0"/>
+                    <element name="additional_attributes" type="typens:catalogProductAdditionalAttributesEntity" minOccurs="0"/>
+                    <element name="used_configurable_attributes" type="typens:ArrayOfString" minOccurs="0"/>
+                </all>
+            </complexType>
+        </schema>
+    </types>
+    
+    <message name="catalogProductTypeConfigurableCreateRequest">
+        <part name="sessionId" type="xsd:string"/>
+        <part name="type" type="xsd:string"/>
+        <part name="set" type="xsd:string"/>
+        <part name="sku" type="xsd:string"/>
+        <part name="productData" type="typens:catalogConfigurableProductCreateEntity"/>
+        <part name="storeView" type="xsd:string"/>
+    </message>
+    <message name="catalogProductTypeConfigurableCreateResponse">
+        <part name="result" type="xsd:int"/>
+    </message>
+    <message name="catalogProductTypeConfigurableAssignRequest">
+        <part name="sessionId" type="xsd:string"/>
+        <part name="operation" type="xsd:string"/>
+        <part name="productId" type="xsd:string"/>
+        <part name="linkedIds" type="typens:ArrayOfString"/>
+    </message>
+    <message name="catalogProductTypeConfigurableAssignResponse">
+        <part name="result" type="xsd:string"/>
+    </message>
+    <portType name="{{var wsdl.handler}}PortType">
+        <operation name="configurableProductCreated">
+            <documentation>Create new category and return its id.</documentation>
+            <input message="typens:catalogProductTypeConfigurableCreateRequest"/>
+            <output message="typens:catalogProductTypeConfigurableCreateResponse"/>
+        </operation>
+        <operation name="configurableProductLinkAssigned">
+            <documentation>Configurable Product Link Assign</documentation>
+            <input message="typens:catalogProductTypeConfigurableAssignRequest"/>
+            <output message="typens:catalogProductTypeConfigurableAssignResponse"/>
+        </operation>
+    </portType>
+    <binding name="{{var wsdl.handler}}Binding" type="typens:{{var wsdl.handler}}PortType">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="configurableProductCreated">
+            <soap:operation soapAction="urn:{{var wsdl.handler}}Action"/>
+            <input>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded"
+                           encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </input>
+            <output>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded"
+                           encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </output>
+        </operation>
+        <operation name="configurableProductLinkAssigned">
+            <soap:operation soapAction="urn:{{var wsdl.handler}}Action"/>
+            <input>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded"
+                           encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </input>
+            <output>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded"
+                           encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </output>
+        </operation>
+    </binding>
+    <service name="{{var wsdl.name}}Service">
+        <port name="{{var wsdl.handler}}Port" binding="typens:{{var wsdl.handler}}Binding">
+            <soap:address location="{{var wsdl.url}}"/>
+        </port>
+    </service>
+</definitions>
