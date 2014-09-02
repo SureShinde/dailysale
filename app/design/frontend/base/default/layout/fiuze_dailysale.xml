@@ -9,12 +9,13 @@
         <reference name="head">
             <action method="setTitle" translate="title" module="customer"><title>Forgot Your Password</title></action>
         </reference>
-        <reference name="root">
+
+		<reference name="root">
             <action method="setTemplate"><template>page/1column.phtml</template></action>
             <action method="setHeaderTitle" translate="title" module="customer"><title>Password forgotten</title></action>
         </reference>
-        <reference name="content">
-            <!--<block type="core/template" name="forgotPassword" template="customer/form/forgotpassword.phtml"/>-->
+
+		<reference name="content">
             <block type="customer/account_forgotpassword" name="existingUser" template="customer/form/renewpassword.phtml" />
         </reference>
     </customer_account_existinguser>
