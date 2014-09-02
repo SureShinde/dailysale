@@ -3,7 +3,7 @@
 /**
  * Module configuration
  *
- * @author Magento
+ * @author Mihail
  */
 -->
 <config>
@@ -12,19 +12,6 @@
             <version>1.0.0</version>
         </Fiuze_Dailysale>
     </modules>
-    
-    <global>
-        <blocks>
-            <fiuze_dailysale>
-                <class>Fiuze_Dailysale_Block</class>
-            </fiuze_dailysale>
-            <customer>
-                <rewrite>                
-                    <account_forgotpassword>Fiuze_Dailysale_Block_Account_Forgotpassword</account_forgotpassword>
-                </rewrite>
-            </customer>
-        </blocks>                
-    </global>
     
     <frontend>
         <routers>
