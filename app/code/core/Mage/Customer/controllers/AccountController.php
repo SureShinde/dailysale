@@ -75,7 +75,8 @@ class Mage_Customer_AccountController extends Mage_Core_Controller_Front_Action
             'resetpassword',
             'resetpasswordpost',
             'confirm',
-            'confirmation'
+            'confirmation',
+			'existinguser'
         );
         $pattern = '/^(' . implode('|', $openActions) . ')/i';
 

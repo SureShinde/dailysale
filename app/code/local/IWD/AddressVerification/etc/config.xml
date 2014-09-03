@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+    <modules>
+        <IWD_AddressVerification>
+            <version>2.0.2</version>
+        </IWD_AddressVerification>
+    </modules>
+    <global>
+        <models>
+            <addressverification>
+                <class>IWD_AddressVerification_Model</class>
+            </addressverification>
+            <addressverification_adminhtml>
+                <class>IWD_AddressVerification_Adminhtml_Model</class>
+            </addressverification_adminhtml>            
+        </models>
+        <blocks>
+            <addressverification>
+                <class>IWD_AddressVerification_Block</class>
+            </addressverification>
+        </blocks>
+        <helpers>
+            <addressverification>
+                <class>IWD_AddressVerification_Helper</class>
+            </addressverification>
+        </helpers>
+    </global>
+    <frontend>
+        <routers>
+            <checkout>
+            	<use>standard</use>
+                <args>
+                    <modules>
+                        <iwd_addressverification before="Mage_Checkout">IWD_AddressVerification</iwd_addressverification>
+                    </modules>
+                </args>
+            </checkout>
+            <opc>
+            	<use>standard</use>
+                <args>
+                    <modules>
+                        <iwd_addressverification before="Mage_Checkout">IWD_AddressVerification</iwd_addressverification>
+                    </modules>
+                </args>
+            </opc>
+        </routers>
+        <layout>
+             <updates>
+                  <addressverification>
+						<file>iwdaddressverification.xml</file>
+                  </addressverification>
+             </updates>
+        </layout>
+    </frontend>
+
+    <default>
+        <addressverification>
+            <general>
+                <enabled>0</enabled>
+                <title>IWD Address Verification</title>
+                <allow_not_valid_address>0</allow_not_valid_address>
+            </general>
+			<ups_address_verification>
+				<enabled>0</enabled>
+				<test_mode>1</test_mode>
+            </ups_address_verification>
+			<usps_address_verification>
+				<enabled>0</enabled>
+				<test_mode>1</test_mode>
+            </usps_address_verification>            
+        </addressverification>
+    </default>
+    <admin>
+        <routers>
+            <addressverification>
+                <use>admin</use>            
+                <args>
+                    <module>IWD_AddressVerification</module>
+                    <frontName>addressverification</frontName>
+                </args>
+            </addressverification>
+        </routers>
+    </admin>    
+</config>
