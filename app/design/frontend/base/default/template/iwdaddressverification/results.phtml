@@ -1,0 +1,6 @@
+<?php
+if(Mage::helper('addressverification')->isAddressVerificationEnabled()): 
+$is_mobile	= Mage::helper('addressverification')->isMobile();
+?>
+<div id='checkout-address-validation-load' <?php if($is_mobile){echo " class='av-mobile-device' ";}?>></div>
+<?php endif;?>

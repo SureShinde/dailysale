@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+    <modules>
+        <IWD_AddressVerification>
+            <active>true</active>
+            <codePool>local</codePool>
+        </IWD_AddressVerification>
+    </modules>
+</config>
