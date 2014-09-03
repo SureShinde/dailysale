@@ -28,10 +28,10 @@
 <config>
     <global>
         <install>
-            <date><![CDATA[Tue, 15 Nov 2011 20:58:35 +0000]]></date>
+            <date><![CDATA[Wed, 07 May 2014 18:54:19 +0000]]></date>
         </install>
         <crypt>
-            <key><![CDATA[2413a55f42917e8ce749ecdfbe71e0a8]]></key>
+            <key><![CDATA[bb94fee3570fa9cbb47e33cd82d7bbf5]]></key>
         </crypt>
         <disable_local_modules>false</disable_local_modules>
         <resources>
@@ -40,10 +40,10 @@
             </db>
             <default_setup>
                 <connection>
-                    <host><![CDATA[127.0.0.1]]></host>
-                    <username><![CDATA[root]]></username>
-                    <password><![CDATA[]]></password>
-                    <dbname><![CDATA[dailysale]]></dbname>
+                    <host><![CDATA[localhost]]></host>
+                    <username><![CDATA[dsmageadmin]]></username>
+                    <password><![CDATA[>{+a1+}c';dk>[T]]></password>
+                    <dbname><![CDATA[dsmage]]></dbname>
                     <initStatements><![CDATA[SET NAMES utf8]]></initStatements>
                     <model><![CDATA[mysql4]]></model>
                     <type><![CDATA[pdo_mysql]]></type>
