@@ -1,0 +1,261 @@
+<?php
+if(Mage::helper('addressverification')->isAddressVerificationEnabled()):
+	$address_type	= $this->getShowValidationResults();
+	if($address_type):
+
+		$this->setShowValidationResults(false);
+
+		$allow_not_valid	= Mage::helper('addressverification')->allowNotValidAddress(); // if not valid addresses allowed for checkout
+	
+		$av_msg = Mage::helper('addressverification')->__('Address Validation');
+		
+		$spec_error	= '';
+		
+		if($address_type == 'billing' || $address_type == 'both')
+		{
+			
+			$bill_msg	= Mage::helper('addressverification')->__('Please review your billing address and make any necessary changes. ');
+			$bill_validation_results	= $this->getBillingValidationResults();
+			if($bill_validation_results){
+				if(isset($bill_validation_results['error']) && !empty($bill_validation_results['error']))
+				{
+					if($bill_validation_results['error'] != 'YES' && $bill_validation_results['error'] != 'NO')
+						$spec_error	= $bill_validation_results['error'];
+					
+					if($bill_validation_results['error'] != 'YES')
+					{
+						$av_msg = Mage::helper('addressverification')->__('Address Cannot Be Verified');
+						/*
+						if($allow_not_valid)
+							$bill_msg.= '<br/>'.Mage::helper('addressverification')->__('You may use your original billing address if no changes are required.');
+						else
+							$bill_msg= Mage::helper('addressverification')->__('Billing address is not valid.').'<br/>'.$bill_msg;
+						*/
+					}
+				}
+			}
+		}
+		
+		if($address_type == 'shipping' || $address_type == 'both')
+		{		
+			$ship_msg	= Mage::helper('addressverification')->__('Please review your shipping address and make any necessary changes. ');
+			$ship_validation_results	= $this->getShippingValidationResults();
+			if($ship_validation_results){
+				if(isset($ship_validation_results['error']) && !empty($ship_validation_results['error']))
+				{
+					if($ship_validation_results['error'] != 'YES' && $ship_validation_results['error'] != 'NO')
+					{
+						if($spec_error != $ship_validation_results['error'])
+						{
+							if(!empty($spec_error))
+								$spec_error.='<br/>';
+							$spec_error.= $ship_validation_results['error'];
+						}
+					}
+					
+					if($ship_validation_results['error'] != 'YES')
+					{
+						$av_msg = Mage::helper('addressverification')->__('Address Cannot Be Verified');
+						/*
+						if($allow_not_valid)
+							$ship_msg.= '<br/>'.Mage::helper('addressverification')->__('You may use your original shipping address if no changes are required.');
+						else
+							$ship_msg= Mage::helper('addressverification')->__('Shipping address is not valid.').'<br/>'.$ship_msg;
+						*/
+					}
+				}
+			}
+		}
+?>
+<div class="iwd_modal_container" id="address-verification-results">
+<div class='iwdav_modal'>
+	<div class='iwdav_modal_inner'>
+	
+<div class='iwd-verification-title'>
+	<div class="iwd-head">
+		<?php echo $av_msg;?>
+	</div>
+</div>
+<div class="iwd_container">
+<?php 
+	$candidates_exists	= false;
+
+	if(isset($spec_error) && !empty($spec_error))
+		echo "<p style='color:red;'>$spec_error</p>";
+
+if($address_type == 'billing' || $address_type == 'both'):
+	
+	if($bill_validation_results):?>
+
+		<p><?php echo $bill_msg;?></p>
+<?php if($allow_not_valid):?>
+<div class='va_label'>
+<?php echo Mage::helper('addressverification')->__('Use Original Address');?>:
+</div>
+<div class='va_choices'>
+	<div class='va_choice_row'>
+		<div class='va_choice'>
+			<input class='va_bill_id' type='radio' name='va_bill_id' id='va_bill_id_original' value='use_original_address' />
+		</div>
+		<label class='va_info' for='va_bill_id_original'>
+			<?php $o_a = $bill_validation_results['original_address']; 
+			echo "{$o_a['street']}, {$o_a['city']}, {$o_a['state']}, {$o_a['zip_code']}"; ?>
+		</label>
+	</div>
+	<div class='clear'></div>
+</div>
+<div class='clear'></div>
+<?php endif;?>
+	<?php 
+		if(isset($bill_validation_results['error']) && !empty($bill_validation_results['error'])):
+			if(isset($bill_validation_results['candidates']) && !empty($bill_validation_results['candidates'])):
+				$candidates_exists	= true;
+				?>
+				
+<div class='va_label'>
+<?php echo Mage::helper('addressverification')->__('Use Suggested Address');?>:
+</div>
+<div class='va_choices'>
+<?php foreach($bill_validation_results['candidates'] as $va_key => $candidate):?>
+	<div class='va_choice_row'>
+		<div class='va_choice'>
+			<input class='va_bill_id' type='radio' name='va_bill_id' id='va_bill_id_<?php echo $va_key;?>' value='<?php echo $va_key;?>'/>
+				<input type='hidden' id='va_billing_street_<?php echo $va_key;?>' value='<?php echo $candidate['street'];?>' />
+				<input type='hidden' id='va_billing_city_<?php echo $va_key;?>' value='<?php echo $candidate['city'];?>' />
+				<input type='hidden' id='va_billing_region_<?php echo $va_key;?>' value='<?php echo $candidate['region'];?>' />
+				<input type='hidden' id='va_billing_postcode_<?php echo $va_key;?>' value='<?php echo $candidate['postcode'];?>' />
+		</div>
+		<label class='va_info' for='va_bill_id_<?php echo $va_key;?>'>
+			<?php echo "{$candidate['street']}, {$candidate['city']}, {$candidate['region_abbr']}, {$candidate['postcode']}";?>
+		</label>
+	</div>
+	<div class='clear'></div>
+<?php endforeach;?>
+</div>
+<div class='clear'></div>				
+				<?php 
+			endif;?>
+		<?php
+		else:
+			$candidate = $bill_validation_results['candidates'][0]; ?>	
+<div class='va_label'>
+<?php echo Mage::helper('addressverification')->__('Use Suggested Address');?>:
+</div>
+<div class='va_choices'>
+	<div class='va_choice_row'>
+		<div class='va_choice'>
+			<input class='va_bill_id' type='radio' name='va_bill_id' id='va_bill_id_val' value='val'/>				
+				<input type='hidden' id='va_billing_street_val' value='<?php echo $candidate['street'];?>' />
+				<input type='hidden' id='va_billing_city_val' value='<?php echo $candidate['city'];?>' />
+				<input type='hidden' id='va_billing_region_val' value='<?php echo $candidate['region'];?>' />
+				<input type='hidden' id='va_billing_postcode_val' value='<?php echo $candidate['postcode'];?>' />
+		</div>
+		<label class='va_info' for='va_bill_id_val'>
+			<?php echo "{$candidate['street']}, {$candidate['city']}, {$candidate['region_abbr']}, {$candidate['postcode']}";?>
+		</label>
+	</div>
+	<div class='clear'></div>
+</div>
+<div class='clear'></div>
+			<?php 
+		endif; 
+	endif;
+
+endif; // end billing
+
+if($address_type == 'shipping' || $address_type == 'both'): // shipping address
+ 
+	if($ship_validation_results):?>
+
+		<p><?php echo $ship_msg;?></p>
+<?php if($allow_not_valid):?>
+<div class='va_label'>
+<?php echo Mage::helper('addressverification')->__('Use Original Address');?>:
+</div>
+<div class='va_choices'>
+	<div class='va_choice_row'>
+		<div class='va_choice'>
+			<input class='va_ship_id' type='radio' name='va_ship_id' id='va_ship_id_original' value='use_original_address' />
+		</div>
+		<label class='va_info' for='va_ship_id_original'>
+			<?php $o_a = $ship_validation_results['original_address']; 
+			echo "{$o_a['street']}, {$o_a['city']}, {$o_a['state']}, {$o_a['zip_code']}"; ?> 
+		</label>
+	</div>
+	<div class='clear'></div>
+</div>
+<div class='clear'></div>
+<?php endif;?>
+	<?php 
+		if(isset($ship_validation_results['error']) && !empty($ship_validation_results['error'])):
+			if(isset($ship_validation_results['candidates']) && !empty($ship_validation_results['candidates'])):
+				$candidates_exists	= true;
+				?>
+<div class='va_label'>
+<?php echo Mage::helper('addressverification')->__('Use Suggested Address');?>:
+</div>
+<div class='va_choices'>
+<?php foreach($ship_validation_results['candidates'] as $va_key => $candidate):?>
+	<div class='va_choice_row'>
+		<div class='va_choice'>
+			<input type='radio' class='va_ship_id' name='va_ship_id' id='va_ship_id_<?php echo $va_key;?>' value='<?php echo $va_key;?>'/>
+				<input type='hidden' id='va_shipping_street_<?php echo $va_key;?>' value='<?php echo $candidate['street'];?>' />
+				<input type='hidden' id='va_shipping_city_<?php echo $va_key;?>' value='<?php echo $candidate['city'];?>' />
+				<input type='hidden' id='va_shipping_region_<?php echo $va_key;?>' value='<?php echo $candidate['region'];?>' />
+				<input type='hidden' id='va_shipping_postcode_<?php echo $va_key;?>' value='<?php echo $candidate['postcode'];?>' />
+		</div>
+		<label class='va_info' for='va_ship_id_<?php echo $va_key;?>'>
+			<?php echo "{$candidate['street']}, {$candidate['city']}, {$candidate['region_abbr']}, {$candidate['postcode']}";?>
+		</label>
+	</div>
+	<div class='clear'></div>
+<?php endforeach;?>
+</div>
+<div class='clear'></div>
+				<?php 
+			endif;?>
+		<?php
+		else:
+			$candidate = $ship_validation_results['candidates'][0];?>
+			
+			
+<div class='va_label'>
+<?php echo Mage::helper('addressverification')->__('Use Suggested Address');?>:
+</div>
+<div class='va_choices'>
+	<div class='va_choice_row'>
+		<div class='va_choice'>
+			<input class='va_ship_id' type='radio' name='va_ship_id' id='va_ship_id_val' value='val'/>
+				<input type='hidden' id='va_shipping_street_val' value='<?php echo $candidate['street'];?>' />
+				<input type='hidden' id='va_shipping_city_val' value='<?php echo $candidate['city'];?>' />
+				<input type='hidden' id='va_shipping_region_val' value='<?php echo $candidate['region'];?>' />
+				<input type='hidden' id='va_shipping_postcode_val' value='<?php echo $candidate['postcode'];?>' />
+		</div>
+		<label class='va_info' for='va_ship_id_val'>
+			<?php echo "{$candidate['street']}, {$candidate['city']}, {$candidate['region_abbr']}, {$candidate['postcode']}";?>
+		</label>
+	</div>
+	<div class='clear'></div>
+</div>
+<div class='clear'></div>			
+			<?php 
+		endif; 
+	endif;	
+
+endif;	// end shipping
+?>
+
+    <div class='clear'></div>
+</div>
+<div class="iwd-buttons-set" id="consent-buttons-container">
+	<button type="button" title="<?php echo $this->__('Continue') ?>" class="iwd-button" onclick="continue_verification()"><?php echo $this->__('Continue') ?></button>
+</div>
+
+	</div>
+</div>
+</div>
+
+<div id='iwdPopupOverlay' class='iwdPopupOverlay'>&nbsp;</div>
+
+	<?php endif;?>
+<?php endif;?>
