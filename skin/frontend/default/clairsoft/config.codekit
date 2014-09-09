@@ -11,6 +11,15 @@
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
+	"\/css\/customercredit.css": {
+		"fileType": 16,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/css\/customercredit.css",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
 	"\/css\/forms.css": {
 		"fileType": 16,
 		"ignore": 1,
@@ -191,6 +200,48 @@
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"processed": 0
+		},
+	"\/css\/iwd\/opc\/images\/ajax-loader-button.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 33239,
+		"inputAbbreviatedPath": "\/css\/iwd\/opc\/images\/ajax-loader-button.png",
+		"outputAbbreviatedPath": "\/css\/iwd\/opc\/images\/ajax-loader-button.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/css\/iwd\/opc\/images\/ajax-loader.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 92623,
+		"inputAbbreviatedPath": "\/css\/iwd\/opc\/images\/ajax-loader.png",
+		"outputAbbreviatedPath": "\/css\/iwd\/opc\/images\/ajax-loader.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/css\/iwd\/opc\/images\/close.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 1070,
+		"inputAbbreviatedPath": "\/css\/iwd\/opc\/images\/close.png",
+		"outputAbbreviatedPath": "\/css\/iwd\/opc\/images\/close.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/css\/iwd\/opc\/opc.css": {
+		"fileType": 16,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/css\/iwd\/opc\/opc.css",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
 		},
 	"\/css\/jquery-ui.css": {
 		"fileType": 16,
@@ -616,6 +667,17 @@
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
+	"\/js\/product.js": {
+		"fileType": 64,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/js\/product.js",
+		"outputAbbreviatedPath": "\/js\/min\/product-ck.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
 	"\/sass\/account.scss": {
 		"createSourceMap": 0,
 		"debugStyle": 0,
@@ -669,7 +731,7 @@
 		"debugStyle": 0,
 		"decimalPrecision": 5,
 		"fileType": 4,
-		"ignore": 1,
+		"ignore": 0,
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/sass\/checkout_success.scss",
 		"outputAbbreviatedPath": "\/css\/checkout_success.css",
@@ -765,7 +827,7 @@
 		"debugStyle": 0,
 		"decimalPrecision": 5,
 		"fileType": 4,
-		"ignore": 1,
+		"ignore": 0,
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/sass\/improved-onepage-checkout.scss",
 		"outputAbbreviatedPath": "\/css\/improved-onepage-checkout.css",

@@ -47,6 +47,10 @@ $j(document).ready(function(){
 		}
 	});
 
+	$j("#subscribe-pop button").click(function(){
+		$j.cookie('subscribe', 'closed', { expires: 730, path: '/' });
+	});
+
 	//timer script for popup action
 
 	var idleTime = 0;
@@ -87,5 +91,13 @@ $j(document).ready(function(){
 		}, 'slow'); };
 
 	$j('.products-grid li.item').hover(borderEnter, borderLeave);
+
+	//remove html tags from customer credit cart section
+	
+	function removeAllHtmlInsideElement(){
+		$j(".credit-payment button").html($j(".credit-payment button").text());
+	}
+
+	removeAllHtmlInsideElement();
 
 });

@@ -1,6 +1,27 @@
 .account-create{
 }
 
+#signin-modal{
+
+	.forgot-password{
+		color: $main-color !important;
+	}
+	#signin-login{
+		@include clairsoft-default-button;
+		padding: 0;
+		width: 100%;
+	}
+
+	.fieldset{
+		border: 0px !important;
+	}
+
+	input{
+		@include border-radius(4px);
+	}
+
+}
+
 .account-login{
 	button{
 		@include clairsoft-default-button;
