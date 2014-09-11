@@ -1240,9 +1240,24 @@ ul.tabs {
   width: auto; }
 
 /* line 6, ../sass/register-login.scss */
+#signin-modal .f-p {
+  display: block;
+  height: 30px;
+  width: auto;
+  float: none;
+  margin: 0;
+  text-align: right; }
+/* line 15, ../sass/register-login.scss */
+#signin-modal .recover-password {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 13px;
+  text-align: center; }
+/* line 22, ../sass/register-login.scss */
 #signin-modal .forgot-password {
-  color: #1b75bb !important; }
-/* line 9, ../sass/register-login.scss */
+  color: #1b75bb !important;
+  float: none !important; }
+/* line 26, ../sass/register-login.scss */
 #signin-modal #signin-login {
   border: 1px solid #196fb1 !important;
   color: white;
@@ -1266,16 +1281,16 @@ ul.tabs {
     border: 1px solid #515252;
     color: #eeeeee;
     text-shadow: none; }
-/* line 15, ../sass/register-login.scss */
+/* line 32, ../sass/register-login.scss */
 #signin-modal .fieldset {
   border: 0px !important; }
-/* line 19, ../sass/register-login.scss */
+/* line 36, ../sass/register-login.scss */
 #signin-modal input {
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
   border-radius: 4px; }
 
-/* line 26, ../sass/register-login.scss */
+/* line 43, ../sass/register-login.scss */
 .account-login button {
   border: 1px solid #196fb1 !important;
   color: white;
@@ -1297,19 +1312,19 @@ ul.tabs {
     border: 1px solid #515252;
     color: #eeeeee;
     text-shadow: none; }
-/* line 30, ../sass/register-login.scss */
+/* line 47, ../sass/register-login.scss */
 .account-login .registered-users {
   background: #eeeeee; }
 
-/* line 37, ../sass/register-login.scss */
+/* line 54, ../sass/register-login.scss */
 .customer-account-login h2 {
   border-bottom: 1px solid #cccccc;
   padding-bottom: 5px;
   margin-bottom: 8px; }
-/* line 43, ../sass/register-login.scss */
+/* line 60, ../sass/register-login.scss */
 .customer-account-login p {
   margin: 5px 0; }
-/* line 47, ../sass/register-login.scss */
+/* line 64, ../sass/register-login.scss */
 .customer-account-login .new-users {
   width: 63% !important;
   padding: 1em;
@@ -1318,7 +1333,7 @@ ul.tabs {
   border-radius: 4px;
   font-size: 17px;
   position: relative; }
-  /* line 57, ../sass/register-login.scss */
+  /* line 74, ../sass/register-login.scss */
   .customer-account-login .new-users button {
     border: 1px solid #196fb1 !important;
     color: white;
@@ -1340,24 +1355,24 @@ ul.tabs {
       border: 1px solid #515252;
       color: #eeeeee;
       text-shadow: none; }
-/* line 65, ../sass/register-login.scss */
+/* line 82, ../sass/register-login.scss */
 .customer-account-login .registered-users {
   border: 1px solid #cccccc;
   width: 36% !important;
   padding: 1.5em;
   position: relative; }
-  /* line 73, ../sass/register-login.scss */
+  /* line 90, ../sass/register-login.scss */
   .customer-account-login .registered-users label {
     margin-bottom: 3px;
     color: #515252; }
-  /* line 78, ../sass/register-login.scss */
+  /* line 95, ../sass/register-login.scss */
   .customer-account-login .registered-users input {
     height: 35px;
     width: 280px;
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
     border-radius: 4px; }
-  /* line 84, ../sass/register-login.scss */
+  /* line 101, ../sass/register-login.scss */
   .customer-account-login .registered-users button {
     border: 1px solid #196fb1 !important;
     color: white;
@@ -1382,7 +1397,7 @@ ul.tabs {
       border: 1px solid #515252;
       color: #eeeeee;
       text-shadow: none; }
-  /* line 91, ../sass/register-login.scss */
+  /* line 108, ../sass/register-login.scss */
   .customer-account-login .registered-users .f-left {
     font-size: 12px;
     position: absolute;
