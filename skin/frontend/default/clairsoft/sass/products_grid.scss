@@ -1,4 +1,10 @@
-.category-products{
+.cms-index-index{
+	li.item:nth-child(3n){
+		margin-right: 0;
+	}
+}
+
+.cms-index-index, .category-products{
 
 	#dealcountdown{display: none;}
 
@@ -16,6 +22,8 @@
 		padding: 0px;
 		@include border-bottom-left-radius(4px);
 		@include border-bottom-right-radius(4px);
+		list-style: none;
+		float: left;
 
 		// &:hover{
 		// 	margin-top: -3px;
