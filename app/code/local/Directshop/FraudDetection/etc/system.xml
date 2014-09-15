@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<!--
+/**
+ *
+ * @category   Directshop
+ * @package    Directshop_FraudDetection
+ * @author     Ben James
+ * @copyright  Copyright (c) 2008-2012 Directshop Pty Ltd. (http://directshop.com.au)
+ */
+-->
+<config>
+    <sections>
+        <frauddetection translate="label" module="frauddetection">
+            <label>Directshop Fraud Detection</label>
+            <tab>dsbase</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>330</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <general translate="label">
+                    <label>General</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+						<threshold translate="label">
+                           <label>Score Threshold</label>
+                           <frontend_type>text</frontend_type>
+                           <sort_order>10</sort_order>
+                           <show_in_default>1</show_in_default>
+                           <show_in_website>1</show_in_website>
+                           <show_in_store>1</show_in_store>
+                       	</threshold>
+						<holdwhenflagged translate="label">
+                           <label>Hold order when over threshold</label>
+                           <frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+                           <sort_order>20</sort_order>
+                           <show_in_default>1</show_in_default>
+                           <show_in_website>1</show_in_website>
+                           <show_in_store>1</show_in_store>
+                        </holdwhenflagged>
+                        
+                        <ipexceptions translate="label">
+                            <label>IP Address Exceptions</label>
+                            <frontend_model>frauddetection/adminhtml_system_config_form_field_ipexceptions</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Orders coming from these IP Addresses will not be checked for possible fraud.</comment>
+                        </ipexceptions>
+                    </fields>
+                </general>
+				<maxmind translate="label">
+                    <label>MaxMind</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>20</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+						<licensekey translate="label">
+                            <label>MaxMind License Key</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </licensekey>
+						<request_type translate="label">
+                            <label>Request Type</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>frauddetection/requesttype</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </request_type>
+                    </fields>
+                </maxmind>
+                <debug translate="label">
+                    <label>Debug</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>30</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+						<force_ip translate="label">
+                            <label>Force IP Address</label>
+                            <comment>This will override the IP address of all orders when retrieving fraud information. This should be left empty except for debugging purposes.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </force_ip>
+                    </fields>
+                </debug>
+            </groups>
+        </frauddetection>
+    </sections>
+</config>
