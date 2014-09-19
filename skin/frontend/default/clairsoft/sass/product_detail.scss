@@ -336,7 +336,7 @@ ul.tabs{
 			width: 230px;
 			border: 1px solid $subtle-color;
 			background: white;
-			//height: 330px;
+			min-height: 420px;
 			text-align: center;
 
 			img{
@@ -356,10 +356,30 @@ ul.tabs{
 
 			.yousave{display: none;}
 
-			.special-price{
+			.special-price, .our-price{
 				color: $main-color;
 				font-size: 32px;
-				margin-bottom: 5px;
+				//margin-bottom: 5px;
+			}
+
+			.availability-container{
+				font-size: 14px;
+				position: absolute;
+				bottom: 60px;
+				//left: 10px;
+				text-align: center;
+				width: 100%;			}
+
+			a.soldout-btn{
+				@include clairsoft-inactive-button;
+				margin: 10px 10px 0 0;
+				padding: 12px;
+				//float: none;
+				//display: inline-block;
+				width: 210px;
+				position: absolute;
+				bottom: 10px;
+				left: 10px;
 			}
 
 			a.view-deal-btn{
@@ -372,7 +392,7 @@ ul.tabs{
 				text-align: center;
 				text-decoration: none;
 				//float: right;
-				width: 200px;
+				width: 210px;
 				//height: 35px;
 				border: 1px solid $subtle-color;
 				//margin: 25px 10px 0 0;
