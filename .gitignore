@@ -11,3 +11,5 @@
 !/var/.htaccess
 !/media/.htaccess
 /skin/frontend/default/clairsoft/.sass-cache/
+
+/skin/frontend/default/clairsoft/config.codekit

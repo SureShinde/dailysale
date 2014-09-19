@@ -51,17 +51,18 @@
 				width: auto;
 			}
 
-			.special-price .price{
+			.our-price .price, .special-price .price{
 				display: block;
 				margin-top: -12px;
 				margin-bottom: -8px;
 				color: $main-color;
 				font-weight: bold;
 				font-size: 56pt;
+			}
 
-				.price-label{
-
-				}
+			.more-than-three-digits .price{
+				font-size: 30px !important;
+				margin: 0;
 			}
 
 			.percent-off{
