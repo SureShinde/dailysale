@@ -59,7 +59,7 @@ class Mage_Customer_AccountController extends Mage_Core_Controller_Front_Action
     {
         // a brute-force protection here would be nice
 
-        Mage_Core_Controller_Front_Action::preDispatch();
+        parent::preDispatch();
 
         if (!$this->getRequest()->isDispatched()) {
             return;
@@ -75,8 +75,7 @@ class Mage_Customer_AccountController extends Mage_Core_Controller_Front_Action
             'resetpassword',
             'resetpasswordpost',
             'confirm',
-            'confirmation',
-			'existinguser'
+            'confirmation'
         );
         $pattern = '/^(' . implode('|', $openActions) . ')/i';
 
