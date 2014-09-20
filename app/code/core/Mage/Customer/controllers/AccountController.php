@@ -59,7 +59,7 @@ class Mage_Customer_AccountController extends Mage_Core_Controller_Front_Action
     {
         // a brute-force protection here would be nice
 
-        parent::preDispatch();
+        Mage_Core_Controller_Front_Action::preDispatch();
 
         if (!$this->getRequest()->isDispatched()) {
             return;
