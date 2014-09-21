@@ -114,10 +114,10 @@
 		position: relative;
 		margin-bottom: 0;
 
-		.special-price{
+		.special-price, .regular-price{
 			// display: block;
 			font-size: 35px;
-			font-weight: bold;
+			//font-weight: bold;
 			color: $dark-color;
 			position: absolute;
 			padding: 0;
@@ -126,7 +126,7 @@
 			text-align: center;
 		}
 
-		.old-price{
+		.msrp{
 			font-size: 14px;
 			color: $main-color;
 			position: absolute;
@@ -140,6 +140,11 @@
 				font-weight: normal;
 			}
 
+		}
+
+		.more-than-three-digits{
+			font-size: 24px;
+			margin-top: 15px;
 		}
 
 		.percent-off{
@@ -173,6 +178,10 @@
 				margin-top: 0;
 			}
 		}
+
+		.no-percent{
+			background: none;
+		}
 	}
 
 	.actions{
@@ -191,11 +200,11 @@
 			border: 1px solid $subtle-color !important;
 			color: $dark-color;
 			text-decoration: none;
-			padding: 12px 15px 12px 15px;
+			padding: 12px;
 			@include border-radius(4px, 4px);
 			@include background-image(linear-gradient(white, $faint-color));
 			// float: right;
-			margin: 25px 10px 0 0;
+			margin: 10px 10px 0 0;
 			position: relative;
 			z-index: 97;
 
@@ -211,6 +220,8 @@
 
 		a.soldout-btn{
 			@include clairsoft-inactive-button;
+			margin: 10px 10px 0 0;
+			padding: 12px;
 		}
 	}
 }
