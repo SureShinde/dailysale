@@ -15,7 +15,7 @@ class Fiuze_Dailysale_AccountController extends Mage_Customer_AccountController
     {
         // a brute-force protection here would be nice
 
-        //parent::preDispatch();
+        Mage_Core_Controller_Front_Action::preDispatch();
 
         if (!$this->getRequest()->isDispatched()) {
             return;
@@ -42,8 +42,9 @@ class Fiuze_Dailysale_AccountController extends Mage_Customer_AccountController
             }
         } else {
             $this->_getSession()->setNoReferer(true);
+			parent::preDispatch();
         }
-    }
+    } 
 
     /**
      * Existing user action
