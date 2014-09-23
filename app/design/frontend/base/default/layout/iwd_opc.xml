@@ -23,7 +23,8 @@
         
         <reference name="head">		
         	<action method="addItem"><type>skin_js</type><name>js/iwd/opc/checkout.js</name></action>
-        	<action method="addItem"><type>skin_js</type><name>js/iwd/opc/extend.js</name></action>        
+        	<action method="addItem"><type>skin_js</type><name>js/iwd/opc/extend.js</name></action>
+        	<action method="addJs"><file>mage/directpost.js</file></action>        
 			<action method="addItem"><type>skin_js</type><name>js/opcheckout.js</name></action>					
             <action method="addCss"><stylesheet>css/iwd/opc/opc.css</stylesheet></action>
 		</reference>

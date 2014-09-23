@@ -56,6 +56,7 @@ $theme = Mage::getDesign()->getTheme('frontend');
     </div>
 </div>
 <script>
+	var vopc = '<?php echo Mage::getConfig()->getModuleConfig("IWD_Opc")->version;?>';
 	IWD.OPC.Checkout.config = '<?php echo $this->getJsonConfig()?>';
 	<?php if ($this->getOnepage()->getQuote()->isVirtual()):?>
 	IWD.OPC.Checkout.isVirtual = true;

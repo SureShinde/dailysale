@@ -2,7 +2,7 @@
 <config>
 	<modules>
         <IWD_Opc>
-            <version>3.3.3</version>
+            <version>3.3.5</version>
         </IWD_Opc>
 	</modules>
 	
