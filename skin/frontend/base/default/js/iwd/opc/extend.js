@@ -112,13 +112,17 @@ IWD.OPC.Lipp = {
 		},
 		
 		prepareTokenResponse: function(response){
+			IWD.OPC.Checkout.xhr = null;
 			if (typeof(response.error)!="undefined"){
+				IWD.OPC.Checkout.hideLoader();
+				IWD.OPC.Checkout.unlockPlaceOrder();
+				
 				if (response.error==false){
-					IWD.OPC.Checkout.hideLoader();
 					PAYPAL.apps.Checkout.startFlow(IWD.OPC.Checkout.config.paypalexpress + response.token);
 				}
 				
 				if (response.error==true){
+					IWD.OPC.saveOrderStatus = false;
 					alert(response.message);
 				}
 			}

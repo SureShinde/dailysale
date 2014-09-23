@@ -27,7 +27,7 @@ IWD.OPC = {
 					return;
 				}
 				var addressForm = new VarienForm('billing-new-address-form');
-				if (!addressForm.validator.validate()){				
+				if (!addressForm.validator.validate()){
 					return;
 				}
 				
@@ -54,14 +54,51 @@ IWD.OPC = {
 		
 		/** INIT CHAGE PAYMENT METHOD **/
 		initPayment: function(){
+			
+			IWD.OPC.removeNotAllowedPaymentMethods();
+			
 			IWD.OPC.bindChangePaymentFields();
 			$j(document).on('click', '#co-payment-form input[type="radio"]', function(event){
+				IWD.OPC.removeNotAllowedPaymentMethods();
+				
 				IWD.OPC.validatePayment();
 			});
 		},
 		
+		/** remove not allowed payment method **/
+		removeNotAllowedPaymentMethods: function(){
+			// remove p_method_authorizenet_directpost
+			var auth_dp_obj = $j('#p_method_authorizenet_directpost');
+			if(auth_dp_obj && auth_dp_obj.attr('id') == 'p_method_authorizenet_directpost')
+			{
+				if(auth_dp_obj.attr('checked'))
+					auth_dp_obj.attr('checked', false);
+				
+				auth_dp_obj.parent('dt').remove();
+				$j('#payment_form_authorizenet_directpost').parent('dd').remove();
+				$j('#directpost-iframe').remove();
+				$j('#co-directpost-form').remove();
+			}
+			////
+		},
+		
 		/** CHECK PAYMENT IF PAYMENT IF CHECKED AND ALL REQUIRED FIELD ARE FILLED PUSH TO SAVE **/
 		validatePayment: function(){	
+			
+			// check all required fields not empty
+			var is_empty = false;
+			$j('#co-payment-form .required-entry').each(function(){
+				if($j(this).val() == '' && $j(this).css('display') != 'none' && !$j(this).attr('disabled'))
+					is_empty = true;
+			});
+			if(is_empty)
+			{
+				IWD.OPC.saveOrderStatus = false;
+				IWD.OPC.Checkout.hideLoader();
+				IWD.OPC.Checkout.unlockPlaceOrder();				
+				return false;
+			}
+			////
 			
 			var vp = payment.validate();
 			if(!vp)
@@ -78,6 +115,9 @@ IWD.OPC = {
 				IWD.OPC.savePayment();
 			}else{
 				IWD.OPC.saveOrderStatus = false;
+				IWD.OPC.Checkout.hideLoader();
+				IWD.OPC.Checkout.unlockPlaceOrder();
+				
 				IWD.OPC.bindChangePaymentFields();
 			}
 			
@@ -85,7 +125,7 @@ IWD.OPC = {
 		},
 		
 		/** BIND CHANGE PAYMENT FIELDS **/ 
-		bindChangePaymentFields: function(){
+		bindChangePaymentFields: function(){			
 			IWD.OPC.unbindChangePaymentFields();
 			
 			$j('#co-payment-form input').keyup(function(event){
@@ -168,9 +208,6 @@ IWD.OPC = {
 				IWD.OPC.recheckItems();
 			}
 
-			IWD.OPC.Checkout.hideLoader();
-			IWD.OPC.Checkout.unlockPlaceOrder();
-			
 			if (typeof(response.error) != "undefined"){
 				
 				IWD.OPC.Plugin.dispatch('error');
@@ -191,11 +228,22 @@ IWD.OPC = {
 				if (IWD.OPC.Checkout.xhr==null){
 					setLocation(response.redirect);
 				}
+				else
+				{
+					IWD.OPC.Checkout.hideLoader();
+					IWD.OPC.Checkout.unlockPlaceOrder();					
+				}
+				
 				return;
 			}
 			
 			if (IWD.OPC.saveOrderStatus===true){
 				IWD.OPC.saveOrder();				
+			}
+			else
+			{
+				IWD.OPC.Checkout.hideLoader();
+				IWD.OPC.Checkout.unlockPlaceOrder();				
 			}
 			
 			IWD.OPC.Plugin.dispatch('savePaymentAfter');
@@ -208,22 +256,39 @@ IWD.OPC = {
 			var form = $j('#co-payment-form').serializeArray();
 			form  = IWD.OPC.checkAgreement(form);
 			form  = IWD.OPC.checkSubscribe(form);
+			form  = IWD.OPC.getComment(form);
 			
 			IWD.OPC.Checkout.showLoader();
 			IWD.OPC.Checkout.lockPlaceOrder();				
 
 			if (IWD.OPC.Checkout.config.comment!=="0"){
 				IWD.OPC.saveCustomerComment();
+				
+				setTimeout(function(){
+					IWD.OPC.callSaveOrder(form);				
+				},600);
 			}
-			
+			else
+			{
+				IWD.OPC.callSaveOrder(form);
+			}
+		},
+		
+		callSaveOrder: function(form){
 			IWD.OPC.Plugin.dispatch('saveOrder');
-			IWD.OPC.Checkout.xhr = $j.post(IWD.OPC.Checkout.saveOrderUrl ,form, IWD.OPC.prepareOrderResponse,'json');
+			IWD.OPC.Checkout.xhr = $j.post(IWD.OPC.Checkout.saveOrderUrl ,form, IWD.OPC.prepareOrderResponse,'json');			
 		},
 		
 		/** SAVE CUSTOMER COMMNET **/
 		saveCustomerComment: function(){
 			$j.post(IWD.OPC.Checkout.config.baseUrl + 'onepage/json/comment',{"comment": $j('#customer_comment').val()});
 		}, 
+		
+		getComment: function(form){
+			var com = $j('#customer_comment').val();
+			form.push({"name":"customer_comment", "value":com});
+			return form;
+		},
 		
 		/** ADD AGGREMENTS TO ORDER FORM **/
 		checkAgreement: function(form){
@@ -276,6 +341,7 @@ IWD.OPC = {
 		
 		/** CHECK RESPONSE FROM AJAX AFTER SAVE ORDER **/
 		prepareOrderResponse: function(response){
+			IWD.OPC.Checkout.xhr = null;
 			if (typeof(response.error) != "undefined" && response.error!=false){
 				IWD.OPC.Checkout.hideLoader();
 				IWD.OPC.Checkout.unlockPlaceOrder();				
@@ -355,9 +421,7 @@ IWD.OPC.Checkout = {
 			
 			//DECORATE
 			this.clearOnChange();
-			this.removePrice();
-			
-			
+			this.removePrice();			
 			
 			//MAIN FUNCTION
 			IWD.OPC.Billing.init();
@@ -379,24 +443,18 @@ IWD.OPC.Checkout = {
 				IWD.OPC.Checkout.pullPayments();
 			}
 			
-			
-						
 			IWD.OPC.initPayment();
 		},
-		
-		 
 		
 		/** PARSE RESPONSE FROM AJAX SAVE BILLING AND SHIPPING METHOD **/
 		prepareAddressResponse: function(response){
 			IWD.OPC.Checkout.xhr = null;
 			
-			IWD.OPC.Checkout.unlockPlaceOrder();
-			IWD.OPC.Checkout.hideLoader();
-
 			if (typeof(response.error) != "undefined"){
 				$j('.opc-message-container').html(response.message);
 				$j('.opc-message-wrapper').show();
 				IWD.OPC.Checkout.hideLoader();
+				IWD.OPC.Checkout.unlockPlaceOrder();
 				return;
 			}
 			
@@ -404,6 +462,7 @@ IWD.OPC.Checkout = {
             if (typeof(response.address_validation) != "undefined"){
                 $j('#checkout-address-validation-load').empty().html(response.address_validation);
                 IWD.OPC.Checkout.hideLoader();
+                IWD.OPC.Checkout.unlockPlaceOrder();
                 return;
             }
 			
@@ -413,12 +472,12 @@ IWD.OPC.Checkout = {
 			
 			if (typeof(response.payments) != "undefined"){
 				$j('#checkout-payment-method-load').empty().html(response.payments);
-				payment.initWhatIsCvvListeners();//default logic for view "what is this?"
 				
+				IWD.OPC.removeNotAllowedPaymentMethods();
+				payment.initWhatIsCvvListeners();//default logic for view "what is this?"
 			}
 			
 			if (typeof(response.isVirtual) != "undefined"){
-				
 				IWD.OPC.Checkout.isVirtual = true;
 			}
 			
@@ -439,9 +498,10 @@ IWD.OPC.Checkout = {
 		/** PARSE RESPONSE FROM AJAX SAVE SHIPPING METHOD **/
 		prepareShippingMethodResponse: function(response){
 			IWD.OPC.Checkout.xhr = null;
-			IWD.OPC.Checkout.hideLoader();
-			IWD.OPC.Checkout.unlockPlaceOrder();
 			if (typeof(response.error)!="undefined"){
+				
+				IWD.OPC.Checkout.hideLoader();
+				IWD.OPC.Checkout.unlockPlaceOrder();
 				
 				IWD.OPC.Plugin.dispatch('error');
 				
@@ -536,12 +596,15 @@ IWD.OPC.Checkout = {
 		pullReview: function(){
 			IWD.OPC.Checkout.lockPlaceOrder();
 			IWD.OPC.Checkout.xhr = $j.post(IWD.OPC.Checkout.config.baseUrl + 'onepage/json/review',function(response){
+				IWD.OPC.Checkout.xhr = null;
 				IWD.OPC.Checkout.hideLoader();
 				IWD.OPC.Checkout.unlockPlaceOrder();
 				if (typeof(response.review)!="undefined"){
 					$j('#opc-review-block').html(response.review);
+					
 					IWD.OPC.Checkout.removePrice();
 				}
+				IWD.OPC.removeNotAllowedPaymentMethods();
 			});
 		},
 		
@@ -549,18 +612,20 @@ IWD.OPC.Checkout = {
 		pullPayments: function(){
 			IWD.OPC.Checkout.lockPlaceOrder();
 			IWD.OPC.Checkout.xhr = $j.post(IWD.OPC.Checkout.config.baseUrl + 'onepage/json/payments',function(response){
-				IWD.OPC.Checkout.hideLoader();
-				IWD.OPC.Checkout.unlockPlaceOrder();
+				IWD.OPC.Checkout.xhr = null;
 				
 				if (typeof(response.error)!="undefined"){
 					$j('.opc-message-container').html(response.error);
 					$j('.opc-message-wrapper').show();
 					IWD.OPC.saveOrderStatus = false;
+					IWD.OPC.Checkout.hideLoader();
+					IWD.OPC.Checkout.unlockPlaceOrder();					
 					return;
 				}
 				
 				if (typeof(response.payments)!="undefined"){
 					$j('#checkout-payment-method-load').html(response.payments);
+					
 					payment.initWhatIsCvvListeners();
 					IWD.OPC.bindChangePaymentFields();
 				};
@@ -677,13 +742,22 @@ IWD.OPC.Billing = {
 		
 		/** VALIDATE ADDRESS BEFORE SEND TO SAVE QUOTE**/
 		validateAddressForm: function(form){
-			
-			  var addressForm = new Validation('opc-address-form-billing', { onSubmit : false, stopOnFirst : false, focusOnError : false});
-			  if (addressForm.validate()){				  		 
-				  return true;
-			  }else{				 
-				  return false;
-			  }
+			// check all required fields not empty
+			var is_empty = false;
+			$j('#opc-address-form-billing .required-entry').each(function(){
+				if($j(this).val() == '' && $j(this).css('display') != 'none' && !$j(this).attr('disabled'))
+					is_empty = true;
+			});
+			if(is_empty)
+				return false;
+			////
+
+			var addressForm = new Validation('opc-address-form-billing', { onSubmit : false, stopOnFirst : false, focusOnError : false});
+			if (addressForm.validate()){				  		 
+				return true;
+			}else{				 
+				return false;
+			}
 		},
 		
 		/** SET SHIPPING AS BILLING TO TRUE OR FALSE **/
@@ -833,13 +907,23 @@ IWD.OPC.Shipping = {
 		
 		/** VALIDATE ADDRESS BEFORE SEND TO SAVE QUOTE**/
 		validateAddressForm: function(form){
+			// check all required fields not empty
+			var is_empty = false;
+			$j('#opc-address-form-shipping .required-entry').each(function(){
+				if($j(this).val() == '' && $j(this).css('display') != 'none' && !$j(this).attr('disabled'))
+					is_empty = true;
+			});
 			
-			  var addressForm = new Validation('opc-address-form-shipping', { onSubmit : false, stopOnFirst : false, focusOnError : false});
-			  if (addressForm.validate()){				  		 
-				  return true;
-			  }else{				 
-				  return false;
-			  }
+			if(is_empty)
+				return false;
+			////
+			
+			var addressForm = new Validation('opc-address-form-shipping', { onSubmit : false, stopOnFirst : false, focusOnError : false});
+			if (addressForm.validate()){				  		 
+				return true;
+			}else{				 
+				return false;
+			}
 		},
 		
 		/** METHOD CREATE AJAX REQUEST FOR UPDATE SHIPPIN METHOD **/
@@ -949,6 +1033,7 @@ IWD.OPC.Coupon = {
 		},
 		
 		prepareResponse: function(response){
+			IWD.OPC.Checkout.xhr = null;
 			IWD.OPC.Checkout.hideLoader();
 			if (typeof(response.message) != "undefined"){
 				$j('.opc-message-container').html(response.message);
@@ -961,6 +1046,9 @@ IWD.OPC.Coupon = {
 			}
 			if (typeof(response.payments)!="undefined"){
 				$j('#checkout-payment-method-load').html(response.payments);
+				
+				IWD.OPC.removeNotAllowedPaymentMethods();
+				
 				payment.initWhatIsCvvListeners();
 				IWD.OPC.bindChangePaymentFields();
 			};			
@@ -1027,6 +1115,7 @@ IWD.OPC.Login ={
 		},
 		
 		prepareResponse: function(response){
+			IWD.OPC.Checkout.xhr = null;
 			IWD.OPC.Checkout.hideLoader();
 			if (typeof(response.error)!="undefined"){
 				alert(response.message);
