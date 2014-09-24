@@ -38,8 +38,23 @@
                 <a href="<?php echo $_item->getProductUrl() ?>">
                     <img src="<?php echo $this->helper('catalog/image')->init($_item, 'thumbnail')->resize(228) ?>" width="228" height="228" alt="<?php echo $this->escapeHtml($_item->getName()) ?>" />
                 </a>
+                <?php $_product = $this->getProduct(); ?>
+
                 <span class="price"><?php echo $this->getPriceHtml($_item, true, '-related') ?></span>
-                <a class="view-deal-btn" href="<?php echo $_item->getProductUrl() ?>">View Deal</a>
+                <div class="availability-container">
+                    <?php if ($this->displayProductStockStatus()): ?>
+                        <?php if ($_product->isAvailable()): ?>
+                            <p class="availability in-stock"><?php echo $this->__('Availability:') ?> <span><?php echo $this->__('In stock') ?></span></p>
+                        <?php else: ?>
+                            <p class="availability out-of-stock"><?php echo $this->__('Availability:') ?> <span><?php echo $this->__('Out of stock') ?></span></p>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                </div>
+                <?php if($_product->isSaleable()): ?>
+                    <a class="view-deal-btn" href="<?php echo $_product->getProductUrl() ?>">View Deal</a>
+                <?php else: ?>
+                    <a class="soldout-btn">Sold Out</a>
+                <?php endif; ?>
             </div>
         <?php endforeach ?>
         </ol>
