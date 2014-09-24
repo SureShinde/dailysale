@@ -412,18 +412,18 @@ $_specialPriceStoreLabel = $this->getProductAttribute('special_price')->getStore
         <?php else: // excl. ?>
 
             <?php
-            //new msrp pricing structure
+            //IF SPECIAL PRICE EXISTS
                 $msrp = Mage::helper('core')->currency($_product->getMsrp(),true,false);
                 $msrpInt = str_replace('$', '', $msrp);
                 $ourPrice = $_coreHelper->formatPrice($_regularPrice, false);
                 $specialPrice = $_coreHelper->formatPrice($_finalPrice, false);
-                //var_dump($ourPrice);
-                //if($msrp != "FREE"):
             ?>
+            <?php if($msrp != "FREE"): ?>
             <p class="msrp">
                 <span class="msrp-label"><?php echo $this->__('Retail*:') ?></span>
                 <span class="price" id="msrp"><?php echo $msrp ?></span>
             </p>
+            <?php endif ?>
 
             <?php if ($_taxHelper->displayBothPrices()): ?>
                 <p class="special-price">
