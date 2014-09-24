@@ -12,4 +12,28 @@
 
 .credit-payment.box.discount{
 	font-size: 14px;
+	display: block;
+	height: 130px;
+
+	button{
+		margin-left: 5px;
+	}
+}
+
+.discount{
+	display: block;
+
+	.discount-form label{
+		display: block !important;
+	}
+}
+
+.opc-wrapper-opc .discount-block .button{
+	@include clairsoft-default-button;
+}
+
+.opc-wrapper-opc .discount-block .button span {
+	background: none !important;
+	background-color: transparent !important;
+	line-height: 100% !important;
 }

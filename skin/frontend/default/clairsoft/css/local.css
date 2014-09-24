@@ -1553,7 +1553,48 @@ ul.tabs {
 
 /* line 13, ../sass/checkout.scss */
 .credit-payment.box.discount {
-  font-size: 14px; }
+  font-size: 14px;
+  display: block;
+  height: 130px; }
+  /* line 18, ../sass/checkout.scss */
+  .credit-payment.box.discount button {
+    margin-left: 5px; }
+
+/* line 23, ../sass/checkout.scss */
+.discount {
+  display: block; }
+  /* line 26, ../sass/checkout.scss */
+  .discount .discount-form label {
+    display: block !important; }
+
+/* line 31, ../sass/checkout.scss */
+.opc-wrapper-opc .discount-block .button {
+  border: 1px solid #196fb1 !important;
+  color: white;
+  text-decoration: none;
+  padding: 12px 15px 12px 15px;
+  -moz-border-radius: 4px / 4px;
+  -webkit-border-radius: 4px 4px;
+  border-radius: 4px / 4px;
+  text-shadow: 1px 1px 0px #155d95;
+  background-image: -moz-linear-gradient(#3d89c5, #1b75bb);
+  background-image: -webkit-linear-gradient(#3d89c5, #1b75bb);
+  background-image: linear-gradient(#3d89c5, #1b75bb);
+  width: auto; }
+  /* line 11, ../sass/mixins.scss */
+  .opc-wrapper-opc .discount-block .button:hover {
+    background-image: -moz-linear-gradient(#6b6b6b, #515252);
+    background-image: -webkit-linear-gradient(#6b6b6b, #515252);
+    background-image: linear-gradient(#6b6b6b, #515252);
+    border: 1px solid #515252;
+    color: #eeeeee;
+    text-shadow: none; }
+
+/* line 35, ../sass/checkout.scss */
+.opc-wrapper-opc .discount-block .button span {
+  background: none !important;
+  background-color: transparent !important;
+  line-height: 100% !important; }
 
 /* line 10, ../../../../../../../../../Applications/CodeKit 2.app/Contents/Resources/engines/compass/compass-core/stylesheets/compass/layout/_sticky-footer.scss */
 html, body {
@@ -1630,23 +1671,30 @@ footer {
       float: left;
       height: 100%;
       padding: 0 20px; }
-    /* line 71, ../sass/footer.scss */
+      /* line 70, ../sass/footer.scss */
+      footer #footer-container #footer-content-center .AuthorizeNetSeal {
+        display: inline-block; }
+      /* line 74, ../sass/footer.scss */
+      footer #footer-container #footer-content-center .ComodoSSLSeal {
+        width: 100px;
+        display: inline-block; }
+    /* line 80, ../sass/footer.scss */
     footer #footer-container #footer-content-right {
       width: 320px;
       float: left;
       height: 100%;
       padding-left: 40px; }
-      /* line 77, ../sass/footer.scss */
+      /* line 86, ../sass/footer.scss */
       footer #footer-container #footer-content-right .socialicons {
         display: inline-block;
         padding: 5px 10px 0 0; }
-  /* line 84, ../sass/footer.scss */
+  /* line 93, ../sass/footer.scss */
   footer #copyright {
     width: 100%;
     text-align: center;
     margin-top: 50px;
     display: block;
     color: #898989; }
-    /* line 91, ../sass/footer.scss */
+    /* line 100, ../sass/footer.scss */
     footer #copyright a {
       color: #cccccc; }
