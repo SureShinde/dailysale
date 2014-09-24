@@ -1322,21 +1322,25 @@ ul.tabs {
       color: #eeeeee;
       text-shadow: none; }
 
-/* line 115, ../sass/account.scss */
+/* line 113, ../sass/account.scss */
+.sales-order-history .pager {
+  border: none; }
+
+/* line 124, ../sass/account.scss */
 .manage-cards-bottom h2 {
   border-bottom: 1px solid #eeeeee;
   margin-bottom: 15px;
   color: #1b75bb; }
-/* line 121, ../sass/account.scss */
+/* line 130, ../sass/account.scss */
 .manage-cards-bottom h4 {
   margin-bottom: 10px; }
-/* line 124, ../sass/account.scss */
+/* line 133, ../sass/account.scss */
 .manage-cards-bottom input {
   height: 20px; }
-/* line 128, ../sass/account.scss */
+/* line 137, ../sass/account.scss */
 .manage-cards-bottom #authnetcim_cc_cid {
   display: block; }
-/* line 132, ../sass/account.scss */
+/* line 141, ../sass/account.scss */
 .manage-cards-bottom button {
   border: 1px solid #196fb1 !important;
   color: white;
@@ -1359,12 +1363,12 @@ ul.tabs {
     color: #eeeeee;
     text-shadow: none; }
 
-/* line 137, ../sass/account.scss */
+/* line 146, ../sass/account.scss */
 .manage-cards-ccinfo {
   width: 50%;
   float: left; }
 
-/* line 142, ../sass/account.scss */
+/* line 151, ../sass/account.scss */
 .manage-cards-addressinfo {
   border-right: 1px solid #eeeeee;
   width: 45%;
