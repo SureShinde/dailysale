@@ -32,15 +32,31 @@
 <div id="top-wrapper">
     <div class="top-container">
         <?php echo $this->getChildHtml('topSearch') ?>
-        <div class="top-links-container <?php if($cart_qty <= 0){echo 'empty-cart';}?>">
+        <!-- if short name -->
+        <?php
+            $customer = Mage::getSingleton('customer/session')->getCustomer()->getData();
+            if (strlen($customer['firstname']) < 13):?>
+            <div class="top-links-container <?php if($cart_qty <= 0){echo 'empty-cart';}?>">
                    <?php echo $this->getChildHtml('topLinks') ?>
             </div>
-        <p class="welcome-msg"><?php
-            $customer = Mage::getSingleton('customer/session')->getCustomer()->getData();
+            <p class="welcome-msg"><?php
+            //$customer = Mage::getSingleton('customer/session')->getCustomer()->getData();
             if(Mage::getSingleton('customer/session')->isLoggedIn()){
                echo $this->__('Welcome, %s!', $customer['firstname']);
             }
         ?></p>
+        <!-- if long name -->
+        <?php elseif (strlen($customer['firstname']) >= 13):?>
+            <p class="welcome-msg-long"><?php
+            //$customer = Mage::getSingleton('customer/session')->getCustomer()->getData();
+            if(Mage::getSingleton('customer/session')->isLoggedIn()){
+               echo $this->__('Welcome, %s!', $customer['firstname']);
+            }
+        ?></p>
+        <div class="top-links-container-long <?php if($cart_qty <= 0){echo 'empty-cart';}?>">
+                   <?php echo $this->getChildHtml('topLinks') ?>
+            </div>
+        <?php endif ?>
 
     </div>
 </div>
