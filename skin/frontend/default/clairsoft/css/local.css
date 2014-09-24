@@ -1052,6 +1052,16 @@ ul.tabs {
         background-image: -webkit-linear-gradient(#3d89c5, #1b75bb);
         background-image: linear-gradient(#3d89c5, #1b75bb); }
     /* line 385, ../sass/product_detail.scss */
+    .block .block-content .mini-products-list .single-xsell-container .instock-noshow {
+      display: block;
+      height: 20px;
+      position: relative;
+      bottom: 0px; }
+    /* line 392, ../sass/product_detail.scss */
+    .block .block-content .mini-products-list .single-xsell-container .instock-pricedisplay {
+      margin-top: 11px;
+      display: block; }
+    /* line 397, ../sass/product_detail.scss */
     .block .block-content .mini-products-list .single-xsell-container a.view-deal-btn {
       -moz-border-radius: 4px / 4px;
       -webkit-border-radius: 4px 4px;
@@ -1066,7 +1076,7 @@ ul.tabs {
       width: 210px;
       border: 1px solid #cccccc;
       padding: 12px 0px 12px 0px; }
-      /* line 401, ../sass/product_detail.scss */
+      /* line 413, ../sass/product_detail.scss */
       .block .block-content .mini-products-list .single-xsell-container a.view-deal-btn:hover {
         background-image: -moz-linear-gradient(#3d89c5, #1b75bb);
         background-image: -webkit-linear-gradient(#3d89c5, #1b75bb);
@@ -1586,7 +1596,7 @@ ul.tabs {
 .credit-payment.box.discount {
   font-size: 14px;
   display: block;
-  height: 130px; }
+  height: 155px; }
   /* line 18, ../sass/checkout.scss */
   .credit-payment.box.discount button {
     margin-left: 5px; }
@@ -1626,6 +1636,11 @@ ul.tabs {
   background: none !important;
   background-color: transparent !important;
   line-height: 100% !important; }
+
+/* line 42, ../sass/checkout.scss */
+.checkout-onepage-success h2 {
+  font-weight: bold;
+  color: #1b75bb; }
 
 /* line 10, ../../../../../../../../../Applications/CodeKit 2.app/Contents/Resources/engines/compass/compass-core/stylesheets/compass/layout/_sticky-footer.scss */
 html, body {
@@ -1704,28 +1719,30 @@ footer {
       padding: 0 20px; }
       /* line 70, ../sass/footer.scss */
       footer #footer-container #footer-content-center .AuthorizeNetSeal {
-        display: inline-block; }
-      /* line 74, ../sass/footer.scss */
+        display: inline-block;
+        margin: 0 10px 20px 0; }
+      /* line 75, ../sass/footer.scss */
       footer #footer-container #footer-content-center .ComodoSSLSeal {
         width: 100px;
-        display: inline-block; }
-    /* line 80, ../sass/footer.scss */
+        display: inline-block;
+        margin: 0 0px 20px 10px; }
+    /* line 82, ../sass/footer.scss */
     footer #footer-container #footer-content-right {
       width: 320px;
       float: left;
       height: 100%;
       padding-left: 40px; }
-      /* line 86, ../sass/footer.scss */
+      /* line 88, ../sass/footer.scss */
       footer #footer-container #footer-content-right .socialicons {
         display: inline-block;
         padding: 5px 10px 0 0; }
-  /* line 93, ../sass/footer.scss */
+  /* line 95, ../sass/footer.scss */
   footer #copyright {
     width: 100%;
     text-align: center;
     margin-top: 50px;
     display: block;
     color: #898989; }
-    /* line 100, ../sass/footer.scss */
+    /* line 102, ../sass/footer.scss */
     footer #copyright a {
       color: #cccccc; }
