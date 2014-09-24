@@ -250,17 +250,17 @@ $_specialPriceStoreLabel = $this->getProductAttribute('special_price')->getStore
             <p class="percent-off
             <?php
             //insert no percent class if there's no MSRP
-            if ($_msrpPrice == "FREE"){
-                echo "no-percent";
-            };
+            //if ($_msrpPrice == "FREE"){
+              //  echo "no-percent";
+            //};
             ?>
             ">
-                <?php if ($_msrpPrice != "FREE"): ?>
+                <?php //if ($_msrpPrice != "FREE"): ?>
                     <span class="label"><?php echo $this->__('Save') ?></span>
                     <span class="price">
                         <?php echo $_savePercent; ?>%
                     </span>
-                <?php endif; ?>
+                <?php //endif; ?>
             </p>
     <?php // Discount percent output end ?>
 
