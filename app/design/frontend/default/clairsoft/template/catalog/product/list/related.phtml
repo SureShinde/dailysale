@@ -40,11 +40,10 @@
                 </a>
                 <?php $_product = $this->getProduct(); ?>
 
-                <span class="price"><?php echo $this->getPriceHtml($_item, true, '-related') ?></span>
-                <div class="availability-container">
+                <span class="price <?php if ($_product->isAvailable()): ?> instock-pricedisplay<?php endif ?>"><?php echo $this->getPriceHtml($_item, true, '-related') ?></span>
+                <div class="availability-container<?php if ($_product->isAvailable()): ?> instock-noshow<?php endif ?>">
                     <?php if ($this->displayProductStockStatus()): ?>
                         <?php if ($_product->isAvailable()): ?>
-                            <p class="availability in-stock"><?php echo $this->__('Availability:') ?> <span><?php echo $this->__('In stock') ?></span></p>
                         <?php else: ?>
                             <p class="availability out-of-stock"><?php echo $this->__('Availability:') ?> <span><?php echo $this->__('Out of stock') ?></span></p>
                         <?php endif; ?>

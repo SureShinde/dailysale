@@ -382,6 +382,18 @@ ul.tabs{
 				left: 10px;
 			}
 
+			.instock-noshow{
+				display: block;
+				height: 20px;
+				position: relative;
+				bottom: 0px;
+			}
+
+			.instock-pricedisplay{
+				margin-top: 11px;
+				display: block;
+			}
+
 			a.view-deal-btn{
 				//font-weight: bold;
 				//background: image-url("btntraingledark.png") no-repeat 135px 50%;
