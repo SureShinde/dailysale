@@ -164,7 +164,8 @@ class Fiuze_Shell_Cache extends Mage_Shell_Abstract
      */
     public function flushAll() {
         try {
-            Mage::app()->getCacheInstance()->flush();
+			if (function_exists('opcache_reset')) opcache_reset();
+			Mage::app()->getCacheInstance()->flush();
             echo "The cache storage has been flushed.\n";
         } catch (Exception $e) {
             echo "Exception:\n";
@@ -178,7 +179,8 @@ class Fiuze_Shell_Cache extends Mage_Shell_Abstract
      */
     public function flushSystem() {
         try {
-            Mage::app()->cleanCache();
+			if (function_exists('opcache_reset')) opcache_reset();
+			Mage::app()->cleanCache();
             echo "The Magento cache storage has been flushed.\n";
         } catch (Exception $e) {
             echo "Exception:\n";
@@ -193,6 +195,7 @@ class Fiuze_Shell_Cache extends Mage_Shell_Abstract
      */
     public function refresh($types) {
         $updatedTypes = 0;
+		if (function_exists('opcache_reset')) opcache_reset();		
         if (!empty($types)) {
             foreach ($types as $type) {
                 try {
@@ -215,7 +218,8 @@ class Fiuze_Shell_Cache extends Mage_Shell_Abstract
      */
     public function cleanMedia() {
         try {
-            Mage::getModel('core/design_package')->cleanMergedJsCss();
+			if (function_exists('opcache_reset')) opcache_reset();            
+			Mage::getModel('core/design_package')->cleanMergedJsCss();
             Mage::dispatchEvent('clean_media_cache_after');
             echo "The JavaScript/CSS cache has been cleaned.\n";
         }
@@ -231,7 +235,8 @@ class Fiuze_Shell_Cache extends Mage_Shell_Abstract
      */
     public function cleanImages() {
         try {
-            Mage::getModel('catalog/product_image')->clearCache();
+			if (function_exists('opcache_reset')) opcache_reset();
+			Mage::getModel('catalog/product_image')->clearCache();
             Mage::dispatchEvent('clean_catalog_images_cache_after');
             echo "The image cache was cleaned.\n";
         }
@@ -246,6 +251,7 @@ class Fiuze_Shell_Cache extends Mage_Shell_Abstract
      */
     public function destroy() {
         $types = $this->_parseCacheTypeString('all');
+		if (function_exists('opcache_reset')) opcache_reset();
         $this->refresh($types);
         $this->cleanImages();
         $this->cleanMedia();
