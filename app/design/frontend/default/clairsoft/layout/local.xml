@@ -20,7 +20,7 @@
             <action method="addItem"><type>skin_js</type><script>js/jquery-ui.min.js</script></action>
             <action method="addItem"><type>skin_js</type><script>js/jquery.cookie.js</script></action>
             <action method="addItem"><type>skin_js</type><script>js/local.js</script></action>
-            <!-- <action method="addItem"><type>skin_js</type><script>js/jquery.leadspendemail-0.1.min.js</script></action> -->
+            <action method="addItem"><type>skin_js</type><script>js/leadspend.js</script></action>
             <!-- <action method="addItem"><type>js_css</type><name>prototype/windows/themes/default.css</name></action> -->
             <!-- <action method="addCss"><name>lib/prototype/windows/themes/magento.css</name></action> -->
         </reference>
