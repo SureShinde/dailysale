@@ -20,12 +20,37 @@
 		width: 960px;
 		position: relative;
 
-		ul.links{
+		.top-links-container-long{
+			width: auto;
+			//float: left;
+			text-align: right;
+			height: 100% !important;
+			line-height: 100%;
+			margin-top: 8px;
+
+			a{
+				margin-left: 8px;
+			}
+
+			a[title="Log In"]{ //login
+				background: url(../images/loginlock.png) no-repeat 0 0;
+				padding-left: 18px !important;
+			}
+
+			a[title="My Account"]{ //login
+				background: url(../images/glyph_crown.png) no-repeat 0 0;
+				padding-left: 18px !important;
+			}
+
+		}
+
+		.top-links-container{
 			width: auto;
 			float: right;
 			text-align: right;
 			height: 100% !important;
 			line-height: 200%;
+			margin-top: 8px;
 
 			a{
 				margin-left: 8px;
@@ -68,12 +93,22 @@
 		}
 
 		.welcome-msg{
-			// float: right;
+			float: left;
+			// border: 1px dashed red !important;
+			color: white;
+			height: 100% !important;
+			line-height: 200%;
+			text-align: center;
+			margin: 8px 0 0 15px;
+		}
+
+		.welcome-msg-long{
+			//float: right;
 			// border: 1px dashed red !important;
 			color: white;
 			// height: 100% !important;
-			line-height: 200%;
-			text-align: center;
+			line-height: 100%;
+			text-align: right;
 		}
 	}
 

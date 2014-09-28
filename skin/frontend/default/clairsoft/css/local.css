@@ -306,29 +306,48 @@ input:not([type=submit]):not([type=checkbox]):not([type=radio]) {
     width: 960px;
     position: relative; }
     /* line 23, ../sass/header_nav.scss */
-    #top-wrapper .top-container ul.links {
+    #top-wrapper .top-container .top-links-container-long {
+      width: auto;
+      text-align: right;
+      height: 100% !important;
+      line-height: 100%;
+      margin-top: 8px; }
+      /* line 31, ../sass/header_nav.scss */
+      #top-wrapper .top-container .top-links-container-long a {
+        margin-left: 8px; }
+      /* line 35, ../sass/header_nav.scss */
+      #top-wrapper .top-container .top-links-container-long a[title="Log In"] {
+        background: url(../images/loginlock.png) no-repeat 0 0;
+        padding-left: 18px !important; }
+      /* line 40, ../sass/header_nav.scss */
+      #top-wrapper .top-container .top-links-container-long a[title="My Account"] {
+        background: url(../images/glyph_crown.png) no-repeat 0 0;
+        padding-left: 18px !important; }
+    /* line 47, ../sass/header_nav.scss */
+    #top-wrapper .top-container .top-links-container {
       width: auto;
       float: right;
       text-align: right;
       height: 100% !important;
-      line-height: 200%; }
-      /* line 30, ../sass/header_nav.scss */
-      #top-wrapper .top-container ul.links a {
+      line-height: 200%;
+      margin-top: 8px; }
+      /* line 55, ../sass/header_nav.scss */
+      #top-wrapper .top-container .top-links-container a {
         margin-left: 8px; }
-      /* line 34, ../sass/header_nav.scss */
-      #top-wrapper .top-container ul.links a[title="Log In"] {
+      /* line 59, ../sass/header_nav.scss */
+      #top-wrapper .top-container .top-links-container a[title="Log In"] {
         background: url(../images/loginlock.png) no-repeat 0 0;
         padding-left: 18px !important; }
-      /* line 39, ../sass/header_nav.scss */
-      #top-wrapper .top-container ul.links a[title="My Account"] {
+      /* line 64, ../sass/header_nav.scss */
+      #top-wrapper .top-container .top-links-container a[title="My Account"] {
         background: url(../images/glyph_crown.png) no-repeat 0 0;
         padding-left: 18px !important; }
-    /* line 46, ../sass/header_nav.scss */
+    /* line 71, ../sass/header_nav.scss */
     #top-wrapper .top-container .form-search {
       width: 42%;
       float: left;
       margin-right: 8px; }
-      /* line 51, ../sass/header_nav.scss */
+      /* line 76, ../sass/header_nav.scss */
       #top-wrapper .top-container .form-search input#search {
         width: 99%;
         height: 28px;
@@ -339,141 +358,149 @@ input:not([type=submit]):not([type=checkbox]):not([type=radio]) {
         border: 1px solid #196fb1 !important;
         color: #898989;
         font-size: 14px; }
-      /* line 61, ../sass/header_nav.scss */
+      /* line 86, ../sass/header_nav.scss */
       #top-wrapper .top-container .form-search button {
         margin-left: -40px;
         width: 32px;
         height: 18px;
         background: url(../images/glyph_search.png) no-repeat 50% 50%;
         border-left: 1px solid #cccccc !important; }
-    /* line 70, ../sass/header_nav.scss */
+    /* line 95, ../sass/header_nav.scss */
     #top-wrapper .top-container .welcome-msg {
+      float: left;
       color: white;
+      height: 100% !important;
       line-height: 200%;
-      text-align: center; }
-  /* line 80, ../sass/header_nav.scss */
+      text-align: center;
+      margin: 8px 0 0 15px; }
+    /* line 105, ../sass/header_nav.scss */
+    #top-wrapper .top-container .welcome-msg-long {
+      color: white;
+      line-height: 100%;
+      text-align: right; }
+  /* line 115, ../sass/header_nav.scss */
   #top-wrapper a {
     color: white; }
 
-/* line 85, ../sass/header_nav.scss */
+/* line 120, ../sass/header_nav.scss */
 .header {
   padding: 0; }
 
-/* line 89, ../sass/header_nav.scss */
+/* line 124, ../sass/header_nav.scss */
 .nav-container {
   position: absolute;
   top: 27px;
   left: 335px; }
-  /* line 96, ../sass/header_nav.scss */
+  /* line 131, ../sass/header_nav.scss */
   .nav-container ul#nav li {
     margin-left: 1em; }
-    /* line 99, ../sass/header_nav.scss */
+    /* line 134, ../sass/header_nav.scss */
     .nav-container ul#nav li:first-child {
       margin-left: 0; }
-  /* line 104, ../sass/header_nav.scss */
+  /* line 139, ../sass/header_nav.scss */
   .nav-container ul#nav a {
     padding: 7px 10px 7px 20px;
     text-decoration: none;
     font-size: 16px;
     color: #898989;
     margin-left: 8px; }
-    /* line 113, ../sass/header_nav.scss */
+    /* line 148, ../sass/header_nav.scss */
     .nav-container ul#nav a:hover {
       color: #1b75bb; }
-  /* line 119, ../sass/header_nav.scss */
+  /* line 154, ../sass/header_nav.scss */
   .nav-container ul#nav .nav-1 {
     width: 70px; }
-    /* line 123, ../sass/header_nav.scss */
+    /* line 158, ../sass/header_nav.scss */
     .nav-container ul#nav .nav-1 a {
       background: url(../images/sprite_navicons.png) no-repeat 0 0;
       height: 20px;
       width: 20px;
       padding: 0;
       margin-left: 0; }
-      /* line 130, ../sass/header_nav.scss */
+      /* line 165, ../sass/header_nav.scss */
       .nav-container ul#nav .nav-1 a:hover {
         background: url(../images/sprite_navicons.png) no-repeat -20px 0; }
-    /* line 135, ../sass/header_nav.scss */
+    /* line 170, ../sass/header_nav.scss */
     .nav-container ul#nav .nav-1 span {
       margin-left: 23px; }
-  /* line 140, ../sass/header_nav.scss */
+  /* line 175, ../sass/header_nav.scss */
   .nav-container ul#nav .nav-2 {
     width: 95px; }
-    /* line 144, ../sass/header_nav.scss */
+    /* line 179, ../sass/header_nav.scss */
     .nav-container ul#nav .nav-2 a {
       background: url(../images/sprite_navicons.png) no-repeat 0 -20px;
       height: 20px;
       width: 20px;
       padding: 0;
       margin-left: 0; }
-      /* line 151, ../sass/header_nav.scss */
+      /* line 186, ../sass/header_nav.scss */
       .nav-container ul#nav .nav-2 a:hover {
         background: url(../images/sprite_navicons.png) no-repeat -20px -20px; }
-    /* line 156, ../sass/header_nav.scss */
+    /* line 191, ../sass/header_nav.scss */
     .nav-container ul#nav .nav-2 span {
       margin-left: 23px; }
-  /* line 161, ../sass/header_nav.scss */
+  /* line 196, ../sass/header_nav.scss */
   .nav-container ul#nav .nav-3 {
     width: 70px; }
-    /* line 164, ../sass/header_nav.scss */
+    /* line 199, ../sass/header_nav.scss */
     .nav-container ul#nav .nav-3 a {
       background: url(../images/sprite_navicons.png) no-repeat 0 -40px;
       height: 20px;
       width: 20px;
       padding: 0;
       margin-left: 0; }
-      /* line 171, ../sass/header_nav.scss */
+      /* line 206, ../sass/header_nav.scss */
       .nav-container ul#nav .nav-3 a:hover {
         background: url(../images/sprite_navicons.png) no-repeat -20px -40px; }
-    /* line 176, ../sass/header_nav.scss */
+    /* line 211, ../sass/header_nav.scss */
     .nav-container ul#nav .nav-3 span {
       margin-left: 26px; }
-  /* line 181, ../sass/header_nav.scss */
+  /* line 216, ../sass/header_nav.scss */
   .nav-container ul#nav .nav-4 {
     width: 120px; }
-    /* line 184, ../sass/header_nav.scss */
+    /* line 219, ../sass/header_nav.scss */
     .nav-container ul#nav .nav-4 a {
       background: url(../images/sprite_navicons.png) no-repeat 0 -60px;
       height: 20px;
       width: 20px;
       padding: 0;
       margin-left: 0; }
-      /* line 191, ../sass/header_nav.scss */
+      /* line 226, ../sass/header_nav.scss */
       .nav-container ul#nav .nav-4 a:hover {
         background: url(../images/sprite_navicons.png) no-repeat -20px -60px; }
-    /* line 196, ../sass/header_nav.scss */
+    /* line 231, ../sass/header_nav.scss */
     .nav-container ul#nav .nav-4 span {
       margin-left: 26px; }
-  /* line 201, ../sass/header_nav.scss */
+  /* line 236, ../sass/header_nav.scss */
   .nav-container ul#nav .nav-5 {
     width: 95px; }
-    /* line 205, ../sass/header_nav.scss */
+    /* line 240, ../sass/header_nav.scss */
     .nav-container ul#nav .nav-5 a {
       background: url(../images/sprite_navicons.png) no-repeat 0 -80px;
       height: 20px;
       width: 20px;
       padding: 0;
       margin-left: 0; }
-      /* line 212, ../sass/header_nav.scss */
+      /* line 247, ../sass/header_nav.scss */
       .nav-container ul#nav .nav-5 a:hover {
         background: url(../images/sprite_navicons.png) no-repeat -20px -80px; }
-    /* line 217, ../sass/header_nav.scss */
+    /* line 252, ../sass/header_nav.scss */
     .nav-container ul#nav .nav-5 span {
       margin-left: 23px; }
-  /* line 222, ../sass/header_nav.scss */
+  /* line 257, ../sass/header_nav.scss */
   .nav-container ul#nav .nav-6 {
     width: 95px; }
-    /* line 226, ../sass/header_nav.scss */
+    /* line 261, ../sass/header_nav.scss */
     .nav-container ul#nav .nav-6 a {
       background: url(../images/sprite_navicons.png) no-repeat 0 -100px;
       height: 20px;
       width: 20px;
       padding: 0;
       margin-left: 0; }
-      /* line 233, ../sass/header_nav.scss */
+      /* line 268, ../sass/header_nav.scss */
       .nav-container ul#nav .nav-6 a:hover {
         background: url(../images/sprite_navicons.png) no-repeat -20px -100px; }
-    /* line 238, ../sass/header_nav.scss */
+    /* line 273, ../sass/header_nav.scss */
     .nav-container ul#nav .nav-6 span {
       margin-left: 23px; }
 
@@ -1025,6 +1052,16 @@ ul.tabs {
         background-image: -webkit-linear-gradient(#3d89c5, #1b75bb);
         background-image: linear-gradient(#3d89c5, #1b75bb); }
     /* line 385, ../sass/product_detail.scss */
+    .block .block-content .mini-products-list .single-xsell-container .instock-noshow {
+      display: block;
+      height: 20px;
+      position: relative;
+      bottom: 0px; }
+    /* line 392, ../sass/product_detail.scss */
+    .block .block-content .mini-products-list .single-xsell-container .instock-pricedisplay {
+      margin-top: 11px;
+      display: block; }
+    /* line 397, ../sass/product_detail.scss */
     .block .block-content .mini-products-list .single-xsell-container a.view-deal-btn {
       -moz-border-radius: 4px / 4px;
       -webkit-border-radius: 4px 4px;
@@ -1039,7 +1076,7 @@ ul.tabs {
       width: 210px;
       border: 1px solid #cccccc;
       padding: 12px 0px 12px 0px; }
-      /* line 401, ../sass/product_detail.scss */
+      /* line 413, ../sass/product_detail.scss */
       .block .block-content .mini-products-list .single-xsell-container a.view-deal-btn:hover {
         background-image: -moz-linear-gradient(#3d89c5, #1b75bb);
         background-image: -webkit-linear-gradient(#3d89c5, #1b75bb);
@@ -1190,7 +1227,7 @@ ul.tabs {
       margin-top: 15px; }
   /* line 95, ../sass/cart.scss */
   .cart .credit-payment.box.discount {
-    height: 120px;
+    height: 140px;
     margin-bottom: 1em; }
     /* line 99, ../sass/cart.scss */
     .cart .credit-payment.box.discount h4, .cart .credit-payment.box.discount p {
@@ -1322,21 +1359,25 @@ ul.tabs {
       color: #eeeeee;
       text-shadow: none; }
 
-/* line 115, ../sass/account.scss */
+/* line 113, ../sass/account.scss */
+.sales-order-history .pager {
+  border: none; }
+
+/* line 124, ../sass/account.scss */
 .manage-cards-bottom h2 {
   border-bottom: 1px solid #eeeeee;
   margin-bottom: 15px;
   color: #1b75bb; }
-/* line 121, ../sass/account.scss */
+/* line 130, ../sass/account.scss */
 .manage-cards-bottom h4 {
   margin-bottom: 10px; }
-/* line 124, ../sass/account.scss */
+/* line 133, ../sass/account.scss */
 .manage-cards-bottom input {
   height: 20px; }
-/* line 128, ../sass/account.scss */
+/* line 137, ../sass/account.scss */
 .manage-cards-bottom #authnetcim_cc_cid {
   display: block; }
-/* line 132, ../sass/account.scss */
+/* line 141, ../sass/account.scss */
 .manage-cards-bottom button {
   border: 1px solid #196fb1 !important;
   color: white;
@@ -1359,12 +1400,12 @@ ul.tabs {
     color: #eeeeee;
     text-shadow: none; }
 
-/* line 137, ../sass/account.scss */
+/* line 146, ../sass/account.scss */
 .manage-cards-ccinfo {
   width: 50%;
   float: left; }
 
-/* line 142, ../sass/account.scss */
+/* line 151, ../sass/account.scss */
 .manage-cards-addressinfo {
   border-right: 1px solid #eeeeee;
   width: 45%;
@@ -1555,7 +1596,7 @@ ul.tabs {
 .credit-payment.box.discount {
   font-size: 14px;
   display: block;
-  height: 130px; }
+  height: 155px; }
   /* line 18, ../sass/checkout.scss */
   .credit-payment.box.discount button {
     margin-left: 5px; }
@@ -1595,6 +1636,11 @@ ul.tabs {
   background: none !important;
   background-color: transparent !important;
   line-height: 100% !important; }
+
+/* line 42, ../sass/checkout.scss */
+.checkout-onepage-success h2 {
+  font-weight: bold;
+  color: #1b75bb; }
 
 /* line 10, ../../../../../../../../../Applications/CodeKit 2.app/Contents/Resources/engines/compass/compass-core/stylesheets/compass/layout/_sticky-footer.scss */
 html, body {
@@ -1673,28 +1719,30 @@ footer {
       padding: 0 20px; }
       /* line 70, ../sass/footer.scss */
       footer #footer-container #footer-content-center .AuthorizeNetSeal {
-        display: inline-block; }
-      /* line 74, ../sass/footer.scss */
+        display: inline-block;
+        margin: 0 10px 20px 0; }
+      /* line 75, ../sass/footer.scss */
       footer #footer-container #footer-content-center .ComodoSSLSeal {
         width: 100px;
-        display: inline-block; }
-    /* line 80, ../sass/footer.scss */
+        display: inline-block;
+        margin: 0 0px 20px 10px; }
+    /* line 82, ../sass/footer.scss */
     footer #footer-container #footer-content-right {
       width: 320px;
       float: left;
       height: 100%;
       padding-left: 40px; }
-      /* line 86, ../sass/footer.scss */
+      /* line 88, ../sass/footer.scss */
       footer #footer-container #footer-content-right .socialicons {
         display: inline-block;
         padding: 5px 10px 0 0; }
-  /* line 93, ../sass/footer.scss */
+  /* line 95, ../sass/footer.scss */
   footer #copyright {
     width: 100%;
     text-align: center;
     margin-top: 50px;
     display: block;
     color: #898989; }
-    /* line 100, ../sass/footer.scss */
+    /* line 102, ../sass/footer.scss */
     footer #copyright a {
       color: #cccccc; }
