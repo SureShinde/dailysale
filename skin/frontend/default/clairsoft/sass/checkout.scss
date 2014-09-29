@@ -13,10 +13,16 @@
 .credit-payment.box.discount{
 	font-size: 14px;
 	display: block;
-	height: 130px;
+	height: 155px;
 
 	button{
 		margin-left: 5px;
+	}
+
+	a{
+		@include clairsoft-default-button;
+		display: inline-block;
+		margin-top: 8px;
 	}
 }
 
@@ -36,4 +42,11 @@
 	background: none !important;
 	background-color: transparent !important;
 	line-height: 100% !important;
+}
+
+.checkout-onepage-success{
+	h2{
+		font-weight: bold;
+		color: $main-color;
+	}
 }
