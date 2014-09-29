@@ -1040,7 +1040,7 @@ ul.tabs {
       padding: 12px;
       width: 210px;
       position: absolute;
-      bottom: 10px;
+      bottom: 15px;
       left: 10px; }
       /* line 66, ../sass/mixins.scss */
       .block .block-content .mini-products-list .single-xsell-container a.soldout-btn:hover {
@@ -1600,15 +1600,39 @@ ul.tabs {
   /* line 18, ../sass/checkout.scss */
   .credit-payment.box.discount button {
     margin-left: 5px; }
+  /* line 22, ../sass/checkout.scss */
+  .credit-payment.box.discount a {
+    border: 1px solid #196fb1 !important;
+    color: white;
+    text-decoration: none;
+    padding: 12px 15px 12px 15px;
+    -moz-border-radius: 4px / 4px;
+    -webkit-border-radius: 4px 4px;
+    border-radius: 4px / 4px;
+    text-shadow: 1px 1px 0px #155d95;
+    background-image: -moz-linear-gradient(#3d89c5, #1b75bb);
+    background-image: -webkit-linear-gradient(#3d89c5, #1b75bb);
+    background-image: linear-gradient(#3d89c5, #1b75bb);
+    width: auto;
+    display: inline-block;
+    margin-top: 8px; }
+    /* line 11, ../sass/mixins.scss */
+    .credit-payment.box.discount a:hover {
+      background-image: -moz-linear-gradient(#6b6b6b, #515252);
+      background-image: -webkit-linear-gradient(#6b6b6b, #515252);
+      background-image: linear-gradient(#6b6b6b, #515252);
+      border: 1px solid #515252;
+      color: #eeeeee;
+      text-shadow: none; }
 
-/* line 23, ../sass/checkout.scss */
+/* line 29, ../sass/checkout.scss */
 .discount {
   display: block; }
-  /* line 26, ../sass/checkout.scss */
+  /* line 32, ../sass/checkout.scss */
   .discount .discount-form label {
     display: block !important; }
 
-/* line 31, ../sass/checkout.scss */
+/* line 37, ../sass/checkout.scss */
 .opc-wrapper-opc .discount-block .button {
   border: 1px solid #196fb1 !important;
   color: white;
@@ -1631,13 +1655,13 @@ ul.tabs {
     color: #eeeeee;
     text-shadow: none; }
 
-/* line 35, ../sass/checkout.scss */
+/* line 41, ../sass/checkout.scss */
 .opc-wrapper-opc .discount-block .button span {
   background: none !important;
   background-color: transparent !important;
   line-height: 100% !important; }
 
-/* line 42, ../sass/checkout.scss */
+/* line 48, ../sass/checkout.scss */
 .checkout-onepage-success h2 {
   font-weight: bold;
   color: #1b75bb; }
@@ -1722,7 +1746,7 @@ footer {
         display: inline-block;
         margin: 0 10px 20px 0; }
       /* line 75, ../sass/footer.scss */
-      footer #footer-container #footer-content-center .ComodoSSLSeal {
+      footer #footer-container #footer-content-center .SSLSeal {
         width: 100px;
         display: inline-block;
         margin: 0 0px 20px 10px; }
