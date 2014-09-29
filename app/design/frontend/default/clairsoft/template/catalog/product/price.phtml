@@ -464,7 +464,7 @@ $_specialPriceStoreLabel = $this->getProductAttribute('special_price')->getStore
         <?php endif; ?>
 
     <?php // Discount percents output start ?>
-    <?php if($_finalPrice != 0): ?>
+    <?php if($_finalPrice != 0 && $msrp != "FREE"): ?>
         <?php
             //var_dump($_finalPrice);
             $_msrpPrice = (float)$msrpInt;
