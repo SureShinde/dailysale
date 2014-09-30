@@ -244,6 +244,10 @@ ul.tabs{
 	border-bottom:1px solid $subtle-color;
 	zoom: 1;
 
+	#product_tabs_description_tabbed_contents img{
+		display: none;
+	}
+
 	li{
 		@include background-image(linear-gradient(white, $faint-color));
 	    float: left;
