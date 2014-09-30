@@ -919,9 +919,6 @@ ul.tabs {
   border-bottom: 1px solid #cccccc;
   zoom: 1; }
   /* line 247, ../sass/product_detail.scss */
-  ul.tabs #product_tabs_description_tabbed_contents img {
-    display: none; }
-  /* line 251, ../sass/product_detail.scss */
   ul.tabs li {
     background-image: -moz-linear-gradient(#ffffff, #eeeeee);
     background-image: -webkit-linear-gradient(#ffffff, #eeeeee);
@@ -934,20 +931,20 @@ ul.tabs {
     border-left: 1px solid #cccccc;
     list-style: none;
     line-height: 36px; }
-    /* line 262, ../sass/product_detail.scss */
+    /* line 258, ../sass/product_detail.scss */
     ul.tabs li:hover {
       background: #eeeeee; }
-    /* line 266, ../sass/product_detail.scss */
+    /* line 262, ../sass/product_detail.scss */
     ul.tabs li:first-child {
       -moz-border-radius-topleft: 4px;
       -webkit-border-top-left-radius: 4px;
       border-top-left-radius: 4px; }
-    /* line 270, ../sass/product_detail.scss */
+    /* line 266, ../sass/product_detail.scss */
     ul.tabs li:last-child {
       -moz-border-radius-topright: 4px;
       -webkit-border-top-right-radius: 4px;
       border-top-right-radius: 4px; }
-    /* line 274, ../sass/product_detail.scss */
+    /* line 270, ../sass/product_detail.scss */
     ul.tabs li.active {
       position: relative;
       z-index: 5;
@@ -955,37 +952,41 @@ ul.tabs {
       border-right: 1px solid #cccccc;
       border-left: 1px solid #cccccc;
       background: #fff; }
-      /* line 282, ../sass/product_detail.scss */
+      /* line 278, ../sass/product_detail.scss */
       ul.tabs li.active a {
         color: #2e7da3; }
-    /* line 287, ../sass/product_detail.scss */
+    /* line 283, ../sass/product_detail.scss */
     ul.tabs li a {
       padding: 10px 15px;
       color: #898989;
       text-decoration: none; }
-      /* line 293, ../sass/product_detail.scss */
+      /* line 289, ../sass/product_detail.scss */
       ul.tabs li a:focus {
         border: none; }
 
-/* line 300, ../sass/product_detail.scss */
+/* line 296, ../sass/product_detail.scss */
 .padder {
   padding-left: 10px; }
 
-/* line 308, ../sass/product_detail.scss */
+/* line 300, ../sass/product_detail.scss */
+#product_tabs_description_tabbed_contents img {
+  display: none; }
+
+/* line 306, ../sass/product_detail.scss */
 .block-related {
   width: 960px;
   border-top: 1px solid #eeeeee !important;
   margin-top: 1em;
   padding-top: 1em; }
-  /* line 314, ../sass/product_detail.scss */
+  /* line 312, ../sass/product_detail.scss */
   .block-related .block-title h1 {
     margin-bottom: 10px;
     font-size: 24px; }
 
-/* line 320, ../sass/product_detail.scss */
+/* line 318, ../sass/product_detail.scss */
 .block .block-content {
   padding: 0px; }
-  /* line 326, ../sass/product_detail.scss */
+  /* line 324, ../sass/product_detail.scss */
   .block .block-content .mini-products-list .single-xsell-container {
     -moz-border-radius-bottomleft: 4px;
     -webkit-border-bottom-left-radius: 4px;
@@ -1002,33 +1003,33 @@ ul.tabs {
     background: white;
     min-height: 420px;
     text-align: center; }
-    /* line 339, ../sass/product_detail.scss */
+    /* line 337, ../sass/product_detail.scss */
     .block .block-content .mini-products-list .single-xsell-container img {
       margin-bottom: 10px;
       padding: 0;
       border-bottom: 1px solid #cccccc; }
-    /* line 345, ../sass/product_detail.scss */
+    /* line 343, ../sass/product_detail.scss */
     .block .block-content .mini-products-list .single-xsell-container:hover {
       border: 1px solid #1b75bb;
       top: -3px; }
-    /* line 350, ../sass/product_detail.scss */
+    /* line 348, ../sass/product_detail.scss */
     .block .block-content .mini-products-list .single-xsell-container:last-child {
       margin-right: 0px; }
-    /* line 354, ../sass/product_detail.scss */
+    /* line 352, ../sass/product_detail.scss */
     .block .block-content .mini-products-list .single-xsell-container .yousave {
       display: none; }
-    /* line 356, ../sass/product_detail.scss */
+    /* line 354, ../sass/product_detail.scss */
     .block .block-content .mini-products-list .single-xsell-container .special-price, .block .block-content .mini-products-list .single-xsell-container .our-price {
       color: #1b75bb;
       font-size: 32px; }
-    /* line 362, ../sass/product_detail.scss */
+    /* line 360, ../sass/product_detail.scss */
     .block .block-content .mini-products-list .single-xsell-container .availability-container {
       font-size: 14px;
       position: absolute;
       bottom: 60px;
       text-align: center;
       width: 100%; }
-    /* line 370, ../sass/product_detail.scss */
+    /* line 368, ../sass/product_detail.scss */
     .block .block-content .mini-products-list .single-xsell-container a.soldout-btn {
       float: right;
       border: 1px solid #cccccc !important;
@@ -1055,17 +1056,17 @@ ul.tabs {
         background-image: -moz-linear-gradient(#3d89c5, #1b75bb);
         background-image: -webkit-linear-gradient(#3d89c5, #1b75bb);
         background-image: linear-gradient(#3d89c5, #1b75bb); }
-    /* line 382, ../sass/product_detail.scss */
+    /* line 380, ../sass/product_detail.scss */
     .block .block-content .mini-products-list .single-xsell-container .instock-noshow {
       display: block;
       height: 20px;
       position: relative;
       bottom: 0px; }
-    /* line 389, ../sass/product_detail.scss */
+    /* line 387, ../sass/product_detail.scss */
     .block .block-content .mini-products-list .single-xsell-container .instock-pricedisplay {
       margin-top: 11px;
       display: block; }
-    /* line 394, ../sass/product_detail.scss */
+    /* line 392, ../sass/product_detail.scss */
     .block .block-content .mini-products-list .single-xsell-container a.view-deal-btn {
       -moz-border-radius: 4px / 4px;
       -webkit-border-radius: 4px 4px;
@@ -1080,7 +1081,7 @@ ul.tabs {
       width: 210px;
       border: 1px solid #cccccc;
       padding: 12px 0px 12px 0px; }
-      /* line 410, ../sass/product_detail.scss */
+      /* line 408, ../sass/product_detail.scss */
       .block .block-content .mini-products-list .single-xsell-container a.view-deal-btn:hover {
         background-image: -moz-linear-gradient(#3d89c5, #1b75bb);
         background-image: -webkit-linear-gradient(#3d89c5, #1b75bb);
@@ -1780,33 +1781,32 @@ footer {
       border-right: 1px solid #898989 !important;
       float: left;
       height: 100%;
-      padding: 0 20px; }
-      /* line 70, ../sass/footer.scss */
+      padding: 0 20px;
+      text-align: center; }
+      /* line 71, ../sass/footer.scss */
       footer #footer-container #footer-content-center .AuthorizeNetSeal {
-        display: inline-block;
         margin: 0 10px 20px 0; }
-      /* line 75, ../sass/footer.scss */
+      /* line 76, ../sass/footer.scss */
       footer #footer-container #footer-content-center .SSLSeal {
         width: 100px;
-        display: inline-block;
         margin: 0 0px 20px 10px; }
-    /* line 82, ../sass/footer.scss */
+    /* line 83, ../sass/footer.scss */
     footer #footer-container #footer-content-right {
       width: 320px;
       float: left;
       height: 100%;
       padding-left: 40px; }
-      /* line 88, ../sass/footer.scss */
+      /* line 89, ../sass/footer.scss */
       footer #footer-container #footer-content-right .socialicons {
         display: inline-block;
         padding: 5px 10px 0 0; }
-  /* line 95, ../sass/footer.scss */
+  /* line 96, ../sass/footer.scss */
   footer #copyright {
     width: 100%;
     text-align: center;
     margin-top: 50px;
     display: block;
     color: #898989; }
-    /* line 102, ../sass/footer.scss */
+    /* line 103, ../sass/footer.scss */
     footer #copyright a {
       color: #cccccc; }
