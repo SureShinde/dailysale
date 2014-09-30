@@ -1603,8 +1603,12 @@ ul.tabs {
   height: 155px; }
   /* line 18, ../sass/checkout.scss */
   .credit-payment.box.discount button {
-    margin-left: 5px; }
-  /* line 22, ../sass/checkout.scss */
+    font-size: 16px;
+    font-weight: bold;
+    margin-left: 5px;
+    padding-top: 10px;
+    text-transform: uppercase; }
+  /* line 27, ../sass/checkout.scss */
   .credit-payment.box.discount a {
     border: 1px solid #196fb1 !important;
     color: white;
@@ -1629,14 +1633,14 @@ ul.tabs {
       color: #eeeeee;
       text-shadow: none; }
 
-/* line 29, ../sass/checkout.scss */
+/* line 34, ../sass/checkout.scss */
 .discount {
   display: block; }
-  /* line 32, ../sass/checkout.scss */
+  /* line 37, ../sass/checkout.scss */
   .discount .discount-form label {
     display: block !important; }
 
-/* line 37, ../sass/checkout.scss */
+/* line 42, ../sass/checkout.scss */
 .opc-wrapper-opc .discount-block .button {
   border: 1px solid #196fb1 !important;
   color: white;
@@ -1659,17 +1663,17 @@ ul.tabs {
     color: #eeeeee;
     text-shadow: none; }
 
-/* line 41, ../sass/checkout.scss */
+/* line 46, ../sass/checkout.scss */
 .opc-wrapper-opc .discount-block .button span {
   background: none !important;
   background-color: transparent !important;
   line-height: 100% !important; }
 
-/* line 48, ../sass/checkout.scss */
+/* line 53, ../sass/checkout.scss */
 .checkout-onepage-success h2 {
   font-weight: bold;
   color: #1b75bb; }
-/* line 53, ../sass/checkout.scss */
+/* line 58, ../sass/checkout.scss */
 .checkout-onepage-success .box {
   background: white;
   border: 1px solid #cccccc;
@@ -1679,7 +1683,7 @@ ul.tabs {
   border-radius: 4px;
   min-height: 165px;
   padding: 1em; }
-/* line 62, ../sass/checkout.scss */
+/* line 67, ../sass/checkout.scss */
 .checkout-onepage-success button {
   border: 1px solid #196fb1 !important;
   color: white;
