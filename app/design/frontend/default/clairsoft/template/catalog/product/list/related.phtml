@@ -40,6 +40,8 @@
                 </a>
                 <?php $_product = $this->getProduct(); ?>
 
+                <!-- <p class="product-name"><a href="<?php //echo $_item->getProductUrl() ?>"><?php //echo $this->escapeHtml($_item->getName()) ?></a></p> -->
+
                 <span class="price <?php if ($_product->isAvailable()): ?> instock-pricedisplay<?php endif ?>"><?php echo $this->getPriceHtml($_item, true, '-related') ?></span>
                 <div class="availability-container<?php if ($_product->isAvailable()): ?> instock-noshow<?php endif ?>">
                     <?php //if ($this->displayProductStockStatus()): ?>
