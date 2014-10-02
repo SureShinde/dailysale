@@ -1,0 +1,86 @@
+<?php if (Mage::getStoreConfig('newsletterbooster/geo_ip/enabled')) : ?>
+    <?php if ($this->CampaignSelected()) : ?>
+        <?php $countrys = $this->getCountryData() ?>
+        <?php $regions = $this->getRegionData() ?>
+        <?php if (count($countrys) > 0) : ?>
+            <button class="scalable back newsletterbooster-geo-back" onclick="clearCiryChart()" type="button" style="margin-bottom: 5px;margin-left: 20px;">
+                <?php echo Mage::helper('newsletterbooster')->__('Back To World Map') ?>
+            </button>
+            <script type='text/javascript'>
+                google.load('visualization', '1', {'packages': ['geomap']});
+                google.setOnLoadCallback(drawRegionsMap);
+
+                function drawRegionsMap() {
+                    $$('button.newsletterbooster-geo-back')[0].hide();
+                    var arrayData = [
+                        ['Country', 'Opens'],
+                        <?php foreach ($countrys as $country => $count) : ?>
+                        ["<?php echo $country ?>", <?php echo $count ?>],
+                        <?php endforeach; ?>
+                    ];
+                    var data = google.visualization.arrayToDataTable(arrayData)
+
+                    var options = {};
+                    options['width'] = '600px';
+                    options['height'] = '450px';
+                    var chart = new google.visualization.GeoMap(document.getElementById('chart_div'));
+                    google.visualization.events.addListener(chart, 'regionClick', function (eventData) {
+                        $('chart_div').innerHTML = '';
+                        $('loading-mask').show();
+                        var region = eventData.region;
+                        //chart.clearChart();
+                        drawCityGeoChart(region);
+                    });
+
+                    chart.draw(data, options);
+                };
+
+                function drawCityGeoChart(region)
+                {
+                    var optionsCity = {};
+
+                    var arrayData = [
+                        ['City', 'Opens'],
+                        <?php foreach ($regions as $city) : ?>
+                        ["<?php echo $city['city'] ?>", <?php echo $city["opens"] ?>],
+                        <?php endforeach; ?>
+                    ];
+
+                    var dataCity = google.visualization.arrayToDataTable(arrayData);
+                    optionsCity['region'] = region;
+                    optionsCity['width'] = '600px';
+                    optionsCity['height'] = '450px';
+                    optionsCity['colors'] = [0xFF8747, 0xFFB581, 0xc06000]; //orange colors
+                    optionsCity['dataMode'] = 'markers';
+
+                    var chartCity = new google.visualization.GeoMap(document.getElementById('chart_div'));
+                    google.visualization.events.addListener(chartCity, 'drawingDone', function (eventData) {
+                        $$('button.newsletterbooster-geo-back')[0].show();
+                        $('loading-mask').hide();
+                    });
+                    chartCity.draw(dataCity, optionsCity);
+                }
+
+                function clearCiryChart()
+                {
+                    $('chart_div').innerHTML = '';
+                    drawRegionsMap();
+                }
+            </script>
+
+            <div id="chart_div" style="width: 650px; height: 350px; margin-left: 20px;"></div>
+        <?php else : ?>
+            <p class="a-center" style="width:650px;height:350px; margin:0 auto;">
+                <?php echo Mage::helper('newsletterbooster')->__('No data found.') ?>
+            </p>
+        <?php endif; ?>
+    <?php else : ?>
+        <p class="a-center" style="width:650px;height:350px; margin:0 auto;">
+            <?php echo Mage::helper('newsletterbooster')->__('No active campaign choosen.') ?>
+        </p>
+    <?php endif; ?>
+<?php else : ?>
+    <p class="a-center" style="width:650px;height:350px; margin:0 auto;">
+        <?php echo Mage::helper('newsletterbooster')->__('No active campaign choosen.') ?>
+    </p>
+<?php endif; ?>

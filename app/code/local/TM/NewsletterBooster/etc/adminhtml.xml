@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <menu>
+        <templates_master>
+            <title>Templates Master</title>
+            <sort_order>71</sort_order>
+            <children>
+                <newsletterbooster translate="title" module="newsletterbooster">
+                    <title>Newsletter Booster</title>
+                    <sort_order>1</sort_order>
+                    <children>
+                        <dashboard translate="title">
+                            <title>Dashboard</title>
+                            <action>adminhtml/newsletterbooster_dashboard/index</action>
+                            <sort_order>5</sort_order>
+                        </dashboard>
+                        <campaign translate="title">
+                            <title>Campaign</title>
+                            <action>adminhtml/newsletterbooster_campaign/index</action>
+                            <sort_order>10</sort_order>
+                        </campaign>
+                        <queue translate="title">
+                            <title>Queue</title>
+                            <action>adminhtml/newsletterbooster_queue/index</action>
+                            <sort_order>15</sort_order>
+                        </queue>
+                        <gateway translate="title">
+                            <title>Email Gateway</title>
+                            <action>adminhtml/newsletterbooster_gateway/index</action>
+                            <sort_order>20</sort_order>
+                        </gateway>
+                        <subscriber translate="title">
+                            <title>Campaign Subscribers</title>
+                            <action>adminhtml/newsletterbooster_subscriber/index</action>
+                            <sort_order>25</sort_order>
+                        </subscriber>
+                    </children>
+                </newsletterbooster>
+            </children>
+        </templates_master>
+    </menu>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <newsletterbooster translate="title" module="newsletterbooster">
+                                        <title>Newsletter Booster</title>
+                                    </newsletterbooster>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                    <templates_master>
+                        <title>Templates Master</title>
+                        <sort_order>71</sort_order>
+                        <children>
+                            <newsletterbooster translate="title" module="newsletterbooster">
+                                <title>Newsletter Booster</title>
+                                <sort_order>10</sort_order>
+                                <children>
+                                    <dashboard translate="title">
+                                        <title>Dashboard</title>
+                                        <sort_order>5</sort_order>
+                                    </dashboard>
+                                    <campaign translate="title">
+                                        <title>Newsletter Booster</title>
+                                        <sort_order>10</sort_order>
+                                    </campaign>
+                                    <queue translate="title">
+                                        <title>Queue</title>
+                                        <sort_order>15</sort_order>
+                                    </queue>
+                                     <gateway translate="title">
+                                        <title>Email Gateway</title>
+                                        <sort_order>20</sort_order>
+                                    </gateway>
+                                </children>
+                            </newsletterbooster>
+                        </children>
+                    </templates_master>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+ </config>
