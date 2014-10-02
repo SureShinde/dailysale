@@ -100,4 +100,15 @@ $j(document).ready(function(){
 
 	removeAllHtmlInsideElement();
 
+	var result = $j("#newsletter-result").val();
+
+	Validation.add('leadSpendEmail-noconfig', 'Please enter a valid email adddddress. For example johndoe@domain.com.', function(v) {
+	    if (result === "disposable" || result === "unreachable" || result === "illegimate" || result === "undeliverable" || result === "unknown" || result === "error"){
+	    	return false;
+	    } else if (result === "verified"){
+		    return true;
+		}
+
+	});
+
 });
