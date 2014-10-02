@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+
+    <modules>
+        <TM_NewsletterBooster>
+            <version>1.2.3</version>
+        </TM_NewsletterBooster>
+    </modules>
+
+    <global>
+        <template>
+            <email>
+                <newsletterbooster_one_column module="newsletterbooster">
+                    <label>Default One Column Template</label>
+                    <file>newsletterbooster_one_column.html</file>
+                    <type>html</type>
+                </newsletterbooster_one_column>
+                <newsletterbooster_two_column module="newsletterbooster">
+                    <label>Default Two Column Template</label>
+                    <file>newsletterbooster_two_column.html</file>
+                    <type>html</type>
+                </newsletterbooster_two_column>
+                <newsletterbooster_three_column module="newsletterbooster">
+                    <label>Default Three Column Template</label>
+                    <file>newsletterbooster_three_column.html</file>
+                    <type>html</type>
+                </newsletterbooster_three_column>
+                <newsletterbooster_subscribe_success module="newsletterbooster">
+                    <label>Subscribe Successe</label>
+                    <file>newsletterbooster_subscribe_success.html</file>
+                    <type>html</type>
+                </newsletterbooster_subscribe_success>
+            </email>
+        </template>
+        <models>
+            <newsletterbooster>
+                <class>TM_NewsletterBooster_Model</class>
+                <resourceModel>newsletterbooster_mysql4</resourceModel>
+            </newsletterbooster>
+            <newsletterbooster_mysql4>
+                <class>TM_NewsletterBooster_Model_Mysql4</class>
+                <entities>
+                    <campaign>
+                        <table>tm_newsletterbooster_campaign</table>
+                    </campaign>
+                    <gateway>
+                        <table>tm_newsletterbooster_gateway</table>
+                    </gateway>
+                    <store>
+                        <table>tm_newsletterbooster_campaign_store</table>
+                    </store>
+                    <queue>
+                        <table>tm_newsletterbooster_queue</table>
+                    </queue>
+                    <send>
+                        <table>tm_newsletterbooster_queue_send</table>
+                    </send>
+                    <trackopen>
+                        <table>tm_newsletterbooster_track_open</table>
+                    </trackopen>
+                    <trackclick>
+                        <table>tm_newsletterbooster_track_click</table>
+                    </trackclick>
+                    <unsubscribe>
+                        <table>tm_newsletterbooster_unsubscribe</table>
+                    </unsubscribe>
+                    <subscriber>
+                        <table>tm_newsletterbooster_subscribers</table>
+                    </subscriber>
+                </entities>
+            </newsletterbooster_mysql4>
+        </models>
+        <blocks>
+            <newsletterbooster>
+                <class>TM_NewsletterBooster_Block</class>
+            </newsletterbooster>
+        </blocks>
+        <helpers>
+            <newsletterbooster>
+                <class>TM_NewsletterBooster_Helper</class>
+            </newsletterbooster>
+        </helpers>
+        <resources>
+            <tm_newsletterbooster_setup>
+                <setup>
+                    <module>TM_NewsletterBooster</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </tm_newsletterbooster_setup>
+            <newsletterbooster_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </newsletterbooster_write>
+            <newsletterbooster_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </newsletterbooster_read>
+        </resources>
+    </global>
+
+    <frontend>
+        <layout>
+            <updates>
+                <newsletterbooster>
+                    <file>newsletterbooster.xml</file>
+                </newsletterbooster>
+            </updates>
+        </layout>
+        <routers>
+            <newsletterbooster>
+                <use>standard</use>
+                <args>
+                    <module>TM_NewsletterBooster</module>
+                    <frontName>newsletterbooster</frontName>
+                </args>
+            </newsletterbooster>
+        </routers>
+        <translate>
+            <modules>
+                <TM_NewsletterBooster>
+                    <files>
+                        <default>TM_NewsletterBooster.csv</default>
+                    </files>
+                </TM_NewsletterBooster>
+            </modules>
+        </translate>
+    </frontend>
+
+    <adminhtml>
+        <layout>
+            <updates>
+                <newsletterbooster>
+                    <file>newsletterbooster.xml</file>
+                </newsletterbooster>
+            </updates>
+        </layout>
+        <translate>
+            <modules>
+                <TM_NewsletterBooster>
+                    <files>
+                        <default>TM_NewsletterBooster.csv</default>
+                    </files>
+                </TM_NewsletterBooster>
+            </modules>
+        </translate>
+    </adminhtml>
+
+    <admin>
+        <routers>
+             <adminhtml>
+                 <args>
+                     <modules>
+                         <newsletterbooster before="Mage_Adminhtml">TM_NewsletterBooster_Adminhtml</newsletterbooster>
+                     </modules>
+                 </args>
+             </adminhtml>
+        </routers>
+    </admin>
+
+    <default>
+        <newsletterbooster>
+            <general>
+                <enabled>0</enabled>
+            </general>
+            <geo_ip>
+                <enabled>0</enabled>
+            </geo_ip>
+        </newsletterbooster>
+    </default>
+
+    <crontab>
+        <jobs>
+            <newsletterbooster_send_letter>
+                <schedule>
+                    <cron_expr>*/20 * * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>newsletterbooster/observer::scheduledSendCampaign</model>
+                </run>
+            </newsletterbooster_send_letter>
+        </jobs>
+    </crontab>
+
+</config>

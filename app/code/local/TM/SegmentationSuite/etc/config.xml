@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+
+    <modules>
+        <TM_SegmentationSuite>
+            <version>1.0.0</version>
+        </TM_SegmentationSuite>
+    </modules>
+
+    <global>
+        <models>
+            <segmentationsuite>
+                <class>TM_SegmentationSuite_Model</class>
+                <resourceModel>segmentationsuite_mysql4</resourceModel>
+            </segmentationsuite>
+            <segmentationsuite_mysql4>
+                <class>TM_SegmentationSuite_Model_Mysql4</class>
+                <entities>
+                    <segments>
+                        <table>tm_segmentationsuite_segments</table>
+                    </segments>
+                    <index>
+                        <table>tm_segmentationsuite_index</table>
+                    </index>
+                    <store>
+                        <table>tm_segmentationsuite_segment_store</table>
+                    </store>
+                </entities>
+            </segmentationsuite_mysql4>
+        </models>
+        <blocks>
+            <segmentationsuite>
+                <class>TM_SegmentationSuite_Block</class>
+            </segmentationsuite>
+        </blocks>
+        <helpers>
+            <segmentationsuite>
+                <class>TM_SegmentationSuite_Helper</class>
+            </segmentationsuite>
+        </helpers>
+        <resources>
+            <tm_segmentationsuite_setup>
+                <setup>
+                    <module>TM_SegmentationSuite</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </tm_segmentationsuite_setup>
+            <segmentationsuite_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </segmentationsuite_write>
+            <segmentationsuite_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </segmentationsuite_read>
+        </resources>
+    </global>
+
+    <frontend>
+        <layout>
+            <updates>
+                <segmentationsuite>
+                    <file>segmentationsuite.xml</file>
+                </segmentationsuite>
+            </updates>
+        </layout>
+        <routers>
+            <segmentationsuite>
+                <use>standard</use>
+                <args>
+                    <module>TM_SegmentationSuite</module>
+                    <frontName>segmentationsuite</frontName>
+                </args>
+            </segmentationsuite>
+        </routers>
+        <translate>
+            <modules>
+                <TM_SegmentationSuite>
+                    <files>
+                        <default>TM_SegmentationSuite.csv</default>
+                    </files>
+                </TM_SegmentationSuite>
+            </modules>
+        </translate>
+    </frontend>
+
+    <adminhtml>
+        <translate>
+            <modules>
+                <TM_SegmentationSuite>
+                    <files>
+                        <default>TM_SegmentationSuite.csv</default>
+                    </files>
+                </TM_SegmentationSuite>
+            </modules>
+        </translate>
+    </adminhtml>
+
+    <admin>
+        <routers>
+             <adminhtml>
+                 <args>
+                     <modules>
+                         <segmentationsuite before="Mage_Adminhtml">TM_SegmentationSuite_Adminhtml</segmentationsuite>
+                     </modules>
+                 </args>
+             </adminhtml>
+        </routers>
+    </admin>
+
+    <default>
+        <segmentationsuite>
+            <general>
+                <enabled>0</enabled>
+            </general>
+        </segmentationsuite>
+    </default>
+
+    <!-- <crontab>
+        <jobs>
+            <tm_prolabels_reindex_all>
+                <schedule>
+                    <cron_expr>0 1 * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>prolabels/observer::autoReindexLabels</model>
+                </run>
+            </tm_prolabels_reindex_all>
+        </jobs>
+    </crontab> -->
+</config>

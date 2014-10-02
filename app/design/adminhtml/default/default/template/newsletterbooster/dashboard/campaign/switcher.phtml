@@ -1,0 +1,63 @@
+<?php if ($websites = $this->getWebsites()): ?>
+<p class="switcher"><label for="store_switcher"><?php echo Mage::helper('newsletterbooster')->__('Choose Store View:') ?></label>
+<select name="store_switcher" id="store_switcher" onchange="return switchStore(this);">
+<?php if ($this->hasDefaultOption()): ?>
+    <option value=""><?php echo $this->getDefaultStoreName() ?></option>
+<?php endif; ?>
+    <?php foreach ($websites as $website): ?>
+        <?php $showWebsite = false; ?>
+        <?php foreach ($website->getGroups() as $group): ?>
+            <?php $showGroup = false; ?>
+            <?php foreach ($this->getStores($group) as $store): ?>
+                <?php if ($showWebsite == false): ?>
+                    <?php $showWebsite = true; ?>
+                    <optgroup label="<?php echo $this->escapeHtml($website->getName()) ?>"></optgroup>
+                <?php endif; ?>
+                <?php if ($showGroup == false): ?>
+                    <?php $showGroup = true; ?>
+                    <optgroup label="&nbsp;&nbsp;&nbsp;<?php echo $this->escapeHtml($group->getName()) ?>">
+                <?php endif; ?>
+                <option value="<?php echo $this->escapeHtml($store->getId()) ?>"<?php if($this->getStoreId() == $store->getId()): ?> selected="selected"<?php endif; ?>>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $this->escapeHtml($store->getName()) ?></option>
+            <?php endforeach; ?>
+            <?php if ($showGroup): ?>
+                </optgroup>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    <?php endforeach; ?>
+</select>
+<?php endif; ?>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<label for="campaign_switcher"><?php echo Mage::helper('newsletterbooster')->__('Choose Campaign:') ?></label>
+<select name="campaign_switcher" id="campaign_switcher" onchange="return switchCampaign(this);">
+    <?php foreach ($this->getCampaigns() as $id => $title): ?>
+        <option value="<?php echo $id ?>"<?php if($this->getCampaignId() == $id): ?> selected="selected"<?php endif; ?>><?php echo $title ?></option>
+    <?php endforeach; ?>
+</select>
+</p>
+<script type="text/javascript">
+    function switchStore(obj) {
+        var storeParam = obj.value ? 'store/' + obj.value + '/' : '';
+        if (obj.switchParams) {
+            storeParam += obj.switchParams;
+        }
+        <?php if ($this->getUseConfirm()): ?>
+            if (confirm("<?php echo $this->__('Please confirm site switching. All data that hasn\'t been saved will be lost.') ?>")) {
+                setLocation('<?php echo $this->getSwitchUrl() ?>' + storeParam);
+                return true;
+            } else {
+                obj.value = '<?php echo $this->getStoreId() ?>';
+            }
+            return false;
+        <?php else: ?>
+            setLocation('<?php echo $this->getSwitchUrl() ?>' + storeParam);
+        <?php endif; ?>
+    }
+    function switchCampaign(obj) {
+        if (obj.value != "") {
+            var campaignParam = obj.value ? 'campaign/' + obj.value + '/' : '';
+            setLocation('<?php echo $this->getSwitchCampaignUrl(true) ?>' + campaignParam);
+        } else {
+            setLocation('<?php echo $this->getSwitchCampaignUrl(false) ?>');
+        }
+    }
+</script>

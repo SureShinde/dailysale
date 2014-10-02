@@ -218,7 +218,7 @@ class IWD_Opc_JsonController extends Mage_Core_Controller_Front_Action{
 			
 			
 			$customerAddressId = $this->getRequest()->getPost('billing_address_id', false);
-	
+
 			if (isset($data['email'])) {
 				$data['email'] = trim($data['email']);
 			}
@@ -247,6 +247,7 @@ class IWD_Opc_JsonController extends Mage_Core_Controller_Front_Action{
 				
 				// check if need to reload payment methods
 				$use_method = Mage::helper('opc')->checkUpdatedPaymentMethods($methods_before, $methods_after);
+
 				if($use_method != -1)
 				{
 					if(empty($use_method))
@@ -428,7 +429,7 @@ class IWD_Opc_JsonController extends Mage_Core_Controller_Front_Action{
         }
 	
 		$version = Mage::getVersionInfo();
-		
+	
 		$result = array();
 		try {
 			$requiredAgreements = Mage::helper('checkout')->getRequiredAgreementIds();
@@ -459,8 +460,17 @@ class IWD_Opc_JsonController extends Mage_Core_Controller_Front_Action{
 			}
 	
 			// save comments
-			$comment  = Mage::getSingleton('core/session')->getOpcOrderComment();
-			$this->getOnepage()->getQuote()->setCustomerNote($comment);
+			if (Mage::helper('opc')->isShowComment())
+			{
+				$comment = $this->getRequest()->getPost('customer_comment', '');
+				if(empty($comment))
+					$comment  = Mage::getSingleton('core/session')->getOpcOrderComment();
+				else
+					Mage::getSingleton('core/session')->setOpcOrderComment($comment);
+					
+				$this->getOnepage()->getQuote()->setCustomerNote($comment);
+			}
+			///
 
 			$this->getOnepage()->saveOrder();
 			
