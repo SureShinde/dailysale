@@ -219,8 +219,11 @@ input:not([type=submit]):not([type=checkbox]):not([type=radio]) {
   #subscribe-pop .form-subscribe-header {
     font-size: 12px;
     margin-bottom: 8px; }
+  /* line 252, ../sass/local.scss */
+  #subscribe-pop .validation-advice {
+    color: white; }
 
-/* line 253, ../sass/local.scss */
+/* line 257, ../sass/local.scss */
 #generateButton {
   border: 1px solid #196fb1 !important;
   color: white;

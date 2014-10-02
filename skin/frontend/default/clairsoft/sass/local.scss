@@ -248,6 +248,10 @@ input:not([type=submit]):not([type=checkbox]):not([type=radio]){
 			font-size: 12px;
 			margin-bottom: 8px;
 		}
+
+		.validation-advice{
+			color: white;
+		}
 }
 
 #generateButton{
