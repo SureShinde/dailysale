@@ -1,0 +1,37 @@
+<?php $_helper = Mage::helper('signin');?>
+<?php if ($_helper->isEnable() && !$_helper->isLoggedIn() && $_helper->isAvailableVersion()):?>
+<div class="md-modal md-effect-7 signin" id="signin-modal">
+	<div class="md-content">
+			<div class="md-modal-header">
+				<button type="button" class="close">&times;</button>
+				<h4><?php echo $this->__('Login or Sign up')?></h4>
+			</div>	
+			<div class="md-content-wrapper">
+				<?php echo $this->getChildHtml('signin.modal.cms')?>
+				<div id="signin-ajax-load">
+				</div>
+
+			</div>
+			
+			<div class="ajax-loader">
+				<div id="floatingCirclesG">
+					<div class="f_circleG" id="frotateG_01"></div>
+					<div class="f_circleG" id="frotateG_02"></div>
+					<div class="f_circleG" id="frotateG_03"></div>
+					<div class="f_circleG" id="frotateG_04"></div>
+					<div class="f_circleG" id="frotateG_05"></div>
+					<div class="f_circleG" id="frotateG_06"></div>
+					<div class="f_circleG" id="frotateG_07"></div>
+					<div class="f_circleG" id="frotateG_08"></div>
+				</div>
+			</div>
+	</div>
+	
+</div>
+<div class="md-overlay"></div>	
+<script type="text/javascript">
+	//<![CDATA[
+		var SigninConfig = <?php echo $this->getConfig();?>;	
+	//]]>
+</script>
+<?php endif;?>
