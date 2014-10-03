@@ -4,6 +4,16 @@
 	}
 }
 
+.toolbar{
+	//hide sorter but leave pager
+	
+	.sorter{ display: none;}
+
+	.pager{
+		border: none;
+	}
+}
+
 .cms-index-index, .category-products{
 
 	#dealcountdown{display: none;}
@@ -254,6 +264,6 @@
 			width: 300px;
 			display: block;
 			height: 100%;
-			padding: 8px 0 6px 40px;
+			padding: 8px 0 6px 0px;
 		}
 }
