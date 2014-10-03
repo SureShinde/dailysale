@@ -27,6 +27,13 @@ strong{
 	font-weight: bold;
 }
 
+//ie hackeries and tomfoolery
+
+.soldout-btn, .view-deal-btn, .addtocartbtn, .btn-proceed-checkout, .apply-coupon{
+	background: $main-color;
+	filter: none;
+}
+
 //border resets for stupid blank theme...
 
 .header, #nav, .col-main, .col-right, .col-left, .products-grid, .block, .block-related, .block .block-title, .buttons-set, .page-title, ol.opc{
