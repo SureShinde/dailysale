@@ -1791,30 +1791,27 @@ footer {
       padding: 0 20px; }
       /* line 70, ../sass/footer.scss */
       footer #footer-container #footer-content-center .AuthorizeNetSeal {
-        display: inline-block;
-        margin: 0 10px 20px 0; }
-      /* line 75, ../sass/footer.scss */
+        margin: 0 auto; }
+      /* line 76, ../sass/footer.scss */
       footer #footer-container #footer-content-center .SSLSeal {
-        width: 100px;
-        display: inline-block;
-        margin: 0 0px 20px 10px; }
-    /* line 82, ../sass/footer.scss */
+        margin: 10px 0 10px 5px; }
+    /* line 83, ../sass/footer.scss */
     footer #footer-container #footer-content-right {
       width: 320px;
       float: left;
       height: 100%;
       padding-left: 40px; }
-      /* line 88, ../sass/footer.scss */
+      /* line 89, ../sass/footer.scss */
       footer #footer-container #footer-content-right .socialicons {
         display: inline-block;
         padding: 5px 10px 0 0; }
-  /* line 95, ../sass/footer.scss */
+  /* line 96, ../sass/footer.scss */
   footer #copyright {
     width: 100%;
     text-align: center;
     margin-top: 50px;
     display: block;
     color: #898989; }
-    /* line 102, ../sass/footer.scss */
+    /* line 103, ../sass/footer.scss */
     footer #copyright a {
       color: #cccccc; }
