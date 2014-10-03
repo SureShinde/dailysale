@@ -100,15 +100,32 @@ $j(document).ready(function(){
 
 	removeAllHtmlInsideElement();
 
-	var result = $j("#newsletter-result").val();
-
-	Validation.add('leadSpendEmail-noconfig', 'Please enter a valid email adddddress. For example johndoe@domain.com.', function(v) {
-	    if (result === "disposable" || result === "unreachable" || result === "illegimate" || result === "undeliverable" || result === "unknown" || result === "error"){
-	    	return false;
-	    } else if (result === "verified"){
-		    return true;
-		}
-
+	$j("a[title='Sign Up']").click(function(e){
+		e.preventDefault();
+		$j('#signin-modal').addClass('md-show');
+		//IWD.Signin.prepareLoginForm();
+		//$j('.login-form').hide();
+      IWD.Signin.insertLoader();
+      IWD.Signin.prepareRegisterForm();
+	    });
+	    $j(document).on('click', '.account-create-signin .back-link, .account-forgotpassword .back-link', function (e) {
+	      e.preventDefault();
+	      $j('html, body').animate({
+	        scrollTop: 0
+	      }, 'slow');
+	      IWD.Signin.insertLoader();
+	      IWD.Signin.prepareLoginForm();
 	});
+
+	// var result = $j("#newsletter-result").val();
+
+	// Validation.add('leadSpendEmail-noconfig', 'Please enter a valid email adddddress. For example johndoe@domain.com.', function(v) {
+	//     if (result === "disposable" || result === "unreachable" || result === "illegimate" || result === "undeliverable" || result === "unknown" || result === "error"){
+	//     	return false;
+	//     } else {
+	// 	    return true;
+	// 	}
+
+	// });
 
 });
