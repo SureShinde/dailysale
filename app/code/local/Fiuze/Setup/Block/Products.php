@@ -89,7 +89,7 @@ class Fiuze_Setup_Block_Products extends Mage_Core_Block_Abstract implements Mag
 		
 		$html .= '</div><div style="clear:both"></div>';
 		
-		Mage::log($html, null, "fiuzesetup.log");
+		//Mage::log($html, null, "fiuzesetup.log");
 
         return $html;
     }

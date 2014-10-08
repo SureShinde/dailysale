@@ -58,5 +58,5 @@ if($categoryCollection->getSize() == 0 ){
 
 	}
 }else {
-	Mage::log("NewsletterSource already exists", null, $logFileName);
+	Mage::log("The category 'NewsletterSource' already exists", null, $logFileName);
 }
