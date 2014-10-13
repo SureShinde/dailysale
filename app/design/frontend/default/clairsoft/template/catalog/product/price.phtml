@@ -412,7 +412,13 @@ $_specialPriceStoreLabel = $this->getProductAttribute('special_price')->getStore
                 $specialPrice = $_coreHelper->formatPrice($_finalPrice, false);
             ?>
             <?php if($msrp != "FREE"): ?>
-            <p class="msrp">
+            <p class="msrp <?php
+                    //insert extra class depening on no. of digits in final price
+                    $numberOfMSRPDigits = strlen($msrp);
+                    if ($numberOfMSRPDigits > 3) {
+                        echo "more-than-three-digits-msrp";
+                    };
+                ?>">
                 <span class="msrp-label"><?php echo $this->__('Retail*:') ?></span>
                 <span class="price" id="msrp"><?php echo $msrp ?></span>
             </p>
