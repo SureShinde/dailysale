@@ -474,6 +474,17 @@ $_specialPriceStoreLabel = $this->getProductAttribute('special_price')->getStore
                     <?php echo $_savePercent; ?>%
                 </span>
             </p>
+    <?php elseif($specialPrice == 0): ?>
+        <?php
+            $_msrpPrice = (float)$msrpInt;
+            $_savePercent = 100 - round(($specialPrice / $_msrpPrice)*100); 
+        ?>
+        <p class="percent-off">
+                <span class="label"><?php echo $this->__('Save*') ?></span>
+                <span class="price">
+                    <?php echo $_savePercent; ?>%
+                </span>
+            </p>
     <?php endif; ?>
     <?php // Discount percent output end ?>
 
