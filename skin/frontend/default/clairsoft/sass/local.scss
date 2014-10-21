@@ -27,7 +27,10 @@ strong{
 	font-weight: bold;
 }
 
-button{
+//ie hackeries and tomfoolery
+
+.soldout-btn, .view-deal-btn, .addtocartbtn, .btn-proceed-checkout, .apply-coupon{
+	background: $main-color;
 	filter: none;
 }
 
