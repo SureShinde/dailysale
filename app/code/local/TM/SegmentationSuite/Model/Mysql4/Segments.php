@@ -16,6 +16,7 @@ class TM_SegmentationSuite_Model_Mysql4_Segments extends Mage_CatalogRule_Model_
         $select = $this->_getReadAdapter()->select()
             ->from($this->getMainTable())
         ;
+        $rowset = array();
         foreach ($this->_getReadAdapter()->fetchAll($select) as $row) {
             $rowset[] = array('label' => $row['segment_title'], 'value' => $row['segment_id']);
         }
@@ -25,7 +26,6 @@ class TM_SegmentationSuite_Model_Mysql4_Segments extends Mage_CatalogRule_Model_
 
     public function load(Mage_Core_Model_Abstract $object, $value, $field=null)
     {
-
         if (!intval($value) && is_string($value)) {
             $field = 'identifier'; // You probably don't have an identifier...
         }
