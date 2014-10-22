@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<widgets>
+    <fiuze_setup_products type="fiuze_setup/products">
+        <name>Products For Newsletter</name>
+        <description type="desc">Adds products in the appropriate category selected from the list 1 - 31 according to the day of the month</description>
+    </fiuze_setup_products>
+</widgets> 
