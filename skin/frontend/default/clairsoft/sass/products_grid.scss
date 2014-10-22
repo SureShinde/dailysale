@@ -4,6 +4,16 @@
 	}
 }
 
+.toolbar{
+	//hide sorter but leave pager
+	
+	.sorter{ display: none;}
+
+	.pager{
+		border: none;
+	}
+}
+
 .cms-index-index, .category-products{
 
 	#dealcountdown{display: none;}
@@ -147,6 +157,11 @@
 			margin-top: 15px;
 		}
 
+		.more-than-three-digits-msrp{
+			font-size: 14px;
+			margin: 5px 0 0 -9px;
+		}
+
 		.percent-off{
 			background: url(../images/percentoffbg.png) no-repeat;
 			width: 100px;
@@ -254,6 +269,6 @@
 			width: 300px;
 			display: block;
 			height: 100%;
-			padding: 8px 0 6px 40px;
+			padding: 8px 0 6px 0px;
 		}
 }

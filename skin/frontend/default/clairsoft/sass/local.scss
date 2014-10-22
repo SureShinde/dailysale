@@ -27,6 +27,13 @@ strong{
 	font-weight: bold;
 }
 
+//ie hackeries and tomfoolery
+
+.soldout-btn, .view-deal-btn, .addtocartbtn, .btn-proceed-checkout, .apply-coupon{
+	background: $main-color;
+	filter: none;
+}
+
 //border resets for stupid blank theme...
 
 .header, #nav, .col-main, .col-right, .col-left, .products-grid, .block, .block-related, .block .block-title, .buttons-set, .page-title, ol.opc{
@@ -248,10 +255,18 @@ input:not([type=submit]):not([type=checkbox]):not([type=radio]){
 			font-size: 12px;
 			margin-bottom: 8px;
 		}
+
+		.validation-advice{
+			color: white;
+		}
 }
 
 #generateButton{
 	@include clairsoft-default-button;
+}
+
+.md-modal-header h4{
+	font-size: 22px;
 }
 
 

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+    <modules>
+        <Fiuze_NewsletterSubscribe>
+            <version>0.0.1</version>
+        </Fiuze_NewsletterSubscribe>
+    </modules>
+    <global>
+        <helpers>
+            <fiuze_newslettersubscribe>
+                <class>Fiuze_NewsletterSubscribe_Helper</class>
+            </fiuze_newslettersubscribe>
+        </helpers>
+    </global>
+    <frontend>
+        <events>
+            <sales_order_place_after>
+		<observers>
+		    <fiuze_newslettersubscribe_sales_order_place_after>
+				<class>Fiuze_NewsletterSubscribe_Model_Observer</class>
+				<method>salesOrderPlaceAfter</method>
+			</fiuze_newslettersubscribe_sales_order_place_after>                    
+		</observers>
+            </sales_order_place_after>
+            <customer_register_success>
+                <observers>
+                    <fiuze_newslettersubscribe_customer_register_success>
+                        <class>Fiuze_NewsletterSubscribe_Model_Observer</class>
+                        <method>customerRegisterSuccess</method>
+                    </fiuze_newslettersubscribe_customer_register_success>
+                </observers>  
+            </customer_register_success>                               
+        </events>
+        <layout>
+            <updates>
+                <inchoo_tickets module="Fiuze_NewsletterSubscribe">
+                    <file>fiuze_newslettersubscribe.xml</file>
+                </inchoo_tickets>
+            </updates>
+        </layout>        
+    </frontend>   
+</config>
