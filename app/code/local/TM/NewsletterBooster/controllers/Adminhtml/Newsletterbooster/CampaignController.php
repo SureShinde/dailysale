@@ -36,7 +36,7 @@ class TM_NewsletterBooster_Adminhtml_Newsletterbooster_CampaignController extend
             $this->getLayout()->createBlock('newsletterbooster/adminhtml_template_grid')->toHtml()
         );
     }
-    
+
     public function subscriberAction()
     {
         $this->getResponse()->setBody(
@@ -171,7 +171,12 @@ class TM_NewsletterBooster_Adminhtml_Newsletterbooster_CampaignController extend
         }
 
         try {
-            $segments = implode(',', $request->getParam('tm_segment'));
+            if ($request->getParam('tm_segment')) {
+                $segments = implode(',', $request->getParam('tm_segment'));
+            } else {
+                $segments = '';
+            }
+
             $template->setTemplateSubject($request->getParam('template_subject'))
                 ->setTemplateCode($request->getParam('template_code'))
                 ->setDescription($request->getParam('description'))
@@ -235,7 +240,7 @@ class TM_NewsletterBooster_Adminhtml_Newsletterbooster_CampaignController extend
             } else {
                 $this->_redirect('*/*/edit',array('id'=>$template->getCampaignId()));
             }
-            
+
         }
         catch (Exception $e) {
             Mage::getSingleton('adminhtml/session')->setData('email_template_form_data', $this->getRequest()->getParams());
@@ -344,14 +349,11 @@ class TM_NewsletterBooster_Adminhtml_Newsletterbooster_CampaignController extend
                 'processed' => 1,
                 'completed' => true,
                 'message'   => Mage::helper('newsletterbooster')->__(
-                    'Test email was successfully sened'
+                    'Test email was successfully sent'
                 )
             )));
-
-
         } catch (Exception $e){
             Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
         }
     }
-
 }
