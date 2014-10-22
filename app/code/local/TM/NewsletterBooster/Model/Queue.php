@@ -137,17 +137,17 @@ class TM_NewsletterBooster_Model_Queue extends Mage_Newsletter_Model_Queue
                 $successSend = $sender->sendTestMail($item->getEmail(), $item->getName(), array('customer' => $item, 'campaign' => $sender));
                 $sender->revertDesign();
                 $this->save();
-    
+
                 if($successSend) {
                     $sendModel->setId(null);
                     $sendModel->setQueueId($this->getId())
                         ->setCustomerId($item->getId());
                     $sendModel->save();
-    
+
                 } else {
                     $this->setErrors($this->getErrors() + 1);
                     $this->save();
-                }                
+                }
             }
         }
 
@@ -210,7 +210,7 @@ class TM_NewsletterBooster_Model_Queue extends Mage_Newsletter_Model_Queue
             } else {
                 $item = $customer->load($data['entity_id']);
             }
-            
+
             $sender->setCustomerId($data['entity_id']);
             $sender->emulateDesign($item->getStoreId());
             $successSend = $sender->sendTestMail($item->getEmail(), $item->getName(), array('customer' => $item, 'campaign' => $sender));
