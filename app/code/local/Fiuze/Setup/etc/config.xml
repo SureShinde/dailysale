@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Fiuze_Setup>
+            <version>1.0.0.0.1</version>
+        </Fiuze_Setup>
+    </modules>
+    <global>
+        <helpers>
+            <fiuze_setup>
+                <class>Fiuze_Setup_Helper</class>
+            </fiuze_setup>
+        </helpers>
+        <blocks>
+             <fiuze_setup>
+                <class>Fiuze_Setup_Block</class>
+             </fiuze_setup>
+        </blocks>
+		<resources>
+			<fiuze_setup_setup>
+				<setup>
+					<module>Fiuze_Setup</module>
+					<class>Mage_Core_Model_Resource_Setup</class>
+				</setup>
+			</fiuze_setup_setup>
+		</resources>
+    </global>
+</config> 
