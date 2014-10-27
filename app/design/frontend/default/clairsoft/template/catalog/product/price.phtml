@@ -228,7 +228,21 @@ $_specialPriceStoreLabel = $this->getProductAttribute('special_price')->getStore
                         ?>
                         ">
                             <span class="price-label"><?php //echo $this->__('Our Price:') ?></span>
-                            <span class="price" id="old-price-<?php echo $_id ?><?php echo $this->getIdSuffix() ?>">
+                            <span class="price
+                                <?php
+
+                                //insert extra class depening on no. of digits in final price
+                                $finalPrice = $_coreHelper->formatPrice($_price, true);
+                                $numberOfPriceDigits = strlen($finalPrice);
+                                if ($_finalPrice == "FREE") {
+                                    echo "free-price-default";
+                                } elseif ($_finalPrice != "FREE" && $numberOfPriceDigits > 3){
+                                    echo "more-than-three-digits-default";
+                                };
+
+                                ?>
+
+                            " id="old-price-<?php echo $_id ?><?php echo $this->getIdSuffix() ?>">
                                 <?php echo $_coreHelper->formatPrice($_price, true) ?>
                             </span>
                         </p>
@@ -456,7 +470,20 @@ $_specialPriceStoreLabel = $this->getProductAttribute('special_price')->getStore
                 ?>
                 ">
                     <span class="price-label"><?php //echo $_specialPriceStoreLabel ?></span>
-                <span class="price" id="product-price-<?php echo $_id ?><?php echo $this->getIdSuffix() ?>">
+                <span class="price
+                    <?php
+
+                                //insert extra class depening on no. of digits in final price
+                                $finalPrice = $_coreHelper->formatPrice($_price, true);
+                                $numberOfPriceDigits = strlen($finalPrice);
+                                if ($_finalPrice == "FREE") {
+                                    echo "free-price-default";
+                                } elseif ($_finalPrice != "FREE" && $numberOfPriceDigits > 3){
+                                    echo "more-than-three-digits-default";
+                                };
+
+                    ?>
+                " id="product-price-<?php echo $_id ?><?php echo $this->getIdSuffix() ?>">
                     <?php 
                         echo $_coreHelper->formatPrice($_finalPrice, false) ?>
                 </span>
