@@ -255,13 +255,10 @@ class TM_NewsletterBooster_Model_Campaign extends Mage_Newsletter_Model_Template
         }
         Zend_Mail::setDefaultTransport($mailTransport);
 
-        //foreach ($emails as $key => $email) {
-            $mail->addTo($email, '=?utf-8?B?' . base64_encode($name) . '?=');
-        //}
+        $mail->addTo($email, '=?utf-8?B?' . base64_encode($name) . '?=');
 
         $this->setUseAbsoluteLinks(true);
 
-        //$text = $this->getProcessedTemplate($variables, true);
         $text = $this->getNewsletterText($variables);
 
         if ($this->getTrackClicks()) {
@@ -334,27 +331,8 @@ class TM_NewsletterBooster_Model_Campaign extends Mage_Newsletter_Model_Template
     {
         $template = $this;
 
-        // $id = (int)$this->getRequest()->getParam('id');
-        // if ($id) {
-        //     $template->load($id);
-        // } else {
-        //     $template->setTemplateType($this->getRequest()->getParam('type'));
-        //     $template->setTemplateText($this->getRequest()->getParam('text'));
-        //     $template->setTemplateStyles($this->getRequest()->getParam('styles'));
-        // }
-
-        // $storeId = $this->getRequest()->getParam('store');
-        // if ('' == $storeId) {
-        //     $store = Mage::app()->getDefaultStoreView();
-        //     $storeId = $store->getId();
-        // }
-        // if (Mage::app()->isSingleStoreMode()) {
-        //     $processor->setStoreId(Mage::app()->getStore());
-        // } else {
-
-        //     $processor->setStoreId();
-        // }
-        $stores = $this->getData('stores');
+        $camp = Mage::getModel('newsletterbooster/campaign')->load($this->getData('campaign_id'));
+        $stores = $camp->getData('stores');
         $storeId = $stores[0];
         /* @var $filter Mage_Core_Model_Input_Filter_MaliciousCode */
         $filter = Mage::getSingleton('core/input_filter_maliciousCode');
@@ -374,7 +352,7 @@ class TM_NewsletterBooster_Model_Campaign extends Mage_Newsletter_Model_Template
         $template->setTemplateText($text);
 
         //Varien_Profiler::start("email_template_proccessing");
-        $vars = array();
+        //$vars = array();
 
         $templateProcessed = $template->getProcessedTemplate($vars, true);
 
