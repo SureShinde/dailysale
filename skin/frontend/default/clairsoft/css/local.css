@@ -145,6 +145,10 @@ body {
   margin: 8px 0 4px 0 !important; }
 
 /* line 171, ../sass/local.scss */
+.main-container .more-than-three-digits-default {
+  font-size: 18px; }
+
+/* line 175, ../sass/local.scss */
 #email-subscribe {
   background: white;
   height: 250px;
@@ -161,7 +165,7 @@ body {
   top: 300px;
   right: 50%;
   z-index: 999; }
-  /* line 186, ../sass/local.scss */
+  /* line 190, ../sass/local.scss */
   #email-subscribe h2 {
     font-weight: bold;
     font-size: 16px;
@@ -170,27 +174,27 @@ body {
     width: 100%;
     padding: 1em 1em 10px 1em;
     float: left; }
-  /* line 196, ../sass/local.scss */
+  /* line 200, ../sass/local.scss */
   #email-subscribe .close {
     padding: 3em; }
-  /* line 200, ../sass/local.scss */
+  /* line 204, ../sass/local.scss */
   #email-subscribe p {
     padding: 1em 1em 10px 1em; }
 
-/* line 209, ../sass/local.scss */
+/* line 213, ../sass/local.scss */
 .footer-container {
   border-top: 1px solid #eeeeee;
   margin-top: 1em;
   padding-top: 1em; }
 
-/* line 217, ../sass/local.scss */
+/* line 221, ../sass/local.scss */
 .dialogSubscribe {
   position: fixed; }
-  /* line 229, ../sass/local.scss */
+  /* line 233, ../sass/local.scss */
   .dialogSubscribe a {
     color: #1b75bb; }
 
-/* line 236, ../sass/local.scss */
+/* line 240, ../sass/local.scss */
 input:not([type=submit]):not([type=checkbox]):not([type=radio]) {
   height: 35px;
   margin: 3px 0 10px 0;
@@ -200,22 +204,22 @@ input:not([type=submit]):not([type=checkbox]):not([type=radio]) {
   border: 1px solid #cccccc;
   padding-left: 5px; }
 
-/* line 247, ../sass/local.scss */
+/* line 251, ../sass/local.scss */
 #subscribe-pop {
   background: #1b75bb;
   text-align: left; }
-  /* line 251, ../sass/local.scss */
+  /* line 255, ../sass/local.scss */
   #subscribe-pop .input-box {
     width: 70%;
     float: left; }
-  /* line 256, ../sass/local.scss */
+  /* line 260, ../sass/local.scss */
   #subscribe-pop input {
     width: 100%; }
-  /* line 260, ../sass/local.scss */
+  /* line 264, ../sass/local.scss */
   #subscribe-pop .actions {
     width: 30%;
     float: left; }
-  /* line 265, ../sass/local.scss */
+  /* line 269, ../sass/local.scss */
   #subscribe-pop button {
     border: 1px solid #898989 !important;
     color: white;
@@ -236,19 +240,19 @@ input:not([type=submit]):not([type=checkbox]):not([type=radio]) {
       background-image: -moz-linear-gradient(#6b6b6b, #515252);
       background-image: -webkit-linear-gradient(#6b6b6b, #515252);
       background-image: linear-gradient(#6b6b6b, #515252); }
-  /* line 269, ../sass/local.scss */
+  /* line 273, ../sass/local.scss */
   #subscribe-pop .block-title {
     font-size: 22px;
     padding-left: 0; }
-  /* line 274, ../sass/local.scss */
+  /* line 278, ../sass/local.scss */
   #subscribe-pop .form-subscribe-header {
     font-size: 12px;
     margin-bottom: 8px; }
-  /* line 279, ../sass/local.scss */
+  /* line 283, ../sass/local.scss */
   #subscribe-pop .validation-advice {
     color: white; }
 
-/* line 284, ../sass/local.scss */
+/* line 288, ../sass/local.scss */
 #generateButton {
   border: 1px solid #196fb1 !important;
   color: white;
@@ -271,7 +275,7 @@ input:not([type=submit]):not([type=checkbox]):not([type=radio]) {
     color: #eeeeee;
     text-shadow: none; }
 
-/* line 288, ../sass/local.scss */
+/* line 292, ../sass/local.scss */
 .md-modal-header h4 {
   font-size: 22px; }
 
