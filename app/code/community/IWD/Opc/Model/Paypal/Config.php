@@ -15,6 +15,11 @@ class IWD_Opc_Model_Paypal_Config extends Mage_Paypal_Model_Config{
 	public function getBuildNotationCode($countryCode = null){
 		parent::getBuildNotationCode($countryCode);
 		
-		return 'IWD_SI_Other_OnePage';
+		
+		if(Mage::helper('opc')->isEnterprise()){
+			return 'IWD_SI_MagentoEE_WPS'; // enterprise
+		}else{
+			return 'IWD_SI_MagentoCE_WPS'; // community
+		}
 	}
 }

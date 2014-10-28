@@ -344,7 +344,7 @@ class Mage_Sales_Model_Observer
     public function addVatRequestParamsOrderComment(Varien_Event_Observer $observer)
     {
         /** @var $orderInstance Mage_Sales_Model_Order */
-        $orderInstance = $observer->getEvent()->getOrder();
+        $orderInstance = $observer->getOrder();
         /** @var $orderAddress Mage_Sales_Model_Order_Address */
         $orderAddress = $this->_getVatRequiredSalesAddress($orderInstance);
         if (!($orderAddress instanceof Mage_Sales_Model_Order_Address)) {

@@ -15,32 +15,25 @@ var checkout =  {
 IWD.OPC.prepareExtendPaymentForm =  function(){
 	$j('.opc-col-left').hide();
 	$j('.opc-col-center').hide();
-	$j('.opc-col-right').hide();
-	$j('.opc-menu p.left').hide();	
+	$j('.opc-col-right').addClass('full-page');
 	$j('#checkout-review-table-wrapper').hide();
 	$j('#checkout-review-submit').hide();
-	
-	$j('.review-menu-block').addClass('payment-form-full-page');
+	$j('.opc-newsletter').hide();
+	$j('.text-login').hide();
 	
 };
 
 IWD.OPC.backToOpc =  function(){
 	$j('.opc-col-left').show();
 	$j('.opc-col-center').show();
-	$j('.opc-col-right').show();
+	$j('.opc-col-right').removeClass('full-page');
 	$j('#checkout-review-table-wrapper').show();
 	$j('#checkout-review-submit').show();
-	
-	
-	
-	//hide payments form
 	$j('#payflow-advanced-iframe').hide();
 	$j('#payflow-link-iframe').hide();
 	$j('#hss-iframe').hide();
-
-	
-	$j('.review-menu-block').removeClass('payment-form-full-page');
-	
+	$j('.opc-newsletter').show();
+	$j('.text-login').show();
 	IWD.OPC.saveOrderStatus = false;
 	
 };
@@ -93,8 +86,54 @@ IWD.OPC.Centinel = {
 };
 
 
+/** PAYPAL EXPRESS CHECKOUT LIGHTBOX **/
+IWD.OPC.Lipp = {
+		init: function(){
+			if (IWD.OPC.Checkout.config.paypalLightBoxEnabled==true){
+				IWD.OPC.Plugin.event('redirectPayment', IWD.OPC.Lipp.checkPaypalExpress);
+			}
+		},
+		
+		checkPaypalExpress:function(url){
+			IWD.OPC.Checkout.showLoader();
+			try{
+				if (url.match(/paypal\/express\/start/i)){
+					IWD.OPC.Checkout.xhr = true;
+					IWD.OPC.Lipp.prepareToken();
+				}
+			
+			}catch(e){
+				IWD.OPC.Checkout.xhr = null;
+			}
+		},
+		
+		prepareToken: function(){
+			$j.post(IWD.OPC.Checkout.config.baseUrl + 'onepage/express/start',{"redirect":'onepage'}, IWD.OPC.Lipp.prepareTokenResponse,'json');
+		},
+		
+		prepareTokenResponse: function(response){
+			IWD.OPC.Checkout.xhr = null;
+			if (typeof(response.error)!="undefined"){
+				IWD.OPC.Checkout.hideLoader();
+				IWD.OPC.Checkout.unlockPlaceOrder();
+				
+				if (response.error==false){
+					PAYPAL.apps.Checkout.startFlow(IWD.OPC.Checkout.config.paypalexpress + response.token);
+				}
+				
+				if (response.error==true){
+					IWD.OPC.saveOrderStatus = false;
+					alert(response.message);
+				}
+			}
+		}
+		
+		
+}
+
 function toggleContinueButton(){}//dummy
 
 $j(document).ready(function(){
 	IWD.OPC.Centinel.init();
+	IWD.OPC.Lipp.init(); 
 });

@@ -246,12 +246,7 @@ $_specialPriceStoreLabel = $this->getProductAttribute('special_price')->getStore
             $msrpReplace = array("$", ",");
             $msrpInt = str_replace($msrpReplace, '', $msrp);
             $_msrpPrice = (float)$msrpInt;
-            if($_msrpPrice == 0){
-                $_savePercent = 100;
-            } else {
-                $_savePercent = 100 - round(($_finalPrice / $_msrpPrice)*100);
-            }
-            ?>
+            $_savePercent = 100 - round(($_finalPrice / $_msrpPrice)*100); ?>
             <?php if($msrp != "FREE"): ?>
                 <p class="percent-off">
                     <span class="label"><?php echo $this->__('Save') ?></span>
@@ -473,11 +468,7 @@ $_specialPriceStoreLabel = $this->getProductAttribute('special_price')->getStore
     <?php if($_finalPrice != 0 && $msrp != "FREE"): ?>
         <?php
             $_msrpPrice = (float)$msrpInt;
-            if($_msrpPrice == 0){
-                $_savePercent = 100;
-            } else {
-                $_savePercent = 100 - round(($_finalPrice / $_msrpPrice)*100);
-            }
+            $_savePercent = 100 - round(($_finalPrice / $_msrpPrice)*100); 
         ?>
             <p class="percent-off">
                 <span class="label"><?php echo $this->__('Save') ?></span>
@@ -487,14 +478,8 @@ $_specialPriceStoreLabel = $this->getProductAttribute('special_price')->getStore
             </p>
     <?php elseif($specialPrice == 0): ?>
         <?php
-
             $_msrpPrice = (float)$msrpInt;
-            if($_msrpPrice == 0){
-                $_savePercent = 100;
-            } else {
-                $_savePercent = 100 - round(($specialPrice / $_msrpPrice)*100); 
-            }
-            
+            $_savePercent = 100 - round(($specialPrice / $_msrpPrice)*100); 
         ?>
         <p class="percent-off">
                 <span class="label"><?php echo $this->__('Save*') ?></span>

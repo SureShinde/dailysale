@@ -34,7 +34,8 @@ class Fiuze_NewsletterSubscribe_Model_Observer extends Varien_Object
 {
     public function salesOrderPlaceAfter($observer)
     {  
-		$email = $observer->getEvent()->getOrder()->getCustomerEmail();
+		var_dump("salesOrderPlaceAfter"); exit();
+    	$email = $observer->getEvent()->getOrder()->getCustomerEmail();
         
         Mage::log('salesOrderPlaceAfter: '.$email, null, 'autosubscribe.log');
         

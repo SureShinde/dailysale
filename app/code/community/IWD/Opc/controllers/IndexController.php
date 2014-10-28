@@ -63,7 +63,7 @@ class IWD_Opc_IndexController extends Mage_Checkout_Controller_Action{
 		
 		$bill_country = $billing_address->getCountryId();
 		if(!empty($bill_country))
-			return $this;
+			return;
 		
 		$countryId = Mage::helper('core')->getDefaultCountry();
 		$ip_country =  Mage::getStoreConfig(self::XML_PATH_GEO_COUNTRY) ? Mage::helper('opc/country')->get() : $countryId;
@@ -77,18 +77,6 @@ class IWD_Opc_IndexController extends Mage_Checkout_Controller_Action{
 
 		$billing_address->addData($default_billing_addr);
 		$billing_address->implodeStreetAddress();
-		
-		if (!$this->getOnepage()->getQuote()->isVirtual())
-		{
-			// set shipping address same as billing
-			$bill = clone $billing_address;
-			$bill->unsAddressId()->unsAddressType();
-			$ship = $this->getOnepage()->getQuote()->getShippingAddress();
-			$ship_method = $ship->getShippingMethod();
-			$ship->addData($bill->getData());
-			$ship->setSameAsBilling(1)->setShippingMethod($ship_method)->setCollectShippingRates(true);
-		}
-		
 		$this->getOnepage()->getQuote()->collectTotals()->save();
 	
 		return $this;

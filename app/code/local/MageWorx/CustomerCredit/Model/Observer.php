@@ -210,7 +210,7 @@ class MageWorx_CustomerCredit_Model_Observer
      * @param Varien_Event_Observer $observer
      */
     public function returnRefandData($observer) {
-        $order = $observer->getEvent()->getOrder();
+        $order = $observer->getOrder();
         if($value = Mage::registry('need_setnull_total_refunded')) {
             Mage::unregister('need_setnull_total_refunded');
             $order->setTotalRefunded($value)->save();

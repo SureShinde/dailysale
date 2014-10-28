@@ -8,27 +8,43 @@ IWD.LIPP = {
 		if (typeof(lippConfig)!="undefined"){
 			this.config = $j.parseJSON(lippConfig);
 			if (this.config.paypalLightBoxEnabled==true){
-				this.initOPC();
 				this.initOnCart();
 			}
 		}
 	}, 
 	
-	initOPC: function(){
-		$j(document).on('click', '.opc-wrapper-opc #checkout-payment-method-load .radio', function(){
-			var method = payment.currentMethod;
-			if (method.indexOf('paypaluk_express')!=-1 || method.indexOf('paypal_express')!=-1){
-				PAYPAL.apps.Checkout.startFlow(IWD.LIPP.config.baseUrl + 'onepage/express/start');
-			}
+	initOnCart: function(){
+		$j('.checkout-types .paypal-logo a').click(function(e){
+			e.preventDefault();
+			IWD.LIPP.prepareToken();
 		});
 	},
 	
-	initOnCart: function(){
-		$j('.checkout-types .paypal-logo a, .opc-menu .paypal-logo a').click(function(e){		
-			e.preventDefault();
-			PAYPAL.apps.Checkout.startFlow(IWD.LIPP.config.baseUrl + 'onepage/express/start');
-		});
-	}	
+	prepareToken: function(){
+		IWD.LIPP.showLoader();
+		$j.post(IWD.LIPP.config.baseUrl + 'onepage/express/start',{}, IWD.LIPP.prepareTokenResponse,'json');
+	},
+	
+	prepareTokenResponse: function(response){
+		IWD.LIPP.hideLoader();
+		if (typeof(response.error)!="undefined"){
+			if (response.error==false){
+				PAYPAL.apps.Checkout.startFlow(IWD.LIPP.config.paypalexpress + response.token);
+			}
+			
+			if (response.error==true){
+				alert(response.message);
+			}
+		}
+	},
+	
+	showLoader: function(){
+		$j('.opc-ajax-loader').show();
+	},
+	
+	hideLoader: function(){
+		$j('.opc-ajax-loader').hide();
+	},
 };
 
 $j(document).ready(function(){
