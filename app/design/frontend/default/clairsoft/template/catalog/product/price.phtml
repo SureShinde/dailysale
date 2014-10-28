@@ -214,7 +214,7 @@ $_specialPriceStoreLabel = $this->getProductAttribute('special_price')->getStore
                         <?php if ($msrp != "FREE"): ?>
                             <p class="msrp">
                                 <span class="msrp-label"><?php echo $this->__('Retail:') ?></span>
-                                <span class="price" id="msrp"><?php echo $msrp ?></span>
+                                <span id="msrp"><?php echo $msrp ?></span>
                             </p>
                         <?php endif; ?>
                         <p class="our-price
@@ -246,7 +246,12 @@ $_specialPriceStoreLabel = $this->getProductAttribute('special_price')->getStore
             $msrpReplace = array("$", ",");
             $msrpInt = str_replace($msrpReplace, '', $msrp);
             $_msrpPrice = (float)$msrpInt;
-            $_savePercent = 100 - round(($_finalPrice / $_msrpPrice)*100); ?>
+            if($_msrpPrice == 0){
+                $_savePercent = 100;
+            } else {
+                $_savePercent = 100 - round(($_finalPrice / $_msrpPrice)*100);
+            }
+            ?>
             <?php if($msrp != "FREE"): ?>
                 <p class="percent-off">
                     <span class="label"><?php echo $this->__('Save') ?></span>
@@ -415,8 +420,10 @@ $_specialPriceStoreLabel = $this->getProductAttribute('special_price')->getStore
             <p class="msrp <?php
                     //insert extra class depening on no. of digits in final price
                     $numberOfMSRPDigits = strlen($msrp);
-                    if ($numberOfMSRPDigits > 3) {
+                    if ($numberOfMSRPDigits > 3 && $numberOfMSRPDigits < 5) {
                         echo "more-than-three-digits-msrp";
+                    } elseif ($numberOfMSRPDigits > 5) {
+                        echo "more-than-five-digits-msrp";
                     };
                 ?>">
                 <span class="msrp-label"><?php echo $this->__('Retail*:') ?></span>
@@ -466,7 +473,11 @@ $_specialPriceStoreLabel = $this->getProductAttribute('special_price')->getStore
     <?php if($_finalPrice != 0 && $msrp != "FREE"): ?>
         <?php
             $_msrpPrice = (float)$msrpInt;
-            $_savePercent = 100 - round(($_finalPrice / $_msrpPrice)*100); 
+            if($_msrpPrice == 0){
+                $_savePercent = 100;
+            } else {
+                $_savePercent = 100 - round(($_finalPrice / $_msrpPrice)*100);
+            }
         ?>
             <p class="percent-off">
                 <span class="label"><?php echo $this->__('Save') ?></span>
@@ -476,8 +487,14 @@ $_specialPriceStoreLabel = $this->getProductAttribute('special_price')->getStore
             </p>
     <?php elseif($specialPrice == 0): ?>
         <?php
+
             $_msrpPrice = (float)$msrpInt;
-            $_savePercent = 100 - round(($specialPrice / $_msrpPrice)*100); 
+            if($_msrpPrice == 0){
+                $_savePercent = 100;
+            } else {
+                $_savePercent = 100 - round(($specialPrice / $_msrpPrice)*100); 
+            }
+            
         ?>
         <p class="percent-off">
                 <span class="label"><?php echo $this->__('Save*') ?></span>
