@@ -12,7 +12,7 @@ class Directshop_FraudDetection_Model_Observer
 	    
     public function salesOrderAfterSave(Varien_Event_Observer $observer)
     {
-    	$order = $observer->getOrder();
+    	$order = $observer->getEvent()->getOrder();
     	if ($res = $order->getFraudDataTemp())
     	{
     		if ($order->getId())
