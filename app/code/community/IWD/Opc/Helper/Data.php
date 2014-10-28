@@ -87,11 +87,12 @@ class IWD_Opc_Helper_Data extends Mage_Core_Helper_Abstract{
 	}
 	
 	
-	public function getPayPalExpressUrl(){
+    public function getPayPalExpressUrl($token){
+		
 		if (Mage::getStoreConfig(self::XML_PAYPAL_LIGHTBOX_SANDBOX)){
-			return 'https://www.sandbox.paypal.com/checkoutnow?token=';
+			return 'https://www.sandbox.paypal.com/checkoutnow?token='.$token;
 		}else{
-			return 'https://www.paypal.com/checkoutnow?token=';
+			return 'https://www.paypal.com/checkoutnow?token='.$token;
 		}
 	
 	}
@@ -153,11 +154,19 @@ class IWD_Opc_Helper_Data extends Mage_Core_Helper_Abstract{
 			$use_method = $selected_method_code;
 			if($free_available)
 				$use_method = $free_available;
+
 			return $use_method;
 		}
 		//////
 		
 		return -1; // no changes 
 	}	
+	
+	public function getGrandTotal(){
+	    $quote = Mage::getModel('checkout/session')->getQuote();
+	    $total = $quote->getGrandTotal();
+	     
+	    return Mage::helper('checkout')->formatPrice($total);
+	}
 	
 }

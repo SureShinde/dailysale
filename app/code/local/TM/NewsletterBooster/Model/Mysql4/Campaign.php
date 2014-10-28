@@ -128,7 +128,7 @@ class TM_NewsletterBooster_Model_Mysql4_Campaign extends Mage_Core_Model_Resourc
         }
         return false;
     }
-
+    
     public function getFrontendCampaigns()
     {
         $select = $this->_getReadAdapter()->select()

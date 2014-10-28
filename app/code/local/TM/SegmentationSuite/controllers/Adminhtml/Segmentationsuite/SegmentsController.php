@@ -103,10 +103,8 @@ class TM_SegmentationSuite_Adminhtml_Segmentationsuite_SegmentsController
             try {
 
                 $model = Mage::getModel('segmentationsuite/segments');
-                if (array_key_exists('segment_id', $data)) {
+                if ($data['segment_id']) {
                     $model->load($data['segment_id']);
-                } else {
-                  $model->setId(null);
                 }
                 $data['conditions'] = $data['rule']['conditions'];
                 if (isset($data['rule'])) {
@@ -136,12 +134,7 @@ class TM_SegmentationSuite_Adminhtml_Segmentationsuite_SegmentsController
             } catch (Exception $e) {
                 Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
                 Mage::getSingleton('adminhtml/session')->setPageData($data);
-                if (array_key_exists('segment_id', $data)) {
-                    $this->_redirect('*/*/edit', array('id' => $data['segment_id']));
-                } else {
-                    $this->_redirect('*/*/edit');
-                }
-
+                $this->_redirect('*/*/edit', array('id' => $data['segment_id']));
                 return;
             }
         }
