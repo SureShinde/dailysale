@@ -223,6 +223,9 @@ class IWD_Opc_JsonController extends Mage_Core_Controller_Front_Action{
 				$data['email'] = trim($data['email']);
 			}
 
+			// get grand totals before
+			$totals_before = $this->_getSession()->getQuote()->getGrandTotal();
+			
 			/// get list of available methods before billing changes
 			$methods_before = Mage::helper('opc')->getAvailablePaymentMethods();
 			///////
@@ -239,7 +242,7 @@ class IWD_Opc_JsonController extends Mage_Core_Controller_Front_Action{
 				$data = $this->getRequest()->getPost('billing', array());
 				if (isset($data['use_for_shipping']) && $data['use_for_shipping'] == 1) {				
 					$result['shipping'] = $this->_getShippingMethodsHtml();
-				}				
+				}
 
 				/// get list of available methods after discount changes
 				$methods_after = Mage::helper('opc')->getAvailablePaymentMethods();
@@ -260,6 +263,12 @@ class IWD_Opc_JsonController extends Mage_Core_Controller_Front_Action{
 				}
 				/////
 
+				// get grand totals after
+				$totals_after = $this->_getSession()->getQuote()->getGrandTotal();
+				
+				if($totals_before != $totals_after)
+					$result['reload_totals'] = true;
+				
 			}else{
 				
 				$responseData['error'] = true;
@@ -282,29 +291,168 @@ class IWD_Opc_JsonController extends Mage_Core_Controller_Front_Action{
 		//TODO create response if post not exist
 		$responseData = array();
 	
-		if ($this->getRequest()->isPost()) {
+		$result = array();
+
+		if ($this->getRequest()->isPost()) {			
+			// get grand totals after
+			$totals_before = $this->_getSession()->getQuote()->getGrandTotal();
+
 			$data = $this->getRequest()->getPost('shipping', array());
 			$customerAddressId = $this->getRequest()->getPost('shipping_address_id', false);
 			$result = $this->getOnepage()->saveShipping($data, $customerAddressId);
 
+			if (isset($result['error'])){
+				$responseData['error'] = true;
+				$responseData['message'] = $result['message'];
+				$responseData['messageBlock'] = 'shipping';
+			}else{
+					
+				$responseData['shipping'] = $this->_getShippingMethodsHtml();
+				
+				// get grand totals after
+				$totals_after = $this->_getSession()->getQuote()->getGrandTotal();
+				
+				if($totals_before != $totals_after)
+					$responseData['reload_totals'] = true;
+			}
 		}
 
-		if (isset($resultBilling['error'])){
-			$responseData['error'] = true;
-			$responseData['message'] = $result['message'];
-			$responseData['messageBlock'] = 'shipping';
-		}else{
-				
-			$responseData['shipping'] = $this->_getShippingMethodsHtml();
-			
-		}
-	
 		$this->getResponse()->setHeader('Content-type','application/json', true);
 		$this->getResponse()->setBody(Mage::helper('core')->jsonEncode($responseData));
 	
 	}
 	
+	/**
+	 * reload available shipping methods based on address
+	 */
+	public function reloadShippingsPaymentsAction(){
+	
+		if ($this->_expireAjax()) {
+			return;
+		}
+	
+		if ($this->getRequest()->isPost()) {
+			
+			$result = array();
+			
+			$address_type = false;
+			$billing = $this->getRequest()->getPost('billing', array());
+			if(!empty($billing) && is_array($billing) && isset($billing['address_id'])){
+				$address_type = 'billing';
+				$data = $billing;
+			}
+			else{
+				$address_type = 'shipping';
+				$data = $this->getRequest()->getPost('shipping', array());
+			}
 
+			// get grand totals after
+			$totals_before = $this->_getSession()->getQuote()->getGrandTotal();
+			
+			/// get list of available methods before billing changes
+			$methods_before = Mage::helper('opc')->getAvailablePaymentMethods();
+			///////
+					
+			$customerAddressId = $this->getRequest()->getPost($address_type.'_address_id', false);
+			$cust_addr_id = $customerAddressId;
+	
+			if($address_type == 'billing')
+				$address = $this->getOnepage()->getQuote()->getBillingAddress();
+			else
+				$address = $this->getOnepage()->getQuote()->getShippingAddress();
+			
+			if (!empty($cust_addr_id))
+			{
+				$cust_addr = Mage::getModel('customer/address')->load($cust_addr_id);
+				if ($cust_addr->getId())
+				{
+					if ($cust_addr->getCustomerId() != $this->getOnepage()->getQuote()->getCustomerId())
+						$result = array('error' => 1, 'message' => Mage::helper('checkout')->__('Customer Address is not valid.'));
+					else
+						$address->importCustomerAddress($cust_addr);
+				}
+			}
+			else
+			{
+				unset($data['address_id']);
+				$address->addData($data);
+			}
+
+			if(!isset($result['error'])){
+				$address->implodeStreetAddress();
+				
+				$ufs = 0;
+				
+				if($address_type == 'billing'){
+					if (!$this->getOnepage()->getQuote()->isVirtual())
+					{
+						if(isset($data['use_for_shipping']))
+							$ufs = (int) $data['use_for_shipping'];
+					
+						switch($ufs)
+						{
+							case 0:
+								$ship = $this->getOnepage()->getQuote()->getShippingAddress();
+								$ship->setSameAsBilling(0);
+								break;
+							case 1:
+								$bill = clone $address;
+								$bill->unsAddressId()->unsAddressType();
+								$ship = $this->getOnepage()->getQuote()->getShippingAddress();
+								$ship_method = $ship->getShippingMethod();
+								$ship->addData($bill->getData());
+								$ship->setSameAsBilling(1)->setShippingMethod($ship_method)->setCollectShippingRates(true);
+								break;
+						}
+					}
+				}
+				else						
+					$address->setCollectShippingRates(true);
+
+				$this->getOnepage()->getQuote()->collectTotals()->save();
+
+				if ($this->getOnepage()->getQuote()->isVirtual())
+					$result['isVirtual'] = true;
+	
+				if(($address_type == 'billing' && $ufs == 1) || $address_type == 'shipping')
+					$result['shipping'] = $this->_getShippingMethodsHtml();
+	
+				/// get list of available methods after discount changes
+				$methods_after = Mage::helper('opc')->getAvailablePaymentMethods();
+				///////
+
+				// check if need to reload payment methods
+				$use_method = Mage::helper('opc')->checkUpdatedPaymentMethods($methods_before, $methods_after);
+
+				if($use_method != -1)
+				{
+					if(empty($use_method))
+						$use_method = -1;
+						
+					// just save new method, (because retuned html is empty)
+					$result['payments'] = $this->_getPaymentMethodsHtml($use_method, true);
+					// and need to send reload method request
+					$result['reload_payments'] = true;
+				}
+				else{
+					// get grand totals after
+					$totals_after = $this->_getSession()->getQuote()->getGrandTotal();
+					
+					if($totals_before != $totals_after)
+						$result['reload_totals'] = true;
+				}
+				/////
+	
+			}else{
+				$result['error'] = true;
+				$result['message'] = $result['message'];
+			}
+			
+			$this->getResponse()->setHeader('Content-type','application/json', true);
+			$this->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
+		}
+	}
+	
 	
 	/**
 	 * Shipping method save action
@@ -334,6 +482,7 @@ class IWD_Opc_JsonController extends Mage_Core_Controller_Front_Action{
 				$this->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
 	
 				$responseData['review'] = $this->_getReviewHtml();
+				$responseData['grandTotal'] = Mage::helper('opc')->getGrandTotal();
 				/*$result['update_section'] = array(
 						'name' => 'payment-method',
 						'html' => $this->_getPaymentMethodsHtml()
@@ -354,6 +503,7 @@ class IWD_Opc_JsonController extends Mage_Core_Controller_Front_Action{
 		}
 		$responseData = array();
 		$responseData['review'] = $this->_getReviewHtml();
+		$responseData['grandTotal'] = Mage::helper('opc')->getGrandTotal();
 		$this->getResponse()->setHeader('Content-type','application/json', true);
 		$this->getResponse()->setBody(Mage::helper('core')->jsonEncode($responseData));
 	}
@@ -394,7 +544,7 @@ class IWD_Opc_JsonController extends Mage_Core_Controller_Front_Action{
 				$this->loadLayout('checkout_onepage_review');
 				
 				$result['review'] = $this->_getReviewHtml();
-				
+				$result['grandTotal'] = Mage::helper('opc')->getGrandTotal();
 			}
 			if ($redirectUrl) {
 				$result['redirect'] = $redirectUrl;

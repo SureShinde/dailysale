@@ -268,7 +268,7 @@ class Mage_SalesRule_Model_Observer
      */
     public function addSalesRuleNameToOrder($observer)
     {
-        $order = $observer->getOrder();
+        $order = $observer->getEvent()->getOrder();
         $couponCode = $order->getCouponCode();
 
         if (empty($couponCode)) {
