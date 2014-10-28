@@ -16,5 +16,9 @@ a.soldout-btn:hover{
 }
 
 .btn-proceed-checkout, .apply-coupon {
-	background: #1b75bb;
+	background: #1b75bb !important;
+}
+ 
+button{
+	background: #1b75bb !important;
 }
