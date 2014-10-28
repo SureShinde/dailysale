@@ -86,6 +86,10 @@ body{
 			text-decoration: underline;
 		}
 	}
+
+	.button{
+		@include clairsoft-default-button;
+	}
 }
 
 .page{
