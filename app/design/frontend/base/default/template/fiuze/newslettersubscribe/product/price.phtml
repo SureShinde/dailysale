@@ -212,9 +212,9 @@ $_specialPriceStoreLabel = $this->getProductAttribute('special_price')->getStore
                             $specialPrice = $_coreHelper->formatPrice($_finalPrice, false);
                         ?>
                         <?php if ($msrp != "FREE"): ?>
-                            <p class="msrp">
-                                <span class="msrp-label"><?php echo $this->__('Retail:') ?></span>
-                                <span id="msrp"><?php echo $msrp ?></span>
+                            <p class="msrp" style="font-family:arial;font-size: 14px;color: #1b75bb;position: absolute;width: 100%;top: 40px;text-align: center;font-style: italic;margin: 3px 0 0 -5px;">
+                                <span class="msrp-label" style="font-weight:normal;font-family:Arial"><?php echo $this->__('Retail:') ?></span>
+                                <span id="msrp" style="font-weight:normal;color: #1B75BB;font-size: 14px;font-style: italic;text-align: center;"><?php echo $msrp ?></span>
                             </p>
                         <?php endif; ?>
                         <p class="our-price
@@ -435,9 +435,9 @@ $_specialPriceStoreLabel = $this->getProductAttribute('special_price')->getStore
                     } elseif ($numberOfMSRPDigits > 5) {
                         echo "more-than-five-digits-msrp";
                     };
-                ?>">
-                <span class="msrp-label"><?php echo $this->__('Retail*:') ?></span>
-                <span class="price" id="msrp" style="font-size: 26px;padding-top: 0;margin-top: 0;display: block;text-align: center;width: 90px;font-weight: bold;white-space:nowrap !important;color:#FFF;font-family:arial"><?php echo $msrp ?></span>
+                ?>" style="font-family:arial;font-size: 14px;color: #1b75bb;position: absolute;width: 100%;top: 40px;text-align: center;font-style: italic;margin: 3px 0 0 -5px; <?php if ($numberOfMSRPDigits > 5) echo 'font-size: 13px;margin: 5px 0 0 -10px;';?> <?php if ($numberOfMSRPDigits > 3 && $numberOfMSRPDigits < 5) echo 'font-size: 14px;margin: 5px 0 0 -9px;';?> ">
+                <span class="msrp-label" style="font-weight:normal;font-family:Arial"><?php echo $this->__('Retail*:') ?></span>
+                <span class="price" id="msrp" style="color: #1B75BB;font-size: 14px;font-style: italic;text-align: center;font-weight:normal;font-family:arial"><?php echo $msrp ?></span>
             </p>
             <?php endif ?>
 
