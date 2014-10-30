@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Sashas_Ordersuccesspage>
-            <active>false</active>
+            <active>true</active>
             <codePool>local</codePool>
         </Sashas_Ordersuccesspage>
     </modules>
