@@ -12,14 +12,24 @@
  *  Email: sales@paradoxlabs.com
  *
  * @category	ParadoxLabs
- * @package		AuthorizeNetCim
+ * @package		TokenBase
  * @author		Ryan Hoerr <magento@paradoxlabs.com>
  * @license		http://store.paradoxlabs.com/license.html
  */
 
-class ParadoxLabs_AuthorizeNetCim_Model_Config_Version extends Mage_Core_Model_Config_Data
-{	
-	protected function _afterLoad() {
-		$this->setValue( (string)Mage::getConfig()->getNode()->modules->ParadoxLabs_AuthorizeNetCim->version );
+class ParadoxLabs_TokenBase_Block_Adminhtml_Config_Renderer_ApiTest extends Varien_Data_Form_Element_Label
+{
+	public function getElementHtml()
+	{
+		$html = parent::getElementHtml();
+		
+		if( strpos( $html, 'success' ) !== false ) {
+			$html = '<strong style="color:#0a0;">' . $html . '</strong>';
+		}
+		else {
+			$html = '<strong class="error">' . $html . '</strong>';
+		}
+		
+		return $html;
 	}
 }

@@ -1,8 +1,8 @@
-<?xml version="1.0"?>
+<?xml version="1.0" ?>
 <config>
 	<modules>
 		<ParadoxLabs_AuthorizeNetCim>
-			<version>1.4.1.20140512</version>
+			<version>2.0.1.20141029</version>
 		</ParadoxLabs_AuthorizeNetCim>
 	</modules>
 	<global>
@@ -11,24 +11,24 @@
 				<class>ParadoxLabs_AuthorizeNetCim_Block</class>
 			</authnetcim>
 		</blocks>
+		<helpers>
+			<authnetcim>
+				<class>ParadoxLabs_AuthorizeNetCim_Helper</class>
+			</authnetcim>
+		</helpers>
 		<models>
 			<authnetcim>
 				<class>ParadoxLabs_AuthorizeNetCim_Model</class>
-                <resourceModel>authnetcim_mysql4</resourceModel>
+				<resourceModel>authnetcim_mysql4</resourceModel>
 			</authnetcim>
-            <authnetcim_mysql4>
-                <class>ParadoxLabs_AuthorizeNetCim_Model_Mysql4</class>
-                <entities>
-                    <card>
-                        <table>authnetcim_card_exclude</table>
-                    </card>
-                </entities>
-            </authnetcim_mysql4>
-			<sales>
-				<rewrite>
-					<service_quote>ParadoxLabs_AuthorizeNetCim_Model_Quote</service_quote>
-				</rewrite>
-			</sales>
+			<authnetcim_mysql4>
+				<class>ParadoxLabs_AuthorizeNetCim_Model_Mysql4</class>
+				<entities>
+					<card>
+						<table>authnetcim_card_exclude</table>
+					</card>
+				</entities>
+			</authnetcim_mysql4>
 		</models>
 		<resources>
 			<authnetcim_setup>
@@ -40,6 +40,15 @@
 					<use>core_setup</use>
 				</connection>
 			</authnetcim_setup>
+			<authnetcim_address_setup>
+				<setup>
+					<module>ParadoxLabs_AuthorizeNetCim</module>
+					<class>Mage_Customer_Model_Entity_Setup</class>
+				</setup>
+				<connection>
+					<use>core_setup</use>
+				</connection>
+			</authnetcim_address_setup>
 			<authnetcim_write>
 				<connection>
 					<use>core_write</use>
@@ -52,105 +61,71 @@
 			</authnetcim_read>
 		</resources>
 		<events>
-			<sales_order_creditmemo_refund>
+			<tokenbase_before_load_active_cards>
 				<observers>
-					<authnetcim_refund>
-						<class>authnetcim/observer</class>
-						<method>processRefund</method>
-					</authnetcim_refund>
+					<authnetcim_loaded_cards>
+						<class>authnetcim/observer_legacy</class>
+						<method>convertStoredData</method>
+					</authnetcim_loaded_cards>
 				</observers>
-			</sales_order_creditmemo_refund>
+			</tokenbase_before_load_active_cards>
+			<tokenbase_before_load_payment_info>
+				<observers>
+					<authnetcim_loaded_cards>
+						<class>authnetcim/observer_legacy</class>
+						<method>convertStoredData</method>
+					</authnetcim_loaded_cards>
+				</observers>
+			</tokenbase_before_load_payment_info>
 		</events>
+		<tokenbase>
+			<methods>
+				<authnetcim />
+			</methods>
+		</tokenbase>
 	</global>
-	<crontab>
-		<jobs>
-			<authnetcim_clean_old>
-				<schedule>
-					<cron_expr>0 5 * * *</cron_expr>
-				</schedule>
-				<run>
-					<model>authnetcim/payment::cleanOldCards</model>
-				</run>
-			</authnetcim_clean_old>
-		</jobs>
-	</crontab>
 	<default>
 		<payment>
 			<authnetcim>
 				<active>0</active>
 				<title>Credit Card (Authorize.Net CIM)</title>
 				<cctypes>AE,VI,MC,DI</cctypes>
-				<login backend_model="adminhtml/system_config_backend_encrypted"/>
-				<model>authnetcim/payment</model>
+				<login backend_model="adminhtml/system_config_backend_encrypted" />
+				<model>authnetcim/method</model>
 				<order_status>pending</order_status>
 				<payment_action>authorize</payment_action>
-				<test>1</test>
-				<debug>1</debug>
+				<test>0</test>
+				<useccv>1</useccv>
 				<validation_mode>liveMode</validation_mode>
-				<trans_key backend_model="adminhtml/system_config_backend_encrypted"/>
+				<trans_key backend_model="adminhtml/system_config_backend_encrypted" />
 				<allowspecific>0</allowspecific>
 				<currency>USD</currency>
 				<allow_unsaved>1</allow_unsaved>
 				<show_branding>0</show_branding>
 			</authnetcim>
+			<authnetcim_advanced>
+				<require_ccv>0</require_ccv>
+				<send_shipping_address>0</send_shipping_address>
+				<send_line_items>1</send_line_items>
+			</authnetcim_advanced>
 		 </payment>
 	</default>
 	<frontend>
-		<routers>
-			<authnetcim>
-				<use>standard</use>
-				<args>
-					<module>ParadoxLabs_AuthorizeNetCim</module>
-					<frontName>authnetcim</frontName>
-				</args>
-			</authnetcim>
-		</routers>
-		<secure_url>
-			<authnetcim>/authnetcim/</authnetcim>
-		</secure_url>
 		<layout>
 			<updates>
-				<authnetcim>
-					<file>authnetcim.xml</file>
+				<authnetcim module="ParadoxLabs_AuthorizeNetCim">
+					<file>ParadoxLabs_AuthorizeNetCim.xml</file>
 				</authnetcim>
 			</updates>
 		</layout>
 	</frontend>
-	<admin>
-		<routers>
-			<adminhtml>
-				<args>
-					<modules>
-						<authnetcim before="Mage_Adminhtml">ParadoxLabs_AuthorizeNetCim_Adminhtml</authnetcim>
-					</modules>
-				</args>
-			</adminhtml>
-		</routers>
-	</admin>
 	<adminhtml>
 		<layout>
 			<updates>
-				<authnetcim>
-					<file>authnetcim.xml</file>
+				<authnetcim module="ParadoxLabs_AuthorizeNetCim">
+					<file>ParadoxLabs_AuthorizeNetCim.xml</file>
 				</authnetcim>
 			</updates>
 		</layout>
-		<acl>
-			<resources>
-				<all>
-					<title>Allow Everything</title>
-				</all>
-			</resources>
-		</acl>
-		<events>
-			<controller_action_predispatch>
-				<observers>
-					<authnetcim_notification>
-						<class>authnetcim/feed</class>
-						<method>observe</method>
-					</authnetcim_notification>
-				</observers>
-			</controller_action_predispatch>
-		</events>
 	</adminhtml>
 </config>

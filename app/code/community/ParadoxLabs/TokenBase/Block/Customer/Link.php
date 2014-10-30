@@ -12,14 +12,19 @@
  *  Email: sales@paradoxlabs.com
  *
  * @category	ParadoxLabs
- * @package		AuthorizeNetCim
+ * @package		TokenBase
  * @author		Ryan Hoerr <magento@paradoxlabs.com>
  * @license		http://store.paradoxlabs.com/license.html
  */
 
-class ParadoxLabs_AuthorizeNetCim_Model_Config_Version extends Mage_Core_Model_Config_Data
-{	
-	protected function _afterLoad() {
-		$this->setValue( (string)Mage::getConfig()->getNode()->modules->ParadoxLabs_AuthorizeNetCim->version );
+class ParadoxLabs_TokenBase_Block_Customer_Link extends Mage_Core_Block_Template
+{
+	public function addProfileLink()
+	{
+		$navigation	= $this->getParentBlock();
+		
+		if( $navigation && count( Mage::helper('tokenbase')->getActiveMethods() ) > 0 ) {
+			$navigation->addLink( 'tokenbase', 'customer/paymentinfo', $this->__("My Payment Data"), array( '_secure' => true ) );
+		}
 	}
 }
