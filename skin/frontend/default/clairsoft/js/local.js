@@ -102,6 +102,9 @@ $j(document).ready(function(){
 
 	$j("a[title='Sign Up']").click(function(e){
 		e.preventDefault();
+		$j('html, body').animate({
+	        scrollTop: 0
+	      }, 'slow');
 		$j('#signin-modal').addClass('md-show');
 		//IWD.Signin.prepareLoginForm();
 		//$j('.login-form').hide();
