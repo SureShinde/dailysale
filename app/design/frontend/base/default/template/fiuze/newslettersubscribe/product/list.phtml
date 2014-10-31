@@ -23,31 +23,31 @@ $_helper = $this->helper('catalog/output');
     <?php  ?>
     <?php $_iterator=0; foreach ($_productCollection as $_product): ?>
         <?php if ($_iterator++%$_columnCount==0): ?>
-            <ul class="products-grid" style="font-family:Arial;width:960px; margin:0; padding:0; list-style-type: none;">
+            <!-- <ul class="products-grid"> -->
         <?php endif; ?>
-                <li class="item" style="font-family:Arial;float: left; width: 298px;height: 435px; margin: 0 29px 25px 0; padding: 0; border: 1px solid #CCC;-moz-border-radius-bottomleft: 4px;-webkit-border-bottom-left-radius: 4px;border-bottom-left-radius: 4px;-moz-border-radius-bottomright: 4px;-webkit-border-bottom-right-radius: 4px;border-bottom-right-radius: 4px; <?php if( $_iterator % $_columnCount==0 ): ?> margin-right:0;<?php endif; ?>">
-                    <div class="products-grid-image-container" style="font-family:Arial;position: relative; box-sizing:border-box;">
-                        <ul class="alerts-container" style="font-family:Arial;position: absolute; right: -1px; padding-left: 0;margin-bottom:1px;bottom: 0;">
+                <li class="item">
+                    <div class="products-grid-image-container">
+                        <ul class="alerts-container">
                             <!-- ** Inventory qty display ** -->
                             <?php 
                             if($_product->isSaleable()){
                                 $productQty =  (int)Mage::getModel('cataloginventory/stock_item')->loadByProduct($_product)->getQty();
                                 if($productQty == 0){
                             ?>
-                                    <li class="alert-banner soldout" style="font-family:Arial;clear: right;color: #FFFFFF;display: table;float: right;font-size: 12px;font-weight: bold;margin-bottom: 0;padding: 6px 12px 6px 14px;text-transform: uppercase;background: #6C6C6C;font-family:Arial;">
+                                    <li class="alert-banner soldout">
                                         <?php echo $this->__('Soldout') ?>
                                     </li> 
                                 <?php } elseif ($productQty == 1){?>
-                                    <li class="alert-banner hotitem" style="font-family:Arial;clear: right;color: #FFFFFF;display: table;float: right;font-size: 12px;font-weight: bold;margin-bottom: 0;padding: 6px 12px 6px 14px;text-transform: uppercase;background:#F26522;font-family:Arial;">
+                                    <li class="alert-banner hotitem">
                                         <?php echo $this->__('Hurry! Just ') ?><?php echo $productQty; ?><?php echo $this->__(' left!') ?>
                                     </li>
                                 <?php } elseif ($productQty <= 10){?>
-                                    <li class="alert-banner hotitem" style="font-family:Arial;clear: right;color: #FFFFFF;display: table;float: right;font-size: 12px;font-weight: bold;margin-bottom: 0;padding: 6px 12px 6px 14px;text-transform: uppercase;background:#F26522;font-family:Arial;">
+                                    <li class="alert-banner hotitem">
                                         <?php echo $this->__('Only ') ?><?php echo $productQty; ?><?php echo $this->__(' left') ?>
                                     </li>
                                 <?php } ?>
                             <?php } else { ?>
-                                <li class="alert-banner soldout" style="font-family:Arial;clear: right;color: #FFFFFF;display: table;float: right;font-size: 12px;font-weight: bold;margin-bottom: 0;padding: 6px 12px 6px 14px;text-transform: uppercase;background: #6C6C6C">
+                                <li class="alert-banner soldout">
                                     <?php echo $this->__('Soldout') ?>
                                 </li>
                             <?php } ?>
@@ -60,12 +60,12 @@ $_helper = $this->helper('catalog/output');
 
                                 if (($now>=$newsFrom && $now<=$newsTo)||($now>=$newsFrom && $newsFrom!='' && $newsTo=='' )) {
                             ?>
-                                <li class="alert-banner newitem" style="font-family:Arial;clear: right;color: #FFFFFF;display: table;float: right;font-size: 12px;font-weight: bold;margin-bottom: 0;padding: 6px 12px 6px 14px;text-transform: uppercase;background:#ED1C24;font-family:arial;">New Item</li>
+                                <li class="alert-banner newitem">New Item</li>
                             <?php }?>
 
                         </ul> <!-- end alerts container -->
 
-                        <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image" style="font-family:Arial;border-bottom: 1px solid #CCC; display: block;width: 298px; height: 298px;margin:0 0 10px 0;">
+                        <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image">
                             <img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(298); ?>" width="298" height="298" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" />
                         </a>
                     </div> <!-- end grid image container -->
@@ -74,13 +74,13 @@ $_helper = $this->helper('catalog/output');
                         <?php //echo $this->getReviewsSummaryHtml($_product, 'short') ?>
                     <?php endif; ?>
 
-                    <div class="actions" style="font-family:Arial;position: relative; bottom: 12px;">
+                    <div class="actions">
                         <?php if($_product->isSaleable()): ?>
-                            <a class="view-deal-btn" href="<?php echo $_product->getProductUrl() ?>" style="font-family:Arial;float: right;border: 1px solid #cccccc !important;color: #898989;text-decoration: none;padding: 12px;-moz-border-radius: 4px / 4px;-webkit-border-radius: 4px 4px;border-radius: 4px / 4px;background-image: -moz-linear-gradient(#ffffff, #eeeeee);background-image: -webkit-linear-gradient(#ffffff, #eeeeee);background-image: linear-gradient(#ffffff, #eeeeee);margin: 10px 10px 0 0;position: relative;z-index: 97;">
+                            <a class="view-deal-btn" href="<?php echo $_product->getProductUrl() ?>">
                                 View Deal
                             </a>
                         <?php else: ?>
-                            <a class="soldout-btn" style="font-family:Arial;float: right;border: 1px solid #cccccc !important;color: #898989;text-decoration: none;padding: 12px 15px 12px 15px;margin: 25px 10px 0 0;position: relative;-moz-border-radius: 4px / 4px;-webkit-border-radius: 4px 4px;border-radius: 4px / 4px;background: white;margin: 10px 10px 0 0;padding: 12px;">
+                            <a class="soldout-btn">
                                 Sold Out
                             </a>
                         <?php endif; ?>
@@ -98,12 +98,12 @@ $_helper = $this->helper('catalog/output');
                     </div>
 
                     <?php echo $this->getPriceHtml($_product, true);?>
-                    <h2 class="product-index-description-container" style="font-family:Arial;height: 35px;overflow: hidden;margin-top: 5px;padding: 0px 12px 0 12px;color: #898989;font-size: 14px;position: absolute;width: 274px;font-weight: normal;font-family: arial;">
+                    <h2 class="product-index-description-container">
                         <?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
                     </h2>
                 </li>
         <?php if ($_iterator%$_columnCount==0 || $_iterator==$_collectionSize): ?>
-            </ul>
+            <!-- </ul> -->
         <?php endif ?>
     <?php endforeach ?>
 <?php endif; ?>
