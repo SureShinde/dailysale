@@ -1,35 +1,23 @@
 <?php
 /**
- * Authorize.Net CIM - checkout form block.
- *
  * Paradox Labs, Inc.
  * http://www.paradoxlabs.com
  * 717-431-3330
- *
- * Having a problem with the plugin?
- * Not sure what something means?
- * Need custom development?
- * Give us a call!
+ * 
+ * Need help? Open a ticket in our support system:
+ *  http://support.paradoxlabs.com
+ * 
+ * Want to customize or need help with your store?
+ *  Phone: 717-431-3330
+ *  Email: sales@paradoxlabs.com
  *
  * @category	ParadoxLabs
- * @package		ParadoxLabs_AuthorizeNetCim
- * @author		Ryan Hoerr <ryan@paradoxlabs.com>
+ * @package		AuthorizeNetCim
+ * @author		Ryan Hoerr <magento@paradoxlabs.com>
+ * @license		http://store.paradoxlabs.com/license.html
  */
 
-class ParadoxLabs_AuthorizeNetCim_Block_Form extends Mage_Payment_Block_Form_Cc
+class ParadoxLabs_AuthorizeNetCim_Block_Form extends ParadoxLabs_TokenBase_Block_Form
 {
-    protected function _construct()
-    {
-        parent::_construct();
-        $this->setTemplate('authorizenetcim/form.phtml');
-    }
-    
-    public function getPriorCards()
-    {
-    	if( Mage::getSingleton('authnetcim/payment')->isAvailable() ) {
-    		return Mage::getSingleton('authnetcim/payment')->getPaymentInfo();
-    	}
-    	
-    	return false;
-    }
+	
 }

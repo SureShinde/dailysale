@@ -1,62 +1,48 @@
 <?php
 /**
- * Authorize.Net CIM - payment info block
- *
  * Paradox Labs, Inc.
  * http://www.paradoxlabs.com
  * 717-431-3330
- *
- * Having a problem with the plugin?
- * Not sure what something means?
- * Need custom development?
- * Give us a call!
+ * 
+ * Need help? Open a ticket in our support system:
+ *  http://support.paradoxlabs.com
+ * 
+ * Want to customize or need help with your store?
+ *  Phone: 717-431-3330
+ *  Email: sales@paradoxlabs.com
  *
  * @category	ParadoxLabs
- * @package		ParadoxLabs_AuthorizeNetCim
- * @author		Ryan Hoerr <ryan@paradoxlabs.com>
+ * @package		AuthorizeNetCim
+ * @author		Ryan Hoerr <magento@paradoxlabs.com>
+ * @license		http://store.paradoxlabs.com/license.html
  */
 
-class ParadoxLabs_AuthorizeNetCim_Block_Info extends Mage_Payment_Block_Info_Cc
+class ParadoxLabs_AuthorizeNetCim_Block_Info extends ParadoxLabs_TokenBase_Block_Info
 {
-    /**
-     * Prepare credit card related payment info
-     *
-     * @param Varien_Object|array $transport
-     * @return Varien_Object
-     */
-    protected function _prepareSpecificInformation($transport = null)
-    {
-        if (null !== $this->_paymentSpecificInformation) {
-            return $this->_paymentSpecificInformation;
-        }
-        
-        $transport = Mage_Payment_Block_Info::_prepareSpecificInformation($transport);
-        $data = array();
-        
-        $ccType = $this->getCcTypeName();
-        if ( !empty( $ccType ) && $ccType != 'N/A' ) {
-            $data[Mage::helper('payment')->__('Credit Card Type')] = $ccType;
-        }
-        
-        // If this is an eCheck, show different info.
-        if ($this->getInfo()->getCcLast4()) {
-	        if( $this->getInfo()->getAdditionalInformation('method') == 'ECHECK' ) {
-	        	$data[Mage::helper('payment')->__('Paid By')] = Mage::helper('payment')->__('eCheck');
-	        	$data[Mage::helper('payment')->__('Account Number')] = sprintf( 'x-%s', $this->getInfo()->getCcLast4() );
-	        }
-	        else {
-            	$data[Mage::helper('payment')->__('Credit Card Number')] = sprintf( 'XXXX-%s', $this->getInfo()->getCcLast4() );
-            }
-        }
-        
-        // If this is admin, show different info.
+	protected function _prepareSpecificInformation($transport = null)
+	{
+		$transport	= parent::_prepareSpecificInformation($transport);
+		$data		= array();
+		
+		// If this is admin, show different info.
 		if( Mage::app()->getStore()->isAdmin() ) {
-			$avs = $this->getInfo()->getAdditionalInformation('avs_result_code');
+			$avs	= $this->getInfo()->getAdditionalInformation('avs_result_code');
+			$ccv	= $this->getInfo()->getAdditionalInformation('card_code_response_code');
+			$cavv	= $this->getInfo()->getAdditionalInformation('cavv_response_code');
 			
-			$data[Mage::helper('payment')->__('Transaction ID')] = $this->getInfo()->getAdditionalInformation('transaction_id');
-			$data[Mage::helper('payment')->__('AVS Response')] = ( !empty( $avs ) ? $avs : 'N/A' );
-        }
-        
-        return $transport->setData(array_merge($data, $transport->getData()));
-    }
+			if( !empty( $avs ) ) {
+				$data[Mage::helper('tokenbase')->__('AVS Response')]	= Mage::helper('authnetcim')->translateAvs( $avs );
+			}
+			
+			if( !empty( $ccv ) ) {
+				$data[Mage::helper('tokenbase')->__('CCV Response')]	= Mage::helper('authnetcim')->translateCcv( $ccv );
+			}
+			
+			if( !empty( $cavv ) ) {
+				$data[Mage::helper('tokenbase')->__('CAVV Response')]	= Mage::helper('authnetcim')->translateCavv( $cavv );
+			}
+		}
+		
+		return $transport->setData(array_merge($transport->getData(), $data));
+	}
 }

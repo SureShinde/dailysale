@@ -1,0 +1,145 @@
+<?xml version="1.0" ?>
+<config>
+	<modules>
+		<ParadoxLabs_TokenBase>
+			<version>2.0.1.20141029</version>
+		</ParadoxLabs_TokenBase>
+	</modules>
+	<global>
+		<blocks>
+			<tokenbase>
+				<class>ParadoxLabs_TokenBase_Block</class>
+			</tokenbase>
+		</blocks>
+		<helpers>
+			<tokenbase>
+				<class>ParadoxLabs_TokenBase_Helper</class>
+			</tokenbase>
+		</helpers>
+		<models>
+			<tokenbase>
+				<class>ParadoxLabs_TokenBase_Model</class>
+				<resourceModel>tokenbase_resource</resourceModel>
+			</tokenbase>
+			<tokenbase_resource>
+				<class>ParadoxLabs_TokenBase_Model_Resource</class>
+				<entities>
+					<card>
+						<table>paradoxlabs_stored_card</table>
+					</card>
+				</entities>
+			</tokenbase_resource>
+		</models>
+		<resources>
+			<tokenbase_setup>
+				<setup>
+					<module>ParadoxLabs_TokenBase</module>
+					<class>Mage_Sales_Model_Mysql4_Setup</class>
+				</setup>
+				<connection>
+					<use>core_setup</use>
+				</connection>
+			</tokenbase_setup>
+			<tokenbase_write>
+				<connection>
+					<use>core_write</use>
+				</connection>
+			</tokenbase_write>
+			<tokenbase_read>
+				<connection>
+					<use>core_read</use>
+				</connection>
+			</tokenbase_read>
+		</resources>
+		<events>
+			<!-- Add proper support for partial refunds. -->
+			<sales_order_creditmemo_refund>
+				<observers>
+					<tokenbase_refund>
+						<class>tokenbase/observer_refund</class>
+						<method>processRefund</method>
+					</tokenbase_refund>
+				</observers>
+			</sales_order_creditmemo_refund>
+		</events>
+		<fieldsets>
+			<sales_convert_quote_payment>
+				<tokenbase_id>
+					<to_order_payment>*</to_order_payment>
+				</tokenbase_id>
+			</sales_convert_quote_payment>
+			<sales_convert_order_payment>
+				<tokenbase_id>
+					<to_quote_payment>*</to_quote_payment>
+				</tokenbase_id>
+			</sales_convert_order_payment>
+		</fieldsets>
+		<!-- Define implementing payment methods - each method will add its entry to this. -->
+		<!-- The method key should match its configuration path and shortcode: payment/{code} -->
+		<tokenbase>
+			<methods />
+		</tokenbase>
+	</global>
+	<crontab>
+		<jobs>
+			<!-- Run maintenance operations regarding stored payment data. -->
+			<tokenbase_clean>
+				<schedule>
+					<cron_expr>0 5 * * *</cron_expr>
+				</schedule>
+				<run>
+					<model>tokenbase/cron_clean::cleanData</model>
+				</run>
+			</tokenbase_clean>
+		</jobs>
+	</crontab>
+	<frontend>
+		<routers>
+			<!-- Attach our account management page onto the Customer module. -->
+			<customer>
+				<args>
+					<modules>
+						<ParadoxLabs_TokenBase before="Mage_Customer">ParadoxLabs_TokenBase_Customer</ParadoxLabs_TokenBase>
+					</modules>
+				</args>
+			</customer>
+		</routers>
+		<layout>
+			<updates>
+				<tokenbase module="ParadoxLabs_TokenBase">
+					<file>ParadoxLabs_TokenBase.xml</file>
+				</tokenbase>
+			</updates>
+		</layout>
+	</frontend>
+	<admin>
+		<routers>
+			<adminhtml>
+				<args>
+					<modules>
+						<tokenbase before="Mage_Adminhtml">ParadoxLabs_TokenBase_Adminhtml</tokenbase>
+					</modules>
+				</args>
+			</adminhtml>
+		</routers>
+	</admin>
+	<adminhtml>
+		<layout>
+			<updates>
+				<tokenbase module="ParadoxLabs_TokenBase">
+					<file>ParadoxLabs_TokenBase.xml</file>
+				</tokenbase>
+			</updates>
+		</layout>
+		<events>
+			<controller_action_predispatch>
+				<observers>
+					<tokenbase_notification>
+						<class>tokenbase/observer_feed</class>
+						<method>observe</method>
+					</tokenbase_notification>
+				</observers>
+			</controller_action_predispatch>
+		</events>
+	</adminhtml>
+</config>

@@ -19,12 +19,12 @@
 
 $this->startSetup();
 
-$this->addAttribute('customer', 'authnetcim_profile_id', array(
-	'label'				=> 'Authorize.Net CIM: Profile ID',
-	'type'				=> 'varchar',
+$this->addAttribute('customer', 'authnetcim_profile_version', array(
+	'label'				=> 'Authorize.Net CIM: Profile version (for updating legacy data)',
+	'type'				=> 'int',
 	'input'				=> 'text',
-	'default'			=> '',
-	'position'			=> 70,
+	'default'			=> '100',
+	'position'			=> 71,
 	'visible'			=> true,
 	'required'			=> false,
 	'user_defined'		=> true,
@@ -32,19 +32,18 @@ $this->addAttribute('customer', 'authnetcim_profile_id', array(
 	'filterable'		=> false,
 	'comparable'		=> false,
 	'visible_on_front'	=> false,
-	'unique'			=> false
+	'unique'			=> false,
 ));
 
-
-$table = $this->getTable('authnetcim/card');
-
-$this->run("CREATE TABLE IF NOT EXISTS {$table} (
-	id int auto_increment primary key,
-	customer_id int,
-	profile_id int,
-	payment_id int,
-	added varchar(255)
-);");
-
+$this->addAttribute('customer_address', 'authnetcim_shipping_id', array(
+	'type'				=> 'varchar',
+	'input'				=> 'text',
+	'label'				=> 'Authorize.Net CIM: Shipping Address ID',
+	'global'			=> true,
+	'visible'			=> false,
+	'required'			=> false,
+	'user_defined'		=> true,
+	'visible_on_front'	=> false,
+));
 
 $this->endSetup();

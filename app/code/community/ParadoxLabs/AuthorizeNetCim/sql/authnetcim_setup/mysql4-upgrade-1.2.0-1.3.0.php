@@ -1,21 +1,21 @@
 <?php
 /**
- * Authorize.Net CIM - Installation script.
- *
  * Paradox Labs, Inc.
  * http://www.paradoxlabs.com
  * 717-431-3330
- *
- * Having a problem with the plugin?
- * Not sure what something means?
- * Need custom development?
- * Give us a call!
+ * 
+ * Need help? Open a ticket in our support system:
+ *  http://support.paradoxlabs.com
+ * 
+ * Want to customize or need help with your store?
+ *  Phone: 717-431-3330
+ *  Email: sales@paradoxlabs.com
  *
  * @category	ParadoxLabs
- * @package		ParadoxLabs_AuthorizeNetCim
- * @author		Ryan Hoerr <ryan@paradoxlabs.com>
+ * @package		AuthorizeNetCim
+ * @author		Ryan Hoerr <magento@paradoxlabs.com>
+ * @license		http://store.paradoxlabs.com/license.html
  */
-
 
 $this->startSetup();
 
@@ -31,4 +31,4 @@ $this->run("CREATE TABLE IF NOT EXISTS {$table} (
 
 $this->endSetup();
 
-Mage::log( 'Authorize.net CIM - Updated to 1.3', null, 'authnetcim.log' );
+Mage::helper('tokenbase')->log( 'authnetcim', 'Authorize.net CIM - Updated to 1.3' );
