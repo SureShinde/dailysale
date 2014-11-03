@@ -1722,6 +1722,16 @@ ul.tabs {
     display: block !important; }
 
 /* line 42, ../sass/checkout.scss */
+.opc-wrapper-opc a {
+  color: #1b75bb; }
+  /* line 45, ../sass/checkout.scss */
+  .opc-wrapper-opc a:hover {
+    text-decoration: none; }
+  /* line 49, ../sass/checkout.scss */
+  .opc-wrapper-opc a:visited {
+    text-decoration: underline; }
+
+/* line 54, ../sass/checkout.scss */
 .opc-wrapper-opc .discount-block .button {
   border: 1px solid #196fb1 !important;
   color: white;
@@ -1744,17 +1754,17 @@ ul.tabs {
     color: #eeeeee;
     text-shadow: none; }
 
-/* line 46, ../sass/checkout.scss */
+/* line 58, ../sass/checkout.scss */
 .opc-wrapper-opc .discount-block .button span {
   background: none !important;
   background-color: transparent !important;
   line-height: 100% !important; }
 
-/* line 53, ../sass/checkout.scss */
+/* line 65, ../sass/checkout.scss */
 .checkout-onepage-success h2 {
   font-weight: bold;
   color: #1b75bb; }
-/* line 58, ../sass/checkout.scss */
+/* line 70, ../sass/checkout.scss */
 .checkout-onepage-success .box {
   background: white;
   border: 1px solid #cccccc;
@@ -1764,7 +1774,7 @@ ul.tabs {
   border-radius: 4px;
   min-height: 165px;
   padding: 1em; }
-/* line 67, ../sass/checkout.scss */
+/* line 79, ../sass/checkout.scss */
 .checkout-onepage-success button {
   border: 1px solid #196fb1 !important;
   color: white;

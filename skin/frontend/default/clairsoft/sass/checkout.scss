@@ -39,6 +39,18 @@
 	}
 }
 
+.opc-wrapper-opc a{
+	color: $main-color;
+
+	&:hover{
+		text-decoration: none;
+	}
+
+	&:visited{
+		text-decoration: underline;
+	}
+}
+
 .opc-wrapper-opc .discount-block .button{
 	@include clairsoft-default-button;
 }
