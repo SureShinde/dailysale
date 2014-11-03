@@ -31,7 +31,7 @@ $_helper = $this->helper('catalog/output');
                             <!-- ** Inventory qty display ** -->
                             <?php 
                             if($_product->isSaleable()){
-                                $productQty =  (int)Mage::getModel('cataloginventory/stock_item')->loadByProduct($_product)->getQty();
+                                $productQty =  (int)Mage::getModel('cataloginventory/stock_item')->loadByProduct($_product)->getStockQty();
                                 if($productQty == 0){
                             ?>
                                     <li class="alert-banner soldout">
