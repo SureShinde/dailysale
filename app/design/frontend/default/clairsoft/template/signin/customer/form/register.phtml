@@ -5,7 +5,7 @@
         <div class="fieldset">
             <input type="hidden" name="success_url" value="<?php echo $this->getSuccessUrl() ?>" />
             <input type="hidden" name="error_url" value="<?php echo $this->getErrorUrl() ?>" />
-            <h2><?php echo $this->__('Personal Information') ?></h2>
+            <!-- <h2><?php //echo $this->__('Personal Information') ?></h2> -->
             <ul class="form-list">
                 <li class="fields">
                     <?php echo $this->getLayout()->createBlock('customer/widget_name')->setObject($this->getFormData())->setForceUseCustomerAttributes(true)->toHtml() ?>
@@ -17,12 +17,12 @@
                     </div>
                 </li>
                 <?php if ($this->isNewsletterEnabled()): ?>
-                <li class="control newsletter">
+                <!-- <li class="control newsletter">
                     <div class="input-box left">
-                        <input type="checkbox" name="is_subscribed" title="<?php echo $this->__('Sign Up for Newsletter') ?>" value="1" id="is_subscribed"<?php if($this->getFormData()->getIsSubscribed()): ?> checked="checked"<?php endif; ?> class="checkbox" />
+                        <input type="checkbox" name="is_subscribed" title="<?php //echo $this->__('Sign Up for Newsletter') ?>" value="1" id="is_subscribed"<?php //if($this->getFormData()->getIsSubscribed()): ?> checked="checked"<?php //endif; ?> class="checkbox" />
                     </div>
                     <label class="left" for="is_subscribed"><?php echo $this->__('Sign Up for Newsletter') ?></label>
-                </li>
+                </li> -->
                 <?php endif ?>
             <?php $_dob = $this->getLayout()->createBlock('customer/widget_dob') ?>
             <?php if ($_dob->isEnabled()): ?>
@@ -113,7 +113,7 @@
         </div>
     <?php endif; ?>
         <div class="fieldset">
-            <h2><?php echo $this->__('Login Information') ?></h2>
+            <!-- <h2><?php //echo $this->__('Login Information') ?></h2> -->
             <ul class="form-list">
                 <li class="fields">
                     <div class="field">
