@@ -8,7 +8,8 @@ $theme = Mage::getDesign()->getTheme('frontend');
 	<p><?php echo $this->__('Fill in the Fields below to complete your purchase!')?></p>
 	
 	<?php if (!Mage::getSingleton('customer/session')->isLoggedIn()):?>
-		<?php //echo $this->getChildHtml('login');?>	
+		<?php //echo $this->getChildHtml('login');?>
+		<p> Already have an account? <a href="#" title="Log In">Click here to log in now.</a></p>	
 	<?php endif;?>
 	<div class="clear"></div>
 
