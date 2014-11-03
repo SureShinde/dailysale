@@ -231,8 +231,8 @@ $_specialPriceStoreLabel = $this->getProductAttribute('special_price')->getStore
                             <span class="price <?php
 
                                 //insert extra class depening on no. of digits in final price
-                                $finalPrice = $_coreHelper->formatPrice($_price, true);
-                                $numberOfPriceDigits = strlen($finalPrice);
+                                //$finalPrice = $_coreHelper->formatPrice($_price, true);
+                                $numberOfPriceDigits = strlen($_finalPrice);
                                 if ($_finalPrice == "FREE") {
                                     echo "free-price-default";
                                 } elseif ($_finalPrice != "FREE" && $numberOfPriceDigits > 3){
@@ -469,8 +469,8 @@ $_specialPriceStoreLabel = $this->getProductAttribute('special_price')->getStore
                     <span class="price-label"><?php //echo $_specialPriceStoreLabel ?></span>
                 <span class="price <?php
                                 //insert extra class depening on no. of digits in final price
-                                $finalPrice = $_coreHelper->formatPrice($_price, true);
-                                $numberOfPriceDigits = strlen($finalPrice);
+                                //$finalPrice = $_coreHelper->formatPrice($_price, true);
+                                $numberOfPriceDigits = strlen($_finalPrice);
                                 if ($_finalPrice == "FREE") {
                                     echo "free-price-default";
                                 } elseif ($_finalPrice != "FREE" && $numberOfPriceDigits > 3){
