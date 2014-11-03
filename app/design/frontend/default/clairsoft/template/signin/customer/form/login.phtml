@@ -15,16 +15,18 @@
 			</div>
 		</div>	
 		<div class="clear"></div>
-		<div class="f-p"><a href="<?php echo $this->getForgotPasswordUrl() ?>" id="forgot-password" class="f-left"><?php echo $this->__('Forgot Your Password?') ?></a></div>
-		<div class="recover-password"><a href="/customer/account/existingUser">Recover your old DailySale.com account here</a></div>
+		<div class="f-p"><a href="<?php echo $this->getForgotPasswordUrl() ?>" id="forgot-password" class="f-left"><?php echo $this->__('Recover Your Password?') ?></a></div>
+		<!-- <div class="recover-password"><a href="/customer/account/existingUser">Recover your old DailySale.com account here</a></div> -->
 		<div class="clear"></div>
 		<?php echo $this->getChildHtml('persistent.remember.me'); ?>
 		<div class="clear"></div>
 		<div class="signin-actions">
-			<button type="submit" class="button" id="signin-login">Log In Now</button>
-			 <!-- <a  class="button" title="<?php //echo $this->__('Login') ?>" id="signin-login"><?php //echo $this->__('Login') ?></a> -->
+			<!-- <button type="submit" class="button" id="signin-login">Log In Now</button> -->
+			 <a  class="button" title="<?php echo $this->__('Login') ?>" id="signin-login"><?php echo $this->__('Login') ?></a>
 			 <a  class="button" title="<?php echo $this->__('Create an Account') ?>" id="create-account-singup"><?php echo $this->__('Create an Account') ?></a>
 		</div>		
+
+		<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
           
     </form>
     
