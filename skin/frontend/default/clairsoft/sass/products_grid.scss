@@ -1,10 +1,14 @@
 .cms-index-index{
 
 	.note-msg{
-		display: none;
+		//display: none;
 	}
-	
-	li.item.last{
+
+	// li.item.last{
+	// 	margin-right: 0;
+	// }
+
+	.item:nth-child(3n){
 		margin-right: 0;
 	}
 }
