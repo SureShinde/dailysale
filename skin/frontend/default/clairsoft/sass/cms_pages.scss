@@ -61,4 +61,8 @@
 		border: 1px solid $dark-color;
 	}
 
+	button{
+		@include clairsoft-default-button;
+	}
+
 }

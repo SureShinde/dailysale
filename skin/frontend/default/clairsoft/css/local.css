@@ -1193,6 +1193,28 @@ ul.tabs {
 /* line 60, ../sass/cms_pages.scss */
 .cms-contact-us input {
   border: 1px solid #898989; }
+/* line 64, ../sass/cms_pages.scss */
+.cms-contact-us button {
+  border: 1px solid #196fb1 !important;
+  color: white;
+  text-decoration: none;
+  padding: 12px 15px 12px 15px;
+  -moz-border-radius: 4px / 4px;
+  -webkit-border-radius: 4px 4px;
+  border-radius: 4px / 4px;
+  text-shadow: 1px 1px 0px #155d95;
+  background-image: -moz-linear-gradient(#3d89c5, #1b75bb);
+  background-image: -webkit-linear-gradient(#3d89c5, #1b75bb);
+  background-image: linear-gradient(#3d89c5, #1b75bb);
+  width: auto; }
+  /* line 11, ../sass/mixins.scss */
+  .cms-contact-us button:hover {
+    background-image: -moz-linear-gradient(#6b6b6b, #515252);
+    background-image: -webkit-linear-gradient(#6b6b6b, #515252);
+    background-image: linear-gradient(#6b6b6b, #515252);
+    border: 1px solid #515252;
+    color: #eeeeee;
+    text-shadow: none; }
 
 /* line 1, ../sass/cart.scss */
 .cart {
