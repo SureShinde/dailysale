@@ -1178,20 +1178,20 @@ ul.tabs {
   border-bottom: none; }
 
 /* line 47, ../sass/cms_pages.scss */
-.cms-contact-us .fieldset {
+.cmspage-leftcol .fieldset {
   background: none;
   border: none !important; }
 /* line 52, ../sass/cms_pages.scss */
-.cms-contact-us li {
+.cmspage-leftcol li {
   list-style: none; }
 /* line 56, ../sass/cms_pages.scss */
-.cms-contact-us .input-text, .cms-contact-us .fields, .cms-contact-us .field {
+.cmspage-leftcol .input-text, .cmspage-leftcol .fields, .cmspage-leftcol .field {
   width: 400px !important; }
 /* line 60, ../sass/cms_pages.scss */
-.cms-contact-us input {
+.cmspage-leftcol input {
   border: 1px solid #898989; }
 /* line 64, ../sass/cms_pages.scss */
-.cms-contact-us button {
+.cmspage-leftcol button {
   border: 1px solid #196fb1 !important;
   color: white;
   text-decoration: none;
@@ -1205,7 +1205,7 @@ ul.tabs {
   background-image: linear-gradient(#3d89c5, #1b75bb);
   width: auto; }
   /* line 11, ../sass/mixins.scss */
-  .cms-contact-us button:hover {
+  .cmspage-leftcol button:hover {
     background-image: -moz-linear-gradient(#6b6b6b, #515252);
     background-image: -webkit-linear-gradient(#6b6b6b, #515252);
     background-image: linear-gradient(#6b6b6b, #515252);
