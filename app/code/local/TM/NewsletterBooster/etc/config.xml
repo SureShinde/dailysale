@@ -176,7 +176,7 @@
         <jobs>
             <newsletterbooster_send_letter>
                 <schedule>
-                    <cron_expr>*/20 * * * *</cron_expr>
+                    <cron_expr>*/5 * * * *</cron_expr>
                 </schedule>
                 <run>
                     <model>newsletterbooster/observer::scheduledSendCampaign</model>
