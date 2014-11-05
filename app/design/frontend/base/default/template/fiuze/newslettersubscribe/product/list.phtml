@@ -101,6 +101,7 @@ $_helper = $this->helper('catalog/output');
                     <h2 class="product-index-description-container">
                         <?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
                     </h2>
+                    <p class="newsletter-short-desc"><?php echo $_product->getShortDescription(); ?></p>
                 </li>
         <?php if ($_iterator%$_columnCount==0 || $_iterator==$_collectionSize): ?>
             <!-- </ul> -->
