@@ -11,7 +11,7 @@
 <config>
 	<modules>
 		<Aschroder_SMTPPro>
-			<version>2.0.3</version>
+			<version>2.0.5</version>
 		</Aschroder_SMTPPro>
 	</modules>
 	<frontend>
@@ -179,11 +179,13 @@
 	<default>
 		<smtppro>
             <general>
-                <option>0</option>
+                <option>disabled</option>
                 <googleapps_email></googleapps_email>
                 <googleapps_gpassword backend_model="adminhtml/system_config_backend_encrypted" />
                 <sendgrid_email></sendgrid_email>
                 <sendgrid_password backend_model="adminhtml/system_config_backend_encrypted" />
+                <mailup_email></mailup_email>
+                <mailup_password backend_model="adminhtml/system_config_backend_encrypted" />
                 <ses_access_key></ses_access_key>
                 <ses_private_key backend_model="adminhtml/system_config_backend_encrypted" />
                 <smtp_authentication></smtp_authentication>
