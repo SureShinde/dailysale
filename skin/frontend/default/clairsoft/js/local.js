@@ -31,7 +31,7 @@ $j(document).ready(function(){
 	//set dialog options
 	$j("#subscribe-pop").hide();
 	$j( "#subscribe-pop" ).dialog({
-		height: 200,
+		height: 220,
 		width: 425,
 		autoOpen: false,
 		dialogClass: 'dialogSubscribe',
