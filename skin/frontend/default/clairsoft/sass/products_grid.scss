@@ -143,6 +143,28 @@
 			margin: 3px 0 0 -5px;
 			width: 100%;
 			text-align: center;
+
+			.price-default{
+				font-size: 32px;
+				font-weight: bold;
+			}
+
+			.more-than-three{
+				font-size: 28px;
+				margin-left: -5px;
+			}
+
+			.more-than-six{
+				font-size: 20px;
+				margin-left: -5px;
+				font-weight: bold;
+			}
+
+			.free-price{
+				font-size: 30px;
+				margin-left: -5px;
+				font-weight: bold;
+			}
 		}
 
 		.msrp{
@@ -159,21 +181,6 @@
 				font-weight: normal;
 			}
 
-		}
-
-		.more-than-three-digits{
-			font-size: 30px;
-			margin: 5px 0 0 -5px;
-		}
-
-		.more-than-three-digits-msrp{
-			font-size: 14px;
-			margin: 5px 0 0 -9px;
-		}
-
-		.more-than-five-digits-msrp{
-			font-size: 13px;
-			margin: 5px 0 0 -10px;
 		}
 
 		.percent-off{
