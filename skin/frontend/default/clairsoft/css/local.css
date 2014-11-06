@@ -666,8 +666,8 @@ input:not([type=submit]):not([type=checkbox]):not([type=radio]) {
       font-weight: normal; }
   /* line 164, ../sass/products_grid.scss */
   .cms-index-index .price-box .more-than-three-digits, .category-products .price-box .more-than-three-digits {
-    font-size: 24px;
-    margin-top: 15px; }
+    font-size: 30px;
+    margin: 5px 0 0 -5px; }
   /* line 169, ../sass/products_grid.scss */
   .cms-index-index .price-box .more-than-three-digits-msrp, .category-products .price-box .more-than-three-digits-msrp {
     font-size: 14px;
@@ -833,7 +833,7 @@ input:not([type=submit]):not([type=checkbox]):not([type=radio]) {
         margin-bottom: -8px;
         color: #1b75bb;
         font-weight: bold;
-        font-size: 56pt; }
+        font-size: 45pt; }
       /* line 64, ../sass/product_detail.scss */
       .product-shop #pricing-container .price-box .percent-off {
         font-size: 14pt; }
