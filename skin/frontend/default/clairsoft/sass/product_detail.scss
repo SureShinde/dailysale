@@ -50,14 +50,37 @@
 				//border-bottom: 1px solid $subtle-color;
 				width: auto;
 			}
-
-			.our-price .price, .special-price .price{
+				
+				// .our-price .price, .special-price .price{
+				// 	font-size: 45pt;
+				// }
+			//.our-price .price, .special-price .price{
+				.our-price, .special-price{
 				display: block;
-				margin-top: -12px;
-				margin-bottom: -8px;
+				// margin-top: -18px;
+				// margin-bottom: -8px;
 				color: $main-color;
 				font-weight: bold;
-				font-size: 45pt;
+				//font-size: 45pt;
+
+				.price-default{
+					font-size: 40pt;
+					font-weight: bold;
+				}
+
+				.more-than-three{
+					font-size: 32px;
+				}
+
+				.more-than-six{
+					font-size: 30px;
+					// margin-top: -12px !important;
+				}
+
+				.free-price{
+					font-size: 40px;
+				}
+
 
 			}
 
