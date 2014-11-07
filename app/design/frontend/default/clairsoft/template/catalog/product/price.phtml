@@ -217,33 +217,23 @@ $_specialPriceStoreLabel = $this->getProductAttribute('special_price')->getStore
                                 <span id="msrp"><?php echo $msrp ?></span>
                             </p>
                         <?php endif; ?>
-                        <p class="our-price
-                        <?php
-                            //insert extra class depening on no. of digits in final price
-                            $specialPrice = $_coreHelper->formatPrice($_finalPrice, false);
-                            $numberOfPriceDigits = strlen($specialPrice);
-                            if ($numberOfPriceDigits > 3) {
-                                echo "more-than-three-digits";
-                            };
-                        ?>
-                        ">
-                            <span class="price-label"><?php //echo $this->__('Our Price:') ?></span>
-                            <span class="price
-                                <?php
-
-                                // //insert extra class depening on no. of digits in final price
-                                // $finalPrice = $_coreHelper->formatPrice($_price, true);
-                                $numberOfPriceDigits = strlen($_finalPrice);
-                                if ($_finalPrice == "FREE") {
-                                    echo "free-price-default";
-                                } elseif ($_finalPrice != "FREE" && $numberOfPriceDigits > 3){
-                                    echo "more-than-three-digits-default";
+                        <p class="our-price">
+                            <!-- <span class="price-label"><?php //echo $this->__('Our Price:') ?></span> -->
+                            <span class="<?php
+                                //insert extra class depening on no. of digits in final price
+                                //$specialPrice = $_coreHelper->formatPrice($_finalPrice, false);
+                                $numberOfPriceDigits2 = strlen($_finalPrice);
+                                if ($_finalPrice == 0) {
+                                    echo "free-price";
+                                } elseif ($numberOfPriceDigits2 >= 6) {
+                                    echo "more-than-six";
+                                } elseif ($numberOfPriceDigits2 > 3 && $numberOfPriceDigits2 < 6) {
+                                    echo "more-than-three";
+                                } elseif ($numberOfPriceDigits <= 3){
+                                    echo "price-default";
                                 };
-
-                                ?>
-
-                            " id="old-price-<?php echo $_id ?><?php echo $this->getIdSuffix() ?>">
-                                <?php echo $_coreHelper->formatPrice($_price, true) ?>
+                            ?>" id="old-price-<?php echo $_id ?><?php echo $this->getIdSuffix() ?>">
+                                <?php echo $_coreHelper->formatPrice($_price, true)  ?>
                             </span>
                         </p>
 
@@ -431,15 +421,7 @@ $_specialPriceStoreLabel = $this->getProductAttribute('special_price')->getStore
                 $specialPrice = $_coreHelper->formatPrice($_finalPrice, false);
             ?>
             <?php if($msrp != "FREE"): ?>
-            <p class="msrp <?php
-                    //insert extra class depening on no. of digits in final price
-                    $numberOfMSRPDigits = strlen($msrp);
-                    if ($numberOfMSRPDigits > 3 && $numberOfMSRPDigits < 5) {
-                        echo "more-than-three-digits-msrp";
-                    } elseif ($numberOfMSRPDigits > 5) {
-                        echo "more-than-five-digits-msrp";
-                    };
-                ?>">
+            <p class="msrp">
                 <span class="msrp-label"><?php echo $this->__('Retail:') ?></span>
                 <span class="price" id="msrp"><?php echo $msrp ?></span>
             </p>
@@ -464,34 +446,23 @@ $_specialPriceStoreLabel = $this->getProductAttribute('special_price')->getStore
                     </span>
                 </p>
             <?php else: ?>
-                <p class="special-price
-                <?php
-                    //insert extra class depening on no. of digits in final price
-                    $specialPrice = $_coreHelper->formatPrice($_finalPrice, false);
-                    $numberOfPriceDigits = strlen($specialPrice);
-                    if ($numberOfPriceDigits > 3) {
-                        echo "more-than-three-digits";
-                    };
-                ?>
-                ">
-                    <span class="price-label"><?php //echo $_specialPriceStoreLabel ?></span>
-                <span class="price
-                    <?php
-
-                                //insert extra class depening on no. of digits in final price
-                                // $finalPrice = $_coreHelper->formatPrice($_price, true);
-                                $numberOfPriceDigits2 = strlen($_finalPrice);
-                                if ($_finalPrice == "FREE") {
-                                    echo "free-price-default";
-                                } elseif ($_finalPrice != "FREE" && $numberOfPriceDigits2 > 3){
-                                    echo "more-than-three-digits-default";
-                                   // var_dump($numberOfPriceDigits2);
+                <p class="special-price">
+                    <!-- <span class="price-label"><?php //echo $_specialPriceStoreLabel ?></span> -->
+                <span class="<?php
+                        //insert extra class depening on no. of digits in final price
+                        $specialPrice = $_coreHelper->formatPrice($_finalPrice, false);
+                        $numberOfPriceDigits = strlen($specialPrice);
+                                if ($_finalPrice == 0) {
+                                    echo "free-price";
+                                } elseif ($numberOfPriceDigits >= 6) {
+                                    echo "more-than-six";
+                                } elseif ($numberOfPriceDigits > 3 && $numberOfPriceDigits < 6) {
+                                    echo "more-than-three";
+                                } elseif ($numberOfPriceDigits <= 3){
+                                    echo "price-default";
                                 };
-
-                    ?>
-                " id="product-price-<?php echo $_id ?><?php echo $this->getIdSuffix() ?>">
-                    <?php 
-                        echo $_coreHelper->formatPrice($_finalPrice, false) ?>
+                    ?>" id="product-price-<?php echo $_id ?><?php echo $this->getIdSuffix() ?>">
+                    <?php echo $_coreHelper->formatPrice($_finalPrice, false) ?>
                 </span>
                 </p>
             <?php endif; ?>
