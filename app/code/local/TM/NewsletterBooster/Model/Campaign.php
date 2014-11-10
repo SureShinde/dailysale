@@ -92,7 +92,7 @@ class TM_NewsletterBooster_Model_Campaign extends Mage_Newsletter_Model_Template
         return $optionArray;
     }
 
-    public function getProcessedTemplate(array $variables = array(), $usePreprocess = false)
+    public function getProcessedTemplate(array $variables = array(), $usePreprocess = false)   
     {
         /* @var $processor Mage_Newsletter_Model_Template_Filter */
         $processor = Mage::helper('newsletterbooster')->getTemplateProcessor();
