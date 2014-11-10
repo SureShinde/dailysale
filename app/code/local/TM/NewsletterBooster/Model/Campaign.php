@@ -355,7 +355,7 @@ class TM_NewsletterBooster_Model_Campaign extends Mage_Newsletter_Model_Template
         //     $processor->setStoreId();
         // }
         $stores = $this->getData('stores');
-        $storeId = $stores[0];
+        $storeId = is_array($stores) ? $stores[0] : Mage::app()->getDefaultStoreView()->getId();
         /* @var $filter Mage_Core_Model_Input_Filter_MaliciousCode */
         $filter = Mage::getSingleton('core/input_filter_maliciousCode');
         $text = $filter->filter($template->getTemplateText());
