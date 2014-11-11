@@ -656,7 +656,7 @@ input:not([type=submit]):not([type=checkbox]):not([type=radio]) {
     top: 40px;
     text-align: center;
     font-style: italic;
-    margin: 3px 0 0 -5px; }
+    margin: 3px 0 0 -12px; }
     /* line 182, ../sass/products_grid.scss */
     .cms-index-index .price-box .msrp .price, .category-products .price-box .msrp .price {
       font-weight: normal; }
