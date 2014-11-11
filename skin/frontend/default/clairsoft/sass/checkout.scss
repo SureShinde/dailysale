@@ -61,22 +61,4 @@
 	line-height: 100% !important;
 }
 
-.checkout-onepage-success{
-	h2{
-		font-weight: bold;
-		color: $main-color;
-	}
-
-	.box{
-		background: white;
-		border: 1px solid #cccccc;
-		margin-bottom: 15px;
-		@include border-radius(4px);
-		min-height: 165px;
-	    padding: 1em;
-	}
-
-	button{
-		@include clairsoft-default-button;
-	}
-}
+@import "checkout_success";

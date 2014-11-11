@@ -1783,11 +1783,11 @@ ul.tabs {
   background-color: transparent !important;
   line-height: 100% !important; }
 
-/* line 65, ../sass/checkout.scss */
+/* line 4, ../sass/checkout_success.scss */
 .checkout-onepage-success h2 {
   font-weight: bold;
   color: #1b75bb; }
-/* line 70, ../sass/checkout.scss */
+/* line 9, ../sass/checkout_success.scss */
 .checkout-onepage-success .box {
   background: white;
   border: 1px solid #cccccc;
@@ -1797,28 +1797,55 @@ ul.tabs {
   border-radius: 4px;
   min-height: 165px;
   padding: 1em; }
-/* line 79, ../sass/checkout.scss */
-.checkout-onepage-success button {
-  border: 1px solid #196fb1 !important;
-  color: white;
-  text-decoration: none;
-  padding: 12px 15px 12px 15px;
-  -moz-border-radius: 4px / 4px;
-  -webkit-border-radius: 4px 4px;
-  border-radius: 4px / 4px;
-  text-shadow: 1px 1px 0px #155d95;
-  background-image: -moz-linear-gradient(#3d89c5, #1b75bb);
-  background-image: -webkit-linear-gradient(#3d89c5, #1b75bb);
-  background-image: linear-gradient(#3d89c5, #1b75bb);
-  width: auto; }
-  /* line 11, ../sass/mixins.scss */
-  .checkout-onepage-success button:hover {
-    background-image: -moz-linear-gradient(#6b6b6b, #515252);
-    background-image: -webkit-linear-gradient(#6b6b6b, #515252);
-    background-image: linear-gradient(#6b6b6b, #515252);
-    border: 1px solid #515252;
-    color: #eeeeee;
-    text-shadow: none; }
+/* line 18, ../sass/checkout_success.scss */
+.checkout-onepage-success h2.sub-title {
+  color: #1b75bb;
+  font-size: 40px;
+  margin-bottom: 8px; }
+/* line 24, ../sass/checkout_success.scss */
+.checkout-onepage-success .buttons-set {
+  padding: 0;
+  margin-top: 1em; }
+  /* line 28, ../sass/checkout_success.scss */
+  .checkout-onepage-success .buttons-set button {
+    border: 1px solid #196fb1 !important;
+    color: white;
+    text-decoration: none;
+    padding: 12px 15px 12px 15px;
+    -moz-border-radius: 4px / 4px;
+    -webkit-border-radius: 4px 4px;
+    border-radius: 4px / 4px;
+    text-shadow: 1px 1px 0px #155d95;
+    background-image: -moz-linear-gradient(#3d89c5, #1b75bb);
+    background-image: -webkit-linear-gradient(#3d89c5, #1b75bb);
+    background-image: linear-gradient(#3d89c5, #1b75bb);
+    width: 100%;
+    font-size: 16px; }
+    /* line 39, ../sass/checkout_success.scss */
+    .checkout-onepage-success .buttons-set button:hover {
+      background-image: -moz-linear-gradient(#6b6b6b, #515252);
+      background-image: -webkit-linear-gradient(#6b6b6b, #515252);
+      background-image: linear-gradient(#6b6b6b, #515252);
+      border: 1px solid #515252;
+      color: #eeeeee;
+      text-shadow: none; }
+
+/* line 75, ../sass/checkout_success.scss */
+.sales-order-view .col2-set.order-info-box > div {
+  border: 1px solid #cccccc !important;
+  padding: 1em 1.5em;
+  margin-bottom: 10px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  font-size: 14px;
+  min-height: 180px;
+  background: white; }
+  /* line 84, ../sass/checkout_success.scss */
+  .sales-order-view .col2-set.order-info-box > div .box-title h2 {
+    border-bottom: 1px solid #cccccc !important;
+    margin-bottom: 10px;
+    padding-bottom: 5px; }
 
 /* line 10, ../../../../../../../../../Applications/CodeKit 2.app/Contents/Resources/engines/compass/compass-core/stylesheets/compass/layout/_sticky-footer.scss */
 html, body {
