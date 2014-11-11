@@ -141,7 +141,7 @@
 			color: $dark-color;
 			position: absolute;
 			padding: 0;
-			margin: 3px 0 0 -5px;
+			margin: 3px 0 0 0px;
 			width: 100%;
 			text-align: center;
 
@@ -158,7 +158,7 @@
 
 			.more-than-six{
 				font-size: 20px;
-				margin-left: -5px;
+				margin-left: -18px;
 				font-weight: bold;
 			}
 
@@ -229,6 +229,7 @@
 		//right: 10px;
 		// width: auto;
 		// height: auto;
+		bottom: 0px;
 
 		a.view-deal-btn{
 			float: right;
