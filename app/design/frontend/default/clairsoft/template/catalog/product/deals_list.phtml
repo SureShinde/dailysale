@@ -92,7 +92,7 @@
         <?php if ($i++%$_columnCount==0): ?>
         <!-- <ul class="products-grid"> -->
         <?php endif ?>
-        <?php if($_product->isSaleable()): ?>
+        <?php //if($_product->isSaleable()): ?>
         <li class="item">
             <!-- <li class="item<?php //if(($i-1)%$_columnCount==0): ?> first<?php //elseif($i%$_columnCount==0): ?> last<?php //endif; ?>"> -->
             <div class="products-grid-image-container">
@@ -111,9 +111,9 @@
                         <?php } elseif ($productQty <= 10){?>
                             <li class="alert-banner hotitem"><?php echo $this->__('Only ') ?><?php echo $productQty; ?><?php echo $this->__(' left') ?></li>
                         <?php } ?>
-                    <?php } else { ?>
-                        <li class="alert-banner soldout"><?php echo $this->__('Soldout') ?></li>
-                    <?php } ?>
+                    <?php } //else { ?>
+                        <!-- <li class="alert-banner soldout"><?php //echo $this->__('Soldout') ?></li> -->
+                    <?php //} ?>
 
                     <!-- ** New item display ** -->
                     <?php
@@ -155,7 +155,7 @@
 
                 <h2 class="product-index-description-container"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></h2>
             </li>
-            <?php endif ?>
+            <?php //endif ?>
         <?php if ($i%$_columnCount==0 || $i==$_collectionSize): ?>
         <!-- </ul> -->
         <?php endif ?>
