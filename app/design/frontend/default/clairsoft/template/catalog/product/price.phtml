@@ -209,7 +209,7 @@ $_specialPriceStoreLabel = $this->getProductAttribute('special_price')->getStore
                     <?php if ($_finalPrice == $_price): ?>
                         <?php
                             $msrp = Mage::helper('core')->currency($_product->getMsrp(),true,false);
-                            $specialPrice = $_coreHelper->formatPrice($_finalPrice, false);
+                            //$specialPrice = $_coreHelper->formatPrice($_finalPrice, false);
                         ?>
                         <?php if ($msrp != "FREE"): ?>
                             <p class="msrp">
@@ -222,12 +222,12 @@ $_specialPriceStoreLabel = $this->getProductAttribute('special_price')->getStore
                             <span class="<?php
                                 //insert extra class depening on no. of digits in final price
                                 //$specialPrice = $_coreHelper->formatPrice($_finalPrice, false);
-                                $numberOfPriceDigits2 = strlen($_finalPrice);
+                                $numberOfPriceDigits = strlen($_price);
                                 if ($_finalPrice == 0) {
                                     echo "free-price";
-                                } elseif ($numberOfPriceDigits2 >= 6) {
+                                } elseif ($numberOfPriceDigits >= 6) {
                                     echo "more-than-six";
-                                } elseif ($numberOfPriceDigits2 > 3 && $numberOfPriceDigits2 < 6) {
+                                } elseif ($numberOfPriceDigits > 3 && $numberOfPriceDigits < 6) {
                                     echo "more-than-three";
                                 } elseif ($numberOfPriceDigits <= 3){
                                     echo "price-default";
@@ -416,9 +416,9 @@ $_specialPriceStoreLabel = $this->getProductAttribute('special_price')->getStore
             <?php
             //IF SPECIAL PRICE EXISTS
                 $msrp = Mage::helper('core')->currency($_product->getMsrp(),true,false);
-                $msrpInt = str_replace('$', '', $msrp);
-                $ourPrice = $_coreHelper->formatPrice($_regularPrice, false);
-                $specialPrice = $_coreHelper->formatPrice($_finalPrice, false);
+                //$msrpInt = str_replace('$', '', $msrp);
+                //$ourPrice = $_coreHelper->formatPrice($_regularPrice, false);
+                //$specialPrice = $_coreHelper->formatPrice($_finalPrice, false);
             ?>
             <?php if($msrp != "FREE"): ?>
             <p class="msrp">
@@ -450,15 +450,17 @@ $_specialPriceStoreLabel = $this->getProductAttribute('special_price')->getStore
                     <!-- <span class="price-label"><?php //echo $_specialPriceStoreLabel ?></span> -->
                 <span class="<?php
                         //insert extra class depening on no. of digits in final price
-                        $specialPrice = $_coreHelper->formatPrice($_finalPrice, false);
-                        $numberOfPriceDigits = strlen($specialPrice);
+                        $sPriceInput = sprintf( "%01.2f", $_finalPrice );
+                        $sPriceReplace = array(".");
+                        $sPrice = str_replace($sPriceReplace, '', $sPriceInput);
+                        $numberOfPriceDigits2 = strlen($sPrice);
                                 if ($_finalPrice == 0) {
                                     echo "free-price";
-                                } elseif ($numberOfPriceDigits >= 6) {
+                                } elseif ($numberOfPriceDigits2 >= 6) {
                                     echo "more-than-six";
-                                } elseif ($numberOfPriceDigits > 3 && $numberOfPriceDigits < 6) {
+                                } elseif ($numberOfPriceDigits2 > 3 && $numberOfPriceDigits2 < 6) {
                                     echo "more-than-three";
-                                } elseif ($numberOfPriceDigits <= 3){
+                                } elseif ($numberOfPriceDigits2 <= 3){
                                     echo "price-default";
                                 };
                     ?>" id="product-price-<?php echo $_id ?><?php echo $this->getIdSuffix() ?>">
