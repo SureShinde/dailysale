@@ -1,5 +1,20 @@
 .checkout-onepage-success{
 
+
+	h2{
+		font-weight: bold;
+		color: $main-color;
+	}
+
+	.box{
+		background: white;
+		border: 1px solid #cccccc;
+		margin-bottom: 15px;
+		@include border-radius(4px);
+		min-height: 165px;
+	    padding: 1em;
+	}
+
 	h2.sub-title{
 		color: $main-color;
 		font-size: 40px;
@@ -9,9 +24,8 @@
 	.buttons-set{
 		padding: 0;
 		margin-top: 1em;
-	}
 
-	button{
+		button{
 		border: 1px solid shade($main-color, 5%) !important;
 		color: white;
 		text-decoration: none;
@@ -30,28 +44,30 @@
 		}
 	}
 
-	.page-title{
-		margin-top: 1em;
-		margin-bottom: 1em;
-		padding-bottom: 10px;
-		border-bottom: 1px solid $subtle-color !important;
 	}
 
-	.col2-set.order-info-box > div{
-		border: 1px solid $subtle-color !important;
-		padding: 1em 1.5em;
-		margin-bottom: 10px;
-		@include border-radius(4px);
-		font-size: 14px;
-		min-height: 180px;
+// 	.page-title{
+// 		margin-top: 1em;
+// 		margin-bottom: 1em;
+// 		padding-bottom: 10px;
+// 		border-bottom: 1px solid $subtle-color !important;
+// 	}
 
-		.box-title h2{
-			color: $main-color;
-			border-bottom: 1px solid $subtle-color !important;
-			margin-bottom: 10px;
-			padding-bottom: 5px;
-		}
-	}
+// 	.col2-set.order-info-box > div{
+// 		border: 1px solid $subtle-color !important;
+// 		padding: 1em 1.5em;
+// 		margin-bottom: 10px;
+// 		@include border-radius(4px);
+// 		font-size: 14px;
+// 		min-height: 180px;
+
+// 		.box-title h2{
+// 			color: $main-color;
+// 			border-bottom: 1px solid $subtle-color !important;
+// 			margin-bottom: 10px;
+// 			padding-bottom: 5px;
+// 		}
+// 	}
 
 }
 

@@ -209,7 +209,7 @@ $_specialPriceStoreLabel = $this->getProductAttribute('special_price')->getStore
                     <?php if ($_finalPrice == $_price): ?>
                         <?php
                             $msrp = Mage::helper('core')->currency($_product->getMsrp(),true,false);
-                            $specialPrice = $_coreHelper->formatPrice($_finalPrice, false);
+                            //$specialPrice = $_coreHelper->formatPrice($_finalPrice, false);
                         ?>
                         <?php if ($msrp != "FREE"): ?>
                             <p class="msrp">
@@ -222,18 +222,18 @@ $_specialPriceStoreLabel = $this->getProductAttribute('special_price')->getStore
                             <span class="<?php
                                 //insert extra class depening on no. of digits in final price
                                 //$specialPrice = $_coreHelper->formatPrice($_finalPrice, false);
-                                $numberOfPriceDigits2 = strlen($_finalPrice);
+                                $numberOfPriceDigits = strlen($_price);
                                 if ($_finalPrice == 0) {
                                     echo "free-price";
-                                } elseif ($numberOfPriceDigits2 >= 6) {
+                                } elseif ($numberOfPriceDigits >= 6) {
                                     echo "more-than-six";
-                                } elseif ($numberOfPriceDigits2 > 3 && $numberOfPriceDigits2 < 6) {
+                                } elseif ($numberOfPriceDigits > 3 && $numberOfPriceDigits < 6) {
                                     echo "more-than-three";
                                 } elseif ($numberOfPriceDigits <= 3){
                                     echo "price-default";
                                 };
                             ?>" id="old-price-<?php echo $_id ?><?php echo $this->getIdSuffix() ?>">
-                                <?php echo $_coreHelper->formatPrice($_price, true) ?>
+                                <?php echo $_coreHelper->formatPrice($_price, true)  ?>
                             </span>
                         </p>
 
@@ -273,7 +273,7 @@ $_specialPriceStoreLabel = $this->getProductAttribute('special_price')->getStore
         <?php if ($_weeeTaxAmount && $_weeeHelper->typeOfDisplay($_product, 0)): // including ?>
             <p class="old-price">
                 <span class="price-label"><?php echo $this->__('Regular Price:') ?></span>
-                <span class="price" id="old-price-<?php echo $_id ?><?php echo $this->getIdSuffix() ?>" >
+                <span class="price" id="old-price-<?php echo $_id ?><?php echo $this->getIdSuffix() ?>">
                     <?php echo $_coreHelper->formatPrice($_regularPrice + $_originalWeeeTaxAmount, false) ?>
                 </span>
             </p>
@@ -283,7 +283,8 @@ $_specialPriceStoreLabel = $this->getProductAttribute('special_price')->getStore
                     <span class="price-label"><?php echo $_specialPriceStoreLabel ?></span>
                     <span class="price-excluding-tax">
                         <span class="label"><?php echo $this->helper('tax')->__('Excl. Tax:') ?></span>
-                        <span class="price" id="price-excluding-tax-<?php echo $_id ?><?php echo $this->getIdSuffix() ?>">
+                        <span class="price"
+                              id="price-excluding-tax-<?php echo $_id ?><?php echo $this->getIdSuffix() ?>">
                             <?php echo $_coreHelper->formatPrice($_finalPrice + $_weeeTaxAmount, false) ?>
                         </span>
                     </span>
@@ -297,7 +298,7 @@ $_specialPriceStoreLabel = $this->getProductAttribute('special_price')->getStore
             <?php else: ?>
                 <p class="special-price">
                     <span class="price-label"><?php echo $_specialPriceStoreLabel ?></span>
-                <span class="price" id="product-price-<?php echo $_id ?><?php echo $this->getIdSuffix() ?>" >
+                <span class="price" id="product-price-<?php echo $_id ?><?php echo $this->getIdSuffix() ?>">
                     <?php echo $_coreHelper->formatPrice($_finalPrice + $_weeeTaxAmountInclTaxes, false) ?>
                 </span>
                 </p>
@@ -415,14 +416,14 @@ $_specialPriceStoreLabel = $this->getProductAttribute('special_price')->getStore
             <?php
             //IF SPECIAL PRICE EXISTS
                 $msrp = Mage::helper('core')->currency($_product->getMsrp(),true,false);
-                $msrpInt = str_replace('$', '', $msrp);
-                $ourPrice = $_coreHelper->formatPrice($_regularPrice, false);
-                $specialPrice = $_coreHelper->formatPrice($_finalPrice, false);
+                //$msrpInt = str_replace('$', '', $msrp);
+                //$ourPrice = $_coreHelper->formatPrice($_regularPrice, false);
+                //$specialPrice = $_coreHelper->formatPrice($_finalPrice, false);
             ?>
             <?php if($msrp != "FREE"): ?>
             <p class="msrp">
                 <span class="msrp-label"><?php echo $this->__('Retail:') ?></span>
-                <span class="price" id="msrp"><?php echo $msrp ?></span>
+                <span id="msrp"><?php echo $msrp ?></span>
             </p>
             <?php endif ?>
 
@@ -431,36 +432,39 @@ $_specialPriceStoreLabel = $this->getProductAttribute('special_price')->getStore
                     <span class="price-label"><?php echo $_specialPriceStoreLabel ?></span>
                     <span class="price-excluding-tax">
                         <span class="label"><?php echo $this->helper('tax')->__('Excl. Tax:') ?></span>
-                        <span class="price" id="price-excluding-tax-<?php echo $_id ?><?php echo $this->getIdSuffix() ?>">
+                        <span class="price"
+                              id="price-excluding-tax-<?php echo $_id ?><?php echo $this->getIdSuffix() ?>">
                             <?php echo $_coreHelper->formatPrice($_finalPrice, false) ?>
                         </span>
                     </span>
                     <span class="price-including-tax">
                         <span class="label"><?php echo $this->helper('tax')->__('Incl. Tax:') ?></span>
-                        <span class="price" id="price-including-tax-<?php echo $_id ?><?php echo $this->getIdSuffix() ?>">
+                        <span class="price"
+                              id="price-including-tax-<?php echo $_id ?><?php echo $this->getIdSuffix() ?>">
                             <?php echo $_coreHelper->formatPrice($_finalPriceInclTax, false) ?>
                         </span>
                     </span>
                 </p>
             <?php else: ?>
                 <p class="special-price">
-                    <span class="price-label"><?php //echo $_specialPriceStoreLabel ?></span>
+                    <!-- <span class="price-label"><?php //echo $_specialPriceStoreLabel ?></span> -->
                 <span class="<?php
                         //insert extra class depening on no. of digits in final price
-                        $specialPrice = $_coreHelper->formatPrice($_finalPrice, false);
-                        $numberOfPriceDigits = strlen($specialPrice);
+                        $sPriceInput = sprintf( "%01.2f", $_finalPrice );
+                        $sPriceReplace = array(".");
+                        $sPrice = str_replace($sPriceReplace, '', $sPriceInput);
+                        $numberOfPriceDigits2 = strlen($sPrice);
                                 if ($_finalPrice == 0) {
                                     echo "free-price";
-                                } elseif ($numberOfPriceDigits >= 6) {
+                                } elseif ($numberOfPriceDigits2 >= 6) {
                                     echo "more-than-six";
-                                } elseif ($numberOfPriceDigits > 3 && $numberOfPriceDigits < 6) {
+                                } elseif ($numberOfPriceDigits2 > 3 && $numberOfPriceDigits2 < 6) {
                                     echo "more-than-three";
-                                } elseif ($numberOfPriceDigits <= 3){
+                                } elseif ($numberOfPriceDigits2 <= 3){
                                     echo "price-default";
                                 };
                     ?>" id="product-price-<?php echo $_id ?><?php echo $this->getIdSuffix() ?>">
-                    <?php 
-                        echo $_coreHelper->formatPrice($_finalPrice, false) ?>
+                    <?php echo $_coreHelper->formatPrice($_finalPrice, false) ?>
                 </span>
                 </p>
             <?php endif; ?>
@@ -494,7 +498,7 @@ $_specialPriceStoreLabel = $this->getProductAttribute('special_price')->getStore
             
         ?>
         <p class="percent-off">
-                <span class="label"><?php echo $this->__('Save*') ?></span>
+                <span class="label"><?php echo $this->__('Save') ?></span>
                 <span class="price">
                     <?php echo $_savePercent; ?>%
                 </span>
@@ -550,13 +554,15 @@ $_specialPriceStoreLabel = $this->getProductAttribute('special_price')->getStore
                 <?php if ($_taxHelper->displayBothPrices()): ?>
                     <span class="price-excluding-tax">
                         <span class="label"><?php echo $this->helper('tax')->__('Excl. Tax:') ?></span>
-                        <span class="price" id="price-excluding-tax-<?php echo $_id ?><?php echo $this->getIdSuffix() ?>">
+                        <span class="price"
+                              id="price-excluding-tax-<?php echo $_id ?><?php echo $this->getIdSuffix() ?>">
                             <?php echo $_coreHelper->formatPrice($_exclTax, false) ?>
                         </span>
                     </span>
                     <span class="price-including-tax">
                         <span class="label"><?php echo $this->helper('tax')->__('Incl. Tax:') ?></span>
-                        <span class="price" id="price-including-tax-<?php echo $_id ?><?php echo $this->getIdSuffix() ?>">
+                        <span class="price"
+                              id="price-including-tax-<?php echo $_id ?><?php echo $this->getIdSuffix() ?>">
                             <?php echo $_coreHelper->formatPrice($_inclTax, false) ?>
                         </span>
                     </span>

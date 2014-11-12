@@ -141,23 +141,24 @@
 			color: $dark-color;
 			position: absolute;
 			padding: 0;
-			margin: 3px 0 0 -5px;
+			margin: 3px 0 0 0px;
 			width: 100%;
 			text-align: center;
 
 			.price-default{
-				font-size: 32px;
+				font-size: 30px;
 				font-weight: bold;
 			}
 
 			.more-than-three{
-				font-size: 28px;
+				font-size: 25px;
 				margin-left: -5px;
+				font-weight: bold;
 			}
 
 			.more-than-six{
 				font-size: 20px;
-				margin-left: -5px;
+				margin-left: -18px;
 				font-weight: bold;
 			}
 
@@ -176,7 +177,7 @@
 			top: 40px;
 			text-align: center;
 			font-style: italic;
-			margin: 3px 0 0 -5px;
+			margin: 3px 0 0 -12px;
 
 			.price{
 				font-weight: normal;
@@ -228,6 +229,7 @@
 		//right: 10px;
 		// width: auto;
 		// height: auto;
+		bottom: 0px;
 
 		a.view-deal-btn{
 			float: right;
@@ -244,6 +246,7 @@
 			margin: 10px 10px 0 0;
 			position: relative;
 			z-index: 97;
+			//display: none;
 
 			&:hover{
 				//background: $main-color image-url("btntrainglelight.png") no-repeat 89% 50%;
