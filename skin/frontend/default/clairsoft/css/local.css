@@ -625,28 +625,29 @@ input:not([type=submit]):not([type=checkbox]):not([type=radio]) {
     color: #898989;
     position: absolute;
     padding: 0;
-    margin: 3px 0 0 -5px;
+    margin: 3px 0 0 0px;
     width: 100%;
     text-align: center; }
     /* line 148, ../sass/products_grid.scss */
     .cms-index-index .price-box .special-price .price-default, .cms-index-index .price-box .regular-price .price-default, .category-products .price-box .special-price .price-default, .category-products .price-box .regular-price .price-default {
-      font-size: 32px;
+      font-size: 30px;
       font-weight: bold; }
     /* line 153, ../sass/products_grid.scss */
     .cms-index-index .price-box .special-price .more-than-three, .cms-index-index .price-box .regular-price .more-than-three, .category-products .price-box .special-price .more-than-three, .category-products .price-box .regular-price .more-than-three {
-      font-size: 28px;
-      margin-left: -5px; }
-    /* line 158, ../sass/products_grid.scss */
-    .cms-index-index .price-box .special-price .more-than-six, .cms-index-index .price-box .regular-price .more-than-six, .category-products .price-box .special-price .more-than-six, .category-products .price-box .regular-price .more-than-six {
-      font-size: 20px;
+      font-size: 25px;
       margin-left: -5px;
       font-weight: bold; }
-    /* line 164, ../sass/products_grid.scss */
+    /* line 159, ../sass/products_grid.scss */
+    .cms-index-index .price-box .special-price .more-than-six, .cms-index-index .price-box .regular-price .more-than-six, .category-products .price-box .special-price .more-than-six, .category-products .price-box .regular-price .more-than-six {
+      font-size: 20px;
+      margin-left: -18px;
+      font-weight: bold; }
+    /* line 165, ../sass/products_grid.scss */
     .cms-index-index .price-box .special-price .free-price, .cms-index-index .price-box .regular-price .free-price, .category-products .price-box .special-price .free-price, .category-products .price-box .regular-price .free-price {
       font-size: 30px;
       margin-left: -5px;
       font-weight: bold; }
-  /* line 171, ../sass/products_grid.scss */
+  /* line 172, ../sass/products_grid.scss */
   .cms-index-index .price-box .msrp, .category-products .price-box .msrp {
     font-size: 14px;
     color: #1b75bb;
@@ -655,11 +656,11 @@ input:not([type=submit]):not([type=checkbox]):not([type=radio]) {
     top: 40px;
     text-align: center;
     font-style: italic;
-    margin: 3px 0 0 -5px; }
-    /* line 181, ../sass/products_grid.scss */
+    margin: 3px 0 0 -12px; }
+    /* line 182, ../sass/products_grid.scss */
     .cms-index-index .price-box .msrp .price, .category-products .price-box .msrp .price {
       font-weight: normal; }
-  /* line 187, ../sass/products_grid.scss */
+  /* line 188, ../sass/products_grid.scss */
   .cms-index-index .price-box .percent-off, .category-products .price-box .percent-off {
     background: url(../images/percentoffbg.png) no-repeat;
     width: 100px;
@@ -667,29 +668,30 @@ input:not([type=submit]):not([type=checkbox]):not([type=radio]) {
     margin: 0px 0 0 -9px;
     color: white !important;
     position: absolute; }
-    /* line 198, ../sass/products_grid.scss */
+    /* line 199, ../sass/products_grid.scss */
     .cms-index-index .price-box .percent-off span, .category-products .price-box .percent-off span {
       display: block;
       text-align: center;
       width: 90px; }
-    /* line 205, ../sass/products_grid.scss */
+    /* line 206, ../sass/products_grid.scss */
     .cms-index-index .price-box .percent-off span:first-child, .category-products .price-box .percent-off span:first-child {
       padding-top: 1.4em;
       padding-bottom: 0;
       margin-bottom: -5px;
       font-size: 11px; }
-    /* line 212, ../sass/products_grid.scss */
+    /* line 213, ../sass/products_grid.scss */
     .cms-index-index .price-box .percent-off span:nth-child(2), .category-products .price-box .percent-off span:nth-child(2) {
       font-size: 26px;
       padding-top: 0;
       margin-top: 0; }
-  /* line 219, ../sass/products_grid.scss */
+  /* line 220, ../sass/products_grid.scss */
   .cms-index-index .price-box .no-percent, .category-products .price-box .no-percent {
     background: none; }
-/* line 224, ../sass/products_grid.scss */
+/* line 225, ../sass/products_grid.scss */
 .cms-index-index .actions, .category-products .actions {
-  position: relative; }
-  /* line 232, ../sass/products_grid.scss */
+  position: relative;
+  bottom: 0px; }
+  /* line 234, ../sass/products_grid.scss */
   .cms-index-index .actions a.view-deal-btn, .category-products .actions a.view-deal-btn {
     float: right;
     border: 1px solid #cccccc !important;
@@ -705,7 +707,7 @@ input:not([type=submit]):not([type=checkbox]):not([type=radio]) {
     margin: 10px 10px 0 0;
     position: relative;
     z-index: 97; }
-    /* line 248, ../sass/products_grid.scss */
+    /* line 251, ../sass/products_grid.scss */
     .cms-index-index .actions a.view-deal-btn:hover, .category-products .actions a.view-deal-btn:hover {
       border: 1px solid #1b75bb;
       text-decoration: none;
@@ -714,7 +716,7 @@ input:not([type=submit]):not([type=checkbox]):not([type=radio]) {
       background-image: -moz-linear-gradient(#3d89c5, #1b75bb);
       background-image: -webkit-linear-gradient(#3d89c5, #1b75bb);
       background-image: linear-gradient(#3d89c5, #1b75bb); }
-  /* line 258, ../sass/products_grid.scss */
+  /* line 261, ../sass/products_grid.scss */
   .cms-index-index .actions a.soldout-btn, .category-products .actions a.soldout-btn {
     float: right;
     border: 1px solid #cccccc !important;
@@ -739,22 +741,22 @@ input:not([type=submit]):not([type=checkbox]):not([type=radio]) {
       background-image: -webkit-linear-gradient(#3d89c5, #1b75bb);
       background-image: linear-gradient(#3d89c5, #1b75bb); }
 
-/* line 267, ../sass/products_grid.scss */
+/* line 270, ../sass/products_grid.scss */
 .col1-layout .products-grid {
   margin: 0;
   width: 960px;
   padding: 0; }
-  /* line 272, ../sass/products_grid.scss */
+  /* line 275, ../sass/products_grid.scss */
   .col1-layout .products-grid .product-image {
     height: 310px;
     width: 310px; }
 
-/* line 279, ../sass/products_grid.scss */
+/* line 282, ../sass/products_grid.scss */
 .category-title {
   border-bottom: 1px solid #cccccc !important;
   padding-bottom: 0px;
   margin-bottom: 12px; }
-  /* line 285, ../sass/products_grid.scss */
+  /* line 288, ../sass/products_grid.scss */
   .category-title h1 {
     font-size: 30px;
     border-bottom: 3px solid #cccccc !important;
@@ -1425,12 +1427,15 @@ ul.tabs {
   display: block;
   padding: 5px;
   width: auto; }
+/* line 82, ../sass/account.scss */
+.col-left .block-account li:nth-child(7) {
+  display: none; }
 
-/* line 86, ../sass/account.scss */
+/* line 90, ../sass/account.scss */
 .authnetcim-manage-index h1 {
   color: #1b75bb; }
 
-/* line 91, ../sass/account.scss */
+/* line 95, ../sass/account.scss */
 .manage-cards-top {
   border: 1px solid #eeeeee;
   background: white;
@@ -1440,7 +1445,7 @@ ul.tabs {
   -webkit-border-radius: 4px;
   border-radius: 4px;
   position: relative; }
-  /* line 104, ../sass/account.scss */
+  /* line 108, ../sass/account.scss */
   .manage-cards-top .mycc-buttons button {
     border: 1px solid #196fb1 !important;
     color: white;
@@ -1463,25 +1468,25 @@ ul.tabs {
       color: #eeeeee;
       text-shadow: none; }
 
-/* line 113, ../sass/account.scss */
+/* line 117, ../sass/account.scss */
 .sales-order-history .pager {
   border: none; }
 
-/* line 124, ../sass/account.scss */
+/* line 128, ../sass/account.scss */
 .manage-cards-bottom h2 {
   border-bottom: 1px solid #eeeeee;
   margin-bottom: 15px;
   color: #1b75bb; }
-/* line 130, ../sass/account.scss */
+/* line 134, ../sass/account.scss */
 .manage-cards-bottom h4 {
   margin-bottom: 10px; }
-/* line 133, ../sass/account.scss */
+/* line 137, ../sass/account.scss */
 .manage-cards-bottom input {
   height: 20px; }
-/* line 137, ../sass/account.scss */
+/* line 141, ../sass/account.scss */
 .manage-cards-bottom #authnetcim_cc_cid {
   display: block; }
-/* line 141, ../sass/account.scss */
+/* line 145, ../sass/account.scss */
 .manage-cards-bottom button {
   border: 1px solid #196fb1 !important;
   color: white;
@@ -1504,12 +1509,12 @@ ul.tabs {
     color: #eeeeee;
     text-shadow: none; }
 
-/* line 146, ../sass/account.scss */
+/* line 150, ../sass/account.scss */
 .manage-cards-ccinfo {
   width: 50%;
   float: left; }
 
-/* line 151, ../sass/account.scss */
+/* line 155, ../sass/account.scss */
 .manage-cards-addressinfo {
   border-right: 1px solid #eeeeee;
   width: 45%;
@@ -1782,11 +1787,11 @@ ul.tabs {
   background-color: transparent !important;
   line-height: 100% !important; }
 
-/* line 65, ../sass/checkout.scss */
+/* line 4, ../sass/checkout_success.scss */
 .checkout-onepage-success h2 {
   font-weight: bold;
   color: #1b75bb; }
-/* line 70, ../sass/checkout.scss */
+/* line 9, ../sass/checkout_success.scss */
 .checkout-onepage-success .box {
   background: white;
   border: 1px solid #cccccc;
@@ -1796,28 +1801,55 @@ ul.tabs {
   border-radius: 4px;
   min-height: 165px;
   padding: 1em; }
-/* line 79, ../sass/checkout.scss */
-.checkout-onepage-success button {
-  border: 1px solid #196fb1 !important;
-  color: white;
-  text-decoration: none;
-  padding: 12px 15px 12px 15px;
-  -moz-border-radius: 4px / 4px;
-  -webkit-border-radius: 4px 4px;
-  border-radius: 4px / 4px;
-  text-shadow: 1px 1px 0px #155d95;
-  background-image: -moz-linear-gradient(#3d89c5, #1b75bb);
-  background-image: -webkit-linear-gradient(#3d89c5, #1b75bb);
-  background-image: linear-gradient(#3d89c5, #1b75bb);
-  width: auto; }
-  /* line 11, ../sass/mixins.scss */
-  .checkout-onepage-success button:hover {
-    background-image: -moz-linear-gradient(#6b6b6b, #515252);
-    background-image: -webkit-linear-gradient(#6b6b6b, #515252);
-    background-image: linear-gradient(#6b6b6b, #515252);
-    border: 1px solid #515252;
-    color: #eeeeee;
-    text-shadow: none; }
+/* line 18, ../sass/checkout_success.scss */
+.checkout-onepage-success h2.sub-title {
+  color: #1b75bb;
+  font-size: 40px;
+  margin-bottom: 8px; }
+/* line 24, ../sass/checkout_success.scss */
+.checkout-onepage-success .buttons-set {
+  padding: 0;
+  margin-top: 1em; }
+  /* line 28, ../sass/checkout_success.scss */
+  .checkout-onepage-success .buttons-set button {
+    border: 1px solid #196fb1 !important;
+    color: white;
+    text-decoration: none;
+    padding: 12px 15px 12px 15px;
+    -moz-border-radius: 4px / 4px;
+    -webkit-border-radius: 4px 4px;
+    border-radius: 4px / 4px;
+    text-shadow: 1px 1px 0px #155d95;
+    background-image: -moz-linear-gradient(#3d89c5, #1b75bb);
+    background-image: -webkit-linear-gradient(#3d89c5, #1b75bb);
+    background-image: linear-gradient(#3d89c5, #1b75bb);
+    width: 100%;
+    font-size: 16px; }
+    /* line 39, ../sass/checkout_success.scss */
+    .checkout-onepage-success .buttons-set button:hover {
+      background-image: -moz-linear-gradient(#6b6b6b, #515252);
+      background-image: -webkit-linear-gradient(#6b6b6b, #515252);
+      background-image: linear-gradient(#6b6b6b, #515252);
+      border: 1px solid #515252;
+      color: #eeeeee;
+      text-shadow: none; }
+
+/* line 75, ../sass/checkout_success.scss */
+.sales-order-view .col2-set.order-info-box > div {
+  border: 1px solid #cccccc !important;
+  padding: 1em 1.5em;
+  margin-bottom: 10px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  font-size: 14px;
+  min-height: 180px;
+  background: white; }
+  /* line 84, ../sass/checkout_success.scss */
+  .sales-order-view .col2-set.order-info-box > div .box-title h2 {
+    border-bottom: 1px solid #cccccc !important;
+    margin-bottom: 10px;
+    padding-bottom: 5px; }
 
 /* line 10, ../../../../../../../../../Applications/CodeKit 2.app/Contents/Resources/engines/compass/compass-core/stylesheets/compass/layout/_sticky-footer.scss */
 html, body {
