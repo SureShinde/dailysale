@@ -10,6 +10,7 @@
 /var/*
 !/var/.htaccess
 !/media/.htaccess
+!/media/newsletterbooster/track.gif
 /skin/frontend/default/clairsoft/.sass-cache/
 
 /skin/frontend/default/clairsoft/config.codekit
