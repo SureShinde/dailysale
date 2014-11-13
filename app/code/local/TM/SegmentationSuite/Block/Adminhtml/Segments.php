@@ -11,33 +11,33 @@ class TM_SegmentationSuite_Block_Adminhtml_Segments extends Mage_Adminhtml_Block
 
         parent::__construct();
 
-        $url = Mage::helper("adminhtml")->getUrl("*/*/applyRules");
-        $urlSuccess = Mage::helper("adminhtml")->getUrl("*/*/*");
-        $this->_addButton('reindex', array(
-            'label'     => Mage::helper('segmentationsuite')->__('Index Segments'),
-            'onclick'   => "
-            function sendRequest(clearSession) {
-                new Ajax.Request('".$url."', {
-                    method: 'post',
-                    parameters: {
-                        clear_session: clearSession
-                    },
-                    onSuccess: showResponse
-                    });
-                }
+        // $url = Mage::helper("adminhtml")->getUrl("*/*/applyRules");
+        // $urlSuccess = Mage::helper("adminhtml")->getUrl("*/*/*");
+        // $this->_addButton('reindex', array(
+        //     'label'     => Mage::helper('segmentationsuite')->__('Index Segments'),
+        //     'onclick'   => "
+        //     function sendRequest(clearSession) {
+        //         new Ajax.Request('".$url."', {
+        //             method: 'post',
+        //             parameters: {
+        //                 clear_session: clearSession
+        //             },
+        //             onSuccess: showResponse
+        //             });
+        //         }
 
-            function showResponse(response) {
-                var response = response.responseText.evalJSON();
-                if (!response.completed) {
-                    sendRequest(0);
-                    var imageSrc = $('loading_mask_loader').select('img')[0].src;
-                    $('loading_mask_loader').innerHTML = '<img src=\'' + imageSrc + '\'/><br/>' + response.message;
-                } else {
-                    window.location = '" . $urlSuccess . "'
-                }
-            }
-            sendRequest(1);
-                            ",
-        ));
+        //     function showResponse(response) {
+        //         var response = response.responseText.evalJSON();
+        //         if (!response.completed) {
+        //             sendRequest(0);
+        //             var imageSrc = $('loading_mask_loader').select('img')[0].src;
+        //             $('loading_mask_loader').innerHTML = '<img src=\'' + imageSrc + '\'/><br/>' + response.message;
+        //         } else {
+        //             window.location = '" . $urlSuccess . "'
+        //         }
+        //     }
+        //     sendRequest(1);
+        //                     ",
+        // ));
     }
 }
