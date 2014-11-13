@@ -98,7 +98,7 @@ class TM_NewsletterBooster_Model_Campaign extends Mage_Newsletter_Model_Template
         $processor = Mage::helper('newsletterbooster')->getTemplateProcessor();
 
         if (!$this->_preprocessFlag) {
-            $variables['this'] = $this;
+            $variables['campaign'] = $this;
         }
 
         if (Mage::app()->isSingleStoreMode()) {
