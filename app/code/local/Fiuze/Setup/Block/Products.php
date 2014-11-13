@@ -30,10 +30,11 @@ class Fiuze_Setup_Block_Products extends Mage_Catalog_Block_Product_Abstract imp
         $categoryIds = array($categoryId);
 
         $productCollection = Mage::getModel('catalog/product')
-                         ->getCollection()
-                         ->joinField('category_id', 'catalog/category_product', 'category_id', 'product_id = entity_id', null, 'left')
-                         ->addAttributeToSelect('*')
-                         ->addAttributeToFilter('category_id', array('in' => $categoryIds));        
+            ->getCollection()
+            ->joinField('category_id', 'catalog/category_product', 'category_id', 'product_id = entity_id', null, 'left')
+            ->addAttributeToSelect('*')
+            ->addAttributeToFilter('category_id', array('in' => $categoryIds))
+            ->setOrder('price','ASC');
 
         return $productCollection;
     }
