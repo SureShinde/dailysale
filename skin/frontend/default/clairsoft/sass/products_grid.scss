@@ -134,7 +134,17 @@
 		position: relative;
 		margin-bottom: 0;
 
-		.special-price, .regular-price{
+		.special-price-container{
+			//border: 1px solid red;
+		    display: block;
+		    height: 71px;
+		    left: 90px;
+		    position: absolute;
+		    text-align: center;
+		    width: 100px;
+		}
+
+		.regular-price{
 			// display: block;
 			font-size: 35px;
 			//font-weight: bold;
@@ -146,6 +156,44 @@
 			text-align: center;
 			height: auto;
 			left: 90px;
+
+
+			.price-default{
+				font-size: 30px;
+				font-weight: bold;
+			}
+
+			.more-than-three{
+				font-size: 25px;
+				margin-left: -5px;
+				font-weight: bold;
+			}
+
+			.more-than-six{
+				font-size: 20px;
+				//margin-left: -18px;
+				font-weight: bold;
+			}
+
+			.free-price{
+				font-size: 30px;
+				margin-left: -5px;
+				font-weight: bold;
+			}
+		}
+
+		.special-price{
+			// display: block;
+			font-size: 35px;
+			//font-weight: bold;
+			color: $dark-color;
+			position: absolute;
+			padding: 0;
+			margin: 3px 0 0 0px;
+			width: 100px;
+			text-align: center;
+			height: auto;
+			//left: 90px;
 
 
 			.price-default{
