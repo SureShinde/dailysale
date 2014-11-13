@@ -61,7 +61,7 @@ $_helper = $this->helper('catalog/output');
 
                     </ul> <!-- end alerts container -->
 
-                    <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(298); ?>" width="298" height="298" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" /></a>
+                    <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(298); ?>" width="300" height="300" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" /></a>
             </div> <!-- end grid image container -->
 
                 <?php if($_product->getRatingSummary()): ?>
@@ -87,6 +87,7 @@ $_helper = $this->helper('catalog/output');
                 <?php echo $this->getPriceHtml($_product, true) ?>
 
                 <h2 class="product-index-description-container"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></h2>
+                <p class="newsletter-short-desc"><?php echo $_product->getShortDescription(); ?></p>
             </li>
             <?php endif ?>
         <?php if ($i%$_columnCount==0 || $i==$_collectionSize): ?>
