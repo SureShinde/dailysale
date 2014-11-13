@@ -1,6 +1,7 @@
 <?php
 
-class TM_SegmentationSuite_Block_Adminhtml_Segments_Edit extends Mage_Adminhtml_Block_Widget_Form_Container
+class TM_SegmentationSuite_Block_Adminhtml_Segments_Edit
+    extends Mage_Adminhtml_Block_Widget_Form_Container
 {
     public function __construct()
     {
@@ -9,30 +10,29 @@ class TM_SegmentationSuite_Block_Adminhtml_Segments_Edit extends Mage_Adminhtml_
         $this->_objectId   = 'id';
         $this->_blockGroup = 'segmentationsuite';
         $this->_controller = 'adminhtml_segments';
-
-        $this->_updateButton('save', 'label', Mage::helper('segmentationsuite')->__('Save Segment'));
-
+        $this->_removeButton('save');
         $objId = $this->getRequest()->getParam($this->_objectId);
+        $this->_updateButton(
+            'delete',
+            'label',
+            Mage::helper('segmentationsuite')->__('Delete Segment')
+        );
+        $this->_addButton('saveandcontinue', array(
+            'label'   => Mage::helper('segmentationsuite')->__('Save And Continue'),
+            'onclick' => 'saveAndContinueEdit()',
+            'class'   => 'save',
+        ), -100);
+
+        $this->_formScripts[] = "
+            function saveAndContinueEdit(){
+                editForm.submit($('edit_form').action+'back/edit/');
+            }
+        ";
         if (!empty($objId)) {
-            $this->_updateButton('delete', 'label', Mage::helper('segmentationsuite')->__('Delete Segment'));
-            $this->_addButton('saveandcontinue', array(
-                'label'   => Mage::helper('segmentationsuite')->__('Save And Continue'),
-                'onclick' => 'saveAndContinueEdit()',
-                'class'   => 'save',
-            ), -100);
-
-            $this->_formScripts[] = "
-                function saveAndContinueEdit(){
-                    editForm.submit($('edit_form').action+'back/edit/');
-                }
-            ";
-
-        } else {
-            $this->_removeButton('delete');
-            $url = Mage::helper("adminhtml")->getUrl("*/*/applySystemRule");
-            $urlSuccess = Mage::helper("adminhtml")->getUrl("*/*/index");
+            $url = Mage::helper("adminhtml")->getUrl("*/*/indexSegment");
+            $urlSuccess = Mage::helper("adminhtml")->getUrl("*/*/edit", array('id' => $objId));
             $this->_addButton('reindex', array(
-                'label'     => Mage::helper('segmentationsuite')->__('Apply'),
+                'label'     => Mage::helper('segmentationsuite')->__("Index Segment"),
                 'class'   => 'save',
                 'onclick'   => "
                 function sendRequest(clearSession) {
@@ -44,7 +44,6 @@ class TM_SegmentationSuite_Block_Adminhtml_Segments_Edit extends Mage_Adminhtml_
                         onSuccess: showResponse
                     });
                 }
-
                 function showResponse(response) {
                     var response = response.responseText.evalJSON();
                     if (!response.completed) {
@@ -55,11 +54,11 @@ class TM_SegmentationSuite_Block_Adminhtml_Segments_Edit extends Mage_Adminhtml_
                         window.location = '" . $urlSuccess . "'
                     }
                 }
-                sendRequest(1);
-                                ",
+                sendRequest(1);",
             ));
+        } else {
+            $this->_removeButton('delete');
         }
-
     }
 
     public function getHeaderText()
