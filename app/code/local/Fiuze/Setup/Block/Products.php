@@ -24,7 +24,7 @@ class Fiuze_Setup_Block_Products extends Mage_Catalog_Block_Product_Abstract imp
         $day = date("j", Mage::getModel('core/date')->timestamp(time()));
         
         $categoryCollection = Mage::getResourceModel('catalog/category_collection')->addFieldToFilter('name', $day);
-        $cat_det = $category->getData();
+        $cat_det = $categoryCollection->getData();
         $categoryId = $cat_det[0]["entity_id"];
 
         $categoryIds = array($categoryId);
