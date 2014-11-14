@@ -46,7 +46,8 @@ class Fiuze_Setup_Block_Products extends Mage_Catalog_Block_Product_Abstract imp
                 'left'
             )
             ->addAttributeToSelect('*')
-            ->addAttributeToFilter('single_category_id', array('in' => $categoryIds));
+            ->addAttributeToFilter('single_category_id', array('in' => $categoryIds))
+            ->addAttributeToSort('position_in_category');
 
         return $productCollection;
     }
