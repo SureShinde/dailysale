@@ -21,7 +21,7 @@ class Fiuze_Setup_Block_Products extends Mage_Catalog_Block_Product_Abstract imp
     */
     public function getLoadedProductCollection() {
         
-        $day = date("j", Mage::getModel('core/date')->timestamp(time()));
+        $day = date('d');
         
         $categoryCollection = Mage::getResourceModel('catalog/category_collection')->addFieldToFilter('name', $day);
         $cat_det = $categoryCollection->getData();
@@ -29,10 +29,11 @@ class Fiuze_Setup_Block_Products extends Mage_Catalog_Block_Product_Abstract imp
 
         $categoryIds = array($categoryId);
 
-        $productCollection = Mage::getModel('catalog/category')->loadByAttribute('name', $day)
-            ->getProductCollection()
-            ->addAttributeToSelect('*')
-            ->addAttributeToSort('position');
+        $productCollection = Mage::getModel('catalog/product')
+                ->getCollection()
+                ->joinField('category_id', 'catalog/category_product', 'category_id', 'product_id = entity_id', null, 'left')
+                ->addAttributeToSelect('*')
+                ->addAttributeToFilter('category_id', array('in' => $categoryIds));
 
         return $productCollection;
     }
