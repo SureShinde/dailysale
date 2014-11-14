@@ -41,7 +41,8 @@ class TM_NewsletterBooster_Model_Template_Filter extends Mage_Widget_Model_Templ
      */
     public function widgetDirective($construction)
     {
-        if (!isset($this->_templateVars['subscriber'])) {
+//        if (!isset($this->_templateVars['subscriber'])) {
+        if (!isset($this->_templateVars['campgain'])) {
             return $construction[0];
         }
         $construction[2] .= sprintf(' store_id ="%s"', $this->getStoreId());

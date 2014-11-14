@@ -127,6 +127,7 @@ class TM_NewsletterBooster_Model_Queue extends Mage_Newsletter_Model_Queue
         foreach($emails as $email) {
             $this->setProcessed($this->getProcessed() + 1);
             $item = $customer->load($email);
+                $item->setStoreId(1);
             if ($subscribers->subscribeExist($unserializeData['campaign_id'], null, $item->getEmail()) ||
             $unsubscribe->unsubscribeExist($unserializeData['campaign_id'], null, null, $item->getEmail())) {
                 $this->setRecipients($this->getRecipients() - 1);
