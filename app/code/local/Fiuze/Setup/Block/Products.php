@@ -29,7 +29,7 @@ class Fiuze_Setup_Block_Products extends Mage_Catalog_Block_Product_Abstract imp
 
         $categoryIds = array($categoryId);
 
-        $productCollection = Mage::getModel('catalog/category')->load($categoryId)
+        $productCollection = Mage::getModel('catalog/category')->loadByAttribute('name', $day)
             ->getProductCollection()
             ->addAttributeToSelect('*')
             ->addAttributeToSort('position');
