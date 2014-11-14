@@ -23,18 +23,16 @@ class Fiuze_Setup_Block_Products extends Mage_Catalog_Block_Product_Abstract imp
         
         $day = date("j", Mage::getModel('core/date')->timestamp(time()));
         
-        $category = Mage::getResourceModel('catalog/category_collection')->addFieldToFilter('name', $day);
-        $cat_det = $category->getData();
+        $categoryCollection = Mage::getResourceModel('catalog/category_collection')->addFieldToFilter('name', $day);
+        $cat_det = $categoryCollection->getData();
         $categoryId = $cat_det[0]["entity_id"];
 
         $categoryIds = array($categoryId);
 
-        $productCollection = Mage::getModel('catalog/product')
-            ->getCollection()
-            ->joinField('category_id', 'catalog/category_product', 'category_id', 'product_id = entity_id', null, 'left')
+        $productCollection = Mage::getModel('catalog/category')->loadByAttribute('name', $day)
+            ->getProductCollection()
             ->addAttributeToSelect('*')
-            ->addAttributeToFilter('category_id', array('in' => $categoryIds))
-            ->setOrder('price','ASC');
+            ->addAttributeToSort('position');
 
         return $productCollection;
     }
