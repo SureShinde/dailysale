@@ -21,7 +21,7 @@ class Fiuze_Setup_Block_Products extends Mage_Catalog_Block_Product_Abstract imp
     */
     public function getLoadedProductCollection() {
         
-        $day = date('j');
+        $day = date("j", Mage::getModel('core/date')->timestamp(time()));
         
         $categoryCollection = Mage::getResourceModel('catalog/category_collection')->addFieldToFilter('name', $day);
         $cat_det = $categoryCollection->getData();
