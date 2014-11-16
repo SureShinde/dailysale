@@ -98,7 +98,7 @@ class TM_NewsletterBooster_Model_Campaign extends Mage_Newsletter_Model_Template
         $processor = Mage::helper('newsletterbooster')->getTemplateProcessor();
 
         if (!$this->_preprocessFlag) {
-            $variables['this'] = $this;
+            $variables['campaign'] = $this;
         }
 
         if (Mage::app()->isSingleStoreMode()) {
@@ -343,14 +343,14 @@ class TM_NewsletterBooster_Model_Campaign extends Mage_Newsletter_Model_Template
         /*         NEED ADD Store ID       */
 
         $initialEnvironmentInfo = $appEmulation->startEnvironmentEmulation($storeId);
-
+        /*
         $processor = Mage::helper('cms')->getBlockTemplateProcessor();
         $text = $processor->filter($template->getTemplateText());
 
         $appEmulation->stopEnvironmentEmulation($initialEnvironmentInfo);
 
         $template->setTemplateText($text);
-
+          */
         //Varien_Profiler::start("email_template_proccessing");
         $templateProcessed = $template->getProcessedTemplate($vars, true);
 
