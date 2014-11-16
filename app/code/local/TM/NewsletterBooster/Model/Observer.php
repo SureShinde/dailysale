@@ -4,7 +4,6 @@ class TM_NewsletterBooster_Model_Observer
 {
     public function scheduledSendCampaign($schedule)
     {
-        DebugBreak('1@localhost:7869');
         $countOfSubscritions = 50;
         if (Mage::getStoreConfig('newsletterbooster/general/mail_count')) {
             $countOfSubscritions = Mage::getStoreConfig('newsletterbooster/general/mail_count');
