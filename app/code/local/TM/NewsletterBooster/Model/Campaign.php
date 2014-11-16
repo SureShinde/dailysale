@@ -98,6 +98,10 @@ class TM_NewsletterBooster_Model_Campaign extends Mage_Newsletter_Model_Template
         DebugBreak('!@localhost');
         $processor = Mage::helper('newsletterbooster')->getTemplateProcessor();
 
+        if (!$this->_preprocessFlag) {
+            $variables['campaign'] = $this;
+        }
+
         if (Mage::app()->isSingleStoreMode()) {
             $processor->setStoreId(Mage::app()->getStore());
         } else {
@@ -108,19 +112,11 @@ class TM_NewsletterBooster_Model_Campaign extends Mage_Newsletter_Model_Template
         $processor
             ->setIncludeProcessor(array($this, 'getInclude'))
             ->setVariables($variables);
-
-        $this->setTemplateText($processor->filter($this->getTemplateText()));
-
-        if (!$this->_preprocessFlag) {
-            $variables['campaign'] = $this;
-        }            
         
-        $this->setTemplateText($processor->filter($this->getTemplateText()));
-            
         if ($usePreprocess && $this->isPreprocessed()) {
             return $processor->filter($this->getPreparedTemplateText(true));
         }
-        
+        $this->setTemplateText($processor->filter($this->getTemplateText()));
         return $processor->filter($this->getPreparedTemplateText());
     }
 
