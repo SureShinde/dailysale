@@ -94,7 +94,8 @@ class TM_NewsletterBooster_Model_Campaign extends Mage_Newsletter_Model_Template
 
     public function getProcessedTemplate(array $variables = array(), $usePreprocess = false)
     {
-        /* @var $processor Mage_Newsletter_Model_Template_Filter */
+        /* @var $processor Mage_Newsletter_Model_Template_Filter */  
+
         $processor = Mage::helper('newsletterbooster')->getTemplateProcessor();
 
         if (!$this->_preprocessFlag) {
@@ -102,20 +103,21 @@ class TM_NewsletterBooster_Model_Campaign extends Mage_Newsletter_Model_Template
         }
 
         if (Mage::app()->isSingleStoreMode()) {
-            $processor->setStoreId(Mage::app()->getStore());
+            $processor->setStoreId(Mage::app()->getStore()->getStoreId());
         } else {
             $stores = $this->getData('stores');
-            $processor->setStoreId($stores[0]);
+            $processor->setStoreId($stores[0]->getStoreId());
         }
 
         $processor
             ->setIncludeProcessor(array($this, 'getInclude'))
             ->setVariables($variables);
-
+        
         if ($usePreprocess && $this->isPreprocessed()) {
             return $processor->filter($this->getPreparedTemplateText(true));
         }
 
+        $this->setTemplateText($processor->filter($this->getTemplateText()));
         return $processor->filter($this->getPreparedTemplateText());
     }
 
@@ -343,14 +345,14 @@ class TM_NewsletterBooster_Model_Campaign extends Mage_Newsletter_Model_Template
         /*         NEED ADD Store ID       */
 
         $initialEnvironmentInfo = $appEmulation->startEnvironmentEmulation($storeId);
-
+        /*
         $processor = Mage::helper('cms')->getBlockTemplateProcessor();
         $text = $processor->filter($template->getTemplateText());
 
         $appEmulation->stopEnvironmentEmulation($initialEnvironmentInfo);
 
         $template->setTemplateText($text);
-
+          */
         //Varien_Profiler::start("email_template_proccessing");
         $templateProcessed = $template->getProcessedTemplate($vars, true);
 
