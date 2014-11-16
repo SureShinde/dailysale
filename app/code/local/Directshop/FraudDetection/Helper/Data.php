@@ -68,7 +68,7 @@ class Directshop_FraudDetection_Helper_Data extends Mage_Core_Helper_Abstract
 				continue;
 			}
 			
-			foreach (explode(";", $response->getRawBody()) as $keyval)
+			foreach (explode(";", $response->getBody()) as $keyval)
 			{
 				$bits = explode("=",$keyval);
 				if (count($bits) > 1)
