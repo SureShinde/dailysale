@@ -57,7 +57,6 @@ class TM_NewsletterBooster_Model_Campaign extends Mage_Newsletter_Model_Template
     }
 
     public function getUnsubscriptionLink() {
-        DebugBreak('1@localhost:7869');
         return Mage::helper('newsletterbooster')->getUnsubscribeUrl($this);
     }
 
