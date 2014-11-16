@@ -103,10 +103,10 @@ class TM_NewsletterBooster_Model_Campaign extends Mage_Newsletter_Model_Template
         }
 
         if (Mage::app()->isSingleStoreMode()) {
-            $processor->setStoreId(Mage::app()->getStore());
+            $processor->setStoreId(Mage::app()->getStore()->getStoreId());
         } else {
             $stores = $this->getData('stores');
-            $processor->setStoreId($stores[0]);
+            $processor->setStoreId($stores[0]->getStoreId());
         }
 
         $processor
