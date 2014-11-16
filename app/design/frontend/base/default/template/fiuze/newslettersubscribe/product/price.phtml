@@ -412,7 +412,7 @@ $_specialPriceStoreLabel = $this->getProductAttribute('special_price')->getStore
                 </span>
             </p>
         <?php else: // excl. ?>
-
+            <span class="special-price-container">
             <?php
             //IF SPECIAL PRICE EXISTS
                 $msrp = Mage::helper('core')->currency($_product->getMsrp(),true,false);
@@ -469,7 +469,7 @@ $_specialPriceStoreLabel = $this->getProductAttribute('special_price')->getStore
                 </p>
             <?php endif; ?>
         <?php endif; ?>
-
+        </span>
     <?php // Discount percents output start for special price ?>
     <?php if($_finalPrice != 0 && $msrp != "FREE"): ?>
         <?php
