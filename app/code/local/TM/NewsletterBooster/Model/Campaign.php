@@ -116,7 +116,7 @@ class TM_NewsletterBooster_Model_Campaign extends Mage_Newsletter_Model_Template
         if ($usePreprocess && $this->isPreprocessed()) {
             return $processor->filter($this->getPreparedTemplateText(true));
         }
-        $text = $processor->filter($this->getTemplateText());
+        $this->setTemplateText($processor->filter($this->getTemplateText()));
         return $processor->filter($this->getPreparedTemplateText());
     }
 
