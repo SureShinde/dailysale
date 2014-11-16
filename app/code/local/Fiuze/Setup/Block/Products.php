@@ -46,6 +46,7 @@ class Fiuze_Setup_Block_Products extends Mage_Catalog_Block_Product_Abstract imp
                 'left'
             )
             ->addAttributeToSelect('*')
+            ->addAttributeToFilter('visibility', array( 'in', array(Mage_Catalog_Model_Product_Visibility::VISIBILITY_IN_CATALOG,Mage_Catalog_Model_Product_Visibility::VISIBILITY_IN_SEARCH,Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH)))
             ->addAttributeToFilter('single_category_id', array('in' => $categoryIds))
             ->addAttributeToSort('position_in_category');
 
