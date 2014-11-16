@@ -29,10 +29,10 @@ strong{
 
 //ie hackeries and tomfoolery
 
-.soldout-btn, .view-deal-btn, .addtocartbtn, .btn-proceed-checkout, .apply-coupon{
-	background: $main-color;
-	filter: none;
-}
+// .soldout-btn, .view-deal-btn, .addtocartbtn, .btn-proceed-checkout, .apply-coupon{
+// 	background: $main-color;
+// 	filter: none;
+// }
 
 //border resets for stupid blank theme...
 
@@ -300,7 +300,6 @@ input:not([type=submit]):not([type=checkbox]):not([type=radio]){
 .md-modal-header h4{
 	font-size: 22px;
 }
-
 
 /*-------------------------------------------- */
 /*----------- Modular SCSS imports ------------*/
