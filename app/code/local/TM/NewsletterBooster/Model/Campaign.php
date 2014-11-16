@@ -95,7 +95,7 @@ class TM_NewsletterBooster_Model_Campaign extends Mage_Newsletter_Model_Template
     public function getProcessedTemplate(array $variables = array(), $usePreprocess = false)
     {
         /* @var $processor Mage_Newsletter_Model_Template_Filter */  
-        DebugBreak('!@localhost');
+
         $processor = Mage::helper('newsletterbooster')->getTemplateProcessor();
 
         if (!$this->_preprocessFlag) {
@@ -116,6 +116,7 @@ class TM_NewsletterBooster_Model_Campaign extends Mage_Newsletter_Model_Template
         if ($usePreprocess && $this->isPreprocessed()) {
             return $processor->filter($this->getPreparedTemplateText(true));
         }
+
         $this->setTemplateText($processor->filter($this->getTemplateText()));
         return $processor->filter($this->getPreparedTemplateText());
     }
