@@ -31,9 +31,16 @@
 </ul> 
 <?php endif;?>
 <?php if ($this->getOrderId()):?>
+<?php
+$orderObj = Mage::getModel('sales/order')->loadByIncrementId($this->getOrderId());
+?>
 <?php echo $this->getLayout()->createBlock('sales/order_info')->setTemplate('ordersuccesspage/info.phtml')->toHtml();?> 
 <?php echo $this->getLayout()->createBlock('sales/order_items')->setTemplate('ordersuccesspage/items.phtml')->toHtml();?> 
 <?php endif;?>
 <div class="buttons-set">
     <button type="button" class="button" title="<?php echo $this->__('Continue Shopping') ?>" onclick="window.location='<?php echo $this->getUrl() ?>'"><?php echo $this->__('Continue Shopping') ?></button>
 </div>
+
+<!-- BEGIN SHARE A SALE TRACKING CODE-->
+<img src="https://shareasale.com/sale.cfm?amount=<?php echo number_format($orderObj->getSubtotal(),2); ?>&tracking=<?php echo ($this->getOrderId());?>&transtype=sale&merchantID=51523" width="1" height="1">
+<!--END SHARE A SALE TRACKING CODE -->
