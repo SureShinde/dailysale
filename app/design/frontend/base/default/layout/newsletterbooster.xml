@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <layout version="0.1.0">
-    <customer_account>       
+    <!-- customer_account>
         <reference name="customer_account_navigation">          
             <action method="addLink" translate="label" module="newsletterbooster">
                 <name>newsletterbooster</name>
                 <path>newsletterbooster/customer/campaign</path>
                 <label>NewsletterBooster Campaign</label>
+                <aParams>rel="nofollow"</aParams>
             </action>
         </reference>
-    </customer_account>  
+    </customer_account>   -->
     
     <newsletterbooster_customer_campaign>
         <update handle="customer_account"/>
