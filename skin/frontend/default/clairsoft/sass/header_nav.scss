@@ -8,11 +8,34 @@
 	border-bottom: 1px solid shade($main-color, 5%) !important;
 	width: 100%;
 	z-index: 100;
-	padding: 10px 0;
+	// padding: 10px 0;
 	font-size: 13px;
 
 	.empty-cart .top-link-cart, .empty-cart .top-link-checkout{
 		display: none;
+	}
+
+	.top-notice-banner{
+		background: none repeat scroll 0 0 #f2f6ee;
+	    border-bottom: 1px solid #3a7967;
+	    color: #3a7967;
+	    line-height: 200%;
+	    margin-bottom: 8px;
+	    text-align: center;
+	    width: 100%;
+
+	    a{
+	    	color: #3a7967;
+	    	text-decoration: underline;
+
+	    	&:hover{
+	    		text-decoration: none;
+	    	}
+
+	    	&:visited{
+	    		color: #3a7967;
+	    	}
+	    }
 	}
 
 	.top-container{
