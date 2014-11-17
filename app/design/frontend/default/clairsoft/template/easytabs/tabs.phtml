@@ -63,9 +63,14 @@
             if($_tab['alias'] === 'custom'){
                 $featuresData = $this->getChildHtml($_tab['alias']);
                 if (strpos($featuresData, "[") !== FALSE){
-                    $jsonData = Mage::helper('core')->jsonDecode($featuresData);
-                    foreach ($jsonData as $jsonItem){
-                        echo '<li>'.$jsonItem.'</li>';
+                    //$jsonData = Mage::helper('core')->jsonDecode($featuresData);
+                    $jsonData = json_decode($featuresData);
+                    if(json_last_error() === 0){
+                        foreach ($jsonData as $jsonItem){
+                            echo '<li>'.$jsonItem.'</li>';
+                        }
+                    } else {
+                        echo "No features list available";
                     }
                 } else {
                     echo $this->getChildHtml($_tab['alias']);

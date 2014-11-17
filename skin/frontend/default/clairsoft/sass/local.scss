@@ -301,6 +301,10 @@ input:not([type=submit]):not([type=checkbox]):not([type=radio]){
 	font-size: 22px;
 }
 
+.newsletterbooster-track-unsubscribe .account-create .buttons-set .button{
+		@include clairsoft-default-button;
+	}
+
 /*-------------------------------------------- */
 /*----------- Modular SCSS imports ------------*/
 /*-------------------------------------------- */
