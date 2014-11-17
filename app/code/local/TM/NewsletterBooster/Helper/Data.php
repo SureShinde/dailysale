@@ -23,6 +23,6 @@ class TM_NewsletterBooster_Helper_Data extends Mage_Core_Helper_Abstract
 
     public function getUnsubscribeCampaignUrl()
     {
-        return $this->_getUrl('newsletterbooster/track/unsubscribepost');
+        return str_replace('http://', '//', $this->_getUrl('newsletterbooster/track/unsubscribepost'));
     }
 }
