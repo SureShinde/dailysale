@@ -116,13 +116,13 @@ class TM_NewsletterBooster_TrackController extends Mage_Core_Controller_Front_Ac
                 'newsletterbooster/track/unsubscribe',
                 array('id' => $campaignId,'entity' => $customerId, 'queue' =>$queueId)
             );
-
+            /*
             if (!$unsubscribe->customerExist($customerId, $email) && null !== $customerId) {
                 Mage::getSingleton('core/session')->addError($helper->__('Wrong customer email'));
                 $this->_redirectUrl($errorUrl);
                 return false;
             }
-            
+            */
             if (!$unsubscribe->unsubscribeExist($campaignId, $queueId, $customerId, $email)) {
                 if (null === $customerId) {
                     $guest = 1;
