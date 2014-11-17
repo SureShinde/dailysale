@@ -161,7 +161,7 @@ class TM_NewsletterBooster_TrackController extends Mage_Core_Controller_Front_Ac
                         $gSubscriber = Mage::getModel('newsletter/subscriber')
                             ->loadByEmail($email)->unsubscribe();
                         if ($gSubscriber->getId()) {
-                            $gSubscriber->setSubscriberStatus(self::STATUS_UNSUBSCRIBED)->save();
+                            $gSubscriber->setSubscriberStatus(Mage_Newsletter_Model_Subscriber::STATUS_UNSUBSCRIBED)->save();
                         }
                     } catch (Exception $genUnsubExcp) {
                         Mage::getSingleton('core/session')->addError($helper->__('We had a problem unsubscribing your email address. Please email us at unsub@dailysale.com with your email address for a manual action.'));
