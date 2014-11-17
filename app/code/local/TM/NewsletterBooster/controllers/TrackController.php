@@ -168,7 +168,7 @@ class TM_NewsletterBooster_TrackController extends Mage_Core_Controller_Front_Ac
                         $this->_redirectUrl(Mage::getBaseUrl());
                     }
                     
-                    Mage::getSingleton('core/session')->addSuccess($helper->__('Unsubscribe complete saving'));
+                    Mage::getSingleton('core/session')->addSuccess($helper->__('You have been unsubscribed from all mailings.'));
                     $this->_redirectUrl(Mage::getBaseUrl());
                     return false;
                 } catch (Exception $e) {
