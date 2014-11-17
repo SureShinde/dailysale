@@ -3,7 +3,7 @@
 
     <modules>
         <TM_NewsletterBooster>
-            <version>1.2.3</version>
+            <version>1.2.5</version>
         </TM_NewsletterBooster>
     </modules>
 
@@ -176,7 +176,7 @@
         <jobs>
             <newsletterbooster_send_letter>
                 <schedule>
-                    <cron_expr>*/5 * * * *</cron_expr>
+                    <cron_expr>*/2 * * * *</cron_expr>
                 </schedule>
                 <run>
                     <model>newsletterbooster/observer::scheduledSendCampaign</model>

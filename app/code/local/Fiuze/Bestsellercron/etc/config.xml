@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Fiuze_Bestsellercron>
+            <version>0.1.0</version>
+        </Fiuze_Bestsellercron>
+    </modules>
+    <global>
+        <models>
+            <bestsellercron>
+                <class>Fiuze_Bestsellercron_Model</class>
+                <resourceModel>fiuze_bestsellercron_resource</resourceModel>
+            </bestsellercron>
+            <bestsellercron>
+                <class>Fiuze_Bestsellercron_Model</class>
+            </bestsellercron>
+        </models>
+        <blocks>
+            <bestsellercron>
+                <class>Fiuze_Bestsellercron_Block</class>
+            </bestsellercron>
+        </blocks>
+        <helpers>
+            <bestsellercron>
+                <class>Fiuze_Bestsellercron_Helper</class>
+            </bestsellercron>
+        </helpers>
+    </global>
+    <frontend>
+        <routers>
+            <bestsellercron>
+                <use>standard</use>
+                <args>
+                    <module>Fiuze_Bestsellercron</module>
+                    <frontName>bestsellercron</frontName>
+                </args>
+            </bestsellercron>
+        </routers>
+    </frontend>
+
+    <crontab>
+    <jobs>
+        <bestsellercron>
+            <schedule>
+                <cron_expr>0 0 * * *</cron_expr>
+            </schedule>
+            <run>
+                <model>bestsellercron/calculate::prepareBestsellers</model>
+            </run>
+        </bestsellercron>
+    </jobs>
+</crontab>
+</config>

@@ -1,11 +1,4 @@
 <?php
-/**
- * DO NOT REMOVE OR MODIFY THIS NOTICE
- *
- * EasyBanner module for Magento - flexible banner management
- *
- * @author Templates-Master Team <www.templates-master.com>
- */
 
 class TM_SegmentationSuite_Model_Segments extends Mage_CatalogRule_Model_Rule
 {
@@ -33,11 +26,6 @@ class TM_SegmentationSuite_Model_Segments extends Mage_CatalogRule_Model_Rule
     protected function _afterSave()
     {
         $this->_getResource()->addSegmentStoreIds($this);
-        if ((int)$this->getData('segment_status') != 0) {
-            $this->_getResource()->updateSegmentCustomerData($this);
-        } else {
-            $this->_getResource()->deleteSegmentIndex($this->getId());
-        }
         parent::_afterSave();
     }
 
@@ -70,43 +58,6 @@ class TM_SegmentationSuite_Model_Segments extends Mage_CatalogRule_Model_Rule
     public function lookupStoreIds($id)
     {
         return $this->_getResource()->lookupStoreIds($id);
-    }
-
-    public function getLabelsData($productId, $mode)
-    {
-        return $this->_getResource()->getProductLabelsData($productId, $mode);
-    }
-
-    /**
-     * Get array of product ids which are matched by rule
-     *
-     * @return array
-     */
-    public function getMatchingCustomerIds()
-    {
-        if (is_null($this->_productIds)) {
-            $this->_productIds = array();
-            $this->setCollectedAttributes(array());
-            $storeIds = $this->lookupStoreIds($this->getId());
-
-            $customerCollection = Mage::getResourceModel('customer/customer_collection');
-            if (!in_array(0, $storeIds)) {
-                $customerCollection->addFieldToFilter('store_id', array('in' => $storeIds));
-            }
-
-            $this->getConditions()->collectValidatedAttributes($customerCollection);
-
-            Mage::getSingleton('core/resource_iterator')->walk(
-                $customerCollection->getSelect(),
-                array(array($this, 'callbackValidateProduct')),
-                array(
-                    'attributes' => $this->getCollectedAttributes(),
-                    'customer'    => Mage::getModel('customer/customer'),
-                )
-            );
-
-        }
-        return $this->_productIds;
     }
 
     /**
@@ -143,66 +94,42 @@ class TM_SegmentationSuite_Model_Segments extends Mage_CatalogRule_Model_Rule
         $this->getResource()->applyToProduct($this, $product, $websiteIds);
     }
 
-    /**
-     * Apply all price rules, invalidate related cache and refresh price index
-     *
-     * @return Mage_CatalogRule_Model_Rule
-     */
-    public function applyAll()
-    {
-        $collection = $this->getResourceCollection();
-        $collection->getSelect()
-            ->where('rules_id>3')
-            ->where('label_status=1');
-
-        $collection->walk(array($this->_getResource(), 'updateProlabelsRuleProductData'));
-//        $this->_getResource()->applyAllRulesForDateRange();
-    }
-
-
-    /**
-     * Apply all price rules to product
-     *
-     * @param  int|Mage_Catalog_Model_Product $product
-     * @return Mage_CatalogRule_Model_Rule
-     */
-    public function applyAllRulesToProduct($product)
-    {
-        $this->_getResource()->applyAllRulesForDateRange(NULL, NULL, $product);
-        $this->_invalidateCache();
-
-        if ($product instanceof Mage_Catalog_Model_Product) {
-            $productId = $product->getId();
-        } else {
-            $productId = $product;
-        }
-
-        if ($productId) {
-            Mage::getSingleton('index/indexer')->processEntityAction(
-                new Varien_Object(array('id' => $productId)),
-                Mage_Catalog_Model_Product::ENTITY,
-                Mage_Catalog_Model_Product_Indexer_Price::EVENT_TYPE_REINDEX_PRICE
-            );
-        }
-    }
-
-
-    /**
-     * Return true if banner status = 1
-     * and banner linked to active placeholder
-     *
-     * @return boolean
-     */
-    public function isActive()
-    {
-        if ($this->getData('label_status')/* && count($this->getPlaceholderIds(true))*/) {
-            return true;
-        }
-        return false;
-    }
-
     public function getStoreIds()
     {
         return $this->_getResource()->loadStoreIds($this);;
+    }
+
+    public function indexSegment($count, $step, $segmentId)
+    {
+        $this->load($segmentId);
+
+        $this->_productIds = array();
+        $this->setCollectedAttributes(array());
+
+        $storeIds = $this->lookupStoreIds($segmentId);
+        $customerCollection = Mage::getResourceModel('customer/customer_collection');
+        if (!in_array(0, $storeIds)) {
+            $customerCollection->addFieldToFilter('store_id', array('in' => $storeIds));
+        }
+        $customerCollection->getSelect()
+            ->order('entity_id')
+            ->limit($count, $count * $step);
+        $customerCollection->load();
+
+        $this->getConditions()->collectValidatedAttributes($customerCollection);
+
+        Mage::getSingleton('core/resource_iterator')->walk(
+            $customerCollection->getSelect(),
+            array(array($this, 'callbackValidateProduct')),
+            array(
+                'attributes' => $this->getCollectedAttributes(),
+                'customer'   => Mage::getModel('customer/customer'),
+            )
+        );
+        if (count($this->_productIds) > 0) {
+            $this->getResource()->updateSegmentCustomerData($this, $this->_productIds);
+        }
+
+        return true;
     }
 }
