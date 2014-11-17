@@ -99,6 +99,7 @@ class TM_NewsletterBooster_TrackController extends Mage_Core_Controller_Front_Ac
 
     public function unsubscribepostAction()
     {
+        $helper = Mage::helper('newsletterbooster');
         if ($this->getRequest()->isPost()) {
             $campaignId = $this->getRequest()->getParam('campaign');
             if ($this->getRequest()->getParam('entity')) {
@@ -110,8 +111,7 @@ class TM_NewsletterBooster_TrackController extends Mage_Core_Controller_Front_Ac
             $queueId = $this->getRequest()->getParam('queue');
             $email = $this->getRequest()->getParam('email');
             $unsubscribe = Mage::getModel('newsletterbooster/unsubscribe');
-
-            $helper = Mage::helper('newsletterbooster');
+            
             $errorUrl = Mage::getUrl(
                 'newsletterbooster/track/unsubscribe',
                 array('id' => $campaignId,'entity' => $customerId, 'queue' =>$queueId)
