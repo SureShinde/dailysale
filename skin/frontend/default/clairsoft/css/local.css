@@ -223,7 +223,12 @@ input:not([type=submit]):not([type=checkbox]):not([type=radio]) {
   #subscribe-pop .validation-advice {
     color: white; }
 
-/* line 296, ../sass/local.scss */
+/* iPhone [portrait + landscape] */
+@media only screen and (max-device-width: 480px) {
+  /* line 300, ../sass/local.scss */
+  .top-notice-banner {
+    font-size: 9px; } }
+/* line 305, ../sass/local.scss */
 #generateButton {
   border: 1px solid #196fb1 !important;
   color: white;
@@ -246,11 +251,11 @@ input:not([type=submit]):not([type=checkbox]):not([type=radio]) {
     color: #eeeeee;
     text-shadow: none; }
 
-/* line 300, ../sass/local.scss */
+/* line 309, ../sass/local.scss */
 .md-modal-header h4 {
   font-size: 22px; }
 
-/* line 304, ../sass/local.scss */
+/* line 313, ../sass/local.scss */
 .newsletterbooster-track-unsubscribe .account-create .buttons-set .button {
   border: 1px solid #196fb1 !important;
   color: white;
