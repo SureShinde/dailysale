@@ -157,32 +157,41 @@ class TM_NewsletterBooster_TrackController extends Mage_Core_Controller_Front_Ac
                         $subscribe->deleteSubscribeRecord($campaignId, $email, $customerId);
                     }
                     /* Unsubscribing from general subscription */
-                    try {
-                        $gSubscriber = Mage::getModel('newsletter/subscriber')
-                            ->loadByEmail($email)->unsubscribe();
-                        if ($gSubscriber->getId()) {
-                            $gSubscriber->setSubscriberStatus(Mage_Newsletter_Model_Subscriber::STATUS_UNSUBSCRIBED)->save();
-                        }
-                    } catch (Exception $genUnsubExcp) {
-                        Mage::getSingleton('core/session')->addError($helper->__('We had a problem unsubscribing your email address. Please email us at unsub@dailysale.com with your email address for a manual action.'));
-                        $this->_redirectUrl(Mage::getBaseUrl());
-                    }
                     
-                    Mage::getSingleton('core/session')->addSuccess($helper->__('Unsubscribed complete.'));
+                    
+                    
                     $this->_redirectUrl(Mage::getBaseUrl());
-                    return false;
                 } catch (Exception $e) {
+                    /*
                     Mage::getSingleton('core/session')->addError($helper->__('Wrong params for unsubscribe campaign'));
                     $this->_redirectUrl(Mage::getBaseUrl());
                     return false;
+                    */
                 }
             } else {
+                /*
                 Mage::getSingleton('core/session')->addNotice($helper->__('You are already unsubscribed from campaign'));
                 $this->_redirectUrl(Mage::getBaseUrl());
                 return false;
+                */
             }
+            try {
+                $gSubscriber = Mage::getModel('newsletter/subscriber')
+                    ->loadByEmail($email)->unsubscribe();
+                if ($gSubscriber->getId()) {
+                    $gSubscriber->setSubscriberStatus(Mage_Newsletter_Model_Subscriber::STATUS_UNSUBSCRIBED)->save();
+                }
+                Mage::getSingleton('core/session')->addSuccess($helper->__('Unsubscribed complete.'));
+            } catch (Exception $genUnsubExcp) {
+                /*
+                Mage::getSingleton('core/session')->addError($helper->__('We had a problem unsubscribing your email address. Please email us at unsub@dailysale.com with your email address for a manual action.'));
+                $this->_redirectUrl(Mage::getBaseUrl());
+                return false;
+                */
+            }
+        } else {
+            Mage::getSingleton('core/session')->addError($helper->__('Needs email to unsubscribe.'));
         }
-        Mage::getSingleton('core/session')->addError($helper->__('Wrong params for unsubscribe campaign.'));
         $this->_redirectUrl(Mage::getBaseUrl());
         return false;
     }
