@@ -30,34 +30,41 @@
 <?php $cart_qty = (int) Mage::getModel('checkout/cart') ->getItemsQty(); ?>
 
 <div id="top-wrapper">
-    <div class="top-container">
-        <?php echo $this->getChildHtml('topSearch') ?>
-        <!-- if short name -->
-        <?php
-            $customer = Mage::getSingleton('customer/session')->getCustomer()->getData();
-            if (strlen($customer['firstname']) < 13):?>
-            <div class="top-links-container <?php if($cart_qty <= 0){echo 'empty-cart';}?>">
-                   <?php echo $this->getChildHtml('topLinks') ?>
-            </div>
-            <p class="welcome-msg"><?php
-            //$customer = Mage::getSingleton('customer/session')->getCustomer()->getData();
-            if(Mage::getSingleton('customer/session')->isLoggedIn()){
-               echo $this->__('Welcome, %s!', $customer['firstname']);
-            }
-        ?></p>
-        <!-- if long name -->
-        <?php elseif (strlen($customer['firstname']) >= 13):?>
-            <p class="welcome-msg-long"><?php
-            //$customer = Mage::getSingleton('customer/session')->getCustomer()->getData();
-            if(Mage::getSingleton('customer/session')->isLoggedIn()){
-               echo $this->__('Welcome, %s!', $customer['firstname']);
-            }
-        ?></p>
-        <div class="top-links-container-long <?php if($cart_qty <= 0){echo 'empty-cart';}?>">
-                   <?php echo $this->getChildHtml('topLinks') ?>
-            </div>
-        <?php endif ?>
+    <div class="top-notice-banner">
+            <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('notice_banner')->toHtml(); ?>    
+        </div>
 
+    <div id="top-search-wrapper">
+
+        <div class="top-container">
+            <?php echo $this->getChildHtml('topSearch') ?>
+            <!-- if short name -->
+            <?php
+                $customer = Mage::getSingleton('customer/session')->getCustomer()->getData();
+                if (strlen($customer['firstname']) < 13):?>
+                <div class="top-links-container <?php if($cart_qty <= 0){echo 'empty-cart';}?>">
+                       <?php echo $this->getChildHtml('topLinks') ?>
+                </div>
+                <p class="welcome-msg"><?php
+                //$customer = Mage::getSingleton('customer/session')->getCustomer()->getData();
+                if(Mage::getSingleton('customer/session')->isLoggedIn()){
+                   echo $this->__('Welcome, %s!', $customer['firstname']);
+                }
+            ?></p>
+            <!-- if long name -->
+            <?php elseif (strlen($customer['firstname']) >= 13):?>
+                <p class="welcome-msg-long"><?php
+                //$customer = Mage::getSingleton('customer/session')->getCustomer()->getData();
+                if(Mage::getSingleton('customer/session')->isLoggedIn()){
+                   echo $this->__('Welcome, %s!', $customer['firstname']);
+                }
+            ?></p>
+            <div class="top-links-container-long <?php if($cart_qty <= 0){echo 'empty-cart';}?>">
+                       <?php echo $this->getChildHtml('topLinks') ?>
+                </div>
+            <?php endif ?>
+
+        </div>
     </div>
 </div>
 <div class="header-container">
