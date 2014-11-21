@@ -40,10 +40,7 @@ function ShortenText($text, $chars) {
         <?php if ($i++%$_columnCount==0): ?>
         <!-- <ul class="products-grid"> -->
         <?php endif ?>
-        <?php 
-            $stockItem = $_product->getStockItem();
-            if($stockItem->getIsInStock()):
-        ?>
+        <?php if($_product->isSaleable()): ?>
         <li class="item">
             <!-- <li class="item<?php //if(($i-1)%$_columnCount==0): ?> first<?php //elseif($i%$_columnCount==0): ?> last<?php //endif; ?>"> -->
             <div class="products-grid-image-container">
