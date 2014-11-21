@@ -159,10 +159,4 @@
 	margin-right: 15px;
 }
 
-//forgot password page
-
-.customer-account-forgotpassword button{
-	@include clairsoft-default-button;
-}
-
 @import "register-login.scss";
