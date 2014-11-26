@@ -40,7 +40,7 @@ function ShortenText($text, $chars) {
         <?php if ($i++%$_columnCount==0): ?>
         <!-- <ul class="products-grid"> -->
         <?php endif ?>
-        <?php if($_product->isSaleable()): ?>
+        <?php if( ($_product->isSaleable()) OR ($_product->getTypeId() == 'configurable') ){ ?>
         <li class="item">
             <!-- <li class="item<?php //if(($i-1)%$_columnCount==0): ?> first<?php //elseif($i%$_columnCount==0): ?> last<?php //endif; ?>"> -->
             <div class="products-grid-image-container">
@@ -92,7 +92,7 @@ function ShortenText($text, $chars) {
                 <?php endif; ?>
 
                 <div class="actions">
-                    <?php if($_product->isSaleable()): ?>
+                    <?php if( ($_product->isSaleable()) OR ($_product->getTypeId() == 'configurable') ): ?>
                         <a class="view-deal-btn" href="<?php echo $_product->getProductUrl() ?>">View Deal</a>
                     <?php else: ?>
                         <a class="soldout-btn">Sold Out</a>
@@ -138,7 +138,7 @@ function ShortenText($text, $chars) {
                     ?>
                 </p>
             </li>
-            <?php endif ?>
+            <?php } //endif ?>
         <?php if ($i%$_columnCount==0 || $i==$_collectionSize): ?>
         <!-- </ul> -->
         <?php endif ?>
