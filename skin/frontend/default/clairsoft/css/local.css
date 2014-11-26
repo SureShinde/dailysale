@@ -223,12 +223,7 @@ input:not([type=submit]):not([type=checkbox]):not([type=radio]) {
   #subscribe-pop .validation-advice {
     color: white; }
 
-/* iPhone [portrait + landscape] */
-@media only screen and (max-device-width: 480px) {
-  /* line 300, ../sass/local.scss */
-  .top-notice-banner {
-    font-size: 9px; } }
-/* line 305, ../sass/local.scss */
+/* line 296, ../sass/local.scss */
 #generateButton {
   border: 1px solid #196fb1 !important;
   color: white;
@@ -251,11 +246,11 @@ input:not([type=submit]):not([type=checkbox]):not([type=radio]) {
     color: #eeeeee;
     text-shadow: none; }
 
-/* line 309, ../sass/local.scss */
+/* line 300, ../sass/local.scss */
 .md-modal-header h4 {
   font-size: 22px; }
 
-/* line 313, ../sass/local.scss */
+/* line 304, ../sass/local.scss */
 .newsletterbooster-track-unsubscribe .account-create .buttons-set .button {
   border: 1px solid #196fb1 !important;
   color: white;
@@ -1139,7 +1134,7 @@ ul.tabs {
     text-align: center; }
     /* line 362, ../sass/product_detail.scss */
     .block .block-content .mini-products-list .single-xsell-container img {
-      margin-bottom: 10px;
+      margin-bottom: 25px;
       padding: 0;
       border-bottom: 1px solid #cccccc; }
     /* line 368, ../sass/product_detail.scss */
@@ -1155,15 +1150,16 @@ ul.tabs {
     /* line 379, ../sass/product_detail.scss */
     .block .block-content .mini-products-list .single-xsell-container .special-price, .block .block-content .mini-products-list .single-xsell-container .our-price {
       color: #1b75bb;
-      font-size: 32px; }
-    /* line 385, ../sass/product_detail.scss */
+      font-size: 32px;
+      font-weight: bold; }
+    /* line 386, ../sass/product_detail.scss */
     .block .block-content .mini-products-list .single-xsell-container .availability-container {
       font-size: 14px;
       position: absolute;
       bottom: 60px;
       text-align: center;
       width: 100%; }
-    /* line 393, ../sass/product_detail.scss */
+    /* line 394, ../sass/product_detail.scss */
     .block .block-content .mini-products-list .single-xsell-container a.soldout-btn {
       float: right;
       border: 1px solid #cccccc !important;
@@ -1191,17 +1187,17 @@ ul.tabs {
         background-image: -moz-linear-gradient(#3d89c5, #1b75bb);
         background-image: -webkit-linear-gradient(#3d89c5, #1b75bb);
         background-image: linear-gradient(#3d89c5, #1b75bb); }
-    /* line 405, ../sass/product_detail.scss */
+    /* line 406, ../sass/product_detail.scss */
     .block .block-content .mini-products-list .single-xsell-container .instock-noshow {
       display: block;
       height: 20px;
       position: relative;
       bottom: 0px; }
-    /* line 412, ../sass/product_detail.scss */
+    /* line 413, ../sass/product_detail.scss */
     .block .block-content .mini-products-list .single-xsell-container .instock-pricedisplay {
       margin-top: 11px;
       display: block; }
-    /* line 417, ../sass/product_detail.scss */
+    /* line 418, ../sass/product_detail.scss */
     .block .block-content .mini-products-list .single-xsell-container a.view-deal-btn {
       -moz-border-radius: 4px / 4px;
       -webkit-border-radius: 4px 4px;
@@ -1215,8 +1211,11 @@ ul.tabs {
       text-decoration: none;
       width: 210px;
       border: 1px solid #cccccc;
-      padding: 12px 0px 12px 0px; }
-      /* line 433, ../sass/product_detail.scss */
+      padding: 12px 0px 12px 0px;
+      position: absolute;
+      bottom: 15px;
+      left: 10px; }
+      /* line 437, ../sass/product_detail.scss */
       .block .block-content .mini-products-list .single-xsell-container a.view-deal-btn:hover {
         background-image: -moz-linear-gradient(#3d89c5, #1b75bb);
         background-image: -webkit-linear-gradient(#3d89c5, #1b75bb);
@@ -1601,29 +1600,6 @@ ul.tabs {
   width: 45%;
   float: left;
   margin-right: 15px; }
-
-/* line 164, ../sass/account.scss */
-.customer-account-forgotpassword button {
-  border: 1px solid #196fb1 !important;
-  color: white;
-  text-decoration: none;
-  padding: 12px 15px 12px 15px;
-  -moz-border-radius: 4px / 4px;
-  -webkit-border-radius: 4px 4px;
-  border-radius: 4px / 4px;
-  text-shadow: 1px 1px 0px #155d95;
-  background-image: -moz-linear-gradient(#3d89c5, #1b75bb);
-  background-image: -webkit-linear-gradient(#3d89c5, #1b75bb);
-  background-image: linear-gradient(#3d89c5, #1b75bb);
-  width: auto; }
-  /* line 11, ../sass/mixins.scss */
-  .customer-account-forgotpassword button:hover {
-    background-image: -moz-linear-gradient(#6b6b6b, #515252);
-    background-image: -webkit-linear-gradient(#6b6b6b, #515252);
-    background-image: linear-gradient(#6b6b6b, #515252);
-    border: 1px solid #515252;
-    color: #eeeeee;
-    text-shadow: none; }
 
 /* line 6, ../sass/register-login.scss */
 #signin-modal a {
