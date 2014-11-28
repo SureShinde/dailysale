@@ -33,6 +33,12 @@
 		padding: 1.5em;
 		@include border-radius(4px);
 
+		.availability-only{
+			color: red;
+			font-weight: bold;
+			text-align: center;
+		}
+
 		.price-box{
 			width: 100%;
 			// height: 40px;
