@@ -356,11 +356,11 @@ ul.tabs{
 			width: 230px;
 			border: 1px solid $subtle-color;
 			background: white;
-			min-height: 420px;
+			min-height: 460px;
 			text-align: center;
 
 			img{
-				margin-bottom: 25px;
+				margin-bottom: 15px;
 				padding: 0;
 				border-bottom: 1px solid $subtle-color;
 			}
@@ -374,6 +374,17 @@ ul.tabs{
 			margin-right: 0px;
 			}
 
+			.product-name{
+				padding: 0 8px;
+
+				a{
+					text-decoration: none;
+					font-size: 14px;
+					color: $dark-color;
+					font-weight: bold;
+				}
+			} 
+
 			.yousave{display: none;}
 
 			.special-price, .our-price{
@@ -381,6 +392,10 @@ ul.tabs{
 				font-size: 32px;
 				//margin-bottom: 5px;
 				font-weight: bold;
+			}
+
+			span#msrp{
+				text-decoration: line-through;
 			}
 
 			.availability-container{

@@ -1130,11 +1130,11 @@ ul.tabs {
     width: 230px;
     border: 1px solid #cccccc;
     background: white;
-    min-height: 420px;
+    min-height: 460px;
     text-align: center; }
     /* line 362, ../sass/product_detail.scss */
     .block .block-content .mini-products-list .single-xsell-container img {
-      margin-bottom: 25px;
+      margin-bottom: 15px;
       padding: 0;
       border-bottom: 1px solid #cccccc; }
     /* line 368, ../sass/product_detail.scss */
@@ -1145,21 +1145,33 @@ ul.tabs {
     .block .block-content .mini-products-list .single-xsell-container:last-child {
       margin-right: 0px; }
     /* line 377, ../sass/product_detail.scss */
+    .block .block-content .mini-products-list .single-xsell-container .product-name {
+      padding: 0 8px; }
+      /* line 380, ../sass/product_detail.scss */
+      .block .block-content .mini-products-list .single-xsell-container .product-name a {
+        text-decoration: none;
+        font-size: 14px;
+        color: #898989;
+        font-weight: bold; }
+    /* line 388, ../sass/product_detail.scss */
     .block .block-content .mini-products-list .single-xsell-container .yousave {
       display: none; }
-    /* line 379, ../sass/product_detail.scss */
+    /* line 390, ../sass/product_detail.scss */
     .block .block-content .mini-products-list .single-xsell-container .special-price, .block .block-content .mini-products-list .single-xsell-container .our-price {
       color: #1b75bb;
       font-size: 32px;
       font-weight: bold; }
-    /* line 386, ../sass/product_detail.scss */
+    /* line 397, ../sass/product_detail.scss */
+    .block .block-content .mini-products-list .single-xsell-container span#msrp {
+      text-decoration: line-through; }
+    /* line 401, ../sass/product_detail.scss */
     .block .block-content .mini-products-list .single-xsell-container .availability-container {
       font-size: 14px;
       position: absolute;
       bottom: 60px;
       text-align: center;
       width: 100%; }
-    /* line 394, ../sass/product_detail.scss */
+    /* line 409, ../sass/product_detail.scss */
     .block .block-content .mini-products-list .single-xsell-container a.soldout-btn {
       float: right;
       border: 1px solid #cccccc !important;
@@ -1187,17 +1199,17 @@ ul.tabs {
         background-image: -moz-linear-gradient(#3d89c5, #1b75bb);
         background-image: -webkit-linear-gradient(#3d89c5, #1b75bb);
         background-image: linear-gradient(#3d89c5, #1b75bb); }
-    /* line 406, ../sass/product_detail.scss */
+    /* line 421, ../sass/product_detail.scss */
     .block .block-content .mini-products-list .single-xsell-container .instock-noshow {
       display: block;
       height: 20px;
       position: relative;
       bottom: 0px; }
-    /* line 413, ../sass/product_detail.scss */
+    /* line 428, ../sass/product_detail.scss */
     .block .block-content .mini-products-list .single-xsell-container .instock-pricedisplay {
       margin-top: 11px;
       display: block; }
-    /* line 418, ../sass/product_detail.scss */
+    /* line 433, ../sass/product_detail.scss */
     .block .block-content .mini-products-list .single-xsell-container a.view-deal-btn {
       -moz-border-radius: 4px / 4px;
       -webkit-border-radius: 4px 4px;
@@ -1215,7 +1227,7 @@ ul.tabs {
       position: absolute;
       bottom: 15px;
       left: 10px; }
-      /* line 437, ../sass/product_detail.scss */
+      /* line 452, ../sass/product_detail.scss */
       .block .block-content .mini-products-list .single-xsell-container a.view-deal-btn:hover {
         background-image: -moz-linear-gradient(#3d89c5, #1b75bb);
         background-image: -webkit-linear-gradient(#3d89c5, #1b75bb);
