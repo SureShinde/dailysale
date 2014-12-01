@@ -136,11 +136,13 @@
             <script type="text/javascript">decorateTable('shopping-cart-table')</script>
         </fieldset>
     </form>
+    <div class="cart-crossells">
+        <?php echo $this->getChildHtml('crosssell') ?>
+    </div>
     <div class="cart-collaterals">
         <div class="col2-set">
             <div class="col-1">
                 <?php echo $this->getChildHtml('coupon') ?>
-                <?php echo $this->getChildHtml('crosssell') ?>
             </div>
             <div class="col-2">
                 <?php /* Extensions placeholder */ ?>

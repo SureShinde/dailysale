@@ -1493,6 +1493,61 @@ ul.tabs {
     /* line 103, ../sass/cart.scss */
     .cart .credit-payment.box.discount button {
       float: right; }
+  /* line 110, ../sass/cart.scss */
+  .cart .crosssell {
+    margin-top: 15px; }
+    /* line 114, ../sass/cart.scss */
+    .cart .crosssell h2 {
+      color: #1b75bb;
+      font-size: 130%;
+      font-weight: normal; }
+    /* line 120, ../sass/cart.scss */
+    .cart .crosssell li.item {
+      width: 430px;
+      float: left;
+      height: 155px;
+      margin-bottom: 15px;
+      margin-right: 15px; }
+      /* line 129, ../sass/cart.scss */
+      .cart .crosssell li.item:nth-child(2n) {
+        border-right: none; }
+      /* line 133, ../sass/cart.scss */
+      .cart .crosssell li.item .product-name a {
+        text-decoration: none;
+        color: #898989; }
+      /* line 138, ../sass/cart.scss */
+      .cart .crosssell li.item .special-price, .cart .crosssell li.item .our-price {
+        font-weight: bold;
+        font-size: 130%;
+        color: #1b75bb; }
+      /* line 144, ../sass/cart.scss */
+      .cart .crosssell li.item span#msrp {
+        text-decoration: line-through; }
+      /* line 148, ../sass/cart.scss */
+      .cart .crosssell li.item .product-details {
+        margin-left: 155px; }
+        /* line 151, ../sass/cart.scss */
+        .cart .crosssell li.item .product-details .btn-cart {
+          border: 1px solid #196fb1 !important;
+          color: white;
+          text-decoration: none;
+          padding: 12px 15px 12px 15px;
+          -moz-border-radius: 4px / 4px;
+          -webkit-border-radius: 4px 4px;
+          border-radius: 4px / 4px;
+          text-shadow: 1px 1px 0px #155d95;
+          background-image: -moz-linear-gradient(#3d89c5, #1b75bb);
+          background-image: -webkit-linear-gradient(#3d89c5, #1b75bb);
+          background-image: linear-gradient(#3d89c5, #1b75bb);
+          width: auto; }
+          /* line 11, ../sass/mixins.scss */
+          .cart .crosssell li.item .product-details .btn-cart:hover {
+            background-image: -moz-linear-gradient(#6b6b6b, #515252);
+            background-image: -webkit-linear-gradient(#6b6b6b, #515252);
+            background-image: linear-gradient(#6b6b6b, #515252);
+            border: 1px solid #515252;
+            color: #eeeeee;
+            text-shadow: none; }
 
 /* line 3, ../sass/account.scss */
 .my-account .welcome-msg {
