@@ -26,16 +26,16 @@
 ?>
 
 <?php
-    function ShortenText($text, $chars) {
-        // Change to the number of characters you want to display
-        //$chars = 120;
-        $text = $text." ";
-        $text = substr($text,0,$chars);
-        $text = substr($text,0,strrpos($text,' '));
-        $text = $text."...";
+    // function ShortenText($text, $chars) {
+    //     // Change to the number of characters you want to display
+    //     //$chars = 120;
+    //     $text = $text." ";
+    //     $text = substr($text,0,$chars);
+    //     $text = substr($text,0,strrpos($text,' '));
+    //     $text = $text."...";
 
-        return $text;
-    }
+    //     return $text;
+    // }
 ?>
 
 <?php if($this->getItems()->getSize()): ?>
