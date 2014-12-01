@@ -7,6 +7,76 @@
 	width: 960px;
 }
 
+.upsells{
+		// border: 1px solid red;
+		width: 500px;
+		//height: 400px;
+		display: inline-block;
+
+		h2{
+			color: $main-color;
+			margin-bottom: 10px;
+		}
+
+		.products-grid{
+			width: 500px;
+		}
+
+		// .emtpy{
+		// 	width: 0;
+		// }
+
+		.upsell-single{
+			border: 1px solid $subtle-color;
+			width: 155px;
+			min-height: 280px;
+			// display: inline-block;
+			float: left;
+			text-align: center;
+			background: white;
+			@include border-radius(4px);
+			margin-right: 16px;
+			margin-bottom: 15px;
+			overflow: hidden;
+
+			&:hover{
+				border: 1px solid $main-color;
+			}
+		}
+
+		.upsell-single:nth-child(3n){
+			margin-right: 0;
+			margin-left: 1px;
+		}
+
+		.product-name{
+			font-size: 12px;
+			margin: 6px 0;
+
+			a{
+				text-decoration: none;
+				color: $dark-color;
+			}
+		}
+
+		.product-image{
+			display: inline;
+		}
+
+		.msrp{
+			font-size: 80%;
+
+			span#msrp{
+				text-decoration: line-through;
+			}
+		}
+
+		.our-price, .special-price{
+			color: $main-color;
+			font-weight: bold;
+			font-size: 150%;
+		}
+	}
 
 .col1-layout .product-view .product-shop { width: 405px;}
 .product-shop{
@@ -32,6 +102,12 @@
 		// margin: 0 10px 0 0px;
 		padding: 1.5em;
 		@include border-radius(4px);
+
+		.availability-only{
+			color: red;
+			font-weight: bold;
+			text-align: center;
+		}
 
 		.price-box{
 			width: 100%;
@@ -356,11 +432,11 @@ ul.tabs{
 			width: 230px;
 			border: 1px solid $subtle-color;
 			background: white;
-			min-height: 420px;
+			min-height: 460px;
 			text-align: center;
 
 			img{
-				margin-bottom: 25px;
+				margin-bottom: 15px;
 				padding: 0;
 				border-bottom: 1px solid $subtle-color;
 			}
@@ -374,6 +450,17 @@ ul.tabs{
 			margin-right: 0px;
 			}
 
+			.product-name{
+				padding: 0 8px;
+
+				a{
+					text-decoration: none;
+					font-size: 14px;
+					color: $dark-color;
+					font-weight: bold;
+				}
+			} 
+
 			.yousave{display: none;}
 
 			.special-price, .our-price{
@@ -381,6 +468,10 @@ ul.tabs{
 				font-size: 32px;
 				//margin-bottom: 5px;
 				font-weight: bold;
+			}
+
+			span#msrp{
+				text-decoration: line-through;
 			}
 
 			.availability-container{
