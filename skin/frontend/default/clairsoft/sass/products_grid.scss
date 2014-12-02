@@ -20,6 +20,41 @@
 
 	.pager{
 		border: none;
+
+		.amount{
+			//color: $darker-color;
+			font-weight: bold;
+		}
+
+		li{
+			//border: 1px solid $subtle-color;
+			padding: 5px 0 5px 0;
+			margin-right: 3px;
+			//@include border-radius(4px);
+
+			a{
+				text-decoration: none;
+				//border: 1px solid green;
+				display: inline;
+				height: 100%;
+				width: 100%;
+				//display: block;
+				@include clairsoft-light-button;
+				padding: 5px;
+			}
+		}
+
+		.current{
+			 padding: 5px;
+		}
+
+		.previous{
+			padding-right: 1px;
+		}
+
+		.pages strong{
+			display: none;
+		}
 	}
 }
 
