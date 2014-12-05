@@ -73,7 +73,7 @@ class MageWorx_CustomerCredit_Helper_Data extends Mage_Core_Helper_Abstract
      * @return boolean
      */
     public function isEnabledCodes() {
-        return Mage::getStoreConfigFlag('mageworx_customers/customercredit_credit/enable_recharge_codes');
+        return Mage::getStoreConfigFlag('mageworx_customers/customercredit_recharge_codes/enable_recharge_codes');
     }
 
     /**
@@ -190,13 +190,14 @@ class MageWorx_CustomerCredit_Helper_Data extends Mage_Core_Helper_Abstract
     }
     
     /**
-     * Cehck apply credits
+     * Check apply credits and return array of values
      * @param Mage_Sales_Model_Quote $quote
      * @param int $customerId
      * @param int $websiteId
-     * @return boolean
+     * @return array
      */
-    private function _checkApplyCredits($quote, $customerId, $websiteId) {
+    public function checkApplyCreditsSum($quote, $customerId, $websiteId) {
+     //   return true;
         $result = array();
         $store = Mage::app()->getStore();
         $customer = Mage::getModel('customer/customer')->setStore($store)->load($customerId);
@@ -204,14 +205,20 @@ class MageWorx_CustomerCredit_Helper_Data extends Mage_Core_Helper_Abstract
         $websiteId = $store->getWebsiteId();
         $ruleModel = Mage::getResourceModel('customercredit/rules_collection');                                    
         $ruleModel->setValidationFilter($websiteId, $customerGroupId)->setRuleTypeFilter(MageWorx_CustomerCredit_Model_Rules::CC_RULE_TYPE_APPLY);
-        foreach ($ruleModel->getData() as $rule) {                                
+        foreach ($ruleModel->getData() as $rule) {    
+            if(!count($result)) {
+                $result = array(0);
+            }
             $conditions = unserialize($rule['conditions_serialized']);                 
             if ($conditions) {
                 $conditionModel = Mage::getModel('customercredit/rules_condition_combine')->setPrefix('conditions')->loadArray($conditions);
-                $result[] = $conditionModel->validate($this->getSalesAddress($quote));
+                $_result = $conditionModel->validate($this->getSalesAddress($quote),TRUE);
+                if(is_array($_result)) {
+                    $result = array_merge($result,$_result);
+                } 
             }
         }
-        return !in_array(false,$result);
+        return $result;
     }
     
     public function getAllBillingAddresses($quote) {
@@ -263,8 +270,9 @@ class MageWorx_CustomerCredit_Helper_Data extends Mage_Core_Helper_Abstract
         }        
         
         // check apply credits
-        if(!$this->_checkApplyCredits($quote, $customerId, $websiteId)) {
-            return -3;
+        $productConditionsPrice = $this->checkApplyCreditsSum($quote, $customerId, $websiteId);
+        if(sizeof($productConditionsPrice)>0 && !array_sum($productConditionsPrice)) {
+               return -3;
         }
         
         if(Mage::getSingleton('customer/session')->getData('customer_credit_rule')) {
@@ -301,6 +309,7 @@ class MageWorx_CustomerCredit_Helper_Data extends Mage_Core_Helper_Abstract
         } else {
             $addresses = $this->getAllBillingAddresses($quote);
         }
+        
         $subtotal = 0;
         $shipping = 0;
         $tax = 0;
@@ -308,14 +317,14 @@ class MageWorx_CustomerCredit_Helper_Data extends Mage_Core_Helper_Abstract
         $tail = 0;
         foreach ($addresses as $address) {
             ///////
-            $subtotal += floatval($address->getBaseSubtotalWithDiscount()); //$address->getBaseSubtotal();
-            $shipping += floatval($address->getBaseShippingAmount() - $address->getBaseShippingTaxAmount());
-            $tax += floatval($address->getBaseTaxAmount());
+            $subtotal = floatval($address->getBaseSubtotalWithDiscount()-$address->getMwRewardpointDiscount()); //$address->getBaseSubtotal();
+            $shipping = floatval($address->getBaseShippingAmount() - $address->getBaseShippingTaxAmount());
+            $tax = floatval($address->getBaseTaxAmount());
 
-            $grandTotal += floatval($quote->getBaseGrandTotal() + $address->getBaseCustomerCreditAmount());
-            if ($grandTotal==0) $grandTotal += floatval(array_sum($address->getAllBaseTotalAmounts()));
-            if ($grandTotal==0) $grandTotal += $subtotal + $shipping + $tax;
-            //echo $subtotal.'|'.$shipping.'|'.$tax.'|='.$grandTotal.'<br/>';        
+            $grandTotal = floatval($quote->getBaseGrandTotal() + $address->getBaseCustomerCreditAmount());
+            if ($grandTotal==0) $grandTotal = floatval(array_sum($address->getAllBaseTotalAmounts()));
+            if ($grandTotal==0) $grandTotal = $subtotal + $shipping + $tax;
+//            echo $subtotal.'|'.$shipping.'|'.$tax.'|='.$grandTotal.'<br/>';        
             $tail = $grandTotal;
         ///////
         }
@@ -335,7 +344,11 @@ class MageWorx_CustomerCredit_Helper_Data extends Mage_Core_Helper_Abstract
                     case 'tax':
                         $amount += $tax;
                         $tail -= $tax;
-                        break;                       
+                        break;  
+                    case 'fees':
+                        $baseCreditLeft += $address->getBaseMultifeesAmount();
+                        $creditLeft += $address->getMultifeesAmount();
+                        break;  
                 }
             }
         } else {
@@ -343,11 +356,21 @@ class MageWorx_CustomerCredit_Helper_Data extends Mage_Core_Helper_Abstract
             $tail = 0;            
         }
         
+        if(sizeof($productConditionsPrice)>0) {
+            $sum = array_sum($productConditionsPrice);
+            $baseCreditLeft = $sum;
+            $creditLeft     = $sum;
+        }
+        
         $amount = round($amount, 2);
         $tail = round($tail, 2);        
-        //echo $amount.'|'.$tail.'|'.$value; exit;
+//        echo $amount.'|'.$tail.'|'.$value; //exit;
         
         if ($value >= $amount && $tail==0) {
+            $minOrder = Mage::getStoreConfig('mageworx_customers/customercredit_credit/min_order_amount');
+            if($minOrder && ($amount - $value<$minOrder)) {
+                if ($isEnabledPartialPayment) return 1; else return 0;
+            }
             return 2;
         } else {
             if ($isEnabledPartialPayment) return 1; else return 0;
@@ -368,8 +391,8 @@ class MageWorx_CustomerCredit_Helper_Data extends Mage_Core_Helper_Abstract
 
         // Retrieve corresponding email template id and customer name        
         $templateId = 'customercredit_email_credit_changed_template';
-        if(Mage::getStoreConfig('mageworx_customers/customercredit_email_config/notification_template_balance_changed')) {
-            $templateId = Mage::getStoreConfig('mageworx_customers/customercredit_email_config/notification_template_balance_changed');
+        if(Mage::getStoreConfig('mageworx_customers/customercredit_email_config/notification_template_balance_changed',$storeId)) {
+            $templateId = Mage::getStoreConfig('mageworx_customers/customercredit_email_config/notification_template_balance_changed',$storeId);
         }
         
         $customerName = $customer->getFirstname() . ' ' . $customer->getLastname();
@@ -436,10 +459,10 @@ class MageWorx_CustomerCredit_Helper_Data extends Mage_Core_Helper_Abstract
         $sendTo = array();
 
         $mailTemplate = Mage::getModel('core/email_template');
-        
+        $storeId = $customer->getStoreId();
         $template = 'customercredit_email_credit_changed_template';
-        if(Mage::getStoreConfig('mageworx_customers/customercredit_email_config/notification_template_balance_changed')) {
-            $template = Mage::getStoreConfig('mageworx_customers/customercredit_email_config/notification_template_balance_changed');
+        if(Mage::getStoreConfig('mageworx_customers/customercredit_email_config/notification_template_balance_changed',$storeId)) {
+            $template = Mage::getStoreConfig('mageworx_customers/customercredit_email_config/notification_template_balance_changed',$storeId);
         }
         $customerName = $customer->getFirstname() . ' ' . $customer->getLastname();
         
@@ -491,8 +514,8 @@ class MageWorx_CustomerCredit_Helper_Data extends Mage_Core_Helper_Abstract
         
         // Retrieve corresponding email template id and customer name        
         $templateId = 'customercredit_email_credit_expiration_notice';    
-        if(Mage::getStoreConfig('mageworx_customers/customercredit_email_config/notification_template_expiration_notice')) {
-            $templateId = Mage::getStoreConfig('mageworx_customers/customercredit_email_config/notification_template_expiration_notice');
+        if(Mage::getStoreConfig('mageworx_customers/customercredit_email_config/notification_template_expiration_notice',$storeId)) {
+            $templateId = Mage::getStoreConfig('mageworx_customers/customercredit_email_config/notification_template_expiration_notice',$storeId);
         }
         $customerName = $customer->getFirstname() . ' ' . $customer->getLastname();
         
@@ -633,12 +656,13 @@ class MageWorx_CustomerCredit_Helper_Data extends Mage_Core_Helper_Abstract
      * @param int $websiteId
      * @return float
      */
-    public function getRealCreditValue($customerId='', $websiteId='') {
-        if(!$customerId) {
+     public function getRealCreditValue($customerId='', $websiteId='') {
+       if(!$customerId) {
             $customerId = $this->getCustomerId();
         }
         if(!$websiteId) {
-            $store = Mage::app()->getStore();
+            $storeId = Mage::app()->getRequest()->getParam('store_id',Mage::app()->getStore()->getId());
+            $store = Mage::app()->getStore($storeId);
             $websiteId = $store->getWebsiteId();
         }
         $credit = Mage::getModel('customercredit/credit')->setCustomerId($customerId);
@@ -666,6 +690,7 @@ class MageWorx_CustomerCredit_Helper_Data extends Mage_Core_Helper_Abstract
         if($credit = Mage::getSingleton('customer/session')->getCustomCreditValue()) {
             return $credit;
         }
+        
         $credit = $this->getRealCreditValue($customerId, $websiteId);
         return $credit;
     }

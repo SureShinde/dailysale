@@ -49,8 +49,8 @@ class MageWorx_CustomerCredit_Model_Mysql4_Credit_Collection extends Mage_Core_M
      */
     public function addWebsiteFilter($id)
     {
-            $this->addFieldToFilter('website_id', array('in'=>$id));
-    return $this;
+        $this->addFieldToFilter('website_id', array('in'=>$id));
+        return $this;
     }
 	
     /**

@@ -158,7 +158,7 @@ class MageWorx_CustomerCredit_IndexController extends Mage_Core_Controller_Front
         $model = Mage::getModel('customercredit/rules_customer_action');
         $collection = $model->getCollection();
         
-        $actionTag = MageWorx_Customercredit_Model_Rules_Customer_Action::MAGEWORX_CUSTOMER_ACTION_FBLIKE;
+        $actionTag = MageWorx_CustomerCredit_Model_Rules_Customer_Action::MAGEWORX_CUSTOMER_ACTION_FBLIKE;
         $log = Mage::getModel('customercredit/rules_customer_log');
         $logCollectionModel = $log->getCollection()->setActionTag($actionTag);
         
@@ -305,7 +305,11 @@ class MageWorx_CustomerCredit_IndexController extends Mage_Core_Controller_Front
                         break;
                     case 'tax':
                         $creditLeft += $tax;
-                        break;                       
+                        break;    
+                    case 'fees':
+                        $baseCreditLeft += $shippingAddress->getBaseMultifeesAmount();
+                        $creditLeft += $shippingAddress->getMultifeesAmount();
+                        break;  
                 }
             }
         } else {

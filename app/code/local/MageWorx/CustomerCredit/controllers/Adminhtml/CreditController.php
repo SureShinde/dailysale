@@ -34,7 +34,7 @@
  * @author     MageWorx Dev Team <dev@mageworx.com>
  */
  
-class MageWorx_Customercredit_Adminhtml_CreditController extends Mage_Adminhtml_Controller_Action
+class MageWorx_CustomerCredit_Adminhtml_CreditController extends Mage_Adminhtml_Controller_Action
 {
     protected function _isAllowed() {
         return Mage::getSingleton('admin/session')->isAllowed('customer/manage');
