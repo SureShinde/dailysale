@@ -33,7 +33,7 @@
  * @package    MageWorx_CustomerCredit
  * @author     MageWorx Dev Team <dev@mageworx.com>
  */
-class MageWorx_Customercredit_Model_Rules_Customer_Action extends Mage_Rule_Model_Rule
+class MageWorx_CustomerCredit_Model_Rules_Customer_Action extends Mage_Rule_Model_Rule
 {
     const MAGEWORX_CUSTOMER_ACTION_TAG          = 1;
     const MAGEWORX_CUSTOMER_ACTION_REVIEW       = 2;

@@ -44,7 +44,7 @@ class MageWorx_CustomerCredit_Block_Customer_View_Credit extends MageWorx_Custom
     }
 
     public function getFormAction() {
-        return $this->getUrl('customercredit/index/refill');
+        return $this->getUrl('customercredit/index/refill',array('_secure'=>true));
     }
 
     public function getCustomerCreditCode() {

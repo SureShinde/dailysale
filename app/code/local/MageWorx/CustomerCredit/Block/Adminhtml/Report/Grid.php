@@ -273,31 +273,46 @@ class MageWorx_CustomerCredit_Block_Adminhtml_Report_Grid extends Mage_Adminhtml
     public function getCsv()
     {
         $csv = '';
-        $this->_prepareCollection();
-        $this->_prepareColumns();
+        $this->_isExport = true;
+        $this->_prepareGrid();
+        $this->getCollection()->getSelect()->limit();
+        $this->getCollection()->setPageSize(0);
+        $this->getCollection()->load();
+        $this->_afterLoadCollection();
 
+        $data = array();
         foreach ($this->_columns as $column) {
             if (!$column->getIsSystem()) {
-                $data[] = '"'.$column->getHeader().'"';
+                $data[] = '"'.$column->getExportHeader().'"';
             }
         }
+          array_pop($data);                                     // Remove Action Title
         $csv.= implode(',', $data)."\n";
 
-        foreach ($this->getCollection() as $_item) {
+        foreach ($this->getCollection() as $item) {
             $data = array();
-                foreach ($this->_columns as $column) {
-                    
-                    if (!$column->getIsSystem()) {
-                        $data[] = '"' . str_replace(
-                            array('"', '\\'),
-                            array('""', '\\\\'),
-                            $_item->getData($column->getId())
-                        ) . '"';
-                    }
-                 }
-             $csv.= implode(',', $data)."\n";
+            foreach ($this->_columns as $column) {
+                if (!$column->getIsSystem()) {
+                    $data[] = '"' . str_replace(array('"', '\\'), array('""', '\\\\'),
+                        $column->getRowFieldExport($item)) . '"';
+                }
+            }
+              array_pop($data);                                     // Remove Action Data
+            $csv.= implode(',', $data)."\n";
         }
-        //echo "<pre>"; print_r($csv); exit;
+
+        if ($this->getCountTotals())
+        {
+            $data = array();
+            foreach ($this->_columns as $column) {
+                if (!$column->getIsSystem()) {
+                    $data[] = '"' . str_replace(array('"', '\\'), array('""', '\\\\'),
+                        $column->getRowFieldExport($this->getTotals())) . '"';
+                }
+            }
+            $csv.= implode(',', $data)."\n";
+        }
+       
         return $csv;
     }
 

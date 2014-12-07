@@ -68,7 +68,7 @@ class MageWorx_CustomerCredit_Model_Rules_Condition_Combine extends Mage_Rule_Mo
                 
         $conditions = parent::getNewChildSelectOptions();
         $model = Mage::getModel('customercredit/rules');
-        $rule_type = MageWorx_Customercredit_Model_Rules::CC_RULE_TYPE_APPLY;
+        $rule_type = MageWorx_CustomerCredit_Model_Rules::CC_RULE_TYPE_APPLY;
         if(!Mage::app()->getRequest()->getParam('current_rule_type')) {
             $rule_type = $model->load(Mage::app()->getRequest()->getParam('id',false))->getRuleType();
         } else {
@@ -77,7 +77,7 @@ class MageWorx_CustomerCredit_Model_Rules_Condition_Combine extends Mage_Rule_Mo
         
         $arrays = array();
         $arrays[] = array('label'=>Mage::helper('salesrule')->__('Conditions combination'), 'value'=>'customercredit/rules_condition_combine');
-        if($rule_type != MageWorx_Customercredit_Model_Rules::CC_RULE_TYPE_APPLY) {
+        if($rule_type != MageWorx_CustomerCredit_Model_Rules::CC_RULE_TYPE_APPLY) {
             $arrays[] = array('label'=>Mage::helper('salesrule')->__('Customer Attributes'), 'value'=>$attributes);
             $arrays[] = array('label'=>Mage::helper('salesrule')->__('Customer Actions'), 'value'=>$actionAttributes);
         };
@@ -93,10 +93,11 @@ class MageWorx_CustomerCredit_Model_Rules_Condition_Combine extends Mage_Rule_Mo
      * @param Varien_Object $object
      * @return boolean
      */
-     public function validate(Varien_Object $object) {
+     public function validate(Varien_Object $object,$_needCalculate=false) {
         if (!$this->getConditions()) {
             return true;
         }
+        $productConditionsPrice = array();
         
         if($object->getAddressType() == 'billing') {
             $checkout = Mage::getSingleton('checkout/session');
@@ -126,12 +127,16 @@ class MageWorx_CustomerCredit_Model_Rules_Condition_Combine extends Mage_Rule_Mo
                     if (!($product instanceof Mage_Catalog_Model_Product)) {
                         $product = Mage::getModel('catalog/product')->load($object->getProductId());
                     }
-
+                    $product->setCategoryIds($product->getCategoryIds());
                     $product->setQuoteItemQty($item->getQty())
                         ->setQuoteItemPrice($item->getPrice()) // possible bug: need to use $object->getBasePrice()
                         ->setQuoteItemRowTotal($item->getBaseRowTotal());
                     foreach ($this->getConditions() as $cond) {
-                        $validated[] = $cond->validate($product);
+                        $isValid = $cond->validate($product);
+                        if($isValid) {
+                            $productConditionsPrice[] = $item->getRowTotal();
+                        }
+                        $validated[] = $isValid;
                     }
                 }
             }
@@ -142,13 +147,16 @@ class MageWorx_CustomerCredit_Model_Rules_Condition_Combine extends Mage_Rule_Mo
             
         }
         $rTrue = ($true==1)?0:1;
-            
+        
         if (($all && $true) && (in_array($rTrue, $validated))) {
             return false;
         } 
         if (($all && !$true) && (in_array($true, $validated))) {
             return false;
-        } 
+        }
+        if($_needCalculate) {
+            return $productConditionsPrice;
+        }
         return true;
     }
 }

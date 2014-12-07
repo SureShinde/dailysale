@@ -29,7 +29,7 @@
  * @author     MageWorx Dev Team
  */
 
-class MageWorx_Customercredit_Model_Import extends Mage_ImportExport_Model_Import
+class MageWorx_CustomerCredit_Model_Import extends Mage_ImportExport_Model_Import
 {
     public  $errors = array();
     public  $totalRecords = 0;
@@ -93,7 +93,7 @@ class MageWorx_Customercredit_Model_Import extends Mage_ImportExport_Model_Impor
     
     /**
      * Run import
-     * @return MageWorx_Customercredit_Model_Import
+     * @return MageWorx_CustomerCredit_Model_Import
      */
     public function run() 
     {

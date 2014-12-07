@@ -55,14 +55,20 @@ class MageWorx_CustomerCredit_Model_Sales_Order extends Mage_Sales_Model_Order {
              * Order can be closed just in case when we have refunded amount.
              * In case of "0" grand total order checking ForcedCanCreditmemo flag
              */
-            if ((floatval($this->getTotalRefunded()) || (!$this->getTotalRefunded()
-                && $this->hasForcedCanCreditmemo()) && Mage::registry('can_closed_order') || !$this->hasForcedCanCreditmemo())
+            elseif (floatval($this->getTotalRefunded()) || (!$this->getTotalRefunded()
+                && $this->hasForcedCanCreditmemo())
             ) {
                 if ($this->getState() !== self::STATE_CLOSED && $this->hasCreditmemos()) {
                     $this->_setState(self::STATE_CLOSED, true, '', $userNotification);
                     $this->unsForcedCanCreditmemo();
                 }
             }
+        }
+        if(Mage::registry('can_closed_order')) {
+                if ($this->getState() !== self::STATE_CLOSED && $this->hasCreditmemos()) {
+                    $this->_setState(self::STATE_CLOSED, true, '', $userNotification);
+                    $this->unsForcedCanCreditmemo();
+                }
         }
 
         if ($this->getState() == self::STATE_NEW && $this->getIsInProcess()) {
@@ -85,18 +91,6 @@ class MageWorx_CustomerCredit_Model_Sales_Order extends Mage_Sales_Model_Order {
     {
         if(Mage::registry('change_order_status_once')) return $this;
         Mage::register("change_order_status_once",true,true);
-        if (false === $status) {
-            $status = $this->getStatus();
-        } elseif (true === $status) {
-            $status = $this->getConfig()->getStateDefaultStatus($this->getState());
-        } else {
-            $this->setStatus($status);
-        }
-        $history = Mage::getModel('sales/order_status_history')
-            ->setStatus($status)
-            ->setComment($comment)
-            ->setEntityName($this->_historyEntityName);
-        $this->addStatusHistory($history);
-        return $history;
+        return parent::addStatusHistoryComment($comment, $status);
     }
 }

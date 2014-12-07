@@ -29,7 +29,7 @@
  * @author     MageWorx Dev Team
  */
 
-class MageWorx_Customercredit_Adminhtml_CodeController extends Mage_Adminhtml_Controller_Action
+class MageWorx_CustomerCredit_Adminhtml_CodeController extends Mage_Adminhtml_Controller_Action
 {
     /**
      * Action initialization 
