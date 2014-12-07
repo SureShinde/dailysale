@@ -217,7 +217,7 @@
                             <show_in_store>1</show_in_store>
                             <validate>validate-digits validate-not-negative-number</validate>
                         </default_qty_credit_units>
-                         <exchange_rate translate="label">
+                         <exchange_rate translate="label comment">
                             <label>Credit Exchange Rate</label>
                             <comment>Enter amount of credits equal to 1 base currency</comment>
                             <frontend_type>text</frontend_type>
@@ -247,6 +247,23 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </sync_credits>
+                        <min_order_amount translate="label">
+                            <label>Minimal Order Amount</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>175</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </min_order_amount>
+                        <product_apply_notice translate="label comment">
+                            <label>Product View Notice</label>
+                            <comment>This message will be shown on products that can be purchased for credits (if credit rules of the “Apply” type are added)</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>190</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </product_apply_notice>
                     </fields>
                 </customercredit_credit>
                 <customercredit_expiration>

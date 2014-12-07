@@ -29,7 +29,7 @@
  * @author     MageWorx Dev Team
  */
 
-class MageWorx_Customercredit_Model_Rules extends Mage_Rule_Model_Rule
+class MageWorx_CustomerCredit_Model_Rules extends Mage_Rule_Model_Rule
 {
     const FREE_SHIPPING_ITEM = 1;
     const FREE_SHIPPING_ADDRESS = 2;
@@ -81,7 +81,7 @@ class MageWorx_Customercredit_Model_Rules extends Mage_Rule_Model_Rule
     /**
      * 
      * @param array $rule
-     * @return MageWorx_Customercredit_Model_Rules
+     * @return MageWorx_CustomerCredit_Model_Rules
      */
     public function loadPost(array $rule)
     {

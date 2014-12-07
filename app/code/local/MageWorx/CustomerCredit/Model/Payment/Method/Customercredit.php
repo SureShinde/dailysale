@@ -29,7 +29,7 @@
  * @author     MageWorx Dev Team
  */
 
-class MageWorx_Customercredit_Model_Payment_Method_Customercredit extends Mage_Payment_Model_Method_Abstract
+class MageWorx_CustomerCredit_Model_Payment_Method_Customercredit extends Mage_Payment_Model_Method_Abstract
 {
     protected $_code            = 'customercredit';
     protected $_formBlockType   = 'customercredit/payment_form';
@@ -62,7 +62,7 @@ class MageWorx_Customercredit_Model_Payment_Method_Customercredit extends Mage_P
 
     /**
      * Validate Credit
-     * @return MageWorx_Customercredit_Model_Payment_Method_Customercredit
+     * @return MageWorx_CustomerCredit_Model_Payment_Method_Customercredit
      */
     public function validate() {
         parent::validate();
