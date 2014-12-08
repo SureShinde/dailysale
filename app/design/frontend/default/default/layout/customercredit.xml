@@ -48,7 +48,7 @@
             <action method="addLinkBlock" ifconfig="mageworx_customers/customercredit_credit/display_credit_link_in_top_menu"><blockName>customercredit_link</blockName><liParams>class='mini-top-cart'</liParams></action>
         </reference>        
     </default>
-    
+  
     <customercredit_index_index>
         <reference name="head">
             <action method="addCss"><stylesheet>css/customercredit.css</stylesheet></action>

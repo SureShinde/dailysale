@@ -86,11 +86,20 @@ class MageWorx_CustomerCredit_Block_Adminhtml_Customer_Edit_Tab_CustomerCredit_A
 
         
         if ($helper->isScopePerWebsite()) {
+            $script = '';
+            foreach (Mage::app()->getWebsites() as $website) {
+                $value  =(float)$helper->getCreditValue($customerId, $website->getId());
+                if($value) {
+                    $value .= $expired;
+                }
+                $script .= 'vs['.$website->getId().']=\''.$value.'\';';
+            }
             $fieldset->addField('website_id', 'select', array(
                 'name'     => 'website_id',
                 'label'    => $helper->__('Website'),
                 'title'    => $helper->__('Website'),
                 'values'   => Mage::getModel('adminhtml/system_store')->getWebsiteValuesForForm(),
+                'onchange' =>  "var vs = []; ".$script." if (vs[this.value]) $('customercredit_credit_website_value').innerHTML = vs[this.value];"
             ));
         }
         

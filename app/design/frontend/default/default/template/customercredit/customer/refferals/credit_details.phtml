@@ -1,17 +1,17 @@
 <?php if ($this->isEnabledCodes()):?>
 <div class="box-account box-recent">
     <div class="page-head box-credit-generate" style="border-bottom: 1px solid #D9DDE3; width: 100%">
-        <h2 style="float:none;"><?php echo $this->__('Recharge Code') ?></h2>
+        <h2 style="float:none;"><?php echo $this->__('Sharing Code') ?></h2>
     </div>
     <br>
     <ol>
-        <li>
+        <li style="padding-bottom:40px;">
             <form id="refill-credit-form" action="<?php echo $this->getFormAction()?>" method="post">
                 <fieldset>
                     <ul class="form-list" >
                         <li>
-                            <label><?php echo $this->__('Enter Recharge Code to Refill the Balance:')?></label><br />                            
-                            <input type="text" class="required-entry input-text" value="<?php echo $this->getCustomerCreditCode()?>" name="customercredit_code"/>
+                            <label style="font-weight:normal"><?php echo $this->__('Enter sharing code sent by a friend to topup your store credit. You can use this credit at any time during the checkout process')?></label><br /> <br/>                           
+                            <input style="width:200px; height:30px;" type="text" class="required-entry input-text" value="<?php echo $this->getCustomerCreditCode()?>" name="customercredit_code"/>
                             <button class="button" type="submit"><span><span><?php echo $this->__('Submit Code')?></span></span></button>                            
                         </li>
                     </ul>
@@ -58,8 +58,8 @@
         <h2 style="float:none;"><?php echo $this->__('Generate My Codes') ?></h2>
     </div>
     <br>
-<form action="<?php echo $this->getUrl('customercredit/refferals/generate') ?>"  method="post" id="form-validate-generator">
-    
+<form action="<?php echo $this->getUrl('customercredit/refferals/generate',array('_secure'=>true)) ?>"  method="post" id="form-validate-generator">
+     <label style="font-weight:normal"><?php echo $this->__('Want to share your store credit with friends. Simply nominate an amount to share, generate the code and send this to a friend. They just need to log into their account here https://mysticcaravan.com.au/customercredit and submit the code.')?></label><br /> <br/>
         <?php echo $this->getBlockHtml('formkey')?>
         <ul class="form-list customcredit-list">
             <li>
@@ -116,7 +116,7 @@ $_items = $this->getCollection(); ?>
                     <td><?php echo $_item->getUsedDate()?></td>
                     <td>
                         <?php if(!$_item->getUsedDate()) : ?>
-                        <a onclick="confirmDelete('<?php echo $this->getUrl('*/*/removeCode',array('code_id'=>$_item->getId()))?>');" style="cursor: pointer;">
+                        <a onclick="confirmDelete('<?php echo $this->getUrl('*/*/removeCode',array('_secure'=>true,'code_id'=>$_item->getId()))?>');" style="cursor: pointer;">
                         Remove
                         </a>
                         <?php else: ?>

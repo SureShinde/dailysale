@@ -210,7 +210,7 @@ class MageWorx_CustomerCredit_Model_Observer
      * @param Varien_Event_Observer $observer
      */
     public function returnRefandData($observer) {
-        $order = $observer->getEvent()->getOrder();
+        $order = $observer->getOrder();
         if($value = Mage::registry('need_setnull_total_refunded')) {
             Mage::unregister('need_setnull_total_refunded');
             $order->setTotalRefunded($value)->save();
@@ -278,9 +278,10 @@ class MageWorx_CustomerCredit_Model_Observer
             
             if (abs($order->getCustomerCreditInvoiced() - $order->getCustomerCreditRefunded())<.0001) {
                 $order->unsForcedCanCreditmemo();
+                 Mage::register('can_closed_order', true, true);
             }
             
-            Mage::register('can_closed_order', true, true);
+           
             // set message
             $payment = $order->getPayment();
             
@@ -399,7 +400,7 @@ class MageWorx_CustomerCredit_Model_Observer
      */
     private function _executeRule($rule) {
         if ($this->_checkConditions($rule)) {
-            $this->_calculateCredit($rule);
+            $rule = $this->_calculateCredit($rule);
             $this->_sendLog($rule);
         }
         return true;
@@ -413,284 +414,292 @@ class MageWorx_CustomerCredit_Model_Observer
     private function _checkConditions($rule) {
         $conditions = unserialize($rule['conditions_serialized']);                
         $customerActions = array();
+        $actionTag = MageWorx_CustomerCredit_Model_Rules_Customer_Action::MAGEWORX_CUSTOMER_ORDER_COMPLETE;
         $model = Mage::getModel('customercredit/rules_customer_action');
         $collection = $model->getCollection();
-        foreach ($conditions['conditions'] as $key => $condition) {
-            $log = Mage::getModel('customercredit/rules_customer_log');
-            $success[$key] = true;
-            $skipUrl = false;
-            switch ($condition['attribute']) {
-                case 'registration':
-                    if(!$this->_customer) return false;
-                    $actionTag = MageWorx_CustomerCredit_Model_Rules_Customer_Action::MAGEWORX_CUSTOMER_ACTION_REGISTRATION;
-                    $logCollectionModel = $log->getCollection()->setActionTag($actionTag);
-                    $logCollection = $logCollectionModel->loadByRuleAndCustomer($rule['rule_id'], $this->_customer->getId());
-                    $createdAt = $this->_customer->getCreatedAt(0);
-                    $createdAt = str_replace('T',' ',$createdAt);
-                    $regArr = explode(' ', $createdAt, 2);
-                    $regDate = explode('-', $regArr[0], 3);
-                    $regTimestamp = mktime(0, 0, 0, $regDate[1], $regDate[2], $regDate[0]);
-
-                    $ruleRegDate = explode('-', $condition['value'], 3);
-                    $ruleRegTimestamp = mktime(0, 0, 0, $ruleRegDate[1], $ruleRegDate[2], $ruleRegDate[0]);
-
-                    if (!version_compare($regTimestamp, $ruleRegTimestamp, $condition['operator'])){
-                        $success[$key] = false;
-                    }
-                    if($logCollection->getSize()) {
-                            $success[$key] = false;
-                            $skipUrl = true;
-                            break;
-                    }
-                    break;
-                case 'first_order':
-                    if(!$this->_order) return false;
-                    $actionTag = MageWorx_CustomerCredit_Model_Rules_Customer_Action::MAGEWORX_CUSTOMER_ACTION_PLACEORDER;
-                    $logCollectionModel = $log->getCollection()->setActionTag($actionTag);
-                    $orders = Mage::getResourceModel('sales/order_collection');
-                    $orders->getSelect()->where('customer_id=?',$this->_customer->getId());
-                    $orders->load();
-
-                    $items = $orders->getItems();
-                    $collectionSize = count($items);
-                    if ($collectionSize > 1){
-                        $success[$key] = false;
-                    } else {
-                        $success[$key] = true;
-                    }
-                    break;
-                case 'total_amount':
-                    if(!$this->_order) return false;
-                    $actionTag = MageWorx_CustomerCredit_Model_Rules_Customer_Action::MAGEWORX_CUSTOMER_ACTION_PLACEORDER;
-                    $logCollectionModel = $log->getCollection()->setActionTag($actionTag);
-                    $orders = Mage::getResourceModel('sales/order_collection');
-                    $orders->getSelect()
-                        ->reset(Zend_Db_Select::WHERE)
-                        ->columns(array('grand_subtotal' => 'SUM(subtotal)'))
-                        ->where('customer_id='.$this->_customer->getId())
-                        ->group('customer_id');
-                    $data = $orders->getData();
-                    #Depricated 2.6.0
-                    /**
-                    if (count($data) != 1){
-                        $success[$key] = false;
-                    }
-                    */
-                    if (!version_compare($data[0]['grand_subtotal'], $condition['value'], $condition['operator'])){
-                        $success[$key] = false;
-                    }
-                    break;
-                case 'place_order':
-                    if(!$this->_order) return false;
-                    $actionTag = MageWorx_CustomerCredit_Model_Rules_Customer_Action::MAGEWORX_CUSTOMER_ACTION_PLACEORDER;
-                    $logCollectionModel = $log->getCollection()->setActionTag($actionTag);
-                    if (isset($rule['is_onetime'])) $isOnetime = $rule['is_onetime']; else $isOnetime = 1;
-                    if($condition['value']==1) {
+        if(isset($conditions) && isset($conditions['conditions'])) {
+            foreach ($conditions['conditions'] as $key => $condition) {
+                $log = Mage::getModel('customercredit/rules_customer_log');
+                $success[$key] = true;
+                $skipUrl = false;
+                switch ($condition['attribute']) {
+                    case 'registration':
+                        if(!$this->_customer) return false;
+                        $actionTag = MageWorx_CustomerCredit_Model_Rules_Customer_Action::MAGEWORX_CUSTOMER_ACTION_REGISTRATION;
+                        $logCollectionModel = $log->getCollection()->setActionTag($actionTag);
                         $logCollection = $logCollectionModel->loadByRuleAndCustomer($rule['rule_id'], $this->_customer->getId());
-                        $logCollection->getSelect()->order('id ASC');
-                        if($logCollection->getSize() && $isOnetime) {
-                            $lastItem = $logCollection->getLastItem();
+                        $createdAt = $this->_customer->getCreatedAt(0);
+                        $createdAt = str_replace('T',' ',$createdAt);
+                        $regArr = explode(' ', $createdAt, 2);
+                        $regDate = explode('-', $regArr[0], 3);
+                        $regTimestamp = mktime(0, 0, 0, $regDate[1], $regDate[2], $regDate[0]);
+
+                        $ruleRegDate = explode('-', $condition['value'], 3);
+                        $ruleRegTimestamp = mktime(0, 0, 0, $ruleRegDate[1], $ruleRegDate[2], $ruleRegDate[0]);
+
+                        if (!version_compare($regTimestamp, $ruleRegTimestamp, $condition['operator'])){
                             $success[$key] = false;
-                            $skipUrl = true;
-                            break;
+                        }
+                        if($logCollection->getSize()) {
+                                $success[$key] = false;
+                                $skipUrl = true;
+                                break;
+                        }
+                        break;
+                    case 'first_order':
+                        if(!$this->_order) return false;
+                        $actionTag = MageWorx_CustomerCredit_Model_Rules_Customer_Action::MAGEWORX_CUSTOMER_ACTION_PLACEORDER;
+                        $logCollectionModel = $log->getCollection()->setActionTag($actionTag);
+                        $orders = Mage::getResourceModel('sales/order_collection');
+                        $orders->getSelect()->where('customer_id=?',$this->_customer->getId());
+                        $orders->load();
+
+                        $items = $orders->getItems();
+                        $collectionSize = count($items);
+                        if ($collectionSize > 1){
+                            $success[$key] = false;
+                        } else {
+                            $success[$key] = true;
+                        }
+                        break;
+                    case 'total_amount':
+                        if(!$this->_order) return false;
+                        $actionTag = MageWorx_CustomerCredit_Model_Rules_Customer_Action::MAGEWORX_CUSTOMER_ACTION_PLACEORDER;
+                        $logCollectionModel = $log->getCollection()->setActionTag($actionTag);
+                        $orders = Mage::getResourceModel('sales/order_collection');
+                        $orders->getSelect()
+                            ->reset(Zend_Db_Select::WHERE)
+                            ->columns(array('grand_subtotal' => 'SUM(subtotal)'))
+                            ->where('customer_id='.$this->_customer->getId())
+                            ->group('customer_id');
+                        $data = $orders->getData();
+                        #Depricated 2.6.0
+                        /**
+                        if (count($data) != 1){
+                            $success[$key] = false;
+                        }
+                        */
+                        if (!version_compare($data[0]['grand_subtotal'], $condition['value'], $condition['operator'])){
+                            $success[$key] = false;
+                        }
+                        break;
+                    case 'place_order':
+                        if(!$this->_order) return false;
+                        $actionTag = MageWorx_CustomerCredit_Model_Rules_Customer_Action::MAGEWORX_CUSTOMER_ACTION_PLACEORDER;
+                        $logCollectionModel = $log->getCollection()->setActionTag($actionTag);
+                        if (isset($rule['is_onetime'])) $isOnetime = $rule['is_onetime']; else $isOnetime = 1;
+                        if($condition['value']==1) {
+                            $logCollection = $logCollectionModel->loadByRuleAndCustomer($rule['rule_id'], $this->_customer->getId());
+                            $logCollection->getSelect()->order('id ASC');
+                            if($logCollection->getSize() && $isOnetime) {
+                                $lastItem = $logCollection->getLastItem();
+                                $success[$key] = false;
+                                $skipUrl = true;
+                                break;
+                            }
+                            $success[$key] = true;
+                        }
+                        break;
+                    case 'newsletter_signup':
+                        if(!$this->_customer) return false;
+                        $actionTag = MageWorx_CustomerCredit_Model_Rules_Customer_Action::MAGEWORX_CUSTOMER_ACTION_SUBSCRIBE;
+                        $logCollectionModel = $log->getCollection()->setActionTag($actionTag);
+                        $logCollection = $logCollectionModel->loadByRuleAndCustomer($rule['rule_id'], $this->_customer->getId());
+                        if($logCollection->getSize()) {
+                                $success[$key] = false;
+                                $skipUrl = true;
+                                break;
                         }
                         $success[$key] = true;
-                    }
-                    break;
-                case 'newsletter_signup':
-                    if(!$this->_customer) return false;
-                    $actionTag = MageWorx_CustomerCredit_Model_Rules_Customer_Action::MAGEWORX_CUSTOMER_ACTION_SUBSCRIBE;
-                    $logCollectionModel = $log->getCollection()->setActionTag($actionTag);
-                    $logCollection = $logCollectionModel->loadByRuleAndCustomer($rule['rule_id'], $this->_customer->getId());
-                    if($logCollection->getSize()) {
-                            $success[$key] = false;
-                            $skipUrl = true;
-                            break;
-                    }
-                    $success[$key] = true;
-                    break;
-                case 'tag_product':
-                    if(!$this->_object) return false;
-                    $coff = 1;
-                    $rest = 0;
-                    $skipUrl = false;
-                    $actionTag = MageWorx_Customercredit_Model_Rules_Customer_Action::MAGEWORX_CUSTOMER_ACTION_TAG;
-                    $logCollectionModel = $log->getCollection()->setActionTag($actionTag);
-                    $logCollection = $logCollectionModel->loadByRuleAndCustomer($rule['rule_id'], $this->_customer->getId());
-                    foreach ($logCollection as $item)
-                    {
-                        if($item->getValue() == $this->_object->getTagId()) {
-//                            $success[$key] = false;
-                            $skipUrl = true;
+                        break;
+                    case 'tag_product':
+                        if(!$this->_object) return false;
+                        $coff = 1;
+                        $rest = 0;
+                        $skipUrl = false;
+                        $actionTag = MageWorx_CustomerCredit_Model_Rules_Customer_Action::MAGEWORX_CUSTOMER_ACTION_TAG;
+                        $logCollectionModel = $log->getCollection()->setActionTag($actionTag);
+                        $logCollection = $logCollectionModel->loadByRuleAndCustomer($rule['rule_id'], $this->_customer->getId());
+                        foreach ($logCollection as $item)
+                        {
+                            if($item->getValue() == $this->_object->getTagId()) {
+    //                            $success[$key] = false;
+                                $skipUrl = true;
+                            }
                         }
-                    }
-                    $action = $collection->loadByRuleAndCustomer($rule['rule_id'], $this->_customer->getId())->getFirstItem();
-                    if ($action->getId()) {
-                        $currentValue = $action->getValue();
-                    } else {
-                        $currentValue = 0;
-                    }
-                    $nextValue = $currentValue+1;
-                    if($nextValue >= $condition['value'])
-                    {
-                       $coff = $nextValue / $condition['value'];
-                       $coff = (int) $coff;
-                       $rest = $nextValue - $condition['value']*$coff;
-//                       $success[$key] = true;
-                    }
-                    else {
-                        $rest = $nextValue;
-//                        $success[$key] = false;
-                    }
-                    $success[$key] = true;
-                    $customerActions[] = array('rule'=>$rule,'rule_id'=>$rule['rule_id'],'customerId'=>$this->_customer->getId(),'actionTag'=>$actionTag,'rest'=>$rest,'coff'=>$coff,'nextValue'=>$nextValue); 
-                    break;
-                case 'review_product':
-                    if(!$this->_object) return false;
-                    if(!$this->_customer) return false;
-                    $customerId = $this->_customer->getId();
-                    $store = Mage::app()->getStore($this->_object->getStoreId());
-                    $websiteId = $store->getWebsiteId();
-                    $log->setWebsiteId($websiteId);
-                    $customerActions = array();
-                    $coff = 1;
-                    $rest = 0;
-                    $skipUrl = false;
-                    $actionTag = MageWorx_Customercredit_Model_Rules_Customer_Action::MAGEWORX_CUSTOMER_ACTION_REVIEW;
-                    $logCollectionModel = $log->getCollection()->setActionTag($actionTag);
-                    $logCollection = $logCollectionModel->loadByRuleAndCustomer($rule['rule_id'], $this->_customer->getId());
-                    foreach ($logCollection as $item)
-                    {
-                        if($item->getValue() == $this->_object->getReviewId()) {
-                            $success[$key] = false;
-                            $skipUrl = true;
+                        $action = $collection->loadByRuleAndCustomer($rule['rule_id'], $this->_customer->getId())->getFirstItem();
+                        if ($action->getId()) {
+                            $currentValue = $action->getValue();
+                        } else {
+                            $currentValue = 0;
                         }
-                    }
-
-
-                    $action = $collection->loadByRuleAndCustomer($rule['rule_id'], $this->_customer->getId())->getFirstItem();
-                    if ($action->getId()) {
-                        $currentValue = $action->getValue();
-                    } else {
-                        $currentValue = 0;
-                    }
-                    $nextValue = $currentValue+1;
-                    if($nextValue >= $condition['value'])
-                    {
-                       $coff = $nextValue / $condition['value'];
-                       $coff = (int) $coff;
-                       $rest = $nextValue - $condition['value']*$coff;
-                       $success[$key] = true;
-                    }
-                    else {
-                        $rest = $nextValue;
-                        $success[$key] = false;
-                    }
-                    $customerActions[] = array('rule'=>$rule,'rule_id'=>$rule['rule_id'],'customerId'=>$customerId,'actionTag'=>$actionTag,'rest'=>$rest,'coff'=>$coff,'nextValue'=>$nextValue); 
-           
-                    break;
-                case 'birthday':
-                    $actionTag = MageWorx_Customercredit_Model_Rules_Customer_Action::MAGEWORX_CUSTOMER_ACTION_DOB;
-                    $logCollectionModel = $log->getCollection()->setActionTag($actionTag);
-                    $logCollection = $logCollectionModel->loadByRuleAndCustomer($rule['rule_id'], $this->_customer->getId());
-                    $logCollection->getSelect()->order('id ASC');
-                    if($logCollection->getSize()) {
-                        $lastItem = $logCollection->getLastItem();
-                        if(time() - $lastItem->getValue() < 31104000) { // one year
-                            $success[$key] = false;
-                            $skipUrl = true;
-                            break;
+                        $nextValue = $currentValue+1;
+                        if($nextValue >= $condition['value'])
+                        {
+                           $coff = $nextValue / $condition['value'];
+                           $coff = (int) $coff;
+                           $rest = $nextValue - $condition['value']*$coff;
+    //                       $success[$key] = true;
                         }
-                    }
-                    $success[$key] = true;
-                    break;
-                default :
-                    // product atributes:
-                    $success[$key] = false;  
-                    $actionTag = MageWorx_Customercredit_Model_Rules_Customer_Action::MAGEWORX_CUSTOMER_ORDER_COMPLETE;
-                    if($this->_order && ($this->_order->getStatus()=='complete')) {
-                        $products = $this->_order->getAllItems();
-                        $store = Mage::app()->getStore($this->_order->getStoreId());
+                        else {
+                            $rest = $nextValue;
+    //                        $success[$key] = false;
+                        }
+                        $success[$key] = true;
+                        $customerActions[] = array('rule'=>$rule,'rule_id'=>$rule['rule_id'],'customerId'=>$this->_customer->getId(),'actionTag'=>$actionTag,'rest'=>$rest,'coff'=>$coff,'nextValue'=>$nextValue); 
+                        break;
+                    case 'review_product':
+                        if(!$this->_object) return false;
+                        if(!$this->_customer) return false;
+                        $customerId = $this->_customer->getId();
+                        $store = Mage::app()->getStore($this->_object->getStoreId());
                         $websiteId = $store->getWebsiteId();
                         $log->setWebsiteId($websiteId);
-                        $this->_customer = Mage::getModel('customer/customer')->load($this->_order->getCustomerId());
-                        $conditionProductModel = Mage::getModel($condition['type'])->loadArray($condition);                                                                                                
-                        foreach($products as $item) {
-                            $product = Mage::getModel('catalog/product')->load($item->getProductId());  
-                            if ($conditionProductModel->validate($product)) {  
-                                $success[$key] = true;
-                                $this->_ruleQty += $item->getQtyOrdered() - $item->getQtyRefunded() - $item->getQtyCanceled();
-                            //    break;
-                            }                                    
-                        }  
-                    }
-            }
-            
-            $result = $this->_checkAggregator($conditions,$success);
-            if($condition['attribute']!=='review_product') {
-                if(!$result) return false;
-            }
-            if(count($customerActions)) {
-                if($actionTag == MageWorx_CustomerCredit_Model_Rules_Customer_Action::MAGEWORX_CUSTOMER_ACTION_TAG) {
-                    foreach ($customerActions as $actionValue) {
-                        if(!$skipUrl) {
-                            $log->setId(null)
-                              ->setRuleId($actionValue['rule_id'])
-                              ->setCustomerId($this->_customer->getId())
-                              ->setActionTag($actionTag)
-                              ->setValue($this->_object->getTagId())
-                              ->save();
-                        }
-                        $action->setRuleId($actionValue['rule_id'])
-                            ->setCustomerId($actionValue['customerId'])
-                            ->setActionTag($actionValue['actionTag']);
-                        if($result) {
-                            $action->setValue($actionValue['rest']);
-                        } else {   
-                            $action->setValue($actionValue['nextValue']);
-                        }
-                        $action->save();
-                        if(!$action->getValue()) return false;
-                    }
-                }
-                if($actionTag == MageWorx_CustomerCredit_Model_Rules_Customer_Action::MAGEWORX_CUSTOMER_ACTION_REVIEW) {
-                    foreach ($customerActions as $actionValue) {
-                        if(!$skipUrl) {
-                            $log->setId(null)
-                              ->setRuleId($actionValue['rule_id'])
-                              ->setCustomerId($customerId)
-                              ->setActionTag($actionTag)
-                              ->setValue($this->_object->getReviewId())
-                              ->save();
+                        $customerActions = array();
+                        $coff = 1;
+                        $rest = 0;
+                        $skipUrl = false;
+                        $actionTag = MageWorx_CustomerCredit_Model_Rules_Customer_Action::MAGEWORX_CUSTOMER_ACTION_REVIEW;
+                        $logCollectionModel = $log->getCollection()->setActionTag($actionTag);
+                        $logCollection = $logCollectionModel->loadByRuleAndCustomer($rule['rule_id'], $this->_customer->getId());
+                        foreach ($logCollection as $item)
+                        {
+                            if($item->getValue() == $this->_object->getReviewId()) {
+                                $success[$key] = false;
+                                $skipUrl = true;
+                            }
                         }
 
-                        $action->setRuleId($actionValue['rule_id'])
-                            ->setCustomerId($actionValue['customerId'])
-                            ->setActionTag($actionValue['actionTag']);
-                        if($result) {
-                            $action->setValue($actionValue['rest']);
-                        } else {   
-                            $action->setValue($actionValue['nextValue']);
-                            $action->save();
-                            return false;
+
+                        $action = $collection->loadByRuleAndCustomer($rule['rule_id'], $this->_customer->getId())->getFirstItem();
+                        if ($action->getId()) {
+                            $currentValue = $action->getValue();
+                        } else {
+                            $currentValue = 0;
                         }
-                        $action->save();
+                        $nextValue = $currentValue+1;
+                        if($nextValue >= $condition['value'])
+                        {
+                           $coff = $nextValue / $condition['value'];
+                           $coff = (int) $coff;
+                           $rest = $nextValue - $condition['value']*$coff;
+                           $success[$key] = true;
+                        }
+                        else {
+                            $rest = $nextValue;
+                            $success[$key] = false;
+                        }
+                        $customerActions[] = array('rule'=>$rule,'rule_id'=>$rule['rule_id'],'customerId'=>$customerId,'actionTag'=>$actionTag,'rest'=>$rest,'coff'=>$coff,'nextValue'=>$nextValue); 
+
+                        break;
+                    case 'birthday':
+                        $actionTag = MageWorx_CustomerCredit_Model_Rules_Customer_Action::MAGEWORX_CUSTOMER_ACTION_DOB;
+                        $logCollectionModel = $log->getCollection()->setActionTag($actionTag);
+                        $logCollection = $logCollectionModel->loadByRuleAndCustomer($rule['rule_id'], $this->_customer->getId());
+                        $logCollection->getSelect()->order('id ASC');
+                        if($logCollection->getSize()) {
+                            $lastItem = $logCollection->getLastItem();
+                            if(time() - $lastItem->getValue() < 31104000) { // one year
+                                $success[$key] = false;
+                                $skipUrl = true;
+                                break;
+                            }
+                        }
+                        $success[$key] = true;
+                        break;
+                    default :
+                        // product atributes:
+                        $success[$key] = false;  
+                        $actionTag = MageWorx_CustomerCredit_Model_Rules_Customer_Action::MAGEWORX_CUSTOMER_ORDER_COMPLETE;
+                        if($this->_order && ($this->_order->getStatus()=='complete')) {
+                            $products = $this->_order->getAllItems();
+                            $store = Mage::app()->getStore($this->_order->getStoreId());
+                            $websiteId = $store->getWebsiteId();
+                            $log->setWebsiteId($websiteId);
+                            $this->_customer = Mage::getModel('customer/customer')->load($this->_order->getCustomerId());
+                            $conditionProductModel = Mage::getModel($condition['type'])->loadArray($condition);   
+                            $conditionProductModel->getValueParsed();
+                            $quoteId = $this->_order->getQuoteId();
+                            $quote = Mage::getModel('sales/quote')->load($quoteId);
+
+                            foreach($products as $item) {
+                                $product = Mage::getModel('catalog/product')->load($item->getProductId());
+                                $product->setQuote($quote);
+                                if ($conditionProductModel->validate($product)) {
+                                    $success[$key] = true;
+                                    $this->_ruleQty += $item->getQtyOrdered() - $item->getQtyRefunded() - $item->getQtyCanceled();
+                                //    break;
+                                }                                    
+                            }  
+                        }
+                }
+
+                $result = $this->_checkAggregator($conditions,$success);
+                if($condition['attribute']!=='review_product') {
+                    if(!$result) return false;
+                }
+                if(count($customerActions)) {
+                    if($actionTag == MageWorx_CustomerCredit_Model_Rules_Customer_Action::MAGEWORX_CUSTOMER_ACTION_TAG) {
+                        foreach ($customerActions as $actionValue) {
+                            if(!$skipUrl) {
+                                $log->setId(null)
+                                  ->setRuleId($actionValue['rule_id'])
+                                  ->setCustomerId($this->_customer->getId())
+                                  ->setActionTag($actionTag)
+                                  ->setValue($this->_object->getTagId())
+                                  ->save();
+                            }
+                            $action->setRuleId($actionValue['rule_id'])
+                                ->setCustomerId($actionValue['customerId'])
+                                ->setActionTag($actionValue['actionTag']);
+                            if($result) {
+                                $action->setValue($actionValue['rest']);
+                            } else {   
+                                $action->setValue($actionValue['nextValue']);
+                            }
+                            $action->save();
+                            if(!$action->getValue()) return false;
+                        }
+                    }
+                    if($actionTag == MageWorx_CustomerCredit_Model_Rules_Customer_Action::MAGEWORX_CUSTOMER_ACTION_REVIEW) {
+                        foreach ($customerActions as $actionValue) {
+                            if(!$skipUrl) {
+                                $log->setId(null)
+                                  ->setRuleId($actionValue['rule_id'])
+                                  ->setCustomerId($customerId)
+                                  ->setActionTag($actionTag)
+                                  ->setValue($this->_object->getReviewId())
+                                  ->save();
+                            }
+
+                            $action->setRuleId($actionValue['rule_id'])
+                                ->setCustomerId($actionValue['customerId'])
+                                ->setActionTag($actionValue['actionTag']);
+                            if($result) {
+                                $action->setValue($actionValue['rest']);
+                            } else {   
+                                $action->setValue($actionValue['nextValue']);
+                                $action->save();
+                                return false;
+                            }
+                            $action->save();
+                        }
+                    }
+                } else {
+                    if(!$skipUrl) {
+                        $log->setId(null)
+                          ->setRuleId($rule['rule_id'])
+                          ->setCustomerId($this->_customer->getId())
+                          ->setActionTag($actionTag)
+                          ->setValue(time())
+                          ->save();
+                    }
+                    else {
+                        return false;
                     }
                 }
-            } else {
-                if(!$skipUrl) {
-                    $log->setId(null)
-                      ->setRuleId($rule['rule_id'])
-                      ->setCustomerId($this->_customer->getId())
-                      ->setActionTag($actionTag)
-                      ->setValue(time())
-                      ->save();
-                }
-                else {
-                    return false;
-                }
+                return true;
             }
-            return true;
         }
     }
     
@@ -747,7 +756,11 @@ class MageWorx_CustomerCredit_Model_Observer
         }
         if(isset($this->_order) && (strpos($rule['credit'],'%')!==false)) {
                 $rule['credit'] = (int) str_replace('%', '', $rule['credit']);
-                $rule['credit'] = round($this->_order->getGrandTotal()*$rule['credit']/100,2);
+                $total = (float)$this->_order->getGrandTotal();
+                if(!$total) {
+                    $total = $this->_order->getSubtotalInvoiced();
+                }
+                $rule['credit'] = round($total*$rule['credit']/100,2);
             }
         return $rule;
     }
@@ -832,6 +845,7 @@ class MageWorx_CustomerCredit_Model_Observer
             $store = $order->getStore();
             $customer = Mage::getModel('customer/customer')->setStore($store)->load($customerId);
             $customerGroupId = $customer->getGroupId();
+            $this->_customer = $customer;
 	    $websiteId = $store->getWebsiteId();
 	    $ruleModel = Mage::getResourceModel('customercredit/rules_collection');                                    
             $orderQty  = 0;//$order->getTotalQtyOrdered();
@@ -859,6 +873,7 @@ class MageWorx_CustomerCredit_Model_Observer
      */
     public function placeOrderAfter(Varien_Event_Observer $observer) {
         $order = $observer->getEvent()->getOrder();
+        $needUseCreditMarker = NULL;
         $needUseCreditMarker = Mage::registry('need_reduce_customercredit');
         $total_amount = $order->getCustomerCreditAmount();
         if($needUseCreditMarker) {
@@ -876,10 +891,13 @@ class MageWorx_CustomerCredit_Model_Observer
                 }
                 $invoice = Mage::getModel('sales/service_order', $order)->prepareInvoice($savedQtys);
                 if (!$invoice->getTotalQty()) return $this;                
-//                if($needUseCreditMarker) {
-//                    $invoice->setBaseGrandTotal($needUseCreditMarker);
-//                    $invoice->setGrandTotal($needUseCreditMarker);
-//                }
+
+                if(!$needUseCreditMarker) {
+                     $baseGrandTotal = $invoice->getBaseGrandTotal() - $invoice->getBaseCustomerCreditAmount();
+                     $grandTotal = $invoice->getGrandTotal() - $invoice->getCustomerCreditAmount();
+                     $invoice->setBaseGrandTotal($baseGrandTotal);
+                     $invoice->setGrandTotal($grandTotal);
+                 }
                 $invoice->register();
                 $invoice->getOrder()->setIsInProcess(true);
                 
@@ -970,7 +988,7 @@ class MageWorx_CustomerCredit_Model_Observer
         $block = $observer->getEvent()->getBlock();
         $transport = $observer->getEvent()->getTransport();
         
-        if (!Mage::registry('customercredit_coupon_block') && $block instanceof Mage_Checkout_Block_Cart_Coupon) {
+        if (!Mage::registry('customercredit_coupon_block') && $block instanceof Mage_Checkout_Block_Cart_Coupon && Mage::app()->getRequest()->getModuleName()!='firecheckout') {
             Mage::register('customercredit_coupon_block',true,true);
             $html = '';
             $partialPayment = $this->isPartialPayment();
@@ -984,7 +1002,7 @@ class MageWorx_CustomerCredit_Model_Observer
                     } else {
                         $address = $quote->getBillingAddress();
                     }
-                    $html .= Mage::helper('core')->__('You are using %s your credits to pay this order.',$address->getCustomerCreditAmount()).'<br/>';
+                    $html .= Mage::helper('core')->__('You are using %s your credits to pay this order.',$address->getCustomerCreditAmount()*Mage::getStoreConfig('mageworx_customers/customercredit_credit/exchange_rate')).'<br/>';
                     $html .= '<a href="'.Mage::getUrl('customercredit/index/removeCreditUse').'">'.Mage::helper('core')->__("Don't use credit.").'</a>';
                     $customBlock = Mage::app()->getLayout()->createBlock("customercredit/checkout_cartvalue", 'custom_value');
                     $customBlock->setTemplate('customercredit/checkout/custom_value_cart.phtml');
@@ -1016,6 +1034,11 @@ class MageWorx_CustomerCredit_Model_Observer
             if($useInternalCredit && (Mage::app()->getRequest()->getControllerName()!='order')) {
                 $html .= " & ".Mage::helper("customercredit")->__("Customer Credit");
             }
+            $transport->setHtml($html);
+        }
+        if($block instanceof Mage_Catalog_Block_Product_Price) {
+            $html = $transport->getHtml();
+            $html = $this->addNotice($block,$html);
             $transport->setHtml($html);
         }
     }
@@ -1333,5 +1356,36 @@ class MageWorx_CustomerCredit_Model_Observer
         
             $item->setIsCron(true)->save();
         }
+    }
+    
+    public function addNotice($block,$html) {
+        if(Mage::registry('notice_added')) return $html;
+        if(!Mage::getSingleton('customer/session')->isLoggedIn()) return $html;
+        if(!Mage::registry('current_product')) return $html;
+        Mage::register('notice_added',true,true);
+        $notice = NULL;
+        $customer = Mage::getSingleton('customer/session')->getCustomer();
+        if ($customerId = $customer->getId()) {
+            $store = Mage::app()->getStore();
+            $product = Mage::registry('current_product');
+            $customer = Mage::getModel('customer/customer')->setStore($store)->load($customerId);
+            $customerGroupId = $customer->getGroupId();
+            $websiteId = $store->getWebsiteId();
+	    $ruleModel = Mage::getResourceModel('customercredit/rules_collection');                                    
+            $ruleModel->setValidationFilter($websiteId, $customerGroupId)->setRuleTypeFilter(MageWorx_CustomerCredit_Model_Rules::CC_RULE_TYPE_APPLY);
+	     foreach ($ruleModel->getData() as $rule) {           
+                $conditions = unserialize($rule['conditions_serialized']);
+                foreach ($conditions['conditions'] as $condition) {
+                 // echo "<pre>";  print_r($conditions); exit;
+                    $values = explode(',',$condition['value']);
+                    if(($condition['attribute']=="sku") && (in_array($product->getSku(),$values))) {
+                        $notice = '<div class="customercredit_notice">'.Mage::getStoreConfig('mageworx_customers/customercredit_credit/product_apply_notice').'</div>';
+                        break;
+                    }
+                }
+	    }
+    	}
+//        $notice = '<div class="customercredit_notice">'.Mage::helper('core')->__('This product can be paid using internal credits.').'</div>';
+        return $html.$notice;
     }
 }

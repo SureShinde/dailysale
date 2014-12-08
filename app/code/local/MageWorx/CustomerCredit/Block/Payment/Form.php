@@ -40,13 +40,54 @@ class MageWorx_CustomerCredit_Block_Payment_Form extends Mage_Payment_Block_Form
         $this->setTemplate('customercredit/payment/form.phtml');
     }
 
-    public function getCreditValue() {
-        if((Mage::helper('customercredit')->getRealCreditValue()!=Mage::helper('customercredit')->getUsedCreditValue()) ||
-            Mage::helper('customercredit')->getRealCreditValue()<Mage::getSingleton('checkout/cart')->getQuote()->getSubtotal()) {
-               return Mage::helper('customercredit')->getRealCreditValue();
+   public function getCreditValue() {
+        $quote  = Mage::getSingleton('checkout/cart')->getQuote();
+        if (Mage::app()->getStore()->isAdmin()) {
+            $quote  = Mage::getSingleton('adminhtml/sales_order_create')->getQuote();
+        }
+        $subtotal = $quote->getSubtotalWithDiscount();
+        $address = Mage::helper('customercredit')->getSalesAddress($quote);
+        $subtotal -= $address->getMwRewardpointDiscount();
+        $websiteId       = Mage::app()->getWebsite()->getId();
+        $customerId = Mage::getSingleton('customer/session')->getCustomer()->getId();
+
+        $productConditionsPrice = array();
+        $productConditionsPrice = Mage::helper('customercredit')->checkApplyCreditsSum($quote,$customerId,$websiteId);
+
+        $shipping = floatval($address->getShippingAmount() - $address->getShippingTaxAmount());
+        $tax = floatval($address->getTaxAmount());
+        $creditTotals = Mage::helper('customercredit')->getCreditTotals();
+        if (count($creditTotals)<=3) {
+            foreach ($creditTotals as $field) {
+                switch ($field) {
+                    case 'shipping':
+                        $subtotal += $shipping;
+                        break;
+                    case 'tax':
+                        $subtotal += $tax;
+                        break;
+                    case 'fees':
+                        $subtotal += $address->getMultifeesAmount();
+                        break;
+                }
+            }
+        }
+        if(sizeof($productConditionsPrice)>0) {
+            $sum = array_sum($productConditionsPrice);
+            $subtotal = $sum;
+        }
+
+         if((Mage::helper('customercredit')->getRealCreditValue()!=Mage::helper('customercredit')->getUsedCreditValue()) ||
+            Mage::helper('customercredit')->getRealCreditValue()<$subtotal) {
+                $a = (float)Mage::helper('customercredit')->getUsedCreditValue();
         }
         else {
-             return Mage::getSingleton('checkout/cart')->getQuote()->getSubtotal();
+            $a =  (float)$subtotal;
         }
+
+        if($subtotal+$tax+$shipping-$a<Mage::getStoreConfig('mageworx_customers/customercredit_credit/min_order_amount')) {
+            $a -= Mage::getStoreConfig('mageworx_customers/customercredit_credit/min_order_amount') - ($subtotal+$tax+$shipping - $a);
+        }
+        return $a;
     }
 }

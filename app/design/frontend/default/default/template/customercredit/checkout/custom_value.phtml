@@ -1,5 +1,5 @@
 <?php if (Mage::getStoreConfig('mageworx_customers/customercredit_credit/enable_custom_value') && $this->getCreditValue()): ?>
-<a id="customercredit_change_value" style="cursor: pointer">Change</a>
+<a id="customercredit_change_value" style="cursor: pointer"><?php echo $this->__('Change')?></a>
 <span id="payment-change-please-wait" class="please-wait" style="display: none;">
 <img class="v-middle" title="<?php echo $this->__('Changing value...')?>" alt="<?php echo $this->__('Changing value...')?>" src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif'); ?>">
 <?php echo $this->__('Changing value...')?>

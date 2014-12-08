@@ -69,6 +69,7 @@ class MageWorx_CustomerCredit_Block_Adminhtml_Customer_Edit_Tab_CustomerCredit_L
             'options'   => $this->getWebsiteOptions(),
             'sortable'  => false,
             'width'     => '120px',
+            'filter_index'=>'main_table.website_id',
             'align'      => 'center'
         ));
         $this->addColumn('action_date', array(

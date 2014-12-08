@@ -144,6 +144,12 @@ class MageWorx_CustomerCredit_Model_Credit extends Mage_Core_Model_Abstract
                    if(!$this->getWebsiteId()) {
                        $this->setWebsiteId(Mage::app()->getStore()->getWebsiteId());
                    }
+               } else {
+                    if(!$this->getWebsiteId()) {
+                        $websites = Mage::app()->getWebsites();
+                        $website = array_shift($websites);
+                        $this->setWebsiteId($website->getId());
+                    }
                }
             }
             if (!$this->getWebsiteId() && !Mage::getSingleton('admin/session')->getUser()) {

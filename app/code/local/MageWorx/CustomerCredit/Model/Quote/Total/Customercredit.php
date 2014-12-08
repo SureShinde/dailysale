@@ -49,6 +49,7 @@ class MageWorx_CustomerCredit_Model_Quote_Total_Customercredit extends Mage_Sale
             return $this;
         }
         
+        $post = Mage::app()->getRequest()->getPost();
         $quote = $address->getQuote();
         if (!$quote->getItemsCount()) {
             return $this;
@@ -103,63 +104,13 @@ class MageWorx_CustomerCredit_Model_Quote_Total_Customercredit extends Mage_Sale
         /**
          * === Rule condition start ===
          */
-        /**
-         * @todo move rule_condition logic to a specific class
-         */
+        
         $websiteId       = Mage::app()->getWebsite()->getId();
-        $customerGroupId = Mage::getSingleton('customer/session')->getCustomer()->getGroupId();
+        $customerId = Mage::getSingleton('customer/session')->getCustomer()->getId();
         
         Mage::getSingleton('customer/session')->setData('customer_credit_rule',false);        
-        $ruleModel = Mage::getResourceModel('customercredit/rules_collection');                              
-        $ruleModel->setValidationFilter($websiteId, $customerGroupId);
-      
         $productConditionsPrice = array();
-        
-        if (Mage::app()->getStore()->isAdmin()) {
-            $allItems = Mage::getSingleton('adminhtml/sales_order_create')->getQuote()->getAllItems();
-        } else {
-            /**
-             * @todo need to be reviewed
-             */
-            $quoteClear = Mage::getModel('sales/quote')->setStoreId(Mage::app()->getStore()->getId());
-            $allItems = $quoteClear->getAllItems();
-        }
-        
-        
-        foreach($allItems as $item) {
-            $product = $item->getProduct();
-            foreach($ruleModel->getData() as $rule) {
-                $conditions = unserialize($rule['conditions_serialized']); 
-                if ($conditions['type']=='customercredit/rules_condition_combine') {
-                foreach ($conditions['conditions'] as $key => $condition) {
-                    if($condition['type'] == 'catalogrule/rule_condition_product') {
-
-                       switch ($condition['operator']) {
-                            case '>=':
-                                if($product->getData($condition['attribute']) >= $condition['value']) {
-                                    $productConditionsPrice[] = $item->getRowTotal();
-                                    continue;
-                                } 
-                                break;
-                            case '==':
-
-                                if($product->getData($condition['attribute']) == $condition['value']) {
-                                    $productConditionsPrice[] = $item->getRowTotal();
-                                    continue;
-                                }
-                                break;
-                            case '=<':
-                                if($product->getData($condition['attribute']) <= $condition['value']) {
-                                    $productConditionsPrice[] = $item->getRowTotal();
-                                    continue;
-                                }
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        $productConditionsPrice = Mage::helper('customercredit')->checkApplyCreditsSum($quote,$customerId,$websiteId);
         /**
          * === Rule condition end ===
          */
@@ -170,8 +121,9 @@ class MageWorx_CustomerCredit_Model_Quote_Total_Customercredit extends Mage_Sale
         /**
          * @todo wtf variable?
          */
-        $session->setUseInternalCredit(false);
-        
+        if(!$request->getControllerName()=='multishipping') {
+            $session->setUseInternalCredit(false);
+        }
         $paymentData = Mage::app()->getRequest()->getPost('payment');
         $orderData = Mage::app()->getRequest()->getPost('order');
         
@@ -190,7 +142,7 @@ class MageWorx_CustomerCredit_Model_Quote_Total_Customercredit extends Mage_Sale
             $params = Mage::app()->getRequest()->getParams();
             $paymentData['use_internal_credit'] = (bool)$request->getParam('use_internal_credit',0);
         }
-        if ($quote->getPayment()->getMethod()=='customercredit' || $orderData['payment_data']=="customercredit"
+        if ($quote->getPayment()->getMethod()=='customercredit' || (isset($orderData['payment_data']) && $orderData['payment_data']=="customercredit") || isset($orderData['payment_method']) && ($orderData['payment_method']=="customercredit")
             || ($paymentData && (isset($paymentData['method']) && $paymentData['method'] == 'customercredit'))
             || ($paymentData && isset($paymentData['use_internal_credit']) && ($paymentData['use_internal_credit'] > 0))
             || ($useInternalCredit && Mage::getSingleton('customer/session')->getCustomerId() && !$paymentData)
@@ -201,7 +153,7 @@ class MageWorx_CustomerCredit_Model_Quote_Total_Customercredit extends Mage_Sale
            
             return $this;
         }                              
-        $baseCredit = Mage::helper('customercredit')->getCreditValue($quote->getCustomerId(), Mage::app()->getStore($quote->getStoreId())->getWebsiteId());
+        $baseCredit = (float)Mage::helper('customercredit')->getCreditValue($quote->getCustomerId(), Mage::app()->getStore($quote->getStoreId())->getWebsiteId());
         if ($baseCredit==0) {
             return $this;
         }
@@ -215,10 +167,10 @@ class MageWorx_CustomerCredit_Model_Quote_Total_Customercredit extends Mage_Sale
         }
         $baseCredit = $baseCredit/Mage::getStoreConfig('mageworx_customers/customercredit_credit/exchange_rate');
         
-        $credit = $quote->getStore()->convertPrice($baseCredit);
+        $credit = (float)$quote->getStore()->convertPrice($baseCredit);
 
-        $baseGrandTotal = $address->getBaseGrandTotal()?floatval($address->getBaseGrandTotal()):floatval($address->getBaseSubtotal());
-        $grandTotal = $address->getGrandTotal()?floatval($address->getGrandTotal()):floatval($address->getSubtotal());
+        $baseGrandTotal = $address->getBaseGrandTotal()?floatval($address->getBaseGrandTotal()-$address->getMwRewardpointDiscount()):floatval($address->getBaseSubtotal()-$address->getMwRewardpointDiscount());
+        $grandTotal = $address->getGrandTotal()?floatval($address->getGrandTotal()-$address->getMwRewardpointDiscount()):floatval($address->getSubtotal()-$address->getMwRewardpointDiscount());
         if(!$baseGrandTotal) $baseGrandTotal = $address->getBaseSubtotal();
         if(!$baseGrandTotal) $grandTotal = $address->getSubtotal();
         
@@ -249,7 +201,11 @@ class MageWorx_CustomerCredit_Model_Quote_Total_Customercredit extends Mage_Sale
                     case 'tax':
                         $baseCreditLeft += $baseTax;
                         $creditLeft += $tax;
-                        break;                       
+                        break;  
+                    case 'fees':
+                        $baseCreditLeft += $address->getBaseMultifeesAmount();
+                        $creditLeft += $address->getMultifeesAmount();
+                        break;  
                 }
             }
         } else {
@@ -257,8 +213,6 @@ class MageWorx_CustomerCredit_Model_Quote_Total_Customercredit extends Mage_Sale
             $creditLeft = $grandTotal;
         }
      
-        if (!$baseCreditLeft) return $this;
-        
         
         // if authorizenet and orderspro_order_edit and credit => adjustment of GrandTotal
         if (Mage::app()->getStore()->isAdmin() && Mage::app()->getRequest()->getControllerName() == 'orderspro_order_edit' && $quote->getPayment()->getMethod() == 'authorizenet') {
@@ -273,6 +227,15 @@ class MageWorx_CustomerCredit_Model_Quote_Total_Customercredit extends Mage_Sale
             }
         }
         
+        if(sizeof($productConditionsPrice)>0) {
+            Mage::getSingleton('customer/session')->setData('customer_credit_rule',true);
+            $sum = array_sum($productConditionsPrice);
+            Mage::register('credit_appled_products_sum', array_sum($productConditionsPrice), TRUE);
+            $baseCreditLeft = $sum;
+            $creditLeft     = $sum;
+        }
+        
+        
         $isEnabledPartialPayment = Mage::helper('customercredit')->isEnabledPartialPayment();
         if ($baseCredit < $baseCreditLeft) {
             if ($isEnabledPartialPayment) {
@@ -283,20 +246,20 @@ class MageWorx_CustomerCredit_Model_Quote_Total_Customercredit extends Mage_Sale
             }    
         }
    
-        if(sizeof($productConditionsPrice)>0) {
-            Mage::getSingleton('customer/session')->setData('customer_credit_rule',true);
-            if(array_sum($productConditionsPrice)>=$credit)
-            {
-                $sum = $credit;
-            }
-            else {
-                $sum = array_sum($productConditionsPrice);
-            }
-            $baseCreditLeft = $sum;
-            $creditLeft     = $sum;
-        }
+        
+        if (!$baseCreditLeft) return $this;
         
         $action = Mage::app()->getRequest()->getActionName();
+        if($credit-$creditLeft<0) {
+            $baseCreditLeft=$baseCredit;
+            $creditLeft = $credit;
+        }
+        
+        $minOrder = Mage::getStoreConfig('mageworx_customers/customercredit_credit/min_order_amount');
+        if(($address->getGrandTotal() - $creditLeft<=$minOrder)) {
+            $baseCreditLeft -= $minOrder - ($address->getBaseGrandTotal() - $baseCreditLeft);
+            $creditLeft -= $minOrder - ($address->getGrandTotal() - $creditLeft);;
+        }
         
         /**
          * @todo FIX this horror! Later...
@@ -309,9 +272,6 @@ class MageWorx_CustomerCredit_Model_Quote_Total_Customercredit extends Mage_Sale
                 } else {
                     $address->setBaseCustomerCreditAmount($baseCreditLeft);
                     $address->setCustomerCreditAmount($creditLeft);
-
-                    $address->setBaseGrandTotal($address->getBaseGrandTotal() - $baseCreditLeft);
-                    $address->setGrandTotal($address->getGrandTotal() - $creditLeft);
                     
                     if($request->getControllerName()=='multishipping') {
                         $creditLeft = 0 - abs($creditLeft);
@@ -322,27 +282,32 @@ class MageWorx_CustomerCredit_Model_Quote_Total_Customercredit extends Mage_Sale
 
                         $address->setSubtotal($address->getSubtotal()+$creditLeft + $shipping+$tax);
                         $address->setBaseSubtotal($address->getBaseSubtotal() + $baseCreditLeft + $shipping+$tax);
+                    } else {
+                        $address->setBaseGrandTotal($address->getBaseGrandTotal() - $baseCreditLeft);
+                        $address->setGrandTotal($address->getGrandTotal() - $creditLeft);
                     }
                 }
             } else {
                 $address->setBaseCustomerCreditAmount($baseCreditLeft);
                 $address->setCustomerCreditAmount($creditLeft);
 
-                $address->setBaseGrandTotal($address->getBaseGrandTotal() - $baseCreditLeft);
-                $address->setGrandTotal($address->getGrandTotal() - $creditLeft); 
-                
                 if($request->getControllerName()=='multishipping') {
-                    $creditLeft = 0 - abs($creditLeft);
-                    $baseCreditLeft = 0 - abs($baseCreditLeft);
-    //                  echo "----/".$creditLeft."/----";
-                    $address->setSubtotalInclTax($address->getSubtotal() + $creditLeft + $shipping);
-                    $address->setBaseSubtotalInclTax($address->getBaseSubtotal() + $baseCreditLeft + $shipping);
+                        $creditLeft = 0 - abs($creditLeft);
+                        $baseCreditLeft = 0 - abs($baseCreditLeft);
+        //                  echo "----/".$creditLeft."/----";
+                        $address->setSubtotalInclTax($address->getSubtotal() + $creditLeft + $shipping);
+                        $address->setBaseSubtotalInclTax($address->getBaseSubtotal() + $baseCreditLeft + $shipping);
 
-                    $address->setSubtotal($address->getSubtotal()+$creditLeft + $shipping+$tax);
-                    $address->setBaseSubtotal($address->getBaseSubtotal() + $baseCreditLeft + $shipping+$tax);
-                }
+                        $address->setSubtotal($address->getSubtotal()+$creditLeft + $shipping+$tax);
+                        $address->setBaseSubtotal($address->getBaseSubtotal() + $baseCreditLeft + $shipping+$tax);
+                    } else {
+                        $address->setBaseGrandTotal($address->getBaseGrandTotal() - $baseCreditLeft);
+                        $address->setGrandTotal($address->getGrandTotal() - $creditLeft);
+                    }
             }
         } else {
+            
+            /// MULTISHIPPING!
             $address->setBaseCustomerCreditAmount($baseCreditLeft);
             $address->setCustomerCreditAmount($creditLeft);
 
@@ -353,12 +318,16 @@ class MageWorx_CustomerCredit_Model_Quote_Total_Customercredit extends Mage_Sale
                 $creditLeft = 0 - abs($creditLeft);
                 $baseCreditLeft = 0 - abs($baseCreditLeft);
 //                  echo "----/".$creditLeft."/----";
+                if($action=='overviewPost') {
+                    $creditLeft = $baseCreditLeft = 0;
+                }
                 $address->setSubtotalInclTax($address->getSubtotal() + $creditLeft + $shipping);
                 $address->setBaseSubtotalInclTax($address->getBaseSubtotal() + $baseCreditLeft + $shipping);
 
                 $address->setSubtotal($address->getSubtotal()+$creditLeft + $shipping+$tax);
                 $address->setBaseSubtotal($address->getBaseSubtotal() + $baseCreditLeft + $shipping+$tax);
-
+            } else {
+                
             }
         }
         
