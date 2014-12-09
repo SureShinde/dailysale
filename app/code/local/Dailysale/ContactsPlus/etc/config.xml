@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Dailysale_ContactsPlus>
+            <version>0.1.0</version>
+        </Dailysale_ContactsPlus>
+    </modules>
+    <frontend>
+        <routers>
+
+        <!-- Creates route to my module via /contactsplus/ - I used this for testing -->
+            <contactsplus>
+                <use>standard</use>
+                <args>
+                    <module>Dailysale_ContactsPlus</module>
+                    <frontName>contactsplus</frontName>
+                </args>
+            </contactsplus>
+
+        <!-- Sets Mage_Contacts route to Dailysale_ContactsPlus -->              
+            <contacts>
+                <args>
+                    <modules>
+                        <Dailysale_ContactsPlus before="Mage_Contacts">Dailysale_ContactsPlus</Dailysale_ContactsPlus>
+                    </modules>
+                </args>
+            </contacts> 
+        </routers>
+    <!-- Sets layout config file (essential for this to work) -->   
+        <layout>
+            <updates>
+                <contactsplus>
+                    <file>contactsplus.xml</file>
+                </contactsplus>
+            </updates>
+        </layout>        
+    </frontend>
+    <global>
+    <!-- Sets a helper class for the module, when overriding contacts this is also essential. -->   
+        <helpers>
+            <contactsplus>
+                <class>Dailysale_ContactsPlus_Helper</class>
+            </contactsplus>
+        </helpers>        
+    </global>
+</config>
