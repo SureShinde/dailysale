@@ -169,6 +169,16 @@
 		position: relative;
 		margin-bottom: 0;
 
+		.minimal-price-link{
+				display: block;
+			    font-size: 12px;
+			    left: 88px;
+			    position: relative;
+			    text-align: center;
+			    text-decoration: none;
+			    width: 98px;
+			}
+
 		.special-price-container{
 			//border: 1px solid red;
 		    display: block;
