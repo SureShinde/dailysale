@@ -92,8 +92,7 @@
         <?php if ($i++%$_columnCount==0): ?>
         <ul class="products-grid">
         <?php endif ?>
-            <?php $sku = Mage::getModel('catalog/product')->load($_product->getId())->getSku(); ?>
-            <li class="item<?php if(($i-1)%$_columnCount==0): ?> first<?php elseif($i%$_columnCount==0): ?> last<?php endif; ?> <?php echo $sku; ?>">
+            <li class="item<?php if(($i-1)%$_columnCount==0): ?> first<?php elseif($i%$_columnCount==0): ?> last<?php endif; ?>">
             <div class="products-grid-image-container">
                 <ul class="alerts-container">
 

@@ -145,7 +145,7 @@ $j(document).ready(function(){
 	//remove duplicate items from homepage
 
 	var seen = {};
-	$j('li.item').each(function() {
+	$j('.cms-index-index li.item').each(function() {
 	    var txt = $j(this).attr('class');
 	    if (seen[txt])
 	        $j(this).remove();
