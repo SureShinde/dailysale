@@ -100,6 +100,8 @@ $j(document).ready(function(){
 
 	removeAllHtmlInsideElement();
 
+	//pop up sign up and login buttons
+
 	$j("a[title='Sign Up']").click(function(e){
 		e.preventDefault();
 		$j('html, body').animate({
@@ -138,6 +140,17 @@ $j(document).ready(function(){
 	      }, 'slow');
 	      IWD.Signin.insertLoader();
 	      IWD.Signin.prepareLoginForm();
+	});
+
+	//remove duplicate items from homepage
+
+	var seen = {};
+	$j('li.item').each(function() {
+	    var txt = $j(this).attr('class');
+	    if (seen[txt])
+	        $j(this).remove();
+	    else
+	        seen[txt] = true;
 	});
 
 	// var result = $j("#newsletter-result").val();

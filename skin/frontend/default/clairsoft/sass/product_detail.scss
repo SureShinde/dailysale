@@ -107,6 +107,27 @@
 			color: red;
 			font-weight: bold;
 			text-align: center;
+
+			a{
+				text-decoration: none;
+				color: red;
+			}
+		}
+
+		.tier-prices{
+			font-size: 14px;
+			color: $main-color;
+			text-align: center;
+
+			li{
+				margin-bottom: 5px;
+				border-bottom: 1px solid $subtle-color;
+			}
+
+			li:nth-last-child(1){
+				border-bottom: none;
+				margin-bottom: 8px;
+			}
 		}
 
 		.price-box{
@@ -480,7 +501,8 @@ ul.tabs{
 				bottom: 60px;
 				//left: 10px;
 				text-align: center;
-				width: 100%;			}
+				width: 100%;
+			}
 
 			a.soldout-btn{
 				@include clairsoft-inactive-button;
