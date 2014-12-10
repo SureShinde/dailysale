@@ -46,7 +46,8 @@
     <?php $_iterator = 0; ?>
     <ol class="products-list" id="products-list">
     <?php foreach ($_productCollection as $_product): ?>
-        <li class="item<?php if( ++$_iterator == sizeof($_productCollection) ): ?> last<?php endif; ?>">
+        <?php $sku = Mage::getModel('catalog/product')->load($_product->getId())->getSku(); ?>
+        <li class="item<?php if( ++$_iterator == sizeof($_productCollection) ): ?> last<?php endif; ?> <?php echo $sku; ?>">
             <?php // Product Image ?>
             <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(135); ?>" width="135" height="135" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" /></a>
             <?php // Product description ?>
@@ -93,7 +94,8 @@
         <!-- <ul class="products-grid"> -->
         <?php endif ?>
         <?php //if($_product->isSaleable()): ?>
-        <li class="item">
+        <?php $sku = Mage::getModel('catalog/product')->load($_product->getId())->getSku(); ?>
+        <li class="item <?php echo $sku; ?>">
             <!-- <li class="item<?php //if(($i-1)%$_columnCount==0): ?> first<?php //elseif($i%$_columnCount==0): ?> last<?php //endif; ?>"> -->
             <div class="products-grid-image-container">
                 <ul class="alerts-container">
