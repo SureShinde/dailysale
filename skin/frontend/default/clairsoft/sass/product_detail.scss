@@ -423,6 +423,36 @@ ul.tabs{
 		display: none;
 	}
 
+	#product_tabs_custom_contents{
+
+		.product-specs{
+			// border: 1px solid red;
+			// display: inline-block;
+			float: left;
+			clear: right;
+		}
+
+		#sku-tab-title, #packaging-tab-title, #features-tab-title{
+			// border: 1px solid blue;
+			// display: inline-block;
+			float: left;
+			clear: both;
+			color: $darker-color;
+			font-weight: bold;
+		}
+
+		.tab-feature-list{
+			// display: inline-block;
+			float: left;
+			// border: 1px solid green;
+			clear: both;
+
+			li{
+				margin-left: 15px;
+			}
+		}
+	}
+
 //related products
 
 .block-related{
