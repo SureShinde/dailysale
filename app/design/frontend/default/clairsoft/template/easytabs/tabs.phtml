@@ -32,7 +32,10 @@
 ?>
 <ul class="tabs">
     <?php $i = 0; ?>
-    <?php foreach ($this->getTabs() as $_index => $_tab): ?>
+    <?php foreach ($this->getTabs() as $_index => $_tab){
+        if ($_tab['alias'] != 'custom2') {
+            if ($_tab['alias'] != 'custom1') {
+     ?>
         <?php if($this->getChildHtml($_tab['alias']) && strlen(strip_tags(trim($this->getChildHtml($_tab['alias']))))>0): ?>
             <?php
                 $tab_title = $_tab['title'];
@@ -52,10 +55,17 @@
             <li id="product_tabs_<?php echo $_tab['alias'] ?>" <?php echo !$i  ? 'class="active first"' : '' ?>><a href="#"><?php echo $tab_title; ?></a></li>
 	    <?php $i++; ?>
         <?php endif; ?>
-    <?php endforeach; ?>
+    <?php } //endif;
+        } //endif;
+    } //endforeach; ?>
 </ul>
 <div class="padder">
-    <?php foreach ($this->getTabs() as $_index => $_tab): ?>
+<?php $_helper = $this->helper('catalog/output'); ?>
+<?php $_product = $this->getProduct(); ?>
+    <?php foreach ($this->getTabs() as $_index => $_tab){ 
+            if ($_tab['alias'] != 'custom2') {
+                if ($_tab['alias'] != 'custom1') {
+    ?>
         <?php if($this->getChildHtml($_tab['alias'])): ?>
             <div id="product_tabs_<?php echo $_tab['alias'] ?>_contents">
             <!-- JSON encode/decode -->
@@ -65,15 +75,24 @@
                 if (strpos($featuresData, "[") !== FALSE){
                     //$jsonData = Mage::helper('core')->jsonDecode($featuresData);
                     $jsonData = json_decode($featuresData);
-                    if(json_last_error() === 0){
+                        if(json_last_error() === 0){
+                        echo ('<span id="sku-tab-title"> SKU:&nbsp; </span>'. $this->getChildHtml('custom2'));
+                        echo ('<span id="packaging-tab-title"> Packaging:&nbsp; </span>'. $this->getChildHtml('custom1'));
+                        echo '<ul class="tab-feature-list"><span id="features-tab-title"> Features:&nbsp; </span>';
                         foreach ($jsonData as $jsonItem){
                             echo '<li>'.$jsonItem.'</li>';
                         }
+                        echo '</ul>';
                     } else {
-                        echo "No features list available";
+                        echo ('<span id="sku-tab-title"> SKU:&nbsp; </span>'. $this->getChildHtml('custom2'));
+                        echo ('<span id="packaging-tab-title"> Packaging:&nbsp; </span>'. $this->getChildHtml('custom1'));
+                        echo '<div class="tab-feature-list"> No features list available </div>';
                     }
                 } else {
-                    echo $this->getChildHtml($_tab['alias']);
+                    
+                    echo ('<span id="sku-tab-title"> SKU:&nbsp; </span>'. $this->getChildHtml('custom2'));
+                    echo ('<span id="packaging-tab-title"> Packaging:&nbsp; </span>'. $this->getChildHtml('custom1'));
+                    echo ('<span id="features-tab-title"> Features:&nbsp; </span><div class="tab-feature-list">'. $this->getChildHtml($_tab['alias']) . '</div>');
                 }
             } else {
                     echo $this->getChildHtml($_tab['alias']);
@@ -82,7 +101,9 @@
 
             <?php //echo $this->getChildHtml($_tab['alias']); ?></div>
         <?php endif; ?>
-    <?php endforeach; ?>
+    <?php } //end if;
+    } //end if;
+    } //endforeach; ?>
 </div>
 <script type="text/javascript">
 var EasyTabs = Class.create();
