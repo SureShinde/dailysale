@@ -432,13 +432,19 @@ ul.tabs{
 			clear: right;
 		}
 
-		#sku-tab-title, #packaging-tab-title, #features-tab-title{
+		#sku-tab-title, #packaging-tab-title, #features-tab-title, #condition-tab-title{
 			// border: 1px solid blue;
 			// display: inline-block;
 			float: left;
 			clear: both;
 			color: $darker-color;
 			font-weight: bold;
+		}
+
+		#features-tab-title{
+			border-top: 1px solid $subtle-color;
+			margin-top: 10px;
+			padding-top: 10px;
 		}
 
 		.tab-feature-list{
