@@ -35,6 +35,7 @@
     <?php foreach ($this->getTabs() as $_index => $_tab){
         if ($_tab['alias'] != 'custom2') {
             if ($_tab['alias'] != 'custom1') {
+                if ($_tab['alias'] != 'custom3') {
      ?>
         <?php if($this->getChildHtml($_tab['alias']) && strlen(strip_tags(trim($this->getChildHtml($_tab['alias']))))>0): ?>
             <?php
@@ -57,6 +58,7 @@
         <?php endif; ?>
     <?php } //endif;
         } //endif;
+        } //endif;
     } //endforeach; ?>
 </ul>
 <div class="padder">
@@ -65,6 +67,7 @@
     <?php foreach ($this->getTabs() as $_index => $_tab){ 
             if ($_tab['alias'] != 'custom2') {
                 if ($_tab['alias'] != 'custom1') {
+                    if ($_tab['alias'] != 'custom3') {
     ?>
         <?php if($this->getChildHtml($_tab['alias'])): ?>
             <div id="product_tabs_<?php echo $_tab['alias'] ?>_contents">
@@ -77,6 +80,7 @@
                     $jsonData = json_decode($featuresData);
                         if(json_last_error() === 0){
                         echo ('<span id="sku-tab-title"> SKU:&nbsp; </span>'. $this->getChildHtml('custom2'));
+                        echo ('<span id="condition-tab-title"> Condition:&nbsp; </span>'. $this->getChildHtml('custom3'));
                         echo ('<span id="packaging-tab-title"> Packaging:&nbsp; </span>'. $this->getChildHtml('custom1'));
                         echo '<ul class="tab-feature-list"><span id="features-tab-title"> Features:&nbsp; </span>';
                         foreach ($jsonData as $jsonItem){
@@ -85,12 +89,14 @@
                         echo '</ul>';
                     } else {
                         echo ('<span id="sku-tab-title"> SKU:&nbsp; </span>'. $this->getChildHtml('custom2'));
+                        echo ('<span id="condition-tab-title"> Condition:&nbsp; </span>'. $this->getChildHtml('custom3'));
                         echo ('<span id="packaging-tab-title"> Packaging:&nbsp; </span>'. $this->getChildHtml('custom1'));
                         echo '<div class="tab-feature-list"> No features list available </div>';
                     }
                 } else {
                     
                     echo ('<span id="sku-tab-title"> SKU:&nbsp; </span>'. $this->getChildHtml('custom2'));
+                    echo ('<span id="condition-tab-title"> Condition:&nbsp; </span>'. $this->getChildHtml('custom3'));
                     echo ('<span id="packaging-tab-title"> Packaging:&nbsp; </span>'. $this->getChildHtml('custom1'));
                     echo ('<span id="features-tab-title"> Features:&nbsp; </span><div class="tab-feature-list">'. $this->getChildHtml($_tab['alias']) . '</div>');
                 }
@@ -102,6 +108,7 @@
             <?php //echo $this->getChildHtml($_tab['alias']); ?></div>
         <?php endif; ?>
     <?php } //end if;
+    } //end if;
     } //end if;
     } //endforeach; ?>
 </div>
