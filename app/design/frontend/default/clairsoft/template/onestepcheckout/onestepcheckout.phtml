@@ -94,12 +94,9 @@
     </li>
     <?php if ($this->isShowLoginLink() && !$this->isCustomerLoggedIn()): ?>
         <li class="onestepcheckout-login-link">            
-            <!-- <a href="javascript:void(0);"  id="onestepcheckout-login-link"><span>&nbsp;</span>
-                <?php //echo $this->configData['login_link_title'] ? $this->configData['login_link_title'] : $this->__('Already have an account?Click here to login') ?>
-            </a> -->
-
-            <a href="#" title="Log In"> Already have an account? Click here to log in now.</a> 
-
+            <a href="javascript:void(0);"  id="onestepcheckout-login-link"><span>&nbsp;</span>
+                <?php echo $this->configData['login_link_title'] ? $this->configData['login_link_title'] : $this->__('Already have an account?Click here to login') ?>
+            </a>
         </li>
     <?php endif ?>
     <li class='payment_buttons'>
