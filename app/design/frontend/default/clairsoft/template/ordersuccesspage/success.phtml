@@ -41,6 +41,27 @@ $orderObj = Mage::getModel('sales/order')->loadByIncrementId($this->getOrderId()
     <button type="button" class="button" title="<?php echo $this->__('Continue Shopping') ?>" onclick="window.location='<?php echo $this->getUrl() ?>'"><?php echo $this->__('Continue Shopping') ?></button>
 </div>
 
+<!-- Google Code for Daily Sale Conversion Conversion Page -->
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 1003172301;
+var google_conversion_language = "en";
+var google_conversion_format = "2";
+var google_conversion_color = "ffffff";
+var google_conversion_label = "xLwaCJCAtFgQzeOs3gM";
+var google_conversion_value = 1.00;
+var google_conversion_currency = "USD";
+var google_remarketing_only = false;
+/* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/1003172301/?value=1.00&amp;currency_code=USD&amp;label=xLwaCJCAtFgQzeOs3gM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+
 <!-- BEGIN SHARE A SALE TRACKING CODE-->
 <img src="https://shareasale.com/sale.cfm?amount=<?php echo number_format($orderObj->getSubtotal(),2); ?>&tracking=<?php echo ($this->getOrderId());?>&transtype=sale&merchantID=51523" width="1" height="1">
 <!--END SHARE A SALE TRACKING CODE -->
