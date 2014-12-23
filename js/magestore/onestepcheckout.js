@@ -252,12 +252,15 @@ function save_address_information(save_address_url, update_address_shipping, upd
     });
 }
 
-function save_shipping_method(shipping_method_url, update_shipping_payment, update_shipping_review) {
+function save_shipping_method(shipping_method_url, update_shipping_payment, update_shipping_review,checkboxvalue) {
     if (typeof update_shipping_payment == 'undefined') {
         var update_shipping_payment = false;
     }
     if (typeof update_shipping_review == 'undefined') {
         var update_shipping_review = false;
+    }
+    if(typeof checkboxvalue == 'undefined' && $('p_method_customercredit'))	{
+        var checkboxvalue = $('p_method_customercredit').checked;
     }
 
     var form = $('one-step-checkout-form');
@@ -276,10 +279,11 @@ function save_shipping_method(shipping_method_url, update_shipping_payment, upda
     }
     var parameters = {
         shipping_method: shipping_method,
-        payment_method: payment_method
+        payment_method: payment_method,
+        use_internal_credit: checkboxvalue
     };
 
-    //Find payment parameters and include 
+    //Find payment parameters and include
     var items = $$('input[name^=payment]', 'select[name^=payment]');
     var names = items.pluck('name');
     var values = items.pluck('value');
