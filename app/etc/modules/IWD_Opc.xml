@@ -2,7 +2,7 @@
 <config>
     <modules>
         <IWD_Opc>
-            <active>true</active>
+            <active>false</active>
             <codePool>community</codePool>
         </IWD_Opc>
     </modules>
