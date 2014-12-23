@@ -61,20 +61,10 @@ class MageWorx_CustomerCredit_Model_Quote_Total_Customercredit extends Mage_Sale
             return $this;
         }
         
-
+        // if multishipping
         $session           = Mage::getSingleton('checkout/session');
         $useInternalCredit = $session->getUseInternalCredit();
-        $requestValue = Mage::app()->getRequest()->getPost('use_internal_credit');
-        if(Mage::helper('core')->isModuleEnabled('Magestore_Onestepcheckout')) {
-            if($requestValue=="false") {
-                $useInternalCredit = false;
-            } else {
-                $useInternalCredit = true;
-            }
-        }
-
         $request = Mage::app()->getRequest();
-        // if multishipping
         if($request->getControllerName()=='multishipping') {
             $params = $request->getParams();
             $payment = $request->getParam('payment');
@@ -265,11 +255,12 @@ class MageWorx_CustomerCredit_Model_Quote_Total_Customercredit extends Mage_Sale
             $creditLeft = $credit;
         }
         
-        $maxCredit = Mage::getStoreConfig('mageworx_customers/customercredit_credit/min_order_amount');
-        if($maxCredit) {
-            $baseCreditLeft = $address->getBaseGrandTotal()*$maxCredit/100;
-            $creditLeft = $address->getGrandTotal()*$maxCredit/100;
+        $minOrder = Mage::getStoreConfig('mageworx_customers/customercredit_credit/min_order_amount');
+        if(($address->getGrandTotal() - $creditLeft<=$minOrder)) {
+            $baseCreditLeft -= $minOrder - ($address->getBaseGrandTotal() - $baseCreditLeft);
+            $creditLeft -= $minOrder - ($address->getGrandTotal() - $creditLeft);;
         }
+        
         /**
          * @todo FIX this horror! Later...
          */
