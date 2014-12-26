@@ -61,10 +61,20 @@ class MageWorx_CustomerCredit_Model_Quote_Total_Customercredit extends Mage_Sale
             return $this;
         }
         
-        // if multishipping
+
         $session           = Mage::getSingleton('checkout/session');
         $useInternalCredit = $session->getUseInternalCredit();
+        $requestValue = Mage::app()->getRequest()->getPost('use_internal_credit');
+        if(Mage::helper('core')->isModuleEnabled('Magestore_Onestepcheckout') && Mage::app()->getRequest()->getActionName()!=='saveOrder') {
+            if($requestValue=="false") {
+                $useInternalCredit = false;
+            } else {
+                $useInternalCredit = true;
+            }
+        }
+
         $request = Mage::app()->getRequest();
+        // if multishipping
         if($request->getControllerName()=='multishipping') {
             $params = $request->getParams();
             $payment = $request->getParam('payment');
@@ -137,14 +147,22 @@ class MageWorx_CustomerCredit_Model_Quote_Total_Customercredit extends Mage_Sale
         /**
          * @todo make a condition more easy for reading
          */
-        if(isset($paymentData['use_internal_credit']) && ($paymentData['use_internal_credit'] == 'customercredit')) {
+        if(isset($paymentData['use_internal_credit']) && ($paymentData['use_internal_credit'] == 'customercredit') && !Mage::helper('core')->isModuleEnabled('Magestore_Onestepcheckout')) {
             $request = Mage::app()->getRequest();
             $params = Mage::app()->getRequest()->getParams();
             $paymentData['use_internal_credit'] = (bool)$request->getParam('use_internal_credit',0);
         }
+//        var_dump($quote->getPayment()->getMethod()=='customercredit' || (isset($orderData['payment_data']) && $orderData['payment_data']=="customercredit") || isset($orderData['payment_method']) && ($orderData['payment_method']=="customercredit")
+//        );
+//        var_dump($paymentData && (isset($paymentData['method']) && $paymentData['method'] == 'customercredit'));
+//        echo $paymentData['use_internal_credit'] .">". 0;
+//        var_dump($paymentData && isset($paymentData['use_internal_credit']) && ((int)$paymentData['use_internal_credit'] > 0));
+//        var_dump($useInternalCredit && Mage::getSingleton('customer/session')->getCustomerId() && !$paymentData);
+//        var_dump($useInternalCredit && Mage::getSingleton('customer/session')->getCustomerId() && ($request->getControllerName()=='multishipping')
+//        ); exit;
         if ($quote->getPayment()->getMethod()=='customercredit' || (isset($orderData['payment_data']) && $orderData['payment_data']=="customercredit") || isset($orderData['payment_method']) && ($orderData['payment_method']=="customercredit")
             || ($paymentData && (isset($paymentData['method']) && $paymentData['method'] == 'customercredit'))
-            || ($paymentData && isset($paymentData['use_internal_credit']) && ($paymentData['use_internal_credit'] > 0))
+            || ($paymentData && isset($paymentData['use_internal_credit']) && ($paymentData['use_internal_credit']))
             || ($useInternalCredit && Mage::getSingleton('customer/session')->getCustomerId() && !$paymentData)
             || ($useInternalCredit && Mage::getSingleton('customer/session')->getCustomerId() && ($request->getControllerName()=='multishipping'))
             ) {
@@ -255,12 +273,11 @@ class MageWorx_CustomerCredit_Model_Quote_Total_Customercredit extends Mage_Sale
             $creditLeft = $credit;
         }
         
-        $minOrder = Mage::getStoreConfig('mageworx_customers/customercredit_credit/min_order_amount');
-        if(($address->getGrandTotal() - $creditLeft<=$minOrder)) {
-            $baseCreditLeft -= $minOrder - ($address->getBaseGrandTotal() - $baseCreditLeft);
-            $creditLeft -= $minOrder - ($address->getGrandTotal() - $creditLeft);;
+        $maxCredit = Mage::getStoreConfig('mageworx_customers/customercredit_credit/min_order_amount');
+        if($maxCredit) {
+            $baseCreditLeft = $address->getBaseGrandTotal()*$maxCredit/100;
+            $creditLeft = $address->getGrandTotal()*$maxCredit/100;
         }
-        
         /**
          * @todo FIX this horror! Later...
          */
