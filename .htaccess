@@ -108,6 +108,14 @@
 
 </IfModule>
 
+#############################################
+## Adding Allow Origin for Ajax requests
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin http://dailysale.com http://www.dailysale.com  https://dailysale.com https://www.dailysale.com
+    Header set Access-Control-Allow-Credentials true
+</IfModule>
+
+
 <IfModule mod_rewrite.c>
 
 ############################################
