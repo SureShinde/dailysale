@@ -37,7 +37,7 @@
             if ($_tab['alias'] != 'custom1') {
                 if ($_tab['alias'] != 'custom3') {
      ?>
-        <?php if($this->getChildHtml($_tab['alias']) && strlen(strip_tags(trim($this->getChildHtml($_tab['alias']))))>0): ?>
+        <?php //if($this->getChildHtml($_tab['alias']) && strlen(strip_tags(trim($this->getChildHtml($_tab['alias']))))>0): ?>
             <?php
                 $tab_title = $_tab['title'];
                 $tab_is_custom = strpos($_tab['alias'], 'custom');
@@ -55,7 +55,7 @@
             ?>
             <li id="product_tabs_<?php echo $_tab['alias'] ?>" <?php echo !$i  ? 'class="active first"' : '' ?>><a href="#"><?php echo $tab_title; ?></a></li>
 	    <?php $i++; ?>
-        <?php endif; ?>
+        <?php //endif; ?>
     <?php } //endif;
         } //endif;
         } //endif;
@@ -69,7 +69,7 @@
                 if ($_tab['alias'] != 'custom1') {
                     if ($_tab['alias'] != 'custom3') {
     ?>
-        <?php if($this->getChildHtml($_tab['alias'])): ?>
+        <?php //if($this->getChildHtml($_tab['alias'])): ?>
             <div id="product_tabs_<?php echo $_tab['alias'] ?>_contents">
             <!-- JSON encode/decode -->
             <?php
@@ -98,7 +98,11 @@
                     echo ('<span id="sku-tab-title"> SKU:&nbsp; </span>'. $this->getChildHtml('custom2'));
                     echo ('<span id="condition-tab-title"> Condition:&nbsp; </span>'. $this->getChildHtml('custom3'));
                     echo ('<span id="packaging-tab-title"> Packaging:&nbsp; </span>'. $this->getChildHtml('custom1'));
-                    echo ('<span id="features-tab-title"> Features:&nbsp; </span><div class="tab-feature-list">'. $this->getChildHtml($_tab['alias']) . '</div>');
+                    if (strlen(strip_tags(trim($this->getChildHtml($_tab['alias']))))>0) {
+                        echo ('<span id="features-tab-title"> Features:&nbsp; </span><div class="tab-feature-list">'. $this->getChildHtml($_tab['alias']) . '</div>');
+                    } else {
+                        echo ('<span id="features-tab-title"> Features:&nbsp; </span><div class="tab-feature-list"> No Features Available. </div>');
+                    }
                 }
             } else {
                     echo $this->getChildHtml($_tab['alias']);
@@ -106,7 +110,7 @@
             ?>
 
             <?php //echo $this->getChildHtml($_tab['alias']); ?></div>
-        <?php endif; ?>
+        <?php //endif; ?>
     <?php } //end if;
     } //end if;
     } //end if;
