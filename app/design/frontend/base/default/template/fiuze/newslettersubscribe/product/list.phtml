@@ -132,7 +132,7 @@ function ShortenText($text, $chars) {
                     <?php //echo $_product->getShortDescription(); ?>
                     <?php 
                         if (strlen($newsletterShortDesc) > 140) {
-                            echo ShortenText($newsletterShortDesc, 160);
+                            echo ShortenText($newsletterShortDesc, 90);
                         } else {
                             echo ($newsletterShortDesc);
                         }
