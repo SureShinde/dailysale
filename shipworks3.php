@@ -18,8 +18,8 @@
     |
     |
      */
-    define('REQUIRE_SECURE', true);
-    $moduleVersion = "3.9.3.0";
+    define('REQUIRE_SECURE', True);
+    $moduleVersion = "3.9.3.1";
     $schemaVersion = "1.0.0";
 
     // include the Mage engine
@@ -399,23 +399,46 @@
         writeStartTag("Order");
 
     $incrementId = $order->getIncrementId();
-	$orderPrefix = '';
-    $orderPostfix = '';
 	
-	$prefixParts = preg_split('/(?=\d)/', $incrementId, 2);
+	$orderPrefix = '';
+	$orderNumber = '';
+	$orderPostfix = '';
+	$ordernumberParts = '';
 
-	$orderPrefix = $prefixParts[0];
- 
-	$postfixParts = preg_split('/(?=\D)/', $prefixParts[1], 2);
+	if(is_numeric($incrementId)){
+		$orderNumber = $incrementId;
+	}else{
+		if(strpos($incrementId, '-') !== false){
+			$ordernumberParts = explode('-', $incrementId);
 
-	$orderNumber = $postfixParts[0];
- 
-	$orderPostfix = $postfixParts[1];
+			if(count($ordernumberParts == 2)){
+				if(is_numeric($ordernumberParts[0])){
+					$orderNumber = $ordernumberParts[0];
+					$orderPostfix = '-'.$ordernumberParts[1];
+				}else{
+					$orderPrefix = $ordernumberParts[0]."-";
+					$orderNumber = $ordernumberParts[1];
+				}
+			}
+		} elseif (!is_numeric($incrementId)) {
+			if(preg_split('/(?=\d)/', $incrementId,2)[0] != ''){
+				$ordernumberParts = preg_split('/(?=\d)/', $incrementId,2);
 
+				$orderPrefix = $ordernumberParts[0];
+				$orderNumber = $ordernumberParts[1];
+			}elseif(is_numeric(preg_split('/(?=\D)/', $incrementId,2)[0])){
+				$ordernumberParts = preg_split('/(?=\D)/', $incrementId,2);
 
-		writeElement("OrderNumberPrefix", $orderPrefix);
+				$orderNumber = $ordernumberParts[0];
+				$orderPostfix = $ordernumberParts[1];
+			}
+		}
+	}
+
+        
+        writeElement("OrderNumberPrefix", $orderPrefix);
         writeElement("OrderNumber", $orderNumber);
-		writeElement("OrderNumberPostfix", $orderPostfix);
+        writeElement("OrderNumberPostfix", $orderPostfix);
         writeElement("OrderDate", FormatDate($order->getCreatedAt()));
         writeElement("LastModified", FormatDate($order->getUpdatedAt()));
         writeElement("ShippingMethod", $order->getShippingDescription());
@@ -831,46 +854,52 @@
     // Takes the actions necessary to get an order to Complete
     function CompleteOrder($order, $comments, $carrierData, $tracking)
     {
-        // first create a shipment
-        try 
-        {   
-            $shipment = $order->prepareShipment();
-            if ($shipment)
-            {
-                $shipment->register();
-                $shipment->addComment($comments, false);
-                $order->setIsInProcess(true);
-
-                // add tracking info if it was supplied
-                if (strlen($tracking) > 0)
-                {
-                    $track = Mage::getModel('sales/order_shipment_track')->setNumber($tracking);
+        //Check to see if the order already any shipments
+        $existingShipments = $order->getShipmentsCollection();
         
-                    # carrier data is of the format code|title
-                    $carrierData = preg_split("[\|]", $carrierData);
-                    $track->setCarrierCode($carrierData[0]);
-                    $track->setTitle($carrierData[1]);
+        if($existingShipments->count() > 0)
+        {
+            //Order already has shipments
+            //Grab the first shipment to add tracking to
+            $shipment = $existingShipments->getFirstItem();
+        }
+        else 
+        {
+            //Order has no shipments
+            $shipment = $order->prepareShipment();
+            $shipment->register();
+        }   
+        
+        //Do Shipment Stuff
+        if ($shipment)
+        {
+            $shipment->addComment($comments, false);
+            $order->setIsInProcess(true);
 
-                    $shipment->addTrack($track);
-                }
+            // add tracking info if it was supplied
+            if (strlen($tracking) > 0)
+            {
+                $track = Mage::getModel('sales/order_shipment_track')->setNumber($tracking);
 
-                $transactionSave = Mage::getModel('core/resource_transaction')
-                    ->addObject($shipment)
-                    ->addObject($shipment->getOrder())
-                    ->save();
-                    
-                 // send the email if it's requested
-    			if (isset($_REQUEST['sendemail']) && $_REQUEST['sendemail'] == '1')
-    			{
-    				$shipment->sendEmail(true);
-    			} 
+                # carrier data is of the format code|title
+                $carrierData = preg_split("[\|]", $carrierData);
+                $track->setCarrierCode($carrierData[0]);
+                $track->setTitle($carrierData[1]);
+
+                $shipment->addTrack($track);
+            }
+
+            $transactionSave = Mage::getModel('core/resource_transaction')
+                ->addObject($shipment)
+                ->addObject($shipment->getOrder())
+                ->save();
+
+             // send the email if it's requested
+            if (isset($_REQUEST['sendemail']) && $_REQUEST['sendemail'] == '1')
+            {
+                $shipment->sendEmail(true);
             } 
         } 
-        // Only one shipment can be created per order.  Subsequent attempts will throw, but we ignore the error and move on to setting up the invoice.
-        catch (Exception $ex)
-        {
-
-        }
         
         // invoice the order
         if ($order->hasInvoices())
