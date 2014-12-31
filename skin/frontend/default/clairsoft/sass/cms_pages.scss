@@ -6,6 +6,15 @@
 		margin-top: 2em;
 		margin-bottom: -1em;
 		padding: 2em 3em;
+
+		.cmspage-leftcol{
+			width: 500px;
+			float: left;
+		}
+
+		.cmspage-rightcol-image{
+			float: right;
+		}
 	}
 	
 	.page-title h1{
@@ -31,4 +40,33 @@
 			border-bottom: none;
 		}
 	}
+}
+
+.cmspage-leftcol{
+	
+	.fieldset{
+		background: none;
+		border: none !important;
+	}
+
+	li{
+		list-style: none;
+	}
+
+	.input-text, .fields, .field{
+		width: 400px !important;
+	}
+
+	input{
+		border: 1px solid $dark-color;
+	}
+
+	button{
+		@include clairsoft-default-button;
+	}
+
+}
+
+.cms-contact-us #messages_product_view{
+	display: none;
 }

@@ -1,68 +1,64 @@
-@import "improved-onepage-checkout"; //styles for checkout page
+.opc-col-left, .shipping-block, .payment-block, .discount-block, .opc-col-right{
+	border: 1px solid $faint-color;
+	padding: 1em;
+	background: white;
+	@include border-radius(4px);
 
-
-//overrides for improved one page checkout
-
-.checkout-onepage-index .main-container{
-
-	button{
-		@include clairsoft-default-button;
-	}
-
-	.opc{
-		label{
-			font-size: 14px;
-		}
-
-		.allow .step-title {
-
-			.number{
-				background: $main-color;
-			}
-
-			h2{
-				color: $dark-color;
-			}
-		}
-
-		.please-wait{
-			// background: red !important;
-			// padding: 40px;
-			// padding-top: -20px;
-			z-index: 999 !important;
-		}
-	}
-
-	.opc-block-progress .block-content{
-
-		div{
-			border: 1px solid $subtle-color !important;
-			margin-bottom: 10px;
-			padding: 1em;
-			font-size: 14px;
-			@include border-radius(4px);
-			// background: white;
-		}
-
-		dt{
-			border-bottom: 1px solid $subtle-color !important;
-			padding-bottom: 5px;
-			margin-bottom: 5px;
-			font-size: 12px;
-
-		}
-
-		dd address{
-			// line-height: 200%;
-		}
-
-		.data-table .product-name{
-			color: red !important;
-		}
+	input{
+		@include border-radius(4px);
+		height: 30px;
 	}
 }
 
-//checkout sucess page
+.credit-payment.box.discount{
+	font-size: 14px;
+	display: block;
+	height: 155px;
+
+	button{
+		font-size: 16px;
+	    font-weight: bold;
+	    margin-left: 5px;
+	    padding-top: 10px;
+	    text-transform: uppercase;
+		
+	}
+
+	a{
+		@include clairsoft-default-button;
+		display: inline-block;
+		margin-top: 8px;
+	}
+}
+
+.discount{
+	display: block;
+
+	.discount-form label{
+		display: block !important;
+	}
+}
+
+.opc-wrapper-opc a{
+	color: $main-color;
+
+	&:hover{
+		text-decoration: none;
+	}
+
+	&:visited{
+		text-decoration: underline;
+	}
+}
+
+.opc-wrapper-opc .discount-block .button{
+	@include clairsoft-default-button;
+}
+
+.opc-wrapper-opc .discount-block .button span {
+	background: none !important;
+	background-color: transparent !important;
+	line-height: 100% !important;
+}
 
 @import "checkout_success";
-

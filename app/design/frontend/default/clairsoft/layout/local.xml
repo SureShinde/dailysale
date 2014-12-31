@@ -13,15 +13,37 @@
         <!-- add the local stylesheet -->
         <reference name="head">
             <action method="addCss"><stylesheet>css/local.css</stylesheet></action>
+            <action method="addCss"><stylesheet>css/jquery-ui.css</stylesheet></action>
+            <!-- <action method="addCss"><stylesheet>css/jquery-ui.theme.css</stylesheet></action> -->
+            <!-- <action method="addItem"><type>js</type><name>prototype/window.js</name></action> -->
+            <action method="addItem"><type>skin_js</type><script>js/jquery-1.10.1.min.js</script></action>
+            <action method="addItem"><type>skin_js</type><script>js/jquery-ui.min.js</script></action>
+            <action method="addItem"><type>skin_js</type><script>js/jquery.cookie.js</script></action>
             <action method="addItem"><type>skin_js</type><script>js/local.js</script></action>
-            <action method="addItem"><type>js</type><name>prototype/window.js</name></action>
-            <action method="addItem"><type>js_css</type><name>prototype/windows/themes/default.css</name></action>
-            <action method="addCss"><name>lib/prototype/windows/themes/magento.css</name></action>
+            <action method="addItem"><type>skin_js</type><script>js/jquery.leadspendemail-0.1.js</script></action>
+            <!-- <action method="addItem">
+                <type>skin_css</type>
+                <name>css/styles-ie7-and-up.css</name>
+                <params/>
+                <if>gt IE 7</if>
+            </action> -->
+            <!-- <action method="addItem"><type>js_css</type><name>prototype/windows/themes/default.css</name></action> -->
+            <!-- <action method="addCss"><name>lib/prototype/windows/themes/magento.css</name></action> -->
+        </reference>
+
+        <reference name="subscribepop">
+            <block type="newsletter/subscribe" before="-" name="right.newsletter" template="newsletter/subscribe.phtml"/>
         </reference>
 
         <action method="unsetChild"><name>product.info.options</name></action>
 
     </default>
+
+    <catalog_product_view>
+         <reference name="head">
+                <action method="addItem"><type>skin_js</type><script>js/product.js</script></action>
+            </reference>
+     </catalog_product_view>
 
     <customer_logged_in>
         <remove name="sale.reorder.sidebar"></remove>

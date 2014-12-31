@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<config>
+    <sections>
+        <bestsellers_settings_sec translate="label" module="bestsellercron">
+            <label>Fiuze Bestsellers Cron</label>
+            <tab>catalog</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>1</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <bestsellers_settings_grp translate="label">
+                    <label>Configure</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>100</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <list_mode translate="label">
+                            <label>Number of Products</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </list_mode>
+                        <hours translate="label">
+                            <label>Hours</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </hours>
+                    </fields>
+                </bestsellers_settings_grp>
+            </groups>
+        </bestsellers_settings_sec>
+    </sections>
+</config>

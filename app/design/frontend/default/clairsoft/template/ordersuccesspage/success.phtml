@@ -10,9 +10,48 @@
 <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
 <h2 class="sub-title"><?php echo $this->__('Thank you for your purchase!') ?></h2>
 
+<?php
+
+$orderId = $this->getOrderId(); 
+$order = Mage::getModel('sales/order')->loadByIncrementId($orderId); 
+$total = $order->getGrandTotal(); 
+$subtotal = $order->getSubtotal(); 
+$discount = $order->getDiscountAmount(); 
+$affiliateTotal = ($subtotal + $discount);
+
+$ordered_items = $order->getAllVisibileItems();
+$skulist = ''; //setup skulist param
+$pricelist = ''; //setup pricelist param
+$quantitylist = ''; //setup quantitylist param
+
+foreach($ordered_items as $item){
+	$skulist .= $item->getSku() . ',';
+    $quantitylist .= $item->getQtyOrdered() . ',';
+    $pricelist .= $item->getProduct()->getFinalPrice() . ',';
+}
+//not totally necessary, but cleans up the trailing commas at the end of each skulist, pricelist, quantitylist param
+$skulist = substr($skulist, 0, -1);
+$quantitylist = substr($quantitylist, 0, -1);
+$pricelist = substr($pricelist, 0, -1);
+//Magento has only one couponcode allowed, so no comma-separated list to make
+$couponcodes = $order->getCouponCode(); 
+
+$newcustomer = ''; //setup newcustomer param
+$customer = $order->getCustomerId();
+if($customer){
+	$_orders = Mage::getModel('sales/order')->getCollection()->addFieldToFilter('customer_id', $customer);                        
+	$_orderCnt = $_orders->count(); //orders count
+	//if customer has more than an order, they're not new
+	$newcustomer = ($_orderCnt > 0 ? 0 : 1);
+}
+//setup currency code
+$currency = $order->getOrderCurrencyCode();
+?>
+<img src="https://shareasale.com/sale.cfm?tracking=<?php echo $orderId ?>&amount=<?php echo $affiliateTotal ?>&transtype=sale&merchantID=51523&couponcode=<?php echo $couponcodes ?>&skulist=<?php echo $skulist ?>&quantitylist=<?php echo $quantitylist ?>&pricelist=<?php echo $pricelist ?>&newcustomer=<?php echo $newcustomer ?>&currency=<?php echo $currency ?>" width="1" height="1">
+
 <?php if ($this->getOrderId()):?>
     <p><?php echo $this->__('You will receive an order confirmation email with details of your order and a link to track its progress.') ?>
-       <?php echo $this->__('Click <a href="%s" onclick="this.target=\'_blank\'">here to print</a> a copy of your order confirmation.', $this->getUrl('ordersuccesspage/ordersuccesspage/print',array('id',Mage::registry('current_order')->getId()))) ?> 
+       <?php //echo $this->__('Click <a href="%s" onclick="this.target=\'_blank\'">here to print</a> a copy of your order confirmation.', $this->getUrl('ordersuccesspage/ordersuccesspage/print',array('id',Mage::registry('current_order')->getId()))) ?> 
     </p>
  
 <?php endif;?>
@@ -31,9 +70,33 @@
 </ul> 
 <?php endif;?>
 <?php if ($this->getOrderId()):?>
+<?php
+$orderObj = Mage::getModel('sales/order')->loadByIncrementId($this->getOrderId());
+?>
 <?php echo $this->getLayout()->createBlock('sales/order_info')->setTemplate('ordersuccesspage/info.phtml')->toHtml();?> 
 <?php echo $this->getLayout()->createBlock('sales/order_items')->setTemplate('ordersuccesspage/items.phtml')->toHtml();?> 
 <?php endif;?>
 <div class="buttons-set">
     <button type="button" class="button" title="<?php echo $this->__('Continue Shopping') ?>" onclick="window.location='<?php echo $this->getUrl() ?>'"><?php echo $this->__('Continue Shopping') ?></button>
 </div>
+
+<!-- Google Code for Daily Sale Conversion Conversion Page -->
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 1003172301;
+var google_conversion_language = "en";
+var google_conversion_format = "2";
+var google_conversion_color = "ffffff";
+var google_conversion_label = "xLwaCJCAtFgQzeOs3gM";
+var google_conversion_value = 1.00;
+var google_conversion_currency = "USD";
+var google_remarketing_only = false;
+/* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/1003172301/?value=1.00&amp;currency_code=USD&amp;label=xLwaCJCAtFgQzeOs3gM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>

@@ -7,7 +7,81 @@
 	width: 960px;
 }
 
+.upsells{
+		// border: 1px solid red;
+		width: 500px;
+		//height: 400px;
+		display: inline-block;
+
+		h2{
+			color: $main-color;
+			margin-bottom: 10px;
+		}
+
+		.products-grid{
+			width: 500px;
+		}
+
+		// .emtpy{
+		// 	width: 0;
+		// }
+
+		.upsell-single{
+			border: 1px solid $subtle-color;
+			width: 155px;
+			min-height: 280px;
+			// display: inline-block;
+			float: left;
+			text-align: center;
+			background: white;
+			@include border-radius(4px);
+			margin-right: 16px;
+			margin-bottom: 15px;
+			overflow: hidden;
+
+			&:hover{
+				border: 1px solid $main-color;
+			}
+		}
+
+		.upsell-single:nth-child(3n){
+			margin-right: 0;
+			margin-left: 1px;
+		}
+
+		.product-name{
+			font-size: 12px;
+			margin: 6px 0;
+
+			a{
+				text-decoration: none;
+				color: $dark-color;
+			}
+		}
+
+		.product-image{
+			display: inline;
+		}
+
+		.msrp{
+			font-size: 80%;
+
+			span#msrp{
+				text-decoration: line-through;
+			}
+		}
+
+		.our-price, .special-price{
+			color: $main-color;
+			font-weight: bold;
+			font-size: 150%;
+		}
+	}
+
+.col1-layout .product-view .product-shop { width: 405px;}
 .product-shop{
+
+	width: 405px;
 
 	h1{
 		margin: -5px 0 0px 0;
@@ -29,6 +103,33 @@
 		padding: 1.5em;
 		@include border-radius(4px);
 
+		.availability-only{
+			color: red;
+			font-weight: bold;
+			text-align: center;
+
+			a{
+				text-decoration: none;
+				color: red;
+			}
+		}
+
+		.tier-prices{
+			font-size: 14px;
+			color: $main-color;
+			text-align: center;
+
+			li{
+				margin-bottom: 5px;
+				border-bottom: 1px solid $subtle-color;
+			}
+
+			li:nth-last-child(1){
+				border-bottom: none;
+				margin-bottom: 8px;
+			}
+		}
+
 		.price-box{
 			width: 100%;
 			// height: 40px;
@@ -46,18 +147,38 @@
 				//border-bottom: 1px solid $subtle-color;
 				width: auto;
 			}
-
-			.special-price .price{
+				
+				// .our-price .price, .special-price .price{
+				// 	font-size: 45pt;
+				// }
+			//.our-price .price, .special-price .price{
+				.our-price, .special-price{
 				display: block;
-				margin-top: -12px;
-				margin-bottom: -8px;
+				// margin-top: -18px;
+				// margin-bottom: -8px;
 				color: $main-color;
 				font-weight: bold;
-				font-size: 56pt;
+				//font-size: 45pt;
 
-				.price-label{
-
+				.price-default{
+					font-size: 40pt;
+					font-weight: bold;
 				}
+
+				.more-than-three{
+					font-size: 32px;
+				}
+
+				.more-than-six{
+					font-size: 30px;
+					// margin-top: -12px !important;
+				}
+
+				.free-price{
+					font-size: 40px;
+				}
+
+
 			}
 
 			.percent-off{
@@ -65,7 +186,9 @@
 				// margin-bottom: -2px;
 				font-size: 14pt;
 			}
+			
 		}
+
 
 		#dealcountdown{
 			// display: block;
@@ -87,11 +210,9 @@
 	}
 
 	.product-options{
-		// border: 1px solid red;
-		// display: inline-block;
-		float: right;
 		margin: 0;
 		width: 50%;
+		display: inline-block;
 		border: none;
 
 		label {
@@ -110,14 +231,12 @@
 
 		.required{
 			padding: 0;
-			// display: none;
 		}
 	}
 
 	.product-options-bottom{
-		// border: 1px solid green;
 		width: 50%;
-		float: right;
+		display: inline-block;
 		border: none;
 	}
 
@@ -125,8 +244,6 @@
 		width: 50%;
 		float: right;
 		padding: 10px;
-		// border: 1px solid blue;
-		// margin: 20px 0 0 20px;
 
 		.add-to-cart{
 			width: 100%;
@@ -147,7 +264,6 @@
 	    border-image-source: none;
 	    border-image-slice: 100%;
 	    border-image-width: 1;
-	    //border: 1px solid rgb(204, 204, 204);
 	    border-image-outset: 0px;
 	    border-image-repeat: stretch;
 	    background-color: rgb(255, 255, 255);
@@ -216,6 +332,10 @@
 			#___plusone_0{
 				width: 65px !important;
 			}
+		}
+
+		.padder ul li{
+			list-style: disc;
 		}
 	}
 
@@ -299,7 +419,46 @@ ul.tabs{
 		padding-left: 10px;
 	}
 
+#product_tabs_description_tabbed_contents img{
+		display: none;
+	}
 
+	#product_tabs_custom_contents{
+
+		.product-specs{
+			// border: 1px solid red;
+			// display: inline-block;
+			float: left;
+			clear: right;
+		}
+
+		#sku-tab-title, #packaging-tab-title, #features-tab-title, #condition-tab-title{
+			// border: 1px solid blue;
+			// display: inline-block;
+			float: left;
+			clear: both;
+			color: $darker-color;
+			font-weight: bold;
+		}
+
+		#features-tab-title{
+			border-top: 1px solid $subtle-color;
+			margin-top: 10px;
+			padding-top: 10px;
+		}
+
+		.tab-feature-list{
+			// display: inline-block;
+			float: left;
+			// border: 1px solid green;
+			clear: both;
+
+			li{
+				margin-left: 15px;
+				clear: left;
+			}
+		}
+	}
 
 //related products
 
@@ -331,11 +490,11 @@ ul.tabs{
 			width: 230px;
 			border: 1px solid $subtle-color;
 			background: white;
-			//height: 330px;
+			min-height: 460px;
 			text-align: center;
 
 			img{
-				margin-bottom: 10px;
+				margin-bottom: 15px;
 				padding: 0;
 				border-bottom: 1px solid $subtle-color;
 			}
@@ -349,12 +508,61 @@ ul.tabs{
 			margin-right: 0px;
 			}
 
+			.product-name{
+				padding: 0 8px;
+
+				a{
+					text-decoration: none;
+					font-size: 14px;
+					color: $dark-color;
+					font-weight: bold;
+				}
+			} 
+
 			.yousave{display: none;}
 
-			.special-price{
+			.special-price, .our-price{
 				color: $main-color;
 				font-size: 32px;
-				margin-bottom: 5px;
+				//margin-bottom: 5px;
+				font-weight: bold;
+			}
+
+			span#msrp{
+				text-decoration: line-through;
+			}
+
+			.availability-container{
+				font-size: 14px;
+				position: absolute;
+				bottom: 60px;
+				//left: 10px;
+				text-align: center;
+				width: 100%;
+			}
+
+			a.soldout-btn{
+				@include clairsoft-inactive-button;
+				margin: 10px 10px 0 0;
+				padding: 12px;
+				//float: none;
+				//display: inline-block;
+				width: 210px;
+				position: absolute;
+				bottom: 15px;
+				left: 10px;
+			}
+
+			.instock-noshow{
+				display: block;
+				height: 20px;
+				position: relative;
+				bottom: 0px;
+			}
+
+			.instock-pricedisplay{
+				margin-top: 11px;
+				display: block;
 			}
 
 			a.view-deal-btn{
@@ -367,11 +575,14 @@ ul.tabs{
 				text-align: center;
 				text-decoration: none;
 				//float: right;
-				width: 200px;
+				width: 210px;
 				//height: 35px;
 				border: 1px solid $subtle-color;
 				//margin: 25px 10px 0 0;
 				padding: 12px 0px 12px 0px;
+				position: absolute;
+				bottom: 15px;
+				left: 10px;
 
 				&:hover{
 					@include background-image(linear-gradient(tint($main-color, 15%),$main-color));

@@ -20,7 +20,7 @@
  *
  * @category    Mage
  * @package     Mage_Sales
- * @copyright   Copyright (c) 2013 Magento Inc. (http://www.magentocommerce.com)
+ * @copyright   Copyright (c) 2014 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -344,7 +344,7 @@ class Mage_Sales_Model_Observer
     public function addVatRequestParamsOrderComment(Varien_Event_Observer $observer)
     {
         /** @var $orderInstance Mage_Sales_Model_Order */
-        $orderInstance = $observer->getOrder();
+        $orderInstance = $observer->getEvent()->getOrder();
         /** @var $orderAddress Mage_Sales_Model_Order_Address */
         $orderAddress = $this->_getVatRequiredSalesAddress($orderInstance);
         if (!($orderAddress instanceof Mage_Sales_Model_Order_Address)) {

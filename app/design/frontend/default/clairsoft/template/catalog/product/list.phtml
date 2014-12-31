@@ -40,7 +40,7 @@
 <p class="note-msg"><?php echo $this->__('There are no products matching the selection.') ?></p>
 <?php else: ?>
 <div class="category-products">
-    <?php //echo $this->getToolbarHtml() ?>
+    <?php echo $this->getToolbarHtml() ?>
     <?php // List mode ?>
     <?php if($this->getMode()!='grid'): ?>
     <?php $_iterator = 0; ?>
@@ -100,7 +100,17 @@
 
                     <?php if($_product->isSaleable()){
 
-                        $productQty =  (int)Mage::getModel('cataloginventory/stock_item')->loadByProduct($_product)->getQty();
+                        //$productQty =  (int)Mage::getModel('cataloginventory/stock_item')->loadByProduct($_product)->getStockQty();
+
+                        if($_product->getTypeId() == 'configurable'){
+                            $children = Mage::getModel('catalog/product_type_configurable')->getUsedProducts(null,$_product);
+                            $productQty = 0;
+                            foreach($children as $child){
+                                $productQty += $child->getStockItem()->getStockQty();
+                            }
+                        }else{
+                            $productQty =  (int)Mage::getModel('cataloginventory/stock_item')->loadByProduct($_product)->getQty();
+                        }
 
                         if($productQty == 0){?>
                             <!-- <li class="alert-banner soldout"><?php //echo $this->__('Soldout') ?><?php //echo $productQty ?></li> -->
@@ -161,7 +171,7 @@
     <?php endif; ?>
 
     <div class="toolbar-bottom">
-        <?php //echo $this->getToolbarHtml() ?>
+        <?php echo $this->getToolbarHtml() ?>
     </div>
 </div>
 <?php endif; ?>

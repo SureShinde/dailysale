@@ -1,0 +1,13 @@
+<?php if($this->isEnabled() && $this->hasHash()): ?>
+	<?php $order = Mage::getModel('sales/order')->load(Mage::getSingleton('checkout/session')->getLastOrderId()) ?>
+	<!-- BEGIN: buySAFE Guarantee -->
+	<span id="BuySafeGuaranteeSpan"></span>
+	<script type="text/javascript">
+	   buySAFE.Hash = '<?php echo $this->getHash() ?>';
+	   buySAFE.Guarantee.order = '<?php echo $order->getIncrementId() ?>';
+	   buySAFE.Guarantee.total = '<?php echo round($order->getBaseSubtotal(), 2) ?>';
+	   buySAFE.Guarantee.email = '<?php echo $order->getCustomerEmail() ?>';
+	   WriteBuySafeGuarantee("JavaScript");
+	</script>
+	<!-- END: buySAFE Guarantee -->
+<?php endif ?>

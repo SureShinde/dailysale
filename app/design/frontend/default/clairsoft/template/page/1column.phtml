@@ -51,18 +51,12 @@
                    <span>Back To Top</span>
                 </a>
             </div>
+                <div id="subscribe-pop"><?php echo $this->getLayout()->createBlock('newsletter/subscribe')->setTemplate('newsletter/subscribe.phtml')->toHtml(); ?></div>
         </div>
         <?php //echo $this->getChildHtml('footer') ?>
         <?php echo $this->getChildHtml('global_cookie_notice') ?>
         <?php echo $this->getChildHtml('before_body_end') ?>
     </div>
-</div>
-<div id="email-subscribe">
-    <h2>Never miss a deal!</h2>
-    <button class="close">close</button>
-    <p>DS mini logo</p>
-    <p>Sign up today to have the very best deals delivered right your inbox</p>
-    <button>Sign Up</button>
 </div>
 <?php echo $this->getChildHtml('footer') ?>
 <?php echo $this->getAbsoluteFooter() ?>

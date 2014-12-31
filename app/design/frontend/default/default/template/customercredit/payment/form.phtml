@@ -1,0 +1,47 @@
+<?php
+/**
+ * MageWorx
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the MageWorx EULA that is bundled with
+ * this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.mageworx.com/LICENSE-1.0.html
+ *
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@mageworx.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade the extension
+ * to newer versions in the future. If you wish to customize the extension
+ * for your needs please refer to http://www.mageworx.com/ for more information
+ * or send an email to sales@mageworx.com
+ *
+ * @category   design_default
+ * @package    MageWorx_CustomerCredit
+ * @copyright  Copyright (c) 2010 MageWorx (http://www.mageworx.com/)
+ * @license    http://www.mageworx.com/LICENSE-1.0.html
+ */
+
+/**
+ * Customer Credit extension
+ *
+ * @category   design_default
+ * @package    MageWorx_CustomerCredit
+ * @author     MageWorx Dev Team <dev@mageworx.com>
+ */
+$var1 = Mage::helper('core')->currency(round($this->getCreditValue(),2));
+$var2 = $this->getCreditValue()*Mage::getStoreConfig('mageworx_customers/customercredit_credit/exchange_rate');
+$var3 = Mage::helper('core')->currency(Mage::helper('customercredit')->getRealCreditValue()/Mage::getStoreConfig('mageworx_customers/customercredit_credit/exchange_rate'));
+$var4 = round(Mage::helper('customercredit')->getRealCreditValue(),2);
+?>
+<fieldset class="form-list">
+    <ul id="payment_form_<?php echo $this->getMethodCode() ?>" style="display:none">
+        <li>
+            <label><?php echo Mage::helper('customercredit')->__("Using %s (%s credits) of %s (%s credits)", $var1,$var2,$var3,$var4)?></label>
+        </li>
+    </ul>
+</fieldset>

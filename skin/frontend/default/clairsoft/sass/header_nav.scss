@@ -7,12 +7,35 @@
 	background: $main-color;
 	border-bottom: 1px solid shade($main-color, 5%) !important;
 	width: 100%;
-	z-index: 9999;
-	padding: 10px 0;
+	z-index: 100;
+	// padding: 10px 0;
 	font-size: 13px;
 
 	.empty-cart .top-link-cart, .empty-cart .top-link-checkout{
 		display: none;
+	}
+
+	.top-notice-banner{
+		background: none repeat scroll 0 0 #f2f6ee;
+	    border-bottom: 1px solid #3a7967;
+	    color: #3a7967;
+	    line-height: 200%;
+	    margin-bottom: 8px;
+	    text-align: center;
+	    width: 100%;
+
+	    a{
+	    	color: #3a7967;
+	    	text-decoration: underline;
+
+	    	&:hover{
+	    		text-decoration: none;
+	    	}
+
+	    	&:visited{
+	    		color: #3a7967;
+	    	}
+	    }
 	}
 
 	.top-container{
@@ -20,12 +43,37 @@
 		width: 960px;
 		position: relative;
 
-		ul.links{
+		.top-links-container-long{
+			width: auto;
+			//float: left;
+			text-align: right;
+			height: 100% !important;
+			line-height: 100%;
+			margin-top: 8px;
+
+			a{
+				margin-left: 8px;
+			}
+
+			a[title="Log In"]{ //login
+				background: url(../images/loginlock.png) no-repeat 0 0;
+				padding-left: 18px !important;
+			}
+
+			a[title="My Account"]{ //login
+				background: url(../images/glyph_crown.png) no-repeat 0 0;
+				padding-left: 18px !important;
+			}
+
+		}
+
+		.top-links-container{
 			width: auto;
 			float: right;
 			text-align: right;
 			height: 100% !important;
 			line-height: 200%;
+			margin-top: 8px;
 
 			a{
 				margin-left: 8px;
@@ -60,6 +108,7 @@
 
 			button{
 				margin-left: -40px;
+				margin-top: -6px;
 				width: 32px;
 				height: 18px;
 				background: url(../images/glyph_search.png) no-repeat 50% 50%;
@@ -68,12 +117,22 @@
 		}
 
 		.welcome-msg{
-			// float: right;
+			float: left;
+			// border: 1px dashed red !important;
+			color: white;
+			height: 100% !important;
+			line-height: 200%;
+			text-align: center;
+			margin: 8px 0 0 15px;
+		}
+
+		.welcome-msg-long{
+			//float: right;
 			// border: 1px dashed red !important;
 			color: white;
 			// height: 100% !important;
-			line-height: 200%;
-			text-align: center;
+			line-height: 100%;
+			text-align: right;
 		}
 	}
 
@@ -88,7 +147,7 @@
 
 .nav-container{
 	position: absolute;
-	top: 14px;
+	top: 27px;
 	left: 335px;
 
 	ul#nav{
@@ -116,35 +175,128 @@
 				}
 			}
 
-		.nav-1{
-			background: url(../images/navicon_men.png) no-repeat 2px 50%;
+		.nav-1 {
+
+			width: 70px;
+
+			a{
+				background: url(../images/sprite_navicons.png) no-repeat 0 0;
+				height: 20px;
+				width: 20px;
+				padding: 0;
+				margin-left: 0;
+
+				&:hover{
+					background: url(../images/sprite_navicons.png) no-repeat -20px 0;
+				}
+			}
+
+			span{
+				margin-left: 23px;
+			}
 		}
 
 		.nav-2{
-			background: url(../images/navicon_women.png) no-repeat 2px 50%;
+
+			width: 95px;
 
 			a{
-				padding-left: 10px;
+				background: url(../images/sprite_navicons.png) no-repeat 0 -20px;
+				height: 20px;
+				width: 20px;
+				padding: 0;
+				margin-left: 0;
+
+				&:hover{
+					background: url(../images/sprite_navicons.png) no-repeat -20px -20px;
+				}
+			}
+
+			span{
+				margin-left: 23px;
 			}
 		}
 
 		.nav-3{
-			background: url(../images/navicon_kids.png) no-repeat 2px 50%;
+			width: 70px;
+
+			a{
+				background: url(../images/sprite_navicons.png) no-repeat 0 -40px;
+				height: 20px;
+				width: 20px;
+				padding: 0;
+				margin-left: 0;
+
+				&:hover{
+					background: url(../images/sprite_navicons.png) no-repeat -20px -40px;
+				}
+			}
+
+			span{
+				margin-left: 26px;
+			}
 		}
 
 		.nav-4{
-			background: url(../images/navicon_electronics.png) no-repeat 2px 50%;
+			width: 120px;
+
+			a{
+				background: url(../images/sprite_navicons.png) no-repeat 0 -60px;
+				height: 20px;
+				width: 20px;
+				padding: 0;
+				margin-left: 0;
+
+				&:hover{
+					background: url(../images/sprite_navicons.png) no-repeat -20px -60px;
+				}
+			}
+
+			span{
+				margin-left: 26px;
+			}
 		}
 
 		.nav-5{
-			background: url(../images/navicon_lifestyle.png) no-repeat 2px 50%;
+
+			width: 95px;
+
 			a{
-				padding-left: 12px;
+				background: url(../images/sprite_navicons.png) no-repeat 0 -80px;
+				height: 20px;
+				width: 20px;
+				padding: 0;
+				margin-left: 0;
+
+				&:hover{
+					background: url(../images/sprite_navicons.png) no-repeat -20px -80px;
+				}
+			}
+
+			span{
+				margin-left: 23px;
 			}
 		}
 
 		.nav-6{
-			background: url(../images/navicon_jewelry.png) no-repeat 2px 50%;
+
+			width: 95px;
+
+			a{
+				background: url(../images/sprite_navicons.png) no-repeat 0 -100px;
+				height: 20px;
+				width: 20px;
+				padding: 0;
+				margin-left: 0;
+
+				&:hover{
+					background: url(../images/sprite_navicons.png) no-repeat -20px -100px;
+				}
+			}
+
+			span{
+				margin-left: 23px;
+			}
 		}
 	}
 }

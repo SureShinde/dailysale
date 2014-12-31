@@ -1,0 +1,46 @@
+<?php
+
+/**
+ * Cart row renderers are different between some versions of Magento and Magento's rwd theme.
+ * We're supporting everything that comes with Magento
+ */
+
+
+/*
+ * Start with common code that all templates can use
+ */
+$_item = $this->getItem();
+$item_id = $_item->getId();
+
+// Fetch points redemption data
+$hasRedeemed = $this->hasRedemptions();
+$redeem_list_id = 'points-list-redeemed-'. $item_id;
+$redeemed_points_data = $this->getRedemptionData();
+$is_points_only = false;
+if ($hasRedeemed) {
+	$points_only = Mage::getModel('rewardsonly/catalog_product')->wrap2($this->getProduct())
+	->getSimplePointsCost(Mage::getSingleton('rewards/session')->getCustomer());
+
+	if (!empty($points_only)) {
+		$is_points_only = true;
+	}
+}
+
+
+/*
+ * Now, include specific templates:
+ */
+if (Mage::helper('rewards/theme')->getPackageName() === "rwd") {
+    include 'default_rwd.phtml';
+    
+} else if (Mage::helper('rewards/version')->isMageVersionAtLeast('1.5.0.0')) {
+    include 'default_m1501.phtml';
+    
+} else if (Mage::helper('rewards/version')->isMageVersionAtLeast('1.4.2.0')) {
+    include 'default_m142x.phtml';
+    
+} else {
+    include 'default_m141x.phtml';
+}
+
+?>

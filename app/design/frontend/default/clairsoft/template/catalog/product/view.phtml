@@ -69,9 +69,6 @@
                 <?php echo $this->getChildHtml('alert_urls') ?>
                 <div id="pricing-container">
                     <?php echo $this->getChildHtml('product_type_data') ?>
-                    <?php if ($_product->isSaleable() && $this->hasOptions()):?>
-                        <?php echo $this->getChildChildHtml('container2', '', true, true) ?>
-                    <?php endif;?>
                     <?php echo $this->getTierPriceHtml() ?>
                     <?php echo $this->getChildHtml('extrahint') ?>
                     <div id="dealcountdown">Deal Expires In <span id="timer">00:00:00</span></div>
@@ -102,8 +99,9 @@
             <?php //endif;?>
 
             <?php if ($_product->isSaleable() && $this->hasOptions()):?>
-                        <?php echo $this->getChildChildHtml('container1', '', true, true) ?>
-                    <?php endif;?>
+                <?php echo $this->getChildChildHtml('container1', '', true, true) ?>
+                <?php echo $this->getChildChildHtml('container2', '', true, true) ?>
+            <?php endif;?>
 
             <div class="product-collateral">
 <?php foreach ($this->getChildGroup('detailed_info', 'getChildHtml') as $alias => $html):?>
@@ -114,7 +112,7 @@
             <?php echo $html; ?>
         </div>
 <?php endforeach;?>
-        <?php echo $this->getChildHtml('upsell_products') ?>
+        
         <?php echo $this->getChildHtml('product_additional_data') ?>
     </div>
 
@@ -128,6 +126,9 @@
 
         <div class="product-img-box">
             <?php echo $this->getChildHtml('media') ?>
+        </div>
+        <div class="upsells">
+            <?php echo $this->getChildHtml('upsell_products') ?>
         </div>
 
         <div class="clearer"></div>

@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Module configuration
+ *
+ * @author Mihail
+ */
+-->
+<config>
+    <modules>
+        <Fiuze_Dailysale>
+            <version>1.0.0</version>
+        </Fiuze_Dailysale>
+    </modules>
+    
+    <frontend>
+        <routers>
+            <customer>
+                <args>
+                    <modules>
+                        <Fiuze_Dailysale before="Mage_Customer">Fiuze_Dailysale</Fiuze_Dailysale>
+                    </modules>
+                </args>
+            </customer>
+        </routers>
+        <layout>
+            <updates>
+                <fiuze_dailysale>
+                    <file>fiuze_dailysale.xml</file>
+                </fiuze_dailysale>
+            </updates>
+        </layout>
+    </frontend>
+</config>

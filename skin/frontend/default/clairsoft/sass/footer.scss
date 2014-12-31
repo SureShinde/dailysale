@@ -66,6 +66,44 @@ footer{
 			float: left;
 			height: 100%;
 			padding: 0 20px;
+
+			.topseals{
+				position: relative;
+				display: inline-block;
+				margin-bottom: 5px;
+				margin-top: -15px;
+			}
+
+			.AuthorizeNetSeal{
+				display: inline-block;
+				float: left;
+				margin-right: 5px;
+
+			}
+
+			.DandBseal{
+				width: 90px;
+				float: left;
+				margin-left: 10px;
+				// padding-right: 90px;
+				// clear: right;
+				// display: inline-block;
+			}
+
+			.SSLSeal{
+				display: inline-block;
+				margin-left: 5px;
+				// padding-top: 13px;
+			}
+
+			.BBBseal{
+				margin-top: 10px;
+			}
+
+			.McAfeeSeal{
+				display: inline-block;
+				margin-right: 5px;
+			}
 		}
 
 		#footer-content-right{

@@ -78,6 +78,85 @@
 		padding: 5px;
 		width: auto;
 	}
+
+	li:nth-child(7){
+		display: none;
+	}
+}
+
+//manage my cards
+
+.authnetcim-manage-index{
+	h1{
+		color: $main-color;
+	}
+}
+
+.manage-cards-top{
+	border: 1px solid $faint-color;
+	background: white;
+	padding: 15px;
+	margin-bottom: 15px;
+	@include border-radius(4px);
+	position: relative;
+
+	.mycc-buttons{
+		//position: absolute;
+		//right: 20px;
+		//bottom: 0px;
+
+		button{
+			@include clairsoft-default-button;
+			//float: right;
+			//display: inline-block;
+		}
+	}
+}
+
+.sales-order-history{
+	.pager{
+		border: none;
+	}
+}
+
+
+// Manage My Cards
+
+.manage-cards-bottom{
+	//border: 1px solid blue;
+	
+	h2{
+		border-bottom: 1px solid $faint-color;
+		margin-bottom: 15px;
+		color: $main-color;
+	}
+
+	h4{
+		margin-bottom: 10px;
+	}
+	input{
+		height: 20px;
+	}
+
+	#authnetcim_cc_cid{
+		display: block;
+	}
+
+	button{
+		@include clairsoft-default-button;
+	}
+}
+
+.manage-cards-ccinfo{
+	width: 50%;
+	float: left;
+}
+
+.manage-cards-addressinfo{
+	border-right: 1px solid $faint-color;
+	width: 45%;
+	float: left;
+	margin-right: 15px;
 }
 
 @import "register-login.scss";

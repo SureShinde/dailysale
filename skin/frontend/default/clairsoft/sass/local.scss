@@ -27,6 +27,13 @@ strong{
 	font-weight: bold;
 }
 
+//ie hackeries and tomfoolery
+
+// .soldout-btn, .view-deal-btn, .addtocartbtn, .btn-proceed-checkout, .apply-coupon{
+// 	background: $main-color;
+// 	filter: none;
+// }
+
 //border resets for stupid blank theme...
 
 .header, #nav, .col-main, .col-right, .col-left, .products-grid, .block, .block-related, .block .block-title, .buttons-set, .page-title, ol.opc{
@@ -79,11 +86,15 @@ body{
 			text-decoration: underline;
 		}
 	}
+
+	// .button{
+	// 	@include clairsoft-default-button;
+	// }
 }
 
 .page{
 	width: 960px;
-	margin-top: 60px;
+	margin-top: 80px;
 	position: relative;
 
 	.main-container{
@@ -109,17 +120,17 @@ body{
 	//background: white;
 	border: 1px solid $main-color !important;
 	background: white url("../images/backtotopicon.png") no-repeat 7px 50%;
-	padding: 10px 10px 8px 30px;
+	padding: 10px 10px 8px 0px;
 	position: fixed;
 	z-index: 9999;
 	//left:980px;
 	bottom: 40px;
 	right: 40px;
-	// width: 30px;
-	// height: 30px;
-	// overflow: hidden;
+	width: 30px;
+	height: 30px;
+	overflow: hidden;
 	//float: right;
-	//display: block;
+	display: block;
 	// display: none;
 	@include box-shadow($box-shadow-color 0px 8px 8px);
 
@@ -128,9 +139,9 @@ body{
 		}
 
 		span{
-			// position: absolute;
+			position: absolute;
 			width: 100px;
-			top: 7px;
+			top: 5px;
 			left: 31px;
 		}
 	}
@@ -140,6 +151,34 @@ body{
 	}
 
 }
+
+// .product-shop .price-box .free-price-default span.price{
+// 	font-size: 40px !important;
+// 	margin: 8px 0 4px 0 !important;
+// }
+
+// .product-shop .special-price.more-than-three-digits .free-price-default{
+// 	font-size: 40px !important;
+// 	margin: 8px 0 4px 0 !important;
+// }
+
+// .product-shop .our-price .more-than-three-digits-default span.price{
+// 	font-size: 36px !important;
+// 	margin: 8px 0 4px 0 !important;
+// }
+
+// .product-shop .special-price.more-than-three-digits .more-than-three-digits-default{
+// 	font-size: 36px !important;
+// 	margin: 8px 0 4px 0 !important;
+// }
+
+// .main-container .more-than-three-digits-default{
+// 	font-size: 18px;
+// }
+
+///////////
+/// digit mess
+///////////
 
 #email-subscribe{
 	background: white;
@@ -184,6 +223,87 @@ body{
 	margin-top: 1em;
 	padding-top: 1em;
 }
+
+//subscribe
+
+.dialogSubscribe{
+	// background: white;
+	position:fixed;
+	// border: 1px solid $subtle-color;
+	// @include border-bottom-left-radius(4px);
+	// @include border-bottom-right-radius(4px);
+	// @include border-top-left-radius(0px);
+	// @include border-top-right-radius(0px);
+	// padding: 0;
+	// margin-left: auto;
+	// margin-right: auto;
+
+	a{
+		color: $main-color;
+	}
+}
+
+// !UI CLASSES
+
+input:not([type=submit]):not([type=checkbox]):not([type=radio]){
+	height: 35px;
+	margin: 3px 0 10px 0;
+	@include border-radius(4px, 4px);
+	border: 1px solid $subtle-color;
+	padding-left: 5px;
+}
+
+
+//end UI classes
+
+#subscribe-pop{
+		background: #1b75bb;
+		text-align: left;
+
+		.input-box{
+		width: 70%;
+		float: left
+		}
+
+		input{
+			width: 100%;
+		}
+
+		.actions{
+			width: 30%;
+			float: left;
+		}
+
+		button{
+			@include clairsoft-dark-button;
+		}
+
+		.block-title{
+			font-size: 22px;
+			padding-left: 0;
+		}
+
+		.form-subscribe-header{
+			font-size: 12px;
+			margin-bottom: 8px;
+		}
+
+		.validation-advice{
+			color: white;
+		}
+}
+
+#generateButton{
+	@include clairsoft-default-button;
+}
+
+.md-modal-header h4{
+	font-size: 22px;
+}
+
+.newsletterbooster-track-unsubscribe .account-create .buttons-set .button{
+		@include clairsoft-default-button;
+	}
 
 /*-------------------------------------------- */
 /*----------- Modular SCSS imports ------------*/
