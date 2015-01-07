@@ -1,0 +1,14 @@
+<?php /* @var $this Bronto_Common_Block_Popup */ ?>
+
+<?php echo $this->getPopupCode() ?>
+
+<script type="text/javascript">
+if (document.addEventListener) {
+  document.addEventListener('bronto:popup-submitted', function(e) {
+    new Ajax.Request('<?php echo $this->getPopupSubmitUrl(); ?>', {
+      method: 'post',
+      parameters: { emailAddress: e.detail.email }
+    });
+  }, false);
+}
+</script>

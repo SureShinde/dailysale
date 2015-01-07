@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<layout>
+    <adminhtml_system_config_edit>
+        <reference name="head">
+            <action method="addCss"><stylesheet>bronto/bronto.css</stylesheet></action>
+            <action method="addItem"><type>skin_js</type><script>bronto/js/jquery-1.10.2.js</script></action>
+            <action method="addItem"><type>skin_js</type><script>bronto/js/jquery-noconflict.js</script></action>
+            <action method="addItem"><type>skin_js</type><script>bronto/js/guider/guiders.js</script></action>
+            <action method="addCss"><stylesheet>bronto/js/guider/guiders.css</stylesheet></action>
+        </reference>
+        <reference name="before_body_end">
+            <block type="bronto_common/adminhtml_system_config_guide" name="bronto.adminhtml.guide" as="bronto_guiders">
+                <action method="setTemplate">
+                    <template>bronto/common/guiders.phtml</template>
+                </action>
+                <block type="bronto_common/adminhtml_system_config_guide" name="bronto_api.adminhtml.guide" as="bronto_api_guide" template="bronto/api/guide.phtml" />
+                <block type="bronto_common/adminhtml_system_config_guide" name="bronto_common.adminhtml.guide" as="bronto_common_guide" template="bronto/common/guide.phtml" />
+                <block type="bronto_common/adminhtml_system_config_guide" name="bronto_customer.adminhtml.guide" as="bronto_customer_guide" template="bronto/customer/guide.phtml" />
+                <block type="bronto_common/adminhtml_system_config_guide" name="bronto_email.adminhtml.guide" as="bronto_email_guide" template="bronto/email/guide.phtml" />
+                <block type="bronto_common/adminhtml_system_config_guide" name="bronto_news.adminhtml.guide" as="bronto_news_guide" template="bronto/news/guide.phtml" />
+                <block type="bronto_common/adminhtml_system_config_guide" name="bronto_newsletter.adminhtml.guide" as="bronto_newsletter_guide" template="bronto/newsletter/guide.phtml" />
+                <block type="bronto_common/adminhtml_system_config_guide" name="bronto_order.adminhtml.guide" as="bronto_order_guide" template="bronto/order/guide.phtml" />
+                <block type="bronto_common/adminhtml_system_config_guide" name="bronto_reminder.adminhtml.guide" as="bronto_reminder_guide" template="bronto/reminder/guide.phtml" />
+                <block type="bronto_common/adminhtml_system_config_guide" name="bronto_verify.adminhtml.guide" as="bronto_verify_guide" template="bronto/verify/guide.phtml" />
+                <block type="bronto_common/adminhtml_system_config_guide" name="bronto_popup.adminhtml.guide" as="bronto_popup_guide" template="bronto/popup/guide.phtml" />
+                <block type="bronto_common/adminhtml_system_config_guide" name="bronto_coupon.adminhtml.guide" as="bronto_coupon_guide" template="bronto/coupon/guide.phtml" />
+                <block type="bronto_common/adminhtml_system_config_guide" name="bronto_reviews.adminhtml.guide" as="bronto_reviews_guide" template="bronto/reviews/guide.phtml" />
+                <block type="bronto_common/adminhtml_system_config_guide" name="bronto_product.adminhtml.guide" as="bronto_product_guide" template="bronto/product/guide.phtml" />
+            </block>
+        </reference>
+    </adminhtml_system_config_edit>
+</layout>

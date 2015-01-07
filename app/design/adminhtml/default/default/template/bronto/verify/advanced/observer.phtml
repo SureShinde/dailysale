@@ -1,0 +1,42 @@
+<?php /* var $this Bronto_Verify_Block_Adminhtml_System_Config_Advanced_Observersearch */ ?>
+<style>
+    dl.conflict-values { clear: both; }
+    dl.conflict-values dt { float: left; width:6em ; }
+    dl.conflict-values dt, dl.conflict-values dd { padding: 3px; }
+</style>
+<fieldset class="grid">
+    <?php $observers = $this->getObservers(); ?>
+    <?php if (is_array($observers) && !empty($observers)) : ?>
+        <table class="border">
+            <thead>
+                <tr class="headings">
+                    <th>Results</th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($observers as $observerName=>$observer) : ?>
+                <tr class="<?php echo $this->getParity(); ?>">
+                    <td>
+                        <dl class="observer-details">
+                            <dt><strong>Area :</strong></dt>
+                            <dd><?php echo ucfirst($observer['area']); ?></dd>
+                            <dt><strong>Class/Method :</strong></dt>
+                            <dd><?php echo $observer['class'] . '::' . $observer['method']; ?></dd>
+                            <dt><strong>Location :</strong></dt>
+                            <dd><?php echo $observer['path'] . ' Line: ' . $observer['line'] ?></dd>
+                        </dl>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    <?php else : ?>
+        <table class="border">
+            <thead>
+            <tr class="headings">
+                <th>** No observers for this event **</th>
+            </tr>
+            </thead>
+        </table>
+    <?php endif; ?>
+</fieldset>

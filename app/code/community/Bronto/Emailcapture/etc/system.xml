@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<config>
+    <sections>
+        <bronto_reminder translate="label" module="bronto_reminder">
+            <groups>
+                <settings translate="label">
+                    <fields>
+                        <field_selector>
+                            <label>Email Capture Input Field CSS Selector(s)</label>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-required</validate>
+                            <comment>
+                              <![CDATA[Comma-separated CSS Class Name(s) and/or ID(s) used to identify input fields to capture email addresses for the sake of guest abandonment triggering.<br />Default: "input.validate-email"]]></comment>
+                        </field_selector>
+                        <cookie_ttl>
+                            <label>Email Capture Cookie Lifetime</label>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>111</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-required validate-digits-range digits-range--1-3650</validate>
+                            <comment>
+                                <![CDATA[Number of days for email capture cookie to persist. Must be between 0 to 3650.<br />Default: 365]]></comment>
+                        </cookie_ttl>
+                    </fields>
+                </settings>
+            </groups>
+        </bronto_reminder>
+    </sections>
+</config>

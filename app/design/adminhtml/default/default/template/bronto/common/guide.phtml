@@ -1,0 +1,189 @@
+<?php /* @var $this Bronto_Common_Block_Adminhtml_System_Config_Guide */ ?>
+
+<?php if($this->isBrontoSection('bronto_common')): ?>
+<?php $version = Mage::helper($this->getCurrentSection())->getModuleVersion(); ?>
+
+    /**
+     * Introduce them to the guide and provide instructions
+     */
+    guiders.createGuider({
+        buttons: [
+            {name: "<?php echo $this->__("Let's Get Started!") ?>", onclick: guiders.next},
+            {name: "<?php echo $this->__('No Thanks') ?>", onclick: guiders.hideAll}
+        ],
+        buttonCustomHTML: dontShowButtonHtml,
+        description: "<?php echo $this->__(
+            "We will now guide you through the process of configuring the Bronto Extension for Magento.%sAt any point you can exit this guide by clicking the `Close` button.  " .
+            "You can then return to the guide at any point by clicking on the `Start Configuration Guide` link in the header.%sReady to Go?%s",
+            '<br /><br />',
+            '<br /><br /><div style=\"text-align:right; font-weight:bold;\">',
+            '</div>'
+        ) ?>",
+        id: "start",
+        next: "bronto_common-enable",
+        overlay: true,
+        closeOnEscape: true,
+        title: "Bronto Extension for Magento <?php echo empty($version) ? null : "(v{$version})" ?>",
+        width: 600
+    });
+
+    /**
+     * Enable the Module
+     */
+    guiders.createGuider({
+        attachTo: '#bronto_settings_enabled',
+        shouldSkip: function() {
+            if (jQuery('#bronto_settings_enabled').val() == '1') {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        buttons: [
+            {name: "<?php echo $this->__('Back') ?>"},
+            {name: "<?php echo $this->__('Next') ?>", onclick: function() {
+                if (jQuery('#bronto_settings_enabled').val() == '1') {
+                    guiders.next();
+                } else {
+                    alert("<?php echo $this->__("Don't forget to enable the extension") ?>");
+                }
+            }},
+            {name: "<?php echo $this->__('Close') ?>"}
+        ],
+        autoFocus: true,
+        highlight: '#bronto_settings_enabled',
+        description: "<?php echo $this->__("Let's enable the extension and expose some more options.  Just set `Enable Module` to Yes.") ?>",
+        id: "bronto_common-enable",
+        next: "bronto_common-api_token",
+        position: 11,
+        overlay: true,
+        closeOnEscape: true,
+        title: "<?php echo $this->__('Enable the Extension') ?>",
+        width: 200
+    });
+
+    /**
+     * Get them to provide their API Token
+     */
+    guiders.createGuider({
+        attachTo: '#bronto_settings_api_token',
+        shouldSkip: function() {
+            if (jQuery('#bronto_settings_api_token').val() != '') {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        buttons: [
+            {name: "<?php echo $this->__('Back') ?>"},
+            {name: "<?php echo $this->__('Next') ?>"},
+            {name: "<?php echo $this->__('Close') ?>"}
+        ],
+        autoFocus: true,
+        closeOnEscape: true,
+        highlight: '#bronto_settings_api_token',
+        description: "<?php echo $this->__(
+            "The first thing we need to do is enter our API Token.  Please type or paste your token into the field below.%sIf you don't have an API Token yet, you can get it by logging into your account at %s.  " .
+            "Using the menu bar, go to %s and either copy an existing API Token or follow the instructions in %s section to create a new one.%sOnce you have entered your API Token, and have received a %sPassed Verification%s, " .
+            " click next to proceed to the next step.",
+            '<br /><br />',
+            '<a href=\"https://app.bronto.com/login/index/login/\">app.bronto.com</a>',
+            "<br /><strong>Home</strong> &raquo; <strong>Settings</strong> &raquo; <strong>Data Exchange</strong>",
+            "<strong>API Access Tokens</strong>",
+            "<br /><br />",
+            '<span style=\"color: green; font-weight:bold;\">',
+            "</span>")
+        ?>",
+        id: "bronto_common-api_token",
+        next: "bronto_common-debug",
+        position: 10,
+        overlay: true,
+        title: "<?php echo $this->__('Provide your API Token') ?>",
+        width: 200
+    });
+
+    /**
+     * Show them the debug and logging settings
+     */
+    guiders.createGuider({
+        attachTo: '#row_bronto_settings_debug',
+        buttons: [
+            {name: "<?php echo $this->__('Back') ?>"},
+            {name: "<?php echo $this->__('Next') ?>"},
+            {name: "<?php echo $this->__('Close') ?>"}
+        ],
+        autoFocus: true,
+        closeOnEscape: true,
+        description: "<?php echo $this->__('These settings allow you to control Debug and Logging settings. These can be disabled on a production environment.') ?>",
+        id: "bronto_common-debug",
+        next: "bronto_common-register_module",
+        position: 10,
+        title: "<?php echo $this->__('Debug and Logging') ?>",
+        width: 200
+    });
+
+    /**
+     * Register Extension
+     */
+    guiders.createGuider({
+        attachTo: '#bronto_support-head',
+        buttons: [
+            {name: "<?php echo $this->__('Back') ?>"},
+            {name: "<?php echo $this->__('Next') ?>"},
+            {name: "<?php echo $this->__('Close') ?>"}
+        ],
+        autoFocus: true,
+        closeOnEscape: true,
+        description: "<?php echo $this->__('In order to continue with the activation process, you need to register the extension.  Please complete all fields and click next when you are done.') ?>",
+        id: "bronto_common-register_module",
+        next: "bronto_common-formatting_options",
+        position: 10,
+        title: "<?php echo $this->__('Register the %s', 'Bronto Extension') ?>",
+        width: 200
+    });
+
+    /**
+     * Formatting Options
+     */
+    guiders.createGuider({
+        attachTo: '#bronto_format-head',
+        buttons: [
+            {name: "<?php echo $this->__('Back') ?>"},
+            {name: "<?php echo $this->__('Next') ?>"},
+            {name: "<?php echo $this->__('Close') ?>"}
+        ],
+        autoFocus: true,
+        closeOnEscape: true,
+        description: "<?php echo $this->__('The Formatting Options section allows you to customize how product images and currency symbols display in your reminder and transactional emails.') ?>",
+        id: "bronto_common-formatting_options",
+        next: "bronto_common-support_information",
+        position: 10,
+        title: "<?php echo $this->__('Email Formatting Options') ?>",
+        width: 200
+    });
+
+    /**
+     * Support Information
+     */
+    guiders.createGuider({
+        attachTo: '#bronto_information-head',
+        buttons: [
+            {name: "<?php echo $this->__('Back') ?>"},
+            {name: "<?php echo $this->__('Next') ?>"},
+            {name: "<?php echo $this->__('Close') ?>"}
+        ],
+        autoFocus: true,
+        closeOnEscape: true,
+        description: "<?php echo $this->__('The Support Information section provides resources for getting support with any issues you may encounter with the Bronto Extension for Magento.') ?>",
+        id: "bronto_common-support_information",
+        next: "scope",
+        position: 10,
+        title: "<?php echo $this->__('Support Information') ?>",
+        width: 200
+    });
+
+    <?php if($this->canShowGuide()): ?>
+        guiders.show('start');
+    <?php endif; ?>
+
+<?php endif; ?>

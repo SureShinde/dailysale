@@ -1,0 +1,24 @@
+<?php /* @var $this Bronto_Common_Block_Adminhtml_System_Config_Guide */ ?>
+
+<?php if ($this->isBrontoSection('bronto_news')): ?>
+
+    /**
+     * Introduce them to the guide and provide instructions
+     */
+    guiders.createGuider({
+        buttons: [
+            {name: "<?php echo $this->__('Thanks!') ?>", onclick: guiders.hideAll}
+        ],
+        buttonCustomHTML: dontShowButtonHtml,
+        description: "<?php echo $this->__('This module provides you quick access to any important information from Bronto, such as new versions, critical fixes or other helpful information.') ?>",
+        id: "start",
+        overlay: true, closeOnEscape: true,
+        title: "Bronto Extension - <?php echo $this->__('Announcements & News') ?>",
+        width: 600
+    });
+
+    <?php if ($this->canShowGuide()): ?>
+        guiders.show('start');
+    <?php endif; ?>
+
+<?php endif; ?>

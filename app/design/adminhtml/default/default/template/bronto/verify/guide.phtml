@@ -1,0 +1,218 @@
+<?php /* @var $this Bronto_Common_Block_Adminhtml_System_Config_Guide */ ?>
+
+<?php if($this->isBrontoSection('bronto_verify')): ?>
+
+    /**
+     * Continue Guide now that module is enabled
+     */
+    guiders.createGuider({
+        buttons: [
+            {name: "<?php echo $this->__('Continue with Guide') ?>", onclick: guiders.next},
+            {name: "<?php echo $this->__('No Thanks') ?>", onclick: guiders.hideAll}
+        ],
+        buttonCustomHTML: dontShowButtonHtml,
+        description: "<?php echo $this->__(
+            'The Admin Tools module is here as a helpful troubleshooting resource. ' .
+            'This page allows you, among other things, ' .
+            'see any configuration conflicts between any other installed modules, and ensure your files all have the correct permissions to run correctly and securely.' .
+            '%sReady to Go?%s',
+            '<br /><br /><div style=\"text-align:right; font-weight:bold;\">',
+            '</div>'
+        ) ?>",
+        id: "start",
+        next: "bronto_verify-install_status",
+        overlay: true, closeOnEscape: true,
+        title: "Bronto Extension - <?php echo $this->__('Admin Tools') ?>",
+        width: 600
+    });
+
+    /**
+     * Explain Install Status
+     */
+    guiders.createGuider({
+        attachTo: '#bronto_verify_installs-head',
+        buttons: [
+            {name: "<?php echo $this->__('Back') ?>"},
+            {name: "<?php echo $this->__('Next') ?>"},
+            {name: "<?php echo $this->__('Close') ?>"}
+        ],
+        autoFocus: true, closeOnEscape: true,
+        onShow: function() { sectionOpen('#bronto_verify_installs-head'); },
+        onHide: function() { sectionClose('#bronto_verify_installs-head'); },
+        description: "<?php echo $this->__('This section shows you a scoped view of all modules and links to the corresponding configuration pages.') ?>",
+        id: "bronto_verify-install_status",
+        next: "bronto_verify-advanced",
+        position: 9,
+        title: "<?php echo $this->__('Install Status') ?>",
+        width: 200
+    });
+
+    /**
+     * Explain Advanced Debug Section
+     */
+    guiders.createGuider({
+        attachTo: '#bronto_verify_advanced-head',
+        shouldSkip: function() {
+            return <?php echo ($this->isDefaultScope()) ? 'false' : 'true'; ?>
+        },
+        buttons: [
+            {name: "<?php echo $this->__('Back') ?>"},
+            {name: "<?php echo $this->__('Next') ?>"},
+            {name: "<?php echo $this->__('Close') ?>"}
+        ],
+        autoFocus: true, closeOnEscape: true,
+        onShow: function() { sectionOpen('#bronto_verify_advanced-head'); },
+        onHide: function() { sectionClose('#bronto_verify_advanced-head'); },
+        description: "<?php echo $this->__('The Classpath Inspection section provides functionality for identifying observers of events and file paths for classes.') ?>",
+        id: "bronto_verify-advanced",
+        next: "bronto_verify-conflict_checker",
+        position: 9,
+        title: "<?php echo $this->__('Classpath Inspection') ?>",
+        width: 200
+    });
+
+    /**
+     * Explain Conflict Checker
+     */
+    guiders.createGuider({
+        attachTo: '#bronto_verify_conflictchecker-head',
+        shouldSkip: function() {
+            return <?php echo ($this->isDefaultScope()) ? 'false' : 'true'; ?>
+        },
+        buttons: [
+            {name: "<?php echo $this->__('Back') ?>"},
+            {name: "<?php echo $this->__('Next') ?>"},
+            {name: "<?php echo $this->__('Close') ?>"}
+        ],
+        autoFocus: true, closeOnEscape: true,
+        onShow: function() { sectionOpen('#bronto_verify_conflictchecker-head'); },
+        onHide: function() { sectionClose('#bronto_verify_conflictchecker-head'); },
+        description: "<?php echo $this->__(
+            "The Conflict Checker is a powerful tool when you find that something is not working like you expect it to.  " .
+            'It will run through the configurations for all installed modules and report any values that are overridden.  ' .
+            'To start the process, just click the `Check Module Conflicts` button.' .
+            '%s* Note: This process may take a minute or two to complete, just be patient.%s',
+            '<br /><br /><em>',
+            '</em>'
+        ) ?>",
+        id: "bronto_verify-conflict_checker",
+        next: "bronto_verify-permissions_settings",
+        position: 9,
+        title: "<?php echo $this->__('Conflict Checker') ?>",
+        width: 200
+    });
+
+    /**
+     * Explain Permissions Settings
+     */
+    guiders.createGuider({
+        attachTo: '#bronto_verify_permissionchecker-head',
+        shouldSkip: function() {
+            return <?php echo ($this->isDefaultScope()) ? 'false' : 'true'; ?>
+        },
+        buttons: [
+            {name: "<?php echo $this->__('Back') ?>"},
+            {name: "<?php echo $this->__('Next') ?>"},
+            {name: "<?php echo $this->__('Close') ?>"}
+        ],
+        autoFocus: true, closeOnEscape: true,
+        onShow: function() { sectionOpen('#bronto_verify_permissionchecker-head'); },
+        onHide: function() { sectionClose('#bronto_verify_permissionchecker-head'); },
+        description: "<?php echo $this->__(
+            'The Permissions Settings section allow you to customize the desired file/folder permissions for your code base.  ' .
+            'The default settings are based on Magento\'s recommended values.' .
+            'If, during the Permissions Validation process, you find that your files/folders are not set to the desired permissions, ' .
+            'you can use the provided commands to apply the correct permissions to your system.'
+        ) ?>",
+        id: "bronto_verify-permissions_settings",
+        next: "bronto_verify-permissions_validation",
+        position: 9,
+        title: "<?php echo $this->__('Permissions Settings') ?>",
+        width: 200
+    });
+
+    /**
+     * Explain Permissions Validation
+     */
+    guiders.createGuider({
+        attachTo: '#bronto_verify_permissionchecker_validate-head',
+        shouldSkip: function() {
+            return <?php echo ($this->isDefaultScope()) ? 'false' : 'true'; ?>
+        },
+        buttons: [
+            {name: "<?php echo $this->__('Back') ?>"},
+            {name: "<?php echo $this->__('Next') ?>"},
+            {name: "<?php echo $this->__('Close') ?>"}
+        ],
+        autoFocus: true, closeOnEscape: true,
+        onShow: function() { sectionOpen('#bronto_verify_permissionchecker_validate-head'); },
+        onHide: function() { sectionClose('#bronto_verify_permissionchecker_validate-head'); },
+        description: "<?php echo $this->__(
+            'The Permissions Validation section will traverse your Magento installation, check the permissions against those specified in the Permissions Settings ' .
+            'section, and display the path of any files/folders that have incorrect permissions.' .
+            '%s* Note: This process may take a minute or two to complete, just be patient.  If you get no response from this process, ' .
+            'it means that the request timed out, possibly due to a very large number of incorrect permissions in your system.%s',
+            '<br /><br /><em>',
+            '</em>'
+        ) ?>",
+        id: "bronto_verify-permissions_validation",
+        next: "bronto_verify-cron_settings",
+        position: 9,
+        title: "<?php echo $this->__('Permissions Validation') ?>",
+        width: 200
+    });
+
+    /**
+     * Explain Cron Settings Section
+     */
+    guiders.createGuider({
+        attachTo: '#bronto_verify_cron_settings-head',
+        shouldSkip: function() {
+            return <?php echo ($this->isDefaultScope()) ? 'false' : 'true'; ?>
+        },
+        buttons: [
+            {name: "<?php echo $this->__('Back') ?>"},
+            {name: "<?php echo $this->__('Next') ?>"},
+            {name: "<?php echo $this->__('Close') ?>"}
+        ],
+        autoFocus: true, closeOnEscape: true,
+        onShow: function() { sectionOpen('#bronto_verify_cron_settings-head'); },
+        description: "<?php echo $this->__('The Cron Settings section allows you to set different modules to use the system cron instead of the Magento cron system.  This is provided as a solution for instances where the Magento cron fails to properly trigger the Import or Reminder cron jobs.') ?>",
+        id: "bronto_verify-cron_settings",
+        next: "bronto_verify-cron_examples",
+        position: 9,
+        title: "<?php echo $this->__('Cron Settings') ?>",
+        width: 200
+    });
+
+    /**
+     * Explain Cron Examples
+     */
+    guiders.createGuider({
+        attachTo: '#bronto-magecron-example',
+        shouldSkip: function() {
+            return <?php echo ($this->isDefaultScope()) ? 'false' : 'true'; ?>
+        },
+        buttons: [
+            {name: "<?php echo $this->__('Back') ?>"},
+            {name: "<?php echo $this->__('Next') ?>"},
+            {name: "<?php echo $this->__('Close') ?>"}
+        ],
+        autoFocus: true, closeOnEscape: true,
+        onShow: function() { sectionOpen('#bronto_verify_cron_settings-head'); },
+        onHide: function() { sectionClose('#bronto_verify_cron_settings-head'); },
+        description: "<?php echo $this->__('To help with getting your Cron working correctly, here are some example crontab entries.  The Bronto Cron script* provides a number of options for additional control over the process.%sNote: The script is located at shell/bronto/cron.php.%s',
+        '<br /><br/><em>',
+        '</em>') ?>",
+        id: "bronto_verify-cron_examples",
+        next: "final",
+        position: 9,
+        title: "<?php echo $this->__('Crontab Examples') ?>",
+        width: 200
+    });
+
+    <?php if($this->canShowGuide()): ?>
+        guiders.show('start');
+    <?php endif; ?>
+
+<?php endif; ?>

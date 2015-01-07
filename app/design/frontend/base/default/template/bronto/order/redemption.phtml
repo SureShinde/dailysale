@@ -1,0 +1,12 @@
+<?php if ($this->getOrder() && $this->getRedemptionSiteHash()) : ?>
+<script type="text/javascript" src="https://cdn.bronto.com/coupon/js/bcm.js"></script>
+<script type="text/javascript">
+__bcm.redeemCoupon("<?php echo $this->getRedemptionSiteHash(); ?>", {
+    email: "<?php echo $this->getEmailAddress(); ?>",
+    coupon: "<?php echo $this->getCouponUsed(); ?>",
+    orderId: "<?php echo $this->getOrderIncrementId(); ?>",
+    orderSubtotal: "<?php echo $this->getOrderSubtotal(); ?>",
+    orderDiscount: "<?php echo $this->getDiscountAmount(); ?>"
+});
+</script>
+<?php endif; ?>

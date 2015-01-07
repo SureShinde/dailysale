@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+        <reference name="before_body_end">
+            <block type="bronto_emailcapture/emailcapture" name="bronto.emailcapture" as="bronto_emailcapture">
+                <action method="setTemplate">
+                    <template>bronto/emailcapture/js.phtml</template>
+                </action>
+            </block>
+        </reference>
+    </default>
+</layout>

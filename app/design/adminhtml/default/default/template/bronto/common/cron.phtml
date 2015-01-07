@@ -1,0 +1,50 @@
+<?php /* var $this Bronto_Common_Block_Adminhtml_System_Config_Cron */ ?>
+
+<div class="grid bronto-cron">
+    <?php if ($this->hasProgressBar()): ?>
+        <?php echo $this->getProgressBarHtml(); ?>
+    <?php endif; ?>
+    <?php echo $this->getButtonsHtml(); ?>
+    <?php if ($this->showCronTable()): ?>
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" class="bronto-cron-table data">
+        <thead>
+            <tr class="">
+                <th width="150">Created</th>
+                <th width="150">Scheduled</th>
+                <th width="150">Executed</th>
+                <th width="150">Finished</th>
+                <th>Message</th>
+                <th width="200">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php $_jobSchedule = $this->getJobSchedule(); ?>
+            <?php if ($_jobSchedule->count() > 0): ?>
+                <?php foreach ($_jobSchedule as $i => $job): ?>
+                    <tr class="<?php echo ($i % 2 ? 'even' : 'odd'); ?>">
+                        <td><?php echo $job->getCreatedAt(); ?></td>
+                        <td><?php echo $job->getScheduledAt(); ?></td>
+                        <td><?php echo $job->getExecutedAt() == '0000-00-00 00:00:00' ? '&nbsp;' : $job->getExecutedAt(); ?></td>
+                        <td><?php echo $job->getFinishedAt() == '0000-00-00 00:00:00' ? '&nbsp;' : $job->getFinishedAt(); ?></td>
+                        <td>
+                            <pre title="<?php echo $job->getMessages(); ?>">
+                                <?php echo $this->getTruncatedJobMessages($job) ; ?>
+                            </pre>
+                        </td>
+                        <td><?php echo $this->decorateJobStatus($job->getStatus()); ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <tr>
+                    <td colspan="99" style="text-align:center;padding:10px">
+                        No cron schedules to show - is the Magento cron (<pre style="display:inline">cron.php</pre>) enabled?
+                        How-To: <a href="http://www.magentocommerce.com/wiki/groups/227/setting_up_magento_in_cron" target="_blank">Setting Up Magento in Cron</a>
+                    </td>
+                </tr>
+            <?php endif; ?>
+        </tbody>
+    </table>
+    <?php else: ?>
+        <div style="clear:both;">&nbsp;</div>
+    <?php endif; ?>
+</div>

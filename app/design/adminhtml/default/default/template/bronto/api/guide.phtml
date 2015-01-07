@@ -1,0 +1,280 @@
+<?php /* @var $this Bronto_Common_Block_Adminhtml_System_Config_Guide */ ?>
+
+<?php if ($this->isBrontoSection('bronto_api')): ?>
+
+    <?php if (!Mage::helper('bronto_common/api')->isEnabled()): ?>
+        /**
+         * Introduce them to the guide and provide instructions
+         */
+        guiders.createGuider({
+            buttons: [
+                {name: "<?php echo $this->__("Let's Get Started!") ?>", onclick: guiders.next},
+                {name: "<?php echo $this->__('No Thanks') ?>", onclick: guiders.hideAll}
+            ],
+            buttonCustomHTML: dontShowButtonHtml,
+            description: "<?php echo $this->__(
+                'The Advanced API is where you can customize the API error retry interval, ' .
+                'check your API Token validity and connection, ' .
+                'and customize you API client.' .
+                '%sReady to Go?%s',
+                '<br /><br /><div style=\"text-align:right; font-weight:bold;\">',
+                '</div>'
+            ) ?>",
+            id: "start",
+            next: "bronto_api-enable",
+            overlay: true,
+            closeOnEscape: true,
+            title: "Bronto Extension - <?php echo $this->__('Advanced API') ?>",
+            width: 600
+        });
+
+        /**
+         * Enable the Module
+         */
+        guiders.createGuider({
+            attachTo: '#bronto_api_settings_enabled',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>", onclick: function() {
+                    if (jQuery('#bronto_api_settings_enabled').val() == '1') {
+                        guiders.next();
+                    } else {
+                        alert("<?php echo $this->__("Do not forget to enable the module") ?>");
+                    }
+                }},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+            closeOnEscape: true,
+            highlight: '#bronto_customer_settings_enabled',
+            description: "<?php echo $this->__("Enable the API retry and expose some more options.  Just set `Enable API Retry` to Yes and click `Save Config`.") ?>",
+            id: "bronto_api-enable",
+            next: "bronto_api-configure_cron",
+            position: 11,
+            overlay: true,
+            title: "<?php echo $this->__('Enable API Retry') ?>",
+            width: 200
+        });
+
+        /**
+         * Configure Cron
+         */
+        guiders.createGuider({
+            attachTo: '#bronto_api_settings',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+            closeOnEscape: true,
+            description: "<?php echo $this->__('These options allow you to configure the cron schedule and retry process.') ?>",
+            id: "bronto_api-configure_cron",
+            next: "bronto_api-save_config_first",
+            position: 10,
+            title: "<?php echo $this->__('Configure the Cron') ?>",
+            width: 200
+        });
+
+        /**
+         * Save Configuration
+         */
+        guiders.createGuider({
+            attachTo: 'button.save',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Save Config') ?>", onclick: function() {
+                    configForm.submit()
+                }},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+            closeOnEscape: true,
+            highlight: 'button.save',
+            description: "<?php echo $this->__('Now that the initial settings have been configured, you should save them.  Click `Save Config` now.') ?>",
+            id: "bronto_api-save_config_first",
+            next: "final",
+            position: 5,
+            overlay: true,
+            title: "<?php echo $this->__('Save Config') ?>"
+        });
+
+    <?php else: ?>
+
+        /**
+         * Continue Guide now that module is enabled
+         */
+        guiders.createGuider({
+            buttons: [
+                {name: "<?php echo $this->__('Continue with Guide') ?>", onclick: guiders.next},
+                {name: "<?php echo $this->__('No Thanks') ?>", onclick: guiders.hideAll}
+            ],
+            buttonCustomHTML: dontShowButtonHtml,
+            description: "<?php echo $this->__(
+                'The Advanced API is where you can customize the API error retry interval, ' .
+                'check your API Token validity and connection, ' .
+                'and customize you API client.' .
+                '%sReady to Go?%s',
+                '<br /><br /><div style=\"text-align:right; font-weight:bold;\">',
+                '</div>'
+            ) ?>",
+            id: "start",
+            next: "bronto_api-api_status",
+            overlay: true, closeOnEscape: true,
+            title: "Bronto Extension - <?php echo $this->__('Advanced API'); ?>",
+            width: 600
+        });
+
+        /**
+         * Explain API Status
+         */
+        guiders.createGuider({
+            attachTo: '#bronto_api_apitoken-head',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true, closeOnEscape: true,
+            description: "<?php echo $this->__('This is where you can verify the status of the API Token and the API Connection.  Just click the `Verify Now` button to the right of each one to update the status.') ?>",
+            id: "bronto_api-api_status",
+            next: "bronto_api-send_mage_cron",
+            position: 9,
+            title: "<?php echo $this->__('API Status') ?>",
+            width: 200
+        });
+
+        /**
+         * Explain Using Magento Cron
+         */
+        <?php $advancedCronLink = $this->helper('bronto_common')->getScopeUrl('/system_config/edit/section/bronto_verify'); ?>
+        guiders.createGuider({
+            attachTo: '#row_bronto_api_queue_settings_mage_cron',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true, closeOnEscape: true,
+            description: "<?php echo $this->__('The `Use Magento Cron` setting, when set to No, allows you to create your own crontab entry on your server instead of using Magento\'s cron system.  You should only change this if you are experiencing issues where the cron job for this module fails to run due to too many jobs.%sYou can find more details under the %s, including examples of how to configure the cron job.', '<br /><br />', '<a href=\"' . $advancedCronLink . '\" title=\"Advanced &raquo; Cron Settings\">Advanced Tab</a>') ?>",
+            id: "bronto_api-send_mage_cron",
+            next: "bronto_api-send_cron_table",
+            position: 10,
+            title: "<?php echo $this->__('Send Cron Options') ?>",
+            width: 200
+        });
+
+        /**
+         * Cron Table
+         */
+        guiders.createGuider({
+            attachTo: '.bronto-cron-table',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+            closeOnEscape: true,
+            highlight: '.bronto-cron-table',
+            overlay: true,
+            description: "<?php echo $this->__('This table shows you the recent history of the Cron Jobs that are pending, running, have successfully completed, or have failed upon execution.') ?>",
+            id: "bronto_api-send_cron_table",
+            next: "bronto_api-mage_cron",
+            position: 10,
+            title: "<?php echo $this->__('Send Cron Table') ?>",
+            width: 200
+        });
+
+        /**
+         * Explain Using Magento Cron
+         */
+        <?php $advancedCronLink = $this->helper('bronto_common')->getScopeUrl('/system_config/edit/section/bronto_verify'); ?>
+        guiders.createGuider({
+            attachTo: '#row_bronto_api_settings_mage_cron',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true, closeOnEscape: true,
+            description: "<?php echo $this->__('The `Use Magento Cron` setting, when set to No, allows you to create your own crontab entry on your server instead of using Magento\'s cron system.  You should only change this if you are experiencing issues where the cron job for this module fails to run due to too many jobs.%sYou can find more details under the %s, including examples of how to configure the cron job.', '<br /><br />', '<a href=\"' . $advancedCronLink . '\" title=\"Advanced &raquo; Cron Settings\">Advanced Tab</a>') ?>",
+            id: "bronto_api-mage_cron",
+            next: "bronto_api-attempt_threshold",
+            position: 10,
+            title: "<?php echo $this->__('Retry Cron Options') ?>",
+            width: 200
+        });
+
+        /**
+         * Explain email capture
+         */
+        guiders.createGuider({
+            attachTo: '#row_bronto_api_settings_threshold',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true, closeOnEscape: true,
+            description: "<?php echo $this->__("The Attempt Threshold setting allows you to grab entries that have failed less than the specified number. These are attempts that failed upon later retrying the call.") ?>",
+            id: "bronto_api-attempt_threshold",
+            next: "bronto_api-cron_table",
+            position: 10,
+            title: "<?php echo $this->__('Attempt Threshold') ?>",
+            width: 200
+        });
+
+        /**
+         * Cron Table
+         */
+        guiders.createGuider({
+            attachTo: '#bronto_api_settings ~ .bronto-cron',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+            closeOnEscape: true,
+            highlight: '.bronto-cron-table',
+            overlay: true,
+            description: "<?php echo $this->__('This table shows you the recent history of the Cron Jobs that are pending, running, have successfully completed, or have failed upon execution.') ?>",
+            id: "bronto_api-cron_table",
+            next: "bronto_api-soap_options",
+            position: 10,
+            title: "<?php echo $this->__('Retry Cron Table') ?>",
+            width: 200
+        });
+
+        /**
+         * Explain SOAP Config Section
+         */
+        guiders.createGuider({
+            attachTo: '#bronto_api_soap_options-head',
+            shouldSkip: function() {
+                return <?php echo ($this->isDefaultScope()) ? 'false' : 'true'; ?>
+            },
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true, closeOnEscape: true,
+            onShow: function() { sectionOpen('#bronto_api_soap_options-head'); },
+            onHide: function() { sectionClose('#bronto_api_soap_options-head'); },
+            description: "<?php echo $this->__('The SOAP Options section allows you to customize SOAP client settings that are specific to your system.') ?>",
+            id: "bronto_api-soap_options",
+            next: "final",
+            position: 9,
+            title: "<?php echo $this->__('SOAP Options') ?>",
+            width: 200
+        });
+
+    <?php endif; ?>
+
+    <?php if($this->canShowGuide()): ?>
+        guiders.show('start');
+    <?php endif; ?>
+
+<?php endif; ?>

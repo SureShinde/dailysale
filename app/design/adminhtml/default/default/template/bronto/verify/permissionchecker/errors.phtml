@@ -1,0 +1,55 @@
+<?php $errors = $this->getErrors(); ?>
+<?php if (count($errors)) : ?>
+    <ul class="messages">
+        <li class="error-msg">
+            <ul>
+                <li>
+                    <span>
+                        Some files and/or directories do not match specified settings.
+                    </span>
+                </li>
+                <li>
+                    <span>
+                        Please see list below for a detailed description of what files and/or directories have discrepencies.
+                    </span>
+                </li>
+            </ul>
+        </li>
+    </ul>
+    <table class="border">
+        <thead>
+            <tr class="headings">
+                <th>File</th>
+                <th>Deviation</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($errors as $file => $error) : ?>
+                <tr class="<?php echo $this->getParity(); ?>">
+                    <td><?php echo $file; ?></td>
+                    <td>
+                        <?php foreach ($error as $issue => $deviation) : ?>
+                            <div>
+                                <strong> <?php echo $issue; ?> </strong>
+                                is set to
+                                <strong> <?php echo $deviation; ?> </strong>
+                            </div>
+                        <?php endforeach; ?>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php else : ?>
+    <ul class="messages">
+        <li class="success-msg">
+            <ul>
+                <li>
+                    <span>
+                        All files and directories conform the specified settings.
+                    </span>
+                </li>
+            </ul>
+        </li>
+    </ul>
+<?php endif; ?>
