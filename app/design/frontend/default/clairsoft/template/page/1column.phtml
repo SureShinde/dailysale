@@ -51,7 +51,7 @@
                    <span>Back To Top</span>
                 </a>
             </div>
-                <div id="subscribe-pop"><?php echo $this->getLayout()->createBlock('newsletter/subscribe')->setTemplate('newsletter/subscribe.phtml')->toHtml(); ?></div>
+                <div style="display:none;" id="subscribe-pop"><?php echo $this->getLayout()->createBlock('newsletter/subscribe')->setTemplate('newsletter/subscribe.phtml')->toHtml(); ?></div>
         </div>
         <?php //echo $this->getChildHtml('footer') ?>
         <?php echo $this->getChildHtml('global_cookie_notice') ?>
