@@ -9,17 +9,8 @@
         <models>
             <bestsellercron>
                 <class>Fiuze_Bestsellercron_Model</class>
-                <resourceModel>fiuze_bestsellercron_resource</resourceModel>
-            </bestsellercron>
-            <bestsellercron>
-                <class>Fiuze_Bestsellercron_Model</class>
             </bestsellercron>
         </models>
-        <blocks>
-            <bestsellercron>
-                <class>Fiuze_Bestsellercron_Block</class>
-            </bestsellercron>
-        </blocks>
         <helpers>
             <bestsellercron>
                 <class>Fiuze_Bestsellercron_Helper</class>
@@ -37,17 +28,28 @@
             </bestsellercron>
         </routers>
     </frontend>
-
     <crontab>
-    <jobs>
-        <bestsellercron>
-            <schedule>
-                <cron_expr>0 0 * * *</cron_expr>
-            </schedule>
-            <run>
-                <model>bestsellercron/calculate::prepareBestsellers</model>
-            </run>
-        </bestsellercron>
-    </jobs>
-</crontab>
+        <jobs>
+            <bestsellercron>
+                <schedule>
+                    <config_path>bestsellers_settings_sec/bestsellers_settings_grp/scheduler</config_path>
+                </schedule>
+                <run>
+                    <model>bestsellercron/cron::bestSellers</model>
+                </run>
+            </bestsellercron>
+        </jobs>
+    </crontab>
+    <default>
+        <bestsellers_settings_sec>
+            <bestsellers_settings_grp>
+                <products>10</products>
+                <time>00,00,00</time>
+                <days>1</days>
+                <category>1</category>
+                <criteria>revenue</criteria>
+                <scheduler>1 1 * * *</scheduler>
+            </bestsellers_settings_grp>
+        </bestsellers_settings_sec>
+    </default>
 </config>

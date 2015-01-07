@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @category    Fiuze
+ * @package     Fiuze_Bestsellercron
+ * @author     Alena Tsareva <alena.tsareva@webinse.com>
+ */
+-->
+<config>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <bestsellers_settings_sec translate="title" module="bestsellercron">
+                                        <title>Fiuze Bestsellers Cron</title>
+                                    </bestsellers_settings_sec>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>
