@@ -1,0 +1,291 @@
+<?php /* @var $this Bronto_Common_Block_Adminhtml_System_Config_Guide */ ?>
+
+<?php if ($this->isBrontoSection('bronto_reviews')): ?>
+
+    /**
+     * Introduce them to the guide and provide instructions
+     */
+    guiders.createGuider({
+        buttons: [
+            {name: "<?php echo $this->__("Let's Get Started!") ?>", onclick: guiders.next},
+            {name: "<?php echo $this->__('No Thanks') ?>", onclick: guiders.hideAll}
+        ],
+        buttonCustomHTML: dontShowButtonHtml,
+        description: "<?php echo $this->__(
+            'This module allows you to set up an email to be sent after a specified number of days of an order reaching a specified status, prompting your customers to provide a review of the product(s) they purchased.' .
+            "%sLet's get you set up!%sReady to Go?%s",
+            '<br /><br />',
+            '<br /><br /><div style=\"text-align:right; font-weight:bold;\">',
+            '</div>'
+        ) ?>",
+        id: "start",
+        next: "bronto_reviews-settings-enable",
+        overlay: true, closeOnEscape: true,
+        title: "Bronto Extension - <?php echo $this->__('Post-Purchase Emails Module') ?>",
+        width: 600
+    });
+
+    var postPurchaseSettings = {
+        settings: {
+          label: '<?php echo Mage::helper('bronto_reviews')->getPostLabel('settings'); ?>',
+          next: 'bronto_reviews-reorder-enable',
+        },
+        reorder: {
+          label: '<?php echo Mage::helper('bronto_reviews')->getPostLabel('reorder'); ?>',
+          next: 'bronto_reviews-caretip-enable'
+        },
+        caretip: {
+          label: '<?php echo Mage::helper('bronto_reviews')->getPostLabel('caretip'); ?>',
+          next: 'scope'
+        }
+    };
+
+    for (var settingName in postPurchaseSettings) {
+        var jsObject= postPurchaseSettings[settingName],
+            replaceName = function($name) {
+              return $name.replace('Setting Label', jsObject.label);
+            },
+            replaceId = function($name) {
+              return $name.replace('settings', settingName);
+            };
+        /**
+         * Enable the Module
+         */
+        guiders.createGuider({
+            attachTo: replaceId('#bronto_reviews_settings_enabled'),
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>", onclick: function() {
+                    if (jQuery(replaceId('#bronto_reviews_settings_enabled')).val() == '1') {
+                        guiders.next();
+                    } else {
+                        alert("<?php echo $this->__("Don't forget to enable the module.") ?>");
+                    }
+                }},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            shouldSkip: function() {
+                return <?php echo ($this->isDefaultScope()) ? 'false' : 'true'; ?>
+            },
+            autoFocus: true,
+            highlight: replaceId('#bronto_reviews_settings_enabled'),
+            description: "<?php echo $this->__("Let's enable the module and expose some more options.  Just set `Enable Module` to Yes.") ?>",
+            id: replaceId("bronto_reviews-settings-enable"),
+            next: replaceId("bronto_reviews-settings-order_status"),
+            position: 11,
+            overlay: true, closeOnEscape: true,
+            title: "<?php echo $this->__('Enable the Module') ?>",
+            width: 200
+        });
+
+        /**
+         * Save Configuration
+         */
+        guiders.createGuider({
+            attachTo: 'button.save',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Save Config') ?>", onclick: function() {
+                    configForm.submit()
+                }},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            shouldSkip: function() {
+                return <?php echo ($this->isDefaultScope()) ? 'false' : 'true'; ?>
+            },
+            autoFocus: true,
+            highlight: 'button.save',
+            overlay: true, closeOnEscape: true,
+            description: "<?php echo $this->__('Now that the initial settings have been configured, you should save them.  Click `Save Config` now.') ?>",
+            id: replaceId("bronto_reviews-settings-save_config_first"),
+            next: replaceId("bronto_reviews-settings-order_status"),
+            position: 5,
+            title: "<?php echo $this->__('Save Config') ?>"
+        });
+
+        /**
+         * Explain the Order Status option
+         */
+        guiders.createGuider({
+            attachTo: replaceId('#bronto_reviews_settings_status'),
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+            highlight: replaceId('#bronto_reviews_settings_status'),
+            description: "<?php echo $this->__("This setting allows you to specify the order status at which to trigger the delivery.  When an order reaches this status the system will send a delivery schedule request to Bronto to schedule an email to be sent after a specified number of days.") ?>",
+            id: replaceId("bronto_reviews-settings-order_status"),
+            next: replaceId("bronto_reviews-settings-cancel_status"),
+            position: 11,
+            overlay: true, closeOnEscape: true,
+            title: "<?php echo $this->__('Order Status') ?>",
+            width: 200
+        });
+
+        /**
+         * Explain the Cancel Status Option
+         */
+        guiders.createGuider({
+            attachTo: replaceId('#bronto_reviews_settings_cancel_status'),
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+            highlight: replaceId("#bronto_reviews_settings_cancel_status"),
+            description: "<?php echo $this->__('This setting allows you to specify the order status(s) which should cancel the scheduled delivery.  You will need to select a status that can be reached after a delivery has been placed, such as if your Order Status is set to `Complete`, your Cancel Delivery Status should be `Closed` as once an order is complete it can only be removed by refunding the order.') ?>",
+            id: replaceId("bronto_reviews-settings-cancel_status"),
+            next: replaceId("bronto_reviews-settings-period"),
+            position: 10,
+            overlay: true, closeOnEscape: true,
+            title: "<?php echo $this->__('Cancel Order Status') ?>",
+            width: 200
+        });
+
+        /**
+         * Explain the Send Period Setting
+         */
+        guiders.createGuider({
+            attachTo: replaceId('#bronto_reviews_settings_period'),
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+            highlight: replaceId("#bronto_reviews_settings_period"),
+            description: replaceName("<?php echo $this->__('The Send Period is the number of days to wait before sending the Setting Label email.') ?>"),
+            id: replaceId("bronto_reviews-settings-period"),
+            next: replaceId("bronto_reviews-settings-adjustment"),
+            position: 9,
+            overlay: true, closeOnEscape: true,
+            title: "<?php echo $this->__('Send Period') ?>",
+            width: 200
+        });
+
+        guiders.createGuider({
+            attachTo: replaceId('#bronto_reviews_settings_adjustment'),
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+            highlight: replaceId("#bronto_reviews_settings_adjustment"),
+            title: "<?php echo $this->__('Adjustment Period') ?>",
+            description: replaceName("<?php echo $this->__('The Adjustment Period is the number of days to adjust the sending period for the Setting Label email.') ?>"),
+            id: replaceId('bronto_reviews-settings-adjustment'),
+            position: 9,
+            next: replaceId("bronto_reviews-settings-message"),
+            overlay: true, closeOnEscape: true,
+            width: 200
+        });
+
+        /**
+         * Explain the Review Request Message
+         */
+        guiders.createGuider({
+            attachTo: replaceId('#bronto_reviews_settings_message'),
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+            highlight: replaceId("#bronto_reviews_settings_message"),
+            description: replaceName("<?php echo $this->__('Select the Bronto Message you want to use to send the Setting Label email.') ?>"),
+            id: replaceId("bronto_reviews-settings-message"),
+            next: replaceId("bronto_reviews-settings-default_coupon"),
+            position: 9,
+            overlay: true, closeOnEscape: true,
+            title: "<?php echo $this->__('Bronto Message') ?>",
+            width: 200
+        });
+
+        guiders.createGuider({
+            attachTo: replaceId('#bronto_reviews_settings_default_coupon'),
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+            highlight: replaceId('#bronto_reviews_settings_default_coupon'),
+            title: "<?php echo $this->__('Shopping Cart Price Rule') ?>",
+            description: replaceName("<? echo $this->__('The Shopping Cart Price Rule can be placed with the Setting Label message that gets scheduled.') ?>"),
+            id: replaceId('bronto_reviews-settings-default_coupon'),
+            next: replaceId("bronto_reviews-settings-default_recommendation"),
+            position: 9,
+            overlay: true, closeOnEscape: true,
+            width: 200
+        });
+
+        guiders.createGuider({
+            attachTo: replaceId('#bronto_reviews_settings_default_recommendation'),
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+            highlight: replaceId('#bronto_reviews_settings_default_recommendation'),
+            title: "<?php echo $this->__('Product Recommendation') ?>",
+            description: replaceName("<? echo $this->__('The Product Recommendation can be placed with the Setting Label message that gets scheduled.') ?>"),
+            id: replaceId('bronto_reviews-settings-default_recommendation'),
+            next: replaceId("bronto_reviews-settings-default_send_flags"),
+            position: 9,
+            overlay: true, closeOnEscape: true,
+            width: 200
+        });
+
+        /**
+         * Explain the Delivery Flags
+         */
+        guiders.createGuider({
+            attachTo: replaceId('#bronto_reviews_settings_default_send_flags'),
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+            highlight: replaceId("#bronto_reviews_settings_default_send_flags"),
+            description: "<?php echo $this->__('The Delivery Flags allows you to add options to the delivery that is scheduled to go out. The options are explained in the comment section.') ?>",
+            id: replaceId("bronto_reviews-settings-default_send_flags"),
+            next: replaceId("bronto_reviews-settings-sender_email"),
+            position: 9,
+            overlay: true, closeOnEscape: true,
+            title: "<?php echo $this->__('Delivery Flags') ?>",
+            width: 200
+        });
+
+        /**
+         * Explain the Sender Details
+         */
+        guiders.createGuider({
+            attachTo: replaceId('#bronto_reviews_settings_identity'),
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+            closeOnEscape: true,
+            description: replaceName("<?php echo $this->__('The Sender Email, Sender Name, and Reply To settings are what will be used for sending the Setting Label emails. You can choose from one of the preconfigured store emails.') ?>"),
+            id: replaceId("bronto_reviews-settings-sender_email"),
+            next: jsObject.next,
+            position: 10,
+            title: "<?php echo $this->__('Sender Details') ?>",
+            width: 200
+        });
+    }
+
+    <?php if ($this->canShowGuide()): ?>
+        guiders.show('start');
+    <?php endif; ?>
+
+<?php endif; ?>

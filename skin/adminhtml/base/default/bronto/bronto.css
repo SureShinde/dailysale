@@ -1,0 +1,94 @@
+.bronto-section > dl > dt.label {
+    padding: 0 0 0 1.3em;
+}
+
+.bronto-section > dl > dt.label > div {
+    height: 22px;
+    text-indent: -9999px;
+    background: url(images/section_logo.png) no-repeat -1px -1px;
+}
+
+/**************************
+Install Status List Styles
+**************************/
+ul#bronto-verify-installs {
+    font-weight: bold;
+}
+
+ul#bronto-verify-installs li {
+    line-height:10px;
+    margin:0;
+    padding:0;
+}
+
+ul#bronto-verify-installs ul li {
+    /*margin-left: 25px;*/
+}
+
+ul#bronto-verify-installs .bronto_verify-installs-inactive span {
+    color: #666;
+    /*line-height:20px;*/
+}
+
+ul#bronto-verify-installs .bronto_verify-installs-inactive .bronto_verify-installs-modules {
+    display: none;
+}
+
+ul#bronto-verify-installs .bronto_verify-installs-active span {
+    color: #000;
+    /*line-height:20px;*/
+}
+
+ul#bronto-verify-installs .bronto_verify-installs-active .bronto_verify-installs-modules {
+    display: block;
+}
+
+.bronto_verify-installs-modules ol li {
+    font-weight: normal;
+}
+
+img.installed-module-enabled {
+    height:18px;
+    width:18px;
+    margin:5px 0 -5px 2px;
+    background: transparent url("./images/InstallStatusEnabled.png") no-repeat;
+}
+img.installed-module-disabled {
+    height:18px;
+    width:18px;
+    margin:5px 0 -5px 2px;
+    background: transparent url("./images/InstallStatusDisabled.png") no-repeat;
+}
+img.installed-module-error {
+    height:18px;
+    width:18px;
+    margin:5px 0 -5px 2px;
+    background: transparent url("./images/InstallStatusError.png") no-repeat;
+}
+
+/**************************
+Install Status Tree Styles
+**************************/
+img.x-tree-ec-icon {
+    height:18px;
+    width:16px;
+    margin:5px 0 -5px 0;
+}
+
+img.x-tree-ec-icon.x-tree-elbow {
+    background: transparent url("/js/extjs/resources/images/magento/tree/elbow.gif") no-repeat;
+}
+img.x-tree-ec-icon.x-tree-elbow-end {
+    background: transparent url("/js/extjs/resources/images/magento/tree/elbow-end.gif") no-repeat;
+}
+img.x-tree-ec-icon.x-tree-elbow-line {
+    background: transparent url("/js/extjs/resources/images/magento/tree/elbow-line.gif") no-repeat;
+}
+img.x-tree-ec-icon.x-tree-elbow-minus {
+    cursor: pointer;
+    background: transparent url("/js/extjs/resources/images/magento/tree/elbow-minus.gif") no-repeat;
+}
+img.x-tree-ec-icon.x-tree-elbow-end-plus {
+    cursor: pointer;
+    background: transparent url("/js/extjs/resources/images/magento/tree/elbow-end-plus.gif") no-repeat;
+}

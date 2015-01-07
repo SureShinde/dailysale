@@ -1,0 +1,352 @@
+<?php /* @var $this Bronto_Common_Block_Adminhtml_System_Config_Guide */ ?>
+
+<?php if($this->isBrontoSection('bronto_customer')): ?>
+    <?php if (!Mage::helper($this->getCurrentSection())->isEnabled()): ?>
+        /**
+         * Introduce them to the guide and provide instructions
+         */
+        guiders.createGuider({
+            buttons: [
+                {name: "<?php echo $this->__("Let's Get Started!") ?>", onclick: guiders.next},
+                {name: "<?php echo $this->__('No Thanks') ?>", onclick: guiders.hideAll}
+            ],
+            buttonCustomHTML: dontShowButtonHtml,
+            description: "<?php echo $this->__(
+                'This module allows you to map customer information collected on your Magento site to contact fields in Bronto and automatically import the data.%sLet\'s get you set up!%sReady to Go?%s',
+                '<br /><br />',
+                '<br /><br /><div style=\"text-align:right; font-weight:bold;\">',
+                '</div>'
+            ) ?>",
+            id: "start",
+            next: "bronto_customer-enable",
+            overlay: true,
+            closeOnEscape: true,
+            title: "Bronto Extension - <?php echo $this->__('Contact Import Module') ?>",
+            width: 600
+        });
+
+        /**
+         * Enable the Module
+         */
+        guiders.createGuider({
+            attachTo: '#bronto_customer_settings_enabled',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>", onclick: function() {
+                    if (jQuery('#bronto_customer_settings_enabled').val() == '1') {
+                        guiders.next();
+                    } else {
+                        alert("<?php echo $this->__("Do not forget to enable the module") ?>");
+                    }
+                }},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+            closeOnEscape: true,
+            highlight: '#bronto_customer_settings_enabled',
+            description: "<?php echo $this->__("Enable the module and expose some more options.  Just set `Enable Module` to Yes and click `Save Config`.") ?>",
+            id: "bronto_customer-enable",
+            next: "bronto_customer-configure_cron",
+            position: 11,
+            overlay: true,
+            title: "<?php echo $this->__('Enable the Module') ?>",
+            width: 200
+        });
+
+        /**
+         * Configure Cron
+         */
+        guiders.createGuider({
+            attachTo: '#bronto_customer_settings',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+            closeOnEscape: true,
+            description: "<?php echo $this->__('These options allow you to configure the cron schedule and import process.') ?>",
+            id: "bronto_customer-configure_cron",
+            next: "bronto_customer-save_config_first",
+            position: 10,
+            title: "<?php echo $this->__('Configure the Cron') ?>",
+            width: 200
+        });
+
+        /**
+         * Save Configuration
+         */
+        guiders.createGuider({
+            attachTo: 'button.save',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Save Config') ?>", onclick: function() {
+                    configForm.submit()
+                }},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+            closeOnEscape: true,
+            highlight: 'button.save',
+            description: "<?php echo $this->__('Now that the initial settings have been configured, you should save them.  Click `Save Config` now.') ?>",
+            id: "bronto_customer-save_config_first",
+            next: "final",
+            position: 5,
+            overlay: true,
+            title: "<?php echo $this->__('Save Config') ?>"
+        });
+
+    <?php else: ?>
+
+        /**
+         * Continue Guide now that module is enabled
+         */
+        guiders.createGuider({
+            buttons: [
+                {name: "<?php echo $this->__('Continue with Guide') ?>", onclick: guiders.next},
+                {name: "<?php echo $this->__('No Thanks') ?>", onclick: guiders.hideAll}
+            ],
+            buttonCustomHTML: dontShowButtonHtml,
+            description: "<?php echo $this->__(
+                'With the Contact Import module enabled, we have a few more sections to explore.%sReady to Go?%s',
+                '<br /><br /><div style=\"text-align:right; font-weight:bold;\">',
+                '</div>'
+            ) ?>",
+            id: "start",
+            next: "bronto_customer-mage_cron",
+            overlay: true,
+            closeOnEscape: true,
+            title: "Bronto Extension - <?php echo $this->__('Contact Import Module') ?>",
+            width: 600
+        });
+
+        /**
+         * Explain Using Magento Cron
+         */
+        <?php $advancedCronLink = $this->helper('bronto_common')->getScopeUrl('/system_config/edit/section/bronto_verify'); ?>
+        guiders.createGuider({
+            attachTo: '#row_bronto_customer_settings_mage_cron',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true, closeOnEscape: true,
+            description: "<?php echo $this->__('The `Use Magento Cron` setting, when set to No, allows you to create your own crontab entry on your server instead of using Magento\'s cron system.  You should only change this if you are experiencing issues where the cron job for this module fails to run due to too many jobs.%sYou can find more details under the %s, including examples of how to configure the cron job.', '<br /><br />', '<a href=\"' . $advancedCronLink . '\" title=\"Advanced &raquo; Cron Settings\">Advanced Tab</a>') ?>",
+            id: "bronto_customer-mage_cron",
+            next: "bronto_customer-progress_bar",
+            position: 10,
+            title: "<?php echo $this->__('Cron Options') ?>",
+            width: 200
+        });
+
+        /**
+         * Explain Progress Bar
+         */
+        guiders.createGuider({
+            attachTo: '.bronto-progress-bar',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+            closeOnEscape: true,
+            description: "<?php echo $this->__(
+                'This is the Progress bar, it will show the status of the Contact import process including how many have successfully imported, ' .
+                'how many have been suppressed due to errors, and how many belong to a store where this module is not enabled.'
+            ) ?>",
+            id: "bronto_customer-progress_bar",
+            next: "bronto_customer-cron_table",
+            position: 11,
+            title: "Making Progress",
+            width: 400
+        });
+
+        /**
+         * Cron Table
+         */
+        guiders.createGuider({
+            attachTo: '.bronto-cron-table',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+            closeOnEscape: true,
+            highlight: '.bronto-cron-table',
+            overlay: true,
+            description: "<?php echo $this->__('This table shows you the recent history of the Cron Jobs that are pending, running, have successfully completed, or have failed upon execution.') ?>",
+            id: "bronto_customer-cron_table",
+            next: "bronto_customer-suppression_interface",
+            position: 10,
+            title: "<?php echo $this->__('Cron Table') ?>",
+            width: 200
+        });
+
+        /**
+         * Explain Suppression Interface
+         */
+        guiders.createGuider({
+            attachTo: '#bronto_customer_suppressed-head',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+            closeOnEscape: true,
+            onShow: function() {
+              sectionOpen('#bronto_customer_suppressed-head');
+              if ($('bronto-suppression-interface').innerHTML.length == 0) {
+                loadSuppressionTable(1);
+              }
+            },
+            onHide: function() { sectionClose('#bronto_customer_suppressed-head'); },
+            description: "<?php echo $this->__(
+                'The Suppressed Customers section will show you important details about any Customers that failed to import and were suppressed due to an error.  ' .
+                'This section is collapsed by default, so just click on the title to expand it.'
+            ) ?>",
+            id: "bronto_customer-suppression_interface",
+            next: "bronto_customer-customer_attributes",
+            position: 9,
+            title: "<?php echo $this->__('Suppressed Customers') ?>",
+            width: 200
+        });
+
+        /**
+         * Explain Customer Attributes
+         */
+        guiders.createGuider({
+            attachTo: '#bronto_customer_attributes-head',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+            closeOnEscape: true,
+            description: "<?php echo $this->__(
+                'The Customer Attributes section is where you will map the Magento Customer Attributes to Bronto Fields.  ' .
+                'You can create fields on the fly by selecting `Create New...` and entering the name of the new field in the text box that displays below it.  ' .
+                "If you do not wish to import an attribute, just leave the drop-down set to `-- None Selected --`."
+            ) ?>",
+            id: "bronto_customer-customer_attributes",
+            next: "bronto_customer-address_attributes",
+            position: 9,
+            title: "<?php echo $this->__('Customer Attributes') ?>",
+            width: 200
+        });
+
+        /**
+         * Explain Address Attributes
+         */
+        guiders.createGuider({
+            attachTo: '#bronto_customer_address_attributes-head',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+            closeOnEscape: true,
+            description: "<?php echo $this->__(
+                'The Address Attributes section is where you will map the Magento Customer Address Attributes to Bronto Fields.  ' .
+                'You can create fields on the fly by selecting `Create New...` and entering the name of the new field in the text box that displays below it.  ' .
+                "If you do not wish to import an attribute, just leave the drop-down set to `-- None Selected --`."
+            ) ?>",
+            id: "bronto_customer-address_attributes",
+            next: "bronto_customer-sync_button",
+            position: 9,
+            title: "<?php echo $this->__('Customer Address Attributes') ?>",
+            width: 200
+        });
+
+        /**
+         * Explain Sync Button
+         */
+        guiders.createGuider({
+            attachTo: '.bronto-cron-sync',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+            closeOnEscape: true,
+            highlight: '.bronto-cron-sync',
+            overlay: true,
+            description: "<?php echo $this->__(
+                'If you find that you have more customers in Magento than are being represented in the progress bar count, ' .
+                'you can click this button and it will add any* missing Customers into the queue.' .
+                '%s* The number of Customers synced at a time is limited by the `Sync Limit` setting found in the Settings section.%s',
+                '<br /><br /><em>',
+                '</em>'
+            ) ?>",
+            id: "bronto_customer-sync_button",
+            next: "bronto_customer-reset_button",
+            position: 1,
+            title: "<?php echo $this->__('Sync Customer Queue') ?>",
+            width: 400
+        });
+
+        /**
+         * Explain Reset Button
+         */
+        guiders.createGuider({
+            attachTo: '.bronto-cron-reset',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+            closeOnEscape: true,
+            highlight: '.bronto-cron-reset',
+            overlay: true,
+            description: "<?php echo $this->__(
+                "If you find that your customers are not importing with the correct information, you have mapped a new field, or you have a large number of suppressed Customers " .
+                "that are ready to retry, you can click this button and ALL customers in the queue will be reset and will have to be imported again."
+            ) ?>",
+            id: "bronto_customer-reset_button",
+            next: "bronto_customer-run_button",
+            position: 1,
+            title: "<?php echo $this->__('Reset Contact Queue') ?>",
+            width: 400
+        });
+
+        /**
+         * Explain Run Button
+         */
+        guiders.createGuider({
+            attachTo: '.bronto-cron-run',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+            closeOnEscape: true,
+            highlight: '.bronto-cron-run',
+            overlay: true,
+            description: "<?php echo $this->__(
+                'Once you have all your settings configured and attribute fields mapped, you can start the import process* manually by clicking this button.' .
+                '%s* The number of Contacts imported per click is limited by the `Limit` setting found in the Settings section.%s',
+                '<br /><br /><em>',
+                '</em>'
+            ) ?>",
+            id: "bronto_customer-run_button",
+            next: "scope",
+            position: 1,
+            title: "<?php echo $this->__('Run the Import') ?>",
+            width: 400
+        });
+
+    <?php endif; ?>
+
+    <?php if($this->canShowGuide()): ?>
+        guiders.show('start');
+    <?php endif; ?>
+
+<?php endif; ?>

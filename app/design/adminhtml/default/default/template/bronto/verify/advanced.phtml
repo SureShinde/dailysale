@@ -1,0 +1,52 @@
+<table cellspacing="0" class="form-list" width="100%">
+    <colgroup class="value"></colgroup>
+    <colgroup class="label"></colgroup>
+    <tbody>
+        <tr>
+            <td class="label">
+                <p class="form-buttons" id="advanced-debug-observers-search" style="margin: 0 -3px 2px 0">
+                    <button id="advanced-debug-observers-search-button" title="Search Observers" type="bronto_verify/adminhtml_widget_button_searchobservers" class="scalable" onclick="searchObservers(); return false;">
+                        <span>
+                            <span>
+                                <span>Search Event Observers</span>
+                            </span>
+                        </span>
+                    </button>
+                </p>
+            </td>
+            <td class="value">
+                <input id="advanced-debug-observers-search-input" name="observersearch" class="input-text" type="text" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" id="observer-results" width="100%"></td>
+        </tr>
+    </tbody>
+</table>
+
+<script type="text/javascript">
+//<![CDATA[
+    function searchObservers()
+    {
+        var searchText = $('advanced-debug-observers-search-input').value;
+
+//            var event      = trim1('{$token}');
+        var statusText = $('observer-results');
+        var reloadUrl  = '<?php echo $this->getUrl('*/advanced/ajaxobservers') ?>';
+//
+//            statusText.innerHTML = $('loadingmask').innerHTML;
+//            statusText.removeClassName('valid').removeClassName('invalid');
+
+        new Ajax.Request(reloadUrl, {
+            method: 'post',
+            parameters: {event: searchText},
+            onComplete: function(transport) {
+//                    Element.hide('loadingmask');
+                statusText.innerHTML = transport.responseText;
+            }
+        });
+
+        return false;
+    }
+//]]>
+</script>

@@ -1,0 +1,1080 @@
+<?xml version="1.0"?>
+<config>
+    <tabs>
+        <bronto module="bronto_common">
+            <label><![CDATA[<div>Bronto</div>]]></label>
+            <class>bronto-section</class>
+            <sort_order>999</sort_order>
+        </bronto>
+    </tabs>
+    <sections>
+        <bronto_api module="bronto_common">
+            <label>Advanced API</label>
+            <tab>bronto</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>900</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <about>
+                    <frontend_type>text</frontend_type>
+                    <frontend_model>bronto_common/adminhtml_system_config_about</frontend_model>
+                    <sort_order>0</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                </about>
+                <apitoken>
+                    <label>API Status</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <fields>
+                        <token_status>
+                            <label>Last API Token Status</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>bronto_verify/adminhtml_system_config_form_field_apitoken</frontend_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </token_status>
+                        <roundtrip_status>
+                            <label>Last API Connection Status</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>bronto_verify/adminhtml_system_config_form_field_roundtrip</frontend_model>
+                            <sort_order>11</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </roundtrip_status>
+                    </fields>
+                </apitoken>
+                <queue_settings>
+                    <label>API Send Queue Settings</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>2</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <fields>
+                        <enabled>
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <backend_model>bronto_common/system_config_backend_enable</backend_model>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[With send queuing enabled,
+                              <em>all</em>
+                              transactional emails will be placed in a queue,
+                              and must be flushed. While this is a more performant
+                              method, real-time sending is essentially disabled.
+                              It is <em>highly</em>
+                              recommended to flush this queue using the system
+                              cron, or the lowest available interval Magento cron.]]></comment>
+                        </enabled>
+                        <mage_cron>
+                            <label>Use Magento Cron</label>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field</frontend_model>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <backend_model>bronto_common/system_config_backend_cron_queue</backend_model>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>
+                              <![CDATA[Setting to <em>No</em> will prevent the Magento Cron from triggering the import process for this module.<br />For more details, check the <em>Cron Settings</em> section in the <strong>Bronto &raquo; Advanced</strong> tab.]]></comment>
+                        </mage_cron>
+                        <frequency>
+                            <label>Frequency</label>
+                            <depends>
+                                <enabled>1</enabled>
+                                <mage_cron>1</mage_cron>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bronto_common/system_config_source_cron_frequency</source_model>
+                            <backend_model>bronto_common/system_config_backend_cron_error</backend_model>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </frequency>
+                        <interval>
+                            <label>Interval</label>
+                            <depends>
+                                <enabled>1</enabled>
+                                <frequency>I</frequency>
+                                <mage_cron>1</mage_cron>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bronto_common/system_config_source_cron_minutes</source_model>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Set this value larger than your cron.php launch period.</comment>
+                        </interval>
+                        <minutes>
+                            <label>Minute of the Hour</label>
+                            <depends>
+                                <frequency>H</frequency>
+                                <mage_cron>1</mage_cron>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Valid range: 0-59 (default 0).</comment>
+                        </minutes>
+                        <time>
+                            <label>Start Time</label>
+                            <depends>
+                                <enabled>1</enabled>
+                                <mage_cron>1</mage_cron>
+                            </depends>
+                            <frontend_type>time</frontend_type>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </time>
+                        <limit>
+                            <label>Limit</label>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bronto_common/system_config_source_limit</source_model>
+                            <sort_order>6</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Total API deliveries to process every run.</comment>
+                        </limit>
+                    </fields>
+                </queue_settings>
+                <queue_cron_list>
+                    <frontend_type>text</frontend_type>
+                    <frontend_model>bronto_common/adminhtml_system_config_cron_queue</frontend_model>
+                    <sort_order>3</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                </queue_cron_list>
+                <settings>
+                    <label>API Retry Settings</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>4</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <expanded>1</expanded>
+                    <fields>
+                        <enabled>
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <backend_model>bronto_common/system_config_backend_enable</backend_model>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </enabled>
+                        <mage_cron>
+                            <label>Use Magento Cron</label>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field</frontend_model>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <backend_model>bronto_common/system_config_backend_cron_error</backend_model>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>
+                              <![CDATA[Setting to <em>No</em> will prevent the Magento Cron from triggering the import process for this module.<br />For more details, check the <em>Cron Settings</em> section in the <strong>Bronto &raquo; Advanced</strong> tab.]]></comment>
+                        </mage_cron>
+                        <frequency>
+                            <label>Frequency</label>
+                            <depends>
+                                <enabled>1</enabled>
+                                <mage_cron>1</mage_cron>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bronto_common/system_config_source_cron_frequency</source_model>
+                            <backend_model>bronto_common/system_config_backend_cron_error</backend_model>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </frequency>
+                        <interval>
+                            <label>Interval</label>
+                            <depends>
+                                <enabled>1</enabled>
+                                <frequency>I</frequency>
+                                <mage_cron>1</mage_cron>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bronto_common/system_config_source_cron_minutes</source_model>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Set this value larger than your cron.php launch period.</comment>
+                        </interval>
+                        <minutes>
+                            <label>Minute of the Hour</label>
+                            <depends>
+                                <frequency>H</frequency>
+                                <mage_cron>1</mage_cron>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Valid range: 0-59 (default 0).</comment>
+                        </minutes>
+                        <time>
+                            <label>Start Time</label>
+                            <depends>
+                                <enabled>1</enabled>
+                                <mage_cron>1</mage_cron>
+                            </depends>
+                            <frontend_type>time</frontend_type>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </time>
+                        <limit>
+                            <label>Limit</label>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bronto_common/system_config_source_limit</source_model>
+                            <sort_order>6</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Total API Errors to process every run.</comment>
+                        </limit>
+                        <threshold>
+                            <label>Attempt Threshold</label>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>7</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Do not process entry whose attempts are
+                              over this amount.</comment>
+                        </threshold>
+                    </fields>
+                </settings>
+                <cron_list>
+                    <frontend_type>text</frontend_type>
+                    <frontend_model>bronto_common/adminhtml_system_config_cron_error</frontend_model>
+                    <sort_order>5</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                </cron_list>
+                <soap_options>
+                    <label>SOAP Options</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>6</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <expanded>0</expanded>
+                    <fields>
+                        <soap_client>
+                            <label>SOAP class</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment><![CDATA[Overrides the Bronto_SoapClient class.<br/>
+                              Default: Bronto_SoapClient<br/>
+                              <em>* Provided class name must be available via
+                                Magento's autoloader.</em>]]></comment>
+                        </soap_client>
+                        <observer>
+                            <label>Bronto Observer</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>6</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment><![CDATA[Overrides the Bronto_Observer
+                              class.<br/>
+                              Default: Bronto_Common_Model_Api<br/>
+                              <em>* Provided class name must be available via
+                                Magento's autoloader.</em>]]></comment>
+                        </observer>
+                        <retryer>
+                            <label>Bronto Retryer</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>7</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment><![CDATA[Overrides the Bronto_Util_Retryer
+                              class.<br/>
+                              Default: Bronto_Common_Model_Error<br/>
+                              <em>* Provided class name must be available via
+                                Magento's autoloader.</em>]]></comment>
+                        </retryer>
+                        <stream_context>
+                            <label>Use Stream Context</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>8</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment><![CDATA[Replace the SSL stream context for the
+                              underlying SOAP client.<br/><em>* Use this option if you
+                              are experiencing errors related to SSL or reaching
+                              the Bronto API WSDL.</em>]]></comment>
+                        </stream_context>
+                        <retry_limit>
+                            <label>Retry Limit</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <validate>validate-digits validate-digits-range digits-range-0-5</validate>
+                            <comment><![CDATA[The number of times the SOAP client will attempt to retry API call. Must be between 0 and 5.<br />Default: 2]]>
+                            </comment>
+                        </retry_limit>
+                        <connection_timeout>
+                            <label>Connection Timeout</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <validate>validate-digits validate-digits-range digits-range-0-3600</validate>
+                            <comment><![CDATA[The number of seconds the SOAP client will wait before attempting to retry the API call. Must be between 0 and 3600.<br />
+                              Default: 30]]>
+                            </comment>
+                        </connection_timeout>
+                        <trace>
+                            <label>Trace</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment><![CDATA[If <em>Yes</em>, the SOAP client will trace its call.<br />Default: <em>No</em>]]></comment>
+                        </trace>
+                        <exceptions>
+                            <label>Exceptions</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment><![CDATA[If <em>Yes</em>, the SOAP client will throw exceptions on failure.<br />Default: <em>Yes</em>]]></comment>
+                        </exceptions>
+                        <cache_wsdl>
+                            <label>WSDL Cache</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bronto_verify/system_config_source_wsdlcache</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment><![CDATA[If <em>Yes</em>, the SOAP client will cache the WSDL.<br />Default: <em>WSDL_CACHE_BOTH</em>]]></comment>
+                        </cache_wsdl>
+                    </fields>
+                </soap_options>
+            </groups>
+        </bronto_api>
+        <bronto_coupon module="bronto_common">
+            <label>Coupon Management</label>
+            <tab>bronto</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>899</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <about>
+                    <frontend_type>text</frontend_type>
+                    <frontend_model>bronto_common/adminhtml_system_config_about</frontend_model>
+                    <sort_order>0</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                </about>
+                <settings>
+                    <label>Coupon Manager Integration</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>5</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <comment><![CDATA[With the Bronto Coupon Manager, you can easily edit, manage and distribute unique coupon codes via email marketing or SMS messaging for highly targeted, revenue-generating campaigns. Adding your account ID will enable the automatic redemption of coupons in Coupon Manager to report on valuable metrics such as: redemption rate, average redemption time, and revenue/discount per coupon. To learn more, please visit the <a target="_blank"
+                        href="https://appcenter.bronto.com/apps/coupon-manager">Bronto AppCenter</a> and contact your account manager.
+                  <br /><br/>]]></comment>
+                    <fields>
+                        <site_hash>
+                            <label>Account ID</label>
+                            <frontend_type>text</frontend_type>
+                            <comment>Found in the settings dialog of the Coupon Manager.</comment>
+                            <sort_order>80</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </site_hash>
+                    </fields>
+                </settings>
+                <apply_coupon>
+                    <label>Auto-Apply Coupons</label>
+                    <frontend_type>text</frontend_type>
+                    <frontend_model>bronto_common/adminhtml_system_config_form_coupon</frontend_model>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <comment><![CDATA[When enabled, coupon codes can be applied
+                      to a customer's shopping session with one of two methods. There is
+                      a controller that listens to the store front route
+                      <strong>/apply/coupon/</strong>. You can pass the coupon
+                      code in the designated <em>Coupon Code Query
+                        Parameter</em>, and a redirect URL. For example:
+                      the URL <strong>{baseUrl}apply/coupon/?{code}={example}&redirect_path=%2Fcheckout%2Fcart</strong>
+                      will apply coupon <strong>{example}</strong> to the customer's
+                      shopping session, and redirect them to
+                      <strong>{baseUrl}checkout/cart/</strong>. The second method applies a
+                      coupon code by using an observer with <em>Use Event Observer</em> that
+                      will scan any store front URL for the
+                      <em>Coupon Code Query Parameter</em>. This method is optional, as
+                      it can be disabled. If the module is disabled, the controller will
+                      still perform redirects, but it will no longer apply coupons.<br/><br/>]]></comment>
+                    <fields>
+                        <enabled>
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field</frontend_model>
+                            <backend_model>bronto_common/system_config_backend_enable</backend_model>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enabled>
+                        <use_observer>
+                            <label>Use Event Observer</label>
+                            <depends><enabled>1</enabled></depends>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </use_observer>
+                        <coupon_code_param>
+                            <label>Coupon Code Query Parameter</label>
+                            <depends><enabled>1</enabled></depends>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>The value associated with this key will be
+                              the coupon code to be appiled to the shopping
+                              cart.
+                              </comment>
+                        </coupon_code_param>
+                        <error_message_param>
+                            <label>Invalid Coupon Query Parameter</label>
+                            <depends><enabled>1</enabled></depends>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[The value associated with this key
+                              will cause the corresponding message to be
+                              displayed.<br/>Valid values are:<br/>
+                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>invalid</strong>: The Invalid Message
+                              will be used.<br/>
+                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>depleted</strong>: The Depleted Message
+                              will be used.<br/>
+                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>expired</strong>: The Expired Message
+                              will be used.]]></comment>
+                        </error_message_param>
+                        <success_message>
+                            <label>Success Message</label>
+                            <depends><enabled>1</enabled></depends>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Displayed when the coupon code in the URL was
+                              successfully applied to the session. The coupon code can be
+                              replaced in the message dynamically by using the
+                              <em>{code}</em> tag.]]></comment>
+                        </success_message>
+                        <invalid>
+                            <label>Invalid Message</label>
+                            <depends><enabled>1</enabled></depends>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Displayed when the coupon code is
+                              not applicable to the customer, does not exist, or
+                              if the <strong>invalid</strong> value is
+                              used. The coupon code can be replaced in the message
+                              dynamically by using the <em>{code}</em> tag.]]></comment>
+                        </invalid>
+                        <depleted>
+                            <label>Depleted Message</label>
+                            <depends><enabled>1</enabled></depends>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>45</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Displayed when there are no
+                              more uses for this coupon code or if the
+                              <strong>depleted</strong> value is used. The
+                              coupon code can be replaced in the message by using the
+                              <em>{code}</em> tag.]]></comment>
+                        </depleted>
+                        <expired>
+                            <label>Expired Message</label>
+                            <depends><enabled>1</enabled></depends>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Displayed when the coupon code has
+                              expired or if the <strong>expired</strong>
+                              value is used. The coupon code can be replaced in the
+                              message by using the <em>{code}</em>
+                              tag.]]></comment>
+                        </expired>
+                        <conflict>
+                            <label>Conflict Message</label>
+                            <depends><enabled>1</enabled></depends>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>55</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Displayed when a coupon code is
+                              currently applied in the session and it does not
+                              match the coupon code to be applied. There are
+                              three tags that can be replaced in the message
+                              dynamically:
+                              <br/>
+                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{oldCode}</strong>: Coupon
+                              currently in the session.
+                              <br/>
+                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{newCode}</strong>: Coupon to
+                              be applied to the session.
+                              <br/>
+                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{link}</strong>: The link to apply the new coupon code.]]></comment>
+                        </conflict>
+                        <link>
+                            <label>Link Text</label>
+                            <depends><enabled>1</enabled></depends>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[The link to apply the new coupon
+                              code instead, which can only be used by the
+                              <em>Conflict Message</em>. Two tags are
+                              available for dynamic replacement:<br/>
+                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{oldCode}</strong>: Coupon currently in
+                              the session.<br/>
+                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{newCode}</strong>: Coupon to be applied to the session.]]></comment>
+                        </link>
+                    </fields>
+                </apply_coupon>
+            </groups>
+        </bronto_coupon>
+        <bronto_popup module="bronto_common">
+            <label>Pop-up Manager Integration</label>
+            <tab>bronto</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>898</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <about>
+                    <frontend_type>text</frontend_type>
+                    <frontend_model>bronto_common/adminhtml_system_config_about</frontend_model>
+                    <sort_order>0</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                </about>
+                <settings>
+                    <label>Settings</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <comment><![CDATA[With Pop-Up Manager, you can create, test and manage pop-up sign-ups with minimal involvement from Bronto or your developer, and watch your email marketing list skyrocket! To learn more, visit the
+                      <a target="_blank"
+                        href="https://appcenter.bronto.com/apps/pop-up-manager">Bronto AppCenter</a> and contact your account manager.
+                  <br /><br/>]]></comment>
+                    <fields>
+                        <code>
+                            <label>Pop-up Manager Script</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </code>
+                        <subscribe>
+                            <label>Subscribe to Magento</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <comment><![CDATA[If <em>Yes</em>, the customer subscribing to the Pop-Up will be subscribed to the Magento newsletter for the store view.]]></comment>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </subscribe>
+                    </fields>
+                </settings>
+            </groups>
+        </bronto_popup>
+        <bronto module="bronto_common">
+            <label>General</label>
+            <tab>bronto</tab>
+            <frontend_type>text</frontend_type>
+            <frontend_model>bronto_common/adminhtml_system_config_form</frontend_model>
+            <sort_order>100</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <about>
+                    <frontend_type>text</frontend_type>
+                    <frontend_model>bronto_common/adminhtml_system_config_about</frontend_model>
+                    <sort_order>0</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                </about>
+                <settings>
+                    <label>Settings</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <fields>
+                        <enabled>
+                            <label>Enable Module</label>
+                            <frontend_type>select</frontend_type>
+                            <backend_model>bronto_common/system_config_backend_enable</backend_model>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Changing to <em>No</em> will disable all modules
+                              for this scope.]]></comment>
+                        </enabled>
+                        <api_token>
+                            <label>API Token</label>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field_apitoken</frontend_model>
+                            <backend_model>bronto_common/system_config_backend_token</backend_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-length minimum-length-36</validate>
+                            <comment>
+                                <![CDATA[<span style="color: red; font-weight:bold;">Warning!</span> Changing your API Token will require you to reconfigure all Bronto modules and reimport your data.]]></comment>
+                        </api_token>
+                        <debug>
+                            <label>Debug</label>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field</frontend_model>
+                            <source_model>adminhtml/system_config_source_enabledisable</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>
+                                <![CDATA[Allow the Bronto extension to write logs in <code>var/log</code>.]]></comment>
+                        </debug>
+                        <verbose>
+                            <label>Verbose Log Output</label>
+                            <depends>
+                                <debug>1</debug>
+                            </depends>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field</frontend_model>
+                            <source_model>adminhtml/system_config_source_enabledisable</source_model>
+                            <sort_order>25</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[If enabled, debug logs will also contain each API call.]]></comment>
+                        </verbose>
+                        <notices>
+                            <label>Error Notices</label>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field</frontend_model>
+                            <source_model>adminhtml/system_config_source_enabledisable</source_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>
+                                <![CDATA[Show warnings/errors as site notices.<br /><strong>Note:</strong> Site notices can be customer-facing.]]></comment>
+                        </notices>
+                        <clear_logs>
+                            <label>Enable Log Cleanup</label>
+                            <depends>
+                                <debug>1</debug>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field</frontend_model>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>At midnight, logs older than the Log
+                              Cleanup Threshold will be removed.</comment>
+                        </clear_logs>
+                        <log_threshold>
+                            <label>Log Cleanup Threshold</label>
+                            <depends>
+                                <debug>1</debug>
+                                <clear_logs>1</clear_logs>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field</frontend_model>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment><![CDATA[Number of days to keep logs.<br/>Default: 30]]></comment>
+                        </log_threshold>
+                    </fields>
+                </settings>
+                <support>
+                    <label>Registration</label>
+                    <frontend_type>text</frontend_type>
+                    <frontend_model>bronto_common/adminhtml_system_config_support</frontend_model>
+                    <sort_order>5</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <site_name>
+                            <label>Bronto Site Name</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field_support_site
+                            </frontend_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </site_name>
+                        <firstname>
+                            <label>First Name</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field_support</frontend_model>
+                            <validate>validate-length</validate>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </firstname>
+                        <lastname>
+                            <label>Last Name</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field_support</frontend_model>
+                            <validate>validate-length</validate>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </lastname>
+                        <title>
+                            <label>Title</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field_support</frontend_model>
+                            <validate>validate-length</validate>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </title>
+                        <email>
+                            <label>Email</label>
+                            <frontend_type>text</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_email_address</backend_model>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field_support</frontend_model>
+                            <validate>validate-email</validate>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </email>
+                        <number>
+                            <label>Phone Number</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field_support</frontend_model>
+                            <validate>validate-phone</validate>
+                            <sort_order>6</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </number>
+                        <using_solution_partner>
+                            <label>Working with a Magento Solution Partner or Systems Integrator?</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field_support</frontend_model>
+                            <sort_order>7</sort_order>
+                            <default_value>1</default_value>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </using_solution_partner>
+                        <partner>
+                            <depends>
+                                <using_solution_partner>1</using_solution_partner>
+                            </depends>
+                            <label>Name of Solution Partner or SI</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field_support</frontend_model>
+                            <sort_order>8</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </partner>
+                        <terms>
+                          <label><![CDATA[Agree to Terms of Service?]]></label>
+                          <source_model>adminhtml/system_config_source_yesno</source_model>
+                          <frontend_model>bronto_common/adminhtml_system_config_form_field_support</frontend_model>
+                          <frontend_type>select</frontend_type>
+                          <sort_order>9</sort_order>
+                          <show_in_default>1</show_in_default>
+                          <show_in_website>1</show_in_website>
+                          <show_in_store>1</show_in_store>
+                          <comment>
+                            <![CDATA[If <em>Yes</em>, you certify the contacts you will be importing as active subscribers via the Newsletter Opt-In Module of this extension have been collected in compliance with the <a href="http://hosting-source.bm23.com/30245/public/Bronto_PMPolicy.html" target="_blank">Bronto Permission Marketing Policy</a>; specifically, the contacts have provided explicit and deliberate permission to receive email from you and have been emailed within the last 24 months. For more information, please contact Bronto Support.]]>
+                          </comment>
+                        </terms>
+                    </fields>
+                </support>
+                <format>
+                    <label>Email Formatting Options</label>
+                    <frontend_type>text</frontend_type>
+                    <frontend_model>bronto_common/adminhtml_system_config_form_fieldset</frontend_model>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <comment>
+                        <![CDATA[<strong style="color: red">Warning!</strong>&nbsp;Changing any formatting options will immediately affect future emails. Make sure your corresponding messages are ready to accept the newly formatted content.<br/><br/>Leave image width <em>or</em> height blank to resize according to aspect ratio. Leave both width <em>and</em> height blank to use the full image size. You can always set width and height values within the HTML of your message too.<br/><br/>]]></comment>
+                    <fields>
+                        <image_type>
+                            <label>Image Type</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field_image</frontend_model>
+                            <source_model>bronto_common/system_config_source_image</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <default_value>small_image</default_value>
+                            <comment>The product image to use.</comment>
+                        </image_type>
+                        <image_width>
+                            <label>Image Width</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field</frontend_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <default_value>88</default_value>
+                            <comment>Product image width in pixels.</comment>
+                        </image_width>
+                        <image_height>
+                            <label>Image Height</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field</frontend_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <default_value>77</default_value>
+                            <comment>Product image height in pixels.</comment>
+                        </image_height>
+                        <default_greeting>
+                            <label>Default Greeting</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field</frontend_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>
+                              <![CDATA[If User does not have a Full Name set for their account, this value will be used in the email to populate the <em>%%%%#customerName%%%%</em> API tag.]]></comment>
+                        </default_greeting>
+                        <default_greeting_prefix>
+                            <label>Default Greeting Prefix</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field</frontend_model>
+                            <sort_order>41</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>
+                              <![CDATA[If User does not have a Prefix set for their account, this value will be used in the email to populate the <em>%%%%#prefix%%%%</em> API tag.]]></comment>
+                        </default_greeting_prefix>
+                        <default_greeting_firstname>
+                            <label>Default Greeting First Name</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field</frontend_model>
+                            <sort_order>42</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>
+                              <![CDATA[If User does not have a First Name set for their account, this value will be used in the email to populate the <em>%%%%#firstName%%%%</em> API tag.]]></comment>
+                        </default_greeting_firstname>
+                        <default_greeting_lastname>
+                            <label>Default Greeting Last Name</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field</frontend_model>
+                            <sort_order>43</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>
+                              <![CDATA[If User does not have a Last Name set for their account, this value will be used in the email to populate the <em>%%%%#lastName%%%%</em> API tag.]]></comment>
+                        </default_greeting_lastname>
+                        <use_symbol>
+                            <label>Include Currency Symbol</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field</frontend_model>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>44</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>
+                                <![CDATA[Pass Default Display Currency symbol into email (located in "General" > "Currency Setup" > "Default Display Currency").]]></comment>
+                        </use_symbol>
+                        <incl_tax>
+                            <label>Include Tax in Reminder Emails</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field</frontend_model>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>45</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[If enabled, the <em>%%%%#productPrice_#%%%%</em> for
+                              quote items will include the tax (if available)
+                              for the given product, subtotal, and grand total.]]></comment>
+                        </incl_tax>
+                    </fields>
+                </format>
+                <information>
+                    <label>Support Information</label>
+                    <comment>
+                        <![CDATA[Most questions can easily be answered by thoroughly reviewing the Bronto <a style="color:#ea7601" target="_blank" href="http://a.bron.to/magento" title="Magento Resource Center | Bronto Developers">Magento Resource Center</a> so please consult that first. The next best resource is the <a style="color:#ea7601" target="_blank" href="http://dev.bronto.com/questions" title="Questions | Bronto Developers">Questions</a> forum where you can post the question if it has not been asked yet.<br/><br/><strong>Disclaimer:</strong> The Bronto Extension for Magento was tested in clean Magento environments and Bronto cannot guarantee compatibility with third-party extensions or other site customizations.<br/><br/>If you believe you have encountered an actual issue with the extension itself then you may file a support case. Please note that regular Bronto Support hours are between 8am-8pm ET, Monday through Friday, excluding holidays.<br/><br/><span style="padding-left: 30px;">To contact the Bronto Support team, please perform the following steps:</span><br/><ul><li style="padding-left: 60px;"><strong>Step 1: &nbsp;</strong><a style="color: #ea7601" target="_blank" href="https://app.bronto.com/shared/support/case_add" title="Technical Support | Bronto Marketing Platform">Open a case</a> within Bronto. In your case description, please outline the issue and steps to reproduce it. Also, be sure to mention the version of Magento and the version of the Bronto extension currently running.</li><li style="padding-left: 60px;"><strong>Step 2: &nbsp;</strong>After creating a case, please add a comment and paste in all of the debug information that is generated after clicking the <em>Generate Debug Information</em> button below:<ul style="padding-left: 85px;list-style-type:lower-alpha;"><li>Click on the <a style="color:#ea7601" target="_blank" title="Technical Support | Bronto Marketing Platform" href="https://app.bronto.com/shared/support/index">Support</a> link located in the top right of the page.</li><li>Click on the case you want to comment on.</li><li>Paste in the debug information and click <em>Post Response</em>.</li></ul></li><li style="padding-left: 60px;"><strong>Step 3: &nbsp;</strong>Optionally, if more information is needed, your Support representative may request log files. Simply click the <em>Create Log Archive</em> button below and then click the link that is generated and displayed below the button to download an archive of log files to send to the location designated by your Support representative.</li></ul><br/>]]></comment>
+                    <frontend_type>text</frontend_type>
+                    <frontend_model>bronto_common/adminhtml_system_config_form_fieldset</frontend_model>
+                    <sort_order>15</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <download>
+                            <label>Create Log Archive</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field_download</frontend_model>
+                            <sort_order>7</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </download>
+                        <debug>
+                            <label>Debug Information</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field_debug</frontend_model>
+                            <sort_order>8</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </debug>
+                    </fields>
+                </information>
+            </groups>
+        </bronto>
+    </sections>
+</config>
