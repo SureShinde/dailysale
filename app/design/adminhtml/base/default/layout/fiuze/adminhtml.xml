@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<layout version="0.1.0">
+    <adminhtml_deals_list>
+        <reference name="content">
+            <!--In the content we add our grid container-->
+            <block type="fiuze_deals/adminhtml_deals" name="deals.grid.container"/>
+        </reference>
+    </adminhtml_deals_list>
+</layout>

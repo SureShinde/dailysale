@@ -15,3 +15,7 @@
 
 /skin/frontend/default/clairsoft/config.codekit
 .DS_Store
+
+.idea/
+
+.gitignore

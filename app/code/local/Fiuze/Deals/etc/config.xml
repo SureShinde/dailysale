@@ -47,6 +47,25 @@
                 </setup>
             </fiuze_deals_setup>
         </resources>
+        <events>
+            <controller_front_init_routers>
+                <observers>
+                    <router>
+                        <type>singleton</type>
+                        <class>Fiuze_Deals_Controller_Router</class>
+                        <method>initControllerRouters</method>
+                    </router>
+                </observers>
+            </controller_front_init_routers>
+            <catalog_block_product_list_collection>
+                <observers>
+                    <dailydeals_catalog_block_product_list_collection>
+                        <class>Fiuze_Deals_Model_Observer</class>
+                        <method>catalogBlockProductListCollection</method>
+                    </dailydeals_catalog_block_product_list_collection>
+                </observers>
+            </catalog_block_product_list_collection>
+        </events>
     </global>
     <frontend>
         <routers>
@@ -58,5 +77,46 @@
                 </args>
             </fiuze_deals>
         </routers>
+        <layout>
+            <updates>
+                <fiuze_deals>
+                    <file>fiuze/catalog.xml</file>
+                </fiuze_deals>
+            </updates>
+        </layout>
     </frontend>
+
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <fiuze_deals before="Mage_Adminhtml">Fiuze_Deals_Adminhtml</fiuze_deals>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+        <events>
+
+        </events>
+    </admin>
+
+    <adminhtml>
+        <layout>
+            <updates>
+                <fiuze_deals>
+                    <file>fiuze/adminhtml.xml</file>
+                </fiuze_deals>
+            </updates>
+        </layout>
+    </adminhtml>
+
+
+    <default>
+        <fiuze_deals_cron_time>
+            <fiuze_deals_cron_time_grp>
+                <route>blowout.html</route>
+            </fiuze_deals_cron_time_grp>
+        </fiuze_deals_cron_time>
+    </default>
 </config>
