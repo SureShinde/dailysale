@@ -1,0 +1,18 @@
+<?php /* @var $this Bronto_Emailcapture_Block_Emailcapture */ ?>
+
+<?php if (Mage::helper('bronto_order')->isModuleEnabled()): ?>
+
+<script type="text/javascript">
+    //<![CDATA[
+    var scrProtocol  = (document.location.protocol == "https:") ? "https:" : "http:";
+    var scriptString = '%3Cscript src="' + scrProtocol + '//p.bm23.com/bta.js" type="text/javascript"%3E%3C/script%3E';
+    document.write(unescape(scriptString));
+    //]]>
+</script>
+<script type="text/javascript">
+    //<![CDATA[
+    var bta = new __bta('<?php echo $this->getKey() ?>');
+    //]]>
+</script>
+
+<?php endif; ?>

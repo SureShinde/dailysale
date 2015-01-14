@@ -1,0 +1,367 @@
+<?php /* @var $this Bronto_Common_Block_Adminhtml_System_Config_Guide */ ?>
+
+<?php if($this->isBrontoSection('bronto_order')): ?>
+
+    <?php if (!Mage::helper($this->getCurrentSection())->isEnabled()): ?>
+        /**
+         * Introduce them to the guide and provide instructions
+         */
+        guiders.createGuider({
+            buttons: [
+                {name: "<?php echo $this->__("Let's Get Started!") ?>", onclick: guiders.next},
+                {name: "<?php echo $this->__('No Thanks') ?>", onclick: guiders.hideAll}
+            ],
+            buttonCustomHTML: dontShowButtonHtml,
+            description: "<?php echo $this->__(
+                'This module allows you to Import your Magento Orders into Bronto' .
+                "%sLet's get you set up!%sReady to Go?%s",
+                '<br /><br />',
+                '<br /><br /><div style=\"text-align:right; font-weight:bold;\">',
+                '</div>'
+            ) ?>",
+            id: "start",
+            next: "bronto_order-enable",
+            overlay: true,
+            closeOnEscape: true,
+            title: "Bronto Extension - <?php echo $this->__('Order Import Module') ?>",
+            width: 600
+        });
+
+        /**
+         * Enable the Module
+         */
+        guiders.createGuider({
+            attachTo: '#bronto_order_settings_enabled',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>", onclick: function() {
+                    if (jQuery('#bronto_order_settings_enabled').val() == '1') {
+                        guiders.next();
+                    } else {
+                        alert("<?php echo $this->__("Do nott forget to enable the module") ?>");
+                    }
+                }},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true, closeOnEscape: true,
+            highlight: '#bronto_order_settings_enabled',
+            description: "<?php echo $this->__("Let's enable the module and expose some more options.  Just set `Enable Module` to Yes and click `Save Config`.") ?>",
+            id: "bronto_order-enable",
+            next: "bronto_order-customize_import",
+            position: 11,
+            overlay: true,
+            title: "<?php echo $this->__('Enable the Module') ?>",
+            width: 200
+        });
+
+        /**
+         * Customize the import setting
+         */
+        guiders.createGuider({
+            attachTo: '#bronto_order_import-head',
+            buttons: [
+              {name: "<?php echo $this->__('Back') ?>"},
+              {name: "<?php echo $this->__('Next') ?>"},
+              {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+            closeOnEscape: true,
+            onShow: function() { sectionOpen('#bronto_order_import-head'); },
+            onHide: function() { sectionClose('#bronto_order_import-head'); },
+            description: "<?php echo $this->__(
+                'The Product Attributes section allows you to customize some of the product data imported to your Bronto account. By default, the Display Price ' .
+                'with no modification is used, but now you can decide to use the Base Price (Base Currency) instead, and even whether to include taxes and/or ' .
+                'line item discounts. You can also choose which attribute to use for the product description.'
+            ); ?>",
+            id: "bronto_order-customize_import",
+            next: "bronto_order-configure_cron",
+            position: 10,
+            title: "<?php echo $this->__('Customize Import Data'); ?>",
+            width: 200
+        });
+
+        /**
+         * Configure Cron
+         */
+        guiders.createGuider({
+            attachTo: '#bronto_order_settings',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true, closeOnEscape: true,
+            description: "<?php echo $this->__('These options allow you to configure the cron schedule and import process.') ?>",
+            id: "bronto_order-configure_cron",
+            next: "bronto_order-mage_cron",
+            position: 10,
+            title: "<?php echo $this->__('Configure the Cron') ?>",
+            width: 200
+        });
+
+        /**
+         * Explain Using Magento Cron
+         */
+        <?php $advancedCronLink = $this->helper('bronto_common')->getScopeUrl('/system_config/edit/section/bronto_verify'); ?>
+        guiders.createGuider({
+            attachTo: '#row_bronto_order_settings_mage_cron',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true, closeOnEscape: true,
+            description: "<?php echo $this->__('The `Use Magento Cron` setting, when set to No, allows you to create your own crontab entry on your server instead of using Magento\'s cron system.  You should only change this if you are experiencing issues where the cron job for this module fails to run due to too many jobs.%sYou can find more details under the %s, including examples of how to configure the cron job.', '<br /><br />', '<a href=\"' . $advancedCronLink . '\" title=\"Advanced &raquo; Cron Settings\">Advanced Tab</a>') ?>",
+            id: "bronto_order-mage_cron",
+            next: "bronto_order-save_config_first",
+            position: 10,
+            title: "<?php echo $this->__('Cron Options') ?>",
+            width: 200
+        });
+
+        /**
+         * Save Configuration
+         */
+        guiders.createGuider({
+            attachTo: 'button.save',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Save Config') ?>", onclick: function() {
+                    configForm.submit()
+                }},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true, closeOnEscape: true,
+            highlight: 'button.save',
+            description: "<?php echo $this->__('Now that the initial settings have been configured, you should save them.  Click `Save Config` now.') ?>",
+            id: "bronto_order-save_config_first",
+            next: "final",
+            position: 5,
+            overlay: true,
+            title: "<?php echo $this->__('Save Config') ?>"
+        });
+
+    <?php else: ?>
+
+        /**
+         * Continue Guide now that module is enabled
+         */
+        guiders.createGuider({
+            buttons: [
+                {name: "<?php echo $this->__('Continue with Guide') ?>", onclick: guiders.next},
+                {name: "<?php echo $this->__('No Thanks') ?>", onclick: guiders.hideAll}
+            ],
+            buttonCustomHTML: dontShowButtonHtml,
+            description: "<?php echo $this->__(
+                'With the Order Import module enabled, we have a few more sections to explore.%sReady to Go?%s',
+                '<br /><br /><div style=\"text-align:right; font-weight:bold;\">',
+                '</div>'
+            ) ?>",
+            id: "start",
+            next: "bronto_order-mage_cron",
+            overlay: true, closeOnEscape: true,
+            title: "Bronto Extension - <?php echo $this->__('Order Import Module') ?>",
+            width: 600
+        });
+
+        /**
+         * Explain Using Magento Cron
+         */
+        <?php $advancedCronLink = $this->helper('bronto_common')->getScopeUrl('/system_config/edit/section/bronto_verify'); ?>
+        guiders.createGuider({
+            attachTo: '#row_bronto_order_settings_mage_cron',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true, closeOnEscape: true,
+            description: "<?php echo $this->__('The `Use Magento Cron` setting, when set to No, allows you to create your own crontab entry on your server instead of using Magento\'s cron system.  You should only change this if you are experiencing issues where the cron job for this module fails to run due to too many jobs.%sYou can find more details under the %s, including examples of how to configure the cron job.', '<br /><br />', '<a href=\"' . $advancedCronLink . '\" title=\"Advanced &raquo; Cron Settings\">Advanced Tab</a>') ?>",
+            id: "bronto_order-mage_cron",
+            next: "bronto_order-customize_import",
+            position: 10,
+            title: "<?php echo $this->__('Cron Options') ?>",
+            width: 200
+        });
+
+
+        /**
+         * Customize the import setting
+         */
+        guiders.createGuider({
+            attachTo: '#bronto_order_import-head',
+            buttons: [
+              {name: "<?php echo $this->__('Back') ?>"},
+              {name: "<?php echo $this->__('Next') ?>"},
+              {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+            closeOnEscape: true,
+            description: "<?php echo $this->__(
+                'The Product Attributes section allows you to customize some of the product data imported to your Bronto account. By default the Display Price ' .
+                'with no modification is imported into Bronto. You can decide whether you want the Base Price (Base Currency), include tax, and/or include ' .
+                'line item discounts. You can also choose which product description to use.'
+            ); ?>",
+            id: "bronto_order-customize_import",
+            next: "bronto_order-progress_bar",
+            position: 10,
+            title: "<?php echo $this->__('Product Attributes'); ?>",
+            width: 200
+        });
+
+        /**
+         * Explain Progress Bar
+         */
+        guiders.createGuider({
+            attachTo: '.bronto-progress-bar',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true, closeOnEscape: true,
+            description: "<?php echo $this->__(
+                'This is the Progress bar, it will show the status of the Order import process including how many have successfully imported, ' .
+                'how many have been suppressed due to errors, and how many belong to a store where this module is not enabled.'
+            ) ?>",
+            id: "bronto_order-progress_bar",
+            next: "bronto_order-cron_table",
+            position: 11,
+            title: "<?php echo $this->__('Making Progress') ?>",
+            width: 400
+        });
+
+        /**
+         * Cron Table
+         */
+        guiders.createGuider({
+            attachTo: '.bronto-cron-table',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true, closeOnEscape: true,
+            highlight: '.bronto-cron-table',
+            overlay: true,
+            description: "<?php echo $this->__('This table shows you the recent history of the Cron Jobs that are pending, running, have successfully completed, or have failed upon execution.') ?>",
+            id: "bronto_order-cron_table",
+            next: "bronto_order-suppression_interface",
+            position: 10,
+            title: "<?php echo $this->__('Cron Table') ?>",
+            width: 200
+        });
+
+        /**
+         * Explain Suppression Interface
+         */
+        guiders.createGuider({
+            attachTo: '#bronto_order_suppressed-head',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true, closeOnEscape: true,
+            onShow: function() {
+              sectionOpen('#bronto_order_suppressed-head');
+              if ($('bronto-suppression-interface').innerHTML.length == 0) {
+                loadSuppressionTable(1);
+              }
+            },
+            onHide: function() { sectionClose('#bronto_order_suppressed-head'); },
+            description: "<?php echo $this->__(
+                'The Suppressed Orders section will show you important details about any Orders that failed to import and were suppressed due to an error.  ' .
+                'This section is collapsed by default, so just click on the title to expand it.'
+            ) ?>",
+            id: "bronto_order-suppression_interface",
+            next: "bronto_order-sync_button",
+            position: 9,
+            title: "<?php echo $this->__('Suppressed Orders') ?>",
+            width: 200
+        });
+
+        /**
+         * Explain Sync Button
+         */
+        guiders.createGuider({
+            attachTo: '.bronto-cron-sync',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true, closeOnEscape: true,
+            highlight: '.bronto-cron-sync',
+            overlay: true,
+            description: "<?php echo $this->__(
+                'If you find that you have more orders in Magento than are being represented in the progress bar count, ' .
+                'you can click this button and it will add any* missing Orders into the queue.' .
+                '%s* The number of Orders synced at a time is limited by the `Sync Limit` setting found in the Settings section.%s',
+                '<br /><br /><em>',
+                '</em>'
+            ) ?>",
+            id: "bronto_order-sync_button",
+            next: "bronto_order-reset_button",
+            position: 1,
+            title: "<?php echo $this->__('Sync Order Queue') ?>",
+            width: 400
+        });
+
+        /**
+         * Explain Reset Button
+         */
+        guiders.createGuider({
+            attachTo: '.bronto-cron-reset',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true, closeOnEscape: true,
+            highlight: '.bronto-cron-reset',
+            overlay: true,
+            description: "<?php echo $this->__(
+                "If you find that your orders are not importing with the correct information or you have a large number of suppressed Orders " .
+                "that are ready to retry, you can click this button and ALL orders in the queue will be reset and will have to be imported again."
+            ) ?>",
+            id: "bronto_order-reset_button",
+            next: "bronto_order-run_button",
+            position: 1,
+            title: "<?php echo $this->__('Reset Order Queue') ?>",
+            width: 400
+        });
+
+        /**
+         * Explain Run Button
+         */
+        guiders.createGuider({
+            attachTo: '.bronto-cron-run',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true, closeOnEscape: true,
+            highlight: '.bronto-cron-run',
+            overlay: true,
+            description: "<?php echo $this->__(
+                'Once you have all your settings configured, you can start the import process* manually by clicking this button.' .
+                '%s* The number of Orders imported per click is limited by the `Limit` setting found in the Settings section.%s',
+                '<br /><br /><em>',
+                '</em>'
+            ) ?>",
+            id: "bronto_order-run_button",
+            next: "scope",
+            position: 1,
+            title: "<?php echo $this->__('Run the Import') ?>",
+            width: 400
+        });
+
+    <?php endif; ?>
+
+    <?php if($this->canShowGuide()): ?>
+        guiders.show('start');
+    <?php endif; ?>
+
+<?php endif; ?>

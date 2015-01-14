@@ -1,0 +1,37 @@
+<?php /* @var $this Bronto_Emailcapture_Block_Emailcapture */ ?>
+
+<?php if ($this->isEnabled()): ?>
+<script type="text/javascript">
+    //<![CDATA[
+
+    // Handle Magento Email Fields
+    Event.observe(window, 'load', function() {
+        $$('<?php echo $this->getFieldSelector() ?>').each(function(item) {
+            item.observe('change', function(event) {
+                captureEmail(item.value);
+            });
+        });
+    });
+
+    // Handle Popup Event
+    if (document.addEventListener) {
+        document.addEventListener('bronto:popup-created', function(e) {
+            $$('.popup-dialog input[id*=inputs-email]').each(function(item) {
+                item.observe('change', function(event) {
+                    captureEmail(item.value);
+                });
+            });
+        }, false);
+    }
+
+    // Trigger AJAX call to capture Email Address
+    function captureEmail(emailAddress) {
+        var targetUrl = '<?php echo $this->getTargetUrl() ?>';
+        new Ajax.Request(targetUrl, {
+            method: 'post',
+            parameters: {emailAddress: emailAddress}
+        });
+    }
+    //]]>
+</script>
+<?php endif; ?>

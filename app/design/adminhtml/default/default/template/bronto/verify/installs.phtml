@@ -1,0 +1,77 @@
+<?php /* @var $this Bronto_Verify_Block_Adminhtml_System_Config_Installs */ ?>
+<?php $scopes = $this->_getScopeAllowedScopes(); ?>
+
+<?php $spacer = '<img src="' . $this->getJsUrl('spacer.gif') . '" class="x-tree-ec-icon" />'; ?>
+<?php $line   = '<img src="' . $this->getJsUrl('spacer.gif') . '" class="x-tree-ec-icon x-tree-elbow-line" />'; ?>
+<?php $elbow  = '<img src="' . $this->getJsUrl('spacer.gif') . '" class="x-tree-ec-icon x-tree-elbow" />'; ?>
+<?php $end    = '<img src="' . $this->getJsUrl('spacer.gif') . '" class="x-tree-ec-icon x-tree-elbow-end" />'; ?>
+
+<fieldset style="border:1px solid #ccc; padding: 5px;"><legend style="display:block; height:auto; width:auto; line-height:16px; visibility: visible; margin: 2px; padding: 2px; font-weight:bold;">Legend: </legend>
+    <img src="<?php echo $this->getJsUrl('spacer.gif'); ?>" class="installed-module-enabled" /> = Enabled
+    <img src="<?php echo $this->getJsUrl('spacer.gif'); ?>" class="installed-module-disabled" /> = Disabled
+<!--    <img src="--><?php //echo $this->getJsUrl('spacer.gif'); ?><!--" class="installed-module-error" /> = Error-->
+</fieldset>
+
+<ul id="bronto-verify-installs">
+    <li class="bronto_verify-installs-<?php echo $this->_getScopedStyle('default') ?>">
+        <span><?php echo $scopes['default']['label'] ?> <a href="<?php echo $this->getConfigScopeUrl('bronto_verify', 'default', 0) ?>" title="Go To <?php echo $scopes['default']['label'] ?> Scope">&raquo;</a></span>
+        <?php echo $this->getModulesStatus(null, null, $line); ?>
+        <ul>
+        <?php $wTotal = count($scopes['default']['websites']); ?>
+        <?php $wCount = 1; ?>
+        <?php foreach($scopes['default']['websites'] as $wCode => $website): ?>
+            <?php if (count($website['groups']) > 0): ?>
+            <?php $wIsEnd = ($wCount == $wTotal); ?>
+            <li class="bronto_verify-installs-<?php echo $this->_getScopedStyle('website') ?>">
+                <?php echo ($wIsEnd ? $end : $elbow); ?>
+                <span><?php echo $website['label'] ?> <a href="<?php echo $this->getConfigScopeUrl('bronto_verify', 'website', $wCode) ?>" title="Go To <?php echo $website['label'] ?> Scope">&raquo;</a></span>
+                <?php echo $this->getModulesStatus(null, $wCode, ($wIsEnd ? $spacer : $line), $line); ?>
+                <ul>
+                <?php $gTotal = count($website['groups']); ?>
+                <?php $gCount = 1; ?>
+                <?php foreach($website['groups'] as $name => $group): ?>
+                    <?php if(count($group['stores']) > 0): ?>
+                    <?php $gIsEnd = ($gCount == $gTotal); ?>
+                    <li class="bronto_verify-installs-<?php echo $this->_getScopedStyle('group') ?>">
+                        <?php echo ($wIsEnd ? $spacer : $line) . ($gIsEnd ? $end : $elbow); ?>
+                        <span><?php echo $group['label'] ?></span>
+                        <ul>
+                        <?php $sTotal = count($group['stores']); ?>
+                        <?php $sCount = 1; ?>
+                        <?php foreach($group['stores'] as $sCode => $store): ?>
+                            <?php $sIsEnd = ($sCount == $sTotal); ?>
+                            <li class="bronto_verify-installs-<?php echo $this->_getScopedStyle('store') ?>">
+                                <?php echo ($wIsEnd ? $spacer : $line) . ($gIsEnd ? $spacer : $line) . ($sIsEnd ? $end : $elbow); ?>
+                                <span><?php echo $store['label'] ?> <a href="<?php echo $this->getConfigScopeUrl('bronto_verify', 'store', $sCode) ?>" title="Go To <?php echo $store['label'] ?> Scope">&raquo;</a></span>
+                                <?php echo $this->getModulesStatus($sCode, $wCode, ($wIsEnd ? $spacer : $line), ($gIsEnd ? $spacer : $line), ($sIsEnd ? $spacer : $line)); ?>
+                            </li>
+                            <?php $sCount++; ?>
+                        <?php endforeach; ?>
+                        </ul>
+                    </li>
+                    <?php endif; ?>
+                    <?php $gCount++; ?>
+                <?php endforeach; ?>
+                </ul>
+            </li>
+            <?php endif; ?>
+            <?php $wCount++; ?>
+        <?php endforeach; ?>
+        </ul>
+    </li>
+</ul>
+
+<script type="text/javascript">
+    function toggleModules(element, target)
+    {
+        $(target).toggle();
+
+        if ($(element).hasClassName('x-tree-elbow-minus')) {
+            $(element).removeClassName('x-tree-elbow-minus');
+            $(element).addClassName('x-tree-elbow-end-plus');
+        } else {
+            $(element).removeClassName('x-tree-elbow-end-plus');
+            $(element).addClassName('x-tree-elbow-minus');
+        }
+    }
+</script>

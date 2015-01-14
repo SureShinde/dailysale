@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<layout>
+    <adminhtml_promo_quote_edit>
+        <reference name="content">
+            <block type="bronto_reminder/adminhtml_promo_notice" name="promo_edit_notice"/>
+        </reference>
+    </adminhtml_promo_quote_edit>
+    <adminhtml_delivery_index>
+        <reference name="content">
+            <block type="bronto_reminder/adminhtml_delivery" name="reminder_delivery_log" />
+        </reference>
+    </adminhtml_delivery_index>
+</layout>

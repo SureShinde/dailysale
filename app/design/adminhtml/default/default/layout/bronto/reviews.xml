@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<layout>
+  <adminhtml_catalog_product_edit>
+    <reference name="product_tabs">
+      <action method="addTab">
+        <name>post_reorder</name>
+        <block>bronto_reviews/adminhtml_catalog_product_edit_tab_reorder</block>
+      </action>
+      <action method="addTab">
+        <name>post_caretip</name>
+        <block>bronto_reviews/adminhtml_catalog_product_edit_tab_caretip</block>
+      </action>
+    </reference>
+  </adminhtml_catalog_product_edit>
+  <adminhtml_sales_order_view>
+    <reference name="sales_order_tabs">
+      <action method="addTab">
+        <name>order_post_purchase</name>
+        <block>bronto_reviews/adminhtml_sales_order_view_tab_post_purchase</block>
+      </action>
+    </reference>
+  </adminhtml_sales_order_view>
+</layout>

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<layout>
+    <adminhtml_permissionchecker_verify>
+        <remove name="root" />
+        <block type="bronto_verify/adminhtml_system_config_permissionchecker"
+               name="bronto.permissionchecker.errors"
+               output="toHtml"/>
+    </adminhtml_permissionchecker_verify>
+</layout>

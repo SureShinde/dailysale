@@ -1,0 +1,10 @@
+<?php /*  @var $this Bronto_Newsletter_Block_Checkout_Onepage_Newsletter */ ?>
+<?php $this->_setCheckboxStatus(); ?>
+<div class="input-box newsletter-signup"<?php echo $this->getCheckboxShow() ?>>
+    <style>
+        <?php echo $this->getCheckboxStyle(); ?>
+    </style>
+    <input id="billing:is_subscribed" type="hidden" name="billing[is_subscribed]" value="<?php echo $this->getCheckboxValue() ?>" />
+    <input id="billing:is_subscribed_box" class="billing_is_subscribed_box" type="checkbox" onchange="setSubscribedValue(); return false;"<?php echo $this->getCheckboxChecked() ?> title="<?php echo $this->__($this->getCheckboxLabelText()) ?>" />
+    <label id="billing_subscribed_label" for="billing:is_subscribed_box"><?php echo $this->__($this->getCheckboxLabelText()) ?></label>
+</div>

@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @category  Bronto
+ * @package   Bronto_Verify
+ * @author    Adam Daniels <adam.daniels@atlanticbt.com>
+ * @copyright 2012 Atlantic BT
+ * @license   http://www.atlanticbt.com/ Atlantic BT
+ */
+-->
+<config>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <bronto_verify translate="title" module="bronto_verify">
+                                        <title>Bronto Admin Tools Section</title>
+                                        <sort_order>9999</sort_order>
+                                    </bronto_verify>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>

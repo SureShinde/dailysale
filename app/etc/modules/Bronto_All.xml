@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Bronto_Common>
+            <active>true</active>
+            <codePool>community</codePool>
+            <depends>
+                <Mage_Adminhtml/>
+                <Mage_Customer/>
+                <Mage_Checkout/>
+                <Mage_Sales/>
+            </depends>
+        </Bronto_Common>
+    </modules>
+</config>

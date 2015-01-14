@@ -1,0 +1,19 @@
+<?php
+/**
+ * @param Bronto_News_Block_Adminhtml_ItemRender $this
+ * @param Bronto_News_Model_Item $item
+ */
+?>
+<div id="news_item_<? echo $element->getId(); ?>" class="bronto_news_item">
+	<div class="bronto_news_item_info item_header">
+		<div class="bronto_news_item_header item_link">
+			<?php echo $element->getDefaultHtml(); ?>
+		</div>
+		<div class="bronto_news_item_header item_date">
+			<?php echo $date->date('m/d/Y', $element->getNewsItem()->getPubDate()); ?>
+		</div>
+	</div>
+	<div class="bronto_news_item_info item_description">
+		<?php echo $element->getNewsItem()->getDescription(); ?>
+	</div>
+</div>

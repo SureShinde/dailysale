@@ -1,0 +1,21 @@
+<script type="text/javascript">
+//<![CDATA[
+    function validatePermissions() {
+        $('bronto_permissionchecker_results').innerHTML = $('permissions-loadingmask').innerHTML;
+        
+        new Ajax.Request('<?php echo $this->getAjaxUrl(); ?>', {
+            onSuccess: function(response) {
+                Element.hide('permissions-loadingmask');
+                $('bronto_permissionchecker_results').update(response.responseText);
+            }
+        });
+    }
+//]]>
+</script>
+<span id="permissions-loadingmask" style="display: none; width: 100px;">
+    <span class="loader" id="permissions-loading-mask-loader" style="background: url(<?php echo $this->getSkinUrl('bronto/images/ajax-loader-tr.gif') ?>) no-repeat 0 50%; background-size: 20px; padding:3px 0 3px 25px;"><?php echo $this->__(' Checking Permissions...') ?></span>
+    <span id="permissions-loading-mask"></span>
+</span>
+<button onclick="javascript:validatePermissions();" type="button" id="<?php echo $this->getHtmlId(); ?>">
+    <span id="validation_result"><?php echo $this->escapeHtml($this->getButtonLabel()); ?></span>
+</button>
