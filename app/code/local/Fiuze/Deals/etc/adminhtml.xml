@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @category    Fiuze
+ * @package     Fiuze_Deals
+ * @author     Alena Tsareva <alena.tsareva@webinse.com>
+ */
+-->
+<config>
+    <!--Here we define our admin menu-->
+    <menu>
+        <fiuze_deals>
+            <title>Fiuze Daily</title>
+            <sort_order>80</sort_order>
+            <children>
+                <deals>
+                    <title>Daily Cron Products</title>
+                    <action>adminhtml/deals/list</action>
+                </deals>
+            </children>
+        </fiuze_deals>
+    </menu>
+    <acl>
+        <resources>
+            <all>
+                <title>Allow Everything</title>
+            </all>
+            <admin>
+                <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <fiuze_deals_cron_time translate="title" module="fiuze_deals">
+                                        <title>Fiuze Deals Cron time</title>
+                                    </fiuze_deals_cron_time>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                    <fiuze_deals translate="title" module="fiuze_deals">
+                        <title>Daily Cron Products</title>
+                        <sort_order>9999</sort_order>
+                        <children>
+                            <deals translate="title">
+                                <title>Deals</title>
+                                <sort_order>10</sort_order>
+                            </deals>
+                        </children>
+                    </fiuze_deals>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+
+</config>

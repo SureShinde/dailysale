@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+<!--
+/**
+* Deals Rotation
+*
+* @category   Fiuze
+* @package    Fiuze_Deals
+* @author     Alena Tsareva <alena.tsareva@webinse.com>
+*/
+-->
+<config>
+    <modules>
+        <Fiuze_Deals>
+            <version>0.1.0</version>
+        </Fiuze_Deals>
+    </modules>
+    <global>
+        <blocks>
+            <fiuze_deals>
+                <class>Fiuze_Deals_Block</class>
+            </fiuze_deals>
+        </blocks>
+        <helpers>
+            <fiuze_deals>
+                <class>Fiuze_Deals_Helper</class>
+            </fiuze_deals>
+        </helpers>
+        <models>
+            <fiuze_deals>
+                <class>Fiuze_Deals_Model</class>
+                <resourceModel>fiuze_deals_resource</resourceModel>
+            </fiuze_deals>
+            <fiuze_deals_resource>
+                <class>Fiuze_Deals_Model_Resource</class>
+                <entities>
+                    <deals>
+                        <table>fiuze_deals</table>
+                    </deals>
+                </entities>
+            </fiuze_deals_resource>
+        </models>
+        <resources>
+            <fiuze_deals_setup>
+                <setup>
+                    <module>Fiuze_Deals</module>
+                    <class>Mage_Core_Model_Resource_Setup</class>
+                </setup>
+            </fiuze_deals_setup>
+        </resources>
+        <events>
+            <controller_front_init_routers>
+                <observers>
+                    <router>
+                        <type>singleton</type>
+                        <class>Fiuze_Deals_Controller_Router</class>
+                        <method>initControllerRouters</method>
+                    </router>
+                </observers>
+            </controller_front_init_routers>
+            <catalog_block_product_list_collection>
+                <observers>
+                    <dailydeals_catalog_block_product_list_collection>
+                        <class>Fiuze_Deals_Model_Observer</class>
+                        <method>catalogBlockProductListCollection</method>
+                    </dailydeals_catalog_block_product_list_collection>
+                </observers>
+            </catalog_block_product_list_collection>
+        </events>
+    </global>
+    <frontend>
+        <routers>
+            <fiuze_deals>
+                <use>standard</use>
+                <args>
+                    <module>Fiuze_Deals</module>
+                    <frontName>fiuze_deals</frontName>
+                </args>
+            </fiuze_deals>
+        </routers>
+        <layout>
+            <updates>
+                <fiuze_deals>
+                    <file>fiuze/catalog.xml</file>
+                </fiuze_deals>
+            </updates>
+        </layout>
+    </frontend>
+
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <fiuze_deals before="Mage_Adminhtml">Fiuze_Deals_Adminhtml</fiuze_deals>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+        <events>
+
+        </events>
+    </admin>
+
+    <adminhtml>
+        <layout>
+            <updates>
+                <fiuze_deals>
+                    <file>fiuze/adminhtml.xml</file>
+                </fiuze_deals>
+            </updates>
+        </layout>
+    </adminhtml>
+
+
+    <default>
+        <fiuze_deals_cron_time>
+            <fiuze_deals_cron_time_grp>
+                <route>blowout.html</route>
+            </fiuze_deals_cron_time_grp>
+        </fiuze_deals_cron_time>
+    </default>
+</config>
