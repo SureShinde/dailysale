@@ -142,7 +142,7 @@ class TM_NewsletterBooster_TrackController extends Mage_Core_Controller_Front_Ac
                     $gSubscriber->unsubscribe();
                     Mage::getSingleton('core/session')->addSuccess($helper->__('Unsubscribed complete.'));
                 } else{
-                    Mage::getSingleton('core/session')->addError($helper->__('Email %s has not found.', $email));
+                    Mage::getSingleton('core/session')->addError($helper->__('Email %s has not been found.', $email));
                     $this->_redirectUrl($this->_getRefererUrl());
                     return false;
                 }
