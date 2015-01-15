@@ -28,14 +28,7 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Products extends Mage_Adminhtml_Block_Wi
     {
         $collection = Mage::getResourceModel('catalog/product_collection')
             ->addAttributeToSelect('*')
-            ->addAttributeToFilter('visibility', array('neq' => 1))
-            ->addAttributeToFilter(
-                array(
-                    array('attribute' => 'deal_status', 'null' => true),
-                    array('attribute' => 'deal_status', 'eq' => null),
-                    array('attribute' => 'deal_status', 'neq' => 1),
-                ), '', 'left'
-            );
+            ->addAttributeToFilter('visibility', array('neq' => 1));
         $this->setCollection($collection);
         return parent::_prepareCollection();
     }
@@ -54,22 +47,18 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Products extends Mage_Adminhtml_Block_Wi
     protected function _prepareColumns()
     {
         $store = $this->getStore();
-        $helper = Mage::helper('dailydeals');
+        $helper = Mage::helper('fiuze_deals');
 
         $this->addColumn('title', array(
             'header' => $helper->__('Product Name'),
             'index' => 'name',
+            'width' => '30%',
         ));
         $this->addColumn('sku', array(
             'header' => $helper->__('Sku'),
             'index' => 'sku',
         ));
-        $this->addColumn('type_product', array(
-            'header' => $helper->__('Type'),
-            'index' => 'type_id',
-            'type' => 'options',
-            'options' => Mage::getSingleton('dailydeals/statuses')->getOptionsTypeArray(),
-        ));
+
         $this->addColumn('price', array(
             'header' => $helper->__('Price'),
             'type' => 'price',

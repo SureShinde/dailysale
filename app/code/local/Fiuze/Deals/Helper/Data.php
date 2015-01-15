@@ -74,14 +74,20 @@ class Fiuze_Deals_Helper_Data extends Mage_Core_Helper_Abstract
         return $this->getConf(self::XML_PATH_LAYOUT, $store);
     }
 
-    public function getConf($code, $store = null)
+    /**
+     * Retrieve current config model
+     * @param string $path
+     * @param mixed $store
+     * @return public
+     */
+    private function getConf($code, $store = null)
     {
         return Mage::getStoreConfig($code, $store);
     }
 
     /**
      * Retrieve current product model (in cron set)
-     *
+     ****************************************************************-----------------------------------------
      * @return Mage_Catalog_Model_Product
      */
     public function getProductCron()
@@ -97,5 +103,34 @@ class Fiuze_Deals_Helper_Data extends Mage_Core_Helper_Abstract
 
         }
         return Mage::registry('product');
+    }
+
+    /**
+     * Retrieve current category model (in cron set)
+     *
+     * @return Mage_Catalog_Model_Category
+     */
+    public function getCategoryCron()
+    {
+        if (!Mage::registry('category_cron')) {
+            $config = new Varien_Object($this->getConf(self::XML_ROOT));
+            $categoryId = (int)$config->getData('category');
+            Mage::register('category_cron', Mage::getModel('catalog/category')->load($categoryId));
+        }
+        return Mage::registry('category_cron');
+    }
+    /**
+     * Retrieve time cron
+     *
+     * @return
+     */
+    public function getTimeCron()
+    {
+        if (!Mage::registry('time_cron')) {
+            $config = new Varien_Object($this->getConf(self::XML_ROOT));
+            $timeCron = $config->getData('cron_time');
+            Mage::register('time_cron', $timeCron);
+        }
+        return Mage::registry('time_cron');
     }
 }

@@ -46,6 +46,16 @@
                     <class>Mage_Core_Model_Resource_Setup</class>
                 </setup>
             </fiuze_deals_setup>
+            <fiuze_deals_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </fiuze_deals_write>
+            <fiuze_deals_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </fiuze_deals_read>
         </resources>
         <events>
             <controller_front_init_routers>
@@ -65,6 +75,15 @@
                     </dailydeals_catalog_block_product_list_collection>
                 </observers>
             </catalog_block_product_list_collection>
+            <admin_system_config_changed_section_fiuze_deals_cron_time>
+                <observers>
+                    <mymodule>
+                        <type>singleton</type>
+                        <class>Fiuze_Deals_Model_Observer</class>
+                        <method>adminSystemConfigChanged</method>
+                    </mymodule>
+                </observers>
+            </admin_system_config_changed_section_fiuze_deals_cron_time>
         </events>
     </global>
     <frontend>
@@ -111,7 +130,6 @@
         </layout>
     </adminhtml>
 
-
     <default>
         <fiuze_deals_cron_time>
             <fiuze_deals_cron_time_grp>
@@ -119,4 +137,25 @@
             </fiuze_deals_cron_time_grp>
         </fiuze_deals_cron_time>
     </default>
+
+    <!--
+        Cron setting
+    -->
+    <crontab>
+        <jobs>
+            <fiuze_deals_scheduler>
+                <schedule><config_path>system/cron/cron_expr_heartbeat</config_path></schedule>
+                <run><model>fiuze_deals/observer::dailyCatalogUpdate</model></run>
+            </fiuze_deals_scheduler>
+        </jobs>
+    </crontab>
+
+    <default>
+        <system>
+            <cron>
+                <cron_expr_heartbeat>*/5 * * * *</cron_expr_heartbeat>
+            </cron>
+        </system>
+    </default>
+
 </config>

@@ -5,7 +5,6 @@
  * @package     Fiuze_Deals
  * @author     Alena Tsareva <alena.tsareva@webinse.com>
  */
-
 class Fiuze_Deals_Block_Adminhtml_Deals_Edit_Form extends Mage_Adminhtml_Block_Widget_Form
 {
 
@@ -21,8 +20,32 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Edit_Form extends Mage_Adminhtml_Block_W
      */
     protected function _prepareForm()
     {
+        $data = Mage::registry('current_product_deal');
 
-        $data = Mage::registry('current_user');
+
+        $categoryIds = $data->getCategoryIds();
+        $categoryAll = '';
+        foreach ($categoryIds as $category_id) {
+            $category = Mage::getModel('catalog/category')->load($category_id);
+            $categoryAll .= $category->getName() . ', ';
+        }
+        $categoryAll = trim($categoryAll, ', ');
+        $data->setCategoryAll($categoryAll);
+
+        $productDeals = Mage::getResourceModel('fiuze_deals/deals_collection')
+            ->addFilter('product_id',$data->getData('entity_id'))->getFirstItem();
+
+        $dealsPrice = $productDeals->getDealsPrice();
+        $data->setDealPrice($dealsPrice);
+
+        $dealsQty = $productDeals->getDealsQty();
+        $data->setDealQty($dealsQty);
+
+        $qty = $data->getStockItem()->getQty();
+        $data->setQty($qty);
+
+
+
         $helper = Mage::helper('fiuze_deals');
         $form = new Varien_Data_Form(array(
             'id' => 'edit_form',
@@ -45,9 +68,12 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Edit_Form extends Mage_Adminhtml_Block_W
 
         $fieldset->addField('name', 'label', array(
             'label' => $helper->__('Product Name'),
-            'class' => 'required-entry',
-            'required' => true,
             'name' => 'name'
+        ));
+
+        $fieldset->addField('category_all', 'label', array(
+            'label' => $helper->__('Product category'),
+            'name' => 'category_all',
         ));
 
         $fieldset->addField('price', 'label', array(
@@ -64,42 +90,23 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Edit_Form extends Mage_Adminhtml_Block_W
             'name' => 'deal_price',
         ));
 
+        $fieldset->addField('qty', 'label', array(
+            'label' => $helper->__('Quantity'),
+            'class' => 'require-entry',
+            'name' => 'qty',
+        ));
+
         $fieldset->addField('deal_qty', 'text', array(
-            'label' => $helper->__('Qty'),
+            'label' => $helper->__('Deal Quantity'),
             'class' => 'require-entry',
             'name' => 'deal_qty',
             'required' => true,
             'note' => $helper->__('Quantity products with special price'),
         ));
 
-        $dateStrFormat = Mage::app()->getLocale()->getDateFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT);
-
-        $fieldset->addField('deal_start_time', 'date', array(
-            'name' => 'deal_start_time',
-            'label' => $helper->__('Start Time'),
-            'image' => $this->getSkinUrl('images/grid-cal.gif'),
-            'class' => 'validate-date validate-date-range date-range-deal_start_time',
-            'required' => true,
-            'format' => $dateStrFormat,
-            'no_span' => true,
-
-        ));
-
-
-        $fieldset->addField('deal_end_time', 'date', array(
-            'name' => 'deal_end_time',
-            'label' => $helper->__('End Time'),
-            'image' => $this->getSkinUrl('images/grid-cal.gif'),
-            'class' => 'validate-date validate-date-range date-range-deal_end_time',
-            'required' => true,
-            'format' => $dateStrFormat,
-            'no_span' => true,
-        ));
-
-
-        $fieldset->addField('deal_status', 'select', array(
+        $fieldset->addField('active', 'select', array(
             'label' => $helper->__('Status'),
-            'name' => 'deal_status',
+            'name' => 'active',
             'values' => Mage::getModel('fiuze_deals/System_Config_Source_Enabling')->toArray(),
             'value' => true,
         ));
