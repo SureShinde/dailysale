@@ -19,3 +19,25 @@
 .idea/
 
 .gitignore
+app/code/community/Aoe
+
+skin/adminhtml/default/default/aoe_scheduler/
+shell/scheduler.php
+app/locale/en_US/template/email/aoe_scheduler/
+app/locale/de_DE/Aoe_Scheduler.csv
+
+app/design/adminhtml/default/default/layout/aoe_scheduler/
+app/design/adminhtml/default/default/template/aoe_scheduler/
+app/etc/modules/Aoe_Scheduler.xml
+
+
+
+
+
+
+
+
+
+
+
+

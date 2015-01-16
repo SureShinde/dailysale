@@ -7,4 +7,10 @@
             <block type="fiuze_deals/adminhtml_deals" name="deals.grid.container"/>
         </reference>
     </adminhtml_deals_list>
+    <adminhtml_deals_new>
+        <reference name="content">
+            <!--In the content we add our grid container-->
+            <block type="fiuze_deals/adminhtml_deals_products" name="deals.new.container"/>
+        </reference>
+    </adminhtml_deals_new>
 </layout>

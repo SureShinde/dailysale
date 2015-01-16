@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Deals Rotation
  *
@@ -6,10 +7,11 @@
  * @package    Fiuze_Deals
  * @author     Alena Tsareva <alena.tsareva@webinse.com>
  */
+class Fiuze_Deals_Model_System_Config_Source_Category
+{
 
-class Fiuze_Deals_Model_System_Config_Source_Category {
-
-    public function toOptionArray() {
+    public function toOptionArray()
+    {
         $categories = Mage::getResourceModel('catalog/category_collection')
             ->addAttributeToSelect('name')
             ->getItems();
@@ -25,7 +27,6 @@ class Fiuze_Deals_Model_System_Config_Source_Category {
                 'value' => $category->getId()
             );
         }
-
         return $optionArray;
     }
 
