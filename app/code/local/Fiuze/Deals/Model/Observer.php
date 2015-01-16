@@ -37,17 +37,19 @@ class Fiuze_Deals_Model_Observer
             $item->save();
             return;
         }
+        //cyclical overkill
         foreach ($productDeals as $item) {
             if ($item->getCurrentActive()) {
                 $item->setCurrentActive(0);
-                $item->setStartTime(0);
+                $item->setEndTime(0);
                 $item->save();
                 $item = current($productDeals);
                 $item->setCurrentActive(1);
+                list($hh, $mm, $ss) = explode(",", Mage::helper('fiuze_deals')->getTimeCron());
+                $mm += $hh * 60;
                 $date = new Zend_Date();
-                $date->add('5', Zend_Date::MINUTE);
-                $hghgh = Mage::helper('fiuze_deals')->getTimeCron();
-                $item->setStartTime($date);
+                $date->add($mm, Zend_Date::MINUTE);
+                $item->setEndTime($date);
                 $item->save();
                 return;
             }
@@ -67,10 +69,10 @@ class Fiuze_Deals_Model_Observer
         if (strnatcasecmp($observer->getData('name'), 'admin_system_config_changed_section_fiuze_deals_cron_time')) {
             $timeCron = Mage::helper('fiuze_deals')->getTimeCron();
             list($hh, $mm, $ss) = explode(',', $timeCron);
-            $mm = $hh * 60 + $mm;
+            $mm += $hh * 60;
 
             $cronExprArray = array(
-                intval($mm) ? '/' . intval($mm) : '*',              # Minute
+                intval($mm) ? '/' . intval($mm) : '*',         # Minute
                 '*',                                           # Hour
                 '*',                                           # Day of the Month
                 '*',                                           # Month of the Year
@@ -89,7 +91,6 @@ class Fiuze_Deals_Model_Observer
                 Mage::throwException(Mage::helper('adminhtml')->__('Unable to save the cron expression.'));
             }
 
-            //Перезаписать продукты из выбраной категории (активный продукт не сохраняется)
             // Overwrite products from the selected category (active product is not stored)
             $category = Mage::helper('fiuze_deals')->getCategoryCron();
             $currentCategory = $category->getProductCollection();
@@ -102,6 +103,7 @@ class Fiuze_Deals_Model_Observer
                     '{{table}}.stock_id=1',
                     'left'
                 )
+                ->addAttributeToFilter('qty', array("gt" => 0))
                 ->addAttributeToSelect('*');
 
             if (Mage::getResourceModel('fiuze_deals/deals_collection')->count()) {
@@ -113,15 +115,15 @@ class Fiuze_Deals_Model_Observer
             $products = $currentCategory->getItems();
             foreach ($products as $product) {
                 $productDeals = Mage::getModel('fiuze_deals/deals');
-                $productDeals->setProductId($product->getEntityId());
-                $productDeals->setCategoryId($category->getId());
-                $productDeals->setProductName($product->getName());
-                $productDeals->setDealsPrice($product->getPrice());
-                $productDeals->setDealsQty($product->getQty());
-                $productDeals->setDealsActive(false);
-                $productDeals->setSortOrder(0);
-                $productDeals->setCurrentActive(0);
-                $productDeals->setOriginSpecialPrice($product->getSpecialPrice());
+                $productDeals->setData('product_id', (int)$product->getEntityId());
+                $productDeals->setData('category_id', (int)$category->getId());
+                $productDeals->setData('product_name', $product->getName());
+                $productDeals->setData('deals_price', (float)$product->getPrice());
+                $productDeals->setData('deals_qty', (int)$product->getQty());
+                $productDeals->setData('deals_active', true);
+                $productDeals->setData('sort_order', 0);
+                $productDeals->setData('current_active', 0);
+                $productDeals->setData('origin_special_price', (float)$product->getSpecialPrice());
                 try {
                     $productDeals->save();
                 } catch (Exception $ex) {
@@ -132,6 +134,73 @@ class Fiuze_Deals_Model_Observer
 
         return true;
     }
+
+    /**
+     * Add new product in category
+     * @param Varien_Event_Observer $observer
+     *
+     * @return boolean
+     */
+    public function catalogProductSaveAfter(Varien_Event_Observer $observer)
+    {
+        $product = $observer->getProduct();
+        $categoryIds = $product->getCategoryIds();
+        $categoryDeal = Mage::getResourceModel('fiuze_deals/deals_collection')
+            ->addFieldToSelect('category_id')->getFirstItem()->getData();
+
+        //verify the change category
+        $countId = Mage::getResourceModel('fiuze_deals/deals_collection')
+            ->addFilter('product_id', $product->getEntityId())
+            ->addFieldToSelect('product_id')->count();
+        if ($countId) {
+            $intersect = array_intersect($categoryIds, $categoryDeal);
+            if (!count($intersect)) {
+                Mage::getModel('fiuze_deals/deals')
+                    ->load($product->getEntityId(), 'product_id')
+                    ->delete();
+            }
+        }
+
+        $intersect = array_intersect($categoryIds, $categoryDeal);
+        if (count($intersect)) {
+            $productDeals = Mage::getModel('fiuze_deals/deals')->load($product->getEntityId(), 'product_id');
+            $productDeals->setData('product_id', $product->getEntityId());
+            $productDeals->setData('category_id', (int)$intersect[0]);
+            $productDeals->setData('product_name', $product->getName());
+            $productDeals->setData('deals_price', $product->getPrice());
+            $productDeals->setData('deals_qty', (int)$product->getQty());
+            $productDeals->setData('deals_active', true);
+            $productDeals->setData('sort_order', 0);
+            $productDeals->setData('current_active', 0);
+            $productDeals->setData('origin_special_price', (float)$product->getSpecialPrice());
+            try {
+                $productDeals->save();
+            } catch (Exception $ex) {
+                Mage::logException($ex);
+            }
+        }
+    }
+
+    /**
+     * Delete product in category
+     * @param Varien_Event_Observer $observer
+     *
+     * @return boolean
+     */
+    public function catalogProductDeleteAfter(Varien_Event_Observer $observer){
+        $product = $observer->getProduct();
+        $productId = $product->getEntityId();
+
+        try{
+            $productDeals = Mage::getModel('fiuze_deals/deals')->load($productId, 'product_id');
+            $productDeals->delete();
+        }catch (Exception $ex){
+            Mage::logException($ex);
+        }
+
+    }
+
+
 
 }
 

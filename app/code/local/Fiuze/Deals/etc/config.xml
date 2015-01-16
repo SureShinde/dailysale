@@ -84,6 +84,24 @@
                     </mymodule>
                 </observers>
             </admin_system_config_changed_section_fiuze_deals_cron_time>
+            <catalog_product_save_after>
+                <observers>
+                    <yourmodule>
+                        <type>singleton</type>
+                        <class>Fiuze_Deals_Model_Observer</class>
+                        <method>catalogProductSaveAfter</method>
+                    </yourmodule>
+                </observers>
+            </catalog_product_save_after>
+            <catalog_product_delete_after>
+                <observers>
+                    <yourmodule>
+                        <type>singleton</type>
+                        <class>Fiuze_Deals_Model_Observer</class>
+                        <method>catalogProductDeleteAfter</method>
+                    </yourmodule>
+                </observers>
+            </catalog_product_delete_after>
         </events>
     </global>
     <frontend>

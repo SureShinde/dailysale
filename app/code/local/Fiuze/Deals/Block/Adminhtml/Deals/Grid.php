@@ -64,6 +64,7 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Grid extends Mage_Adminhtml_Block_Widget
                 '{{table}}.stock_id=1',
                 'left'
             )
+            ->addAttributeToFilter('qty', array("gt" => 0))
             ->addAttributeToSelect('*');
 
         if(Mage::getResourceModel('fiuze_deals/deals_collection')->count()){
@@ -90,12 +91,10 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Grid extends Mage_Adminhtml_Block_Widget
                 array('sort_order' => 'sort_order')
             );
         }else{
-
+            $this->setCollection(Mage::getResourceModel('fiuze_deals/deals_collection'));
+            return parent::_prepareCollection();
         }
-
-
-        //$currentCategory->getSelect()->group('e.entity_id');
-        //$test = $currentCategory->getItems();
+        $test = $currentCategory->load()->getItems();
         $this->setCollection($currentCategory);
         return parent::_prepareCollection();
     }

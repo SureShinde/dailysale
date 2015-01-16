@@ -19,13 +19,7 @@ class Fiuze_Deals_Adminhtml_DealsController extends Mage_Adminhtml_Controller_Ac
             ->_title($this->__('Daily Cron Products'));
 
         $this->_addBreadcrumb(Mage::helper('fiuze_deals')->__('Fiuze Daily'), Mage::helper('fiuze_deals')->__('Daily Cron Products'), $this->getUrl());
-        $this->_title($this->__('Deals'))
-            ->_title($this->__('Webinse'));
-        // load layout, set active menu and breadcrumbs
-        $this->loadLayout()
-            ->_setActiveMenu('hr')
-            ->_addBreadcrumb(Mage::helper('cms')->__('CMS'), Mage::helper('cms')->__('CMS'))
-            ->_addBreadcrumb(Mage::helper('cms')->__('Deals Pages'), Mage::helper('cms')->__('Deals Pages'));
+        $this->_title($this->__('Deals'));
         return $this;
     }
 
@@ -51,8 +45,9 @@ class Fiuze_Deals_Adminhtml_DealsController extends Mage_Adminhtml_Controller_Ac
     public function editAction()
     {
         $this->_initGroup();
-        $this->loadLayout();
-        $this->_setActiveMenu('hr/dailydeals');
+        $this->loadLayout()
+            ->_setActiveMenu('fiuze_deals')
+            ->_title($this->__('Daily Cron Products'));
         $this->_addBreadcrumb(Mage::helper('adminhtml')->__('Product Discount'), Mage::helper('adminhtml')->__('Product Discount'));
         $this->_addBreadcrumb(Mage::helper('adminhtml')->__('Discount'), Mage::helper('adminhtml')->__('Discount'), $this->getUrl('*/discount'));
 
@@ -103,6 +98,11 @@ class Fiuze_Deals_Adminhtml_DealsController extends Mage_Adminhtml_Controller_Ac
     {
         $this->_title($this->__('New'));
 
+        if (!Mage::getResourceModel('fiuze_deals/deals_collection')->count()) {
+            Mage::getSingleton('adminhtml/session')->addWarning( Mage::helper('fiuze_deals')->__('Warning: add current deals category in system config'));
+            $this->_forward('list');
+            return;
+        }
         $this->_initAction();
         $this->renderLayout();
     }

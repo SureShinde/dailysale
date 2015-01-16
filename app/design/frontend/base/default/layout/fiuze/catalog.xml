@@ -19,9 +19,13 @@
             </action>
         </reference>
         <reference name="content">
-            <block type="core/template" name="333" template="deals/product_deal.phtml"/>
-
+            <block type="core/template" name="scriptproduct">
+                <action method="setTemplate">
+                    <template>fiuze/deals/product_deal.phtml</template>
+                </action>
+            </block>
         </reference>
+
         <update handle="catalog_product_view"/>
         <update handle="PRODUCT_TYPE_simple"/>
         <update handle="PRODUCT_TYPE_configurable"/>
