@@ -82,7 +82,8 @@ class Fiuze_Deals_Adminhtml_DealsController extends Mage_Adminhtml_Controller_Ac
             try {
                 $productDeals->setDealsPrice($data['deal_price']);
                 $productDeals->setDealsQty($data['deal_qty']);
-                $productDeals->setDealsActive($data['active']?true:false);
+                $productDeals->setSortOrder($data['sort_order']);
+                $productDeals->setDealsActive($data['deals_active']?true:false);
                 $productDeals->save();
                 $this->getResponse()->setRedirect($this->getUrl('*/*/list'));
                 return;

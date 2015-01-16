@@ -11,6 +11,21 @@
 
 <layout version="0.1.0">
     <fiuze_deals_index_index>
+        <reference name="head">
+            <action method="removeItem">
+                <type>skin_js</type>
+                <name>js/product.js</name>
+                <params/>
+            </action>
+        </reference>
+        <reference name="content">
+            <block type="core/template" name="333" template="deals/product_deal.phtml"/>
+
+        </reference>
         <update handle="catalog_product_view"/>
+        <update handle="PRODUCT_TYPE_simple"/>
+        <update handle="PRODUCT_TYPE_configurable"/>
+        <update handle="PRODUCT_TYPE_grouped"/>
+        <update handle="PRODUCT_TYPE_virtual"/>
     </fiuze_deals_index_index>
 </layout>

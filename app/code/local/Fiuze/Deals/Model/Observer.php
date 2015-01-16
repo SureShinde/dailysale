@@ -5,27 +5,54 @@
  * @package     Fiuze_Deals
  * @author     Alena Tsareva <alena.tsareva@webinse.com>
  */
-
-class Fiuze_Deals_Model_Observer{
-    const CRON_STRING_PATH  = 'system/cron/cron_expr_heartbeat';
+class Fiuze_Deals_Model_Observer
+{
+    const CRON_STRING_PATH = 'system/cron/cron_expr_heartbeat';
 
     /**
      *
      * @param Varien_Event_Observer $observer
      */
-    public function catalogBlockProductListCollection(Varien_Event_Observer $observer){
+    public function catalogBlockProductListCollection(Varien_Event_Observer $observer)
+    {
         $observer->getCollection()->addAttributeToSelect('*');
 
     }
 
     /**
-     * Update cron catalog
+     * Update cron product
      *
      * @return public
      */
-    public function dailyCatalogUpdate(){
-
-        return true;
+    public static function dailyCatalogUpdate()
+    {
+        $productDeals = Mage::getResourceModel('fiuze_deals/deals_collection')
+            ->addFilter('deals_active', 1)
+            ->addOrder('sort_order', Varien_Data_Collection::SORT_ORDER_ASC)->getItems();
+        $productActive = Mage::getResourceModel('fiuze_deals/deals_collection')
+            ->addFilter('current_active', 1)->getSize();
+        if (!$productActive) {
+            $item = array_shift($productDeals);
+            $item->setCurrentActive(1);
+            $item->save();
+            return;
+        }
+        foreach ($productDeals as $item) {
+            if ($item->getCurrentActive()) {
+                $item->setCurrentActive(0);
+                $item->setStartTime(0);
+                $item->save();
+                $item = current($productDeals);
+                $item->setCurrentActive(1);
+                $date = new Zend_Date();
+                $date->add('5', Zend_Date::MINUTE);
+                $hghgh = Mage::helper('fiuze_deals')->getTimeCron();
+                $item->setStartTime($date);
+                $item->save();
+                return;
+            }
+        }
+        return;
     }
 
 
@@ -35,21 +62,22 @@ class Fiuze_Deals_Model_Observer{
      *
      * @return public
      */
-    public function adminSystemConfigChanged(Varien_Event_Observer $observer){
-        if(strnatcasecmp($observer->getData('name'),'admin_system_config_changed_section_fiuze_deals_cron_time')){
-            $timeCron=Mage::helper('fiuze_deals')->getTimeCron();
+    public function adminSystemConfigChanged(Varien_Event_Observer $observer)
+    {
+        if (strnatcasecmp($observer->getData('name'), 'admin_system_config_changed_section_fiuze_deals_cron_time')) {
+            $timeCron = Mage::helper('fiuze_deals')->getTimeCron();
             list($hh, $mm, $ss) = explode(',', $timeCron);
             $mm = $hh * 60 + $mm;
 
             $cronExprArray = array(
-                intval($mm)? '/'.intval($mm):'*',              # Minute
+                intval($mm) ? '/' . intval($mm) : '*',              # Minute
                 '*',                                           # Hour
                 '*',                                           # Day of the Month
                 '*',                                           # Month of the Year
                 '*',                                           # Day of the Week
             );
             $cronExprString = join(' ', $cronExprArray);
-            $cronExprString='*'.$cronExprString;
+            $cronExprString = '*' . $cronExprString;
 
             try {
                 Mage::getModel('core/config_data')
@@ -65,7 +93,7 @@ class Fiuze_Deals_Model_Observer{
             // Overwrite products from the selected category (active product is not stored)
             $category = Mage::helper('fiuze_deals')->getCategoryCron();
             $currentCategory = $category->getProductCollection();
-            $currentCategory->addFieldToFilter('status',Mage_Catalog_Model_Product_Status::STATUS_ENABLED)
+            $currentCategory->addFieldToFilter('status', Mage_Catalog_Model_Product_Status::STATUS_ENABLED)
                 ->joinField(
                     'qty',
                     'cataloginventory/stock_item',
@@ -76,14 +104,14 @@ class Fiuze_Deals_Model_Observer{
                 )
                 ->addAttributeToSelect('*');
 
-            if(Mage::getResourceModel('fiuze_deals/deals_collection')->count()){
-                foreach(Mage::getResourceModel('fiuze_deals/deals_collection') as $item){
-                    $item ->delete();
+            if (Mage::getResourceModel('fiuze_deals/deals_collection')->count()) {
+                foreach (Mage::getResourceModel('fiuze_deals/deals_collection') as $item) {
+                    $item->delete();
                 }
             }
 
             $products = $currentCategory->getItems();
-            foreach($products as $product){
+            foreach ($products as $product) {
                 $productDeals = Mage::getModel('fiuze_deals/deals');
                 $productDeals->setProductId($product->getEntityId());
                 $productDeals->setCategoryId($category->getId());
@@ -91,9 +119,12 @@ class Fiuze_Deals_Model_Observer{
                 $productDeals->setDealsPrice($product->getPrice());
                 $productDeals->setDealsQty($product->getQty());
                 $productDeals->setDealsActive(false);
-                try{
+                $productDeals->setSortOrder(0);
+                $productDeals->setCurrentActive(0);
+                $productDeals->setOriginSpecialPrice($product->getSpecialPrice());
+                try {
                     $productDeals->save();
-                }catch (Exception $ex){
+                } catch (Exception $ex) {
                     Mage::log($ex->getMessage());
                 }
             }
