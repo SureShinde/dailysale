@@ -102,6 +102,14 @@
                     </yourmodule>
                 </observers>
             </catalog_product_delete_after>
+            <sales_order_place_after>
+                <observers>
+                    <solvingmagento_orderexport>
+                        <class>Fiuze_Deals_Model_Observer</class>
+                        <method>salesOrderPlaceAfter</method>
+                    </solvingmagento_orderexport>
+                </observers>
+            </sales_order_place_after>
         </events>
     </global>
     <frontend>

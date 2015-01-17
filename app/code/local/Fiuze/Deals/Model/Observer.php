@@ -187,17 +187,28 @@ class Fiuze_Deals_Model_Observer
      *
      * @return boolean
      */
-    public function catalogProductDeleteAfter(Varien_Event_Observer $observer){
+    public function catalogProductDeleteAfter(Varien_Event_Observer $observer)
+    {
         $product = $observer->getProduct();
         $productId = $product->getEntityId();
-
-        try{
+        try {
             $productDeals = Mage::getModel('fiuze_deals/deals')->load($productId, 'product_id');
             $productDeals->delete();
-        }catch (Exception $ex){
+        } catch (Exception $ex) {
             Mage::logException($ex);
         }
+    }
 
+    /**
+     * Change sales
+     * @param Varien_Event_Observer $observer
+     *
+     * @return boolean
+     */
+    public function salesOrderPlaceAfter(Varien_Event_Observer $observer){
+        $order = $observer->getEvent()->getOrder();
+
+        return true;
     }
 
 

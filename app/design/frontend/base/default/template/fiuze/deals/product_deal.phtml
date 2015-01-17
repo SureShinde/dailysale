@@ -2,13 +2,11 @@
     <?php
         $productActive = Mage::getResourceModel('fiuze_deals/deals_collection')
             ->addFilter('current_active', 1)->getFirstItem();
-        $date = new Zend_Date($productActive->getData('end_time'));
-
     ?>
     function timer() {
         var now = new Date();
         var nowDate = new Date(now.getTime() + now.getTimezoneOffset() * 60000);
-        var achiveDate = new Date('<?php echo $productActive->getData('start_time') ?>'); //Задаем дату, к которой будет осуществляться обратный отсчет
+        var achiveDate = new Date('<?php echo $productActive->getData('end_time') ?>'); //Задаем дату, к которой будет осуществляться обратный отсчет
         var result = (achiveDate - nowDate) + 1000;
         if (result < 0) {
             var elmntNew = document.getElementById('timer');
