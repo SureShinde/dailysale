@@ -19,7 +19,13 @@ class Fiuze_Deals_Adminhtml_DealsController extends Mage_Adminhtml_Controller_Ac
             ->_title($this->__('Daily Cron Products'));
 
         $this->_addBreadcrumb(Mage::helper('fiuze_deals')->__('Fiuze Daily'), Mage::helper('fiuze_deals')->__('Daily Cron Products'), $this->getUrl());
-
+        $this->_title($this->__('Deals'))
+            ->_title($this->__('Webinse'));
+        // load layout, set active menu and breadcrumbs
+        $this->loadLayout()
+            ->_setActiveMenu('hr')
+            ->_addBreadcrumb(Mage::helper('cms')->__('CMS'), Mage::helper('cms')->__('CMS'))
+            ->_addBreadcrumb(Mage::helper('cms')->__('Deals Pages'), Mage::helper('cms')->__('Deals Pages'));
         return $this;
     }
 
@@ -27,10 +33,10 @@ class Fiuze_Deals_Adminhtml_DealsController extends Mage_Adminhtml_Controller_Ac
     {
         $this->_title($this->__('Product Discount'))->_title($this->__('Manage'));
 
-        Mage::register('current_user', Mage::getModel('catalog/product'));
+        Mage::register('current_product_deal', Mage::getModel('catalog/product'));
         $userId = $this->getRequest()->getParam('id');
         if (!is_null($userId)) {
-            Mage::registry('current_user')->load($userId);
+            Mage::registry('current_product_deal')->load($userId);
         }
     }
 
@@ -57,8 +63,52 @@ class Fiuze_Deals_Adminhtml_DealsController extends Mage_Adminhtml_Controller_Ac
         }
         $this->getLayout()->getBlock('content')
             ->append($this->getLayout()->createBlock('fiuze_deals/adminhtml_deals_edit', 'discount')
-                ->setEditMode((bool)Mage::registry('current_user')->getId()));
+                ->setEditMode((bool)Mage::registry('current_product_deal')->getId()));
 
+        $this->renderLayout();
+    }
+
+    /**
+     * Controller for save new deal product
+     */
+    public function saveAction()
+    {
+        $data = $this->getRequest()->getParams();
+
+        $id =(int) $this->getRequest()->getParam('id');
+        if ($id) {
+            $productDeals = Mage::getResourceModel('fiuze_deals/deals_collection')
+                ->addFilter('product_id',$id)->getFirstItem();
+            try {
+                $productDeals->setDealsPrice($data['deal_price']);
+                $productDeals->setDealsQty($data['deal_qty']);
+                $productDeals->setDealsActive($data['active']?true:false);
+                $productDeals->save();
+                $this->getResponse()->setRedirect($this->getUrl('*/*/list'));
+                return;
+            } catch (Exception $e) {
+                Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+                $this->getResponse()->setRedirect($this->getUrl('*/*/edit', array('id' => $id)));
+                return;
+            }
+        } else {
+            Mage::getSingleton('adminhtml/session')->addError(Mage::helper('adminhtml')->__('User with id \'' . (int)$id . '\' not found.'));
+            $this->getResponse()->setRedirect($this->getUrl('*/*/edit', array('id' => $id)));
+            return;
+        }
+    }
+
+    public function newAction()
+    {
+        $this->_title($this->__('New'));
+
+        $this->_initAction();
+        $this->renderLayout();
+    }
+
+    public function cronAction()
+    {
+        $this->_initAction();
         $this->renderLayout();
     }
 }

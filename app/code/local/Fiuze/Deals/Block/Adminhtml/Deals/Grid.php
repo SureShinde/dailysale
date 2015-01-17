@@ -52,17 +52,39 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Grid extends Mage_Adminhtml_Block_Widget
      */
     protected function _prepareCollection()
     {
-        $tableName = Mage::getSingleton('core/resource')->getTableName('fiuze_deals/deals');
-        $this->updateDealsStatuses();
-        $collection = Mage::getResourceModel('catalog/product_collection')
-            ->addAttributeToSelect('*');
-            //->addAttributeToFilter('deal_status', array("notnull" => true));
 
-        //$collection->joinAttribute('deal_statuses', 'catalog_product/deal_statuses', 'entity_id', null, 'inner');
-//        $collection->getSelect()->joinLeft($tableName, 'at_deal_statuses.value = '.$tableName.'.code', array(
-//            'deal_statuses' => 'title',
-//        ));
-        $this->setCollection($collection);
+        $currentCategory = Mage::helper('fiuze_deals')->getCategoryCron();
+        $currentCategory = $currentCategory->getProductCollection();
+        $currentCategory->addFieldToFilter('status',Mage_Catalog_Model_Product_Status::STATUS_ENABLED)
+            ->addFieldToFilter('status',Mage_Catalog_Model_Product_Status::STATUS_ENABLED)
+            ->joinField(
+                'qty',
+                'cataloginventory/stock_item',
+                'qty',
+                'product_id=entity_id',
+                '{{table}}.stock_id=1',
+                'left'
+            )
+            ->addAttributeToSelect('*');
+
+        $tableName = Mage::getSingleton('core/resource')->getTableName('fiuze_deals/deals');
+
+        $currentCategory->getSelect()->join(
+            array('bonus' => $tableName), 'e.entity_id = bonus.product_id',
+            array('deals_active' => 'deals_active')
+        );
+        $currentCategory->getSelect()->join(
+            array('bonus1' => $tableName), 'e.entity_id = bonus1.product_id',
+            array('deals_price' => 'deals_price')
+        );
+        $currentCategory->getSelect()->join(
+            array('bonus2' => $tableName), 'e.entity_id = bonus2.product_id',
+            array('deals_qty' => 'deals_qty')
+        );
+
+        //$currentCategory->getSelect()->group('e.entity_id');
+        //$test = $currentCategory->getItems();
+        $this->setCollection($currentCategory);
         return parent::_prepareCollection();
     }
 
@@ -77,11 +99,13 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Grid extends Mage_Adminhtml_Block_Widget
         $this->addColumn('product_name', array(
             'header' => $helper->__('Product Name'),
             'index' => 'name',
+            'width' => '20%',
         ));
 
         $this->addColumn('product_sku', array(
             'header' => $helper->__('Product Sku'),
             'index' => 'sku',
+            'width' => '10%',
         ));
 
         $this->addColumn('price', array(
@@ -91,11 +115,11 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Grid extends Mage_Adminhtml_Block_Widget
             'index' => 'price',
         ));
 
-        $this->addColumn('deal_price', array(
+        $this->addColumn('deals_price', array(
             'header' => $helper->__('Deal price'),
             'type' => 'price',
             'currency_code' => $store->getBaseCurrency()->getCode(),
-            'index' => 'deal_price',
+            'index' => 'deals_price',
         ));
 
         $this->addColumn('qty', array(
@@ -104,12 +128,21 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Grid extends Mage_Adminhtml_Block_Widget
             'index' => 'qty',
         ));
 
-        $this->addColumn('deal_qty', array(
+        $this->addColumn('deals_qty', array(
             'header' => $helper->__('Deal Quantity'),
             'type' => 'number',
-            'index' => 'deal_qty',
+            'index' => 'deals_qty',
         ));
 
+        $this->addColumn('deals_active',
+            array(
+                'header'=> Mage::helper('catalog')->__('Status'),
+                'width' => '70px',
+                'index' => 'deals_active',
+                'type'  => 'options',
+                'options' => array('0' => 'Disabled','1' =>'Enabled'),
+            )
+        );
 
         $this->addColumn('view_deal_product', array(
             'header' => $helper->__('Edit'),
@@ -117,6 +150,7 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Grid extends Mage_Adminhtml_Block_Widget
             'getter' => 'getId',
             'filter' => false,
             'is_system' => true,
+            'width' => '5%',
             'actions' => array(
                 array(
                     'caption' => $helper->__('Edit'),
@@ -126,7 +160,7 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Grid extends Mage_Adminhtml_Block_Widget
 
         $this->addColumn('view_product', array(
             'header' => $helper->__('View Product'),
-            'width' => '100',
+            'width' => '5%',
             'type' => 'action',
             'getter' => 'getId',
             'filter' => false,

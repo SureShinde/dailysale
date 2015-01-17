@@ -21,6 +21,7 @@ class Fiuze_Deals_Block_Adminhtml_Deals extends Mage_Adminhtml_Block_Widget_Grid
             'class'   => 'add',
         ));
 
+
         parent::__construct();
         if (!Mage::getSingleton('admin/session')->isAllowed('*/*/create')) {
             $this->_removeButton('add');
