@@ -54,8 +54,8 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Grid extends Mage_Adminhtml_Block_Widget
     {
         $currentCategory = Mage::helper('fiuze_deals')->getCategoryCron();
         $currentCategory = $currentCategory->getProductCollection();
-        $currentCategory->addFieldToFilter('status',Mage_Catalog_Model_Product_Status::STATUS_ENABLED)
-            ->addFieldToFilter('status',Mage_Catalog_Model_Product_Status::STATUS_ENABLED)
+        $currentCategory->addFieldToFilter('status', Mage_Catalog_Model_Product_Status::STATUS_ENABLED)
+            ->addFieldToFilter('status', Mage_Catalog_Model_Product_Status::STATUS_ENABLED)
             ->joinField(
                 'qty',
                 'cataloginventory/stock_item',
@@ -67,7 +67,7 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Grid extends Mage_Adminhtml_Block_Widget
             ->addAttributeToFilter('qty', array("gt" => 0))
             ->addAttributeToSelect('*');
 
-        if(Mage::getResourceModel('fiuze_deals/deals_collection')->count()){
+        if (Mage::getResourceModel('fiuze_deals/deals_collection')->count()) {
             $tableName = Mage::getSingleton('core/resource')->getTableName('fiuze_deals/deals');
 
             $currentCategory->getSelect()->join(
@@ -90,7 +90,7 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Grid extends Mage_Adminhtml_Block_Widget
                 array('bonus4' => $tableName), 'e.entity_id = bonus4.product_id',
                 array('sort_order' => 'sort_order')
             );
-        }else{
+        } else {
             $this->setCollection(Mage::getResourceModel('fiuze_deals/deals_collection'));
             return parent::_prepareCollection();
         }
@@ -163,11 +163,11 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Grid extends Mage_Adminhtml_Block_Widget
 
         $this->addColumn('deals_active',
             array(
-                'header'=> Mage::helper('catalog')->__('Deal status'),
+                'header' => Mage::helper('catalog')->__('Deal status'),
                 'width' => '70px',
                 'index' => 'deals_active',
-                'type'  => 'options',
-                'options' => array('0' => 'Disabled','1' =>'Enabled'),
+                'type' => 'options',
+                'options' => array('0' => 'Disabled', '1' => 'Enabled'),
             )
         );
 
@@ -191,7 +191,7 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Grid extends Mage_Adminhtml_Block_Widget
             'type' => 'action',
             'getter' => 'getId',
             'filter' => false,
-            'is_system'=>true,
+            'is_system' => true,
             'actions' => array(
                 array(
                     'caption' => $helper->__('View Product'),

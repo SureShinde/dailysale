@@ -13,10 +13,41 @@ class Fiuze_Deals_Model_Observer
      *
      * @param Varien_Event_Observer $observer
      */
+    public function salesOrderSaveAfter(Varien_Event_Observer $observer)
+    {
+        $order = $observer->getEvent()->getOrder();
+        if ((strcasecmp($order->getState(), 'complete') == 0)) {
+            foreach ($order->getItemsCollection() as $item) {
+                $productId = $item->getProductId();
+                $productDeals = Mage::getModel('fiuze_deals/deals')->load($productId, 'product_id');
+
+                if($productDeals->getData()){
+                    try {
+                        $qty = (int)$item->getQtyOrdered();
+                        $dealQty = $productDeals->getData('deals_qty');
+                        $productDeals->setData('deals_qty', $dealQty - $qty);
+                        $productDeals->save();
+                    } catch (Exception $ex) {
+                        Mage::logException($ex);
+                    }
+                }
+                //$product = Mage::getModel('catalog/product')->load($productId);
+                //$stock_obj = Mage::getModel('cataloginventory/stock_item')->loadByProduct($productId);
+                //$stockData = $stock_obj->getData();
+                //$product_qty_before = (int)$stock_obj->getQty();
+                //$product_qty_after = (int)($product_qty_before + $qty);
+                //$stockData['qty'] = $product_qty_after;
+            }
+        }
+    }
+
+    /**
+     *
+     * @param Varien_Event_Observer $observer
+     */
     public function catalogBlockProductListCollection(Varien_Event_Observer $observer)
     {
         $observer->getCollection()->addAttributeToSelect('*');
-
     }
 
     /**
@@ -34,22 +65,38 @@ class Fiuze_Deals_Model_Observer
 
         $productActive = Mage::getResourceModel('fiuze_deals/deals_collection')
             ->addFilter('current_active', 1)->getSize();
-        if (!$productActive) {
-            $item = array_shift($productDeals);
-            $item->setCurrentActive(1);
-            $item->save();
+        if (!$productDeals) {
+            Mage::app()->getResponse()->setRedirect(Mage::getBaseUrl());
             return;
         }
         try {
+            if (!$productActive) {
+                $item = array_shift($productDeals);
+                $item->setCurrentActive(1);
+                //set origin special price
+                $product = Mage::getModel('catalog/product')->load($item->getData('product_id'));
+                $dealSpecialPrice = $product->getSpecialPrice();
+                $product->setSpecialPrice((float)$item->getData('deals_price'));
+                $item->setData('origin_special_price', $dealSpecialPrice);
+                list($hh, $mm, $ss) = explode(",", Mage::helper('fiuze_deals')->getTimeCron());
+                $mm += $hh * 60;
+                $date = new Zend_Date();
+                $date->add($mm, Zend_Date::MINUTE);
+                $item->setEndTime($date);
+                $product->save();
+                $item->save();
+                return;
+            }
+
             //cyclical overkill
             foreach ($productDeals as $item) {
                 if ($item->getCurrentActive()) {
                     $item->setCurrentActive(0);
                     $item->setEndTime(0);
                     //set origin special price
-                    $product = Mage::getModel('fiuze_deals/deals')->load($item->getData('product_id'));
+                    $product = Mage::getModel('catalog/product')->load($item->getData('product_id'));
                     $dealSpecialPrice = $product->getSpecialPrice();
-                    $product->setSpecialPrice($item->getData('origin_special_price'));
+                    $product->setSpecialPrice((float)$item->getData('origin_special_price'));
                     $item->setData('origin_special_price', $dealSpecialPrice);
                     $product->save();
                     $item->save();
@@ -62,9 +109,9 @@ class Fiuze_Deals_Model_Observer
                     $date->add($mm, Zend_Date::MINUTE);
                     $item->setEndTime($date);
                     //set deals special price
-                    $product = Mage::getModel('fiuze_deals/deals')->load($item->getData('product_id'));
+                    $product = Mage::getModel('catalog/product')->load($item->getData('product_id'));
                     $dealSpecialPrice = $product->getSpecialPrice();
-                    $product->setSpecialPrice($item->getData('origin_special_price'));
+                    $product->setSpecialPrice((float)$item->getData('deals_price'));
                     $item->setData('origin_special_price', $dealSpecialPrice);
                     $product->save();
                     $item->save();

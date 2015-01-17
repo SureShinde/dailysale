@@ -69,47 +69,48 @@
             </controller_front_init_routers>
             <catalog_block_product_list_collection>
                 <observers>
-                    <dailydeals_catalog_block_product_list_collection>
+                    <fiuzedeals_catalog_block_product_list_collection>
                         <class>Fiuze_Deals_Model_Observer</class>
                         <method>catalogBlockProductListCollection</method>
-                    </dailydeals_catalog_block_product_list_collection>
+                    </fiuzedeals_catalog_block_product_list_collection>
                 </observers>
             </catalog_block_product_list_collection>
             <admin_system_config_changed_section_fiuze_deals_cron_time>
                 <observers>
-                    <mymodule>
+                    <fiuzedeals_admin_system_config_changed_section_fiuze_deals_cron_time>
                         <type>singleton</type>
                         <class>Fiuze_Deals_Model_Observer</class>
                         <method>adminSystemConfigChanged</method>
-                    </mymodule>
+                    </fiuzedeals_admin_system_config_changed_section_fiuze_deals_cron_time>
                 </observers>
             </admin_system_config_changed_section_fiuze_deals_cron_time>
             <catalog_product_save_after>
                 <observers>
-                    <yourmodule>
+                    <fiuzedeals_catalog_product_save_after>
                         <type>singleton</type>
                         <class>Fiuze_Deals_Model_Observer</class>
                         <method>catalogProductSaveAfter</method>
-                    </yourmodule>
+                    </fiuzedeals_catalog_product_save_after>
                 </observers>
             </catalog_product_save_after>
             <catalog_product_delete_after>
                 <observers>
-                    <yourmodule>
+                    <fiuzedeals_catalog_product_delete_after>
                         <type>singleton</type>
                         <class>Fiuze_Deals_Model_Observer</class>
                         <method>catalogProductDeleteAfter</method>
-                    </yourmodule>
+                    </fiuzedeals_catalog_product_delete_after>
                 </observers>
             </catalog_product_delete_after>
-            <sales_order_place_after>
+            <sales_order_save_after>
                 <observers>
-                    <solvingmagento_orderexport>
+                    <fiuzedeals_sales_order_save_after>
+                        <type>singleton</type>
                         <class>Fiuze_Deals_Model_Observer</class>
-                        <method>salesOrderPlaceAfter</method>
-                    </solvingmagento_orderexport>
+                        <method>salesOrderSaveAfter</method>
+                    </fiuzedeals_sales_order_save_after>
                 </observers>
-            </sales_order_place_after>
+            </sales_order_save_after>
         </events>
     </global>
     <frontend>
@@ -170,8 +171,12 @@
     <crontab>
         <jobs>
             <fiuze_deals_scheduler>
-                <schedule><config_path>system/cron/cron_expr_heartbeat</config_path></schedule>
-                <run><model>fiuze_deals/observer::dailyCatalogUpdate</model></run>
+                <schedule>
+                    <config_path>system/cron/cron_expr_heartbeat</config_path>
+                </schedule>
+                <run>
+                    <model>fiuze_deals/observer::dailyCatalogUpdate</model>
+                </run>
             </fiuze_deals_scheduler>
         </jobs>
     </crontab>
