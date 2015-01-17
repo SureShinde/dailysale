@@ -28,7 +28,10 @@ class Fiuze_Deals_Model_Observer
     {
         $productDeals = Mage::getResourceModel('fiuze_deals/deals_collection')
             ->addFilter('deals_active', 1)
-            ->addOrder('sort_order', Varien_Data_Collection::SORT_ORDER_ASC)->getItems();
+            ->addOrder('sort_order', Varien_Data_Collection::SORT_ORDER_ASC);
+        $productDeals->getSelect()->where("`deals_qty` > 0");
+        $productDeals = $productDeals->getItems();
+
         $productActive = Mage::getResourceModel('fiuze_deals/deals_collection')
             ->addFilter('current_active', 1)->getSize();
         if (!$productActive) {
@@ -37,22 +40,39 @@ class Fiuze_Deals_Model_Observer
             $item->save();
             return;
         }
-        //cyclical overkill
-        foreach ($productDeals as $item) {
-            if ($item->getCurrentActive()) {
-                $item->setCurrentActive(0);
-                $item->setEndTime(0);
-                $item->save();
-                $item = current($productDeals);
-                $item->setCurrentActive(1);
-                list($hh, $mm, $ss) = explode(",", Mage::helper('fiuze_deals')->getTimeCron());
-                $mm += $hh * 60;
-                $date = new Zend_Date();
-                $date->add($mm, Zend_Date::MINUTE);
-                $item->setEndTime($date);
-                $item->save();
-                return;
+        try {
+            //cyclical overkill
+            foreach ($productDeals as $item) {
+                if ($item->getCurrentActive()) {
+                    $item->setCurrentActive(0);
+                    $item->setEndTime(0);
+                    //set origin special price
+                    $product = Mage::getModel('fiuze_deals/deals')->load($item->getData('product_id'));
+                    $dealSpecialPrice = $product->getSpecialPrice();
+                    $product->setSpecialPrice($item->getData('origin_special_price'));
+                    $item->setData('origin_special_price', $dealSpecialPrice);
+                    $product->save();
+                    $item->save();
+                    ///*****next item
+                    $item = current($productDeals);
+                    $item->setCurrentActive(1);
+                    list($hh, $mm, $ss) = explode(",", Mage::helper('fiuze_deals')->getTimeCron());
+                    $mm += $hh * 60;
+                    $date = new Zend_Date();
+                    $date->add($mm, Zend_Date::MINUTE);
+                    $item->setEndTime($date);
+                    //set deals special price
+                    $product = Mage::getModel('fiuze_deals/deals')->load($item->getData('product_id'));
+                    $dealSpecialPrice = $product->getSpecialPrice();
+                    $product->setSpecialPrice($item->getData('origin_special_price'));
+                    $item->setData('origin_special_price', $dealSpecialPrice);
+                    $product->save();
+                    $item->save();
+                    return;
+                }
             }
+        } catch (Exception $ex) {
+            Mage::logException($ex);
         }
         return;
     }
@@ -205,12 +225,12 @@ class Fiuze_Deals_Model_Observer
      *
      * @return boolean
      */
-    public function salesOrderPlaceAfter(Varien_Event_Observer $observer){
+    public function salesOrderPlaceAfter(Varien_Event_Observer $observer)
+    {
         $order = $observer->getEvent()->getOrder();
 
         return true;
     }
-
 
 
 }
