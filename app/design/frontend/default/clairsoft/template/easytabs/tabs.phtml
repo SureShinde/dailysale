@@ -82,20 +82,14 @@
                     //sku
                         if (strlen(strip_tags(trim($this->getChildHtml('custom2'))))>0) {
                             echo ('<span id="sku-tab-title"> SKU:&nbsp; </span>'. $this->getChildHtml('custom2'));
-                        } else {
-                            echo ('<span id="sku-tab-title"> SKU:&nbsp; </span> <div class="tab-secondary-info">SKU information not available</div>');
                         }
                     //condition
-                        if (strlen(strip_tags(trim($this->getChildHtml('custom2'))))>0) {
+                        if (strlen(strip_tags(trim($this->getChildHtml('custom3'))))>0) {
                             echo ('<span id="condition-tab-title"> Condition:&nbsp; </span>'. $this->getChildHtml('custom3'));
-                        } else {
-                            echo ('<span id="condition-tab-title"> Condition:&nbsp; </span><div class="tab-secondary-info">Condition information not available</div>');
                         }
                     //packaging
                         if (strlen(strip_tags(trim($this->getChildHtml('custom1'))))>0) {
                             echo ('<span id="packaging-tab-title"> Packaging:&nbsp; </span>'. $this->getChildHtml('custom1'));
-                        } else {
-                            echo ('<span id="packaging-tab-title"> Packaging:&nbsp; </span> <div class="tab-secondary-info">Packaging information not available</div>');
                         }
                         echo '<ul class="tab-feature-list"><span id="features-tab-title"> Features:&nbsp; </span>';
                         foreach ($jsonData as $jsonItem){
@@ -107,52 +101,36 @@
                 //sku
                     if (strlen(strip_tags(trim($this->getChildHtml('custom2'))))>0) {
                         echo ('<span id="sku-tab-title"> SKU:&nbsp; </span>'. $this->getChildHtml('custom2'));
-                    } else {
-                        echo ('<span id="sku-tab-title"> SKU:&nbsp; </span> <div class="tab-secondary-info">SKU information not available</div>');
                     }
                 //condition
-                    if (strlen(strip_tags(trim($this->getChildHtml('custom2'))))>0) {
+                    if (strlen(strip_tags(trim($this->getChildHtml('custom3'))))>0) {
                         echo ('<span id="condition-tab-title"> Condition:&nbsp; </span>'. $this->getChildHtml('custom3'));
-                    } else {
-                        echo ('<span id="condition-tab-title"> Condition:&nbsp; </span><div class="tab-secondary-info">Condition information not available</div>');
                     }
                 //packaging
                     if (strlen(strip_tags(trim($this->getChildHtml('custom1'))))>0) {
                         echo ('<span id="packaging-tab-title"> Packaging:&nbsp; </span>'. $this->getChildHtml('custom1'));
-                    } else {
-                        echo ('<span id="packaging-tab-title"> Packaging:&nbsp; </span> <div class="tab-secondary-info">Packaging information not available</div>');
                     }
                 //features list
                     if (strlen(strip_tags(trim($this->getChildHtml($_tab['alias']))))>0) {
                         echo ('<span id="features-tab-title"> Features:&nbsp; </span><div class="tab-feature-list">'. $this->getChildHtml($_tab['alias']) . '</div>');
-                    } else {
-                        echo ('<span id="features-tab-title"> Features:&nbsp; </span><div class="tab-feature-list"> No Features Available. </div>');
                     }
-                    }
+                }
                 } else {
                 //sku
                     if (strlen(strip_tags(trim($this->getChildHtml('custom2'))))>0) {
                         echo ('<span id="sku-tab-title"> SKU:&nbsp; </span>'. $this->getChildHtml('custom2'));
-                    } else {
-                        echo ('<span id="sku-tab-title"> SKU:&nbsp; </span> <div class="tab-secondary-info">SKU information not available</div>');
                     }
                 //condition
-                    if (strlen(strip_tags(trim($this->getChildHtml('custom2'))))>0) {
+                    if (strlen(strip_tags(trim($this->getChildHtml('custom3'))))>0) {
                         echo ('<span id="condition-tab-title"> Condition:&nbsp; </span>'. $this->getChildHtml('custom3'));
-                    } else {
-                        echo ('<span id="condition-tab-title"> Condition:&nbsp; </span><div class="tab-secondary-info">Condition information not available</div>');
                     }
                 //packaging
                     if (strlen(strip_tags(trim($this->getChildHtml('custom1'))))>0) {
                         echo ('<span id="packaging-tab-title"> Packaging:&nbsp; </span>'. $this->getChildHtml('custom1'));
-                    } else {
-                        echo ('<span id="packaging-tab-title"> Packaging:&nbsp; </span> <div class="tab-secondary-info">Packaging information not available</div>');
                     }
                 //features list
                     if (strlen(strip_tags(trim($this->getChildHtml($_tab['alias']))))>0) {
                         echo ('<span id="features-tab-title"> Features:&nbsp; </span><div class="tab-feature-list">'. $this->getChildHtml($_tab['alias']) . '</div>');
-                    } else {
-                        echo ('<span id="features-tab-title"> Features:&nbsp; </span><div class="tab-feature-list"> No Features Available. </div>');
                     }
                 }
             } else {
