@@ -42,7 +42,7 @@ if($customer){
 	$_orders = Mage::getModel('sales/order')->getCollection()->addFieldToFilter('customer_id', $customer);                        
 	$_orderCnt = $_orders->count(); //orders count
 	//if customer has more than an order, they're not new
-	$newcustomer = ($_orderCnt > 0 ? 0 : 1);
+	$newcustomer = ($_orderCnt > 1 ? 0 : 1);
 }
 //setup currency code
 $currency = $order->getOrderCurrencyCode();
