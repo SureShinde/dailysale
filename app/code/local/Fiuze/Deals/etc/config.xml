@@ -111,6 +111,15 @@
                     </fiuzedeals_sales_order_save_after>
                 </observers>
             </sales_order_save_after>
+            <sales_order_place_after>
+                <observers>
+                    <fiuzedeals_sales_order_place_after>
+                        <type>singleton</type>
+                        <class>Fiuze_Deals_Model_Observer</class>
+                        <method>salesOrderPlaceAfter</method>
+                    </fiuzedeals_sales_order_place_after>
+                </observers>
+            </sales_order_place_after>
         </events>
     </global>
     <frontend>

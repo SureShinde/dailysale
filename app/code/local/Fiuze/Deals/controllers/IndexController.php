@@ -17,8 +17,9 @@ class Fiuze_Deals_IndexController extends Mage_Core_Controller_Front_Action
     public function indexAction()
     {
         $layout = $this->loadLayout();
-        //$block = $layout->getLayout()->createBlock('fiuze_deals/scriptproduct')->setTemplate('deals/product_deal.phtml');
-        //$this->getLayout()->getBlock('content')->append($block);
+        $config = new Varien_Object(Mage::helper('fiuze_deals')->getConf(Fiuze_Deals_Helper_Data::XML_ROOT));
+        $configLayout = $config->getData('layout');
+        $layout->getLayout()->getBlock('root')->setTemplate($configLayout);
         $this->renderLayout();
     }
 }
