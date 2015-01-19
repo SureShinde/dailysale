@@ -80,27 +80,29 @@ class Fiuze_Deals_Helper_Data extends Mage_Core_Helper_Abstract
      * @param mixed $store
      * @return public
      */
-    private function getConf($code, $store = null)
+    public static function getConf($code, $store = null)
     {
         return Mage::getStoreConfig($code, $store);
     }
 
     /**
      * Retrieve current product model (in cron set)
-     ****************************************************************-----------------------------------------
      * @return Mage_Catalog_Model_Product
      */
     public function getProductCron()
     {
         if (!Mage::registry('product')) {
+            //Fiuze_Deals_Model_Observer::dailyCatalogUpdate(); /////////////test cron
 
-            $config = new Varien_Object($this->getConf(self::XML_ROOT));
-            $categoryId = (int)$config->getData('category');
-            $category = Mage::getModel('catalog/category')->load($categoryId);
+            $productActive = Mage::getResourceModel('fiuze_deals/deals_collection')
+                ->addFilter('current_active', 1)->getFirstItem();
+            try {
+                $currentProduct = Mage::getModel('catalog/product')->load($productActive->getProductId());
+                Mage::register('product', $currentProduct);
+                Mage::register('current_product', $currentProduct);
+            } catch (Exception $ex) {
 
-            Mage::register('product', Mage::getModel('catalog/product')->load(1));
-            Mage::register('current_product', Mage::getModel('catalog/product')->load(1));
-
+            }
         }
         return Mage::registry('product');
     }
@@ -119,6 +121,7 @@ class Fiuze_Deals_Helper_Data extends Mage_Core_Helper_Abstract
         }
         return Mage::registry('category_cron');
     }
+
     /**
      * Retrieve time cron
      *

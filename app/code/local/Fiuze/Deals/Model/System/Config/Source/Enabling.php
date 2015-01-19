@@ -17,8 +17,8 @@ class Fiuze_Deals_Model_System_Config_Source_Enabling
     public function toOptionArray()
     {
         return array(
-            array('value' => true, 'label' => Mage::helper('adminhtml')->__('Enabled')),
-            array('value' => false, 'label' => Mage::helper('adminhtml')->__('Disabled')),
+            array('value' => 0, 'label' => Mage::helper('adminhtml')->__('Disabled')),
+            array('value' => 1, 'label' => Mage::helper('adminhtml')->__('Enabled')),
         );
     }
 
@@ -30,8 +30,8 @@ class Fiuze_Deals_Model_System_Config_Source_Enabling
     public function toArray()
     {
         return array(
-            1 => Mage::helper('adminhtml')->__('Enabled'),
-            0 => Mage::helper('adminhtml')->__('Disabled'),
+            '1' => Mage::helper('adminhtml')->__('Enabled'),
+            '0' => Mage::helper('adminhtml')->__('Disabled'),
         );
     }
 

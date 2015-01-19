@@ -17,24 +17,23 @@ $table = $installer->getConnection()
     ->addColumn('product_id', Varien_Db_Ddl_Table::TYPE_INTEGER)
     ->addColumn('product_name', Varien_Db_Ddl_Table::TYPE_VARCHAR)
     ->addColumn('deals_price', Varien_Db_Ddl_Table::TYPE_FLOAT)
-    ->addColumn('origin_deals_price', Varien_Db_Ddl_Table::TYPE_FLOAT)
+    ->addColumn('origin_special_price', Varien_Db_Ddl_Table::TYPE_FLOAT)
     ->addColumn('deals_qty', Varien_Db_Ddl_Table::TYPE_INTEGER)
     ->addColumn('category_id', Varien_Db_Ddl_Table::TYPE_INTEGER)
-    ->addColumn('start_time', Varien_Db_Ddl_Table::TYPE_DATETIME)
+    ->addColumn('end_time', Varien_Db_Ddl_Table::TYPE_DATETIME)
     ->addColumn('deals_active', Varien_Db_Ddl_Table::TYPE_BOOLEAN)
-
+    ->addColumn('current_active', Varien_Db_Ddl_Table::TYPE_INTEGER)
+    ->addColumn('sort_order', Varien_Db_Ddl_Table::TYPE_INTEGER)
     ->addIndex($installer->getIdxName('fiuze_deals/deals', array('product_id')), array('product_id'))
     ->addForeignKey($installer->getFkName('fiuze_deals/deals', 'product_id', 'catalog/product', 'entity_id'),
         'product_id',
         $installer->getTable('catalog/product'), 'entity_id',
         Varien_Db_Ddl_Table::ACTION_CASCADE, Varien_Db_Ddl_Table::ACTION_CASCADE)
-
     ->addIndex($installer->getIdxName('fiuze_deals/deals', array('category_id')), array('category_id'))
     ->addForeignKey($installer->getFkName('fiuze_deals/deals', 'category_id', 'catalog/category', 'entity_id'),
         'category_id',
         $installer->getTable('catalog/category'), 'entity_id',
         Varien_Db_Ddl_Table::ACTION_CASCADE, Varien_Db_Ddl_Table::ACTION_CASCADE)
-
     ->setComment('Deals Rotation Table');
 
 $installer->getConnection()->createTable($table);

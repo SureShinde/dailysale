@@ -27,8 +27,16 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Products extends Mage_Adminhtml_Block_Wi
     protected function _prepareCollection()
     {
         $collection = Mage::getResourceModel('catalog/product_collection')
-            ->addAttributeToSelect('*')
-            ->addAttributeToFilter('visibility', array('neq' => 1));
+            ->addAttributeToFilter('visibility', array('neq' => 1))
+            ->addAttributeToSelect('*');
+
+        //exclude products available in this category
+        if (Mage::getResourceModel('fiuze_deals/deals_collection')->count()) {
+            $current = Mage::getResourceModel('fiuze_deals/deals_collection')
+                ->addFieldToSelect('product_id')->getData();
+            $collection->AddAttributeToFilter ('entity_id', array ('nin' => $current));
+        }
+
         $this->setCollection($collection);
         return parent::_prepareCollection();
     }
@@ -103,5 +111,4 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Products extends Mage_Adminhtml_Block_Wi
     {
         return $this->getUrl('*/*/products', array('_current' => true));
     }
-
 }

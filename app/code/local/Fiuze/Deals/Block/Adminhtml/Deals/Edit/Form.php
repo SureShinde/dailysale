@@ -44,6 +44,15 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Edit_Form extends Mage_Adminhtml_Block_W
         $qty = $data->getStockItem()->getQty();
         $data->setQty($qty);
 
+        $originSpecialPrice = $productDeals->getOriginSpecialPrice();
+        $data->setOriginSpecialPrice($originSpecialPrice);
+
+        $sortOrder = $productDeals->getSortOrder();
+        $data->setSortOrder($sortOrder);
+
+        $dealsActive = $productDeals->getDealsActive();
+        $data->setDealsActive($dealsActive);
+
 
 
         $helper = Mage::helper('fiuze_deals');
@@ -77,18 +86,20 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Edit_Form extends Mage_Adminhtml_Block_W
         ));
 
         $fieldset->addField('price', 'label', array(
-            'label' => $helper->__('Original Price'),
-            'class' => 'required-entry',
-            'required' => true,
+            'label' => $helper->__('Original Price ').Mage::app()->getStore()->getBaseCurrency()->getCode(),
             'name' => 'price',
         ));
 
+        $fieldset->addField('origin_special_price', 'label', array(
+            'label' => $helper->__('Original special price ').Mage::app()->getStore()->getBaseCurrency()->getCode(),
+            'name' => 'origin_special_price',
+        ));
+
         $fieldset->addField('deal_price', 'text', array(
-            'label' => $helper->__('Deal Price'),
+            'label' => $helper->__('Deal Price ').Mage::app()->getStore()->getBaseCurrency()->getCode(),
             'class' => 'required-entry',
             'required' => true,
-            'name' => 'deal_price',
-        ));
+            'name' => 'deal_price',));
 
         $fieldset->addField('qty', 'label', array(
             'label' => $helper->__('Quantity'),
@@ -104,14 +115,21 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Edit_Form extends Mage_Adminhtml_Block_W
             'note' => $helper->__('Quantity products with special price'),
         ));
 
-        $fieldset->addField('active', 'select', array(
-            'label' => $helper->__('Status'),
-            'name' => 'active',
-            'values' => Mage::getModel('fiuze_deals/System_Config_Source_Enabling')->toArray(),
-            'value' => true,
+        $fieldset->addField('sort_order', 'text', array(
+            'label' => $helper->__('Sort order'),
+            'class' => 'require-entry',
+            'name' => 'sort_order',
+            'required' => true,
         ));
 
-        $form->setValues($data);
+        $fieldset->addField('deals_active', 'select', array(
+            'label' => $helper->__('Status'),
+            'name' => 'deals_active',
+            'value' => 1,
+            'values' => Mage::getModel('fiuze_deals/System_Config_Source_Enabling')->toOptionArray(),
+        ));
+
+        $form->addValues($data->getData());
 
         $form->setUseContainer(true);
         $form->setId('edit_form');
