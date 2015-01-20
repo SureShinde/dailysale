@@ -204,7 +204,7 @@ class Fiuze_Deals_Model_Observer
             $productDeals->setData('product_name', $product->getName());
             $productDeals->setData('deals_price', $product->getPrice());
             $productDeals->setData('deals_qty', (int)$product->getQty());
-            $productDeals->setData('deals_active', true);
+            $productDeals->setData('deals_active', false);
             $productDeals->setData('sort_order', 0);
             $productDeals->setData('current_active', 0);
             $productDeals->setData('origin_special_price', (float)$product->getSpecialPrice());
