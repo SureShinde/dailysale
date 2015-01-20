@@ -473,6 +473,9 @@ $_specialPriceStoreLabel = $this->getProductAttribute('special_price')->getStore
     <?php // Discount percents output start for special price ?>
     <?php if($_finalPrice != 0 && $msrp != "FREE"): ?>
         <?php
+            $msrp = Mage::helper('core')->currency($_product->getMsrp(),true,false);
+            $msrpReplace = array("$", ",");
+            $msrpInt = str_replace($msrpReplace, '', $msrp);
             $_msrpPrice = (float)$msrpInt;
             if($_msrpPrice == 0){
                 $_savePercent = 100;
