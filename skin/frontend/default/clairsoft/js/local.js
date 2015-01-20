@@ -51,6 +51,10 @@ $j(document).ready(function(){
 		$j.cookie('subscribe', 'closed', { expires: 730, path: '/' });
 	});
 
+	//click outside to close modal popup
+	$j('body').on('click','.ui-widget-overlay',function(){ $j('#subscribe-pop').dialog('close'); });
+
+
 	//timer script for popup action
 
 	var idleTime = 0;
