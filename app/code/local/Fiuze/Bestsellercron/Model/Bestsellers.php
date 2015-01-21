@@ -22,7 +22,7 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
     }
 
     /**
-     * Retrieve bese sellers array which contains product id and profit/revenue
+     * Retrieve best sellers array which contains product id and profit/revenue
      * 
      * @return array
      */
@@ -43,8 +43,8 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
     /**
      * Returns the item's row total with any discount and also with any tax
      *
-     * @param Mage_Sales_Model_Quote_Item $item
-     * @return string
+     * @param Mage_Sales_Model_Order_Item $item
+     * @return float
      */
     protected function _getRowTotalWithDiscountInclTax(Mage_Sales_Model_Order_Item $item) {
         $tax          = ($item->getTaxAmount() ? $item->getTaxAmount() : 0);
@@ -60,7 +60,6 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
      * @return array
      */
     protected function _applyCriteria($items) {
-        $bestSellers = array();
         if ($this->_criteria == 'revenue') {
             $bestSellers = $this->_maxRevenue($items);
         } else {

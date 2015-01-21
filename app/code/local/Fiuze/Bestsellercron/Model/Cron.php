@@ -7,57 +7,59 @@
  * @package    Fiuze_Bestsellercron
  * @author     Alena Tsareva <alena.tsareva@webinse.com>
  */
-class Fiuze_Bestsellercron_Model_Cron extends Mage_Core_Model_Abstract {
+class Fiuze_Bestsellercron_Model_Cron extends Mage_Core_Model_Abstract{
 
     const XML_PATH_CATEGORY = 'bestsellers_settings_sec/bestsellers_settings_grp/category';
 
-    private $_bestSellerCtegory;
+    private $_bestSellerCategory;
 
-    public function __construct() {
-        $this->_bestSellerCtegory = Mage::getModel('catalog/category')->load(Mage::getStoreConfig(self::XML_PATH_CATEGORY));
+    public function __construct(){
+        $this->_bestSellerCategory = Mage::getModel('catalog/category')->load(Mage::getStoreConfig(self::XML_PATH_CATEGORY));
 
         parent::__construct();
     }
 
-    public function bestSellers() {
-        Mage::log('cron run!');
-        if (!$this->_bestSellerCtegory->getId()) {
+    public function bestSellers(){
+        if(!$this->_bestSellerCategory->getId()){
             Mage::log('Fiuze_Bestsellercron: Please choose category in the System->Configuration->Catalog->Fiuze Bestsellers Cron tab.');
             return false;
         }
 
         //set admin area if method run in the controller
         Mage::app()->setCurrentStore(Mage_Core_Model_App::ADMIN_STORE_ID);
-        
+
         $this->_clearBestSellerCategory();
         $bestSellersArray = Mage::getModel('bestsellercron/bestsellers')->getBestSellers();
         $this->_assignBestSellersToCategory($bestSellersArray);
-        
+
         return true;
     }
 
     /**
      * Remove all products from best seller category
-     * 
+     *
      * @return boolean
      */
-    protected function _clearBestSellerCategory() {
+    protected function _clearBestSellerCategory(){
         $productCollection = Mage::getResourceModel('catalog/product_collection')
-                ->addCategoryFilter($this->_bestSellerCtegory);
+            ->addAttributeToFilter('bestsellercron_flag', true)
+            ->addCategoryFilter($this->_bestSellerCategory);
 
-        foreach ($productCollection as $product) {
+        foreach($productCollection as $product){
             $categoryIds = $product->getCategoryIds();
-            $categoryKey = array_search($this->_bestSellerCtegory->getId(), $categoryIds);
+            $categoryKey = array_search($this->_bestSellerCategory->getId(), $categoryIds);
 
-            if ($categoryKey === FALSE) {
+            if($categoryKey === FALSE){
                 continue;
             }
 
             unset($categoryIds[$categoryKey]);
 
-            try {
-                $product->setCategoryIds($categoryIds)->save();
-            } catch (Exception $e) {
+            try{
+                $product->setCategoryIds($categoryIds)
+                    ->setBestsellercronFlag(false)
+                    ->save();
+            } catch(Exception $e){
                 Mage::logException($e);
             }
         }
@@ -67,23 +69,25 @@ class Fiuze_Bestsellercron_Model_Cron extends Mage_Core_Model_Abstract {
 
     /**
      * Assign all new best sellers to category
-     * 
-     * @param type $bestSellers
+     *
+     * @param array $bestSellers
      * @return boolean
      */
-    protected function _assignBestSellersToCategory($bestSellers) {
+    protected function _assignBestSellersToCategory($bestSellers){
         $productCollection = Mage::getResourceModel('catalog/product_collection')
-                ->addAttributeToSelect('*')
-                ->addAttributeToFilter('entity_id', array('in' => $bestSellers))
-                ->getItems();
+            ->addAttributeToSelect('*')
+            ->addAttributeToFilter('entity_id', array('in' => $bestSellers))
+            ->getItems();
 
-        foreach ($productCollection as $product) {
+        foreach($productCollection as $product){
             $categoryIds = $product->getCategoryIds();
-            array_push($categoryIds, $this->_bestSellerCtegory->getId());
+            array_push($categoryIds, $this->_bestSellerCategory->getId());
 
-            try {
-                $product->setCategoryIds($categoryIds)->save();
-            } catch (Exception $e) {
+            try{
+                $product->setCategoryIds($categoryIds)
+                    ->setBestsellercronFlag(true)
+                    ->save();
+            } catch(Exception $e){
                 Mage::logException($e);
             }
         }
