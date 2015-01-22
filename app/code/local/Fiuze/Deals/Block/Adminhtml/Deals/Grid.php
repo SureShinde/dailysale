@@ -27,8 +27,7 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Grid extends Mage_Adminhtml_Block_Widget
      */
     protected function _prepareCollection(){
         $currentCategory = Mage::helper('fiuze_deals')->getCategoryCron()->getProductCollection();
-        $currentCategory->addFieldToFilter('status', Mage_Catalog_Model_Product_Status::STATUS_ENABLED)
-            ->addFieldToFilter('status', Mage_Catalog_Model_Product_Status::STATUS_ENABLED)
+        $currentCategory//->addFieldToFilter('status', Mage_Catalog_Model_Product_Status::STATUS_ENABLED)
             ->joinField(
                 'qty',
                 'cataloginventory/stock_item',
@@ -163,7 +162,26 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Grid extends Mage_Adminhtml_Block_Widget
 
         return parent::_prepareColumns();
     }
+    protected function _prepareMassaction()
+    {
+        $this->setMassactionIdField('entity_id');
+        $this->getMassactionBlock()->setFormFieldName('banners');
 
+        $this->getMassactionBlock()->addItem('status', array(
+            'label' => Mage::helper('adminhtml')->__('Change status'),
+            'url' => $this->getUrl('*/*/massStatus', array('_current' => true)),
+            'additional' => array(
+                'visibility' => array(
+                    'name' => 'status',
+                    'type' => 'select',
+                    'class' => 'required-entry',
+                    'label' => Mage::helper('adminhtml')->__('Status'),
+                    'values' => Mage::getModel('fiuze_deals/system_config_source_status')->toArray(),
+                )
+            )
+        ));
+        return $this;
+    }
     public function getRowUrl($row){
         return $this->getUrl('*/*/edit', array('id' => $row->getId()));
     }

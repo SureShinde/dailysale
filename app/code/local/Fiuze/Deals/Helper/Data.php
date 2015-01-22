@@ -101,7 +101,7 @@ class Fiuze_Deals_Helper_Data extends Mage_Core_Helper_Abstract{
             Mage::register('category_cron', $category);
         }
 
-        return $category;
+        return Mage::registry('category_cron');
     }
 
     /**
@@ -114,7 +114,7 @@ class Fiuze_Deals_Helper_Data extends Mage_Core_Helper_Abstract{
             $timeCron = $this->_rootConfig->getCronTime();
             Mage::register('time_cron', $timeCron);
         }
-        return $timeCron;
+        return Mage::registry('time_cron');
     }
 
     /**

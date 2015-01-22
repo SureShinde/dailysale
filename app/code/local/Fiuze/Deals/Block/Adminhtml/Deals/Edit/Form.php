@@ -129,6 +129,7 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Edit_Form extends Mage_Adminhtml_Block_W
             'values' => Mage::getModel('fiuze_deals/System_Config_Source_Status')->toOptionArray(),
         ));
 
+
         $form->addValues($data->getData());
 
         $form->setUseContainer(true);

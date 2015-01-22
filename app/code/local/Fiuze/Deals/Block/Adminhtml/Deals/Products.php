@@ -22,7 +22,7 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Products extends Mage_Adminhtml_Block_Wi
      * @return Mage_Adminhtml_Block_Widget_Grid
      */
     protected function _prepareCollection(){
-        $collection = Mage::getResourceModel('catalog/product_collection')
+        $collection = Mage::helper('fiuze_deals')->getCategoryCron()->getProductCollection()
             ->addAttributeToFilter('visibility', array('neq' => 1))
             ->addAttributeToSelect('*');
 
