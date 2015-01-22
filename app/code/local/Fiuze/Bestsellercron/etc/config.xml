@@ -6,18 +6,33 @@
         </Fiuze_Bestsellercron>
     </modules>
     <global>
-        <models>
-            <bestsellercron>
-                <class>Fiuze_Bestsellercron_Model</class>
-            </bestsellercron>
-        </models>
         <helpers>
             <bestsellercron>
                 <class>Fiuze_Bestsellercron_Helper</class>
             </bestsellercron>
         </helpers>
+        <models>
+            <bestsellercron>
+                <class>Fiuze_Bestsellercron_Model</class>
+            </bestsellercron>
+        </models>
+        <resources>
+            <bestsellercron_setup>
+                <setup>
+                    <module>Fiuze_Bestsellercron</module>
+                    <class>Mage_Catalog_Model_Resource_Setup</class>
+                </setup>
+            </bestsellercron_setup>
+        </resources>
     </global>
     <frontend>
+        <product>
+            <collection>
+                <attributes>
+                    <bestsellercron_flag/>
+                </attributes>
+            </collection>
+        </product>
         <routers>
             <bestsellercron>
                 <use>standard</use>
