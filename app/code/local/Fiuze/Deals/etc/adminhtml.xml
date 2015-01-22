@@ -10,11 +10,11 @@
     <!--Here we define our admin menu-->
     <menu>
         <fiuze_deals>
-            <title>Fiuze Daily</title>
+            <title>Deal Rotation</title>
             <sort_order>80</sort_order>
             <children>
                 <deals>
-                    <title>Daily Cron Products</title>
+                    <title>Manage Deals</title>
                     <action>adminhtml/deals/list</action>
                 </deals>
             </children>
@@ -32,18 +32,18 @@
                             <config>
                                 <children>
                                     <fiuze_deals_cron_time translate="title" module="fiuze_deals">
-                                        <title>Fiuze Deals Cron time</title>
+                                        <title>Fiuze Deal Rotation</title>
                                     </fiuze_deals_cron_time>
                                 </children>
                             </config>
                         </children>
                     </system>
                     <fiuze_deals translate="title" module="fiuze_deals">
-                        <title>Daily Cron Products</title>
+                        <title>Deal Rotation</title>
                         <sort_order>9999</sort_order>
                         <children>
                             <deals translate="title">
-                                <title>Deals</title>
+                                <title>Manage Deal</title>
                                 <sort_order>10</sort_order>
                             </deals>
                         </children>
@@ -52,5 +52,4 @@
             </admin>
         </resources>
     </acl>
-
 </config>

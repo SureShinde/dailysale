@@ -5,103 +5,86 @@
  *
  * @category   Fiuze
  * @package    Fiuze_Deals
- * @author     Alena Tsareva <alena.tsareva@webinse.com>
+ * @author     Webinse Team <info@webinse.com>
  */
-class Fiuze_Deals_Helper_Data extends Mage_Core_Helper_Abstract
-{
+class Fiuze_Deals_Helper_Data extends Mage_Core_Helper_Abstract{
+
     const XML_ROOT = 'fiuze_deals_cron_time/fiuze_deals_cron_time_grp';
-    const DEFAULT_ROOT = 'blowout';
-    const XML_PATH_LAYOUT = 'fiuze_deals_cron_time/fiuze_deals_cron_time_grp/layout';
 
-    public function getRoute($store = null)
-    {
-        $config = new Varien_Object($this->getConf(self::XML_ROOT, $store));
-        $route = strtolower(trim($config->getData('route')));
-        if (!$route) {
-            $route = self::DEFAULT_ROOT;
-        }
-        return $route;
-    }
+    protected $_rootConfig = null;
 
-    public function getRouteUrl($store = null)
-    {
-        return Mage::getUrl($this->getRoute($store), array('_store' => $store));
-
-    }
-
-    public function ifStoreChangedRedirect()
-    {
-        $path = Mage::app()->getRequest()->getPathInfo();
-
-        $helper = Mage::helper('fiuze_deals');
-        $currentRoute = $helper->getRoute();
-
-        $fromStore = Mage::app()->getRequest()->getParam('___from_store');
-        if ($fromStore) {
-            $fromStoreId = $helper->getStoreIdByCode($fromStore);
-            $fromRoute = $helper->getRoute($fromStoreId);
-
-            $url = preg_replace("#$fromRoute#si", $currentRoute, $path, 1);
-            $url = Mage::getBaseUrl() . ltrim($url, '/');
-
-            Mage::app()->getFrontController()->getResponse()
-                ->setRedirect($url)
-                ->sendResponse();
-            exit;
-        }
-    }
-
-    public function getEnabled()
-    {
-        return $this->extensionEnabled('Fiuze_Deals');
-    }
-
-    public function extensionEnabled($extensionName)
-    {
-        $modules = (array)Mage::getConfig()->getNode('modules')->children();
-        if (
-            !isset($modules[$extensionName])
-            || $modules[$extensionName]->descend('active')->asArray() == 'false'
-            || Mage::getStoreConfig('advanced/modules_disable_output/' . $extensionName)
-        ) {
-            return false;
-        }
-        return true;
-    }
-
-    public function getLayout($store = null)
-    {
-        return $this->getConf(self::XML_PATH_LAYOUT, $store);
+    /**
+     * Set root config
+     */
+    public function __construct(){
+        $this->_rootConfig = new Varien_Object(Mage::getStoreConfig(self::XML_ROOT));
     }
 
     /**
-     * Retrieve current config model
-     * @param string $path
-     * @param mixed $store
-     * @return public
+     * Check if deals rotation extension is enabled
+     *
+     * @return bool
      */
-    public static function getConf($code, $store = null)
-    {
-        return Mage::getStoreConfig($code, $store);
+    public function isEnabled(){
+        return $this->_extensionEnabled('Fiuze_Deals');
+    }
+
+    /**
+     * Retrieve root layout template name
+     *
+     * @return string
+     */
+    public function getLayout(){
+        return $this->_rootConfig->getData('layout');
+    }
+
+    /**
+     * Retrieve cron scheduler
+     *
+     * @return string
+     */
+    public function getScheduler(){
+        return $this->_rootConfig->getData('scheduler');
+    }
+
+    /**
+     * Retrieve route name from system configuration
+     *
+     * @return string
+     */
+    public function getRoute(){
+        return $this->_rootConfig->getRoute();
+    }
+
+    /**
+     * Retrieve full route url
+     *
+     * @param null $store
+     * @return string
+     */
+    public function getRouteUrl($store = null){
+        return Mage::getUrl($this->getRoute(), array('_store' => $store));
+
     }
 
     /**
      * Retrieve current product model (in cron set)
+     *
      * @return Mage_Catalog_Model_Product
      */
-    public function getProductCron()
-    {
-        if (!Mage::registry('product')) {
-            //Fiuze_Deals_Model_Observer::dailyCatalogUpdate(); /////////////test cron
+    public function getProductCron(){
+        if(!Mage::registry('product')){
 
             $productActive = Mage::getResourceModel('fiuze_deals/deals_collection')
-                ->addFilter('current_active', 1)->getFirstItem();
-            try {
+                ->addFilter('current_active', 1)
+                ->getFirstItem();
+
+            try{
                 $currentProduct = Mage::getModel('catalog/product')->load($productActive->getProductId());
                 Mage::register('product', $currentProduct);
                 Mage::register('current_product', $currentProduct);
-            } catch (Exception $ex) {
-
+            } catch(Exception $e){
+                Mage::logException($e);
             }
         }
         return Mage::registry('product');
@@ -112,13 +95,12 @@ class Fiuze_Deals_Helper_Data extends Mage_Core_Helper_Abstract
      *
      * @return Mage_Catalog_Model_Category
      */
-    public function getCategoryCron()
-    {
-        if (!Mage::registry('category_cron')) {
-            $config = new Varien_Object($this->getConf(self::XML_ROOT));
-            $categoryId = (int)$config->getData('category');
-            Mage::register('category_cron', Mage::getModel('catalog/category')->load($categoryId));
+    public function getCategoryCron(){
+        if(!Mage::registry('category_cron')){
+            $category = Mage::getModel('catalog/category')->load((int)$this->_rootConfig->getCategory());
+            Mage::register('category_cron', $category);
         }
+
         return Mage::registry('category_cron');
     }
 
@@ -127,13 +109,66 @@ class Fiuze_Deals_Helper_Data extends Mage_Core_Helper_Abstract
      *
      * @return
      */
-    public function getTimeCron()
-    {
-        if (!Mage::registry('time_cron')) {
-            $config = new Varien_Object($this->getConf(self::XML_ROOT));
-            $timeCron = $config->getData('cron_time');
+    public function getTimeCron(){
+        if(!Mage::registry('time_cron')){
+            $timeCron = $this->_rootConfig->getCronTime();
             Mage::register('time_cron', $timeCron);
         }
         return Mage::registry('time_cron');
+    }
+
+    /**
+     * Retrieve cron expression
+     *
+     * @return string
+     */
+    public function getCronExpr(){
+        list($hh, $mm, $ss) = explode(',', $this->getTimeCron());
+        $mm += $hh * 60;
+
+        $cronExprArray = array(
+            intval($mm) ? '/' . intval($mm) : '*', # Minute
+            '*', # Hour
+            '*', # Day of the Month
+            '*', # Month of the Year
+            '*', # Day of the Week
+        );
+        $cronExprString = join(' ', $cronExprArray);
+        $cronExprString = '*' . $cronExprString;
+
+        return $cronExprString;
+    }
+
+    /**
+     * Retrieve end time for deal product in the frontend
+     *
+     * @return Zend_Date
+     */
+    public function getEndDealTime(){
+        list($hh, $mm, $ss) = explode(",", $this->getTimeCron());
+        $mm += $hh * 60;
+        $date = new Zend_Date();
+        $date->add($mm, Zend_Date::MINUTE);
+
+        return $date;
+    }
+
+    /**
+     * Check if deals rotation extension is available
+     *
+     * @param string $extensionName
+     * @return bool
+     */
+    protected function _extensionEnabled($extensionName){
+        $modules = (array)Mage::getConfig()->getNode('modules')->children();
+        if(
+            !isset($modules[$extensionName])
+            || $modules[$extensionName]->descend('active')->asArray() == 'false'
+            || Mage::getStoreConfig('advanced/modules_disable_output/' . $extensionName)
+        ){
+            return false;
+        }
+
+        return true;
     }
 }

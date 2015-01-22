@@ -4,7 +4,7 @@
  *
  * @category   Fiuze
  * @package    Fiuze_Deals
- * @author     Alena Tsareva <alena.tsareva@webinse.com>
+ * @author     Webinse Team <info@webinse.com>
  */
 
 class Fiuze_Deals_Model_System_Config_Source_Layouts extends Mage_Core_Model_Abstract{

@@ -5,10 +5,9 @@ class Fiuze_Deals_IndexController extends Mage_Core_Controller_Front_Action
     public function preDispatch()
     {
         parent::preDispatch();
-        if (!Mage::helper('fiuze_deals')->getEnabled()) {
+        if (!Mage::helper('fiuze_deals')->isEnabled()) {
             $this->_redirectUrl(Mage::helper('core/url')->getHomeUrl());
         }
-        //Mage::helper('fiuze_deals')->ifStoreChangedRedirect();
 
         //set current product for deals
         Mage::helper('fiuze_deals')->getProductCron();
@@ -16,9 +15,13 @@ class Fiuze_Deals_IndexController extends Mage_Core_Controller_Front_Action
 
     public function indexAction()
     {
+        $deals = $productActive = Mage::getResourceModel('fiuze_deals/deals_collection')
+            ->addFilter('current_active', 1)->getFirstItem();
+        if (!$deals->getId()) {
+            $this->_redirectUrl(Mage::helper('core/url')->getHomeUrl());
+        }
         $layout = $this->loadLayout();
-        $config = new Varien_Object(Mage::helper('fiuze_deals')->getConf(Fiuze_Deals_Helper_Data::XML_ROOT));
-        $configLayout = $config->getData('layout');
+        $configLayout = Mage::helper('fiuze_deals')->getLayout();
         $layout->getLayout()->getBlock('root')->setTemplate($configLayout);
         $this->renderLayout();
     }
