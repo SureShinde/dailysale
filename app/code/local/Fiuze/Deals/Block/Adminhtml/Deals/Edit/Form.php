@@ -126,7 +126,7 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Edit_Form extends Mage_Adminhtml_Block_W
             'label' => $helper->__('Status'),
             'name' => 'deals_active',
             'value' => 1,
-            'values' => Mage::getModel('fiuze_deals/System_Config_Source_Enabling')->toOptionArray(),
+            'values' => Mage::getModel('fiuze_deals/System_Config_Source_Status')->toOptionArray(),
         ));
 
         $form->addValues($data->getData());

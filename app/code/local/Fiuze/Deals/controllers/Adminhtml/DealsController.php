@@ -44,6 +44,15 @@ class Fiuze_Deals_Adminhtml_DealsController extends Mage_Adminhtml_Controller_Ac
         $this->renderLayout();
     }
 
+    /**
+     * List action for grid
+     */
+    public function gridAction()
+    {
+        $this->_initAction();
+        $this->renderLayout();
+    }
+
     public function editAction()
     {
         $this->_initGroup();

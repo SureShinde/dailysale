@@ -14,6 +14,7 @@
             <version>0.1.0</version>
         </Fiuze_Deals>
     </modules>
+
     <global>
         <blocks>
             <fiuze_deals>
@@ -60,21 +61,12 @@
         <events>
             <controller_front_init_routers>
                 <observers>
-                    <router>
-                        <type>singleton</type>
-                        <class>Fiuze_Deals_Controller_Router</class>
+                    <fiuzedeals_router>
+                        <class>Fiuze_Deals_Model_Observer</class>
                         <method>initControllerRouters</method>
-                    </router>
+                    </fiuzedeals_router>
                 </observers>
             </controller_front_init_routers>
-            <catalog_block_product_list_collection>
-                <observers>
-                    <fiuzedeals_catalog_block_product_list_collection>
-                        <class>Fiuze_Deals_Model_Observer</class>
-                        <method>catalogBlockProductListCollection</method>
-                    </fiuzedeals_catalog_block_product_list_collection>
-                </observers>
-            </catalog_block_product_list_collection>
             <admin_system_config_changed_section_fiuze_deals_cron_time>
                 <observers>
                     <fiuzedeals_admin_system_config_changed_section_fiuze_deals_cron_time>
@@ -122,6 +114,7 @@
             </sales_order_place_after>
         </events>
     </global>
+
     <frontend>
         <routers>
             <fiuze_deals>
@@ -151,9 +144,6 @@
                 </args>
             </adminhtml>
         </routers>
-        <events>
-
-        </events>
     </admin>
 
     <adminhtml>
@@ -170,32 +160,23 @@
         <fiuze_deals_cron_time>
             <fiuze_deals_cron_time_grp>
                 <route>blowout.html</route>
+                <cron_time>00,05,00</cron_time>
+                <scheduler>*/5 * * * *</scheduler>
+                <layout>page/1column.phtml</layout>
             </fiuze_deals_cron_time_grp>
         </fiuze_deals_cron_time>
     </default>
 
-    <!--
-        Cron setting
-    -->
     <crontab>
         <jobs>
             <fiuze_deals_scheduler>
                 <schedule>
-                    <config_path>system/cron/cron_expr_heartbeat</config_path>
+                    <config_path>fiuze_deals_cron_time/fiuze_deals_cron_time_grp/scheduler</config_path>
                 </schedule>
                 <run>
-                    <model>fiuze_deals/observer::dailyCatalogUpdate</model>
+                    <model>fiuze_deals/cron::dailyCatalogUpdate</model>
                 </run>
             </fiuze_deals_scheduler>
         </jobs>
     </crontab>
-
-    <default>
-        <system>
-            <cron>
-                <cron_expr_heartbeat>*/5 * * * *</cron_expr_heartbeat>
-            </cron>
-        </system>
-    </default>
-
 </config>
