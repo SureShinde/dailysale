@@ -1,0 +1,1407 @@
+<?xml version="1.0"?>
+<config>
+    <sections>
+        <bronto_email translate="label" module="bronto_email">
+            <label><![CDATA[<div id="bronto_email_icon_block">Transactional Emails</div>]]></label>
+            <tab>bronto</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>600</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <about>
+                    <frontend_type>text</frontend_type>
+                    <frontend_model>bronto_email/adminhtml_system_config_about</frontend_model>
+                    <sort_order>0</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                </about>
+                <settings translate="label">
+                    <label>Settings</label>
+                    <frontend_type>text</frontend_type>
+                    <frontend_model>bronto_email/adminhtml_system_config_settings</frontend_model>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <fields>
+                        <enabled translate="label">
+                            <label>Enable Module</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field</frontend_model>
+                            <backend_model>bronto_common/system_config_backend_enable</backend_model>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enabled>
+                        <use_bronto translate="label">
+                            <label>Allow Sending Through Bronto</label>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <backend_model>bronto_email/system_config_backend_usebronto</backend_model>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </use_bronto>
+                        <log_enabled translate="label">
+                            <label>Log Deliveries</label>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </log_enabled>
+                        <log_fields_enabled translate="label">
+                            <label>Log Delivery Fields</label>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>11</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </log_fields_enabled>
+                        <default_coupon>
+                            <label>Default Price Rule Coupon Code</label>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bronto_common/system_config_source_coupon</source_model>
+                            <sort_order>12</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Use API tag <em>%%%%#couponCode%%%%</em> within your message in Bronto. You are responsible for ensuring the Shopping Cart Price Rule is active and valid, or else it may appear blank.]]></comment>
+                        </default_coupon>
+                        <default_recommendation>
+                            <label>Default Product Recommendation</label>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bronto_product/recommendation</source_model>
+                            <sort_order>13</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Inject related product content in the message. Recommendations are created in <strong>Promotions</strong> &raquo; <strong>Bronto Product Recommendations]]></comment>
+                        </default_recommendation>
+                        <default_send_flags>
+                            <label>Default Send Flags</label>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bronto_common/system_config_source_sendOptions</source_model>
+                            <sort_order>14</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Specify the default send flags for
+                              all transactional emails. The options are:
+                              <br/> - <strong>Sender Authentication</strong>: Will
+                                  sign your message with DomainKeys/DKIM,
+                                  optimizing your message delivery to Hotmail,
+                                  MSN, and Yahoo! email addresses.
+                              <br/> - <strong>Fatigue Override</strong>: The
+                                 delivery can be sent even if it exceeds the
+                                 frequency cap settings for a customer.
+                              <br/> - <strong>Reply Tracking</strong>: Will store
+                                a copy of all replies to your messages on the
+                                Replies page within the Bronto platform.
+                              ]]></comment>
+                        </default_send_flags>
+                    </fields>
+                </settings>
+                <templates translate="label">
+                    <label>Assign Templates</label>
+                    <frontend_type>text</frontend_type>
+                    <frontend_model>bronto_email/adminhtml_system_config_templates</frontend_model>
+                    <sort_order>2</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <!--<fields>
+			<label_currency>
+                            <label><![CDATA[##currency## General &raquo; Currency Setup &raquo; Scheduled Import Settings]]></label>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_label</frontend_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </label_currency>
+                        <currency-import-error_email_template translate="label">
+                            <label>Error Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </currency-import-error_email_template>
+                        <currency-import-error_email_template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </currency-import-error_email_template_send_type>
+
+			<label_contacts>
+			    <label><![CDATA[##contacts## General &raquo; Contacts &raquo; Email Options]]></label>
+			    <frontend_type>label</frontend_type>
+			    <frontend_model>bronto_email/adminhtml_system_config_templates_label</frontend_model>
+			    <sort_order>5</sort_order>                            
+			    <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+			</label_contacts>
+			<contacts-email-email_template translate="label">
+                            <label>Email Template</label>
+                            <frontend_type>select</frontend_type>
+			    <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+			    <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>6</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </contacts-email-email_template>
+                        <contacts-email-email_template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>7</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </contacts-email-email_template_send_type>
+
+			<label_sendfriend>
+                            <label><![CDATA[##sendfriend## Catalog &raquo; Email to a Friend &raquo; Email Templates]]></label>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_label</frontend_model>
+                            <sort_order>10</sort_order>                            
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </label_sendfriend>
+                        <sendfriend-email-template translate="label">
+                            <label>Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>11</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sendfriend-email-template>
+                        <sendfriend-email-template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>12</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sendfriend-email-template_send_type>
+
+			<label_newsletter>
+                            <label><![CDATA[##newsletter## Customers &raquo; Newsletter &raquo; Subscription Options]]></label>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_label</frontend_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </label_newsletter>
+                        <newsletter-subscription-success_email_template translate="label">
+                            <label>Success Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>21</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </newsletter-subscription-success_email_template>
+                        <newsletter-subscription-success_email_template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>22</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </newsletter-subscription-success_email_template_send_type>
+			<newsletter-subscription-un_email_template translate="label">
+                            <label>Unsubscription Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>23</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </newsletter-subscription-un_email_template>
+                        <newsletter-subscription-un_email_template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>24</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </newsletter-subscription-un_email_template_send_type>
+			<newsletter-subscription-confirm_email_template translate="label">
+                            <label>Confirmation Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>25</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </newsletter-subscription-confirm_email_template>
+                        <newsletter-subscription-confirm_email_template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>26</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </newsletter-subscription-confirm_email_template_send_type>
+
+			<label_customer_create>
+                            <label><![CDATA[##customer## Customers &raquo; Customer Configuration &raquo; Create New Account Options]]></label>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_label</frontend_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </label_customer_create>
+                        <customer-create_account-email_template translate="label">
+                            <label>Default Welcome Email</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>31</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </customer-create_account-email_template>
+                        <customer-create_account-email_template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>32</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </customer-create_account-email_template_send_type>
+                        <customer-create_account-email_confirmation_template translate="label">
+                            <label>Confirmation Link Email</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>33</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </customer-create_account-email_confirmation_template>
+                        <customer-create_account-email_confirmation_template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>34</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </customer-create_account-email_confirmation_template_send_type>
+			<customer-create_account-email_confirmed_template translate="label comment">
+                            <label>Welcome Email</label>
+			    <comment>This email will be sent instead of default welcome email, after account confirmation.</comment>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>35</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </customer-create_account-email_confirmed_template>
+                        <customer-create_account-email_confirmed_template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>36</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </customer-create_account-email_confirmed_template_send_type>
+
+			<label_customer_password>
+                            <label><![CDATA[##customer## Customers &raquo; Customer Configuration &raquo; Password Options]]></label>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_label</frontend_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </label_customer_password>
+                        <customer-password-forgot_email_template translate="label">
+                            <label>Forgot Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>41</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </customer-password-forgot_email_template>
+                        <customer-password-forgot_email_template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>42</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </customer-password-forgot_email_template_send_type>
+                        <customer-password-remind_email_template translate="label">
+                            <label>Reminder Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>43</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </customer-password-remind_email_template>
+                        <customer-password-remind_email_template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>44</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </customer-password-remind_email_template_send_type>
+
+			<label_customer_store_credit>
+                            <label><![CDATA[##customer## Customers &raquo; Customer Configuration &raquo; Store Credit Options]]></label>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_label</frontend_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </label_customer_store_credit>
+                        <customer-enterprise_customerbalance-email_template translate="label">
+                            <label>Store Credit Update Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>51</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </customer-enterprise_customerbalance-email_template>
+                        <customer-enterprise_customerbalance-email_template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>52</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </customer-enterprise_customerbalance-email_template_send_type>
+
+			<label_wishlist>
+                            <label><![CDATA[##wishlist## Customers &raquo; Wishlist &raquo; Share Options]]></label>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_label</frontend_model>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </label_wishlist>
+                        <wishlist-email-email_template translate="label">
+                            <label>Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>61</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </wishlist-email-email_template>
+                        <wishlist-email-email_template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>62</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </wishlist-email-email_template_send_type>
+
+			<label_invitations>
+                            <label><![CDATA[##enterprise_invitation## Customers &raquo; Invitations &raquo; Email]]></label>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_label</frontend_model>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </label_invitations>
+                        <enterprise_invitation-email-template translate="label">
+                            <label>Customer Invitation Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>71</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enterprise_invitation-email-template>
+                        <enterprise_invitation-email-template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>72</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enterprise_invitation-email-template_send_type>
+
+			<label_rewards>
+                            <label><![CDATA[##enterprise_reward## Customers &raquo; Reward Points &raquo; Email Notification Settings]]></label>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_label</frontend_model>
+                            <sort_order>80</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </label_rewards>
+                        <enterprise_reward-notification-balance_update_template translate="label">
+                            <label>Balance Update Email</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>81</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enterprise_reward-notification-balance_update_template>
+                        <enterprise_reward-notification-balance_update_template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>82</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enterprise_reward-notification-balance_update_template_send_type>
+			<enterprise_reward-notification-expiry_warning_template translate="label">
+                            <label>Reward Points Expiry Warning Email</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>83</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enterprise_reward-notification-expiry_warning_template>
+                        <enterprise_reward-notification-expiry_warning_template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>84</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enterprise_reward-notification-expiry_warning_template_send_type>
+
+			<label_giftregistry_owner_notification>
+                            <label><![CDATA[##enterprise_giftregistry## Customers &raquo; Gift Registry &raquo; Owner Notification]]></label>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_label</frontend_model>
+                            <sort_order>90</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </label_giftregistry_owner_notification>
+                        <enterprise_giftregistry-owner_email-template translate="label">
+                            <label>Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>91</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enterprise_giftregistry-owner_email-template>
+                        <enterprise_giftregistry-owner_email-template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>92</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enterprise_giftregistry-owner_email-template_send_type>
+
+			<label_giftregistry_sharing>
+                            <label><![CDATA[##enterprise_giftregistry## Customers &raquo; Gift Registry &raquo; Gift Registry Sharing]]></label>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_label</frontend_model>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </label_giftregistry_sharing>
+                        <enterprise_giftregistry-sharing_email-template translate="label">
+                            <label>Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>101</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enterprise_giftregistry-sharing_email-template>
+                        <enterprise_giftregistry-sharing_email-template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>102</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enterprise_giftregistry-sharing_email-template_send_type>
+
+			<label_giftregistry_update>
+                            <label><![CDATA[##enterprise_giftregistry## Customers &raquo; Gift Registry &raquo; Gift Registry Update]]></label>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_label</frontend_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </label_giftregistry_update>
+                        <enterprise_giftregistry-update_email-template translate="label">
+                            <label>Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>111</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enterprise_giftregistry-update_email-template>
+                        <enterprise_giftregistry-update_email-template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>112</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enterprise_giftregistry-update_email-template_send_type>
+
+			<label_sales_email_order>
+                            <label><![CDATA[##sales_email## Sales &raquo; Sales Emails &raquo; Order]]></label>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_label</frontend_model>
+                            <sort_order>120</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </label_sales_email_order>
+                        <sales_email-order-template translate="label">
+                            <label>New Order Confirmation Template</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>121</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-order-template>
+                        <sales_email-order-template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>122</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-order-template_send_type>
+                        <sales_email-order-guest_template translate="label">
+                            <label>New Order Confirmation Template for Guest</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>123</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-order-guest_template>
+                        <sales_email-order-guest_template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>124</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-order-guest_template_send_type>
+
+			<label_sales_email_order_comments>
+                            <label><![CDATA[##sales_email## Sales &raquo; Sales Emails &raquo; Order Comments]]></label>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_label</frontend_model>
+                            <sort_order>130</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </label_sales_email_order_comments>
+                        <sales_email-order_comment-template translate="label">
+                            <label>Order Comment Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>131</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-order_comment-template>
+                        <sales_email-order_comment-template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>132</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-order_comment-template_send_type>
+                        <sales_email-order_comment-guest_template translate="label">
+                            <label>Order Comment Email Template for Guest</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>133</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-order_comment-guest_template>
+                        <sales_email-order_comment-guest_template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>134</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-order_comment-guest_template_send_type>
+
+			<label_sales_email_invoice>
+                            <label><![CDATA[##sales_email## Sales &raquo; Sales Emails &raquo; Invoice]]></label>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_label</frontend_model>
+                            <sort_order>140</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </label_sales_email_invoice>
+                        <sales_email-invoice-template translate="label">
+                            <label>Invoice Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>141</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-invoice-template>
+                        <sales_email-invoice-template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>142</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-invoice-template_send_type>
+                        <sales_email-invoice-guest_template translate="label">
+                            <label>Invoice Email Template for Guest</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>143</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-invoice-guest_template>
+                        <sales_email-invoice-guest_template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>144</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-invoice-guest_template_send_type>
+
+			<label_sales_email_invoice_comment>
+                            <label><![CDATA[##sales_email## Sales &raquo; Sales Emails &raquo; Invoice Comments]]></label>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_label</frontend_model>
+                            <sort_order>150</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </label_sales_email_invoice_comment>
+                        <sales_email-invoice_comment-template translate="label">
+                            <label>Invoice Comment Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>151</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-invoice_comment-template>
+                        <sales_email-invoice_comment-template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>152</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-invoice_comment-template_send_type>
+                        <sales_email-invoice_comment-guest_template translate="label">
+                            <label>Invoice Comment Email Template for Guest</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>153</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-invoice_comment-guest_template>
+                        <sales_email-invoice_comment-guest_template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>154</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-invoice_comment-guest_template_send_type>
+
+			<label_sales_email_shipment>
+                            <label><![CDATA[##sales_email## Sales &raquo; Sales Emails &raquo; Shipment]]></label>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_label</frontend_model>
+                            <sort_order>160</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </label_sales_email_shipment>
+                        <sales_email-shipment-template translate="label">
+                            <label>Shipment Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>161</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-shipment-template>
+                        <sales_email-shipment-template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>162</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-shipment-template_send_type>
+                        <sales_email-shipment-guest_template translate="label">
+                            <label>Shipment Email Template for Guest</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>163</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-shipment-guest_template>
+                        <sales_email-shipment-guest_template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>164</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-shipment-guest_template_send_type>
+
+			<label_sales_email_shipment_comment>
+                            <label><![CDATA[##sales_email## Sales &raquo; Sales Emails &raquo; Shipment Comments]]></label>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_label</frontend_model>
+                            <sort_order>170</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </label_sales_email_shipment_comment>
+                        <sales_email-shipment_comment-template translate="label">
+                            <label>Shipment Comment Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>171</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-shipment_comment-template>
+                        <sales_email-shipment_comment-template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>172</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-shipment_comment-template_send_type>
+                        <sales_email-shipment_comment-guest_template translate="label">
+                            <label>Shipment Comment Email Template for Guest</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>173</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-shipment_comment-guest_template>
+                        <sales_email-shipment_comment-guest_template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>174</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-shipment_comment-guest_template_send_type>
+
+			<label_sales_email_creditmemo>
+                            <label><![CDATA[##sales_email## Sales &raquo; Sales Emails &raquo; Credit Memo]]></label>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_label</frontend_model>
+                            <sort_order>180</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </label_sales_email_creditmemo>
+                        <sales_email-creditmemo-template translate="label">
+                            <label>Credit Memo Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>181</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-creditmemo-template>
+                        <sales_email-creditmemo-template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>182</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-creditmemo-template_send_type>
+                        <sales_email-creditmemo-guest_template translate="label">
+                            <label>Credit Memo Email Template for Guest</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>183</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-creditmemo-guest_template>
+                        <sales_email-creditmemo-guest_template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>184</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-creditmemo-guest_template_send_type>
+
+			<label_sales_email_creditmemo_comment>
+                            <label><![CDATA[##sales_email## Sales &raquo; Sales Emails &raquo; Credit Memo Comments]]></label>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_label</frontend_model>
+                            <sort_order>190</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </label_sales_email_creditmemo_comment>
+                        <sales_email-creditmemo_comment-template translate="label">
+                            <label>Credit Memo Comment Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>191</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-creditmemo_comment-template>
+                        <sales_email-creditmemo_comment-template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>192</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-creditmemo_comment-template_send_type>
+                        <sales_email-creditmemo_comment-guest_template translate="label">
+                            <label>Credit Memo Comment Email Template for Guest</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>193</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-creditmemo_comment-guest_template>
+                        <sales_email-creditmemo_comment-guest_template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>194</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-creditmemo_comment-guest_template_send_type>
+
+			<label_sales_email_enterprise_rma>
+                            <label><![CDATA[##sales_email## Sales &raquo; Sales Emails &raquo; RMA]]></label>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_label</frontend_model>
+                            <sort_order>200</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </label_sales_email_enterprise_rma>
+                        <sales_email-enterprise_rma-template translate="label">
+                            <label>RMA Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>201</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-enterprise_rma-template>
+                        <sales_email-enterprise_rma-template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>202</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-enterprise_rma-template_send_type>
+                        <sales_email-enterprise_rma-guest_template translate="label">
+                            <label>RMA Email Template for Guest</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>203</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-enterprise_rma-guest_template>
+                        <sales_email-enterprise_rma-guest_template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>204</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-enterprise_rma-guest_template_send_type>
+
+			<label_sales_email_enterprise_rma_auth>
+                            <label><![CDATA[##sales_email## Sales &raquo; Sales Emails &raquo; RMA Authorization]]></label>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_label</frontend_model>
+                            <sort_order>210</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </label_sales_email_enterprise_rma_auth>
+                        <sales_email-enterprise_rma_auth-template translate="label">
+                            <label>RMA Authorization Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>211</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-enterprise_rma_auth-template>
+                        <sales_email-enterprise_rma_auth-template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>212</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-enterprise_rma_auth-template_send_type>
+                        <sales_email-enterprise_rma_auth-guest_template translate="label">
+                            <label>RMA Authorization Email Template for Guest</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>213</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-enterprise_rma_auth-guest_template>
+                        <sales_email-enterprise_rma_auth-guest_template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>214</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-enterprise_rma_auth-guest_template_send_type>
+
+			<label_sales_email_enterprise_rma_comment>
+                            <label><![CDATA[##sales_email## Sales &raquo; Sales Emails &raquo; RMA Admin Comments]]></label>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_label</frontend_model>
+                            <sort_order>220</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </label_sales_email_enterprise_rma_comment>
+                        <sales_email-enterprise_rma_comment-template translate="label">
+                            <label>RMA Comment Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>221</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-enterprise_rma_comment-template>
+                        <sales_email-enterprise_rma_comment-template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>222</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-enterprise_rma_comment-template_send_type>
+                        <sales_email-enterprise_rma_comment-guest_template translate="label">
+                            <label>RMA Comment Email Template for Guest</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>223</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-enterprise_rma_comment-guest_template>
+                        <sales_email-enterprise_rma_comment-guest_template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>224</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-enterprise_rma_comment-guest_template_send_type>
+
+			<label_sales_email_enterprise_rma_customer_comment>
+                            <label><![CDATA[##sales_email## Sales &raquo; Sales Emails &raquo; RMA Customer Comments]]></label>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_label</frontend_model>
+                            <sort_order>230</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </label_sales_email_enterprise_rma_customer_comment>
+                        <sales_email-enterprise_rma_customer_comment-template translate="label">
+                            <label>RMA Comment Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>231</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-enterprise_rma_customer_comment-template>
+                        <sales_email-enterprise_rma_customer_comment-template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>232</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-enterprise_rma_customer_comment-template_send_type>
+                        <sales_email-enterprise_rma_customer_comment-guest_template translate="label">
+                            <label>RMA Comment Email Template for Guest</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>233</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-enterprise_rma_customer_comment-guest_template>
+                        <sales_email-enterprise_rma_customer_comment-guest_template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>234</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_email-enterprise_rma_customer_comment-guest_template_send_type>
+
+			<label_sales_checkout_payment_failed>
+                            <label><![CDATA[##checkout## Sales &raquo; Checkout &raquo; Payment Failed Emails]]></label>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_label</frontend_model>
+                            <sort_order>240</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </label_sales_checkout_payment_failed>
+                        <checkout-payment_failed-template translate="label">
+                            <label>Payment Failed Template</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>241</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </checkout-payment_failed-template>
+                        <checkout-payment_failed-template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>242</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </checkout-payment_failed-template_send_type>
+
+			<label_admin_forgot_password>
+                            <label><![CDATA[##admin## Advanced &raquo; Admin &raquo; Admin User Emails]]></label>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_label</frontend_model>
+                            <sort_order>250</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </label_admin_forgot_password>
+                        <admin-emails-forgot_email_template translate="label">
+                            <label>Forgot Password Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_field</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_field</backend_model>
+                            <source_model>bronto_email/system_config_source_email_template</source_model>
+                            <sort_order>251</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </admin-emails-forgot_email_template>
+                        <admin-emails-forgot_email_template_send_type translate="label">
+                            <label>Send Type</label>
+                            <frontend_type>radios</frontend_type>
+                            <frontend_model>bronto_email/adminhtml_system_config_templates_sendtype</frontend_model>
+                            <backend_model>bronto_email/system_config_backend_templates_sendtype</backend_model>
+                            <source_model>bronto_email/system_config_source_sendtype</source_model>
+                            <sort_order>252</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </admin-emails-forgot_email_template_send_type>
+		    </fields>-->
+                </templates>
+            </groups>
+        </bronto_email>
+    </sections>
+</config>

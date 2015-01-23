@@ -1,0 +1,664 @@
+<?xml version="1.0"?>
+<config>
+    <sections>
+        <bronto_reviews module="bronto_reviews">
+            <label>Post-Purchase Emails</label>
+            <tab>bronto</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>895</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <about>
+                    <frontend_type>text</frontend_type>
+                    <frontend_model>bronto_reviews/adminhtml_system_config_about</frontend_model>
+                    <sort_order>0</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                </about>
+                <general>
+                    <label>Settings</label>
+                    <frontend_type>text</frontend_type>
+                    <comment><![CDATA[Post-Purchase Emails are triggered when a
+                      placed order reaches the desired status. There are three
+                      types of post-purchase emails: Review Requests, Reorder
+                      Reminders, and Care Tip Notifications. The emails are
+                      scheduled in advance and can be cancelled manually or
+                      when an order reaches a certain status. You can view
+                      pending deliveries in Bronto's <a
+                        href="https://app.bronto.com/mail/message_browser/outgoing_messages/email"
+                        target="_blank">Outgoing Deliveries</a> and under
+                      <strong>System &raquo; Post-Purchase Deliveries</strong>.<br/><br/>]]></comment>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <fields>
+                      <time_of_day>
+                        <label>Target Time for Scheduled Email</label>
+                        <frontend_type>select</frontend_type>
+                        <frontend_model>bronto_common/adminhtml_system_config_form_field</frontend_model>
+                        <source_model>bronto_reviews/system_config_source_hours</source_model>
+                        <sort_order>5</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                        <comment><![CDATA[Post-purchase emails will attempt to
+                          schedule for this time of day, using the server's time zone.]]></comment>
+                      </time_of_day>
+                      <conncurrent_limit>
+                        <label>Max Scheduled Emails</label>
+                        <frontend_type>text</frontend_type>
+                        <sort_order>10</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                        <comment><![CDATA[Max number of scheduled, not yet sent post-purchase
+                          emails for a given customer at any given time for the
+                          current scope.
+                          Limiting the number of scheduled emails will likely
+                          lower customer fatigue.<br/><strong>Note</strong>: -1
+                          means no concurrent limit.]]></comment>
+                      </conncurrent_limit>
+                    </fields>
+                </general>
+                <settings>
+                    <label>Review Request</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>2</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <comment><![CDATA[Review Request is an order-based
+                      post-purchase email, containing all of the products for a
+                      particular order.<br/><br/>]]></comment>
+                    <fields>
+                        <enabled>
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field</frontend_model>
+                            <backend_model>bronto_common/system_config_backend_enable</backend_model>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enabled>
+                        <status>
+                            <label>Order Status</label>
+                            <depends><enabled>1</enabled></depends>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field</frontend_model>
+                            <source_model>bronto_reviews/system_config_source_orderstatus</source_model>
+                            <comment>The order status that will trigger a scheduled
+                              delivery for the Review Request.</comment>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-select</validate>
+                        </status>
+                        <cancel_status>
+                            <label>Cancel Delivery Status</label>
+                            <depends><enabled>1</enabled></depends>
+                            <frontend_type>multiselect</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field</frontend_model>
+                            <source_model>bronto_reviews/system_config_source_orderstatus</source_model>
+                            <comment>Select the order status(es) that will cause the email delivery to be cancelled.</comment>
+                            <sort_order>15</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </cancel_status>
+                        <period>
+                            <label>Send Period</label>
+                            <depends><enabled>1</enabled></depends>
+                            <frontend_type>text</frontend_type>
+                            <comment>Schedule the email this many days after the order status trigger. Must be greater than or equal to 0.</comment>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry validate-number</validate>
+                        </period>
+                        <message>
+                            <label>Bronto Message</label>
+                            <depends><enabled>1</enabled></depends>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bronto_reviews/system_config_source_message</source_model>
+                            <comment>The Bronto Message to use for Review Requests.</comment>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-select required-entry</validate>
+                        </message>
+                        <default_coupon>
+                            <label>Shopping Cart Price Rule</label>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bronto_common/system_config_source_coupon</source_model>
+                            <sort_order>31</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Use API tag <em>%%%%#couponCode%%%%</em> within your message in Bronto. You are responsible for ensuring the Shopping Cart Price Rule is active and valid, or else it may appear blank.]]></comment>
+                        </default_coupon>
+                        <default_recommendation>
+                            <label>Product Recommendation</label>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bronto_product/recommendation</source_model>
+                            <sort_order>32</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Inject related product content in the message. Recommendations are created in <strong>Promotions</strong> &raquo; <strong>Bronto Product Recommendations]]></comment>
+                        </default_recommendation>
+                        <url_suffix>
+                            <label>URL Suffix</label>
+                            <depends><enabled>1</enabled></depends>
+                            <frontend_type>text</frontend_type>
+                            <comment><![CDATA[This suffix will be added to both the Product URL and the Review URL.<br />Default: &quot;<code>#review-form</code>&quot;]]></comment>
+                            <sort_order>33</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </url_suffix>
+                        <default_send_flags>
+                            <label>Delivery Flags</label>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bronto_common/system_config_source_sendOptions</source_model>
+                            <sort_order>34</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Specify the default send flags for
+                              review requests. The options are:
+                              <br/> - <strong>Sender Authentication</strong>: Will
+                                  sign your message with DomainKeys/DKIM,
+                                  optimizing your message delivery to Hotmail,
+                                  MSN, and Yahoo! email addresses.
+                              <br/> - <strong>Fatigue Override</strong>: The
+                                 delivery can be sent even if it exceeds the
+                                 frequency cap settings for a customer.
+                              <br/> - <strong>Reply Tracking</strong>: Will store
+                                a copy of all replies to your messages on the
+                                Replies page within the Bronto platform.
+                              ]]></comment>
+                        </default_send_flags>
+                        <identity>
+                            <label>Email Sender</label>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bronto_reviews/system_config_source_identity</source_model>
+                            <sort_order>36</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Select a preset email or configure a
+                              separate one.</comment>
+                        </identity>
+                        <sender_name>
+                            <label>Sender Name</label>
+                            <depends>
+                              <enabled>1</enabled>
+                              <identity>custom</identity>
+                            </depends>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                        </sender_name>
+                        <sender_email>
+                            <label>Sender Email</label>
+                            <depends>
+                              <enabled>1</enabled>
+                              <identity>custom</identity>
+                            </depends>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry validate-email</validate>
+                        </sender_email>
+                        <exclusion>
+                            <label>Exclusion List(s)</label>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>multiselect</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field_list</frontend_model>
+                            <source_model>bronto_common/system_config_source_list</source_model>
+                            <sort_order>70</sort_order>
+                            <show_in_default>0</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <can_be_empty>1</can_be_empty>
+                            <comment>Exclude sending for customers on the
+                              selected list(s).</comment>
+                        </exclusion>
+                    </fields>
+                </settings>
+                <reorder>
+                    <label>Reorder Reminder</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>5</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <comment><![CDATA[Reorder Reminder is a product-based
+                      post-purchase email, containing a singular product. An order with multiple products can potentially generate multiple reorder reminders. Reorder frequency can be configured
+                      in the product catalog, once enabled.<br/><br/>]]></comment>
+                    <fields>
+                        <enabled>
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field</frontend_model>
+                            <backend_model>bronto_common/system_config_backend_enable</backend_model>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enabled>
+                        <status>
+                            <label>Order Status</label>
+                            <depends><enabled>1</enabled></depends>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field</frontend_model>
+                            <source_model>bronto_reviews/system_config_source_orderstatus</source_model>
+                            <comment>The order status that will trigger a scheduled
+                              delivery for the Reorder Reminder.</comment>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-select</validate>
+                        </status>
+                        <cancel_status>
+                            <label>Cancel Delivery Status</label>
+                            <depends><enabled>1</enabled></depends>
+                            <frontend_type>multiselect</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field</frontend_model>
+                            <source_model>bronto_reviews/system_config_source_orderstatus</source_model>
+                            <comment>Select the order status(es) that will cause the email delivery to be cancelled.</comment>
+                            <sort_order>15</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </cancel_status>
+                        <period>
+                            <label>Default Send Period</label>
+                            <depends><enabled>1</enabled></depends>
+                            <frontend_type>text</frontend_type>
+                            <comment>Schedule the email this many days, per unit, after the order status trigger for each reorder reminder. Must be greater than or equal to 0.</comment>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry validate-number</validate>
+                        </period>
+                        <adjustment>
+                            <label>Default Adjustment Period</label>
+                            <depends><enabled>1</enabled></depends>
+                            <frontend_type>text</frontend_type>
+                            <comment><![CDATA[Adjust the send period by this many
+                              days.<br/><strong>Note</strong>: Negative
+                              numbers are allowed, and will <em>subtract</em>
+                              from the send period.]]></comment>
+                            <sort_order>25</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </adjustment>
+                        <message>
+                            <label>Default Bronto Message</label>
+                            <depends><enabled>1</enabled></depends>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bronto_reviews/system_config_source_message</source_model>
+                            <comment>The Bronto Message to be used for each configured reorderable product.</comment>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-select required-entry</validate>
+                        </message>
+                        <default_coupon>
+                            <label>Shopping Cart Price Rule</label>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bronto_common/system_config_source_coupon</source_model>
+                            <sort_order>31</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Use API tag <em>%%%%#couponCode%%%%</em> within your message in Bronto. You are responsible for ensuring the Shopping Cart Price Rule is active and valid, or else it may appear blank.]]></comment>
+                        </default_coupon>
+                        <default_recommendation>
+                            <label>Product Recommendation</label>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bronto_product/recommendation</source_model>
+                            <sort_order>32</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Inject related product content in the message. Recommendations are created in <strong>Promotions</strong> &raquo; <strong>Bronto Product Recommendations]]></comment>
+                        </default_recommendation>
+                        <default_send_flags>
+                            <label>Delivery Flags</label>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bronto_common/system_config_source_sendOptions</source_model>
+                            <sort_order>34</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Specify the default send flags for
+                              review requests. The options are:
+                              <br/> - <strong>Sender Authentication</strong>: Will
+                                  sign your message with DomainKeys/DKIM,
+                                  optimizing your message delivery to Hotmail,
+                                  MSN, and Yahoo! email addresses.
+                              <br/> - <strong>Fatigue Override</strong>: The
+                                 delivery can be sent even if it exceeds the
+                                 frequency cap settings for a customer.
+                              <br/> - <strong>Reply Tracking</strong>: Will store
+                                a copy of all replies to your messages on the
+                                Replies page within the Bronto platform.
+                              ]]></comment>
+                        </default_send_flags>
+                        <identity>
+                            <label>Email Sender</label>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bronto_reviews/system_config_source_identity</source_model>
+                            <sort_order>36</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Select a preset email or configure a
+                              separate one.</comment>
+                        </identity>
+                        <sender_name>
+                            <label>Sender Name</label>
+                            <depends>
+                              <enabled>1</enabled>
+                              <identity>custom</identity>
+                            </depends>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                        </sender_name>
+                        <sender_email>
+                            <label>Sender Email</label>
+                            <depends>
+                              <enabled>1</enabled>
+                              <identity>custom</identity>
+                            </depends>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry validate-email</validate>
+                        </sender_email>
+                        <exclusion>
+                            <label>Exclusion List(s)</label>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>multiselect</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field_list</frontend_model>
+                            <source_model>bronto_common/system_config_source_list</source_model>
+                            <sort_order>70</sort_order>
+                            <show_in_default>0</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <can_be_empty>1</can_be_empty>
+                            <comment>Exclude sending for customers on the
+                              selected list(s).</comment>
+                        </exclusion>
+                    </fields>
+                </reorder>
+                <caretip>
+                    <label>Care Tips Notification</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <comment><![CDATA[Care Tips Notification is a product-based
+                      post-purchase email, containing a singular product. An order with multiple products can potentially generate multiple care notifications. Care tip
+                      content can be configured in the product catalog, once
+                      enabled.]]></comment>
+                    <fields>
+                        <enabled>
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field</frontend_model>
+                            <backend_model>bronto_common/system_config_backend_enable</backend_model>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enabled>
+                        <status>
+                            <label>Order Status</label>
+                            <depends><enabled>1</enabled></depends>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field</frontend_model>
+                            <source_model>bronto_reviews/system_config_source_orderstatus</source_model>
+                            <comment>The order status that will trigger a scheduled
+                              delivery for the Care Tips Notification.</comment>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-select</validate>
+                        </status>
+                        <cancel_status>
+                            <label>Cancel Delivery Status</label>
+                            <depends><enabled>1</enabled></depends>
+                            <frontend_type>multiselect</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field</frontend_model>
+                            <source_model>bronto_reviews/system_config_source_orderstatus</source_model>
+                            <comment>Select the order status(es) that will cause the email delivery to be cancelled.</comment>
+                            <sort_order>15</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </cancel_status>
+                        <period>
+                            <label>Default Send Period</label>
+                            <depends><enabled>1</enabled></depends>
+                            <frontend_type>text</frontend_type>
+                            <comment>Schedule the email this many days after the order status trigger for each care notification. Must be greater than or equal to 0.</comment>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry validate-number</validate>
+                        </period>
+                        <adjustment>
+                            <label>Default Adjustment Period</label>
+                            <depends><enabled>1</enabled></depends>
+                            <frontend_type>text</frontend_type>
+                            <comment><![CDATA[Adjust the send period by this many
+                              days.<br/><strong>Note</strong>: Negative
+                              numbers are allowed, and will <em>subtract</em>
+                              from the send period.]]></comment>
+                            <sort_order>24</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </adjustment>
+                        <send_limit>
+                            <label>Default Send Limit</label>
+                            <depends><enabled>1</enabled></depends>
+                            <frontend_type>text</frontend_type>
+                            <comment><![CDATA[Number of times a care notification can be scheduled
+                              for a configured product per
+                              customer.<br/><strong>Note</strong>: -1 will
+                              always schedule.]]></comment>
+                            <sort_order>25</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </send_limit>
+                        <message>
+                            <label>Default Bronto Message</label>
+                            <depends><enabled>1</enabled></depends>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bronto_reviews/system_config_source_message</source_model>
+                            <comment>The Bronto Message to be used for all care notifications.</comment>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-select required-entry</validate>
+                        </message>
+                        <default_coupon>
+                            <label>Shopping Cart Price Rule</label>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bronto_common/system_config_source_coupon</source_model>
+                            <sort_order>31</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Use API tag <em>%%%%#couponCode%%%%</em> within your message in Bronto. You are responsible for ensuring the Shopping Cart Price Rule is active and valid, or else it may appear blank.]]></comment>
+                        </default_coupon>
+                        <default_recommendation>
+                            <label>Product Recommendation</label>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bronto_product/recommendation</source_model>
+                            <sort_order>32</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Inject related product content in the message. Recommendations are created in <strong>Promotions</strong> &raquo; <strong>Bronto Product Recommendations]]></comment>
+                        </default_recommendation>
+                        <default_send_flags>
+                            <label>Delivery Flags</label>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bronto_common/system_config_source_sendOptions</source_model>
+                            <sort_order>34</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Specify the default send flags for
+                              review requests. The options are:
+                              <br/> - <strong>Sender Authentication</strong>: Will
+                                  sign your message with DomainKeys/DKIM,
+                                  optimizing your message delivery to Hotmail,
+                                  MSN, and Yahoo! email addresses.
+                              <br/> - <strong>Fatigue Override</strong>: The
+                                 delivery can be sent even if it exceeds the
+                                 frequency cap settings for a customer.
+                              <br/> - <strong>Reply Tracking</strong>: Will store
+                                a copy of all replies to your messages on the
+                                Replies page within the Bronto platform.
+                              ]]></comment>
+                        </default_send_flags>
+                        <identity>
+                            <label>Email Sender</label>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bronto_reviews/system_config_source_identity</source_model>
+                            <sort_order>36</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Select a preset email or configure a new
+                              one.</comment>
+                        </identity>
+                        <sender_name>
+                            <label>Sender Name</label>
+                            <depends>
+                              <enabled>1</enabled>
+                              <identity>custom</identity>
+                            </depends>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                        </sender_name>
+                        <sender_email>
+                            <label>Sender Email</label>
+                            <depends>
+                              <enabled>1</enabled>
+                              <identity>custom</identity>
+                            </depends>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry validate-email</validate>
+                        </sender_email>
+                        <exclusion>
+                            <label>Exclusion List(s)</label>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>multiselect</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field_list</frontend_model>
+                            <source_model>bronto_common/system_config_source_list</source_model>
+                            <sort_order>70</sort_order>
+                            <show_in_default>0</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <can_be_empty>1</can_be_empty>
+                            <comment>Exclude sending for customers on the
+                              selected list(s).</comment>
+                        </exclusion>
+                    </fields>
+                </caretip>
+            </groups>
+        </bronto_reviews>
+    </sections>
+</config>

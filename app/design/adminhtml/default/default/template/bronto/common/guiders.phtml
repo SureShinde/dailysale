@@ -1,0 +1,117 @@
+<?php /* @var $this Bronto_Common_Block_Adminhtml_System_Config_Guide */ ?>
+
+<?php $childHtml = $this->getSectionChildHtml(); ?>
+
+<script type="text/javascript">
+    //<![CDATA[
+
+    /**
+     * HTML for checkbox
+     */
+    var dontShowButtonHtml = "<input type=\"checkbox\" <?php echo $this->canShowGuide() ? '' : 'checked=\"checked\"' ?> id=\"stop_showing\" onchange=\"toggleDontShow(this, '<?php echo $this->getCurrentSection() ?>');\" /> <label for=\"stop_showing\"><?php echo $this->__("Don't automatically show the guide for this section again.") ?></label>";
+
+    /**
+     * If Section is not currently open, trigger click to open it
+     */
+    function sectionOpen(element)
+    {
+        if (!jQuery(element).hasClass('open')) {
+            jQuery(element).trigger('click');
+        }
+    }
+
+    /**
+     * If Section is currently open, trigger click to close it
+     * @param element
+     */
+    function sectionClose(element)
+    {
+        if (jQuery(element).hasClass('open')) {
+            jQuery(element).trigger('click');
+        }
+    }
+
+    <?php if ($childHtml): echo $this->getChildHtml($childHtml); endif; ?>
+
+    /**
+     * Identify Scope Selector
+     */
+    guiders.createGuider({
+        attachTo: '#store_switcher',
+        buttons: [
+            {name: "<?php echo $this->__('Back') ?>"},
+            {name: "<?php echo $this->__('Next') ?>"},
+            {name: "<?php echo $this->__('Close') ?>"}
+        ],
+        autoFocus: true,
+        highlight: '#store_switcher',
+        description: "<?php echo $this->__('If you want to configure stores or websites differently, you can configure the settings for each one individually by selecting the store/website from this dropdown.') ?>",
+        id: "scope",
+        next: "final",
+        position: 3,
+        overlay: true,
+        closeOnEscape: true,
+        title: "<?php echo $this->__('Configure other scopes') ?>",
+        width: 300
+    });
+
+    /**
+     * Final Step: Explore Other Modules
+     */
+    guiders.createGuider({
+        attachTo: 'li.bronto-section',
+        buttons: [
+            {name: "<?php echo $this->__('Back') ?>"},
+            {name: "<?php echo $this->__('Close') ?>"}
+        ],
+        onClose: function() {
+            finishedDontShow();
+        },
+        autoFocus: true,
+        closeOnEscape: true,
+        highlight: 'li.bronto-section',
+        description: "<?php echo $this->__('There are a number of other modules included in this extension, be sure to explore them all!%sIf you want to see this guide again, just click the link at the top right that says `Start Configuration Guide`.', '<br /><br />') ?>",
+        id: "final",
+        position: 2,
+        overlay: true,
+        title: "<?php echo $this->__('What Now?') ?>",
+        width: 200
+    });
+
+    /**
+     * Set Don't Show when finished with guide
+     * @param section
+     */
+    function finishedDontShow()
+    {
+        var targetUrl = '<?php echo $this->getToggleUrl() ?>';
+        jQuery.ajax({
+            type: "GET",
+            url: targetUrl,
+            data: { checkvalue: '0', section: '<?php echo $this->getCurrentSection() ?>' }
+        });
+    }
+
+
+    /**
+     * Toggle Showing Guider by default
+     * @param element
+     * @param section
+     */
+    function toggleDontShow(element, section) 
+    {
+        var checkValue = (element.checked) ? '0' : '1';
+        var targetUrl = '<?php echo $this->getToggleUrl() ?>';
+
+        if (checkValue == '0') {
+            alert('<?php echo $this->__('The configuration guide will no longer be shown for this module.  If you do wish to see it again, you can start the guide by clicking on the `Start Configuration Guide` link at the top right.') ?>');
+        }
+
+        jQuery.ajax({
+            type: "GET",
+            url: targetUrl,
+            data: { checkvalue: checkValue, section: section }
+        });
+    }
+    //]]>
+</script>

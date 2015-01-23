@@ -1,0 +1,299 @@
+<?php if ($this->isBrontoSection('bronto_coupon')): ?>
+
+    /**
+     * Introduce them to the guide and provide instructions
+     */
+    guiders.createGuider({
+        buttons: [
+            {name: "<?php echo $this->__("Let's Get Started!") ?>", onclick: guiders.next},
+            {name: "<?php echo $this->__("No Thanks") ?>", onclick: guiders.hideAll}
+        ],
+        buttonCustomHTML: dontShowButtonHtml,
+        description: "<?php echo $this->__('This module allows you to apply a coupon on a customer\'s shopping session from the URL, and provides quick access to you Coupon Manager Account ID.') ?>",
+        id: "start",
+        next: "bronto_coupon-site_hash",
+        overlay: true, closeOnEscape: true,
+        title: "Bronto Extension - <?php echo $this->__('Coupon Management') ?>",
+        width: 600
+    });
+
+    /**
+     * Submit Script
+     */
+    guiders.createGuider({
+        attachTo: '#bronto_coupon_settings_site_hash',
+        buttons: [
+            {name: "<?php echo $this->__('Back') ?>"},
+            {name: "<?php echo $this->__('Next') ?>", onclick: function() {
+                if (jQuery('#bronto_popup_settings_site_hash').val() == '') {
+                    alert("Don't forget to add your site hash!");
+                } else {
+                    guiders.next();
+                }
+            }},
+            {name: "<?php echo $this->__('Close') ?>"}
+        ],
+        autoFocus: true,
+        highlight: '#bronto_coupon_settings_site_hash',
+        overlay: true, closeOnEscape: true,
+        description: "<?php echo $this->__('Once you have your Coupon Manager Account ID, you can simply paste it here.') ?>",
+        id: "bronto_coupon-site_hash",
+        next: "bronto_coupon-enabled",
+        position: 1,
+        title: "<?php echo $this->__('Pasting your Account ID') ?>",
+        width: 250
+    });
+
+    /**
+     * Enable the Module
+     */
+    guiders.createGuider({
+        attachTo: '#bronto_coupon_apply_coupon_enabled',
+        buttons: [
+            {name: "<?php echo $this->__('Back') ?>"},
+            {name: "<?php echo $this->__('Next') ?>", onclick: function() {
+                if (jQuery('#bronto_coupon_apply_coupon_enabled').val() == '1') {
+                    guiders.next();
+                } else {
+                    alert("<?php echo $this->__("Don't forget to enable the module.") ?>");
+                }
+            }},
+            {name: "<?php echo $this->__('Close') ?>"}
+        ],
+        autoFocus: true,
+        closeOnEscape: true,
+        highlight: '#bronto_coupon_apply_coupon_enabled',
+        description: "<?php echo $this->__("Let's enable the module and expose some more options.  Just set `Enabled` to Yes.") ?>",
+        id: "bronto_coupon-enabled",
+        next: "bronto_coupon-use_observer",
+        position: 11,
+        overlay: true,
+        title: "<?php echo $this->__('Enable the Module') ?>",
+        width: 200
+    });
+
+    /**
+     * Explain the Event Observer
+     */
+    guiders.createGuider({
+        attachTo: '#bronto_coupon_apply_coupon_use_observer',
+        buttons: [
+            {name: "<?php echo $this->__('Back') ?>"},
+            {name: "<?php echo $this->__('Next') ?>"},
+            {name: "<?php echo $this->__('Close') ?>"}
+        ],
+        autoFocus: true,
+        closeOnEscape: true,
+        highlight: '#bronto_coupon_apply_coupon_use_observer',
+        description: "<?php echo $this->__("The `Use Event Observer` switch will scan all front end URL's for the parameters in question instead of use a specific controller URL.") ?>",
+        id: "bronto_coupon-use_observer",
+        next: "bronto_coupon-code_param",
+        position: 9,
+        overlay: true,
+        title: "<?php echo $this->__('Use Event Observer') ?>",
+        width: 200
+    });
+
+    /**
+     * Explain the Coupon Code Query Parameter
+     */
+    guiders.createGuider({
+        attachTo: '#bronto_coupon_apply_coupon_coupon_code_param',
+        buttons: [
+            {name: "<?php echo $this->__('Back') ?>"},
+            {name: "<?php echo $this->__('Next') ?>"},
+            {name: "<?php echo $this->__('Close') ?>"}
+        ],
+        autoFocus: true,
+        closeOnEscape: true,
+        highlight: '#bronto_coupon_apply_coupon_coupon_code_param',
+        description: "<?php echo $this->__("The `Coupon Code Query Parameter` allows you to define the query parameter representing the coupon code to apply to the customer shopping session.") ?>",
+        id: "bronto_coupon-code_param",
+        next: "bronto_coupon-error_message_param",
+        position: 9,
+        overlay: true,
+        title: "<?php echo $this->__('Coupon Code Query Parameter') ?>",
+        width: 200
+    });
+
+    /**
+     * Explain the Invalid Coupon Query Parameter
+     */
+    guiders.createGuider({
+        attachTo: '#bronto_coupon_apply_coupon_error_message_param',
+        buttons: [
+            {name: "<?php echo $this->__('Back') ?>"},
+            {name: "<?php echo $this->__('Next') ?>"},
+            {name: "<?php echo $this->__('Close') ?>"}
+        ],
+        autoFocus: true,
+        closeOnEscape: true,
+        highlight: '#bronto_coupon_apply_coupon_error_message_param',
+        description: "<?php echo $this->__("The `Invalid Coupon Query Parameter` allows you to define the query parameter representing the error code for an invalid message to display to the customer.") ?>",
+        id: "bronto_coupon-error_message_param",
+        next: "bronto_coupon-success_message",
+        position: 9,
+        overlay: true,
+        title: "<?php echo $this->__('Invalid Coupon Query Parameter') ?>",
+        width: 200
+    });
+
+    /**
+     * Explain the Success Message
+     */
+    guiders.createGuider({
+        attachTo: '#bronto_coupon_apply_coupon_success_message',
+        buttons: [
+            {name: "<?php echo $this->__('Back') ?>"},
+            {name: "<?php echo $this->__('Next') ?>"},
+            {name: "<?php echo $this->__('Close') ?>"}
+        ],
+        autoFocus: true,
+        closeOnEscape: true,
+        highlight: '#bronto_coupon_apply_coupon_success_message',
+        description: "<?php echo $this->__("The `Success Message` allows you to define the message to be displayed to the customer if the coupon code was successfully applied.") ?>",
+        id: "bronto_coupon-success_message",
+        next: "bronto_coupon-invalid",
+        position: 9,
+        overlay: true,
+        title: "<?php echo $this->__('Success Message') ?>",
+        width: 200
+    });
+
+    /**
+     * Explain the Invalid Message
+     */
+    guiders.createGuider({
+        attachTo: '#bronto_coupon_apply_coupon_invalid',
+        buttons: [
+            {name: "<?php echo $this->__('Back') ?>"},
+            {name: "<?php echo $this->__('Next') ?>"},
+            {name: "<?php echo $this->__('Close') ?>"}
+        ],
+        autoFocus: true,
+        closeOnEscape: true,
+        highlight: '#bronto_coupon_apply_coupon_invalid',
+        description: "<?php echo $this->__("The `Invalid Message` allows you to define the message to be displayed to the customer if the coupon code invalid or if some other error occurred.") ?>",
+        id: "bronto_coupon-invalid",
+        next: "bronto_coupon-depleted",
+        position: 9,
+        overlay: true,
+        title: "<?php echo $this->__('Invalid Message') ?>",
+        width: 200
+    });
+
+    /**
+     * Explain the Depleted Message
+     */
+    guiders.createGuider({
+        attachTo: '#bronto_coupon_apply_coupon_depleted',
+        buttons: [
+            {name: "<?php echo $this->__('Back') ?>"},
+            {name: "<?php echo $this->__('Next') ?>"},
+            {name: "<?php echo $this->__('Close') ?>"}
+        ],
+        autoFocus: true,
+        closeOnEscape: true,
+        highlight: '#bronto_coupon_apply_coupon_depleted',
+        description: "<?php echo $this->__("The `Depleted Message` allows you to define the message to be displayed to the customer if the coupon code is depleted.") ?>",
+        id: "bronto_coupon-depleted",
+        next: "bronto_coupon-expired",
+        position: 9,
+        overlay: true,
+        title: "<?php echo $this->__('Invalid Message') ?>",
+        width: 200
+    });
+
+    /**
+     * Explain the Expired Message
+     */
+    guiders.createGuider({
+        attachTo: '#bronto_coupon_apply_coupon_expired',
+        buttons: [
+            {name: "<?php echo $this->__('Back') ?>"},
+            {name: "<?php echo $this->__('Next') ?>"},
+            {name: "<?php echo $this->__('Close') ?>"}
+        ],
+        autoFocus: true,
+        closeOnEscape: true,
+        highlight: '#bronto_coupon_apply_coupon_expired',
+        description: "<?php echo $this->__("The `Expired Message` allows you to define the message to be displayed to the customer if the coupon code is expired.") ?>",
+        id: "bronto_coupon-expired",
+        next: "bronto_coupon-conflict",
+        position: 9,
+        overlay: true,
+        title: "<?php echo $this->__('Expired Message') ?>",
+        width: 200
+    });
+
+    /**
+     * Explain the Conflict Message
+     */
+    guiders.createGuider({
+        attachTo: '#bronto_coupon_apply_coupon_conflict',
+        buttons: [
+            {name: "<?php echo $this->__('Back') ?>"},
+            {name: "<?php echo $this->__('Next') ?>"},
+            {name: "<?php echo $this->__('Close') ?>"}
+        ],
+        autoFocus: true,
+        closeOnEscape: true,
+        highlight: '#bronto_coupon_apply_coupon_conflict',
+        description: "<?php echo $this->__("The `Conflict Message` allows you to define the message to be displayed to the customer if the coupon code is going to replace the coupon code already applied on their cart.") ?>",
+        id: "bronto_coupon-conflict",
+        next: "bronto_coupon-link",
+        position: 9,
+        overlay: true,
+        title: "<?php echo $this->__('Conflict Message') ?>",
+        width: 200
+    });
+
+    /**
+     * Explain the Link Content
+     */
+    guiders.createGuider({
+        attachTo: '#bronto_coupon_apply_coupon_link',
+        buttons: [
+            {name: "<?php echo $this->__('Back') ?>"},
+            {name: "<?php echo $this->__('Next') ?>"},
+            {name: "<?php echo $this->__('Close') ?>"}
+        ],
+        autoFocus: true,
+        closeOnEscape: true,
+        highlight: '#bronto_coupon_apply_coupon_link',
+        description: "<?php echo $this->__("The `Link Content` allows you to define the contents of the force application link used in the `Conflict Message`.") ?>",
+        id: "bronto_coupon-link",
+        next: "bronto_coupon-save_config_first",
+        position: 9,
+        overlay: true,
+        title: "<?php echo $this->__('Link Content') ?>",
+        width: 200
+    });
+
+    /**
+     * Save Configuration
+     */
+    guiders.createGuider({
+        attachTo: 'button.save',
+        buttons: [
+            {name: "<?php echo $this->__('Back') ?>"},
+            {name: "<?php echo $this->__('Save Config') ?>", onclick: function() {
+                configForm.submit()
+            }},
+            {name: "<?php echo $this->__('Next') ?>"}
+        ],
+        autoFocus: true,
+        highlight: 'button.save',
+        overlay: true, closeOnEscape: true,
+        description: "<?php echo $this->__("Now that you have added your site hash, and configured your coupon handling, you need to save your settings.  Click `Save Config` now.") ?>",
+        id: "bronto_coupon-save_config_first",
+        next: "scope",
+        position: 5,
+        title: "<?php echo $this->__('Save Config') ?>"
+    });
+
+    <?php if ($this->canShowGuide()): ?>
+        guiders.show('start');
+    <?php endif; ?>
+
+<?php endif; ?>

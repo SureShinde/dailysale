@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @category  Bronto
+ * @package   Bronto_Verify
+ * @author    Adam Daniels <adam.daniels@atlanticbt.com>
+ * @copyright 2013 Adam Daniels
+ * @license   http://www.atlanticbt.com/ Atlantic BT
+ */
+-->
+<config>
+    <modules>
+        <Bronto_Verify>
+            <version>0.1.0</version>
+        </Bronto_Verify>
+    </modules>
+    <global>
+        <blocks>
+            <bronto_verify>
+                <class>Bronto_Verify_Block</class>
+            </bronto_verify>
+        </blocks>
+        <helpers>
+            <bronto_verify>
+                <class>Bronto_Verify_Helper</class>
+            </bronto_verify>
+        </helpers>
+        <models>
+            <bronto_verify>
+                <class>Bronto_Verify_Model</class>
+                <resourceModel>bronto_verify_mysql4</resourceModel>
+            </bronto_verify>
+            <bronto_verify_mysql4>
+                <class>Bronto_Verify_Model_Mysql4</class>
+            </bronto_verify_mysql4>
+        </models>
+    </global>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <bronto_verify before="Mage_Adminhtml">Bronto_Verify_Adminhtml</bronto_verify>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+    <adminhtml>
+        <layout>
+            <updates>
+                <bronto_verify>
+                    <file>bronto/verify.xml</file>
+                </bronto_verify>
+            </updates>
+        </layout>
+    </adminhtml>
+    <default>
+        <bronto_verify>
+            <cron_settings>
+                <bronto_customer-settings-mage_cron>1</bronto_customer-settings-mage_cron>
+                <bronto_newsletter-settings-mage_cron>1</bronto_newsletter-settings-mage_cron>
+                <bronto_order-settings-mage_cron>1</bronto_order-settings-mage_cron>
+                <bronto_product-settings-mage_cron>1</bronto_product-settings-mage_cron>
+                <bronto_reminder-settings-mage_cron>1</bronto_reminder-settings-mage_cron>
+            </cron_settings>
+            <permissionchecker>
+                <directories>755</directories>
+                <files>644</files>
+                <exclude>app/etc, mage, pear, media, var, errors, build, .git, .svn, shell, pkginfo, includes</exclude>
+            </permissionchecker>
+        </bronto_verify>
+    </default>
+
+    <phpunit>
+        <suite>
+            <modules>
+                <Bronto_Verify/>
+            </modules>
+        </suite>
+    </phpunit>
+</config>
