@@ -1,0 +1,37 @@
+.bronto_news_item {
+	width: 100%;
+	border-radius: 5px;
+	overflow: hidden;
+	background-color: #fff;
+	margin-bottom: 7px;
+	border: 1px solid #ccc; }
+
+.bronto_news_item:last-child {
+	margin-bottom: 0px; }
+
+.bronto_news_item_info.item_header {
+	overflow: hidden; }
+
+.bronto_news_item_header.item_link {
+	float: left;
+	padding: 5px 8px;
+	font-size: 15px;
+	font-weight: bold; }
+
+.bronto_news_item_header.item_link span {
+	margin-bottom: 0px; }
+
+.bronto_news_item_header.item_link a {
+	text-decoration: none; }
+
+.bronto_news_item_header.item_link a:hover {
+	text-decoration: underline; }
+
+.bronto_news_item_header.item_date {
+	float: right;
+	font-size: 11px;
+	color: #306375;
+	padding: 5px 7px; }
+
+.bronto_news_item_info.item_description {
+	padding: 0px 1.5em 5px 1.5em; }

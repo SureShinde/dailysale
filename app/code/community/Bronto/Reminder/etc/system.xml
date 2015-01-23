@@ -1,0 +1,215 @@
+<?xml version="1.0"?>
+<config>
+    <sections>
+        <bronto_reminder translate="label" module="bronto_reminder">
+            <label><![CDATA[<div id="bronto_reminder_icon_block">Reminder Emails</div>]]></label>
+            <tab>bronto</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>500</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <about>
+                    <frontend_type>text</frontend_type>
+                    <frontend_model>bronto_reminder/adminhtml_system_config_about</frontend_model>
+                    <sort_order>0</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                </about>
+                <settings translate="label">
+                    <label>Settings</label>
+                    <frontend_type>text</frontend_type>
+                    <frontend_model>bronto_reminder/adminhtml_system_config_settings</frontend_model>
+                    <sort_order>20</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <fields>
+                        <enabled translate="label">
+                            <label>Enable Module</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field</frontend_model>
+                            <backend_model>bronto_common/system_config_backend_enable</backend_model>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enabled>
+                        <allow_send translate="label">
+                            <label>Allow Sending Reminders</label>
+                            <frontend_type>select</frontend_type>
+                            <backend_model>bronto_reminder/system_config_backend_allowsend</backend_model>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Selecting <em>Yes</em> will allow emails to begin sending. <em>No</em> will allow matching
+                              customers, but will not send emails.]]>
+                            </comment>
+                        </allow_send>
+                        <log_enabled translate="label">
+                            <label>Log Deliveries</label>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>21</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </log_enabled>
+                        <log_fields_enabled translate="label">
+                            <label>Log Delivery Fields</label>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>22</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </log_fields_enabled>
+                        <mage_cron>
+                            <label>Use Magento Cron</label>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field</frontend_model>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>
+                              <![CDATA[Setting to <em>No</em> will prevent the Magento Cron from triggering the import process for this module.<br />For more details, check the <em>Cron Settings</em> section in the <strong>Bronto &raquo; Advanced</strong> tab.]]></comment>
+                        </mage_cron>
+                        <frequency translate="label">
+                            <label>Frequency</label>
+                            <depends>
+                                <enabled>1</enabled>
+                                <mage_cron>1</mage_cron>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bronto_common/system_config_source_cron_frequency</source_model>
+                            <backend_model>bronto_reminder/system_config_backend_cron</backend_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </frequency>
+                        <interval translate="label">
+                            <label>Interval</label>
+                            <depends>
+                                <enabled>1</enabled>
+                                <mage_cron>1</mage_cron>
+                                <frequency>I</frequency>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bronto_common/system_config_source_cron_minutes</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Set this value larger than your cron.php launch period.</comment>
+                        </interval>
+                        <minutes translate="label">
+                            <label>Minute of the Hour</label>
+                            <depends>
+                                <enabled>1</enabled>
+                                <frequency>H</frequency>
+                            </depends>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Valid range: 0-59 (default 0).</comment>
+                        </minutes>
+                        <time translate="label">
+                            <label>Start Time</label>
+                            <depends>
+                                <enabled>1</enabled>
+                                <mage_cron>1</mage_cron>
+                            </depends>
+                            <frontend_type>time</frontend_type>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </time>
+                        <limit translate="label">
+                            <label>Maximum Emails per Run</label>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bronto_common/system_config_source_limit</source_model>
+                            <sort_order>80</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </limit>
+                        <threshold translate="label">
+                            <label>Email Send Failure Threshold</label>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>90</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Empty value disables this limitation. If not limited, the emails may get stuck
+                                sending over and over.
+                            </comment>
+                        </threshold>
+                        <identity translate="label">
+                            <label>Reminder Email Sender</label>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_identity</source_model>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </identity>
+                        <exclusion>
+                            <label>Exclusion List(s)</label>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>multiselect</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field_list</frontend_model>
+                            <source_model>bronto_common/system_config_source_list</source_model>
+                            <sort_order>105</sort_order>
+                            <show_in_default>0</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <can_be_empty>1</can_be_empty>
+                            <comment>Exclude sending for customers on the
+                              selected list(s).</comment>
+                        </exclusion>
+                    </fields>
+                </settings>
+                <cron_list>
+                    <frontend_type>text</frontend_type>
+                    <frontend_model>bronto_reminder/adminhtml_system_config_cron</frontend_model>
+                    <sort_order>30</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                </cron_list>
+            </groups>
+        </bronto_reminder>
+    </sections>
+</config>

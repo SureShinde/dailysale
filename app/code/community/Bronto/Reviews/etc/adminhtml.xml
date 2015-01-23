@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<config>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <system>
+                        <children>
+                            <bronto_reviews translate="title" module="bronto_reviews">
+                                <title>Post-Purchase Deliveries</title>
+                                <sort_order>60</sort_order>
+                            </bronto_reviews>
+                            <config>
+                                <children>
+                                    <bronto_reviews module="bronto_reviews">
+                                        <title>Bronto Post-Purchase Emails Section</title>
+                                        <sort_order>9999</sort_order>
+                                    </bronto_reviews>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+    <menu>
+        <system>
+            <children>
+                <bronto_reviews translate="title" module="bronto_reviews">
+                    <title>Post-Purchase Deliveries</title>
+                    <action>adminhtml/postpurchase/deliveries</action>
+                    <sort_order>60</sort_order>
+                    <depends>
+                        <module>Bronto_Reviews</module>
+                    </depends>
+                </bronto_reviews>
+            </children>
+        </system>
+    </menu>
+</config>

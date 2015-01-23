@@ -1,0 +1,268 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @category  Bronto
+ * @package   Bronto_Verify
+ * @author    Adam Daniels <adam.daniels@atlanticbt.com>
+ * @copyright 2013 Adam Daniels
+ * @license   http://www.atlanticbt.com/ Atlantic BT
+ */
+-->
+<config>
+    <sections>
+        <bronto_verify translate="label" module="bronto_verify">
+            <label><![CDATA[<div id="bronto_verify_icon_block">Admin Tools</div>]]></label>
+            <tab>bronto</tab>
+            <sort_order>900</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <!-- About Block -->
+                <about>
+                    <frontend_type>text</frontend_type>
+                    <frontend_model>bronto_verify/adminhtml_system_config_about</frontend_model>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                </about>
+                <!-- API Token Verification -->
+                <installs>
+                    <label>Install Status</label>
+                    <frontend_type>text</frontend_type>
+                    <frontend_model>bronto_verify/adminhtml_system_config_installs</frontend_model>
+                    <sort_order>21</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>0</expanded>
+                </installs>
+                <advanced>
+                    <label>Classpath Inspection</label>
+                    <frontend_type>text</frontend_type>
+                    <!--<frontend_model>bronto_verify/adminhtml_system_config_advanced</frontend_model>-->
+                    <sort_order>30</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <expanded>0</expanded>
+                    <fields>
+                        <classpath_search>
+                            <label>Class to get Path for</label>
+                            <comment>
+                                <![CDATA[Enter Class Name or Alias* to find path for, and then select the class type.<br /><em> * Aliases only work for Model and Helper classes</em>]]></comment>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>bronto_verify/adminhtml_system_config_form_field_classpath</frontend_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </classpath_search>
+                        <observer_search>
+                            <label>Event to search for</label>
+                            <comment>Find all observers for this event</comment>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>bronto_verify/adminhtml_system_config_form_field_events</frontend_model>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </observer_search>
+                    </fields>
+                </advanced>
+                <conflictchecker>
+                    <label>Conflict Checker</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>40</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <expanded>0</expanded>
+                    <fields>
+                        <check_conflicts>
+                            <label>Check Conflicts</label>
+                            <comment>Find all module conflicts</comment>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>bronto_verify/adminhtml_system_config_form_field_conflict</frontend_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </check_conflicts>
+                    </fields>
+                </conflictchecker>
+                <permissionchecker translate="label">
+                    <label>Permissions Settings</label>
+                    <frontend_type>text</frontend_type>
+                    <frontend_model>bronto_verify/adminhtml_system_config_form_permission</frontend_model>
+                    <sort_order>50</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <expanded>0</expanded>
+                    <fields>
+                        <owner translate="label comment">
+                            <label>Owner</label>
+                            <comment><![CDATA[Owner to check for, (can be name or uid)]]></comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </owner>
+                        <group translate="label comment">
+                            <label>Group</label>
+                            <comment><![CDATA[Group to check for, (can be name or gid)]]></comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </group>
+                        <directories translate="label comment">
+                            <label>Directories</label>
+                            <comment><![CDATA[Directory permission to check, standard is 755]]></comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </directories>
+                        <files translate="label comment">
+                            <label>Files</label>
+                            <comment><![CDATA[File permission to check, standard is 644]]></comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </files>
+                        <exclude translate="label comment">
+                            <label>Exclude Patterns</label>
+                            <comment><![CDATA[Nodes to exclude, can be path or file]]></comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </exclude>
+                    </fields>
+                </permissionchecker>
+                <permissionchecker_validate>
+                    <label>Permissions Validation</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>51</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <expanded>0</expanded>
+                    <fields>
+                        <validate translate="label">
+                            <label>Check Permissions</label>
+                            <button_label>Check Permissions</button_label>
+                            <comment>Compare against the above Permissions Settings.</comment>
+                            <frontend_model>bronto_verify/adminhtml_system_config_form_field_button</frontend_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </validate>
+                        <results>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>bronto_verify/adminhtml_system_config_form_field_index</frontend_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </results>
+                    </fields>
+                </permissionchecker_validate>
+                <cron_settings>
+                    <label>Cron Settings</label>
+                    <frontend_type>text</frontend_type>
+                    <frontend_model>bronto_verify/adminhtml_system_config_form_magecron</frontend_model>
+                    <sort_order>52</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <comment>
+                        <![CDATA[This section is provided as an Advanced Option for handling the Cron processes for the Bronto Extension Modules.  If you find that the Magento cron management system fails to trigger the cron processes for these modules, you may utilize the cron.php file provided with this extension.  Simply set the 'Use Magento Cron' setting to 'No' for any modules you wish, click 'Save Config', and then follow the Cron configuration details below to set up the external cron.]]></comment>
+                    <expanded>0</expanded>
+                    <fields>
+                        <bronto_api-queue_settings-mage_cron>
+                            <label>API Send: Use Magento Cron</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <backend_model>bronto_verify/system_config_backend_magecron</backend_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </bronto_api-queue_settings-mage_cron>
+                        <bronto_api-settings-mage_cron>
+                            <label>API Retry: Use Magento Cron</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <backend_model>bronto_verify/system_config_backend_magecron</backend_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </bronto_api-settings-mage_cron>
+                        <bronto_customer-settings-mage_cron>
+                            <label>Contact Import: Use Magento Cron</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <backend_model>bronto_verify/system_config_backend_magecron</backend_model>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </bronto_customer-settings-mage_cron>
+                        <bronto_newsletter-settings-mage_cron>
+                            <label>Newsletter Opt-in: Use Magento Cron</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <backend_model>bronto_verify/system_config_backend_magecron</backend_model>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </bronto_newsletter-settings-mage_cron>
+                        <bronto_order-settings-mage_cron>
+                            <label>Order Import: Use Magento Cron</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <backend_model>bronto_verify/system_config_backend_magecron</backend_model>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </bronto_order-settings-mage_cron>
+                        <bronto_product-settings-mage_cron>
+                            <label>Product Recommendations: Use Magento Cron</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <backend_model>bronto_verify/system_config_backend_magecron</backend_model>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </bronto_product-settings-mage_cron>
+                        <bronto_reminder-settings-mage_cron>
+                            <label>Reminder Emails: Use Magento Cron</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <backend_model>bronto_verify/system_config_backend_magecron</backend_model>
+                            <sort_order>6</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </bronto_reminder-settings-mage_cron>
+                    </fields>
+                </cron_settings>
+            </groups>
+        </bronto_verify>
+    </sections>
+</config>

@@ -1,0 +1,65 @@
+<?php /* var $this Bronto_Common_Block_Adminhtml_System_Config_Suppressed */ ?>
+
+<style>
+.bronto-suppression-interface-control {
+    border: 1px solid #cbd3d4;
+    padding: 3px;
+    text-align:center;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+}
+</style>
+<fieldset class="grid" id="bronto-suppression-interface"></fieldset>
+<script type="text/javascript">
+    Event.observe(window, 'load', function() {
+      $$('a[id$=suppressed-head]').each(function(item) {
+        if (item.getAttribute('class') == 'open') {
+          loadSuppressionTable(1);
+        } else {
+          var handler = function() {
+            if ($('bronto-suppression-interface').innerHTML.length == 0) {
+              loadSuppressionTable(1);
+            }
+            item.stopObserving('click', handler);
+          };
+          item.observe('click', handler);
+        }
+      });
+    });
+
+    function resetAllSuppressed()
+    {
+        if (confirm("This will reset all suppressed entries in the queue.\n\nYou can then click on Run Now to perform an immediate retry.\n\nAre you sure you want to do this?")) {
+            new Ajax.Request('<?php echo $this->getResetUrl(); ?>', {
+                method: 'post',
+                parameters: { suppressed: 1 },
+                onComplete: function(transport) {
+                    window.location.reload(true);
+                }
+            });
+        }
+    }
+
+    function loadSuppressionTable(page)
+    {
+        new Ajax.Request('<?php echo $this->getAjaxUrl() ?>page/' + page + '/', {
+            method: 'get',
+            onComplete: function(transport) {
+                $('bronto-suppression-interface').update(transport.responseText);
+                $$('#bronto-suppression-interface a').each(function(link) {
+                    link.observe('click', function(e) {
+                        e.preventDefault();
+                        var url = link.getAttribute('href');
+                        new Ajax.Request(url, {
+                            method: 'post',
+                            onComplete: function() {
+                                loadSuppressionTable(page);
+                            }
+                        });
+                    });
+                });
+            }
+        });
+    }
+</script>

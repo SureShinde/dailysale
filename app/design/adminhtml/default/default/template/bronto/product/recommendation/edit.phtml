@@ -1,0 +1,58 @@
+<?php echo $this->getFormInitScripts(); ?>
+
+<div class="content-header">
+  <?php echo $this->getHeaderHtml(); ?>
+  <p class="content-buttons form-buttons">
+    <?php echo $this->getButtonsHtml('header'); ?>
+  </p>
+</div>
+
+<form id="edit_form" method="post" action="<?php echo $this->getSaveUrl(); ?>">
+  <?php echo $this->getFormHtml(); ?>
+</form>
+
+<script type="text/javascript">
+  var editForm = new varienForm('edit_form', '<?php echo $this->getValidationUrl(); ?>');
+</script>
+
+<?php if ($this->hasFooterButtons()) : ?>
+  <div class="content-footer">
+    <p class="content-buttons form-buttons">
+      <?php echo $this->getButtonsHtml('footer'); ?>
+    </p>
+  </div>
+<?php endif; ?>
+
+<?php echo $this->getSelectedProductsJs(); ?>
+<script type="text/javascript">
+  Event.observe(window, 'load', function() {
+    $$('#preview_button button').each(function($button) {
+      $button.observe('click', function(e) {
+        Dialog.info({
+          url: "<?php echo $this->getPreviewContentUrl(); ?>",
+          options: {
+            method: 'post',
+            parameters: $('edit_form').serialize()
+          }
+        }, {
+          title: $button.innerText,
+          width: 820,
+          height: 410,
+          id: 'browser_window',
+          top: 50,
+          hideEffect: Element.hide,
+          showEffect: Element.show,
+          recenterAuto: true,
+          className: 'magento',
+          draggable: false,
+          closable: true,
+          resizable: false,
+          windowClassName: 'popup-window',
+          zIndex: 400,
+        });
+      });
+    });
+  });
+</script>
+
+<?php echo $this->getFormScripts(); ?>

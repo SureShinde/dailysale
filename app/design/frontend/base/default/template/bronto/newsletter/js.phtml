@@ -1,0 +1,74 @@
+<?php /* @var $this Bronto_Newsletter_Block_Checkout_Onepage_Newsletter */ ?>
+
+<?php if ($this->isEnabled()): ?>
+<script type="text/javascript">
+//<![CDATA[
+// Observe Page and fetch checkbox code
+Event.observe(window, 'load', function() {    
+    var selector = "<?php echo $this->getCssSelector(); ?>";
+    var billingId = 'billing-newsletter-signup';
+    if (selector == '#billing_address') {
+        // Check if we are on One-Step-Checkout
+        if($('billing_address') != undefined) {
+            var billingFieldset = $$('#billing_address ul');
+        } else {
+            var billingFieldset = $$('#co-billing-form fieldset ul.form-list');
+        }
+        // Build checkbox container
+        var newRow = document.createElement('li').writeAttribute('id', billingId);
+        billingFieldset[0].insert(newRow);
+    } else {
+        var content = document.createElement('div').writeAttribute('id', billingId);
+        $$(selector)[0].insert(content);
+    }
+
+    // If Register/Guest button is clicked, Load Checkbox Code
+    if ($('onepage-guest-register-button') != null) {
+        Event.observe('onepage-guest-register-button', 'click', function() {
+            getCheckbox();
+        });
+    }
+
+    // Load Checkbox Code
+    getCheckbox();
+
+    // Observe Email change
+    if ($('billing:email')) {
+        $('billing:email').observe('change', function() {
+            setSubscribedValue();
+        });
+    }
+});
+
+function setSubscribedValue()
+{
+    var checked  = $('billing:is_subscribed_box').checked ? 1 : 0;
+    var email    = $('billing:email');
+    var starting = <?php $this->_setCheckboxStatus(); echo $this->getChecked(true) ?>;
+    $('billing:is_subscribed').value = checked;
+    
+    // Update Subscribed Status
+    new Ajax.Request('<?php echo $this->getSubscribeUrl() ?>', {
+        method: 'post',
+        parameters: {starting: starting, checked: checked, email: email ? email.value : ''},
+        onSuccess: function(response) {
+            console.log(response.responseText);
+        }
+    });
+    
+    return false;
+}
+
+function getCheckbox() {
+    new Ajax.Request('<?php echo $this->getRequestUrl() ?>', {
+        method: 'post',
+        parameters: {checkoutMode: checkout.method},
+        onSuccess: function(response) {
+            console.log(response.responseText);
+            $('billing-newsletter-signup').update(response.responseText);
+        }
+    });
+}
+//]]>
+</script>
+<?php endif; ?>

@@ -1,0 +1,191 @@
+<?php
+
+if ($this->isBrontoSection('bronto_product')) : ?>
+  <?php if (!Mage::helper($this->getCurrentSection())->isEnabled()): ?>
+        /**
+         * Introduce them to the guide and provide instructions
+         */
+        guiders.createGuider({
+            buttons: [
+                {name: "<?php echo $this->__("Let's Get Started!") ?>", onclick: guiders.next},
+                {name: "<?php echo $this->__('No Thanks') ?>", onclick: guiders.hideAll}
+            ],
+            buttonCustomHTML: dontShowButtonHtml,
+            description: "<?php echo $this->__(
+                'This module allows you to create Product Recommendation that appear in Transactional, Reminder, and Review Emails.%sLet\'s get you set up!%sReady to Go?%s',
+                '<br /><br />',
+                '<br /><br /><div style=\"text-align:right; font-weight:bold;\">',
+                '</div>'
+            ) ?>",
+            id: "start",
+            next: "bronto_product-enable",
+            overlay: true,
+            closeOnEscape: true,
+            title: "Bronto Extension - <?php echo $this->__('Product Recommendations') ?>",
+            width: 600
+        });
+
+        /**
+         * Enable the Module
+         */
+        guiders.createGuider({
+            attachTo: '#bronto_product_settings_enabled',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>", onclick: function() {
+                    if (jQuery('#bronto_product_settings_enabled').val() == '1') {
+                        guiders.next();
+                    } else {
+                        alert("<?php echo $this->__("Do not forget to enable the module") ?>");
+                    }
+                }},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+            closeOnEscape: true,
+            highlight: '#bronto_product_settings_enabled',
+            description: "<?php echo $this->__("Enable the module and expose some more options.  Just set `Enable Module` to Yes and click `Save Config`.") ?>",
+            id: "bronto_product-enable",
+            next: "bronto_product-configure_cron",
+            position: 11,
+            overlay: true,
+            title: "<?php echo $this->__('Enable the Module') ?>",
+            width: 200
+        });
+
+        /**
+         * Configure Cron
+         */
+        guiders.createGuider({
+            attachTo: '#row_bronto_product_settings_mage_cron',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+            closeOnEscape: true,
+            description: "<?php echo $this->__('These options allow you to configure the cron schedule creating content tags containing product recommendations.') ?>",
+            id: "bronto_product-configure_cron",
+            next: "bronto_product-save_config_first",
+            position: 10,
+            title: "<?php echo $this->__('Configure the Cron') ?>",
+            width: 200
+        });
+
+        /**
+         * Save Configuration
+         */
+        guiders.createGuider({
+            attachTo: 'button.save',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Save Config') ?>", onclick: function() {
+                    configForm.submit()
+                }},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+            closeOnEscape: true,
+            highlight: 'button.save',
+            description: "<?php echo $this->__('Now that the initial settings have been configured, you should save them.  Click `Save Config` now.') ?>",
+            id: "bronto_product-save_config_first",
+            next: "final",
+            position: 5,
+            overlay: true,
+            title: "<?php echo $this->__('Save Config') ?>"
+        });
+<?php else : ?>
+        /**
+         * Continue Guide now that module is enabled
+         */
+        guiders.createGuider({
+            buttons: [
+                {name: "<?php echo $this->__('Continue with Guide') ?>", onclick: guiders.next},
+                {name: "<?php echo $this->__('No Thanks') ?>", onclick: guiders.hideAll}
+            ],
+            buttonCustomHTML: dontShowButtonHtml,
+            description: "<?php echo $this->__(
+                'With the Product Recommendation module enabled, you can add related products to Transactional, Reminder, and Review Emails.%sLet\'s get started.%s',
+                '<br /><br /><div style=\"text-align:right; font-weight:bold;\">',
+                '</div>'
+            ) ?>",
+            id: "start",
+            next: "bronto_product-api_info",
+            closeOnEscape: true,
+            title: "Bronto Extension - <?php echo $this->__('Product Recommendation') ?>",
+            width: 600
+        });
+
+        /**
+         * Explain API info
+         */
+        guiders.createGuider({
+            attachTo: '#api_info',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            onShow: function() {
+              jQuery('.bronto-help').css({ 'text-indent': 0, 'overflow': 'inherit' });
+            },
+            onHide: function() {
+              jQuery('.bronto-help').removeAttr('style');
+            },
+            autoFocus: true, closeOnEscape: true,
+            description: "<?php echo $this->__('Some new API tags are added for messages taking advantage of related product information. These tags are used for email based recommendations and content tag recommendations.'); ?>",
+            id: "bronto_product-api_info",
+            next: "bronto_product-mage_cron",
+            position: 10,
+            title: "<?php echo $this->__('API Tags') ?>",
+            width: 200
+        });
+
+        /**
+         * Explain Using Magento Cron
+         */
+        <?php $advancedCronLink = $this->helper('bronto_common')->getScopeUrl('/system_config/edit/section/bronto_verify'); ?>
+        guiders.createGuider({
+            attachTo: '#row_bronto_product_settings_mage_cron',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true, closeOnEscape: true,
+            description: "<?php echo $this->__('The `Use Magento Cron` setting, when set to No, allows you to create your own crontab entry on your server instead of using Magento\'s cron system.  You should only change this if you are experiencing issues where the cron job for this module fails to run due to too many jobs.%sYou can find more details under the %s, including examples of how to configure the cron job.', '<br /><br />', '<a href=\"' . $advancedCronLink . '\" title=\"Advanced &raquo; Cron Settings\">Advanced Tab</a>') ?>",
+            id: "bronto_product-mage_cron",
+            next: "bronto_product-cron_table",
+            position: 10,
+            title: "<?php echo $this->__('Cron Options') ?>",
+            width: 200
+        });
+
+        /**
+         * Cron Table
+         */
+        guiders.createGuider({
+            attachTo: '.bronto-cron-table',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+            closeOnEscape: true,
+            highlight: '.bronto-cron-table',
+            overlay: true,
+            description: "<?php echo $this->__('This table shows you the recent history of the Cron Jobs that are pending, running, have successfully completed, or have failed upon execution.%sThe cron job only applies to creating content tags from product recommendations.', '<br/><br/>') ?>",
+            id: "bronto_product-cron_table",
+            next: "final",
+            position: 10,
+            title: "<?php echo $this->__('Cron Table') ?>",
+            width: 200
+        });
+    <?php endif; ?>
+
+    <?php if ($this->canShowGuide()): ?>
+        guiders.show('start');
+    <?php endif; ?>
+<?php endif; ?>

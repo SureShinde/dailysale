@@ -1,0 +1,173 @@
+<?php /* @var $this Bronto_Common_Block_Adminhtml_System_Config_Guide */ ?>
+
+<?php if($this->isBrontoSection('bronto_email')): ?>
+
+    <?php if (!Mage::helper($this->getCurrentSection())->isEnabled()): ?>
+        /**
+         * Introduce them to the guide and provide instructions
+         */
+        guiders.createGuider({
+            buttons: [
+                {name: "<?php echo $this->__("Let's Get Started!") ?>", onclick: guiders.next},
+                {name: "<?php echo $this->__("No Thanks") ?>", onclick: guiders.hideAll}
+            ],
+            buttonCustomHTML: dontShowButtonHtml,
+            description: "<?php echo $this->__(
+                'This module allows you to send Magento emails through Bronto instead, giving you better analytics and more opportunities.' .
+                '%sReady to Go?%s',
+                '<br /><br /><div style=\"text-align:right; font-weight:bold;\">',
+                '</div>'
+            ) ?>",
+            id: "start",
+            next: "bronto_email-enable",
+            overlay: true,
+            closeOnEscape: true,
+            title: "Bronto Extension - <?php echo $this->__('Transactional Emails Module') ?>",
+            width: 600
+        });
+
+        /**
+         * Enable the Module
+         */
+        guiders.createGuider({
+            attachTo: '#bronto_email_settings_enabled',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>", onclick: function() {
+                    if (jQuery('#bronto_email_settings_enabled').val() == '1') {
+                        guiders.next();
+                    } else {
+                        alert("<?php echo $this->__("Don't forget to enable the module") ?>");
+                    }
+                }},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+            closeOnEscape: true,
+            highlight: '#bronto_email_settings_enabled',
+            description: "<?php echo $this->__("Let's enable the module and expose some more options.  Just set `Enable Module` to Yes and click `Save Config`.") ?>",
+            id: "bronto_email-enable",
+            next: "bronto_email-allow_sending",
+            position: 11,
+            overlay: true,
+            title: "<?php echo $this->__('Enable the Module') ?>",
+            width: 200
+        });
+
+        /**
+         * Explain Sending Through Bronto
+         */
+        guiders.createGuider({
+            attachTo: '#row_bronto_email_settings_use_bronto',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+            closeOnEscape: true,
+            description: "<?php echo $this->__(
+                'The `Allow Sending Through Bronto` switch, when set to `No` allows you to import all your templates into Bronto, ' .
+                'get them approved for Transactional Sending, and get them mapped without actually sending through Bronto until you are ready.  ' .
+                'Once you are ready to have Bronto handle the sending of your email, just flip this switch to `Yes`.'
+            ) ?>",
+            id: "bronto_email-allow_sending",
+            next: "bronto_email-save_config_first",
+            position: 3,
+            title: "<?php echo $this->__('Sending Through Bronto') ?>",
+            width: 200
+        });
+
+        /**
+         * Save Configuration
+         */
+        guiders.createGuider({
+            attachTo: 'button.save',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Save Config') ?>", onclick: function() {
+                    configForm.submit()
+                }},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true, closeOnEscape: true,
+            highlight: 'button.save',
+            overlay: true,
+            description: "<?php echo $this->__('Now that the initial settings have been configured, you should save them.  Click `Save Config` now.') ?>",
+            id: "bronto_email-save_config_first",
+            next: "final",
+            position: 5,
+            title: "<?php echo $this->__('Save Config') ?>"
+        });
+        
+    <?php else: ?>
+
+        /**
+         * Continue Guide now that module is enabled
+         */
+        guiders.createGuider({
+            buttons: [
+                {name: "<?php echo $this->__('Continue with Guide') ?>", onclick: guiders.next},
+                {name: "<?php echo $this->__('No Thanks') ?>", onclick: guiders.hideAll}
+            ],
+            buttonCustomHTML: dontShowButtonHtml,
+            description: "<?php echo $this->__(
+                'With the Transactional Emails module enabled, we have a few more sections to explore.%sReady to Go?%s',
+                '<br /><br /><div style=\"text-align:right; font-weight:bold;\">',
+                '</div>'
+            ) ?>",
+            id: "start",
+            next: "bronto_email-assign_templates",
+            overlay: true, closeOnEscape: true,
+            title: "Bronto Extension - <?php echo $this->__('Transactional Emails Module') ?>",
+            width: 600
+        });
+
+        /**
+         * Explain Assign Templates
+         */
+        guiders.createGuider({
+            attachTo: '#bronto_email_templates-head',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true, closeOnEscape: true,
+            description: "<?php echo $this->__(
+                'The Assign Templates section lets you map your Bronto messages to the emails that Magento sends out, ' .
+                'without having to dig through each configuration section to find the email template settings.'
+            ) ?>",
+            id: "bronto_email-assign_templates",
+            next: "bronto_email-go_link",
+            position: 9,
+            title: "<?php echo $this->__('Assigning Templates') ?>",
+            width: 200
+        });
+
+        /**
+         * Link to Reminders
+         */
+        guiders.createGuider({
+            attachTo: '#bronto_email_settings .comment a',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true, closeOnEscape: true,
+            description: "<?php echo $this->__('When you are ready to start setting up your Transactional Emails, you can simply follow this link.') ?>",
+            id: "bronto_email-go_link",
+            next: "scope",
+            position: 9,
+            title: "<?php echo $this->__('Transactional Emails') ?>",
+            width: 200
+        });
+        
+    <?php endif; ?>
+
+    <?php if($this->canShowGuide()): ?>
+        guiders.show('start');
+    <?php endif; ?>
+
+<?php endif; ?>

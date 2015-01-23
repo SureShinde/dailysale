@@ -1,0 +1,311 @@
+<?xml version="1.0"?>
+<config>
+    <sections>
+        <bronto_newsletter module="bronto_newsletter">
+            <label><![CDATA[<div id="bronto_newsletter_icon_block">Newsletter Opt-In</div>]]></label>
+            <tab>bronto</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>175</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <about>
+                    <frontend_type>text</frontend_type>
+                    <frontend_model>bronto_newsletter/adminhtml_system_config_about</frontend_model>
+                    <sort_order>0</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                </about>
+                <settings>
+                    <label>Settings</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <fields>
+                        <enabled>
+                            <label>Enable Module</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field</frontend_model>
+                            <backend_model>bronto_common/system_config_backend_enable</backend_model>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enabled>
+                        <mage_cron>
+                            <label>Use Magento Cron</label>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field</frontend_model>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>
+                              <![CDATA[Setting to <em>No</em> will prevent the Magento Cron from triggering the import process for this module.<br />For more details, check the <em>Cron Settings</em> section in the <strong>Bronto &raquo; Advanced</strong> tab.]]></comment>
+                        </mage_cron>
+                        <frequency>
+                            <label>Frequency</label>
+                            <depends>
+                                <enabled>1</enabled>
+                                <mage_cron>1</mage_cron>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bronto_common/system_config_source_cron_frequency</source_model>
+                            <backend_model>bronto_newsletter/system_config_backend_cron</backend_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </frequency>
+                        <interval>
+                            <label>Interval</label>
+                            <depends>
+                                <frequency>I</frequency>
+                                <mage_cron>1</mage_cron>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bronto_common/system_config_source_cron_minutes</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Set this value larger than your cron.php launch period.</comment>
+                        </interval>
+                        <minutes>
+                            <label>Minute of the Hour</label>
+                            <depends>
+                                <frequency>H</frequency>
+                                <mage_cron>1</mage_cron>
+                            </depends>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Valid range: 0-59 (default 0).</comment>
+                        </minutes>
+                        <time>
+                            <label>Start Time</label>
+                            <depends>
+                                <enabled>1</enabled>
+                                <mage_cron>1</mage_cron>
+                            </depends>
+                            <frontend_type>time</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </time>
+                        <limit>
+                            <label>Limit</label>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bronto_common/system_config_source_limit</source_model>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Total Subscribers to process every run.</comment>
+                        </limit>
+                        <sync_limit>
+                            <label>Sync Limit</label>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bronto_common/system_config_source_synclimit</source_model>
+                            <sort_order>65</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Total Subscribers to sync to queue at a time.</comment>
+                        </sync_limit>
+                    </fields>
+                </settings>
+                <checkout>
+                    <label>Checkout</label>
+                    <frontend_model>bronto_common/adminhtml_system_config_form_fieldset</frontend_model>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>2</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <show_to_loggedin>
+                            <label>Show on Logged-In Checkout</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </show_to_loggedin>
+                        <show_to_guests>
+                            <label>Show on Guest Checkout</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </show_to_guests>
+                        <show_to_registrars>
+                            <label>Show on Register Checkout</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>6</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </show_to_registrars>
+                        <show_if_subscribed>
+                            <label>Show if Already Subscribed</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>7</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </show_if_subscribed>
+                        <default_checked>
+                            <label>Checked by Default</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </default_checked>
+                        <label_text>
+                            <label>Checkbox Label Text</label>
+                            <frontend_type>text</frontend_type>
+                            <validate>required-entry validate-length minimum-length-1</validate>
+                            <sort_order>15</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </label_text>
+                        <css_selector>
+                            <label>Checkbox CSS Selector</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[CSS Selector to place the newly
+                              added subscriber checkbox on the checkout
+                              page.<br/>Default:
+                              <code>#billing_address</code>]]></comment>
+                        </css_selector>
+                        <checkbox_style>
+                            <label>Checkbox CSS Style</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>25</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Dynamic styling for the newly
+                              created checkbox.<br/>Default: <pre>.col1-layout .billing_is_subscribed_box {
+    margin-left: 240px !important;
+    float:left;
+    width:auto;
+    margin: 2px 8px 0 0; }
+.col1-layout #billing_subscribed_label {
+    width: auto;
+    text-align: left; }</pre>]]></comment>
+                        </checkbox_style>
+                    </fields>
+                </checkout>
+                <contacts>
+                    <label>Contacts</label>
+                    <frontend_model>bronto_common/adminhtml_system_config_form_fieldset</frontend_model>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>3</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <comment>
+                      <![CDATA[Please proceed to the Website and/or Store configuration scopes to select which list(s) to add subscribers to within Bronto.]]></comment>
+                    <fields>
+                        <update_status>
+                            <label>Update Status</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field</frontend_model>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[If <em>Yes</em>, the contact status within Bronto will be set based on the Magento subscriber status.]]></comment>
+                        </update_status>
+                        <lists>
+                            <label>Add Subscribers to List(s)</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field_list</frontend_model>
+                            <source_model>bronto_common/system_config_source_list</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>0</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <can_be_empty>1</can_be_empty>
+                        </lists>
+                        <update_unsub>
+                            <label>Remove Unsubscribes from List(s)</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_form_field</frontend_model>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>0</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[If <em>Yes</em>, the unsubscribing
+                              contact will be removed from the list(s) selected
+                              above.]]></comment>
+                        </update_unsub>
+                    </fields>
+                </contacts>
+                <cron_list>
+                    <frontend_type>text</frontend_type>
+                    <frontend_model>bronto_newsletter/adminhtml_system_config_cron</frontend_model>
+                    <sort_order>4</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                </cron_list>
+                <suppressed>
+                    <label>Suppressed Subscribers</label>
+                    <frontend_type>text</frontend_type>
+                    <frontend_model>bronto_newsletter/adminhtml_system_config_suppressed</frontend_model>
+                    <sort_order>5</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>0</expanded>
+                    <fields>
+                        <reset>
+                            <label>Reset All Suppressed Subscribers</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>bronto_common/adminhtml_system_config_suppressed_reset</frontend_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </reset>
+                    </fields>
+                </suppressed>
+            </groups>
+        </bronto_newsletter>
+    </sections>
+</config>

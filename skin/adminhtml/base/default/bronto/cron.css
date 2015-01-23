@@ -1,0 +1,199 @@
+.bar-red,
+.bar-red span,
+.bar-orange,
+.bar-orange span,
+.bar-yellow,
+.bar-yellow span,
+.bar-green,
+.bar-green span,
+.bar-lightblue,
+.bar-lightblue span,
+.bar-blue,
+.bar-blue span,
+.bar-lightgray,
+.bar-lightgray span,
+.bar-gray,
+.bar-gray span { display:block; height:16px; background-image:url(images/bg_notifications.gif); background-repeat:no-repeat; font:bold 10px/16px Arial, Helvetica, sans-serif; text-transform:uppercase; text-align:center; padding:0 0 0 7px; margin:1px 0; white-space:nowrap; color:#fff; }
+
+.bar-red { background-position:0 0; }
+.bar-red span { background-position:100% 0; padding:0 7px 0 0; }
+
+.bar-orange { background-position:0 -16px; }
+.bar-orange span { background-position:100% -16px; padding:0 7px 0 0; }
+
+.bar-yellow { background-position:0 -32px; }
+.bar-yellow span { background-position:100% -32px; padding:0 7px 0 0; }
+
+.bar-green { background-position:0 -48px; }
+.bar-green span { background-position:100% -48px; padding:0 7px 0 0; }
+
+.bar-lightblue { background-position:0 -64px; }
+.bar-lightblue span { background-position:100% -64px; padding:0 7px 0 0; }
+
+.bar-blue { background-position:0 -80px; }
+.bar-blue span { background-position:100% -80px; padding:0 7px 0 0; }
+
+.bar-lightgray { background-position:0 -96px; }
+.bar-lightgray span { background-position:100% -96px; padding:0 7px 0 0; }
+
+.bar-gray { background-position:0 -112px; }
+.bar-gray span { background-position:100% -112px; padding:0 7px 0 0; }
+
+.bronto-cron {
+    margin-top: 8px;
+    margin-bottom: 10px;
+    padding: 0;
+    color: #666;
+}
+
+.bronto-cron .form-buttons {
+    margin-bottom: 10px;
+    padding-right: 4px;
+    width: 60%;
+    text-align: right;
+}
+
+.bronto-cron .form-buttons button {
+    margin-left: 5px;
+}
+
+.bronto-cron-table {
+    border-collapse: collapse;
+    clear: both;
+}
+
+.bronto-cron-table th {
+    background-color: #e5e5e5;
+}
+
+.bronto-cron-table td, .bronto-cron-table th {
+    border: 1px solid #D6D6D6;
+    white-space: nowrap;
+    padding: 2px 5px;
+}
+
+.bronto-cron-table pre {
+    white-space: nowrap;
+}
+
+.bronto-progress-bar {
+    float: left;
+    width: 34%;
+    background-color: #ccc;
+    border-radius: 2px;
+    padding: 2px;
+    height: 19px;
+    text-align: center;
+    color: #000;
+    font-size: x-small;
+    clear: left;
+}
+
+.bronto-progress-bar div {
+    background-color: #35b963;
+    float:left;
+    border-radius: 2px;
+    text-align: center;
+    color: #fff;
+    font-size: x-small;
+}
+
+.bronto-progress-bar div.bronto-progress-bar-complete {
+    background-color: #35b963;
+}
+
+.bronto-progress-bar div.bronto-progress-bar-suppressed {
+    background-color: #FF4545;
+}
+
+.bronto-progress-bar div.bronto-progress-bar-disabled {
+    background-color: #666;
+}
+
+.bronto-progress-bar-legend {
+    font-size: 10px;
+}
+
+.bronto-progress-bar-legend-complete,
+.bronto-progress-bar-legend-suppressed,
+.bronto-progress-bar-legend-disabled {
+    float:left;
+    padding-right:10px;
+}
+
+.bronto-progress-bar-legend-details {
+    float:left;
+    clear:right;
+}
+
+.bronto-progress-bar-legend-status {
+    width: 12px;
+    height: 12px;
+    float: left;
+    margin: 2px;
+}
+
+.bronto-progress-bar-legend-complete .bronto-progress-bar-legend-status {
+    background-color: #35b963;
+}
+
+.bronto-progress-bar-legend-suppressed .bronto-progress-bar-legend-status {
+    background-color: #FF4545;
+}
+
+.bronto-progress-bar-legend-disabled .bronto-progress-bar-legend-status {
+    background-color: #666;
+}
+
+.bronto-with-help {
+    padding-top: 0px;
+    margin: 3px 0px 5px;
+}
+
+.bronto-with-help > strong {
+    font-size: 11px;
+    margin-left: 13px;
+}
+
+.bronto-help {
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    margin: 3px 4px 1px;
+    width: 16px;
+    height: 16px;
+    background: url(../../../default/default/images/fam_help.gif) 0 0 no-repeat;
+    text-decoration: none !important;
+    text-indent: -999em;
+    overflow: hidden;
+    z-index: 10;
+}
+
+.bronto-floater {
+    float: left;
+}
+
+.bronto-vertical-align {
+    margin-top: 0px;
+}
+.bronto-help:hover {
+    overflow: visible;
+    text-indent:0;
+}
+.bronto-help-window {
+    position:relative;
+    width:200px;
+    background-color:#fff;
+    border: 1px solid #555;
+    padding: 5px;
+    top: 0;
+    left: 20px;
+}
+.bronto-large-image {
+    top: 20px;
+    width: 640px;
+    left: -600px;
+}
+.bronto-large-image img {
+    width: 640px;
+}
