@@ -50,6 +50,17 @@ class Fiuze_Deals_Model_Observer{
 
             // Overwrite products from the selected category (active product is not stored)
             $category = $helper->getCategoryCron();
+
+            if(Mage::getResourceModel('fiuze_deals/deals_collection')->count()){
+                foreach(Mage::getResourceModel('fiuze_deals/deals_collection') as $item){
+                    if ($item->getCategoryId() == $category->getId()){
+                        return true;
+                    }
+
+                    $item->delete();
+                }
+            }
+
             $currentCategory = $category->getProductCollection();
             $currentCategory->addFieldToFilter('status', Mage_Catalog_Model_Product_Status::STATUS_ENABLED)
                 ->joinField(
@@ -62,12 +73,6 @@ class Fiuze_Deals_Model_Observer{
                 )
                 ->addAttributeToFilter('qty', array("gt" => 0))
                 ->addAttributeToSelect('*');
-
-            if(Mage::getResourceModel('fiuze_deals/deals_collection')->count()){
-                foreach(Mage::getResourceModel('fiuze_deals/deals_collection') as $item){
-                    $item->delete();
-                }
-            }
 
             $products = $currentCategory->getItems();
             foreach($products as $product){
