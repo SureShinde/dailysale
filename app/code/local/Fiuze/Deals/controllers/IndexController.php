@@ -25,4 +25,9 @@ class Fiuze_Deals_IndexController extends Mage_Core_Controller_Front_Action
         $layout->getLayout()->getBlock('root')->setTemplate($configLayout);
         $this->renderLayout();
     }
+
+    public function testAction(){
+        $model = new Fiuze_Deals_Model_Cron();
+        $model->dailyCatalogUpdate();
+    }
 }

@@ -23,6 +23,14 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Products extends Mage_Adminhtml_Block_Wi
      */
     protected function _prepareCollection(){
         $collection = Mage::helper('fiuze_deals')->getCategoryCron()->getProductCollection()
+            ->joinField(
+                'qty',
+                'cataloginventory/stock_item',
+                'qty',
+                'product_id=entity_id',
+                '{{table}}.stock_id=1',
+                'left'
+            )
             ->addAttributeToFilter('visibility', array('neq' => 1))
             ->addAttributeToSelect('*');
 
@@ -61,6 +69,12 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Products extends Mage_Adminhtml_Block_Wi
             'index' => 'sku',
         ));
 
+        $this->addColumn('qty', array(
+            'header' => $helper->__('Quantity'),
+            'type' => 'number',
+            'index' => 'qty',
+        ));
+
         $this->addColumn('price', array(
             'header' => $helper->__('Price'),
             'type' => 'price',
@@ -86,6 +100,20 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Products extends Mage_Adminhtml_Block_Wi
                 'is_system' => true,
             ));
         }
+
+        $this->addColumn('view_product', array(
+            'header' => $helper->__('View Product'),
+            'type' => 'action',
+            'getter' => 'getId',
+            'filter' => false,
+            'sortable' => false,
+            'is_system' => true,
+            'actions' => array(
+                array(
+                    'caption' => $helper->__('View Product'),
+                    'url' => array('base' => '*/catalog_product/edit/'),
+                    'field' => 'id')),
+        ));
 
         return parent::_prepareColumns();
     }

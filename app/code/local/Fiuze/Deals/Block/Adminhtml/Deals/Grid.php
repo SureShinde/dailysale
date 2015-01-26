@@ -41,7 +41,7 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Grid extends Mage_Adminhtml_Block_Widget
 
         $tableName = Mage::getSingleton('core/resource')->getTableName('fiuze_deals/deals');
         $currentCategory->getSelect()->joinLeft($tableName, 'e.entity_id = ' . $tableName . '.product_id',
-            array('deals_active', 'deals_price', 'deals_qty', 'origin_special_price', 'sort_order')
+            array('deals_active', 'deals_price', 'deals_qty', 'origin_special_price', 'sort_order', 'current_active')
         );
 
         $this->setCollection($currentCategory);
@@ -119,7 +119,7 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Grid extends Mage_Adminhtml_Block_Widget
         ));
 
         $this->addColumn('deals_active', array(
-            'header' => Mage::helper('catalog')->__('Deal status'),
+            'header' => $helper->__('Deal status'),
             'width' => '70px',
             'index' => 'deals_active',
             'type' => 'options',
@@ -127,6 +127,18 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Grid extends Mage_Adminhtml_Block_Widget
             'sortable' => false,
             'options' => Mage::getModel('fiuze_deals/system_config_source_status')->toArray(),
             'renderer' => 'Fiuze_Deals_Block_Adminhtml_Widget_Grid_Column_Renderer_Status',
+            'align' => 'center'
+        ));
+
+        $this->addColumn('current_active', array(
+            'header' => $helper->__('Frontend status'),
+            'width' => '70px',
+            'index' => 'current_active',
+            'type' => 'options',
+            'filter' => false,
+            'sortable' => false,
+            'options' => Mage::getModel('fiuze_deals/system_config_source_status')->toArray(),
+            'renderer' => 'Fiuze_Deals_Block_Adminhtml_Widget_Grid_Column_Renderer_Active',
             'align' => 'center'
         ));
 

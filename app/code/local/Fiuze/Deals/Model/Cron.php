@@ -29,39 +29,33 @@ class Fiuze_Deals_Model_Cron extends Mage_Core_Model_Abstract{
         try{
             if(!$productActive){
                 $item = array_shift($productDeals);
-                $item->setCurrentActive(1);
+                $this->_setData($item, (float)$item->getData('deals_price'));
 
-                //set origin special price
-                $product = Mage::getModel('catalog/product')->load($item->getData('product_id'));
-                $product->setSpecialPrice((float)$item->getData('deals_price'));
-
-                $item->setData('origin_special_price', $product->getSpecialPrice());
-                $item->setEndTime(Mage::helper('fiuze_deals')->getEndDealTime());
-
-                $product->save();
-                $item->save();
                 return;
             }
 
             //cyclical overkill
-            foreach($productDeals as $item){
+            $count = 0;
+            while($count < count($productDeals)){
+                $item = current($productDeals);
                 if($item->getCurrentActive()){
-                    $item->setCurrentActive(0);
-                    $item->setEndTime(0);
 
-                    // set origin special price
-                    $this->_setActive($item);
+                    // set data for current item (remove element from rotation)
+                    $this->_setData($item, (float)$item->getData('origin_special_price'), false, false);
 
-                    // set next element to rotation
-                    $item = current($productDeals);
-                    $item->setCurrentActive(1);
-                    $item->setEndTime(Mage::helper('fiuze_deals')->getEndDealTime());
+                    // set data for next item (add element to rotation)
+                    $item = next($productDeals);
+                    if ($item === false){
+                        $item = reset($productDeals);
+                    }
 
-                    //set deals special price
-                    $this->_setActive($item);
+                    $this->_setData($item, (float)$item->getData('deals_price'));
 
                     return;
                 }
+
+                next($productDeals);
+                $count++;
             }
         } catch(Exception $e){
             Mage::logException($e);
@@ -71,17 +65,30 @@ class Fiuze_Deals_Model_Cron extends Mage_Core_Model_Abstract{
     }
 
     /**
-     * Set special price to item
+     * Set special data to product and to rotation element
      *
      * @param $item
+     * @param float $specialPrice
+     * @param bool $endDate
+     * @param int $isCurrent
      */
-    protected function _setActive($item){
+    protected function _setData($item, $specialPrice, $endDate = true, $isCurrent = 1){
         $product = Mage::getModel('catalog/product')->load($item->getData('product_id'));
-        $product->setSpecialPrice((float)$item->getData('origin_special_price'));
+        $productSpecialPrice = $product->getSpecialPrice();
+        $product->setSpecialPrice($specialPrice);
 
-        $item->setData('origin_special_price', $product->getSpecialPrice());
-        $product->save();
-        $item->save();
+        $item->setData('origin_special_price', $productSpecialPrice);
+        $item->setEndTime((($endDate) ? Mage::helper('fiuze_deals')->getEndDealTime() : 0));
+        $item->setCurrentActive($isCurrent);
+
+        try{
+            $product->save();
+            $item->save();
+        } catch(Exception $e){
+            Mage::logException($e);
+        }
+
+        return;
     }
 
 }

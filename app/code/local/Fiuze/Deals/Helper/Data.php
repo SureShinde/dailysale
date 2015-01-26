@@ -171,4 +171,17 @@ class Fiuze_Deals_Helper_Data extends Mage_Core_Helper_Abstract{
 
         return true;
     }
+
+    /**
+     * Get options in Quantity html
+     *
+     * @return String
+     */
+    public function toQuantityHtml($qty){
+        if((int)$qty){
+            return '';
+        }else{
+            return '<p class="note" style="color: #d81010">'.$this->__('Quantity not zero').'</p>';
+        }
+    }
 }
