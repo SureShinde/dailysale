@@ -6,7 +6,7 @@
     function timer() {
         var now = new Date();
         var nowDate = new Date(now.getTime() + now.getTimezoneOffset() * 60000);
-        var achiveDate = new Date('<?php echo $productActive->getData('end_time') ?>'); //Задаем дату, к которой будет осуществляться обратный отсчет
+        var achiveDate = new Date('<?php echo $productActive->getData('end_time') ?>');//end time
         var result = (achiveDate - nowDate) + 1000;
         if (result < 0) {
             var elmntNew = document.getElementById('timer');

@@ -41,7 +41,7 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Edit_Form extends Mage_Adminhtml_Block_W
         $dealsQty = $productDeals->getDealsQty();
         $data->setDealQty($dealsQty);
 
-        $qty = $data->getStockItem()->getQty();
+        $qty = (int)$data->getStockItem()->getQty();
         $data->setQty($qty);
 
         $originSpecialPrice = $productDeals->getOriginSpecialPrice();
@@ -97,19 +97,20 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Edit_Form extends Mage_Adminhtml_Block_W
 
         $fieldset->addField('deal_price', 'text', array(
             'label' => $helper->__('Deal Price ').Mage::app()->getStore()->getBaseCurrency()->getCode(),
-            'class' => 'required-entry',
+            'class' => 'required-entry validate-number',
             'required' => true,
             'name' => 'deal_price',));
 
         $fieldset->addField('qty', 'label', array(
             'label' => $helper->__('Quantity'),
-            'class' => 'require-entry',
+            'class' => 'require-entry validate-number',
             'name' => 'qty',
+            'note' => $helper->toQuantityHtml($qty) ,
         ));
 
         $fieldset->addField('deal_qty', 'text', array(
             'label' => $helper->__('Deal Quantity'),
-            'class' => 'require-entry',
+            'class' => 'require-entry validate-number',
             'name' => 'deal_qty',
             'required' => true,
             'note' => $helper->__('Quantity products with special price'),
@@ -117,7 +118,7 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Edit_Form extends Mage_Adminhtml_Block_W
 
         $fieldset->addField('sort_order', 'text', array(
             'label' => $helper->__('Sort order'),
-            'class' => 'require-entry',
+            'class' => 'require-entry validate-number',
             'name' => 'sort_order',
             'required' => true,
         ));

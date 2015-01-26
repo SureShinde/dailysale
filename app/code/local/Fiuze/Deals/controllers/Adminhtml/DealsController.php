@@ -87,18 +87,30 @@ class Fiuze_Deals_Adminhtml_DealsController extends Mage_Adminhtml_Controller_Ac
                 ->addFilter('product_id', $id)->getFirstItem();
             try {
                 $product = Mage::getModel('catalog/product')->load($id);
+                $qty = (int)$product->getStockItem()->getQty();
+                if(!$qty){
+                    Mage::getSingleton('adminhtml/session')->addError(Mage::helper('fiuze_deals')->__('Warning:  product quantity not zero'));
+                    Mage::app()->getResponse()->setRedirect(Mage::helper("adminhtml")->getUrl("adminhtml/deals/edit", array('id' => $id)));
+                    return;
+                }
                 $productDeals->setData('product_id', $id);
                 $productDeals->setData('product_name', $product->getName());
                 $productDeals->setData('origin_special_price', $product->getData('special_price'));
                 $productDeals->setData('category_id', Mage::helper('fiuze_deals')->getCategoryCron()->getData('entity_id'));
-                $productDeals->setData('current_active', 0);
 
                 $productDeals->setDealsPrice($data['deal_price']);
                 $productDeals->setDealsQty($data['deal_qty']);
                 $productDeals->setSortOrder($data['sort_order']);
                 $productDeals->setDealsActive($data['deals_active'] ? true : false);
+
                 if($product->getStockItem()->getQty()){
-                    $productDeals->save();
+                    if(!($data['deals_active'] ? true : false)){
+                        $productDeals->setData('current_active', 0);
+                        $productDeals->save();
+                        Mage::getSingleton('fiuze_deals/cron')->dailyCatalogUpdate();
+                    }else{
+                        $productDeals->save();
+                    }
                     $this->getResponse()->setRedirect($this->getUrl('*/*/list'));
                 }else{
                     Mage::getSingleton('core/session')->addWarning('Qty product 0');
@@ -153,7 +165,13 @@ class Fiuze_Deals_Adminhtml_DealsController extends Mage_Adminhtml_Controller_Ac
                     $productDeals = Mage::getModel('fiuze_deals/deals')
                         ->load($id, 'product_id');
                     $productDeals->setData('deals_active', $status);
-                    $productDeals->save();
+                    if(!($status ? true : false)){
+                        $productDeals->setData('current_active', 0);
+                        $productDeals->save();
+                        Mage::getSingleton('fiuze_deals/cron')->dailyCatalogUpdate();
+                    }else{
+                        $productDeals->save();
+                    }
                 }
                 $this->_getSession()->addSuccess(
                     $this->__('Total of %d record(s) were successfully updated', count($ids))
@@ -163,10 +181,14 @@ class Fiuze_Deals_Adminhtml_DealsController extends Mage_Adminhtml_Controller_Ac
             }
         }
         $dealResource = Mage::getResourceModel('fiuze_deals/deals_collection');
-        if (!$dealResource->addFilter('current_active', 1)->getSize()) {
-            $item = Mage::getResourceModel('fiuze_deals/deals_collection')->getFirstItem();
-            $item->setCurrentActive(1);
-            $item->save();
+        if ($dealResource->addFilter('current_active', 1)->getSize() == 0) {
+            $item = Mage::getResourceModel('fiuze_deals/deals_collection')
+                ->addFilter('deals_active', 1)
+                ->getFirstItem();
+            if($item->getData()){
+                $item->setCurrentActive(1);
+                $item->save();
+            }
         }
         $this->_redirect('*/*/list');
     }
