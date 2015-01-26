@@ -45,6 +45,10 @@ class Fiuze_Deals_Model_Cron extends Mage_Core_Model_Abstract{
 
                     // set data for next item (add element to rotation)
                     $item = next($productDeals);
+                    if ($item === false){
+                        $item = reset($productDeals);
+                    }
+
                     $this->_setData($item, (float)$item->getData('deals_price'));
 
                     return;
