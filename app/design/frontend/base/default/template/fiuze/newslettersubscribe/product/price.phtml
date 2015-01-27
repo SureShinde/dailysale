@@ -450,7 +450,13 @@ $_specialPriceStoreLabel = $this->getProductAttribute('special_price')->getStore
                     <!-- <span class="price-label"><?php //echo $_specialPriceStoreLabel ?></span> -->
                 <span class="<?php
                         //insert extra class depening on no. of digits in final price
-                        $sPriceInput = sprintf( "%01.2f", $_finalPrice );
+                        //check if whole no or decimal
+                        if (round($_finalPrice, 0) == $_finalPrice)
+                        {
+                            $sPriceInput = sprintf( "%01.0f", $_finalPrice );
+                        } else {
+                            $sPriceInput = sprintf( "%01.2f", $_finalPrice );
+                        }
                         $sPriceReplace = array(".");
                         $sPrice = str_replace($sPriceReplace, '', $sPriceInput);
                         $numberOfPriceDigits2 = strlen($sPrice);
@@ -465,6 +471,9 @@ $_specialPriceStoreLabel = $this->getProductAttribute('special_price')->getStore
                                 };
                     ?>" id="product-price-<?php echo $_id ?><?php echo $this->getIdSuffix() ?>">
                     <?php echo $_coreHelper->formatPrice($_finalPrice, false) ?>
+                    <?php //var_dump($numberOfPriceDigits2); ?>
+                    <?php //var_dump($sPrice); ?>
+                    <?php //var_dump($_finalPrice); ?>
                 </span>
                 </p>
             <?php endif; ?>
@@ -473,6 +482,9 @@ $_specialPriceStoreLabel = $this->getProductAttribute('special_price')->getStore
     <?php // Discount percents output start for special price ?>
     <?php if($_finalPrice != 0 && $msrp != "FREE"): ?>
         <?php
+            $msrp = Mage::helper('core')->currency($_product->getMsrp(),true,false);
+            $msrpReplace = array("$", ",");
+            $msrpInt = str_replace($msrpReplace, '', $msrp);
             $_msrpPrice = (float)$msrpInt;
             if($_msrpPrice == 0){
                 $_savePercent = 100;
