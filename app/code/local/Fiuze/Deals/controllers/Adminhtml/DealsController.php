@@ -186,6 +186,7 @@ class Fiuze_Deals_Adminhtml_DealsController extends Mage_Adminhtml_Controller_Ac
                 ->addFilter('deals_active', 1)
                 ->getFirstItem();
             if($item->getData()){
+                $item->setEndTime(Mage::helper('fiuze_deals')->getEndDealTime());
                 $item->setCurrentActive(1);
                 $item->save();
             }
