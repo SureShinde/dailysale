@@ -89,7 +89,7 @@ class Fiuze_Deals_Adminhtml_DealsController extends Mage_Adminhtml_Controller_Ac
                 $product = Mage::getModel('catalog/product')->load($id);
                 $qty = (int)$product->getStockItem()->getQty();
                 if(!$qty){
-                    Mage::getSingleton('adminhtml/session')->addError(Mage::helper('fiuze_deals')->__('Warning:  product quantity not zero'));
+                    Mage::getSingleton('adminhtml/session')->addError(Mage::helper('fiuze_deals')->__('Please make sure that product quantity greater than 0.'));
                     Mage::app()->getResponse()->setRedirect(Mage::helper("adminhtml")->getUrl("adminhtml/deals/edit", array('id' => $id)));
                     return;
                 }

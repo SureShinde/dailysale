@@ -10,10 +10,10 @@ class Fiuze_Deals_Block_Adminhtml_Widget_Grid_Column_Renderer_Active extends Mag
     public function render(Varien_Object $row){
         switch($row->getCurrentActive()){
             case 0:
-                return '<div style="background-color: #CCC;">DISABLED</div>';
+                return '<div style="background-color: #91DBFF;">PENDING</div>';
                 break;
             case 1:
-                return '<div style="background-color: #66FFCC;">ENABLED</div>';
+                return '<div style="background-color: #FFC98B">RUNNING</div>';
                 break;
         }
     }
