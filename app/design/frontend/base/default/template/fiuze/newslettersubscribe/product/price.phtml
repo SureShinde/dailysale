@@ -450,7 +450,13 @@ $_specialPriceStoreLabel = $this->getProductAttribute('special_price')->getStore
                     <!-- <span class="price-label"><?php //echo $_specialPriceStoreLabel ?></span> -->
                 <span class="<?php
                         //insert extra class depening on no. of digits in final price
-                        $sPriceInput = sprintf( "%01.2f", $_finalPrice );
+                        //check if whole no or decimal
+                        if (round($_finalPrice, 0) == $_finalPrice)
+                        {
+                            $sPriceInput = sprintf( "%01.0f", $_finalPrice );
+                        } else {
+                            $sPriceInput = sprintf( "%01.2f", $_finalPrice );
+                        }
                         $sPriceReplace = array(".");
                         $sPrice = str_replace($sPriceReplace, '', $sPriceInput);
                         $numberOfPriceDigits2 = strlen($sPrice);
