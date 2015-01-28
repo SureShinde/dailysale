@@ -252,12 +252,18 @@ function save_address_information(save_address_url, update_address_shipping, upd
     });
 }
 
-function save_shipping_method(shipping_method_url, update_shipping_payment, update_shipping_review) {
+function save_shipping_method(shipping_method_url, update_shipping_payment, update_shipping_review, type_box) {
     if (typeof update_shipping_payment == 'undefined') {
         var update_shipping_payment = false;
     }
     if (typeof update_shipping_review == 'undefined') {
         var update_shipping_review = false;
+    }
+
+    if (typeof type_box == 'undefined') {
+        type_box = false;
+    }else if(type_box == 'checkbox'){
+        type_box = true;
     }
 
     var form = $('one-step-checkout-form');
@@ -274,10 +280,20 @@ function save_shipping_method(shipping_method_url, update_shipping_payment, upda
         var review = $('checkout-review-load');
         reviewLoad();
     }
-    var parameters = {
-        shipping_method: shipping_method,
-        payment_method: payment_method
-    };
+
+    var customercredit= $('p_method_customercredit');
+    if(customercredit && type_box == true){
+        var parameters = {
+            shipping_method: shipping_method,
+            payment_method: payment_method,
+            p_method_customercredit: customercredit.checked
+        };
+    }else{
+        var parameters = {
+            shipping_method: shipping_method,
+            payment_method: payment_method
+        };
+    }
 
     //Find payment parameters and include 
     var items = $$('input[name^=payment]', 'select[name^=payment]');
@@ -327,6 +343,7 @@ function save_shipping_method(shipping_method_url, update_shipping_payment, upda
         }
     });
 }
+
 function checkvalidEmail(){
 
 	if(($('billing:email') && $('billing:email').value != "" )||($('islogin2') && $('islogin2').value != '1' ) ){
