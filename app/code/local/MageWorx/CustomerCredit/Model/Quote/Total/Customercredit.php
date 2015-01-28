@@ -63,6 +63,13 @@ class MageWorx_CustomerCredit_Model_Quote_Total_Customercredit extends Mage_Sale
         
         // if multishipping
         $session           = Mage::getSingleton('checkout/session');
+
+        // if customer credit has been disabled on the checkout page
+        // $_POST['p_method_customercredit'] = 'false' ('false' is string)
+        if (isset($post['p_method_customercredit']) && $post['p_method_customercredit'] == 'false'){
+            $session->setUseInternalCredit(false);
+        }
+
         $useInternalCredit = $session->getUseInternalCredit();
         $request = Mage::app()->getRequest();
         if($request->getControllerName()=='multishipping') {
@@ -140,7 +147,10 @@ class MageWorx_CustomerCredit_Model_Quote_Total_Customercredit extends Mage_Sale
         if(isset($paymentData['use_internal_credit']) && ($paymentData['use_internal_credit'] == 'customercredit')) {
             $request = Mage::app()->getRequest();
             $params = Mage::app()->getRequest()->getParams();
-            if($paymentData['use_internal_credit'] == 'customercredit'){
+            if($paymentData['use_internal_credit'] == 'customercredit' && isset($paymentData['use_internal_credit_partial'])){
+                $paymentData['use_internal_credit'] = $paymentData['use_internal_credit_partial'];
+            }
+            elseif($paymentData['use_internal_credit'] == 'customercredit' ){
                 $paymentData['use_internal_credit'] = 1;
             }else{
                 $paymentData['use_internal_credit'] = 0;
