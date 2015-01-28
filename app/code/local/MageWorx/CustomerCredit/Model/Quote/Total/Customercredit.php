@@ -140,7 +140,12 @@ class MageWorx_CustomerCredit_Model_Quote_Total_Customercredit extends Mage_Sale
         if(isset($paymentData['use_internal_credit']) && ($paymentData['use_internal_credit'] == 'customercredit')) {
             $request = Mage::app()->getRequest();
             $params = Mage::app()->getRequest()->getParams();
-            $paymentData['use_internal_credit'] = (bool)$request->getParam('use_internal_credit',0);
+            if($paymentData['use_internal_credit'] == 'customercredit'){
+                $paymentData['use_internal_credit'] = 1;
+            }else{
+                $paymentData['use_internal_credit'] = 0;
+            }
+            //$session->setUseInternalCredit(true);
         }
         if ($quote->getPayment()->getMethod()=='customercredit' || (isset($orderData['payment_data']) && $orderData['payment_data']=="customercredit") || isset($orderData['payment_method']) && ($orderData['payment_method']=="customercredit")
             || ($paymentData && (isset($paymentData['method']) && $paymentData['method'] == 'customercredit'))
@@ -148,9 +153,8 @@ class MageWorx_CustomerCredit_Model_Quote_Total_Customercredit extends Mage_Sale
             || ($useInternalCredit && Mage::getSingleton('customer/session')->getCustomerId() && !$paymentData)
             || ($useInternalCredit && Mage::getSingleton('customer/session')->getCustomerId() && ($request->getControllerName()=='multishipping'))
             ) {
-            //$session->setUseInternalCredit(true);
+            $session->setUseInternalCredit(true);
         } else {
-           
             return $this;
         }                              
         $baseCredit = (float)Mage::helper('customercredit')->getCreditValue($quote->getCustomerId(), Mage::app()->getStore($quote->getStoreId())->getWebsiteId());
