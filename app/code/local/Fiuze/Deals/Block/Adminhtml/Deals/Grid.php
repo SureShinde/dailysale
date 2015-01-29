@@ -120,7 +120,7 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Grid extends Mage_Adminhtml_Block_Widget
 
         $this->addColumn('deals_active', array(
             'header' => $helper->__('Deal status'),
-            'width' => '70px',
+            'width' => '110px',
             'index' => 'deals_active',
             'type' => 'options',
             'filter' => false,
@@ -132,7 +132,7 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Grid extends Mage_Adminhtml_Block_Widget
 
         $this->addColumn('current_active', array(
             'header' => $helper->__('Frontend status'),
-            'width' => '70px',
+            'width' => '110px',
             'index' => 'current_active',
             'type' => 'options',
             'filter' => false,

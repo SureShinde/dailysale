@@ -13,7 +13,7 @@ class Fiuze_Deals_Block_Adminhtml_Widget_Grid_Column_Renderer_Status extends Mag
                 return '<div style="background-color: #CCC;">DISABLED</div>';
                 break;
             case 1:
-                return '<div style="background-color: #66FFCC;">ENABLED</div>';
+                return '<div style="background-color: #0BFCAD;">ENABLED</div>';
                 break;
         }
     }
