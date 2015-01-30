@@ -30,12 +30,14 @@
     <div class="add-to-cart">
         <?php if(!$_product->isGrouped()): ?>
         <!-- <label for="qty"><?php //echo $this->__('Qty:') ?></label> -->
-        <!-- <input type="text" name="qty" id="qty" maxlength="12" value="<?php echo $this->getProductDefaultQty() * 1 ?>" title="<?php //echo $this->__('Qty') ?>" class="input-text qty" /> -->
-        <select name="qty" id="qty" name="quantity" id="quantity" >
+        <!-- <input type="text" name="qty" id="qty" maxlength="12" value="<?php //echo $this->getProductDefaultQty() * 1 ?>" title="<?php //echo $this->__('Qty') ?>" class="input-text qty" /> -->
+        <select name="qty" id="qty" name="quantity" >
         	<?php for($i=1; $i <= 9; $i++){
 				echo "<option value='".$i."'>Quantity: $i</option>";
         	 } ?>
+             <option id="otherqty-option" value="other">Quantity: 10+</option>
         </select>
+        <input name="qty" type="text" id="otherqty" class="hidden" />
         <?php endif; ?>
         <button type="button" title="<?php echo $buttonTitle ?>" class="addtocartbtn" onclick="productAddToCartForm.submit(this)"><?php echo $buttonTitle ?></button>
         <?php echo $this->getChildHtml('', true, true) ?>
