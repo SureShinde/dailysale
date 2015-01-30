@@ -1,0 +1,182 @@
+<?xml version="1.0"?>
+<!--
+/**
+* Deals Rotation
+*
+* @category   Fiuze
+* @package    Fiuze_Deals
+* @author     Alena Tsareva <alena.tsareva@webinse.com>
+*/
+-->
+<config>
+    <modules>
+        <Fiuze_Deals>
+            <version>0.1.0</version>
+        </Fiuze_Deals>
+    </modules>
+
+    <global>
+        <blocks>
+            <fiuze_deals>
+                <class>Fiuze_Deals_Block</class>
+            </fiuze_deals>
+        </blocks>
+        <helpers>
+            <fiuze_deals>
+                <class>Fiuze_Deals_Helper</class>
+            </fiuze_deals>
+        </helpers>
+        <models>
+            <fiuze_deals>
+                <class>Fiuze_Deals_Model</class>
+                <resourceModel>fiuze_deals_resource</resourceModel>
+            </fiuze_deals>
+            <fiuze_deals_resource>
+                <class>Fiuze_Deals_Model_Resource</class>
+                <entities>
+                    <deals>
+                        <table>fiuze_deals</table>
+                    </deals>
+                </entities>
+            </fiuze_deals_resource>
+        </models>
+        <resources>
+            <fiuze_deals_setup>
+                <setup>
+                    <module>Fiuze_Deals</module>
+                    <class>Mage_Core_Model_Resource_Setup</class>
+                </setup>
+            </fiuze_deals_setup>
+            <fiuze_deals_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </fiuze_deals_write>
+            <fiuze_deals_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </fiuze_deals_read>
+        </resources>
+        <events>
+            <controller_front_init_routers>
+                <observers>
+                    <fiuzedeals_router>
+                        <class>Fiuze_Deals_Model_Observer</class>
+                        <method>initControllerRouters</method>
+                    </fiuzedeals_router>
+                </observers>
+            </controller_front_init_routers>
+            <admin_system_config_changed_section_fiuze_deals_cron_time>
+                <observers>
+                    <fiuzedeals_admin_system_config_changed_section_fiuze_deals_cron_time>
+                        <type>singleton</type>
+                        <class>Fiuze_Deals_Model_Observer</class>
+                        <method>adminSystemConfigChanged</method>
+                    </fiuzedeals_admin_system_config_changed_section_fiuze_deals_cron_time>
+                </observers>
+            </admin_system_config_changed_section_fiuze_deals_cron_time>
+            <catalog_product_save_after>
+                <observers>
+                    <fiuzedeals_catalog_product_save_after>
+                        <type>singleton</type>
+                        <class>Fiuze_Deals_Model_Observer</class>
+                        <method>catalogProductSaveAfter</method>
+                    </fiuzedeals_catalog_product_save_after>
+                </observers>
+            </catalog_product_save_after>
+            <catalog_product_delete_after>
+                <observers>
+                    <fiuzedeals_catalog_product_delete_after>
+                        <type>singleton</type>
+                        <class>Fiuze_Deals_Model_Observer</class>
+                        <method>catalogProductDeleteAfter</method>
+                    </fiuzedeals_catalog_product_delete_after>
+                </observers>
+            </catalog_product_delete_after>
+            <sales_order_save_after>
+                <observers>
+                    <fiuzedeals_sales_order_save_after>
+                        <type>singleton</type>
+                        <class>Fiuze_Deals_Model_Observer</class>
+                        <method>salesOrderSaveAfter</method>
+                    </fiuzedeals_sales_order_save_after>
+                </observers>
+            </sales_order_save_after>
+            <sales_order_place_after>
+                <observers>
+                    <fiuzedeals_sales_order_place_after>
+                        <type>singleton</type>
+                        <class>Fiuze_Deals_Model_Observer</class>
+                        <method>salesOrderPlaceAfter</method>
+                    </fiuzedeals_sales_order_place_after>
+                </observers>
+            </sales_order_place_after>
+        </events>
+    </global>
+
+    <frontend>
+        <routers>
+            <fiuze_deals>
+                <use>standard</use>
+                <args>
+                    <module>Fiuze_Deals</module>
+                    <frontName>fiuze_deals</frontName>
+                </args>
+            </fiuze_deals>
+        </routers>
+        <layout>
+            <updates>
+                <fiuze_deals>
+                    <file>fiuze/catalog.xml</file>
+                </fiuze_deals>
+            </updates>
+        </layout>
+    </frontend>
+
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <fiuze_deals before="Mage_Adminhtml">Fiuze_Deals_Adminhtml</fiuze_deals>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+
+    <adminhtml>
+        <layout>
+            <updates>
+                <fiuze_deals>
+                    <file>fiuze/adminhtml.xml</file>
+                </fiuze_deals>
+            </updates>
+        </layout>
+    </adminhtml>
+
+    <default>
+        <fiuze_deals_cron_time>
+            <fiuze_deals_cron_time_grp>
+                <route>blowout.html</route>
+                <cron_time>00,05,00</cron_time>
+                <scheduler>*/5 * * * *</scheduler>
+                <layout>page/1column.phtml</layout>
+            </fiuze_deals_cron_time_grp>
+        </fiuze_deals_cron_time>
+    </default>
+
+    <crontab>
+        <jobs>
+            <fiuze_deals_scheduler>
+                <schedule>
+                    <config_path>fiuze_deals_cron_time/fiuze_deals_cron_time_grp/scheduler</config_path>
+                </schedule>
+                <run>
+                    <model>fiuze_deals/cron::dailyCatalogUpdate</model>
+                </run>
+            </fiuze_deals_scheduler>
+        </jobs>
+    </crontab>
+</config>

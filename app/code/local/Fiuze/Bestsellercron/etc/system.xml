@@ -11,29 +11,69 @@
             <show_in_store>1</show_in_store>
             <groups>
                 <bestsellers_settings_grp translate="label">
-                    <label>Configure</label>
+                    <label>General</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>100</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <fields>
-                        <list_mode translate="label">
+                        <products translate="label">
                             <label>Number of Products</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>1</sort_order>
+                            <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </list_mode>
-                        <hours translate="label">
-                            <label>Hours</label>
+                            <validate>required-entry validate-digits</validate>
+                        </products>
+                        <time translate="label">
+                            <label>Time Period</label>
+                            <frontend_type>time</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <validate>required-entry</validate>
+                        </time>
+                        <days translate="label">
+                            <label>Days Period</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>1</sort_order>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <validate>required-entry validate-digits</validate>
+                        </days>
+                        <category translate="label">
+                            <label>Category</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bestsellercron/system_config_source_category</source_model>
+                            <sort_order>40</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </hours>
+                            <validate>required-entry</validate>
+                        </category>
+                        <criteria>
+                            <label>Criteria</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bestsellercron/system_config_source_criteria</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                        </criteria>
+                        <scheduler>
+                            <label>Task schedule (cron syntax)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <validate>required-entry</validate>
+                        </scheduler>
                     </fields>
                 </bestsellers_settings_grp>
             </groups>
