@@ -80,6 +80,13 @@ $orderObj = Mage::getModel('sales/order')->loadByIncrementId($this->getOrderId()
     <button type="button" class="button" title="<?php echo $this->__('Continue Shopping') ?>" onclick="window.location='<?php echo $this->getUrl() ?>'"><?php echo $this->__('Continue Shopping') ?></button>
 </div>
 
+<!-- conversion value for Adroll smart pixel -->
+
+<script type="text/javascript">
+  adroll_conversion_value_in_dollars = <?php echo($subtotal); ?>;
+</script>
+
+
 <!-- Google Code for Daily Sale Conversion Conversion Page -->
 <script type="text/javascript">
 /* <![CDATA[ */
