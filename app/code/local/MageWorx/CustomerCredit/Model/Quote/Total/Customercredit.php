@@ -71,14 +71,14 @@ class MageWorx_CustomerCredit_Model_Quote_Total_Customercredit extends Mage_Sale
         }
 
         $useInternalCredit = $session->getUseInternalCredit();
-        $requestValue = Mage::app()->getRequest()->getPost('use_internal_credit');
-        if(Mage::helper('core')->isModuleEnabled('Magestore_Onestepcheckout') && Mage::app()->getRequest()->getActionName()!=='saveOrder') {
-            if($requestValue=="false") {
-                $useInternalCredit = false;
-            } else {
-                $useInternalCredit = true;
-            }
-        }
+        //        $requestValue = Mage::app()->getRequest()->getPost('use_internal_credit');
+        //        if(Mage::helper('core')->isModuleEnabled('Magestore_Onestepcheckout') && Mage::app()->getRequest()->getActionName()!=='saveOrder') {
+        //            if($requestValue=="false") {
+        //                $useInternalCredit = false;
+        //            } else {
+        //                $useInternalCredit = true;
+        //            }
+        //        }
 
         $request = Mage::app()->getRequest();
         // if multishipping

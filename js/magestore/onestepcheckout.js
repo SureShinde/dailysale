@@ -336,7 +336,8 @@ function save_shipping_method(shipping_method_url, update_shipping_payment, upda
                     reviewShow();
                 }
                 if ((update_shipping_payment == 1) || (update_shipping_review == 1)) {
-                }checkvalidEmail();
+                }
+                checkvalidEmail();
 
             }
         }
@@ -349,15 +350,17 @@ function checkvalidEmail(){
             $('onestepcheckout-button-place-order').disabled = false;
             $('onestepcheckout-button-place-order').addClassName('onestepcheckout-btn-checkout');
             $('onestepcheckout-button-place-order').removeClassName('place-order-loader');
-            invalidEmailPopup.close();
+            //invalidEmailPopup.close();
 
         }else if(($('emailvalid') && $('emailvalid').value == "invalid")){
-            invalidEmailPopup.open();
+            //invalidEmailPopup.open();
         }
     }else{
-        if($('emailvalid') && $('emailvalid').value == "invalid") invalidEmailPopup.open();
-        else invalidEmailPopup.close();
-        $('onestepcheckout-button-place-order').disabled = false;
+        //if($('emailvalid') && $('emailvalid').value == "invalid")
+            //invalidEmailPopup.open();
+        //else
+            //invalidEmailPopup.close();
+        $('onestepcheckout-button-place-order').disabled = true;
         $('onestepcheckout-button-place-order').addClassName('onestepcheckout-btn-checkout');
         $('onestepcheckout-button-place-order').removeClassName('place-order-loader');
 
