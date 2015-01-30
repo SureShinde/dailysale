@@ -390,20 +390,6 @@ class MageWorx_CustomerCredit_Model_Observer
         if(Mage::registry('credit_need_refund')) {
             Mage::getModel('customercredit/credit')->refund($observer->getEvent()->getCreditmemo(), Mage::app()->getRequest()->getParam('creditmemo'));        
         }
-
-        //Webinse
-        //change Stock Availability
-        $creditmemo = $observer->getEvent()->getCreditmemo();
-        foreach ($creditmemo->getAllItems() as $item) {
-            /* @var $item Mage_Sales_Model_Order_Creditmemo_Item */
-            if ($item->hasBackToStock()) {
-                if ($item->getQty()) {
-                    $stock = Mage::getModel('cataloginventory/stock_item')->loadByProduct($item->getProductId());
-                    $stock->setData('is_in_stock', 1);
-                    $stock->save();
-                }
-            }
-        }
         return $this;
     }
     

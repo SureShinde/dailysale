@@ -4,6 +4,9 @@
         <Fiuze_All>
             <active>true</active>
             <codePool>local</codePool>
+            <depends>
+                <Mage_CatalogInventory/>
+            </depends>
         </Fiuze_All>
     </modules>
 </config>

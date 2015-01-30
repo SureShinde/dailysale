@@ -21,6 +21,16 @@
                 <class>Fiuze_All_Block</class>
             </fiuze_all>
         </blocks>
+        <events>
+            <sales_order_creditmemo_save_after>
+                <observers>
+                    <fiuze_all_order_creditmemo_refund>
+                        <class>Fiuze_All_Model_Observer</class>
+                        <method>returnProductToStock</method>
+                    </fiuze_all_order_creditmemo_refund>
+                </observers>
+            </sales_order_creditmemo_save_after>
+        </events>
     </global>
 
     <frontend>
