@@ -43,8 +43,8 @@ class MageWorx_CustomerCredit_Model_Checkout_Type_Onepage extends Mage_Checkout_
      * @return Mage_Checkout_Model_Type_Onepage//use_internal_credit_partial
      */
     public function savePayment($data, $check_customercredit = null) {
-        if ((!empty($data['use_internal_credit']) || $data['method']=='customercredit') ||
-            (!empty($data['use_internal_credit_partial']) && $data['use_internal_credit_partial'] == 1)) {
+        if ((!empty($data['method']) && $data['method']=='customercredit') ||
+            (!empty($data['use_internal_credit_partial']) && (int)$data['use_internal_credit_partial'] == 1)) {
             Mage::getSingleton('checkout/session')->setUseInternalCredit(true);
         } else {
             Mage::getModel('checkout/session')->setUseInternalCredit(false);
