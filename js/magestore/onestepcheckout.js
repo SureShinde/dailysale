@@ -360,7 +360,7 @@ function checkvalidEmail(){
             //invalidEmailPopup.open();
         //else
             //invalidEmailPopup.close();
-        $('onestepcheckout-button-place-order').disabled = true;
+        $('onestepcheckout-button-place-order').disabled = false;
         $('onestepcheckout-button-place-order').addClassName('onestepcheckout-btn-checkout');
         $('onestepcheckout-button-place-order').removeClassName('place-order-loader');
 
