@@ -12,6 +12,22 @@ class Fiuze_Deals_Model_Observer{
     const CRON_STRING_PATH = 'fiuze_deals_cron_time/fiuze_deals_cron_time_grp/scheduler';
 
     /**
+     * Change Deal Quantity for deals product rotation in the frontend
+     *
+     * @param Varien_Event_Observer $observer
+     */
+    public function fiuzeDealsSaveAfter(Varien_Event_Observer $observer)
+    {
+        $object = $observer->getObject();
+        if($object instanceof Fiuze_Deals_Model_Deals){
+            $dealsQty = $object->getData('deals_qty');
+            $dealsActive = $object->getData('current_active');
+            if(!$dealsQty && $dealsActive){
+                Mage::getModel('fiuze_deals/cron')->dailyCatalogUpdate();
+            }
+        }
+    }
+    /**
      * Initial timer for deals product rotation in the frontend
      *
      * @param Varien_Event_Observer $observer
