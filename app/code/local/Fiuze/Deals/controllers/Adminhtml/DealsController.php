@@ -79,10 +79,28 @@ class Fiuze_Deals_Adminhtml_DealsController extends Mage_Adminhtml_Controller_Ac
      */
     public function saveGridAction()
     {
-        die('here');
-        $data = $this->getRequest()->getParams();
+        $sortOrder = $this->getRequest()->getParam('sort_order');
+        if(isset($sortOrder)){
+            $productActive = Mage::getResourceModel('fiuze_deals/deals_collection')
+                ->addFieldToSelect('entity_id')
+                ->addFieldToSelect('product_id')
+                ->addFieldToSelect('sort_order')
+                        ->getItems();
+            foreach($productActive as $item){
+                try{
+                    $key = $item->getData('product_id');
+                    $item->setData('sort_order',$sortOrder[$key]);
+                    $item->save();
+                }catch (Exception $ex){
+                    Mage::logException($ex);
+                }
+            }
+        }
         $this->getResponse()->setRedirect($this->getUrl('*/*/list'));
     }
+
+
+
 
     /**
      * Controller for save new deal product

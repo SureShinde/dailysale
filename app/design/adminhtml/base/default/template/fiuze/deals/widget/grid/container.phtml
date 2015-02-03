@@ -25,6 +25,7 @@
  */
 ?>
 <form id="product_deals_form" action="<?php echo $this->getUrl('adminhtml/deals/saveGrid') ?>" method="POST">
+    <?php echo $this->getBlockHtml('formkey')?>
     <div class="content-header">
         <table cellspacing="0">
             <tr>
@@ -39,30 +40,3 @@
     </div>
 </form>
 
-<script type="text/javascript">
-//<![CDATA[
-categoryForm = new varienForm('product_deals_form');
-
-/**
- * Create/edit some category
- */
-function categorySubmit(url) {
-
-    jQuery("input[name^='sort_order_']").each(function(index){
-        console.log(this.value);
-    });
-    var dataJson = jQuery("input[name^='sort_order_']").serializeArray();
-
-    jQuery.ajax({
-        type: "POST",
-        dataType: "json",
-        url: url,
-        data: dataJson,
-        success: function( data0, textStatus, jqXHR){
-            console.log(textStatus);
-        }
-    });
-}
-
-//]]>
-</script>

@@ -23,10 +23,7 @@ class Fiuze_Deals_Block_Adminhtml_Deals extends Mage_Adminhtml_Block_Widget_Grid
 
         $this->addButton('save_grid', array(
             'label' => Mage::helper('adminhtml')->__('Save'),
-            //'onclick' => 'categorySubmit(\''. $this->getSaveGridUrl() .'\', true)',
-            //'type' => 'submit',
-            'onclick' => "categorySubmit('{$this->getSaveGridUrl()}')",
-            //'onclick' =>  "setLocation('{$this->getSaveGridUrl()}')",
+            'type' => 'submit',
             'class' => 'save',
         ),-1);
 

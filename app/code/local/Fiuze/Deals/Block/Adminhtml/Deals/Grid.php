@@ -117,7 +117,7 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Grid extends Mage_Adminhtml_Block_Widget
             'index' => 'sort_order',
             'filter' => false,
             'sortable' => false,
-            //'editable'  => true,
+            'width' => '100px',
             'renderer'  => 'Fiuze_Deals_Block_Adminhtml_Widget_Grid_Column_Renderer_Input',
         ));
 

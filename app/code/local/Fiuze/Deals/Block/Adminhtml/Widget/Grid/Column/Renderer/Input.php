@@ -45,7 +45,7 @@ class Fiuze_Deals_Block_Adminhtml_Widget_Grid_Column_Renderer_Input
     public function render(Varien_Object $row)
     {
         $html = '<input type="text" ';
-        $html .= 'name="' . $this->getColumn()->getId() . '_' . $row->getId() . '" ';
+        $html .= 'name="' . $this->getColumn()->getId() . '[' . $row->getId() . ']" ';
         $html .= 'value="' . $row->getData('sort_order') . '"';
         $html .= 'class="input-text ' . $this->getColumn()->getInlineCss() . '"/>';
         $html .=  $row->getData('sort_order') ;
