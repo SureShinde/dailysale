@@ -77,6 +77,16 @@ class Fiuze_Deals_Adminhtml_DealsController extends Mage_Adminhtml_Controller_Ac
     /**
      * Controller for save new deal product
      */
+    public function saveGridAction()
+    {
+        die('here');
+        $data = $this->getRequest()->getParams();
+        $this->getResponse()->setRedirect($this->getUrl('*/*/list'));
+    }
+
+    /**
+     * Controller for save new deal product
+     */
     public function saveAction()
     {
         $data = $this->getRequest()->getParams();
@@ -110,6 +120,9 @@ class Fiuze_Deals_Adminhtml_DealsController extends Mage_Adminhtml_Controller_Ac
                         Mage::getSingleton('fiuze_deals/cron')->dailyCatalogUpdate();
                     }else{
                         $productDeals->save();
+                        if(!$productDeals->getDealsQty()){
+                            Mage::getSingleton('adminhtml/session')->addError(Mage::helper('fiuze_deals')->__('The product won`t be displayed on the frontend due to `Deal Qty` (it should be greater then 0).'));
+                        }
                     }
                     $this->getResponse()->setRedirect($this->getUrl('*/*/list'));
                 }else{
