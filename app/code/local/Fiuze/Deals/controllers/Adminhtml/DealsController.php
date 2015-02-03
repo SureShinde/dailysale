@@ -142,6 +142,9 @@ class Fiuze_Deals_Adminhtml_DealsController extends Mage_Adminhtml_Controller_Ac
                             Mage::getSingleton('adminhtml/session')->addError(Mage::helper('fiuze_deals')->__('The product won`t be displayed on the frontend due to `Deal Qty` (it should be greater then 0).'));
                         }
                     }
+                    if(!$productDeals->getDealsQty()){
+                        Mage::getSingleton('adminhtml/session')->addError(Mage::helper('fiuze_deals')->__('The product won`t be displayed on the frontend due to `Deal Qty` (it should be greater then 0).'));
+                    }
                     $this->getResponse()->setRedirect($this->getUrl('*/*/list'));
                 }else{
                     Mage::getSingleton('core/session')->addWarning('Qty product 0');
