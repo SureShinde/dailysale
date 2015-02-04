@@ -200,7 +200,8 @@ class Fiuze_Deals_Adminhtml_DealsController extends Mage_Adminhtml_Controller_Ac
                     if(!($status ? true : false)){
                         $productDeals->setData('current_active', 0);
                         $productDeals->save();
-                        Mage::getSingleton('fiuze_deals/cron')->dailyCatalogUpdate();
+                        Mage::dispatchEvent('fiuze_deals_save_after', array('object'=>$productDeals));
+                        //Mage::getSingleton('fiuze_deals/cron')->dailyCatalogUpdate();
                     }else{
                         $productDeals->save();
                     }
@@ -215,6 +216,7 @@ class Fiuze_Deals_Adminhtml_DealsController extends Mage_Adminhtml_Controller_Ac
         $dealResource = Mage::getResourceModel('fiuze_deals/deals_collection');
         if ($dealResource->addFilter('current_active', 1)->getSize() == 0) {
             $item = Mage::getResourceModel('fiuze_deals/deals_collection')
+                ->addFieldToFilter('deals_qty',array('gt' => 0))
                 ->addFilter('deals_active', 1)
                 ->getFirstItem();
             if($item->getData()){

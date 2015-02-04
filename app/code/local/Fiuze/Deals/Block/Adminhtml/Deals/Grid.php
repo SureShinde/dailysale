@@ -14,7 +14,7 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Grid extends Mage_Adminhtml_Block_Widget
         $this->setId('dealsGrid');
         $this->setDefaultSort('identifier');
         $this->setDefaultDir('ASC');
-        $this->setUseAjax(true);
+        $this->setUseAjax(false);
     }
 
     protected function getStore(){
@@ -117,7 +117,8 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Grid extends Mage_Adminhtml_Block_Widget
             'index' => 'sort_order',
             'filter' => false,
             'sortable' => false,
-            'width' => '100px',
+            'editable' =>true,
+            'width' => '80px',
             'renderer'  => 'Fiuze_Deals_Block_Adminhtml_Widget_Grid_Column_Renderer_Input',
         ));
 

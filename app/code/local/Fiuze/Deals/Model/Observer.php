@@ -24,6 +24,12 @@ class Fiuze_Deals_Model_Observer{
             $dealsActive = $object->getData('current_active');
             if(!$dealsQty && $dealsActive){
                 Mage::getModel('fiuze_deals/cron')->dailyCatalogUpdate();
+                return;
+            }
+            $productActive = Mage::getResourceModel('fiuze_deals/deals_collection')->addFilter('current_active', 1)->getSize();
+            if(!$productActive){
+                Mage::getModel('fiuze_deals/cron')->dailyCatalogUpdate();
+                return;
             }
         }
     }
@@ -199,6 +205,7 @@ class Fiuze_Deals_Model_Observer{
                 try{
                     $productDeals->setData('deals_qty', ($productDeals->getDealsQty() - (int)$item->getQtyOrdered()))
                         ->save();
+                    Mage::dispatchEvent('fiuze_deals_save_after', array('object'=>$productDeals));
                 } catch(Exception $e){
                     Mage::logException($e);
                 }
