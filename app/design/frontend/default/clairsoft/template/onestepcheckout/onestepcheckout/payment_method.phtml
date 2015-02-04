@@ -61,9 +61,8 @@ if ($isPartial==2 && $isCheckedCustomercredit) $this->getQuote()->getPayment()->
 </div>
 <script type="text/javascript">
     //<![CDATA[
-    $$('#checkout-payment-method-load dt input').invoke('observe', 'click', function(e) {
-
-
+    $$('#checkout-payment-method-load dt input[type=radio]').invoke('observe', 'click', function(e) {
+        save_shipping_method(shipping_method_url,true, true);
         var element = e.element();
         var name = 'payment_form_' + element.value;
 
