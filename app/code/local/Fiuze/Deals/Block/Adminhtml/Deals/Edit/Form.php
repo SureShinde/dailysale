@@ -110,7 +110,7 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Edit_Form extends Mage_Adminhtml_Block_W
 
         $fieldset->addField('deal_qty', 'text', array(
             'label' => $helper->__('Deal Quantity'),
-            'class' => 'require-entry validate-number',
+            'class' => 'require-entry validate-number validate-not-negative-number',
             'name' => 'deal_qty',
             'required' => true,
             'note' => $helper->__('Quantity products with special price'),

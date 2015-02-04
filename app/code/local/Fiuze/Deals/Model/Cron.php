@@ -17,7 +17,16 @@ class Fiuze_Deals_Model_Cron extends Mage_Core_Model_Abstract{
     public function dailyCatalogUpdate(){
         $dealResource = Mage::getResourceModel('fiuze_deals/deals_collection');
         $productDeals = $dealResource->addFilter('deals_active', 1)
-            ->addFieldToFilter('deals_qty', array("gt" => 0))
+            ->addFieldToFilter(
+                array(
+                    'deals_qty',
+                    'current_active',
+                ),
+                array(
+                    array('gt' => 0),
+                    array('eq' => 1),
+                )
+            )
             ->addOrder('sort_order', Varien_Data_Collection::SORT_ORDER_ASC)
             ->getItems();
 
@@ -25,17 +34,24 @@ class Fiuze_Deals_Model_Cron extends Mage_Core_Model_Abstract{
             return;
         }
 
-        $productActive = $dealResource->addFilter('current_active', 1)->getSize();
+        $productActive = Mage::getResourceModel('fiuze_deals/deals_collection')->addFilter('current_active', 1)->getSize();
         try{
-            if(!$productActive){
-                $item = array_shift($productDeals);
-                $this->_setData($item, (float)$item->getData('deals_price'));
+            if( count($productDeals) == 1){
+                $product = array_shift($productDeals);
+                if(!$product->getData('deals_qty') && $product->getData('current_active')){
+                    $this->_setData($product, (float)$product->getData('origin_special_price'), false, false);
+                    return;
+                }
+            }
 
+            if(!$productActive){
+                $this->_setData($product, (float)$product->getData('deals_price'));
                 return;
             }
 
             //cyclical overkill
             $count = 0;
+            reset($productDeals);
             while($count < count($productDeals)){
                 $item = current($productDeals);
                 if($item->getCurrentActive()){
@@ -50,7 +66,6 @@ class Fiuze_Deals_Model_Cron extends Mage_Core_Model_Abstract{
                     }
 
                     $this->_setData($item, (float)$item->getData('deals_price'));
-
                     return;
                 }
 
@@ -60,7 +75,6 @@ class Fiuze_Deals_Model_Cron extends Mage_Core_Model_Abstract{
         } catch(Exception $e){
             Mage::logException($e);
         }
-
         return;
     }
 

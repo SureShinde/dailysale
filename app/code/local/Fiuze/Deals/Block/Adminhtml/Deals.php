@@ -13,6 +13,7 @@ class Fiuze_Deals_Block_Adminhtml_Deals extends Mage_Adminhtml_Block_Widget_Grid
         $this->_blockGroup = 'fiuze_deals';
         $this->_controller = 'adminhtml_deals';
         $this->_headerText = Mage::helper('fiuze_deals')->__('Deals');
+        //$this->setUseAjax(true);
 
         $this->_addButton('add', array(
             'label' => $this->getAddButtonLabel(),
@@ -20,6 +21,11 @@ class Fiuze_Deals_Block_Adminhtml_Deals extends Mage_Adminhtml_Block_Widget_Grid
             'class' => 'add',
         ));
 
+        $this->addButton('save_grid', array(
+            'label' => Mage::helper('adminhtml')->__('Save'),
+            'type' => 'submit',
+            'class' => 'save',
+        ),-1);
 
         parent::__construct();
         if(!Mage::getSingleton('admin/session')->isAllowed('*/*/create')){
@@ -31,9 +37,14 @@ class Fiuze_Deals_Block_Adminhtml_Deals extends Mage_Adminhtml_Block_Widget_Grid
         }
 
         parent::__construct();
+        $this->setTemplate('fiuze/deals/widget/grid/container.phtml');
     }
 
     public function getHeaderCssClass(){
         return 'icon-head head-products';
+    }
+    public function getSaveGridUrl()
+    {
+        return $this->getUrl('adminhtml/deals/saveGrid');
     }
 }
