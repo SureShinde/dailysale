@@ -15,3 +15,14 @@
 
 /skin/frontend/default/clairsoft/config.codekit
 .DS_Store
+
+.idea/
+app/code/community/Aoe/
+app/design/adminhtml/default/default/layout/aoe_scheduler/
+app/design/adminhtml/default/default/template/aoe_scheduler/
+app/etc/modules/Aoe_Scheduler.xml
+app/locale/de_DE/Aoe_Scheduler.csv
+app/locale/en_US/template/email/aoe_scheduler/
+shell/scheduler.php
+skin/adminhtml/default/default/aoe_scheduler/
+.gitignore

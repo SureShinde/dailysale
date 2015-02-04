@@ -4,12 +4,12 @@
 	<div class="md-content">
 			<div class="md-modal-header">
 				<button type="button" class="close">&times;</button>
-				<h4><?php echo $this->__('Login')?></h4>
+				<h4 id="login-header"><?php echo $this->__('Login')?></h4>
+				<h4 id="forgot-header" style="display:none"><?php echo $this->__('Forgot Password?')?></h4>
 			</div>	
 			<div class="md-content-wrapper">
 				<?php echo $this->getChildHtml('signin.modal.cms')?>
-				<div id="signin-ajax-load">
-				</div>
+				<div id="signin-ajax-load"></div>
 
 			</div>
 			
