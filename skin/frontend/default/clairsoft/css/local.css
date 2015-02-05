@@ -1269,40 +1269,22 @@ ul.tabs {
   #product_tabs_custom_contents .tab-feature-list li {
     margin-left: 15px;
     clear: left; }
-/* line 462, ../sass/product_detail.scss */
-#product_tabs_custom_contents .tab-secondary-info {
-  float: left; }
 
-<<<<<<< HEAD
-/* line 469, ../sass/product_detail.scss */
-=======
 /* line 484, ../sass/product_detail.scss */
->>>>>>> 6875103... allow for order of 10+ qty
 .block-related {
   width: 960px;
   border-top: 1px solid #eeeeee !important;
   margin-top: 1em;
   padding-top: 1em; }
-<<<<<<< HEAD
-  /* line 475, ../sass/product_detail.scss */
-=======
   /* line 490, ../sass/product_detail.scss */
->>>>>>> 6875103... allow for order of 10+ qty
   .block-related .block-title h1 {
     margin-bottom: 10px;
     font-size: 24px; }
 
-<<<<<<< HEAD
-/* line 481, ../sass/product_detail.scss */
-.block .block-content {
-  padding: 0px; }
-  /* line 487, ../sass/product_detail.scss */
-=======
 /* line 496, ../sass/product_detail.scss */
 .block .block-content {
   padding: 0px; }
   /* line 502, ../sass/product_detail.scss */
->>>>>>> 6875103... allow for order of 10+ qty
   .block .block-content .mini-products-list .single-xsell-container {
     -moz-border-radius-bottomleft: 4px;
     -webkit-border-bottom-left-radius: 4px;
@@ -1319,28 +1301,11 @@ ul.tabs {
     background: white;
     min-height: 460px;
     text-align: center; }
-<<<<<<< HEAD
-    /* line 500, ../sass/product_detail.scss */
-=======
     /* line 515, ../sass/product_detail.scss */
->>>>>>> 6875103... allow for order of 10+ qty
     .block .block-content .mini-products-list .single-xsell-container img {
       margin-bottom: 15px;
       padding: 0;
       border-bottom: 1px solid #cccccc; }
-<<<<<<< HEAD
-    /* line 506, ../sass/product_detail.scss */
-    .block .block-content .mini-products-list .single-xsell-container:hover {
-      border: 1px solid #1b75bb;
-      top: -3px; }
-    /* line 511, ../sass/product_detail.scss */
-    .block .block-content .mini-products-list .single-xsell-container:last-child {
-      margin-right: 0px; }
-    /* line 515, ../sass/product_detail.scss */
-    .block .block-content .mini-products-list .single-xsell-container .product-name {
-      padding: 0 8px; }
-      /* line 518, ../sass/product_detail.scss */
-=======
     /* line 521, ../sass/product_detail.scss */
     .block .block-content .mini-products-list .single-xsell-container:hover {
       border: 1px solid #1b75bb;
@@ -1352,49 +1317,30 @@ ul.tabs {
     .block .block-content .mini-products-list .single-xsell-container .product-name {
       padding: 0 8px; }
       /* line 533, ../sass/product_detail.scss */
->>>>>>> 6875103... allow for order of 10+ qty
       .block .block-content .mini-products-list .single-xsell-container .product-name a {
         text-decoration: none;
         font-size: 14px;
         color: #898989;
         font-weight: bold; }
-<<<<<<< HEAD
-    /* line 526, ../sass/product_detail.scss */
-    .block .block-content .mini-products-list .single-xsell-container .yousave {
-      display: none; }
-    /* line 528, ../sass/product_detail.scss */
-=======
     /* line 541, ../sass/product_detail.scss */
     .block .block-content .mini-products-list .single-xsell-container .yousave {
       display: none; }
     /* line 543, ../sass/product_detail.scss */
->>>>>>> 6875103... allow for order of 10+ qty
     .block .block-content .mini-products-list .single-xsell-container .special-price, .block .block-content .mini-products-list .single-xsell-container .our-price {
       color: #1b75bb;
       font-size: 32px;
       font-weight: bold; }
-<<<<<<< HEAD
-    /* line 535, ../sass/product_detail.scss */
-    .block .block-content .mini-products-list .single-xsell-container span#msrp {
-      text-decoration: line-through; }
-    /* line 539, ../sass/product_detail.scss */
-=======
     /* line 550, ../sass/product_detail.scss */
     .block .block-content .mini-products-list .single-xsell-container span#msrp {
       text-decoration: line-through; }
     /* line 554, ../sass/product_detail.scss */
->>>>>>> 6875103... allow for order of 10+ qty
     .block .block-content .mini-products-list .single-xsell-container .availability-container {
       font-size: 14px;
       position: absolute;
       bottom: 60px;
       text-align: center;
       width: 100%; }
-<<<<<<< HEAD
-    /* line 548, ../sass/product_detail.scss */
-=======
     /* line 563, ../sass/product_detail.scss */
->>>>>>> 6875103... allow for order of 10+ qty
     .block .block-content .mini-products-list .single-xsell-container a.soldout-btn {
       float: right;
       border: 1px solid #cccccc !important;
@@ -1422,29 +1368,17 @@ ul.tabs {
         background-image: -moz-linear-gradient(#3d89c5, #1b75bb);
         background-image: -webkit-linear-gradient(#3d89c5, #1b75bb);
         background-image: linear-gradient(#3d89c5, #1b75bb); }
-<<<<<<< HEAD
-    /* line 560, ../sass/product_detail.scss */
-=======
     /* line 575, ../sass/product_detail.scss */
->>>>>>> 6875103... allow for order of 10+ qty
     .block .block-content .mini-products-list .single-xsell-container .instock-noshow {
       display: block;
       height: 20px;
       position: relative;
       bottom: 0px; }
-<<<<<<< HEAD
-    /* line 567, ../sass/product_detail.scss */
-    .block .block-content .mini-products-list .single-xsell-container .instock-pricedisplay {
-      margin-top: 11px;
-      display: block; }
-    /* line 572, ../sass/product_detail.scss */
-=======
     /* line 582, ../sass/product_detail.scss */
     .block .block-content .mini-products-list .single-xsell-container .instock-pricedisplay {
       margin-top: 11px;
       display: block; }
     /* line 587, ../sass/product_detail.scss */
->>>>>>> 6875103... allow for order of 10+ qty
     .block .block-content .mini-products-list .single-xsell-container a.view-deal-btn {
       -moz-border-radius: 4px / 4px;
       -webkit-border-radius: 4px 4px;
@@ -1462,11 +1396,7 @@ ul.tabs {
       position: absolute;
       bottom: 15px;
       left: 10px; }
-<<<<<<< HEAD
-      /* line 591, ../sass/product_detail.scss */
-=======
       /* line 606, ../sass/product_detail.scss */
->>>>>>> 6875103... allow for order of 10+ qty
       .block .block-content .mini-products-list .single-xsell-container a.view-deal-btn:hover {
         background-image: -moz-linear-gradient(#3d89c5, #1b75bb);
         background-image: -webkit-linear-gradient(#3d89c5, #1b75bb);
