@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<config>
+    <sections>
+        <fiuze_deals_cron_time translate="label" module="fiuze_deals">
+            <label>Fiuze Deal Rotation</label>
+            <tab>catalog</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>10</sort_order>
+            <show_in_default>10</show_in_default>
+            <show_in_website>10</show_in_website>
+            <show_in_store>10</show_in_store>
+            <groups>
+                <fiuze_deals_cron_time_grp translate="label" module="fiuze_deals">
+                    <label>General</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>100</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <route translate="label">
+                            <label>Deal URL</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Note: Url should not contain any slashes.</comment>
+                            <validate>required-entry</validate>
+                        </route>
+                        <cron_time translate="label">
+                            <label>Time Period</label>
+                            <frontend_type>time</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>hh : mm : ss</comment>
+                            <validate>required-entry</validate>
+                        </cron_time>
+                        <scheduler>
+                            <label>Task schedule (cron syntax)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>25</sort_order>
+                            <show_in_default>0</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </scheduler>
+                        <category translate="label">
+                            <label>Category</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>fiuze_deals/system_config_source_category</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>This category will use for deal rotation on the frontend.</comment>
+                            <validate>required-entry</validate>
+                        </category>
+                        <layout translate="label">
+                            <label>Page Layout</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>fiuze_deals/system_config_source_layouts</source_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </layout>
+                    </fields>
+                </fiuze_deals_cron_time_grp>
+            </groups>
+        </fiuze_deals_cron_time>
+    </sections>
+</config>

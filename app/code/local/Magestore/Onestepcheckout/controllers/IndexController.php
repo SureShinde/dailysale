@@ -304,25 +304,28 @@ class Magestore_Onestepcheckout_IndexController extends Mage_Core_Controller_Fro
     public function save_shippingAction() {
         $shipping_method = $this->getRequest()->getPost('shipping_method', '');
         $payment_method = $this->getRequest()->getPost('payment_method', false);
+        $p_method_customercredit = $this->getRequest()->getPost('p_method_customercredit');
+
         $old_shipping_method = $this->getOnepage()->getQuote()->getShippingAddress()->getShippingMethod();
         $billing_data = $this->getRequest()->getPost('billing', false);
         if ($billing_data['country_id']) {
             Mage::getModel('checkout/session')->getQuote()->getBillingAddress()->setData('country_id', $billing_data['country_id'])->save();
         }
-        // if ($shipping_method && $shipping_method != '' && $shipping_method != $old_shipping_method) {
-        Mage::helper('onestepcheckout')->saveShippingMethod($shipping_method);
-        $this->getOnepage()->saveShippingMethod($shipping_method);
-        // }
-        // if ($payment_method != '') {
-        try {
-            $payment = $this->getRequest()->getPost('payment', array());
-            $payment['method'] = $payment_method;
-            $this->getOnepage()->savePayment($payment);
-            Mage::helper('onestepcheckout')->savePaymentMethod($payment);
-        } catch (Exception $e) {
-            //
+        if ($shipping_method && $shipping_method != '' && $shipping_method != $old_shipping_method) {
+            Mage::helper('onestepcheckout')->saveShippingMethod($shipping_method);
+            $this->getOnepage()->saveShippingMethod($shipping_method);
         }
-        // }
+        if ($payment_method != '') {
+            try {
+                $payment = $this->getRequest()->getPost('payment', array());
+                $payment['method'] = $payment_method;//'customercredit';
+                $this->getOnepage()->savePayment($payment, $p_method_customercredit);
+                Mage::helper('onestepcheckout')->savePaymentMethod($payment);
+            } catch (Exception $e) {
+                //
+            }
+        }
+
         $this->loadLayout(false);
         $this->renderLayout();
     }
