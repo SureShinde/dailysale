@@ -457,8 +457,8 @@ class Mirasvit_FeedExport_Model_Feed_Generator_Pattern_Product
             }
         }
 
+        $category = ($category) ? $this->getCategory($category->getId()) : null;
         if ($category) {
-            $category = $this->getCategory($category->getId());
             $categoryPath = array($category->getName());
             $parentId     = $category->getParentId();
 
