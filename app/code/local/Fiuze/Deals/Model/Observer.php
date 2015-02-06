@@ -12,6 +12,57 @@ class Fiuze_Deals_Model_Observer{
     const CRON_STRING_PATH = 'fiuze_deals_cron_time/fiuze_deals_cron_time_grp/scheduler';
 
     /**
+     * Change Deal Quantity for deals product rotation in the frontend
+     *
+     * @param Varien_Event_Observer $observer
+     */
+    public function fiuzeDealsSaveAfter(Varien_Event_Observer $observer)
+    {
+        $object = $observer->getObject();
+        if($object instanceof Fiuze_Deals_Model_Deals){
+            $dealsQty = $object->getData('deals_qty');
+            $dealsActive = $object->getData('current_active');
+            if(!$dealsQty && $dealsActive){
+                Mage::getModel('fiuze_deals/cron')->dailyCatalogUpdate();
+                return;
+            }
+            $productActive = Mage::getResourceModel('fiuze_deals/deals_collection')->addFilter('current_active', 1)->getSize();
+            if(!$productActive){
+                Mage::getModel('fiuze_deals/cron')->dailyCatalogUpdate();
+                return;
+            }
+        }
+    }
+    /**
+     * Initial timer for deals product rotation in the frontend
+     *
+     * @param Varien_Event_Observer $observer
+     */
+    public function controllerActionLayoutGenerateBlocksAfter(Varien_Event_Observer $observer)
+    {
+        //limit to the product view page
+        if($observer->getAction() instanceof Mage_Catalog_ProductController)
+        {
+            $idProduct = (int)$observer->getAction()->getRequest()->getParam('id');
+            $productActive = Mage::getResourceModel('fiuze_deals/deals_collection')
+                ->addFilter('product_id', $idProduct)
+                ->addFilter('current_active', 1)
+                ->getFirstItem();
+            if($productActive->getData()){
+                $layout = $observer->getLayout();
+                $pageHead = $layout->getBlock('head');
+                $pageHead->removeItem('skin_js','js/product.js');
+
+                $pageBlockContent = $layout->getBlock('content');
+                $blockScriptProduct = $layout->createBlock('core/template','scriptproduct')
+                                             ->setTemplate('fiuze/deals/product_deal.phtml');
+                $pageBlockContent->append($blockScriptProduct);
+            }
+        }
+
+    }
+
+    /**
      * Initial route name for deals rotation in the frontend
      *
      * @param Varien_Event_Observer $observer
@@ -69,6 +120,14 @@ class Fiuze_Deals_Model_Observer{
                     'qty',
                     'product_id=entity_id',
                     '{{table}}.stock_id=1',
+                    'left'
+                )
+                ->joinField(
+                    'position_product',
+                    'catalog/category_product',
+                    'position',
+                    'product_id=entity_id',
+                    'at_position_product.category_id=cat_pro.category_id',
                     'left'
                 )
                 ->addAttributeToFilter('qty', array("gt" => 0))
@@ -146,6 +205,7 @@ class Fiuze_Deals_Model_Observer{
                 try{
                     $productDeals->setData('deals_qty', ($productDeals->getDealsQty() - (int)$item->getQtyOrdered()))
                         ->save();
+                    Mage::dispatchEvent('fiuze_deals_save_after', array('object'=>$productDeals));
                 } catch(Exception $e){
                     Mage::logException($e);
                 }
@@ -168,7 +228,7 @@ class Fiuze_Deals_Model_Observer{
         $productDeals->setData('deals_price', (float)$product->getPrice());
         $productDeals->setData('deals_qty', (int)$product->getQty());
         $productDeals->setData('deals_active', false);
-        $productDeals->setData('sort_order', 0);
+        $productDeals->setData('sort_order', $product->getPositionProduct());
         $productDeals->setData('current_active', 0);
         $productDeals->setData('origin_special_price', (float)$product->getSpecialPrice());
         try{

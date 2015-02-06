@@ -112,6 +112,22 @@
                     </fiuzedeals_sales_order_place_after>
                 </observers>
             </sales_order_place_after>
+            <controller_action_layout_generate_blocks_after>
+                <observers>
+                    <fiuzedeals_controller_action_layout_generate_blocks_after>
+                        <class>Fiuze_Deals_Model_Observer</class>
+                        <method>controllerActionLayoutGenerateBlocksAfter</method>
+                    </fiuzedeals_controller_action_layout_generate_blocks_after>
+                </observers>
+            </controller_action_layout_generate_blocks_after>
+            <fiuze_deals_save_after>
+                <observers>
+                    <fiuzedeals_fiuze_deals_save_after>
+                        <class>Fiuze_Deals_Model_Observer</class>
+                        <method>fiuzeDealsSaveAfter</method>
+                    </fiuzedeals_fiuze_deals_save_after>
+                </observers>
+            </fiuze_deals_save_after>
         </events>
     </global>
 

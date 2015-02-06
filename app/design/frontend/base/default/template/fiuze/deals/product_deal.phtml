@@ -10,7 +10,7 @@
         var result = (achiveDate - nowDate) + 1000;
         if (result < 0) {
             var elmntNew = document.getElementById('timer');
-            elmntNew.innerHTML = ' 00 : 00 : 00 ';
+            elmntNew.innerHTML = ' 00:00:00 ';
             return undefined;
         }
         var seconds = Math.floor((result / 1000) % 60);

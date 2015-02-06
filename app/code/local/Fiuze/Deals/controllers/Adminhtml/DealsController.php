@@ -77,6 +77,34 @@ class Fiuze_Deals_Adminhtml_DealsController extends Mage_Adminhtml_Controller_Ac
     /**
      * Controller for save new deal product
      */
+    public function saveGridAction()
+    {
+        $sortOrder = $this->getRequest()->getParam('sort_order');
+        if(isset($sortOrder)){
+            $productActive = Mage::getResourceModel('fiuze_deals/deals_collection')
+                ->addFieldToSelect('entity_id')
+                ->addFieldToSelect('product_id')
+                ->addFieldToSelect('sort_order')
+                        ->getItems();
+            foreach($productActive as $item){
+                try{
+                    $key = $item->getData('product_id');
+                    $item->setData('sort_order',$sortOrder[$key]);
+                    $item->save();
+                }catch (Exception $ex){
+                    Mage::logException($ex);
+                }
+            }
+        }
+        $this->getResponse()->setRedirect($this->getUrl('*/*/list'));
+    }
+
+
+
+
+    /**
+     * Controller for save new deal product
+     */
     public function saveAction()
     {
         $data = $this->getRequest()->getParams();
@@ -111,6 +139,10 @@ class Fiuze_Deals_Adminhtml_DealsController extends Mage_Adminhtml_Controller_Ac
                     }else{
                         $productDeals->save();
                     }
+                    if(!$productDeals->getDealsQty()){
+                        Mage::getSingleton('adminhtml/session')->addError(Mage::helper('fiuze_deals')->__('The product won`t be displayed on the frontend due to `Deal Qty` (it should be greater then 0).'));
+                    }
+                    Mage::dispatchEvent('fiuze_deals_save_after', array('object'=>$productDeals));
                     $this->getResponse()->setRedirect($this->getUrl('*/*/list'));
                 }else{
                     Mage::getSingleton('core/session')->addWarning('Qty product 0');
@@ -168,7 +200,8 @@ class Fiuze_Deals_Adminhtml_DealsController extends Mage_Adminhtml_Controller_Ac
                     if(!($status ? true : false)){
                         $productDeals->setData('current_active', 0);
                         $productDeals->save();
-                        Mage::getSingleton('fiuze_deals/cron')->dailyCatalogUpdate();
+                        Mage::dispatchEvent('fiuze_deals_save_after', array('object'=>$productDeals));
+                        //Mage::getSingleton('fiuze_deals/cron')->dailyCatalogUpdate();
                     }else{
                         $productDeals->save();
                     }
@@ -183,6 +216,7 @@ class Fiuze_Deals_Adminhtml_DealsController extends Mage_Adminhtml_Controller_Ac
         $dealResource = Mage::getResourceModel('fiuze_deals/deals_collection');
         if ($dealResource->addFilter('current_active', 1)->getSize() == 0) {
             $item = Mage::getResourceModel('fiuze_deals/deals_collection')
+                ->addFieldToFilter('deals_qty',array('gt' => 0))
                 ->addFilter('deals_active', 1)
                 ->getFirstItem();
             if($item->getData()){
