@@ -3,7 +3,7 @@
 <config>
     <modules>
         <TBT_RewardsLoyalty>
-            <active>true</active>
+            <active>false</active>
             <codePool>community</codePool>
             <depends>
                 <TBT_Common/>
