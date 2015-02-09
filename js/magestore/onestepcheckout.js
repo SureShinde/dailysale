@@ -247,6 +247,9 @@ function save_address_information(save_address_url, update_address_shipping, upd
 
                 }
             }
+            $('onestepcheckout-button-place-order').disabled = false;
+            $('onestepcheckout-button-place-order').addClassName('onestepcheckout-btn-checkout');
+            $('onestepcheckout-button-place-order').removeClassName('place-order-loader');            
         },
         onFailure: ''
     });
