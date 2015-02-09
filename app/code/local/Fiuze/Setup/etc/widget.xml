@@ -3,5 +3,14 @@
     <fiuze_setup_products type="fiuze_setup/products">
         <name>Products For Newsletter</name>
         <description type="desc">Adds products in the appropriate category selected from the list 1 - 31 according to the day of the month</description>
+        <parameters>
+            <set_template translate="label">
+                <required>1</required>
+                <visible>1</visible>
+                <label>Set Template (template is in 'fiuze/newslettersubscribe/product' folder)</label>
+                <type>select</type>
+                <source_model>fiuze_setup/adminhtml_system_config_source_template</source_model>
+            </set_template>
+        </parameters>
     </fiuze_setup_products>
 </widgets> 
