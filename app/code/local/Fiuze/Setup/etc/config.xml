@@ -16,6 +16,11 @@
                 <class>Fiuze_Setup_Block</class>
              </fiuze_setup>
         </blocks>
+        <models>
+            <fiuze_setup>
+                <class>Fiuze_Setup_Model</class>
+            </fiuze_setup>
+        </models>
 		<resources>
 			<fiuze_setup_setup>
 				<setup>

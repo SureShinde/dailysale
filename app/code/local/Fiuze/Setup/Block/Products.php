@@ -1,26 +1,35 @@
 <?php
+
 /**
  * Fiuze Setup Block
  *
  * @author Mihail, Ron
  */
-class Fiuze_Setup_Block_Products extends Mage_Catalog_Block_Product_Abstract implements Mage_Widget_Block_Interface
-{
-    
-    public function __construct()
-    {
+class Fiuze_Setup_Block_Products extends Mage_Catalog_Block_Product_Abstract implements Mage_Widget_Block_Interface{
+
+    public function __construct(){
         parent::__construct();
-        $this->setTemplate('fiuze/newslettersubscribe/product/list.phtml');
-        
         $this->_priceBlockDefaultTemplate = 'fiuze/newslettersubscribe/product/price.phtml';
     }
-    
+
     /**
-    * Get Product Colloection which will be sent today.
-    * @return collection
-    */
-    public function getLoadedProductCollection()
-    {
+     * Retrieve widget html
+     *
+     * @return string
+     */
+    protected function _toHtml(){
+        $templatePath = $this->getData('set_template');
+
+        //set template using widget options or default template list.phtml
+        $this->setTemplate((($templatePath) ? $templatePath : 'fiuze/newslettersubscribe/product/list.phtml'));
+        return parent::_toHtml();
+    }
+
+    /**
+     * Get Product Colloection which will be sent today.
+     * @return collection
+     */
+    public function getLoadedProductCollection(){
 
         $day = date("j", Mage::getModel('core/date')->timestamp(time()));
 
@@ -46,10 +55,22 @@ class Fiuze_Setup_Block_Products extends Mage_Catalog_Block_Product_Abstract imp
                 'left'
             )
             ->addAttributeToSelect('*')
-            ->addAttributeToFilter('visibility', array( 'in', array(Mage_Catalog_Model_Product_Visibility::VISIBILITY_IN_CATALOG,Mage_Catalog_Model_Product_Visibility::VISIBILITY_IN_SEARCH,Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH)))
+            ->addAttributeToFilter('visibility', array('in', array(Mage_Catalog_Model_Product_Visibility::VISIBILITY_IN_CATALOG, Mage_Catalog_Model_Product_Visibility::VISIBILITY_IN_SEARCH, Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH)))
             ->addAttributeToFilter('single_category_id', array('in' => $categoryIds))
             ->addAttributeToSort('position_in_category');
 
         return $productCollection;
+    }
+
+    public function getShortenText($text, $chars){
+
+        // Change to the number of characters you want to display
+        //$chars = 120;
+        $text = $text . " ";
+        $text = substr($text, 0, $chars);
+        $text = substr($text, 0, strrpos($text, ' '));
+        $text = $text . "...";
+
+        return $text;
     }
 } 
