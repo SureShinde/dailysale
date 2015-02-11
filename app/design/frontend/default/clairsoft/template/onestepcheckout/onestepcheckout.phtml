@@ -910,12 +910,18 @@
         if (message == 'valid') {
             $('email-error-message').update('');
             $('valid_email_address_image').show();
+            if($('emailvalid'))
+                $('emailvalid').value = 'valid';
         }
         else if (message == 'invalid') {
             $('valid_email_address_image').hide();
             $('email-error-message').update('<?php echo $this->__('<p>Invalid Email Address</p>') ?>');
+            if($('emailvalid'))
+                $('emailvalid').value = 'invalid';
         }
         else if (message == 'exists') {
+            if($('emailvalid'))
+                $('emailvalid').value = 'valid';
             $('valid_email_address_image').hide();
             if (show_login_link)
                 $('email-error-message').update('<?php echo $this->__('<p>Email address already registered. Please <a href="" onclick="login_popup.show(); return false;">log in</a> or use another email address.</p>') ?>');
