@@ -500,9 +500,10 @@ class IWD_Signin_JsonController extends Mage_Core_Controller_Front_Action
 				$validationResult = count($errors) == 0;
 		
 				if (true === $validationResult) {
-					$customer->save();
-					$customer->setConfirmation(null);
-					$customer->save();
+                    if ((!$customer->isConfirmationRequired()) && $customer->getConfirmation()) {
+                        $customer->setConfirmation(null)->save();
+                        $customer->setIsJustConfirmed(true);
+                    }
 		
 					Mage::dispatchEvent('customer_register_success',
 						array('account_controller' => $this, 'customer' => $customer)
