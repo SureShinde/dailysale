@@ -2,7 +2,7 @@
 <config>
     <modules>
         <TBT_Billboard>
-            <active>true</active>
+            <active>false</active>
             <codePool>community</codePool>
         </TBT_Billboard>
     </modules>

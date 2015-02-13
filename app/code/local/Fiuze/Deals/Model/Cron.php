@@ -42,11 +42,10 @@ class Fiuze_Deals_Model_Cron extends Mage_Core_Model_Abstract{
                     $this->_setData($product, (float)$product->getData('origin_special_price'), false, false);
                     return;
                 }
-            }
-
-            if(!$productActive){
-                $this->_setData($product, (float)$product->getData('deals_price'));
-                return;
+                if(!$productActive){
+                    $this->_setData($product, (float)$product->getData('deals_price'));
+                    return;
+                }
             }
 
             //cyclical overkill
