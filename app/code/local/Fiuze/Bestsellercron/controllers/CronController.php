@@ -4,7 +4,7 @@ class Fiuze_Bestsellercron_CronController extends Mage_Core_Controller_Front_Act
 {
     public function updateBestsellersAction()
     {
-        $model = Mage::getModel('bestsellercron/calculate');
-        $model->prepareBestsellers();
+        $model = Mage::getModel('bestsellercron/cron');
+        $model->bestSellers();
     }
 }
