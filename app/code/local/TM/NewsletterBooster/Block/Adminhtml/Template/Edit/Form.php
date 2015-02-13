@@ -83,8 +83,8 @@ class TM_NewsletterBooster_Block_Adminhtml_Template_Edit_Form extends Mage_Admin
         ));
 
         $campaign->addField('sent_guest', 'select', array(
-            'label'     => Mage::helper('newsletterbooster')->__('Send For NewsletterBooster Subscribers'),
-            'title'     => Mage::helper('newsletterbooster')->__('Send For NewsletterBooster Subscribers'),
+            'label'     => Mage::helper('newsletterbooster')->__('Send For NewsletterBooster Subscribers (guest)'),
+            'title'     => Mage::helper('newsletterbooster')->__('Send For NewsletterBooster Subscribers (guest)'),
             'name'      => 'sent_guest',
             'required'  => true,
             'options'   => array(

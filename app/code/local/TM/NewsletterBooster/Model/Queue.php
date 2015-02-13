@@ -152,6 +152,46 @@ class TM_NewsletterBooster_Model_Queue extends Mage_Newsletter_Model_Queue
             }
         }
 
+
+        $collection = Mage::getResourceSingleton('newsletter/subscriber_collection');
+        $collection
+            ->showCustomerInfo(true)
+            ->addSubscriberTypeField()
+            ->showStoreInfo();
+        $collection->addFieldToFilter('subscriber_status',array('eq' => 1))
+            ->addFieldToFilter('type',array('eq' => 1));
+        $collection=$collection->getItems();
+        if(count($collection)){
+            $customer = Mage::getModel('customer/customer');
+            foreach($collection as $item){
+                $customer->setId(null)
+                    ->setName('Guest')
+                    ->setEmail($item->getSubscriberEmail())
+                    ->setFirstname('Guest')
+                    ->setLastname('Guest')
+                    ->setStoreId($item->getStoreId());
+                $item=$customer;
+
+                $sender->setCustomerId($item->getId());
+                $sender->emulateDesign($item->getStoreId());
+                $successSend = $sender->sendTestMail($item->getEmail(), $item->getName(), array('customer' => $item, 'campaign' => $sender));
+                $sender->revertDesign();
+                $this->setGuest($this->getGuest() + 1);
+                $this->save();
+
+                if($successSend) {
+                    $sendModel->setId(null);
+                    $sendModel->setQueueId($this->getId())
+                        ->setCustomerId($item->getId());
+                    $sendModel->save();
+
+                } else {
+                    $this->setErrors($this->getErrors() + 1);
+                    $this->save();
+                }
+            }
+        }
+
         if($this->getRecipients() ==  $this->getProcessed() + $this->getGuest()) {
             $this->_finishQueue();
         }

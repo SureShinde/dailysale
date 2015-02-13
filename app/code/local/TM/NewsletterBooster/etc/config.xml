@@ -100,6 +100,16 @@
                 </connection>
             </newsletterbooster_read>
         </resources>
+        <events>
+            <newsletter_subscriber_save_commit_after>
+                <observers>
+                    <newsletterbooster_newsletter_subscriber_save_commit_after>
+                        <class>TM_NewsletterBooster_Model_Observer</class>
+                        <method>subscribedToNewsletter</method>
+                    </newsletterbooster_newsletter_subscriber_save_commit_after>
+                </observers>
+            </newsletter_subscriber_save_commit_after>
+        </events>
     </global>
 
     <frontend>
@@ -176,7 +186,7 @@
         <jobs>
             <newsletterbooster_send_letter>
                 <schedule>
-                    <cron_expr>*/2 * * * *</cron_expr>
+                    <cron_expr>0 0 * * *</cron_expr>
                 </schedule>
                 <run>
                     <model>newsletterbooster/observer::scheduledSendCampaign</model>
