@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Deals Rotation
+ *
+ * @category   Fiuze
+ * @package    Fiuze_Deals
+ * @author     Alena Tsareva <alena.tsareva@webinse.com>
+ */
+-->
+<config>
+    <modules>
+        <Fiuze_Deals>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <Mage_Catalog/>
+            </depends>
+        </Fiuze_Deals>
+    </modules>
+</config>
