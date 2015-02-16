@@ -84,6 +84,7 @@ $orderObj = Mage::getModel('sales/order')->loadByIncrementId($this->getOrderId()
 
 <script type="text/javascript">
   adroll_conversion_value_in_dollars = <?php echo($subtotal); ?>;
+  adroll_custom_data = {"ORDER_ID": <?php echo($this->getOrderId()); ?>};
 </script>
 
 

@@ -349,9 +349,9 @@ function save_shipping_method(shipping_method_url, update_shipping_payment, upda
                 if ((update_shipping_payment == 1) || (update_shipping_review == 1)) {
                 }
                 checkvalidEmail();
-                $('onestepcheckout-button-place-order').disabled = false;
+/*                $('onestepcheckout-button-place-order').disabled = false;
                 $('onestepcheckout-button-place-order').addClassName('onestepcheckout-btn-checkout');
-                $('onestepcheckout-button-place-order').removeClassName('place-order-loader');
+                $('onestepcheckout-button-place-order').removeClassName('place-order-loader');*/
             }
         }
     });
