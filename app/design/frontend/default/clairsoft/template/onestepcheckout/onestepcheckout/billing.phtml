@@ -68,7 +68,7 @@
                                 </select>
                                 <?php if (!$helper->enableGeoip()): ?>
                                     <script type="text/javascript">
-                                        $('billing:region_id').setAttribute('defaultValue', "<?php echo $this->htmlEscape($this->getBillingAddress()->getRegionId()) ?>");
+                                        $('billing:region_id').setAttribute('defaultValue', "0");
                                     </script>
                                 <?php endif; ?>
                                 <input type="text" id="billing:region" name="billing[region]" value="<?php echo $this->htmlEscape($this->getBillingAddress()->getRegion()) ?>"  title="<?php echo $this->__('State/Province') ?>" class="<?php if ($helper->getFieldRequire($fields[$i]['value'])) echo 'required-entry'; ?> input-text" style="display:none" />
