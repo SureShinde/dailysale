@@ -29,27 +29,12 @@
 				</setup>
 			</fiuze_setup_setup>
 		</resources>
+        <blocks>
+            <adminhtml>
+                <rewrite>
+                    <sales_order_grid>Fiuze_Setup_Block_Adminhtml_Sales_Order_Grid</sales_order_grid>
+                </rewrite>
+            </adminhtml>
+        </blocks>
     </global>
-    <adminhtml>
-        <events>
-            <core_block_abstract_prepare_layout_before>
-                <observers>
-                    <customgrid_core_block_abstract_prepare_layout_before>
-                        <type>model</type>
-                        <class>Fiuze_Setup_Model_Observer</class>
-                        <method>appendCustomColumn</method>
-                    </customgrid_core_block_abstract_prepare_layout_before>
-                </observers>
-            </core_block_abstract_prepare_layout_before>
-            <sales_order_grid_collection_load_before>
-                <observers>
-                    <customgrid_sales_order_grid_collection_load_before>
-                        <type>model</type>
-                        <class>Fiuze_Setup_Model_Observer</class>
-                        <method>salesOrderGridCollectionLoadBefore</method>
-                    </customgrid_sales_order_grid_collection_load_before>
-                </observers>
-            </sales_order_grid_collection_load_before>
-        </events>
-    </adminhtml>
 </config> 
