@@ -120,16 +120,16 @@
         </segmentationsuite>
     </default>
 
-    <!-- <crontab>
-        <jobs>
-            <tm_prolabels_reindex_all>
-                <schedule>
-                    <cron_expr>0 1 * * *</cron_expr>
-                </schedule>
-                <run>
-                    <model>prolabels/observer::autoReindexLabels</model>
-                </run>
-            </tm_prolabels_reindex_all>
-        </jobs>
-    </crontab> -->
+     <!--<crontab>-->
+        <!--<jobs>-->
+            <!--<tm_prolabels_reindex_all>-->
+                <!--<schedule>-->
+                    <!--<cron_expr>0 1 * * *</cron_expr>-->
+                <!--</schedule>-->
+                <!--<run>-->
+                    <!--<model>prolabels/observer::autoReindexLabels</model>-->
+                <!--</run>-->
+            <!--</tm_prolabels_reindex_all>-->
+        <!--</jobs>-->
+    <!--</crontab>-->
 </config>
