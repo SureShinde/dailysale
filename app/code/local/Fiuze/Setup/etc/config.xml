@@ -29,5 +29,12 @@
 				</setup>
 			</fiuze_setup_setup>
 		</resources>
+        <blocks>
+            <adminhtml>
+                <rewrite>
+                    <sales_order_grid>Fiuze_Setup_Block_Adminhtml_Sales_Order_Grid</sales_order_grid>
+                </rewrite>
+            </adminhtml>
+        </blocks>
     </global>
 </config> 
