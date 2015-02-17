@@ -15,9 +15,9 @@ class TM_NewsletterBooster_Helper_Data extends Mage_Core_Helper_Abstract
     {
         return Mage::getModel('core/url')
             ->getUrl('newsletterbooster/track/unsubscribe', array(
-                'id' => $campaign->getCampaignId(),
+                'id'     => $campaign->getCampaignId(),
                 'entity' => $campaign->getCustomerId(),
-                'queue' => $campaign->getQueueId()
+                'queue'  => $campaign->getQueueId()
             ));
     }
 
