@@ -87,6 +87,9 @@ $orderObj = Mage::getModel('sales/order')->loadByIncrementId($this->getOrderId()
   adroll_custom_data = {"ORDER_ID": <?php echo($this->getOrderId()); ?>};
 </script>
 
+<!-- FlexOffers.com tracking pixel -->
+
+<img src="http://track.flexlinks.com/tracker.aspx?AID={3BCF6C5F-1458-4D9B-AAED-D98B70BF50B9}&AMT=<?php echo($subtotal); ?>&UID=<?php echo($this->getOrderId()); ?>" width="1" height="1" alt=""/> <!-- END OF FLEXOFFERS.COM TRACKING CODE -->
 
 <!-- Google Code for Daily Sale Conversion Conversion Page -->
 <script type="text/javascript">
