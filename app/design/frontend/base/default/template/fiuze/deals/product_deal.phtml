@@ -23,9 +23,9 @@
         elmnt.innerHTML = hours + ':' + minutes + ':' + seconds;
         setTimeout(timer, 1000);
     }
-    window.onload = function () {
+    jQuery(document.getElementById('timer')).ready(function() {
         timer();
-    };
+    });
 </script>
 
 
