@@ -32,6 +32,8 @@ class TM_SegmentationSuite_Model_Index extends Mage_Catalog_Model_Abstract
     
     public function getEmailsToSend($segmentId, $queueId, $count, $offset, $campaignId)
     {
+        //reindex for Newsletter unsubscription success
+        Mage::helper("segmentationsuite")->reIndexCustomers($segmentId);
         return $this->getResource()->getEmailsToSend($segmentId, $queueId, $count, $offset, $campaignId);
     }
 }
