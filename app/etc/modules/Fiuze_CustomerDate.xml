@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Module initial config
+ *
+ * @author Mihail
+ */
+-->
+<config>
+    <modules>
+        <Fiuze_CustomerDate>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Fiuze_CustomerDate>
+    </modules>
+</config>
