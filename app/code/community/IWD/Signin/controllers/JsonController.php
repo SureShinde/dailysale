@@ -87,7 +87,11 @@ class IWD_Signin_JsonController extends Mage_Core_Controller_Front_Action
 						return;
 					}
 					
-					$response['linkAfterLogin'] = $redirectUrl;
+					if (!Mage::getStoreConfigFlag(Mage_Customer_Helper_Data::XML_PATH_CUSTOMER_STARTUP_REDIRECT_TO_DASHBOARD)){
+						$response['linkAfterLogin'] = $redirectUrl;
+					}else{
+						$response['linkAfterLogin'] = Mage::helper('customer')->getLoginUrl();
+					}
 					
 					$this->getResponse()->setBody(Mage::helper('core')->jsonEncode($response));
 					return;
@@ -360,8 +364,7 @@ class IWD_Signin_JsonController extends Mage_Core_Controller_Front_Action
 		}
 	}
 	
-	protected function _welcomeCustomer(Mage_Customer_Model_Customer $customer, $isJustConfirmed = false)
-	{
+	protected function _welcomeCustomer(Mage_Customer_Model_Customer $customer, $isJustConfirmed = false){
 		
 		$customer->sendNewAccountEmail($isJustConfirmed ? 'confirmed' : 'registered', '', Mage::app()->getStore()->getId());
 		
@@ -370,10 +373,6 @@ class IWD_Signin_JsonController extends Mage_Core_Controller_Front_Action
 	
 	public function facebookAction(){
 		$redirectUrl = Mage::getSingleton('core/session')->getSigninRedirect();
-		if(empty($redirectUrl)){
-			$redirectUrl = Mage::getBaseUrl('link', true) . 'customer/account';
-		}
-		
 		$session = $this->_getSession();
 		if ($session->isLoggedIn()) {
 		
@@ -388,15 +387,22 @@ class IWD_Signin_JsonController extends Mage_Core_Controller_Front_Action
 		$params = $this->getRequest()->getParams();
 					
 		$userUId = Mage::getModel('signin/facebook')->getUser(); 
-		
+	
 		if ($params['id']==$userUId && !empty($params['email'])){
 			//login or register
 			try{
 				$customerSession = Mage::getSingleton('customer/session');
 				$customerModel = Mage::getModel('customer/customer')->setWebsiteId(Mage::app()->getStore()->getWebsiteId());
-					
-					
+
 				$customer = $customerModel->loadByEmail($params['email']);
+				
+				if ($customer->getConfirmation() && $customer->isConfirmationRequired()) {
+					throw Mage::exception('Mage_Core', Mage::helper('customer')->__('This account is not confirmed.'),
+							Mage_Customer_Model_Customer::EXCEPTION_EMAIL_NOT_CONFIRMED
+					);
+				}
+				
+				
 					
 				if ($customer->getId()){
 					//login
@@ -411,9 +417,28 @@ class IWD_Signin_JsonController extends Mage_Core_Controller_Front_Action
 				
 				
 				
+			}catch (Mage_Core_Exception $e) {
+					
+					 switch ($e->getCode()) {
+                        case Mage_Customer_Model_Customer::EXCEPTION_EMAIL_NOT_CONFIRMED:
+                            $value = Mage::helper('customer')->getEmailConfirmationUrl($customer->getEmail());
+                            $message =  Mage::helper('customer')->__('This account is not confirmed. <a href="%s">Click here</a> to resend confirmation email.', $value);
+                            break;
+                        case Mage_Customer_Model_Customer::EXCEPTION_INVALID_EMAIL_OR_PASSWORD:
+                            $message = $e->getMessage();
+                            break;
+                        default:
+                            $message = $e->getMessage();
+                    }
+     
+
+                    $response['error'] = true;
+                    $response['message'] = $message;
+                   
+					
 			}catch(Exception $e){
 				$response['error'] = true;
-				$response['message'] = $this->__('Invalid customer data.');
+				$response['message'] = $e->getMessage();;
 			}
 			
 			
@@ -476,32 +501,23 @@ class IWD_Signin_JsonController extends Mage_Core_Controller_Front_Action
 		
 				if (true === $validationResult) {
 					$customer->save();
+					$customer->setConfirmation(null);
+					$customer->save();
 		
 					Mage::dispatchEvent('customer_register_success',
 						array('account_controller' => $this, 'customer' => $customer)
 					);
 		
-					if ($customer->isConfirmationRequired()) {
-		
-						$customer->sendNewAccountEmail(
-								'confirmation',
-								$session->getBeforeAuthUrl(),
-								Mage::app()->getStore()->getId()
-						);
-		
-						$message = $this->__('Account confirmation is required. Please, check your email for the confirmation link. To resend the confirmation email please <a href="%s">click here</a>.', Mage::helper('customer')->getEmailConfirmationUrl($customer->getEmail()));
-						$response['emailConfirmation'] = 1;
-		
-					} else {
-						//if (!Mage::helper('signin')->isEnableCustomerActivation()){
-						$session->setCustomerAsLoggedIn($customer);
-						//}
-		
-						$this->_welcomeCustomer($customer);
-		
-						$message = $this->__('Thank you for registering with %s.', Mage::app()->getStore()->getFrontendName());
-						$response['linkAfterLogin'] = $redirectUrl;
-					}
+				
+					//if (!Mage::helper('signin')->isEnableCustomerActivation()){
+					$session->setCustomerAsLoggedIn($customer);
+					//}
+	
+					$this->_welcomeCustomer($customer);
+	
+					$message = $this->__('Thank you for registering with %s.', Mage::app()->getStore()->getFrontendName());
+					$response['linkAfterLogin'] = $redirectUrl;
+					
 						
 					$response['message'] = $message;
 					return $response;
@@ -551,9 +567,6 @@ class IWD_Signin_JsonController extends Mage_Core_Controller_Front_Action
 	
 	public function googleAction(){
 		$redirectUrl = Mage::getSingleton('core/session')->getSigninRedirect();
-		if(empty($redirectUrl)){
-			$redirectUrl = Mage::getBaseUrl('link', true) . 'customer/account';
-		}
 		if (empty($redirectUrl) || !$redirectUrl){
 			$redirectUrl = Mage::getBaseUrl('link', Mage::app()->getStore()->isFrontUrlSecure());
 		}
@@ -599,8 +612,18 @@ class IWD_Signin_JsonController extends Mage_Core_Controller_Front_Action
 					
 				if ($customer->getId()){
 					//login
+					
+					if ($customer->getConfirmation() && $customer->isConfirmationRequired()) {
+						throw Mage::exception('Mage_Core', Mage::helper('customer')->__('This account is not confirmed.'),
+								Mage_Customer_Model_Customer::EXCEPTION_EMAIL_NOT_CONFIRMED
+						);
+					}
+					
+					
+					
+						$customerSession->loginById($customer->getId());
 					$customerSession->setCustomerAsLoggedIn($customer);
-					$customerSession->renewSession();
+					
 					$this->_redirectUrl($redirectUrl);
 					return;
 				}else{
@@ -610,10 +633,28 @@ class IWD_Signin_JsonController extends Mage_Core_Controller_Front_Action
 					return;
 				}
 
-			}catch(Exception $e){
+			}catch (Mage_Core_Exception $e) {
+					
+					 switch ($e->getCode()) {
+                        case Mage_Customer_Model_Customer::EXCEPTION_EMAIL_NOT_CONFIRMED:
+                            $value = Mage::helper('customer')->getEmailConfirmationUrl($customer->getEmail());
+                            $message =  Mage::helper('customer')->__('This account is not confirmed. <a href="%s">Click here</a> to resend confirmation email.', $value);
+                            break;
+                        case Mage_Customer_Model_Customer::EXCEPTION_INVALID_EMAIL_OR_PASSWORD:
+                            $message = $e->getMessage();
+                            break;
+                        default:
+                            $message = $e->getMessage();
+                    }
+                    $session->addError($message);
+                    $session->setUsername($customer->getEmail());
+                    
+                   
+					
+				}catch(Exception $e){
 				
-				$session->addError($this->__('Invalid customer data'));
-			}
+					$session->addError($this->__('Invalid customer data'));
+				}
 		
 		
 		}else{
@@ -621,7 +662,7 @@ class IWD_Signin_JsonController extends Mage_Core_Controller_Front_Action
 		}
 		
 		$this->_redirectUrl($redirectUrl);
-		return;
+		
 		
 	}
 	

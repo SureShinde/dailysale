@@ -74,6 +74,7 @@ class IWD_Signin_Model_Google{
 			}
 		
 		}catch(Exception $e){
+		    Mage::getSingleton('customer/session')->addError($e->getMessage());
 			Mage::logException($e);
 			return false;
 		}
