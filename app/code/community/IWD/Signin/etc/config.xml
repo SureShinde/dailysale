@@ -3,7 +3,7 @@
 
 	<modules>
 		<IWD_Signin>
-			<version>1.1.5</version>
+			<version>1.2.3</version>
 		</IWD_Signin>
 	</modules>
 	
@@ -39,6 +39,17 @@
 	            </observers>
 	        </customer_login>
 		</events>
+		
+		
+		<translate>
+			<modules>
+				<IWD_Signin>
+					<files>
+						<default>IWD_Signin.csv</default>
+					</files>
+				</IWD_Signin>
+			</modules>
+		</translate>
 		
     </frontend>
 	
