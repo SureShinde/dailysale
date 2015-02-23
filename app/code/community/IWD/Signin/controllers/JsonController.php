@@ -500,6 +500,7 @@ class IWD_Signin_JsonController extends Mage_Core_Controller_Front_Action
 				$validationResult = count($errors) == 0;
 		
 				if (true === $validationResult) {
+
 					$customer->save();
 					$customer->setConfirmation(null);
 					$customer->save();
