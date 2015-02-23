@@ -17,9 +17,16 @@ class Fiuze_Deals_IndexController extends Mage_Core_Controller_Front_Action
     {
         $deals = $productActive = Mage::getResourceModel('fiuze_deals/deals_collection')
             ->addFilter('current_active', 1)->getFirstItem();
+
         if (!$deals->getId()) {
             $this->_redirectUrl(Mage::helper('core/url')->getHomeUrl());
         }
+
+        $timeDeals = new Zend_Date($deals->getEndTime());
+        if($deals->getId() && !$timeDeals->compare(new Zend_Date())){
+            Mage::getModel('fiuze_deals/cron')->dailyCatalogUpdate();
+        }
+
         $layout = $this->loadLayout();
         $configLayout = Mage::helper('fiuze_deals')->getLayout();
         $layout->getLayout()->getBlock('root')->setTemplate($configLayout);
