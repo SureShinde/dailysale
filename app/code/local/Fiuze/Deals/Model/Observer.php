@@ -169,10 +169,10 @@ class Fiuze_Deals_Model_Observer
 
         //if change catalog product (del)
         $paramTab = Mage::app()->getRequest()->getParam('tab');
-        if(isset($paramTab) && $paramTab == 'product_info_tabs_categories') {
+        if (isset($paramTab) && $paramTab == 'product_info_tabs_categories') {
             $categoryIds = $product->getCategoryIds();
             $categoryDeal = Mage::helper('fiuze_deals')->getCategoryCron();
-            $inArray = in_array($categoryDeal->getId(),$categoryIds);
+            $inArray = in_array($categoryDeal->getId(), $categoryIds);
             $productDeals = Mage::getModel('fiuze_deals/deals')->load($product->getEntityId(), 'product_id');
             try {
                 if ($inArray) {
@@ -237,20 +237,20 @@ class Fiuze_Deals_Model_Observer
      */
     public function salesOrderPlaceAfter(Varien_Event_Observer $observer)
     {
-        $order = $observer->getOrder();
-
-        foreach ($order->getItemsCollection() as $item) {
-            $productDeals = Mage::getModel('fiuze_deals/deals')->load($item->getProductId(), 'product_id');
-            if ($productDeals->getData()) {
-                try {
-                    $productDeals->setData('deals_qty', ($productDeals->getDealsQty() - (int)$item->getQtyOrdered()))
-                        ->save();
-                    Mage::dispatchEvent('fiuze_deals_save_after', array('object' => $productDeals));
-                } catch (Exception $e) {
-                    Mage::logException($e);
-                }
-            }
-        }
+        //        $order = $observer->getOrder();
+        //
+        //        foreach ($order->getItemsCollection() as $item) {
+        //            $productDeals = Mage::getModel('fiuze_deals/deals')->load($item->getProductId(), 'product_id');
+        //            if ($productDeals->getData()) {
+        //                try {
+        //                    $productDeals->setData('deals_qty', ($productDeals->getDealsQty() - (int)$item->getQtyOrdered()))
+        //                        ->save();
+        //                    Mage::dispatchEvent('fiuze_deals_save_after', array('object' => $productDeals));
+        //                } catch (Exception $e) {
+        //                    Mage::logException($e);
+        //                }
+        //            }
+        //        }
     }
 
     /**
@@ -277,6 +277,34 @@ class Fiuze_Deals_Model_Observer
             $productDeals->save();
         } catch (Exception $e) {
             Mage::logException($e);
+        }
+    }
+
+    /**
+     *
+     *
+     * @param Varien_Event_Observer $observer
+     */
+    public function cataloginventoryStockItemSaveAfter(Varien_Event_Observer $observer)
+    {
+        $item = $observer->getItem();
+        $qtyCorrection = $item->getQtyCorrection();
+        $productId = $item->getProductId();
+
+        if ($qtyCorrection < 0) {
+            $productDeals = Mage::getModel('fiuze_deals/deals')->load($productId, 'product_id');
+            if ($productDeals->getData()) {
+                $productDeals->setDealsQty($productDeals->getDealsQty() + $qtyCorrection);
+                if ($productDeals->getDealsQty() < 0) {
+                    $productDeals->setDealsQty(0);
+                }
+                try {
+                    $productDeals->save();
+                } catch (Exception $e) {
+                    Mage::logException($e);
+                }
+            }
+
         }
     }
 
