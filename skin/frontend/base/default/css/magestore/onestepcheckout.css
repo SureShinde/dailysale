@@ -1219,5 +1219,5 @@ button#add_coupon_code_button span,button#remove_coupon_code_button span{
 .onestepcheckout-index-index .col-main{position:static!important}
 #container_payment_method_authorizenet_directpost{float:left;width: 92%;padding: 0 4%;box-sizing: content-box;}
 
-.one-step-checkout .validation-advice{float:left;width:100%;}
+.one-step-checkout .validation-advice{/*float:left;*/width:100%;}
 
