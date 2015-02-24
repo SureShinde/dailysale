@@ -296,17 +296,26 @@ class Fiuze_Deals_Model_Observer
         if ($qtyCorrection < 0) {
             $productDeals = Mage::getModel('fiuze_deals/deals')->load($productId, 'product_id');
             if ($productDeals->getData()) {
-                $productDeals->setDealsQty($productDeals->getDealsQty() + $qtyCorrection);
-                if ($productDeals->getDealsQty() < 0) {
-                    $productDeals->setDealsQty(0);
-                }
-                try {
-                    $productDeals->save();
-                } catch (Exception $e) {
-                    Mage::logException($e);
+                if($item->getQty() < $productDeals->getDealsQty()){
+                    $productDeals->setDealsQty($productDeals->getDealsQty() + $qtyCorrection);
+                    if ($productDeals->getDealsQty() < 0) {
+                        $productDeals->setDealsQty(0);
+                        try {
+                            $productDeals->save();
+                            Mage::dispatchEvent('fiuze_deals_save_after', array('object' => $productDeals));
+                        } catch (Exception $e) {
+                            Mage::logException($e);
+                        }
+                    }else{
+                        try {
+                            $productDeals->save();
+                        } catch (Exception $e) {
+                            Mage::logException($e);
+                        }
+                    }
+
                 }
             }
-
         }
     }
 
