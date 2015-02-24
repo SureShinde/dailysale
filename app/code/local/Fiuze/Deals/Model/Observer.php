@@ -298,7 +298,7 @@ class Fiuze_Deals_Model_Observer
             if ($productDeals->getData()) {
                 if($item->getQty() < $productDeals->getDealsQty()){
                     $productDeals->setDealsQty($productDeals->getDealsQty() + $qtyCorrection);
-                    if ($productDeals->getDealsQty() < 0) {
+                    if ($productDeals->getDealsQty() <= 0) {
                         $productDeals->setDealsQty(0);
                         try {
                             $productDeals->save();
