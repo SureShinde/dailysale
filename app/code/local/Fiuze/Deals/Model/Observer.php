@@ -116,7 +116,8 @@ class Fiuze_Deals_Model_Observer
             }
 
             $currentCategory = $category->getProductCollection();
-            $currentCategory->addFieldToFilter('status', Mage_Catalog_Model_Product_Status::STATUS_ENABLED)
+            $currentCategory->addFieldToFilter('status', Mage_Catalog_Model_Product_Status::STATUS_ENABLED)//Mage_Catalog_Model_Product_Visibility::VISIBILITY_IN_CATALOG
+
                 ->joinField(
                     'qty',
                     'cataloginventory/stock_item',
@@ -142,6 +143,7 @@ class Fiuze_Deals_Model_Observer
                     'left'
                 )
                 ->addAttributeToFilter('is_in_stock', array("notnull" => 'is_in_stock'))
+                ->addAttributeToFilter('visibility', array( 'nin' => Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE))
                 ->addAttributeToFilter('qty', array("gt" => 0))
                 ->addAttributeToSelect('*');
 
@@ -237,20 +239,20 @@ class Fiuze_Deals_Model_Observer
      */
     public function salesOrderPlaceAfter(Varien_Event_Observer $observer)
     {
-        //        $order = $observer->getOrder();
-        //
-        //        foreach ($order->getItemsCollection() as $item) {
-        //            $productDeals = Mage::getModel('fiuze_deals/deals')->load($item->getProductId(), 'product_id');
-        //            if ($productDeals->getData()) {
-        //                try {
-        //                    $productDeals->setData('deals_qty', ($productDeals->getDealsQty() - (int)$item->getQtyOrdered()))
-        //                        ->save();
-        //                    Mage::dispatchEvent('fiuze_deals_save_after', array('object' => $productDeals));
-        //                } catch (Exception $e) {
-        //                    Mage::logException($e);
-        //                }
-        //            }
-        //        }
+        $order = $observer->getOrder();
+
+        foreach ($order->getItemsCollection() as $item) {
+            $productDeals = Mage::getModel('fiuze_deals/deals')->load($item->getProductId(), 'product_id');
+            if ($productDeals->getData()) {
+                try {
+                    $productDeals->setData('deals_qty', ($productDeals->getDealsQty() - (int)$item->getQtyOrdered()))
+                        ->save();
+                    Mage::dispatchEvent('fiuze_deals_save_after', array('object' => $productDeals));
+                } catch (Exception $e) {
+                    Mage::logException($e);
+                }
+            }
+        }
     }
 
     /**
