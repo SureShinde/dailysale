@@ -116,7 +116,8 @@ class Fiuze_Deals_Model_Observer
             }
 
             $currentCategory = $category->getProductCollection();
-            $currentCategory->addFieldToFilter('status', Mage_Catalog_Model_Product_Status::STATUS_ENABLED)
+            $currentCategory->addFieldToFilter('status', Mage_Catalog_Model_Product_Status::STATUS_ENABLED)//Mage_Catalog_Model_Product_Visibility::VISIBILITY_IN_CATALOG
+
                 ->joinField(
                     'qty',
                     'cataloginventory/stock_item',
@@ -142,6 +143,7 @@ class Fiuze_Deals_Model_Observer
                     'left'
                 )
                 ->addAttributeToFilter('is_in_stock', array("notnull" => 'is_in_stock'))
+                ->addAttributeToFilter('visibility', array( 'nin' => Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE))
                 ->addAttributeToFilter('qty', array("gt" => 0))
                 ->addAttributeToSelect('*');
 
@@ -169,10 +171,10 @@ class Fiuze_Deals_Model_Observer
 
         //if change catalog product (del)
         $paramTab = Mage::app()->getRequest()->getParam('tab');
-        if(isset($paramTab) && $paramTab == 'product_info_tabs_categories') {
+        if (isset($paramTab) && $paramTab == 'product_info_tabs_categories') {
             $categoryIds = $product->getCategoryIds();
             $categoryDeal = Mage::helper('fiuze_deals')->getCategoryCron();
-            $inArray = in_array($categoryDeal->getId(),$categoryIds);
+            $inArray = in_array($categoryDeal->getId(), $categoryIds);
             $productDeals = Mage::getModel('fiuze_deals/deals')->load($product->getEntityId(), 'product_id');
             try {
                 if ($inArray) {
@@ -277,6 +279,43 @@ class Fiuze_Deals_Model_Observer
             $productDeals->save();
         } catch (Exception $e) {
             Mage::logException($e);
+        }
+    }
+
+    /**
+     *
+     *
+     * @param Varien_Event_Observer $observer
+     */
+    public function cataloginventoryStockItemSaveAfter(Varien_Event_Observer $observer)
+    {
+        $item = $observer->getItem();
+        $qtyCorrection = $item->getQtyCorrection();
+        $productId = $item->getProductId();
+
+        if ($qtyCorrection < 0) {
+            $productDeals = Mage::getModel('fiuze_deals/deals')->load($productId, 'product_id');
+            if ($productDeals->getData()) {
+                if($item->getQty() < $productDeals->getDealsQty()){
+                    $productDeals->setDealsQty($productDeals->getDealsQty() + $qtyCorrection);
+                    if ($productDeals->getDealsQty() <= 0) {
+                        $productDeals->setDealsQty(0);
+                        try {
+                            $productDeals->save();
+                            Mage::dispatchEvent('fiuze_deals_save_after', array('object' => $productDeals));
+                        } catch (Exception $e) {
+                            Mage::logException($e);
+                        }
+                    }else{
+                        try {
+                            $productDeals->save();
+                        } catch (Exception $e) {
+                            Mage::logException($e);
+                        }
+                    }
+
+                }
+            }
         }
     }
 
