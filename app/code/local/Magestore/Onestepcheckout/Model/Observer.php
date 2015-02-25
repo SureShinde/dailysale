@@ -393,4 +393,27 @@ class Magestore_Onestepcheckout_Model_Observer extends Mage_Core_Controller_Vari
         }
     }
 
+    /**
+     * event controller_action_postdispatch_adminhtml_json_countryRegion
+     * @param Varien_Event_Observer $observer
+     */
+    public function countryRegionPostDispatch(Varien_Event_Observer $observer){
+        $controller = $observer->getControllerAction();
+
+        if ($controller->getRequest()->getRouteName() != 'adminhtml') {
+            return;
+        }
+        if ($controller->getRequest()->getControllerName() != 'json' || $controller->getRequest()->getActionName() != 'countryRegion') {
+            return;
+        }
+
+        $body = $controller->getResponse()->getBody();
+        $arrayBody = Mage::helper('core')->jsonDecode($body);
+        $firstItem['title']= 'Default';
+        $firstItem['value']= '0';
+        $firstItem['label']= 'Default';
+        $arrayBody[0] = $firstItem;
+        $jsonData = Mage::helper('core')->jsonEncode($arrayBody);
+        $controller->getResponse()->setBody($jsonData);
+    }
 }
