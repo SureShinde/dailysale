@@ -409,9 +409,9 @@ class Magestore_Onestepcheckout_Model_Observer extends Mage_Core_Controller_Vari
 
         $body = $controller->getResponse()->getBody();
         $arrayBody = Mage::helper('core')->jsonDecode($body);
-        $firstItem['title']= 'Default';
+        $firstItem['title']= 'Please select region, state or province';
         $firstItem['value']= '0';
-        $firstItem['label']= 'Default';
+        $firstItem['label']= 'Please select region, state or province';
         $arrayBody[0] = $firstItem;
         $jsonData = Mage::helper('core')->jsonEncode($arrayBody);
         $controller->getResponse()->setBody($jsonData);
