@@ -1,4 +1,4 @@
-<?php
+<?php 
 class IWD_Signin_Model_Observer{
 	
 	public function checkRequiredModules($observer){
@@ -22,11 +22,17 @@ class IWD_Signin_Model_Observer{
 	}
 	
 	
+	
+	
+	
+	
+	
 	public function checkCustomerLogin($observer){
 		$customer = $observer->getCustomer();
 		//check yahoo 
 		
 		$guid = Mage::getSingleton('customer/session')->getYahooGuid();
+		Mage::getSingleton('customer/session')->unsYahooGuid();
 		if ($guid && $guid!=null){
 			//assign yahoo to customer
 			$model = Mage::getModel('signin/related');
@@ -36,7 +42,7 @@ class IWD_Signin_Model_Observer{
 			
 			try{
 				$model->save();
-				Mage::getSingleton('customer/session')->addSuccess(Mage::helper('signin')->__('Your %s account has been linked with your Yahoo login', Mage::app ()->getStore ()->getFrontendName ()));
+				Mage::getSingleton('customer/session')->addSuccess(Mage::helper('signin')->__('Your %s account has been linked with your Yahoo login. Please update email address.', Mage::app ()->getStore ()->getFrontendName ()));
 			}catch(Exception $e){
 				Mage::logException($e);
 			}
@@ -46,6 +52,7 @@ class IWD_Signin_Model_Observer{
 		//twitter
 		
 		$guid = Mage::getSingleton('customer/session')->getTwitterGuid();
+		Mage::getSingleton('customer/session')->unsTwitterGuid();
 		if ($guid && $guid!=null){
 			//assign yahoo to customer
 			$model = Mage::getModel('signin/related');
@@ -55,7 +62,7 @@ class IWD_Signin_Model_Observer{
 				
 			try{
 				$model->save();
-				Mage::getSingleton('customer/session')->addSuccess(Mage::helper('signin')->__('Your %s account has been linked with your Twitter login', Mage::app ()->getStore ()->getFrontendName ()));
+				Mage::getSingleton('customer/session')->addSuccess(Mage::helper('signin')->__('Your %s account has been linked with your Twitter login. Please update email address.', Mage::app ()->getStore ()->getFrontendName ()));
 			}catch(Exception $e){
 				Mage::logException($e);
 			}

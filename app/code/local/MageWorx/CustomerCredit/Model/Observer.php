@@ -222,14 +222,13 @@ class MageWorx_CustomerCredit_Model_Observer
      * @param Varien_Event_Observer $observer
      * @return MageWorx_CustomerCredit_Model_Observer
      */
-    public function refundCreditmemo(Varien_Event_Observer $observer) {                
-        
+    public function refundCreditmemo(Varien_Event_Observer $observer) {
         $creditmemo = $observer->getEvent()->getCreditmemo();
         if(Mage::registry('cc_order_refund')) {
             return true;
         }
         Mage::register('cc_order_refund', true, true);
-        $order = $creditmemo->getOrder();        
+        $order = $creditmemo->getOrder();
 
         // get real total
         $baseTotal = $creditmemo->getBaseGrandTotal();
@@ -301,6 +300,7 @@ class MageWorx_CustomerCredit_Model_Observer
             $historyRefund = $payment->getOrder()->getStatusHistoryCollection()->getLastItem();
             $historyRefund->setComment($message);
         }
+
         Mage::register('credit_need_refund',TRUE);
         return $this;
     }

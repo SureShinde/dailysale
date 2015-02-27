@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Fiuze_CustomerDate>
+            <version>0.1.0</version>
+        </Fiuze_CustomerDate>
+    </modules>
+    <global>
+        <models>
+            <fiuze_all>
+                <class>Fiuze_CustomerDate_Model</class>
+            </fiuze_all>
+        </models>
+    </global>
+    <frontend>
+        <events>
+            <model_save_before>
+                <observers>
+                    <fiuze_all_model_save_before>
+                        <class>Fiuze_CustomerDate_Model_Observer</class>
+                        <method>customerModelSaveBefore</method>
+                    </fiuze_all_model_save_before>
+                </observers>
+            </model_save_before>
+        </events>
+    </frontend>
+</config> 
