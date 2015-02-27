@@ -47,6 +47,7 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Grid extends Mage_Adminhtml_Block_Widget
             )
             ->addAttributeToFilter('is_in_stock', array("notnull" => 'is_in_stock'))
             ->addAttributeToFilter('qty', array("gt" => 0))
+            ->addAttributeToFilter('visibility', array( 'nin' => Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE))
             ->addAttributeToSelect('*');
 
         $tableName = Mage::getSingleton('core/resource')->getTableName('fiuze_deals/deals');
