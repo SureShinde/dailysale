@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <WIC_Criteotags>
+            <active>true</active>
+            <codePool>community</codePool>
+            <depends>WIC_All</depends>
+        </WIC_Criteotags>
+    </modules>
+</config> 
