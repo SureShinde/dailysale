@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<layout>
+    <default>
+        <reference name="head">
+            <action method="addCss">
+                <name>wic/all/css/tab.css</name>
+            </action>
+        </reference>
+    </default>
+</layout>	
