@@ -64,7 +64,7 @@
                 <email_address_list>example@mail.com</email_address_list>
                 <module_enabled>1</module_enabled>
                 <quantity>0</quantity>
-                <scheduler>*/2 * * * *</scheduler>
+                <scheduler>0 12 * * * *</scheduler>
                 <custom_identity>general</custom_identity>
                 <custom_template>customer_account_share_custom_template</custom_template>
             </core>

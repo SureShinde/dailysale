@@ -55,7 +55,7 @@
                         </custom_identity>
                         <email_address_list translate="label">
                             <label>Email Address List</label>
-                            <comment>Note: ...</comment>
+                            <comment>a list of recipient addresses separated by commas</comment>
                             <frontend_type>text</frontend_type>
                             <validate>required-entry</validate>
                             <sort_order>40</sort_order>
@@ -73,8 +73,8 @@
                             <show_in_store>0</show_in_store>
                         </quantity>
                         <scheduler>
-                            <label>Task schedule (cron syntax)</label>
-                            <comment>Note: */2 * * * *</comment>
+                            <label>Task Schedule</label>
+                            <comment>cron syntax: */5 * * * *</comment>
                             <validate>required-entry</validate>
                             <frontend_type>text</frontend_type>
                             <sort_order>60</sort_order>
