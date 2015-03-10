@@ -8,8 +8,8 @@
     </tabs>
     <sections>
         <notifylowstock translate="label" module="fiuze_notifylowstock">
-            <label><![CDATA[Notify Low Stock]]></label>
-            <tab>fiuze</tab>
+            <label><![CDATA[Fiuze Notify Low Stock]]></label>
+            <tab>catalog</tab>
             <sort_order>10</sort_order>
             <show_in_default>1</show_in_default>
             <show_in_website>1</show_in_website>
@@ -74,7 +74,7 @@
                         </quantity>
                         <scheduler>
                             <label>Task Schedule</label>
-                            <comment>cron syntax: */5 * * * *</comment>
+                            <comment>cron syntax: by default /0 12 * * * */</comment>
                             <validate>required-entry</validate>
                             <frontend_type>text</frontend_type>
                             <sort_order>60</sort_order>

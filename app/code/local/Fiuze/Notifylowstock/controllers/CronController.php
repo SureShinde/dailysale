@@ -1,7 +1,7 @@
 <?php
 
 
-class Fiuze_Notifylowstock_IndexController extends Mage_Core_Controller_Front_Action
+class Fiuze_Notifylowstock_CronController extends Mage_Core_Controller_Front_Action
 {
     public function cronSendAction()
     {
