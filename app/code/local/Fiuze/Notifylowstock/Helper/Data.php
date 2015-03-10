@@ -49,8 +49,8 @@ class Fiuze_Notifylowstock_Helper_Data extends Mage_Core_Helper_Abstract
     public function getEmailArray()
     {
         $storeId = Mage::app()->getStore()->getId();
-        $amail = Mage::getStoreConfig(self::XML_PATH_NOTIFYLOWSTOCK_EMAIL, $storeId);
-        $result = $categoryIds = explode(',', $amail);
+        $email = Mage::getStoreConfig(self::XML_PATH_NOTIFYLOWSTOCK_EMAIL, $storeId);
+        $result = $categoryIds = explode(',', $email);
 
        array_walk($result, function(&$value){
             $value = trim($value);

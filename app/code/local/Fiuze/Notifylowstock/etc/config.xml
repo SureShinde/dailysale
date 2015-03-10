@@ -31,11 +31,11 @@
         </resources>
         <template>
             <email>
-                <fiuze_notifylowstock_template translate="label" module="fiuze_notifylowstock">
+                <notifylowstock_core_custom_template translate="label" module="fiuze_notifylowstock">
                     <label>Notify Low Stock</label>
                     <file>notifylowstock/notifylowstock.html</file>
                     <type>html</type>
-                </fiuze_notifylowstock_template>
+                </notifylowstock_core_custom_template>
             </email>
         </template>
     </global>
@@ -63,7 +63,7 @@
             <core>
                 <email_address_list>example@mail.com</email_address_list>
                 <module_enabled>1</module_enabled>
-                <quantity>0</quantity>
+                <quantity>3</quantity>
                 <scheduler>0 12 * * * *</scheduler>
                 <custom_identity>general</custom_identity>
                 <custom_template>customer_account_share_custom_template</custom_template>
