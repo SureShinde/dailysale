@@ -55,12 +55,12 @@
         ->addAttributeToFilter('category_id', array('in' => $categoryId))
         ->addAttributeToFilter('status', array('in' => '1'))
         ->addAttributeToFilter('qty', array('gt' => '0'))
-        ->addAttributeToFilter('visibility', array('in' => Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH))
+        ->addAttributeToFilter('visibility', array('neq' => Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE))
         ->addAttributeToSelect('special_price')
         ->addAttributeToSelect('name')
         ->addAttributeToSelect('price')
         ->addAttributeToSelect('msrp')
-        ->addAttributeToSelect('small_image');
+        ->addAttributeToSelect('*');
 
     $_helper = $this->helper('catalog/output');
 ?>
@@ -119,6 +119,16 @@
     <?php $_collectionSize = $_productCollection->count() ?>
     <?php $_columnCount = $this->getColumnCount(); ?>
     <?php $i=0; foreach ($_productCollection as $_product): ?>
+            <?php
+            if($_product->getId()=='4319'){
+                Mage::log('image: '.$_product->getImage(),null,'test.log',true);
+                Mage::log('small_image: '.$_product->getSmallImage(),null,'test.log',true);
+                Mage::log('thumbnail: '.$_product->getThumbnail(),null,'test.log',true);
+//                foreach($data as $key=>$value){
+//                    Mage::log($key.': '.$value,null,'test.log',true);
+//                }
+            }
+            ?>
         <?php if ($i++%$_columnCount==0): ?>
         <!-- <ul class="products-grid"> -->
         <?php endif ?>
