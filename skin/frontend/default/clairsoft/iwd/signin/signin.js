@@ -158,6 +158,7 @@ IWD.Signin = {
 		},
 		
 		prepareRegisterForm: function(){
+            this.saveLink();
 			$j.post(IWD.Signin.config.url + 'signin/json/load', {"block":"register"}, IWD.Signin.parseResponseLoad, 'json');
 		},
 		

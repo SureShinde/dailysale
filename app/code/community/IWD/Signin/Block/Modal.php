@@ -10,11 +10,17 @@ class IWD_Signin_Block_Modal extends Mage_Core_Block_Template
 	}
 	
 	public function getConfig(){
-		$isSecure = Mage::app()->getStore()->isCurrentlySecure();
+	    
+	    $_scheme = Mage::app()->getRequest()->getScheme();
+		if ($_scheme=='https'){
+			$_secure = true;
+		}else{
+			$_secure = false;
+		}
 		
 		$config = new Varien_Object();
 		
-		$config->setData('url', Mage::getBaseUrl('link', $isSecure));
+		$config->setData('url', Mage::getBaseUrl('link', $_secure));
 		
 		$config->setData('isLoggedIn', (int)Mage::getSingleton('customer/session')->isLoggedIn());
 		
