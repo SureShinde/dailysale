@@ -75,7 +75,7 @@
         <jobs>
             <fiuze_notifylowstock_scheduler>
                 <schedule>
-                    <config_path>Fnotifylowstock/core/scheduler</config_path>
+                    <config_path>notifylowstock/core/scheduler</config_path>
                 </schedule>
                 <run>
                     <model>Fiuze_Notifylowstock_Model_Cron::sendEmail</model>
