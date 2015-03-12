@@ -73,14 +73,14 @@
 
     <crontab>
         <jobs>
-            <fiuze_notifylowstock_scheduler>
+            <fiuze_notifylowstock>
                 <schedule>
                     <config_path>notifylowstock/core/scheduler</config_path>
                 </schedule>
                 <run>
-                    <model>Fiuze_Notifylowstock_Model_Cron::sendEmail</model>
+                    <model>fiuze_notifylowstock/cron::sendEmail</model>
                 </run>
-            </fiuze_notifylowstock_scheduler>
+            </fiuze_notifylowstock>
         </jobs>
     </crontab>
 

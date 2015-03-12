@@ -1,6 +1,6 @@
 <?php
 
-class Fiuze_Notifylowstock_Model_Cron
+class Fiuze_Notifylowstock_Model_Cron extends Mage_Core_Model_Abstract
 {
     /**
      * @return array products
@@ -57,38 +57,50 @@ class Fiuze_Notifylowstock_Model_Cron
     /**
      * @param array $products
      */
-    public function sendEmail($products = null)
+    public function sendEmail()
     {
-        if(Mage::helper('fiuze_notifylowstock')->getModuleEnabled()){
-            if (is_null($products)) {
-                $products = $this->getNotifyLowStockCategory();
-            }
+        if (Mage::helper('fiuze_notifylowstock')->getModuleEnabled()) {
+            Mage::log('send++++++', null, 'send.log');
+            $products = $this->getNotifyLowStockCategory();
+            Mage::log('$products count: ' . count($products), null, 'send.log');
             $mailList = Mage::helper('fiuze_notifylowstock')->getEmailArray();
+            Mage::log('$mailList: ' . implode(',', $mailList), null, 'send.log');
             $this->_sendTestEmail($mailList, 'email', $products);
+            Mage::log('send-----', null, 'send.log');
         }
     }
 
 
     protected function _sendTestEmail($to, $name, $products)
     {
+
         $helper = Mage::helper('fiuze_notifylowstock');
+        Mage::app()->setCurrentStore(Mage_Core_Model_App::ADMIN_STORE_ID);
+        Mage::getSingleton('core/design_package' )->setStore(Mage::app()->getStore()->getId());
 
         $translate = Mage::getSingleton('core/translate');
         $translate->setTranslateInline(false);
 
         $storeId = Mage::app()->getStore()->getId();
+        Mage::log('$storeId: '.$storeId, null, 'send.log');
         try {
-            Mage::getModel('core/email_template')
-                ->setDesignConfig(array('area' => 'frontend', 'store' => $storeId))
-                ->sendTransactional(
-                    $helper->getTemplateEmail(),
-                    $helper->getIdentityEmail(),
-                    $to,
-                    $name,
-                    array('object' => $products)
-                );
+            $emailTemplate = Mage::getModel('core/email_template')
+                ->setDesignConfig(array('area' => 'frontend', 'store' => $storeId));
+            $emailTemplate->sendTransactional(
+                $helper->getTemplateEmail(),
+                $helper->getIdentityEmail(),
+                $to,
+                $name,
+                array('object' => $products)
+            );
         } catch (Exception $ex) {
-              Mage::logException($ex);
+            Mage::logException($ex);
+        }
+
+        if ($emailTemplate->getSentSuccess()) {
+            Mage::log('Sending mail: Success', null, 'send.log');
+        } else {
+            Mage::log('Sending mail: Failed', null, 'send.log');
         }
 
         $translate->setTranslateInline(true);

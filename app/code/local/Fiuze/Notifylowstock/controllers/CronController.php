@@ -7,9 +7,7 @@ class Fiuze_Notifylowstock_CronController extends Mage_Core_Controller_Front_Act
     {
         if(Mage::helper('fiuze_notifylowstock')->getModuleEnabled()){
             $cronModel = Mage::getModel('fiuze_notifylowstock/cron');
-            $products = $cronModel->getNotifyLowStockCategory();
-
-            $cronModel->sendEmail($products);
+            $cronModel->sendEmail();
         }
     }
 } 
