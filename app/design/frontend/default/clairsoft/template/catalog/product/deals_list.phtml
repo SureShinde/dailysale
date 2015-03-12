@@ -120,11 +120,6 @@
     <?php $_collectionSize = $_productCollection->count() ?>
     <?php $_columnCount = $this->getColumnCount(); ?>
     <?php $i=0; foreach ($_productCollection as $_product): ?>
-            <?php
-                Mage::log('============ Product ID = ' . $_product->getId(),null,'test.log',true);
-                Mage::log('image: '.$_product->getImage(),null,'test.log',true);
-                Mage::log('small_image: '.$_product->getSmallImage(),null,'test.log',true);
-            ?>
         <?php if ($i++%$_columnCount==0): ?>
         <!-- <ul class="products-grid"> -->
         <?php endif ?>
