@@ -1,0 +1,48 @@
+<?php $_order = $this->getOrder() ?>
+<?php $reasonOptions = Mage::getSingleton('urma/source')->setPath('rma_reason')->toOptionHash(true) ?>
+<?php Mage::helper('urma')->initOrderRmasCollection($_order) ?>
+<?php $_rma = Mage::registry('current_rma') ?>
+	<div class="box-title"><h3><?php echo $this->__('Create New RMA') ?></h3></div>
+	<div class="box-content">
+	<form id="new-rma-form" action="<?php echo $this->getUrl('*/*/saveRma')?>" method="post">
+	<input type="hidden" name="order_id" value="<?php echo $_order->getId()?>">
+	<table class="data-table" id="my-rma-table-<?php echo $_rma->getId(); ?>">
+	    <col />
+	    <col width="1" />
+	    <col width="1" />
+	    <thead>
+	        <tr>
+	            <th><?php echo $this->__('Product Name') ?></th>
+	            <th><?php echo $this->__('SKU') ?></th>
+                <th><?php echo $this->__('Condition') ?></th>
+	            <th class="a-center"><span class="nobr"><?php echo $this->__('Qty') ?></span></th>
+	        </tr>
+	    </thead>
+	    <?php $_items = $_rma->getAllItems(); ?>
+	    <?php $_count = count($_items) ?>
+	    <?php foreach ($_items as $_item): ?>
+	    <?php if ($_item->getOrderItem()->getParentItem()) continue; ?>
+	        <?php echo $this->getItemHtml($_item) ?>
+	    <?php endforeach; ?>
+	</table>
+    <p>
+        <label for="rma-reason"><strong>Reason to Return</strong></label><br/>
+        <select id="rma-reason" class="validate-select" name="rma[rma_reason]">
+            <?php foreach ($reasonOptions as $rCode=>$rTitle): ?>
+                <option value="<?php echo $rCode?>"><?php echo $this->htmlEscape($rTitle)?></option>
+            <?php endforeach ?>
+        </select>
+    </p>
+	<p>
+	   <label for="rmamsg"><strong>Comments</strong></label><br/>
+	   <textarea cols="40" rows="10" name="rma[comment_text]" id="rmamsg"></textarea>
+	</p>
+	<p>
+	    <button type="button" onclick="newRmaForm.submit()" class="button btn-create-rma"><span><?php echo $this->__('Create RMA');?></span></button>
+	</p>
+	</form>
+	<script type="text/javascript">
+        decorateTable('my-rma-table-<?php echo $_rma->getId(); ?>', {'tbody' : ['odd', 'even'], 'tbody tr' : ['first', 'last']});
+        var newRmaForm = new VarienForm('new-rma-form', true);
+    </script>
+	</div>

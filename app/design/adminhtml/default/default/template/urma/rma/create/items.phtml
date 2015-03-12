@@ -1,0 +1,88 @@
+<?php $reasonOptions = Mage::getSingleton('urma/source')->setPath('rma_reason')->toOptionHash(true) ?>
+<div class="grid np">
+  <div class="hor-scroll">
+    <table cellspacing="0" class="data order-tables">
+        <col />
+        <col width="1" />
+        <col width="1" />
+        <col width="20" />
+        <thead>
+            <tr class="headings">
+                <th><?php echo $this->helper('sales')->__('Product') ?></th>
+                <th class="a-center"><?php echo $this->helper('sales')->__('Qty') ?></th>
+                <th class="a-center"><?php echo $this->helper('urma')->__('Condition') ?></th>
+                <th class="last"><span class="nobr"><?php echo $this->helper('sales')->__('Qty to Return') ?></span></th>
+            </tr>
+        </thead>
+        <?php $_items = $this->getRma()->getAllItems() ?>
+        <?php $_i=0;foreach ($_items as $_item): if ($_item->getOrderItem()->getIsVirtual() || $_item->getOrderItem()->getParentItem()): continue; endif; $_i++ ?>
+        <tbody class="<?php echo $_i%2?'odd':'even' ?>">
+            <?php echo $this->getItemHtml($_item) ?>
+            <?php echo $this->getItemExtraInfoHtml($_item->getOrderItem()) ?>
+        </tbody>
+        <?php endforeach; ?>
+    </table>
+  </div>
+</div>
+<br />
+<div class="box-left entry-edit">
+    <div class="entry-edit-head"><h4><?php echo $this->__('Return Comments') ?></h4></div>
+    <fieldset>
+        <div id="order-history_form">
+            <span class="field-row">
+                <label class="normal" for="rma_comment_text"><?php echo Mage::helper('sales')->__('Return Comments') ?></label>
+                <textarea id="rma_comment_text" name="rma[comment_text]" rows="3" cols="5" style="height:6em; width:99%;"><?php echo $this->getRma()->getCommentText(); ?></textarea>
+            </span>
+            <div class="clear"></div>
+        </div>
+    </fieldset>
+</div>
+
+<div class="box-right entry-edit">
+    <div class="order-totals">
+        <div class="order-totals-bottom">
+            <p>
+                <label class="normal" for="rma-reason"><strong>Reason to Return</strong></label>
+                <select id="rma-reason" class="validate-select" name="rma[rma_reason]">
+                    <?php foreach ($reasonOptions as $rCode=>$rTitle): ?>
+                        <option value="<?php echo $rCode?>"><?php echo $this->htmlEscape($rTitle)?></option>
+                    <?php endforeach ?>
+                </select>
+            </p>
+          <p>
+              <label class="normal" for="notify_customer"><?php echo Mage::helper('sales')->__('Append Comments') ?></label>
+              <input id="notify_customer" name="rma[comment_customer_notify]" value="1" type="checkbox" />
+          </p>
+          <p>
+              <label class="normal" for="send_email"><?php echo Mage::helper('sales')->__('Email Copy of Return') ?></label>
+              <input id="send_email" name="rma[send_email]" value="1" type="checkbox" />
+          </p>
+          <div class="a-right">
+          <?php echo $this->getChildHtml('submit_button') ?>
+          </div>
+        </div>
+    </div>
+</div>
+<div class="clear"></div>
+<script type="text/javascript">
+//<![CDATA[
+var sendEmailCheckbox = $('send_email');
+if (sendEmailCheckbox) {
+    var notifyCustomerCheckbox = $('notify_customer');
+    var rmaCommentText = $('rma_comment_text');
+    Event.observe(sendEmailCheckbox, 'change', bindSendEmail);
+    bindSendEmail();
+}
+function bindSendEmail()
+{
+    if (sendEmailCheckbox.checked == true) {
+        notifyCustomerCheckbox.disabled = false;
+        //rmaCommentText.disabled = false;
+    }
+    else {
+        notifyCustomerCheckbox.disabled = true;
+        //rmaCommentText.disabled = true;
+    }
+}
+//]]>
+</script>

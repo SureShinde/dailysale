@@ -1,0 +1,348 @@
+<?php $_hlp = Mage::helper('udropship') ?>
+<?php $rma = $this->getRma(); ?>
+<?php $order = $rma->getOrder(); ?>
+<?php $_vendor = $rma->getVendor();
+$vFieldsXml = Mage::getConfig()->getNode('global/udropship/vendor/fields');
+
+$defaultCarrier = 'fedex';
+$availCarriers = array('fedex'=>'FedEx','ups'=>'UPS','usps'=>'USPS');
+
+$method = explode('_', $rma->getUdropshipMethod(), 2);
+$_carrierCode = !empty($method[0]) ? $method[0] : $_vendor->getCarrierCode();
+$defaultMethod['fedex']   = 'fedex_FEDEX_GROUND';
+$defaultMethod['ups']     = 'ups_03';
+$defaultMethod['usps'] = 'usps_Parcel Post';
+
+$availableMethods = array();
+foreach ($availCarriers as $acCode=>$acLabel) {
+    $_availableMethods = $_hlp->getCarrierMethods($acCode);
+    $carrierTitle = Mage::getStoreConfig("carriers/$acCode/title", $rma->getOrder()->getStoreId());
+    $availCarriers[$acCode]=$carrierTitle;
+    foreach ($_availableMethods as $mCode => $mLabel) {
+        $_amDesc = $carrierTitle.' - '.$mLabel;
+        $_amCode = $acCode.'_'.$mCode;
+        $availableMethods[$acCode][$_amCode] = $_amDesc;
+    }
+}
+
+?>
+<?php if($rma->getTracksCollection()->count()): ?>
+<a href="#" id="linkId" onclick="popWin('<?php echo $this->helper('urma/shipping')->getTrackingPopupUrlBySalesModel($this->getRma()) ?>','trackshipment','width=800,height=600,resizable=yes,scrollbars=yes')" title="<?php echo $this->__('Track this Return') ?>"><?php echo $this->__('Track this Return') ?></a>
+<br/>
+<a href="<?php echo $this->getUrl('urmaadmin/order_rma/printLabel', array('rma_id'=>$rma->getId()))?>">
+    <?php echo $this->__('Print Labels') ?>
+</a>
+<?php endif ?>
+
+<div class="field-row grid" id="rma_tracking_info">
+<table cellspacing="0" class="data">
+    <col width="100" />
+    <col />
+    <col />
+    <col width="80" />
+    <thead>
+        <tr class="headings">
+            <th><?php echo Mage::helper('sales')->__('Carrier') ?></th>
+            <th><?php echo Mage::helper('sales')->__('Title') ?></th>
+            <th><?php echo Mage::helper('sales')->__('Number') ?></th>
+            <th><?php echo Mage::helper('sales')->__('Amount') ?></th>
+            <th class="last"><?php echo Mage::helper('sales')->__('Action') ?></th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <td>
+                <select name="carrier" class="select" style="width:110px" onchange="selectCarrier(this)">
+                    <?php foreach ($this->getCarriers() as $_code=>$_name): ?>
+                    <option value="<?php echo $_code ?>"><?php echo $_name ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </td>
+            <td><input class="input-text" type="text" id="tracking_title" name="title" value="" /></td>
+            <td><input class="input-text" type="text" id="tracking_number" name="number" value="" /></td>
+            <td><input class="input-text" type="text" id="tracking_final_price" name="final_price" value="" /></td>
+            <td class="last"><?php echo $this->getSaveButtonHtml() ?></td>
+        </tr>
+    </tfoot>
+<?php if($_tracks = $this->getRma()->getAllTracks()): ?>
+    <tbody>
+    <?php $i=0;foreach ($_tracks as $_track):$i++ ?>
+        <tr class="<?php echo ($i%2==0)?'even':'odd' ?>">
+            <td><?php echo $this->getCarrierTitle($_track->getCarrierCode()) ?></td>
+            <td><?php echo $this->escapeHtml($_track->getTitle()) ?></td>
+            <td>
+                <?php if ($_track->isCustom()): ?>
+                <?php echo $this->escapeHtml($_track->getNumber()) ?>
+                <?php else: ?>
+                <a href="#" onclick="popWin('<?php echo $this->helper('urma/shipping')->getTrackingPopupUrlBySalesModel($_track) ?>','trackorder','width=800,height=600,resizable=yes,scrollbars=yes')"><?php echo $this->escapeHtml($_track->getNumber()) ?></a>
+                <div id="rma_tracking_info_response_<?php echo $_track->getId() ?>"></div>
+                <?php endif; ?>
+            </td>
+            <td><?php echo $_track->getFinalPrice() ? $order->formatBasePrice($_track->getFinalPrice()) : '' ?></td>
+            <td class="last"><a href="#" onclick="deleteTrackingNumber('<?php echo $this->getRemoveUrl($_track) ?>'); return false;"><?php echo Mage::helper('sales')->__('Delete') ?></a></td>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+<?php endif; ?>
+</table>
+</div>
+
+<div class="field-row grid" id="rma_label_form">
+<p>
+    <label class="normal" for="rma_generate_label"><?php echo $_hlp->__('Generate Label') ?></label>
+    <input id="rma_generate_label" name="rma[generate_label]" value="1" type="checkbox" onclick="toggleRmaLabelForm()" />
+</p>
+<p id="rma_use_carrier_select" style="display:none">
+    <label for="rma_use_carrier"><?php echo $_hlp->__('Carrier') ?></label>
+    <select id="rma_use_carrier" name="rma[label_info][use_carrier]" title="<?php echo $_hlp->__('Carrier') ?>"  onchange="toggleRmaLabelForm()">
+        <?php foreach($availCarriers as $_acCode => $_acLabel): ?>
+            <option value="<?php echo $_acCode?>" <?php if ($defaultCarrier==$_acCode): ?> selected<?php endif?>><?php echo $_acLabel?></option>
+        <?php endforeach ?>
+    </select>
+</p>
+<div id="rma_generate_label_form" style="display:none">
+
+<p>
+    <label for="rma_label_weight"><?php echo $_hlp->__('Return Info')?></label>
+    <?php echo $_hlp->__('Weight:') ?>
+    <input id="rma_label_weight" name="rma[label_info][weight]" value="<?php echo $rma->getRemainingWeight() ?>" title="<?php echo $_hlp->__('Weight') ?>" type="text" class="input-text" style="width:50px;" /> LB
+&nbsp;&nbsp;
+    <?php echo $_hlp->__('Value:') ?>
+    <input id="rma_label_value" name="rma[label_info][value]" value="<?php echo $rma->getRemainingValue()*1 ?>" title="<?php echo $_hlp->__('Declared Value') ?>" type="text" class="input-text" style="width:50px;"/> <?php echo $rma->getOrder()->getStoreCurrencyCode() ?>
+</p>
+<p>
+    <label for="rma_label_length"><?php echo $_hlp->__('Pkg. Dimensions')?></label>
+    <?php echo $_hlp->__('Length:') ?>
+    <input id="rma_label_length" name="rma[label_info][length]" value="<?php echo (float)$_vendor->getDefaultPkgLength()?>" title="<?php echo $_hlp->__('Length') ?>" type="text" class="input-text" style="width:30px;" />
+    &nbsp;&nbsp;
+    <?php echo $_hlp->__('Width:') ?>
+    <input id="rma_label_width" name="rma[label_info][width]" value="<?php echo (float)$_vendor->getDefaultPkgWidth()?>" title="<?php echo $_hlp->__('Width') ?>" type="text" class="input-text" style="width:30px;" />
+    &nbsp;&nbsp;
+    <?php echo $_hlp->__('Height:') ?>
+    <input id="rma_label_height" name="rma[label_info][height]" value="<?php echo (float)$_vendor->getDefaultPkgHeight()?>" title="<?php echo $_hlp->__('Height') ?>" type="text" class="input-text" style="width:30px;" />
+</p>
+<p>
+    <label for="rma_label_reference"><?php echo $_hlp->__('Reference') ?></label>
+    <input id="rma_label_reference" name="rma[label_info][reference]" value="<?php echo $rma->getIncrementId() ?>" title="<?php echo $_hlp->__('Reference') ?>" type="text" class="input-text" style="width:250px;" />
+</p>
+
+<div id="rma_generate_label_form_fedex" class="rma_generate_label_subform" style="display:none">
+<p>
+    <label for="rma_label_package_count"><?php echo $_hlp->__('Package Count') ?></label>
+    <select id="rma_label_package_count" name="rma[label_info][package_count]" value="1" title="<?php echo $_hlp->__('Package Count') ?>">
+        <?php foreach(range(1,10) as $pcIdx): ?>
+            <option value="<?php echo $pcIdx?>"><?php echo $pcIdx?></option>
+        <?php endforeach ?>
+    </select>
+    <br />
+</p>
+<p>
+    <label for="rma_use_method_code_fedex"><?php echo $_hlp->__('Shipping Method') ?></label>
+    <select id="rma_use_method_code_fedex" name="rma[label_info][use_method_code]" title="<?php echo $_hlp->__('Shipping Method') ?>">
+        <?php foreach($availableMethods['fedex'] as $_amCode => $_amDesc): ?>
+            <option value="<?php echo $_amCode?>" <?php if ($defaultMethod['fedex']==$_amCode): ?> selected<?php endif?>><?php echo $_amDesc?></option>
+        <?php endforeach ?>
+    </select>
+</p>
+<?php foreach (array(
+    'fedex_dropoff_type' => $vFieldsXml->descend('fedex_dropoff_type'),
+    'fedex_signature_option' => $vFieldsXml->descend('fedex_signature_option'),
+) as $extLabelOpt => $extLabelNode): ?>
+    <?php
+        $lblSource = Mage::getSingleton(
+            $extLabelNode->source_model
+            ? (string)$extLabelNode->source_model
+            : 'udropship/source'
+        );
+        if (is_callable(array($lblSource, 'setPath'))) {
+            $lblSource->setPath($extLabelNode->source ? (string)$extLabelNode->source : $extLabelOpt);
+        }
+        $extLabelLbl = (string)$extLabelNode->label;
+    ?>
+<p>
+    <label for="rma_extra_label_info_<?php echo $extLabelOpt?>]"><?php echo $_hlp->__($extLabelLbl) ?></label>
+    <select id="rma_extra_label_info_<?php echo $extLabelOpt?>" name="rma[extra_label_info][<?php echo $extLabelOpt?>]" title="<?php echo $_hlp->__($extLabelLbl) ?>">
+        <?php foreach($lblSource->toOptionHash() as $_optId => $_optVal): ?>
+            <option value="<?php echo $_optId?>" <?php if ($_optId==$_vendor->getData($extLabelOpt)): ?> selected<?php endif?>><?php echo $_optVal?></option>
+        <?php endforeach ?>
+    </select>
+</p>
+<?php endforeach ?>
+</div>
+
+<div id="rma_generate_label_form_ups" class="rma_generate_label_subform" style="display:none">
+
+<p>
+    <label for="rma_use_method_code_ups"><?php echo $_hlp->__('Shipping Method') ?></label>
+    <select id="rma_use_method_code_ups" name="rma[label_info][use_method_code]" title="<?php echo $_hlp->__('Shipping Method') ?>">
+        <?php foreach($availableMethods['ups'] as $_amCode => $_amDesc): ?>
+            <option value="<?php echo $_amCode?>" <?php if ($defaultMethod['ups']==$_amCode): ?> selected<?php endif?>><?php echo $_amDesc?></option>
+        <?php endforeach ?>
+    </select>
+</p>
+
+<?php foreach (array(
+    'ups_insurance' => $vFieldsXml->descend('ups_insurance'),
+    'ups_delivery_confirmation' => $vFieldsXml->descend('ups_delivery_confirmation'),
+    'ups_verbal_confirmation' => $vFieldsXml->descend('ups_verbal_confirmation'),
+    'ups_pickup' => $vFieldsXml->descend('ups_pickup'),
+    'ups_container' => $vFieldsXml->descend('ups_container'),
+    'ups_dest_type' => $vFieldsXml->descend('ups_dest_type'),
+) as $extLabelOpt => $extLabelNode): ?>
+    <?php
+        $lblSource = Mage::getSingleton(
+            $extLabelNode->source_model
+            ? (string)$extLabelNode->source_model
+            : 'udropship/source'
+        );
+        if (is_callable(array($lblSource, 'setPath'))) {
+            $lblSource->setPath($extLabelNode->source ? (string)$extLabelNode->source : $extLabelOpt);
+        }
+        $extLabelLbl = (string)$extLabelNode->label;
+    ?>
+<p>
+    <label for="rma_extra_label_info_<?php echo $extLabelOpt?>]"><?php echo $_hlp->__($extLabelLbl) ?></label>
+    <select id="rma_extra_label_info_<?php echo $extLabelOpt?>]" name="rma[extra_label_info][<?php echo $extLabelOpt?>]" title="<?php echo $_hlp->__($extLabelLbl) ?>">
+        <?php foreach($lblSource->toOptionHash() as $_optId => $_optVal): ?>
+            <option value="<?php echo $_optId?>" <?php if ($_optId==$_vendor->getData($extLabelOpt)): ?> selected<?php endif?>><?php echo $_optVal?></option>
+        <?php endforeach ?>
+    </select>
+</p>
+<?php endforeach ?>
+
+</div>
+
+<div id="rma_generate_label_form_usps" class="rma_generate_label_subform" style="display:none">
+
+<p>
+    <label for="rma_use_method_code_usps"><?php echo $_hlp->__('Shipping Method') ?></label>
+    <select id="rma_use_method_code_usps" name="rma[label_info][use_method_code]" title="<?php echo $_hlp->__('Shipping Method') ?>">
+        <?php foreach($availableMethods['usps'] as $_amCode => $_amDesc): ?>
+            <option value="<?php echo $_amCode?>" <?php if ($defaultMethod['usps']==$_amCode): ?> selected<?php endif?>><?php echo $_amDesc?></option>
+        <?php endforeach ?>
+    </select>
+</p>
+
+<?php foreach (array(
+    'endicia_stealth' => $vFieldsXml->descend('endicia_stealth'),
+    'endicia_label_type' => $vFieldsXml->descend('endicia_label_type'),
+    'endicia_mail_class' => $vFieldsXml->descend('endicia_mail_class'),
+    'endicia_mailpiece_shape' => $vFieldsXml->descend('endicia_mailpiece_shape'),
+    'endicia_delivery_confirmation' => $vFieldsXml->descend('endicia_delivery_confirmation'),
+    'endicia_signature_confirmation' => $vFieldsXml->descend('endicia_signature_confirmation'),
+    'endicia_return_receipt' => $vFieldsXml->descend('endicia_return_receipt'),
+    'endicia_electronic_return_receipt' => $vFieldsXml->descend('endicia_electronic_return_receipt'),
+    'endicia_insured_mail' => $vFieldsXml->descend('endicia_insured_mail'),
+    'endicia_restricted_delivery' => $vFieldsXml->descend('endicia_restricted_delivery'),
+    'endicia_cod' => $vFieldsXml->descend('endicia_cod'),
+) as $extLabelOpt => $extLabelNode): ?>
+    <?php
+        $lblSource = Mage::getSingleton(
+            $extLabelNode->source_model
+            ? (string)$extLabelNode->source_model
+            : 'udropship/source'
+        );
+        if (is_callable(array($lblSource, 'setPath'))) {
+            $lblSource->setPath($extLabelNode->source ? (string)$extLabelNode->source : $extLabelOpt);
+        }
+        $extLabelLbl = (string)$extLabelNode->label;
+    ?>
+<p>
+    <label for="rma_extra_label_info_<?php echo $extLabelOpt?>"><?php echo $_hlp->__($extLabelLbl) ?></label>
+    <select id="rma_extra_label_info_<?php echo $extLabelOpt?>]" name="rma[extra_label_info][<?php echo $extLabelOpt?>]" title="<?php echo $_hlp->__($extLabelLbl) ?>">
+        <?php foreach($lblSource->toOptionHash() as $_optId => $_optVal): ?>
+            <option value="<?php echo $_optId?>" <?php if ($_optId==$_vendor->getData($extLabelOpt)): ?> selected<?php endif?>><?php echo $_optVal?></option>
+        <?php endforeach ?>
+    </select>
+</p>
+<?php endforeach ?>
+
+</div>
+
+<p>
+<input name="rma[is_customer_notified]" type="checkbox" id="rma_customer_comment_notify" value="1" /> <label class="normal" for="rma_customer_comment_notify"><?php echo Mage::helper('sales')->__('Notify Customer') ?></label>
+</p>
+<p>
+<label class="normal" for="rma_comment"><?php echo Mage::helper('sales')->__('Comment Text') ?></label>
+<textarea name="rma[comment]" rows="3" cols="5" style="height:6em; width:99%;" id="rma_comment"></textarea>
+</p>
+
+<p>
+    <?php echo $this->getGenerateButtonHtml() ?>
+</p>
+
+</div>
+
+
+
+
+<script type="text/javascript">
+
+function toggleRmaLabelForm()
+{
+    if ($('rma_generate_label').checked) {
+        $('rma_use_carrier_select').show();
+        $('rma_generate_label_form').show();
+        $('rma_generate_label_form').select('input,select,textarea').invoke('enable');
+        $('rma_generate_label_form_'+$('rma_use_carrier').value).show();
+        $$('#rma_generate_label_form .rma_generate_label_subform').each(function(subform) {
+            if (subform.id!='rma_generate_label_form_'+$('rma_use_carrier').value) {
+                subform.hide();
+                subform.select('input,select,textarea').invoke('disable');
+            } else {
+                subform.select('input,select,textarea').invoke('enable');
+            }
+        });
+    } else {
+        $('rma_use_carrier_select').hide();
+        $('rma_generate_label_form').hide();
+        $('rma_generate_label_form').select('input,select,textarea').invoke('disable');
+    }
+}
+
+function rmaSubmitAndReloadArea(area, formArea, url) {
+    if($(area) && $(formArea)) {
+        var fields = $(formArea).select('input', 'select', 'textarea');
+        var data = Form.serializeElements(fields, true);
+        url = url + (url.match(new RegExp('\\?')) ? '&isAjax=true' : '?isAjax=true');
+        new Ajax.Request(url, {
+            parameters: $H(data),
+            loaderArea: area,
+            onSuccess: function(transport) {
+                try {
+                    if (transport.responseText.isJSON()) {
+                        var response = transport.responseText.evalJSON()
+                        if (response.error) {
+                            alert(response.message);
+                        }
+                        if(response.ajaxExpired && response.ajaxRedirect) {
+                            setLocation(response.ajaxRedirect);
+                        }
+                    } else {
+                        $(area).update(transport.responseText);
+                    }
+                }
+                catch (e) {
+                    $(area).update(transport.responseText);
+                }
+            }
+        });
+    }
+}
+
+function selectCarrier(elem) {
+    option = elem.options[elem.selectedIndex];
+    if (option.value && option.value != 'custom') {
+        $('tracking_title').value = option.text;
+    }
+    else {
+        $('tracking_title').value = '';
+    }
+}
+
+function deleteTrackingNumber(url) {
+    if (confirm('<?php echo Mage::helper('sales')->__('Are you sure?') ?>')) {
+        rmaSubmitAndReloadArea($('rma_tracking_info').parentNode, $('rma_tracking_info'), url)
+    }
+}
+</script>
