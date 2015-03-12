@@ -55,12 +55,13 @@
         ->addAttributeToFilter('category_id', array('in' => $categoryId))
         ->addAttributeToFilter('status', array('in' => '1'))
         ->addAttributeToFilter('qty', array('gt' => '0'))
-        ->addAttributeToFilter('visibility', array('in' => Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH))
+        ->addAttributeToFilter('visibility', array('neq' => Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE))
         ->addAttributeToSelect('special_price')
         ->addAttributeToSelect('name')
         ->addAttributeToSelect('price')
         ->addAttributeToSelect('msrp')
-        ->addAttributeToSelect('small_image');
+        ->addAttributeToSelect('small_image')
+        ->addAttributeToSelect('image');
 
     $_helper = $this->helper('catalog/output');
 ?>

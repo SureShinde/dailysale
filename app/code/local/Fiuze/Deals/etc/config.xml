@@ -128,6 +128,14 @@
                     </fiuzedeals_fiuze_deals_save_after>
                 </observers>
             </fiuze_deals_save_after>
+            <cataloginventory_stock_item_save_after>
+                <observers>
+                    <fiuzedeals_fiuze_cataloginventory_stock_item_save_after>
+                        <class>Fiuze_Deals_Model_Observer</class>
+                        <method>cataloginventoryStockItemSaveAfter</method>
+                    </fiuzedeals_fiuze_cataloginventory_stock_item_save_after>
+                </observers>
+            </cataloginventory_stock_item_save_after>
         </events>
     </global>
 

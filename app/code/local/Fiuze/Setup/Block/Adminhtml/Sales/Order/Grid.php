@@ -4,12 +4,6 @@ $flag = Mage::helper('core/data')->isModuleOutputEnabled('Directshop_FraudDetect
 if (class_exists($name) && $flag) {
     class Fiuze_Setup_Block_Adminhtml_Sales_Order_Grid extends Directshop_FraudDetection_Block_Adminhtml_Sales_Order_Grid
     {
-        public function __construct()
-        {
-            parent::__construct();
-            $this->setDefaultDir('ASC');
-        }
-
         protected function _prepareCollection()
         {
             $collection = Mage::getResourceModel($this->_getCollectionClass());
