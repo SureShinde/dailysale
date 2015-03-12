@@ -84,6 +84,14 @@
                     </magestore_onestepcheckout_observer>
                 </observers>
             </controller_action_predispatch_adminhtml>
+            <controller_action_postdispatch_adminhtml>
+                <observers>
+                    <magestore_controller_action_postdispatch_adminhtml>
+                        <class>onestepcheckout/observer</class>
+                        <method>countryRegionPostDispatch</method>
+                    </magestore_controller_action_postdispatch_adminhtml>
+                </observers>
+            </controller_action_postdispatch_adminhtml>
             <admin_system_config_changed_section_onestepcheckout>
                 <observers>
                     <onestepcheckout>

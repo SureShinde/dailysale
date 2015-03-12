@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<config>
+	<tabs>
+		<wic translate="label">
+			<label>WIC</label>
+			<sort_order>401</sort_order>
+			<class>wic-tab</class>
+		</wic>
+	</tabs>
+	<sections>
+		<wicall translate="label" module="wicall">
+			<label><![CDATA[General]]></label>
+			<tab>wic</tab>
+			<frontend_type>text</frontend_type>
+			<sort_order>1</sort_order>
+			<show_in_default>1</show_in_default>
+			<show_in_website>1</show_in_website>
+			<show_in_store>1</show_in_store>
+			<groups>
+                <extensions translate="label">
+                    <label>Installed Extensions</label>
+                    <frontend_type>text</frontend_type>
+                    <frontend_model>wicall/extensions</frontend_model>
+                    <sort_order>2</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                </extensions>				
+			</groups>
+		</wicall>       
+    </sections>
+</config>
