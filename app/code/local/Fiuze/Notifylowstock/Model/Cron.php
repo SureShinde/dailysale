@@ -60,13 +60,9 @@ class Fiuze_Notifylowstock_Model_Cron extends Mage_Core_Model_Abstract
     public function sendEmail()
     {
         if (Mage::helper('fiuze_notifylowstock')->getModuleEnabled()) {
-            Mage::log('send++++++', null, 'send.log');
             $products = $this->getNotifyLowStockCategory();
-            Mage::log('$products count: ' . count($products), null, 'send.log');
             $mailList = Mage::helper('fiuze_notifylowstock')->getEmailArray();
-            Mage::log('$mailList: ' . implode(',', $mailList), null, 'send.log');
             $this->_sendTestEmail($mailList, 'email', $products);
-            Mage::log('send-----', null, 'send.log');
         }
     }
 
@@ -82,7 +78,6 @@ class Fiuze_Notifylowstock_Model_Cron extends Mage_Core_Model_Abstract
         $translate->setTranslateInline(false);
 
         $storeId = Mage::app()->getStore()->getId();
-        Mage::log('$storeId: '.$storeId, null, 'send.log');
         try {
             $emailTemplate = Mage::getModel('core/email_template')
                 ->setDesignConfig(array('area' => 'frontend', 'store' => $storeId));
@@ -97,10 +92,8 @@ class Fiuze_Notifylowstock_Model_Cron extends Mage_Core_Model_Abstract
             Mage::logException($ex);
         }
 
-        if ($emailTemplate->getSentSuccess()) {
-            Mage::log('Sending mail: Success', null, 'send.log');
-        } else {
-            Mage::log('Sending mail: Failed', null, 'send.log');
+        if (!$emailTemplate->getSentSuccess()){
+            Mage::log('Sending mail: Failed', null, 'notifylowstock.log');
         }
 
         $translate->setTranslateInline(true);
