@@ -1,0 +1,70 @@
+<?php
+$_vendorCollection=$this->getVendorsCollection();
+?>
+<?php if(!$_vendorCollection->count()): ?>
+    <p class="note-msg"><?php echo $this->__('There are no vendors matching the selection.') ?></p>
+<?php else: ?>
+    <div class="umicrosite-vendors">
+        <?php echo $this->getChildHtml('toolbar') ?>
+        <?php // List mode ?>
+        <?php if($this->getChild('toolbar')->getCurrentMode()!='grid'): ?>
+            <?php $_iterator = 0; ?>
+            <ol class="products-list" id="products-list">
+                <?php foreach ($_vendorCollection as $_vendor):
+                    $_vendor->afterLoad();
+                    $vName = $_vendor->getVendorName();
+                    $vUrl = Mage::helper('umicrosite')->getVendorUrl($_vendor);
+                ?>
+                    <li class="item<?php if( ++$_iterator == sizeof($_vendorCollection) ): ?> last<?php endif; ?>">
+                        <a href="<?php echo $vUrl ?>" title="<?php echo $vName ?>" class="product-image"><img src="<?php echo Mage::getBaseUrl('media').'/'.$_vendor->getLogo() ?>" width="135" height="135" alt="<?php echo $vName ?>" /></a>
+                        <?php // Product description ?>
+                        <div class="product-shop">
+                            <div class="f-fix">
+                                <?php $_vendorNameStripped = $this->stripTags($_vendor->getName(), null, true); ?>
+                                <h2 class="product-name"><a href="<?php echo $vUrl ?>" title="<?php echo $vName; ?>"><?php echo $vName; ?></a></h2>
+                                <?php if(Mage::helper('udropship')->isModuleActive('Unirgy_DropshipVendorRatings')): ?>
+                                    <?php echo Mage::helper('udratings')->getReviewsSummaryHtml($_vendor) ?>
+                                <?php endif; ?>
+                                <div class="desc std">
+                                    <?php echo htmlentities($_vendor->getShortDescription()) ?>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                <?php endforeach; ?>
+            </ol>
+            <script type="text/javascript">decorateList('products-list', 'none-recursive')</script>
+
+        <?php else: ?>
+
+        <?php // Grid Mode ?>
+
+        <?php $_collectionSize = $_vendorCollection->count() ?>
+        <?php $_columnCount = $this->getColumnCount(); ?>
+        <?php $i=0; foreach ($_vendorCollection as $_vendor):
+            $_vendor->afterLoad();
+            $vName = $_vendor->getVendorName();
+            $vUrl = Mage::helper('umicrosite')->getVendorUrl($_vendor);
+        ?>
+        <?php if ($i++%$_columnCount==0): ?>
+            <ul class="products-grid">
+        <?php endif ?>
+            <li class="item<?php if(($i-1)%$_columnCount==0): ?> first<?php elseif($i%$_columnCount==0): ?> last<?php endif; ?>">
+                <a href="<?php echo $vUrl ?>" title="<?php echo $vName ?>" class="product-image"><img src="<?php echo Mage::getBaseUrl('media').'/'.$_vendor->getLogo() ?>" width="135" height="135" alt="<?php echo $vName ?>" /></a>
+                <h2 class="product-name"><a href="<?php echo $vUrl ?>" title="<?php echo $vName; ?>"><?php echo $vName; ?></a></h2>
+                <?php if(Mage::helper('udropship')->isModuleActive('Unirgy_DropshipVendorRatings')): ?>
+                    <?php echo Mage::helper('udratings')->getReviewsSummaryHtml($_vendor) ?>
+                <?php endif; ?>
+            </li>
+            <?php if ($i%$_columnCount==0 || $i==$_collectionSize): ?>
+            </ul>
+        <?php endif ?>
+        <?php endforeach ?>
+            <script type="text/javascript">decorateGeneric($$('ul.products-grid'), ['odd','even','first','last'])</script>
+        <?php endif; ?>
+
+        <div class="toolbar-bottom">
+            <?php echo $this->getChildHtml('toolbar') ?>
+        </div>
+    </div>
+<?php endif; ?>

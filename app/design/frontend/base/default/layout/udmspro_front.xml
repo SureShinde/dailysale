@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<layout>
+    <udmspro_index_landingpage>
+        <update handle="udmspro_current_vendor_cms" />
+    </udmspro_index_landingpage>
+    <umicrosite_index_landingpage>
+        <update handle="udmspro_current_vendor_cms" />
+    </umicrosite_index_landingpage>
+    <udmspro_current_vendor_cms>
+        <reference name="head">
+            <action method="setTitle">
+                <title helper="umicrosite/getLandingPageTitle" />
+            </action>
+            <action method="setKeywords">
+                <title helper="umicrosite/getLandingPageKeywords" />
+            </action>
+            <action method="setDescription">
+                <title helper="umicrosite/getLandingPageDescription" />
+            </action>
+            <!--action method="addLinkRel">
+                <type>canonical</type>
+                <url helper="umicrosite/getCurrentVendorBaseUrl" />
+            </action-->
+        </reference>
+        <reference name="page_content_heading">
+            <action method="setContentHeading">
+                <title helper="umicrosite/getLandingPageTitle" />
+            </action>
+        </reference>
+        <reference name="cms.wrapper">
+            <action method="setElementClass"><value> </value></action>
+        </reference>
+    </udmspro_current_vendor_cms>
+    <udmspro_current_vendor_layer_left>
+        <reference name="left">
+            <block type="catalog/layer_view" name="catalog.leftnav" before="-" template="catalog/layer/view.phtml">
+                <block type="core/text_list" name="catalog.leftnav.state.renderers" as="state_renderers" />
+            </block>
+        </reference>
+    </udmspro_current_vendor_layer_left>
+    <udmspro_current_vendor_layer_right>
+        <reference name="right">
+            <block type="catalog/layer_view" name="catalog.rightnav" before="-" template="catalog/layer/view.phtml">
+                <block type="core/text_list" name="catalog.leftnav.state.renderers" as="state_renderers" />
+            </block>
+        </reference>
+    </udmspro_current_vendor_layer_right>
+    <umicrosite_current_vendor_products_list>
+        <block type="umicrosite/frontend_vendorProducts" name="product_list" template="catalog/product/list.phtml">
+            <block type="core/text_list" name="product_list.name.after" as="name.after" />
+            <block type="core/text_list" name="product_list.after" as="after" />
+            <block type="catalog/product_list_toolbar" name="product_list_toolbar" template="catalog/product/list/toolbar.phtml">
+                <block type="page/html_pager" name="product_list_toolbar_pager"/>
+            </block>
+            <action method="addColumnCountLayoutDepend"><layout>empty</layout><count>6</count></action>
+            <action method="addColumnCountLayoutDepend"><layout>one_column</layout><count>5</count></action>
+            <action method="addColumnCountLayoutDepend"><layout>two_columns_left</layout><count>4</count></action>
+            <action method="addColumnCountLayoutDepend"><layout>two_columns_right</layout><count>4</count></action>
+            <action method="addColumnCountLayoutDepend"><layout>three_columns</layout><count>3</count></action>
+            <action method="setToolbarBlockName"><name>product_list_toolbar</name></action>
+            <action method="setColumnCount"><count>4</count></action>
+        </block>
+    </umicrosite_current_vendor_products_list>
+</layout>

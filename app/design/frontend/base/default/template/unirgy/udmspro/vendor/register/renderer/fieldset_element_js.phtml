@@ -1,0 +1,33 @@
+<?php $el = $this->getElement(); $fc = (array)$el->getData('field_config'); ?>
+
+<?php if (isset($fc['length_gte']) && is_numeric($fc['length_gte'])) : $el->addClass('udvalidate-length-gte'); ?>
+<span id="<?php echo $el->getHtmlId()?>-gte" style="display: none"><?php echo $fc['length_gte']?></span>
+<?php endif ?>
+
+<?php if (isset($fc['length_lte']) && is_numeric($fc['length_lte'])) : $el->addClass('udvalidate-length-lte'); ?>
+<span id="<?php echo $el->getHtmlId()?>-lte" style="display: none"><?php echo $fc['length_lte']?></span>
+<?php endif ?>
+
+<?php if (isset($fc['length_gt']) && is_numeric($fc['length_gt'])) : $el->addClass('udvalidate-length-gt'); ?>
+<span id="<?php echo $el->getHtmlId()?>-gt" style="display: none"><?php echo $fc['length_gt']?></span>
+<?php endif ?>
+
+<?php if (isset($fc['length_lt']) && is_numeric($fc['length_lt'])) : $el->addClass('udvalidate-length-lt'); ?>
+<span id="<?php echo $el->getHtmlId()?>-lt" style="display: none"><?php echo $fc['length_lt']?></span>
+<?php endif ?>
+
+<?php if (isset($fc['symlength_gte']) && is_numeric($fc['symlength_gte'])) : $el->addClass('udvalidate-symlength-gte'); ?>
+<span id="<?php echo $el->getHtmlId()?>-gte" style="display: none"><?php echo $fc['symlength_gte']?></span>
+<?php endif ?>
+
+<?php if (isset($fc['symlength_lte']) && is_numeric($fc['symlength_lte'])) : $el->addClass('udvalidate-symlength-lte'); ?>
+<span id="<?php echo $el->getHtmlId()?>-lte" style="display: none"><?php echo $fc['symlength_lte']?></span>
+<?php endif ?>
+
+<?php if (isset($fc['symlength_gt']) && is_numeric($fc['symlength_gt'])) : $el->addClass('udvalidate-symlength-gt'); ?>
+<span id="<?php echo $el->getHtmlId()?>-gt" style="display: none"><?php echo $fc['symlength_gt']?></span>
+<?php endif ?>
+
+<?php if (isset($fc['symlength_lt']) && is_numeric($fc['symlength_lt'])) : $el->addClass('udvalidate-symlength-lt'); ?>
+<span id="<?php echo $el->getHtmlId()?>-lt" style="display: none"><?php echo $fc['symlength_lt']?></span>
+<?php endif ?>
