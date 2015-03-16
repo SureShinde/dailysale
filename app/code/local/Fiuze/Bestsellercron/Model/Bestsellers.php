@@ -84,8 +84,10 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
         $items = array();
 
         foreach ($orderItems as $orderItem) {
-            $product                  = $orderItem->getProduct();
-            $items[$product->getId()] += $this->_getRowTotalWithDiscountInclTax($orderItem);
+            $product = $orderItem->getProduct();
+            if(!is_null($product->getId())){
+                $items[$product->getId()] += $this->_getRowTotalWithDiscountInclTax($orderItem);
+            }
         }
 
         return $items;
@@ -115,8 +117,9 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
             $profit = (float) ($this->_getRowTotalWithDiscountInclTax($orderItem) - $cost);
 
             if ($profit > 0) {
-
-                $items[$product->getId()] += $profit;
+                if(!is_null($product->getId())){
+                    $items[$product->getId()] += $profit;
+                }
             }
         }
 
