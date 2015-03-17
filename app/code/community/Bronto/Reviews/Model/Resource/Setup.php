@@ -52,6 +52,7 @@ class Bronto_Reviews_Model_Resource_Setup extends Bronto_Common_Model_Resource_A
                 `store_id` int(10) unsigned NOT NULL DEFAULT '0',
                 `message` varchar(36) DEFAULT NULL,
                 `send_limit` int(2) DEFAULT NULL,
+                `multiply_by_qty` smallint(1) unsigned DEFAULT NULL,
                 `adjustment` int(10) DEFAULT NULL,
                 `content` text DEFAULT '',
                 `period` int(10) unsigned DEFAULT NULL COMMENT 'Number of time periods',
@@ -69,7 +70,14 @@ class Bronto_Reviews_Model_Resource_Setup extends Bronto_Common_Model_Resource_A
      */
     protected function _updates()
     {
-        return array();
+        return array(
+          '0.1.0' => array(
+              'post_purchase' => array(
+                  'sql' =>
+                  'ALTER TABLE {table} ADD COLUMN `multiply_by_qty` smallint(1) unsigned DEFAULT NULL AFTER `send_limit`;'
+              )
+          )
+        );
     }
 
     /**
