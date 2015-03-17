@@ -265,6 +265,8 @@ class Bronto_Reminder_Model_Rule
 
             Mage::helper('bronto_reminder')->writeDebug('Sending message to: ' . $customer->getEmail());
 
+            $appEmulation = Mage::getSingleton('core/app_emulation');
+            $emulatedInfo = $appEmulation->startEnvironmentEmulation($store->getId());
             try {
                 $message = Mage::helper('bronto_reminder/message')->getMessageById(
                     $messageData['message_id'],
@@ -287,6 +289,7 @@ class Bronto_Reminder_Model_Rule
             } catch (Exception $e) {
                 Mage::helper('bronto_reminder')->writeError('  ' . $e->getMessage());
             }
+            $appEmulation->stopEnvironmentEmulation($emulatedInfo);
 
             if ($mail->getSentSuccess()) {
                 Mage::helper('bronto_reminder')->writeDebug('  Success');

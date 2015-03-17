@@ -19,9 +19,28 @@ class Bronto_Reviews_Block_Adminhtml_Reviews_Form_Reorder
         $defaultSend = $this->_helper->getPostPeriod($this->getPostType());
         $send = $this->_defaultOverride($fieldset, $post, array(
             'label' => $this->_helper->__('Send Period'),
-            'note' => $this->_helper->__('Schedule the email this many days, per unit, after the order status trigger for each reorder reminder. Must be greater than or equal to 0.<br/><strong>Default</strong>: ' . $defaultSend),
+            'note' => $this->_helper->__('Schedule the email this many days after the order status trigger for each reorder reminder. Must be greater than or equal to 0.<br/><strong>Default</strong>: ' . $defaultSend),
             'name' => 'period',
             'required' => true
+        ));
+
+        $options = Mage::getModel('adminhtml/system_config_source_yesno')->toOptionArray();
+        $defaultMultiplier = $this->_helper->getPostMultiplier();
+        $defaultLabel = null;
+        foreach ($options as $option) {
+            if ($option['value'] == $defaultMultiplier) {
+                $defaultLabel = $option['label'];
+                break;
+            }
+        }
+
+        $multiplier = $this->_defaultOverride($fieldset, $post, array(
+          'type' => 'select',
+          'values' => $options,
+          'label' => $this->_helper->__('Send Period Per Unit'),
+          'note' => $this->_helper->__('If <em>Yes</em>, the Send Period will be multiplied by the quantity ordered.<br><strong>Default</strong>: ' . $defaultLabel),
+          'name' => 'multiply_by_qty',
+          'required' => true,
         ));
 
         $defaultAdjust = $this->_helper->getPostAdjustment($this->getPostType());
@@ -40,6 +59,7 @@ class Bronto_Reviews_Block_Adminhtml_Reviews_Form_Reorder
 
         $this
             ->_dependsOnEnablement($send)
+            ->_dependsOnEnablement($multiplier)
             ->_dependsOnEnablement($adjustment)
             ->_dependsOnEnablement($content);
     }

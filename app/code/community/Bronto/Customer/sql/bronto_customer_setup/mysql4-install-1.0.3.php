@@ -9,7 +9,7 @@ try {
     // Create New Table
     $installer->run("
         DROP TABLE IF EXISTS `{$this->getTable('bronto_customer_queue')}`;
-            
+
         CREATE TABLE  IF NOT EXISTS `{$this->getTable('bronto_customer_queue')}` (
           `queue_id` int(10) NOT NULL AUTO_INCREMENT,
           `customer_id` int(10) unsigned NOT NULL COMMENT 'Customer Entity Id',

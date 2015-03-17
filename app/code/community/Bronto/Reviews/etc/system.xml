@@ -309,13 +309,25 @@
                             <label>Default Send Period</label>
                             <depends><enabled>1</enabled></depends>
                             <frontend_type>text</frontend_type>
-                            <comment>Schedule the email this many days, per unit, after the order status trigger for each reorder reminder. Must be greater than or equal to 0.</comment>
+                            <comment>Schedule the email this many days after the order status trigger for each reorder reminder. Must be greater than or equal to 0.</comment>
                             <sort_order>20</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <validate>required-entry validate-number</validate>
                         </period>
+                        <multipler>
+                            <label>Send Period Per Unit</label>
+                            <depends><enabled>1</enabled></depends>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <comment><![CDATA[If <em>Yes</em>, the Send Period
+                              will be multiplied by the quantity ordered.]]></comment>
+                            <sort_order>21</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </multipler>
                         <adjustment>
                             <label>Default Adjustment Period</label>
                             <depends><enabled>1</enabled></depends>

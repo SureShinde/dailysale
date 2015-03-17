@@ -24,6 +24,7 @@
                 <block type="bronto_common/adminhtml_system_config_guide" name="bronto_verify.adminhtml.guide" as="bronto_verify_guide" template="bronto/verify/guide.phtml" />
                 <block type="bronto_common/adminhtml_system_config_guide" name="bronto_popup.adminhtml.guide" as="bronto_popup_guide" template="bronto/popup/guide.phtml" />
                 <block type="bronto_common/adminhtml_system_config_guide" name="bronto_coupon.adminhtml.guide" as="bronto_coupon_guide" template="bronto/coupon/guide.phtml" />
+                <block type="bronto_common/adminhtml_system_config_guide" name="bronto_cartrecovery.adminhtml.guide" as="bronto_cartrecovery_guide" template="bronto/cartrecovery/guide.phtml" />
                 <block type="bronto_common/adminhtml_system_config_guide" name="bronto_reviews.adminhtml.guide" as="bronto_reviews_guide" template="bronto/reviews/guide.phtml" />
                 <block type="bronto_common/adminhtml_system_config_guide" name="bronto_product.adminhtml.guide" as="bronto_product_guide" template="bronto/product/guide.phtml" />
             </block>

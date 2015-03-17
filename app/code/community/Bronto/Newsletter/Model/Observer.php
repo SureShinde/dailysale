@@ -104,19 +104,6 @@ class Bronto_Newsletter_Model_Observer
 
             /* @var $subscriber Mage_Newsletter_Model_Subscriber */
             $subscriber = Mage::getModel('newsletter/subscriber')->loadByEmail($email);
-            if (!$subscriber->hasSubscriberEmail() && $isSubscribed == Bronto_Api_Contact::STATUS_TRANSACTIONAL) {
-                $this->_helper->writeDebug('Unable to create subscriber object');
-
-                return false;
-            }
-
-            /* @var $contact Bronto_Api_Contact_Row */
-            if (!$contact = $this->_getBrontoContact($email)) {
-                $this->_helper->writeError('Unable to create contact object');
-
-                return false;
-            }
-
             // Determine action
             switch ($isSubscribed) {
                 case Bronto_Api_Contact::STATUS_ACTIVE:
@@ -130,7 +117,7 @@ class Bronto_Newsletter_Model_Observer
                     break;
                 case Bronto_Api_Contact::STATUS_TRANSACTIONAL:
                 default:
-                    $this->_makeTransactional($subscriber, $email);
+                    // No-op
                     break;
             }
         } catch (Exception $e) {
@@ -388,8 +375,13 @@ class Bronto_Newsletter_Model_Observer
                     }
                 }
 
+                // Don't add contacts to be unsubscribed
+                if (!$contact->id && $contact->status == Bronto_Api_Contact::STATUS_UNSUBSCRIBED) {
+                    $subscriber->setImported(1)->save();
+                    $result['success']++;
+                    continue;
+                }
                 $contact->save();
-
                 $subscriber->setImported(1)->save();
 
                 $result['success']++;
