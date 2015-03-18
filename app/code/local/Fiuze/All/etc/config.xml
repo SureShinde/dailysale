@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Fiuze_All>
-            <version>0.1.0</version>
+            <version>0.1.1</version>
         </Fiuze_All>
     </modules>
     <global>
@@ -11,6 +11,13 @@
                 <class>Fiuze_All_Model</class>
             </fiuze_all>
         </models>
+        <resources>
+            <fiuze_all_setup>
+                <setup>
+                    <module>Fiuze_All</module>
+                </setup>
+            </fiuze_all_setup>
+        </resources>
         <helpers>
             <fiuze_all>
                 <class>Fiuze_All_Helper</class>
