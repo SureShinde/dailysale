@@ -2008,4 +2008,17 @@ Limit: {{limit}} days
             </ups>
         </udropship_label>
     </default>
+
+    <frontend>
+        <routers>
+            <udropship>
+                <args>
+                    <frontName>vendor</frontName>
+                </args>
+            </udropship>
+        </routers>
+        <secure_url>
+            <udropship_vendor>/vendor/vendor/</udropship_vendor>
+        </secure_url>
+    </frontend>
 </config>
