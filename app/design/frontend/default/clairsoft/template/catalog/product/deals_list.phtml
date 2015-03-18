@@ -33,6 +33,7 @@
 ?>
 <?php
     $categoryId = $this->getCategoryId();
+    //$_productCollection=$this->getLoadedProductCollection();
     $_productCollection = Mage::getResourceModel('catalog/product_collection')
         ->joinField(
             'qty',
@@ -43,6 +44,7 @@
             'left'
         )
         ->joinField('category_id','catalog/category_product','category_id','product_id=entity_id',null,'left')
+        ->joinField('position','catalog/category_product','position','product_id=entity_id',null,'left')
         ->joinField(
             'is_in_stock',
             'cataloginventory/stock_item',
@@ -51,10 +53,10 @@
             '{{table}}.is_in_stock=1',
             'left'
         )
-        ->addAttributeToFilter('is_in_stock', array("notnull" => 'is_in_stock'))
+        //->addAttributeToFilter('is_in_stock', array("notnull" => 'is_in_stock'))
         ->addAttributeToFilter('category_id', array('in' => $categoryId))
         ->addAttributeToFilter('status', array('in' => '1'))
-        ->addAttributeToFilter('qty', array('gt' => '0'))
+        //->addAttributeToFilter('qty', array('gt' => '0'))
         ->addAttributeToFilter('visibility', array('neq' => Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE))
         ->addAttributeToSelect('special_price')
         ->addAttributeToSelect('name')
@@ -62,6 +64,11 @@
         ->addAttributeToSelect('msrp')
         ->addAttributeToSelect('small_image')
         ->addAttributeToSelect('image');
+        $_productCollection->getSelect()
+            ->group('e.entity_id');
+        $_productCollection->joinTable('catalog/category_product','product_id=entity_id',array('category_id','position'));
+        $_productCollection->setOrder('position', 'DESC');
+
 
     $_helper = $this->helper('catalog/output');
 ?>
