@@ -123,7 +123,6 @@ class Fiuze_Deals_Adminhtml_DealsController extends Mage_Adminhtml_Controller_Ac
                 }
                 $productDeals->setData('product_id', $id);
                 $productDeals->setData('product_name', $product->getName());
-                $productDeals->setData('origin_special_price', $product->getData('special_price'));
                 $productDeals->setData('category_id', Mage::helper('fiuze_deals')->getCategoryCron()->getData('entity_id'));
 
                 $productDeals->setDealsPrice($data['deal_price']);
@@ -149,6 +148,7 @@ class Fiuze_Deals_Adminhtml_DealsController extends Mage_Adminhtml_Controller_Ac
                     $this->getResponse()->setRedirect($this->getUrl('*/*/list'));
                 }
 
+                $this->_changeSpecialPrice($product);
                 return;
             } catch (Exception $e) {
                 Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
@@ -226,6 +226,23 @@ class Fiuze_Deals_Adminhtml_DealsController extends Mage_Adminhtml_Controller_Ac
             }
         }
         $this->_redirect('*/*/list');
+    }
+
+    //Change special price if product is active
+    private function _changeSpecialPrice($product)
+    {
+        $productActive = Mage::getResourceModel('fiuze_deals/deals_collection')
+            ->addFilter('product_id', $product->getId())
+            ->addFilter('current_active', 1)
+            ->getFirstItem();
+        if($productActive->getData()){
+            try{
+                $product->setSpecialPrice($productActive->getData('deals_price'));
+                $product->save();
+            }catch (Exception $ex){
+                Mage::logException($ex);
+            }
+        }
     }
 }
 

@@ -169,6 +169,8 @@ class Fiuze_Deals_Model_Observer
         //if save admin/catalog_product/edit
         $this->_changeQtyStock($product);
 
+        $this->_changeSpecialPrice($product);
+
         //if change catalog product (del)
         $paramTab = Mage::app()->getRequest()->getParam('tab');
         if (isset($paramTab) && $paramTab == 'product_info_tabs_categories') {
@@ -206,8 +208,10 @@ class Fiuze_Deals_Model_Observer
             if ($productActive->getData()) {
                 $qty = $productParam['stock_data']['qty'];
                 $isInStock = $productParam['stock_data']['is_in_stock'];
-                if ($isInStock == 0) {
-                    Mage::getModel('fiuze_deals/cron')->dailyCatalogUpdate();
+                if($isInStock){
+                    if ($isInStock == 0) {
+                        Mage::getModel('fiuze_deals/cron')->dailyCatalogUpdate();
+                    }
                 }
             }
         }
@@ -315,6 +319,22 @@ class Fiuze_Deals_Model_Observer
                     }
 
                 }
+            }
+        }
+    }
+
+    //Change origin_special_price in deals
+    private function _changeSpecialPrice($product)
+    {
+        $productDeals = Mage::getResourceModel('fiuze_deals/deals_collection')
+            ->addFilter('product_id', $product->getId())
+            ->getFirstItem();
+        if ($productDeals->getData()) {
+            try{
+                $productDeals->setData('origin_special_price', $product->getData('special_price'));
+                $productDeals->save();
+            }catch (Exception $ex){
+                Mage::logException($ex);
             }
         }
     }
