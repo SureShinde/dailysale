@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Bronto_Newsletter>
+            <active>true</active>
+            <codePool>community</codePool>
+            <depends>
+                <Bronto_Common/>
+                <Mage_Newsletter/>
+            </depends>
+        </Bronto_Newsletter>
+    </modules>
+</config>

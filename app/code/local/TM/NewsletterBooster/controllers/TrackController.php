@@ -100,7 +100,7 @@ class TM_NewsletterBooster_TrackController extends Mage_Core_Controller_Front_Ac
     public function unsubscribepostAction()
     {
         $helper = Mage::helper('newsletterbooster');
-        if ($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost() && $this->getRequest()->getParam('email')) {
             $campaignId = $this->getRequest()->getParam('campaign');
             if ($this->getRequest()->getParam('entity')) {
                 $customerId = $this->getRequest()->getParam('entity');
@@ -190,7 +190,9 @@ class TM_NewsletterBooster_TrackController extends Mage_Core_Controller_Front_Ac
                 */
             }
         } else {
-            Mage::getSingleton('core/session')->addError($helper->__('Needs email to unsubscribe.'));
+            Mage::getSingleton('core/session')->addError($helper->__('Please enter email to unsubscribe.'));
+            $this->_redirectUrl($this->_getRefererUrl());
+            return false;
         }
         $this->_redirectUrl(Mage::getBaseUrl());
         return false;

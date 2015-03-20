@@ -51,6 +51,10 @@ $j(document).ready(function(){
 		$j.cookie('subscribe', 'closed', { expires: 730, path: '/' });
 	});
 
+	//click outside to close modal popup
+	$j('body').on('click','.ui-widget-overlay',function(){ $j('#subscribe-pop').dialog('close'); });
+
+
 	//timer script for popup action
 
 	var idleTime = 0;
@@ -153,15 +157,18 @@ $j(document).ready(function(){
 	        seen[txt] = true;
 	});
 
-	// var result = $j("#newsletter-result").val();
+	//change qty dropdown to text input for 10+ qty
 
-	// Validation.add('leadSpendEmail-noconfig', 'Please enter a valid email adddddress. For example johndoe@domain.com.', function(v) {
-	//     if (result === "disposable" || result === "unreachable" || result === "illegimate" || result === "undeliverable" || result === "unknown" || result === "error"){
-	//     	return false;
-	//     } else {
-	// 	    return true;
-	// 	}
+	$j('#qty').change(function(e){
+    var selected_item = $j(this).val();
+    e.preventDefault();
 
-	// });
+    if(selected_item === "other"){
+        $j('#otherqty').val("10").removeClass('hidden').focus().select();
+        $j('#qty').val("").remove();
+    }else{
+        $j('#otherqty').val(selected_item).addClass('hidden');
+    }
+});
 
 });

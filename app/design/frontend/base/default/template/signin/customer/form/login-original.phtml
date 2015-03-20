@@ -39,6 +39,7 @@
     <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
      <?php echo $this->getChildHtml('signin.socials')?>
     <form action="<?php echo $this->getPostActionUrl() ?>" method="post" id="login-form">
+    <?php echo $this->getBlockHtml('formkey'); ?>
         <div class="col2-set">
             <div class="col-1 new-users">
                 <div class="content">

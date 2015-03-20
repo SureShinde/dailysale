@@ -20,7 +20,7 @@
             <action method="addItem"><type>skin_js</type><script>js/jquery-ui.min.js</script></action>
             <action method="addItem"><type>skin_js</type><script>js/jquery.cookie.js</script></action>
             <action method="addItem"><type>skin_js</type><script>js/local.js</script></action>
-            <action method="addItem"><type>skin_js</type><script>js/jquery.leadspendemail-0.1.js</script></action>
+            <action method="addItem"><type>skin_js</type><script>js/jquery.leadspendemail.js</script></action>
             <!-- <action method="addItem">
                 <type>skin_css</type>
                 <name>css/styles-ie7-and-up.css</name>
@@ -42,7 +42,7 @@
     <catalog_product_view>
          <reference name="head">
                 <action method="addItem"><type>skin_js</type><script>js/product.js</script></action>
-            </reference>
+         </reference>
      </catalog_product_view>
 
     <customer_logged_in>

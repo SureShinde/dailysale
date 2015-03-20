@@ -1,0 +1,368 @@
+<?php /* @var $this Bronto_Common_Block_Adminhtml_System_Config_Guide */ ?>
+
+<?php if($this->isBrontoSection('bronto_newsletter')): ?>
+    
+    <?php if (!Mage::helper($this->getCurrentSection())->isEnabled()): ?>
+        /**
+         * Introduce them to the guide and provide instructions
+         */
+        guiders.createGuider({
+            buttons: [
+                {name: "<?php echo $this->__("Let's Get Started!") ?>", onclick: guiders.next},
+                {name: "<?php echo $this->__('No Thanks') ?>", onclick: guiders.hideAll}
+            ],
+            buttonCustomHTML: dontShowButtonHtml,
+            description: "<?php echo $this->__(
+                'This module allows you to Import your Magento Newsletter Subscribers into Bronto, specify which list(s) to assign them to*, ' .
+                'and configure the newsletter subscription checkbox on checkout%s* Specifying Subscription lists may only be completed within the store scope%s' .
+                '%sReady to Go?%s',
+                '<br /><br /><em>',
+                '</em>',
+                '<br /><br /><div style=\"text-align:right; font-weight:bold;\">',
+                '</div>'
+            ) ?>",
+            id: "start",
+            next: "bronto_newsletter-enable",
+            overlay: true, closeOnEscape: true,
+            title: "Bronto Extension - <?php echo $this->__('Newsletter Opt-In Module') ?>",
+            width: 600
+        });
+
+        /**
+         * Enable the Module
+         */
+        guiders.createGuider({
+            attachTo: '#bronto_newsletter_settings_enabled',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>", onclick: function() {
+                    if (jQuery('#bronto_newsletter_settings_enabled').val() == '1') {
+                        guiders.next();
+                    } else {
+                        alert("<?php echo $this->__("Don't forget to enable the module") ?>");
+                    }
+                }},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+            highlight: '#bronto_newsletter_settings_enabled',
+            description: "<?php echo $this->__("Let's enable the module and expose some more options.  Just set `Enable Module` to Yes and click `Save Config`.") ?>",
+            id: "bronto_newsletter-enable",
+            next: "bronto_newsletter-configure_cron",
+            position: 11,
+            overlay: true, closeOnEscape: true,
+            title: "<?php echo $this->__('Enable the Module') ?>",
+            width: 200
+        });
+
+        /**
+         * Configure Cron
+         */
+        guiders.createGuider({
+            attachTo: '#bronto_newsletter_settings',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+            closeOnEscape: true,
+            description: "<?php echo $this->__('These options allow you to configure the cron schedule and import process.') ?>",
+            id: "bronto_newsletter-configure_cron",
+            next: "bronto_newsletter-mage_cron",
+            position: 10,
+            title: "<?php echo $this->__('Configure the Cron') ?>",
+            width: 200
+        });
+
+        /**
+         * Explain Using Magento Cron
+         */
+        <?php $advancedCronLink = $this->helper('bronto_common')->getScopeUrl('/system_config/edit/section/bronto_verify'); ?>
+        guiders.createGuider({
+            attachTo: '#row_bronto_newsletter_settings_mage_cron',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true, closeOnEscape: true,
+            description: "<?php echo $this->__('The `Use Magento Cron` setting, when set to No, allows you to create your own crontab entry on your server instead of using Magento\'s cron system.  You should only change this if you are experiencing issues where the cron job for this module fails to run due to too many jobs.%sYou can find more details under the %s, including examples of how to configure the cron job.', '<br /><br />', '<a href=\"' . $advancedCronLink . '\" title=\"Advanced &raquo; Cron Settings\">Advanced Tab</a>') ?>",
+            id: "bronto_newsletter-mage_cron",
+            next: "bronto_newsletter-save_config_first",
+            position: 10,
+            title: "<?php echo $this->__('Cron Options') ?>",
+            width: 200
+        });
+
+
+        /**
+         * Save Configuration
+         */
+        guiders.createGuider({
+            attachTo: 'button.save',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Save Config') ?>", onclick: function() {
+                    configForm.submit()
+                }},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+            highlight: 'button.save',
+            overlay: true, closeOnEscape: true,
+            description: "<?php echo $this->__('Now that the initial settings have been configured, you should save them.  Click `Save Config` now.') ?>",
+            id: "bronto_newsletter-save_config_first",
+            next: "final",
+            position: 5,
+            title: "<?php echo $this->__('Save Config') ?>"
+        });
+
+    <?php else: ?>
+
+        /**
+         * Continue Guide now that module is enabled
+         */
+        guiders.createGuider({
+            buttons: [
+                {name: "<?php echo $this->__('Continue with Guide') ?>", onclick: guiders.next},
+                {name: "<?php echo $this->__('No Thanks') ?>", onclick: guiders.hideAll}
+            ],
+            buttonCustomHTML: dontShowButtonHtml,
+            description: "<?php echo $this->__(
+                'With the Newsletter Opt-In module enabled, we have a few more sections to explore.' .
+                '%sReady to Go?%s',
+                '<br /><br /><div style=\"text-align:right; font-weight:bold;\">',
+                '</div>'
+            ) ?>",
+            id: "start",
+            next: "bronto_newsletter-mage_cron",
+            overlay: true, closeOnEscape: true,
+            title: "Bronto Extension - <?php echo $this->__('Newsletter Opt-In Module') ?>",
+            width: 600
+        });
+
+        /**
+         * Explain Using Magento Cron
+         */
+        <?php $advancedCronLink = $this->helper('bronto_common')->getScopeUrl('/system_config/edit/section/bronto_verify'); ?>
+        guiders.createGuider({
+            attachTo: '#row_bronto_newsletter_settings_mage_cron',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true, closeOnEscape: true,
+            description: "<?php echo $this->__('The `Use Magento Cron` setting, when set to No, allows you to create your own crontab entry on your server instead of using Magento\'s cron system.  You should only change this if you are experiencing issues where the cron job for this module fails to run due to too many jobs.%sYou can find more details under the %s, including examples of how to configure the cron job.', '<br /><br />', '<a href=\"' . $advancedCronLink . '\" title=\"Advanced &raquo; Cron Settings\">Advanced Tab</a>') ?>",
+            id: "bronto_newsletter-mage_cron",
+            next: "bronto_newsletter-checkout_settings",
+            position: 10,
+            title: "<?php echo $this->__('Cron Options') ?>",
+            width: 200
+        });
+
+        /**
+         * Explain Checkout Settings
+         */
+        guiders.createGuider({
+            attachTo: '#bronto_newsletter_checkout-head',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+            closeOnEscape: true,
+            description: "<?php echo $this->__(
+                'The Checkout section contains all the configurations for the Newsletter Subscription checkbox that displays on checkout.  ' .
+                'You can determine when and where it should show, if it will be checked by default, and the text to show as the label for it.'
+            ) ?>",
+            id: "bronto_newsletter-checkout_settings",
+            next: "bronto_newsletter-contacts_settings",
+            position: 9,
+            title: "<?php echo $this->__('Checkout Settings') ?>",
+            width: 200
+        });
+
+        /**
+         * Explain Contacts Settings
+         */
+        guiders.createGuider({
+            attachTo: '#bronto_newsletter_contacts-head',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+            description: "<?php echo $this->__(
+                'The Contacts section allows you to determine if the Magento Subscriber status should overwrite the contact status in Bronto.  ' .
+                'When in the Website or Store configuration scope, you can select which list(s) to add subscribers to within Bronto.'
+            ) ?>",
+            id: "bronto_newsletter-contacts_settings",
+            next: "bronto_newsletter-progress_bar",
+            position: 9,
+            title: "<?php echo $this->__('Contacts Settings') ?>",
+            width: 200
+        });
+
+        /**
+         * Explain Progress Bar
+         */
+        guiders.createGuider({
+            attachTo: '.bronto-progress-bar',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+            closeOnEscape: true,
+            description: "<?php echo $this->__(
+                'This is the Progress bar, it will show the status of the Subscriber import process including how many have successfully imported, ' .
+                'how many have been suppressed due to errors, and how many belong to a store where this module is not enabled.'
+            ) ?>",
+            id: "bronto_newsletter-progress_bar",
+            next: "bronto_newsletter-cron_table",
+            position: 11,
+            title: "<?php echo $this->__('Making Progress') ?>",
+            width: 400
+        });
+
+        /**
+         * Cron Table
+         */
+        guiders.createGuider({
+            attachTo: '.bronto-cron-table',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+            highlight: '.bronto-cron-table',
+            overlay: true, closeOnEscape: true,
+            description: "<?php echo $this->__('This table shows you the recent history of the Cron Jobs that are pending, running, have successfully completed, or have failed upon execution.') ?>",
+            id: "bronto_newsletter-cron_table",
+            next: "bronto_newsletter-suppression_interface",
+            position: 10,
+            title: "<?php echo $this->__('Cron Table') ?>",
+            width: 200
+        });
+
+        /**
+         * Explain Suppression Interface
+         */
+        guiders.createGuider({
+            attachTo: '#bronto_newsletter_suppressed-head',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+            closeOnEscape: true,
+            onShow: function() {
+              sectionOpen('#bronto_newsletter_suppressed-head');
+              if ($('bronto-suppression-interface').innerHTML.length == 0) {
+                loadSuppressionTable(1);
+              }
+            },
+            onHide: function() { sectionClose('#bronto_newsletter_suppressed-head'); },
+            description: "<?php echo $this->__(
+                'The Suppressed Subscribers section will show you important details about any Subscribers that failed to import and were suppressed due to an error.  ' .
+                'This section is collapsed by default, so just click on the title to expand it.'
+            ) ?>",
+            id: "bronto_newsletter-suppression_interface",
+            next: "bronto_newsletter-sync_button",
+            position: 9,
+            title: "<?php echo $this->__('Suppressed Subscribers') ?>",
+            width: 200
+        });
+
+        /**
+         * Explain Sync Button
+         */
+        guiders.createGuider({
+            attachTo: '.bronto-cron-sync',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+        highlight: '.bronto-cron-sync',
+        overlay: true, closeOnEscape: true,
+            description: "<?php echo $this->__(
+                'If you find that you have more subscribers in Magento than are being represented in the progress bar count, ' .
+                'you can click this button and it will add any* missing Subscribers into the queue.' .
+                '%s* The number of Subscribers synced at a time is limited by the `Sync Limit` setting found in the Settings section.%s',
+                '<br /><br /><em>',
+                '</em>'
+            ) ?>",
+            id: "bronto_newsletter-sync_button",
+            next: "bronto_newsletter-reset_button",
+            position: 1,
+            title: "<?php echo $this->__('Sync Subscriber Queue') ?>",
+            width: 400
+        });
+
+        /**
+         * Explain Reset Button
+         */
+        guiders.createGuider({
+            attachTo: '.bronto-cron-reset',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+            highlight: '.bronto-cron-reset',
+            overlay: true, closeOnEscape: true,
+            description: "<?php echo $this->__(
+                "If you find that your Subscribers aren't importing with the correct information, you have mapped a new list, " .
+                'or you have a large number of suppressed Subscribers that are ready to retry, you can click this button and ALL subscribers in the queue will be reset and will have to be imported again.<br/><br/>' .
+                'Data within Bronto will not be modified until Subscribers are reimported.'
+            ) ?>",
+            id: "bronto_newsletter-reset_button",
+            next: "bronto_newsletter-run_button",
+            position: 1,
+            title: "<?php echo $this->__('Reset Subscriber Queue') ?>",
+            width: 400
+        });
+
+        /**
+         * Explain Run Button
+         */
+        guiders.createGuider({
+            attachTo: '.bronto-cron-run',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true,
+            highlight: '.bronto-cron-run',
+            overlay: true, closeOnEscape: true,
+            description: "<?php echo $this->__(
+                'Once you have all your settings configured and attribute fields mapped, you can start the import process* manually by clicking this button. ' .
+                '%s* The number of Subscribers imported per click is limited by the `Limit` setting found in the Settings section.%s' ,
+                '<br /><br /><em>',
+                '</em>'
+            ) ?>",
+            id: "bronto_newsletter-run_button",
+            next: "scope",
+            position: 1,
+            title: "<?php echo $this->__('Run the Import') ?>",
+            width: 400
+        });
+
+<?php endif; ?>
+
+    <?php if($this->canShowGuide()): ?>
+        guiders.show('start');
+    <?php endif; ?>
+
+<?php endif; ?>

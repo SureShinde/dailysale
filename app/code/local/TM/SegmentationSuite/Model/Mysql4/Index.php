@@ -93,7 +93,7 @@ class TM_SegmentationSuite_Model_Mysql4_Index extends Mage_Core_Model_Mysql4_Abs
             ->from(array('ssi' => $this->getTable('segmentationsuite/index')), 'entity_id')
             ->where('ssi.segment_id in (?)', $segmentId)
             ->order('id')
-            ->limit($count, $offset);
+            ->limit($count, 0);
 
         if (count($res) > 0) {
             $getCustomerIds->where('ssi.entity_id not in(?)', $res);

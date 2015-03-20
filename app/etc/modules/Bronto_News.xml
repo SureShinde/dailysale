@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<Bronto_News>
+			<active>true</active>
+			<codePool>community</codePool>
+			<depends>
+				<Bronto_Common/>
+			</depends>
+		</Bronto_News>
+	</modules>
+</config>

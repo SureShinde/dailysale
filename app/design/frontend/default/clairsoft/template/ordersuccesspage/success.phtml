@@ -42,7 +42,7 @@ if($customer){
 	$_orders = Mage::getModel('sales/order')->getCollection()->addFieldToFilter('customer_id', $customer);                        
 	$_orderCnt = $_orders->count(); //orders count
 	//if customer has more than an order, they're not new
-	$newcustomer = ($_orderCnt > 0 ? 0 : 1);
+	$newcustomer = ($_orderCnt > 1 ? 0 : 1);
 }
 //setup currency code
 $currency = $order->getOrderCurrencyCode();
@@ -80,6 +80,17 @@ $orderObj = Mage::getModel('sales/order')->loadByIncrementId($this->getOrderId()
     <button type="button" class="button" title="<?php echo $this->__('Continue Shopping') ?>" onclick="window.location='<?php echo $this->getUrl() ?>'"><?php echo $this->__('Continue Shopping') ?></button>
 </div>
 
+<!-- conversion value for Adroll smart pixel -->
+
+<script type="text/javascript">
+  adroll_conversion_value_in_dollars = <?php echo($subtotal); ?>;
+  adroll_custom_data = {"ORDER_ID": <?php echo($this->getOrderId()); ?>};
+</script>
+
+<!-- FlexOffers.com tracking pixel -->
+
+<img src="http://track.flexlinks.com/tracker.aspx?AID={3BCF6C5F-1458-4D9B-AAED-D98B70BF50B9}&AMT=<?php echo($subtotal); ?>&UID=<?php echo($this->getOrderId()); ?>" width="1" height="1" alt=""/> <!-- END OF FLEXOFFERS.COM TRACKING CODE -->
+
 <!-- Google Code for Daily Sale Conversion Conversion Page -->
 <script type="text/javascript">
 /* <![CDATA[ */
@@ -100,3 +111,39 @@ var google_remarketing_only = false;
 <img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/1003172301/?value=1.00&amp;currency_code=USD&amp;label=xLwaCJCAtFgQzeOs3gM&amp;guid=ON&amp;script=0"/>
 </div>
 </noscript>
+
+<!-- START Google Trusted Stores Order -->
+<div id="gts-order" style="display:none;" translate="no">
+
+  <!-- start order and merchant information -->
+  <span id="gts-o-id">MERCHANT_ORDER_ID</span>
+  <span id="gts-o-domain">MERCHANT_ORDER_DOMAIN</span>
+  <span id="gts-o-email">CUSTOMER_EMAIL</span>
+  <span id="gts-o-country">CUSTOMER_COUNTRY</span>
+  <span id="gts-o-currency">CURRENCY</span>
+  <span id="gts-o-total">ORDER_TOTAL</span>
+  <span id="gts-o-discounts">ORDER_DISCOUNTS</span>
+  <span id="gts-o-shipping-total">ORDER_SHIPPING</span>
+  <span id="gts-o-tax-total">ORDER_TAX</span>
+  <span id="gts-o-est-ship-date">ORDER_EST_SHIP_DATE</span>
+  <span id="gts-o-est-delivery-date">ORDER_EST_DELIVERY_DATE</span>
+  <span id="gts-o-has-preorder">HAS_BACKORDER_PREORDER</span>
+  <span id="gts-o-has-digital">HAS_DIGITAL_GOODS</span>
+  <!-- end order and merchant information -->
+
+  <!-- start repeated item specific information -->
+  <!-- item example: this area repeated for each item in the order -->
+  <span class="gts-item">
+    <span class="gts-i-name">ITEM_NAME</span>
+    <span class="gts-i-price">ITEM_PRICE</span>
+    <span class="gts-i-quantity">ITEM_QUANTITY</span>
+    <span class="gts-i-prodsearch-id">ITEM_GOOGLE_SHOPPING_ID</span>
+    <span class="gts-i-prodsearch-store-id">ITEM_GOOGLE_SHOPPING_ACCOUNT_ID</span>
+    <span class="gts-i-prodsearch-country">ITEM_GOOGLE_SHOPPING_COUNTRY</span>
+    <span class="gts-i-prodsearch-language">ITEM_GOOGLE_SHOPPING_LANGUAGE</span>
+  </span>
+  <!-- end item 1 example -->
+  <!-- end repeated item specific information -->
+
+</div>
+<!-- END Google Trusted Stores Order -->

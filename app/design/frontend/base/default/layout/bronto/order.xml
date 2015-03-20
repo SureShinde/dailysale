@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+        <reference name="before_body_end">
+            <block type="bronto_order/bta" name="bronto.bta" as="bronto_bta">
+                <action method="setTemplate">
+                    <template>bronto/order/js.phtml</template>
+                </action>
+            </block>
+        </reference>
+    </default>
+    <checkout_onepage_success>
+        <reference name="content">
+          <block type="bronto_order/redemption" name="bronto.redemption" as="bronto_redemption" after="-">
+            <action method="setTemplate">
+              <template>bronto/order/redemption.phtml</template>
+            </action>
+          </block>
+        </reference>
+    </checkout_onepage_success>
+</layout>
+

@@ -1,0 +1,110 @@
+<?php echo $this->getFormInitScripts(); ?>
+
+<div class="content-header">
+  <?php echo $this->getHeaderHtml(); ?>
+  <p class="content-buttons form-buttons">
+    <?php echo $this->getButtonsHtml('header'); ?>
+  </p>
+</div>
+
+<?php if (!$this->isSingleStoreMode()): ?>
+  <?php echo $this->getStoreSwitcherHtml(); ?>
+<?php endif; ?>
+
+<form id="preview_form" method="post">
+  <?php echo $this->getFormHtml(); ?>
+</form>
+
+<script type="text/javascript">
+  var previewForm = new varienForm('preview_form', '');
+</script>
+
+<?php if ($this->hasFooterButtons()) : ?>
+  <div class="content-footer">
+    <p class="content-buttons form-buttons">
+      <?php echo $this->getButtonsHtml('footer'); ?>
+    </p>
+  </div>
+<?php endif; ?>
+
+<script type="text/javascript">
+function updateRecommendations() {
+  var preview = $('previewProductsGrid');
+  var recommendation = $('entity_id');
+  var productIds = $('product_ids').value.split(/\s*,\s*/);
+  var button = $$('button[onclick^=messagePicker]').first();
+
+  new Ajax.Request("<?php echo $this->getUpdatePreviewUrl(); ?>", {
+    method: 'post',
+    parameters: {
+      entity_id: recommendation.value,
+      'product_ids[]': productIds
+    },
+    onSuccess: function(resp) {
+      preview.parentNode.innerHTML = resp.responseText;
+    }
+  });
+
+  if (recommendation.value == '') {
+    button
+      .writeAttribute('disabled', true)
+      .addClassName('disabled')
+      .removeClassName('go');
+  } else {
+    button
+      .writeAttribute('disabled', false)
+      .removeClassName('disabled')
+      .addClassName('go');
+  }
+}
+
+function selectedOkHandler() {
+  updateRecommendations();
+}
+
+function messagePicker() {
+  Dialog.confirm({
+    url: "<?php echo $this->getMessageDialogUrl(); ?>",
+  }, {
+    title: 'Test Recommended Products in Email',
+    okLabel: 'Send Email',
+    width: 640,
+    height: 230,
+    id: 'browser_window',
+    top: 50,
+    hideEffect: Element.hide,
+    showEffect: Element.show,
+    recenterAuto: true,
+    className: 'magento',
+    closable: true,
+    resizable: false,
+    windowClassName: 'popup-window',
+    zIndex: 400,
+    ok: function() {
+      var dialog = this;
+      new Ajax.Request("<?php echo $this->getSendMessageUrl(); ?>", {
+        method: 'post',
+        parameters: {
+          entity_id: $('entity_id').value,
+          message_id: $('hmessage_idh').value,
+          email_address: $('hemail_addressh').value,
+          'product_ids[]': $('product_ids').value.split(/\s*,\s*/)
+        },
+        onSuccess: function(resp) {
+          var json = resp.responseJSON;
+          if (json.missingParentRequirement || json.success) {
+            $('messages').innerHTML = json.message;
+            dialog.close();
+          } else {
+            alert(json.message);
+          }
+        }
+      });
+    }
+  });
+}
+</script>
+
+<?php echo $this->getSelectedProductsJs(); ?>
+
+<?php echo $this->getFormScripts(); ?>

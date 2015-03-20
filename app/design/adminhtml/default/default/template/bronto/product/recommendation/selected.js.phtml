@@ -1,0 +1,107 @@
+<script type="text/javascript">
+function selectProducts(fieldId, matchesField) {
+  if (matchesField) {
+    var source = fieldId.split('_')[1];
+    var original = source + "_source";
+    var title = $(original).getAttribute('title');
+  } else {
+    var source = 'none';
+    var title = 'Optional Products';
+  }
+
+  var selected = {};
+  var productIds = $(fieldId).value.split(/\s*,\s*/);
+  for (var i = 0; i < productIds.length; i++) {
+    selected[productIds[i]] = 1;
+  }
+
+  var selectedToProducts = function() {
+    var productIds = [];
+    for (var productId in selected) {
+      if (!productId) {
+        continue;
+      }
+      productIds.push(productId);
+    }
+    return productIds;
+  };
+
+  var setCheckbox = function(element, checked, callback) {
+    if (!isNaN(element.value)) {
+      if (element.checked) {
+        selected[element.value] = 1;
+      } else {
+        delete selected[element.value];
+      }
+      if (callback) {
+        callback(element, checked);
+      }
+    }
+  };
+
+  var dialog = Dialog.confirm({
+    url: "<?php echo $this->getSelectAjaxUrl(); ?>",
+    options: {
+      method: 'post',
+      parameters: {
+        source: source
+      },
+    }
+  }, {
+    title: title,
+    okLabel: "Select Products",
+    okButtonClass: 'go',
+    width: 820,
+    height: 410,
+    id: 'browser_window',
+    top: 50,
+    hideEffect: Element.hide,
+    showEffect: Element.show,
+    recenterAuto: true,
+    className: 'magento',
+    draggable: false,
+    closable: true,
+    resizable: false,
+    windowClassName: 'popup-window',
+    zIndex: 400,
+    ok: function() {
+      $(fieldId).value = selectedToProducts().join(', ');
+      this.close();
+      try {
+        selectedOkHandler();
+      } catch (e) {
+        // Swallow
+      }
+    }
+  });
+
+  Windows.addObserver({
+    onShow: function() {
+      var element = $$('#browser_window_content script').first();
+      if (element) {
+        var content = element.innerText;
+        eval(content);
+        var params = {
+          form_key: FORM_KEY,
+          source: source,
+          'products[]': selectedToProducts(),
+        };
+        selectedProductsGridJsObject.checkboxCheckCallback = function(grid, element, checked) {
+          setCheckbox(element, checked, function() {
+            params['products[]'] = selectedToProducts();
+          });
+        };
+        selectedProductsGridJsObject.rowClickCallback = function(grid, event) {
+          var element = Event.element(event);
+          if (['input'].indexOf(element.tagName.toLowerCase()) != -1) {
+            setCheckbox(element, element.checked, function() {
+              params['products[]'] = selectedToProducts();
+            });
+          }
+        };
+        selectedProductsGridJsObject.reloadParams = params;
+      }
+    }
+  });
+}
+</script>

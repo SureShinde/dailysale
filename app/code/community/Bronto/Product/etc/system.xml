@@ -1,0 +1,203 @@
+<?xml version="1.0"?>
+<config>
+    <sections>
+        <bronto_product module="bronto_product">
+            <label><![CDATA[<div id="bronto_product_icon_block">Product Recommendations</div>]]></label>
+            <tab>bronto</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>896</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <about>
+                    <frontend_type>text</frontend_type>
+                    <frontend_model>bronto_product/adminhtml_system_config_about</frontend_model>
+                    <sort_order>0</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                </about>
+                <settings>
+                    <label>Settings</label>
+                    <frontend_type>text</frontend_type>
+                    <frontend_model>bronto_product/adminhtml_system_config_information</frontend_model>
+                    <sort_order>20</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <comment><![CDATA[Module configuration is located at:
+                      <strong>Promotions &rsaquo; <a
+                        href="{url}">Bronto Product
+                        Recommendations</a></strong><br/>
+                    <div class="bronto-with-help">
+                      <strong>Recommended products adds new API tags to
+                        configured messages.</strong>
+                      <div class="bronto-help bronto-vertical-align">
+                        <div class="bronto-help-window" style="width: 300px">
+                          <table id="api_info" style="width: 300px; border: 1px solid #d6d6d6;">
+                            <thead>
+                              <tr style="border-bottom: 1px solid #d6d6d6;">
+                                <th>Loop Tag Description</th>
+                                <th>Loop Tag</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>Related Product's ID</td>
+                                <td>relatedId_#</td>
+                              </tr>
+                              <tr>
+                                <td>Related Product's name</td>
+                                <td>relatedName_#</td>
+                              </tr>
+                              <tr>
+                                <td>Related Product's description &nbsp;</td>
+                                <td>relatedDescription_#</td>
+                              </tr>
+                              <tr>
+                                <td>Related Product's sku</td>
+                                <td>relatedSku_#</td>
+                              </tr>
+                              <tr>
+                                <td>Related Product's price</td>
+                                <td>relatedPrice_#</td>
+                              </tr>
+                              <tr>
+                                <td>Related Product's URL</td>
+                                <td>relatedUrl_#</td>
+                              </tr>
+                              <tr>
+                                <td>Related Product's image</td>
+                                <td>relatedImgUrl_#</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                     ]]></comment>
+                     <fields>
+                         <enabled>
+                           <label>Enable Module</label>
+                           <frontend_type>select</frontend_type>
+                           <backend_model>bronto_common/system_config_backend_enable</backend_model>
+                           <source_model>adminhtml/system_config_source_yesno</source_model>
+                           <sort_order>10</sort_order>
+                           <show_in_default>1</show_in_default>
+                           <show_in_website>1</show_in_website>
+                           <show_in_store>1</show_in_store>
+                         </enabled>
+                         <mage_cron>
+                             <label>Use Magento Cron</label>
+                             <depends>
+                                 <enabled>1</enabled>
+                             </depends>
+                             <frontend_type>select</frontend_type>
+                             <frontend_model>bronto_common/adminhtml_system_config_form_field</frontend_model>
+                             <source_model>adminhtml/system_config_source_yesno</source_model>
+                             <sort_order>20</sort_order>
+                             <show_in_default>1</show_in_default>
+                             <show_in_website>0</show_in_website>
+                             <show_in_store>0</show_in_store>
+                             <comment>
+                               <![CDATA[Setting to <em>No</em> will prevent the Magento Cron from triggering the import process for this module.<br />For more details, check the <em>Cron Settings</em> section in the <strong>Bronto &raquo; Advanced</strong> tab.]]></comment>
+                         </mage_cron>
+                         <frequency translate="label">
+                             <label>Frequency</label>
+                             <depends>
+                                 <enabled>1</enabled>
+                                 <mage_cron>1</mage_cron>
+                             </depends>
+                             <frontend_type>select</frontend_type>
+                             <source_model>bronto_common/system_config_source_cron_frequency</source_model>
+                             <backend_model>bronto_product/system_config_cron</backend_model>
+                             <sort_order>40</sort_order>
+                             <show_in_default>1</show_in_default>
+                             <show_in_website>0</show_in_website>
+                             <show_in_store>0</show_in_store>
+                         </frequency>
+                         <interval translate="label">
+                             <label>Interval</label>
+                             <depends>
+                                 <enabled>1</enabled>
+                                 <mage_cron>1</mage_cron>
+                                 <frequency>I</frequency>
+                             </depends>
+                             <frontend_type>select</frontend_type>
+                             <source_model>bronto_common/system_config_source_cron_minutes</source_model>
+                             <sort_order>50</sort_order>
+                             <show_in_default>1</show_in_default>
+                             <show_in_website>0</show_in_website>
+                             <show_in_store>0</show_in_store>
+                             <comment>Set this value larger than your cron.php launch period.</comment>
+                         </interval>
+                         <minutes translate="label">
+                             <label>Minute of the Hour</label>
+                             <depends>
+                                 <enabled>1</enabled>
+                                 <frequency>H</frequency>
+                             </depends>
+                             <frontend_type>text</frontend_type>
+                             <sort_order>60</sort_order>
+                             <show_in_default>1</show_in_default>
+                             <show_in_website>0</show_in_website>
+                             <show_in_store>0</show_in_store>
+                             <comment>Valid range: 0-59 (default 0).</comment>
+                         </minutes>
+                         <time translate="label">
+                             <label>Start Time</label>
+                             <depends>
+                                 <enabled>1</enabled>
+                                 <mage_cron>1</mage_cron>
+                             </depends>
+                             <frontend_type>time</frontend_type>
+                             <sort_order>70</sort_order>
+                             <show_in_default>1</show_in_default>
+                             <show_in_website>0</show_in_website>
+                             <show_in_store>0</show_in_store>
+                         </time>
+                         <description>
+                            <label>Product Description Attribute</label>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bronto_order/system_config_source_description</source_model>
+                            <sort_order>80</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Product attribute used for the
+                              <em>%%%%#relatedDescription_#%%%%</em>
+                              tag.]]></comment>
+                         </description>
+                         <char_limit>
+                            <label>Truncate Description Characters</label>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>90</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>If the selected product description attribute is greater than
+                              this amount, the content will be
+                              truncated.</comment>
+                         </char_limit>
+                     </fields>
+                </settings>
+                <cron_list>
+                    <frontend_type>text</frontend_type>
+                    <frontend_model>bronto_product/adminhtml_system_config_cron</frontend_model>
+                    <sort_order>30</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                </cron_list>
+            </groups>
+        </bronto_product>
+    </sections>
+</config>

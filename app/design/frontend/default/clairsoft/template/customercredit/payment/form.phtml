@@ -41,7 +41,7 @@ $var4 = round(Mage::helper('customercredit')->getRealCreditValue(),2);
 <fieldset class="form-list">
     <ul id="payment_form_<?php echo $this->getMethodCode() ?>" style="display:none">
         <li>
-            <label><?php echo Mage::helper('customercredit')->__("Using %s of $%s", $var1,$var2,$var3,$var4)?></label>
+            <label><?php echo Mage::helper('customercredit')->__("Using %s of $%s", $var1,$var4)?></label>
         </li>
     </ul>
 </fieldset>

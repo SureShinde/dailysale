@@ -1,0 +1,260 @@
+<?php /* @var $this Bronto_Common_Block_Adminhtml_System_Config_Guide */ ?>
+
+<?php if($this->isBrontoSection('bronto_reminder')): ?>
+
+    <?php if (!Mage::helper($this->getCurrentSection())->isEnabled()): ?>
+        /**
+         * Introduce them to the guide and provide instructions
+         */
+        guiders.createGuider({
+            buttons: [
+                {name: "<?php echo $this->__("Let's Get Started!") ?>", onclick: guiders.next},
+                {name: "<?php echo $this->__('No Thanks') ?>", onclick: guiders.hideAll}
+            ],
+            buttonCustomHTML: dontShowButtonHtml,
+            description: "<?php echo $this->__(
+                'This module allows you to set up reminder rules that will catch abandoned Carts/Wishlists and send an email reminding the customer to checkout.' .
+                "%sLet's get you set up!%sReady to Go?%s",
+                '<br /><br />',
+                '<br /><br /><div style=\"text-align:right; font-weight:bold;\">',
+                '</div>'
+            ) ?>",
+            id: "start",
+            next: "bronto_reminder-enable",
+            overlay: true, closeOnEscape: true,
+            title: "Bronto Extension - <?php echo $this->__('Reminder Emails Module') ?>",
+            width: 600
+        });
+
+        /**
+         * Enable the Module
+         */
+        guiders.createGuider({
+            attachTo: '#bronto_reminder_settings_enabled',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>", onclick: function() {
+                    if (jQuery('#bronto_reminder_settings_enabled').val() == '1') {
+                        guiders.next();
+                    } else {
+                        alert("<?php echo $this->__("Don't forget to enable the module") ?>");
+                    }
+                }},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true, closeOnEscape: true,
+            highlight: '#bronto_reminder_settings_enabled',
+            description: "<?php echo $this->__("Let's enable the module and expose some more options.  Just set `Enable Module` to Yes.") ?>",
+            id: "bronto_reminder-enable",
+            next: "bronto_reminder-allow_send",
+            position: 11,
+            overlay: true,
+            title: "<?php echo $this->__('Enable the Module') ?>",
+            width: 200
+        });
+
+        /**
+         * Explain the Allow Sending Reminders Option
+         */
+        guiders.createGuider({
+            attachTo: '#bronto_reminder_settings_allow_send',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true, closeOnEscape: true,
+            highlight: '#bronto_reminder_settings_allow_send',
+            description: "<?php echo $this->__("This option, when set to 'No', will prevent Reminder Emails from being sent.  This gives you the time you need to get all your Reminder Rules set up, your Bronto Messages designed, and everything in place before you start sending reminders.  Once you are ready, just switch this to yes and you are good to go.") ?>",
+            id: "bronto_reminder-allow_send",
+            next: "bronto_reminder-configure_cron",
+            position: 11,
+            overlay: true,
+            title: "<?php echo $this->__('Allow Sending Reminders?') ?>",
+            width: 200
+        });
+
+        /**
+         * Configure Cron
+         */
+        guiders.createGuider({
+            attachTo: '#bronto_reminder_settings',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true, closeOnEscape: true,
+            description: "<?php echo $this->__('The rest of this section gives you control over logging for Reminder Deliveries, Cron Settings, and Email Capture preferences.') ?>",
+            id: "bronto_reminder-configure_cron",
+            next: "bronto_reminder-save_config_first",
+            position: 10,
+            title: "<?php echo $this->__('Additional Configurations') ?>",
+            width: 200
+        });
+
+        /**
+         * Save Configuration
+         */
+        guiders.createGuider({
+            attachTo: 'button.save',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Save Config') ?>", onclick: function() {
+                    configForm.submit()
+                }},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true, closeOnEscape: true,
+            highlight: 'button.save',
+            overlay: true, closeOnEscape: true,
+            description: "<?php echo $this->__('Now that the initial settings have been configured, you should save them.  Click `Save Config` now.') ?>",
+            id: "bronto_reminder-save_config_first",
+            next: "final",
+            position: 5,
+            title: "<?php echo $this->__('Save Config') ?>"
+        });
+
+    <?php else: ?>
+
+        /**
+         * Continue Guide now that module is enabled
+         */
+        guiders.createGuider({
+            buttons: [
+                {name: "<?php echo $this->__('Continue with Guide') ?>", onclick: guiders.next},
+                {name: "<?php echo $this->__('No Thanks') ?>", onclick: guiders.hideAll}
+            ],
+            buttonCustomHTML: dontShowButtonHtml,
+            description: "<?php echo $this->__('With the Reminder Emails module enabled, you are all set.') ?>",
+            id: "start",
+            next: "bronto_reminder-configure_cron",
+            overlay: true, closeOnEscape: true,
+            title: "Bronto Extension - <?php echo $this->__('Reminder Emails Module') ?>",
+            width: 600
+        });
+
+        /**
+         * Configure Cron
+         */
+        guiders.createGuider({
+            attachTo: '#bronto_reminder_settings',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true, closeOnEscape: true,
+            description: "<?php echo $this->__('The rest of this section gives you control over logging for Reminder Deliveries, Cron Settings, and Email Capture preferences.') ?>",
+            id: "bronto_reminder-configure_cron",
+            next: "bronto_reminder-delivery_logging",
+            position: 10,
+            title: "<?php echo $this->__('Additional Configurations') ?>",
+            width: 200
+        });
+
+        /**
+         * Explain Logging
+         */
+        guiders.createGuider({
+            attachTo: '#row_bronto_reminder_settings_log_enabled',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true, closeOnEscape: true,
+            description: "<?php echo $this->__('`Log Deliveries` and `Log Delivery Fields` allow you to create a log that you can view from within the Reminder Emails page that will show delivery status and the fields that were sent with the email.') ?>",
+            id: "bronto_reminder-delivery_logging",
+            next: "bronto_reminder-mage_cron",
+            position: 10,
+            title: "<?php echo $this->__('Log Deliveries') ?>",
+            width: 200
+        });
+
+        /**
+         * Explain Using Magento Cron
+         */
+        <?php $advancedCronLink = $this->helper('bronto_common')->getScopeUrl('/system_config/edit/section/bronto_verify'); ?>
+        guiders.createGuider({
+            attachTo: '#row_bronto_reminder_settings_mage_cron',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true, closeOnEscape: true,
+            description: "<?php echo $this->__('The `Use Magento Cron` setting, when set to No, allows you to create your own crontab entry on your server instead of using Magento\'s cron system.  You should only change this if you are experiencing issues where the cron job for this module fails to run due to too many jobs.%sYou can find more details under the %s, including examples of how to configure the cron job.', '<br /><br />', '<a href=\"' . $advancedCronLink . '\" title=\"Advanced &raquo; Cron Settings\">Advanced Tab</a>') ?>",
+            id: "bronto_reminder-mage_cron",
+            next: "bronto_reminder-email_capture",
+            position: 10,
+            title: "<?php echo $this->__('Cron Options') ?>",
+            width: 200
+        });
+
+        /**
+         * Explain email capture
+         */
+        guiders.createGuider({
+            attachTo: '#row_bronto_reminder_settings_field_selector',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true, closeOnEscape: true,
+            description: "<?php echo $this->__("The Email Capture settings allow you to target fields with the specified CSS selector(s) throughout your entire site and capture the email addressentered by the customer.  A cookie is then set to identify the customer in the system even if they are not logged in, and the lifetime of the cookie is configured by the `Email Capture Cookie Lifetime` setting.%sThis allows the system to better handle abandoned carts for Guests by applying the last email address they entered on the site to their cart.", '<br /><br />') ?>",
+            id: "bronto_reminder-email_capture",
+            next: "bronto_reminder-cron_table",
+            position: 10,
+            title: "<?php echo $this->__('Email Capture') ?>",
+            width: 200
+        });
+
+        /**
+         * Cron Table
+         */
+        guiders.createGuider({
+            attachTo: '.bronto-cron-table',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true, closeOnEscape: true,
+            highlight: '.bronto-cron-table',
+            overlay: true, closeOnEscape: true,
+            description: "<?php echo $this->__('This table shows you the recent history of the Cron Jobs that are pending, running, have successfully completed, or have failed upon execution.') ?>",
+            id: "bronto_reminder-cron_table",
+            next: "bronto_reminder-go_link",
+            position: 10,
+            title: "<?php echo $this->__('Cron Table') ?>",
+            width: 200
+        });
+
+        /**
+         * Link to Reminders
+         */
+        guiders.createGuider({
+            attachTo: '#bronto_reminder_settings .comment a',
+            buttons: [
+                {name: "<?php echo $this->__('Back') ?>"},
+                {name: "<?php echo $this->__('Next') ?>"},
+                {name: "<?php echo $this->__('Close') ?>"}
+            ],
+            autoFocus: true, closeOnEscape: true,
+            description: "<?php echo $this->__('When you are ready to start setting up your Reminder Rules, you can simply follow this link.') ?>",
+            id: "bronto_reminder-go_link",
+            next: "scope",
+            position: 9,
+            title: "<?php echo $this->__('Reminder Rules') ?>",
+            width: 200
+        });
+
+    <?php endif; ?>
+
+    <?php if($this->canShowGuide()): ?>
+        guiders.show('start');
+    <?php endif; ?>
+
+<?php endif; ?>
