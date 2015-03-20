@@ -45,6 +45,7 @@ class Fiuze_Bestsellercron_Model_Cron extends Mage_Core_Model_Abstract{
             ->addAttributeToFilter('bestsellercron_flag', true)
             ->addCategoryFilter($this->_bestSellerCategory);
 
+
         foreach($productCollection as $product){
             $categoryIds = $product->getCategoryIds();
             $categoryKey = array_search($this->_bestSellerCategory->getId(), $categoryIds);
@@ -54,8 +55,8 @@ class Fiuze_Bestsellercron_Model_Cron extends Mage_Core_Model_Abstract{
             }
 
             unset($categoryIds[$categoryKey]);
-
             try{
+
                 $product->setCategoryIds($categoryIds)
                     ->setBestsellercronFlag(false)
                     ->save();
@@ -91,6 +92,13 @@ class Fiuze_Bestsellercron_Model_Cron extends Mage_Core_Model_Abstract{
                 Mage::logException($e);
             }
         }
+
+        Mage::app()->setCurrentStore(Mage::getModel('core/store')->load(Mage_Core_Model_App::ADMIN_STORE_ID));
+        $category = Mage::getModel('catalog/category')->setStoreId(Mage_Core_Model_App::ADMIN_STORE_ID)->load($this->_bestSellerCategory->getId());
+
+        $flipped_arr = array_flip($bestSellers);
+        $category->setPostedProducts($flipped_arr);
+        $category->save();
 
         return true;
     }

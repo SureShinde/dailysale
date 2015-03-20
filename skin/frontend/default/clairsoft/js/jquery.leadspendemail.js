@@ -81,13 +81,18 @@
 			} else {
 				resultElementName = "";
 			}
-			
+
+            // Class attr will always be leadSpendEmail[+suffix]
+            resultElementClass = "leadSpendEmail" + resultInputSuffix;
+
+
 			// Class attr will always be leadSpendEmail[+suffix]
 			resultElementClass = "leadSpendEmail" + resultInputSuffix;
-			
-			resultElementHtml = "<input class=\"" 	+ resultElementClass +
+			resultElementHtml = "<div class=\"" 	+ resultElementClass +
 									   "\" id=\"" 	+ resultElementID +
-									   "\" name=\"" + resultElementName + "\">";
+									   "\" name=\"" + resultElementName + "</div>";
+
+            resultElementHtml = "<div class=\"validation-advice\" id=\"" + resultElementID + "\">Please enter a valid email address.</div>";
 			this.resultElement = $( resultElementHtml );
 			this.resultElement.hide();
 			$( this.element ).after( this.resultElement );
@@ -139,6 +144,15 @@
 					this._handleDelaySubmit();
 				}
 			}
+
+            if ( $( this.resultElement ).val() != "pending" ){
+                if ( $( this.resultElement ).val() != "verified" ){
+                    this.resultElement.show();
+                }else{
+                    this.resultElement.hide();
+                }
+            }
+
 		};
 		
 		// returns the email address associated with the current result
