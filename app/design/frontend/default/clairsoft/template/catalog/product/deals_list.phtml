@@ -33,6 +33,7 @@
 ?>
 <?php
     $categoryId = $this->getCategoryId();
+    //$_productCollection=$this->getLoadedProductCollection();
     $_productCollection = Mage::getResourceModel('catalog/product_collection')
         ->joinField(
             'qty',
@@ -42,7 +43,6 @@
             '{{table}}.stock_id=1',
             'left'
         )
-        ->joinField('category_id','catalog/category_product','category_id','product_id=entity_id',null,'left')
         ->joinField(
             'is_in_stock',
             'cataloginventory/stock_item',
@@ -51,10 +51,7 @@
             '{{table}}.is_in_stock=1',
             'left'
         )
-        ->addAttributeToFilter('is_in_stock', array("notnull" => 'is_in_stock'))
-        ->addAttributeToFilter('category_id', array('in' => $categoryId))
         ->addAttributeToFilter('status', array('in' => '1'))
-        ->addAttributeToFilter('qty', array('gt' => '0'))
         ->addAttributeToFilter('visibility', array('neq' => Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE))
         ->addAttributeToSelect('special_price')
         ->addAttributeToSelect('name')
@@ -62,6 +59,10 @@
         ->addAttributeToSelect('msrp')
         ->addAttributeToSelect('small_image')
         ->addAttributeToSelect('image');
+    $_productCollection->joinTable('catalog/category_product','product_id=entity_id',array('category_id','position'))->getSelect()
+        ->where('category_id = '.$categoryId)
+        ->order('position', 'DESC');
+
 
     $_helper = $this->helper('catalog/output');
 ?>
@@ -120,11 +121,6 @@
     <?php $_collectionSize = $_productCollection->count() ?>
     <?php $_columnCount = $this->getColumnCount(); ?>
     <?php $i=0; foreach ($_productCollection as $_product): ?>
-            <?php
-                Mage::log('============ Product ID = ' . $_product->getId(),null,'test.log',true);
-                Mage::log('image: '.$_product->getImage(),null,'test.log',true);
-                Mage::log('small_image: '.$_product->getSmallImage(),null,'test.log',true);
-            ?>
         <?php if ($i++%$_columnCount==0): ?>
         <!-- <ul class="products-grid"> -->
         <?php endif ?>
