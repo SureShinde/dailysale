@@ -64,10 +64,9 @@
         ->addAttributeToSelect('msrp')
         ->addAttributeToSelect('small_image')
         ->addAttributeToSelect('image');
-        $_productCollection->getSelect()
-            ->group('e.entity_id');
-        $_productCollection->joinTable('catalog/category_product','product_id=entity_id',array('category_id','position'));
-        $_productCollection->setOrder('position', 'DESC');
+        $_productCollection->joinTable('catalog/category_product','product_id=entity_id',array('category_id','position'))->getSelect()
+            ->where('category_id = '.$categoryId)
+            ->order('position', 'DESC');
 
 
     $_helper = $this->helper('catalog/output');
