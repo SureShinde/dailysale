@@ -32,7 +32,38 @@
  */
 ?>
 <?php
-    $_productCollection=$this->getLoadedProductCollection();
+    $categoryId = $this->getCategoryId();
+    //$_productCollection=$this->getLoadedProductCollection();
+    $_productCollection = Mage::getResourceModel('catalog/product_collection')
+        ->joinField(
+            'qty',
+            'cataloginventory/stock_item',
+            'qty',
+            'product_id=entity_id',
+            '{{table}}.stock_id=1',
+            'left'
+        )
+        ->joinField(
+            'is_in_stock',
+            'cataloginventory/stock_item',
+            'is_in_stock',
+            'product_id=entity_id',
+            '{{table}}.is_in_stock=1',
+            'left'
+        )
+        ->addAttributeToFilter('status', array('in' => '1'))
+        ->addAttributeToFilter('visibility', array('neq' => Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE))
+        ->addAttributeToSelect('special_price')
+        ->addAttributeToSelect('name')
+        ->addAttributeToSelect('price')
+        ->addAttributeToSelect('msrp')
+        ->addAttributeToSelect('small_image')
+        ->addAttributeToSelect('image');
+    $_productCollection->joinTable('catalog/category_product','product_id=entity_id',array('category_id','position'))->getSelect()
+        ->where('category_id = '.$categoryId)
+        ->order('position', 'DESC');
+
+
     $_helper = $this->helper('catalog/output');
 ?>
 
@@ -46,7 +77,7 @@
     <?php $_iterator = 0; ?>
     <ol class="products-list" id="products-list">
     <?php foreach ($_productCollection as $_product): ?>
-        <?php $sku = Mage::getModel('catalog/product')->load($_product->getId())->getSku(); ?>
+        <?php $sku = $_product->getSku(); ?>
         <li class="item<?php if( ++$_iterator == sizeof($_productCollection) ): ?> last<?php endif; ?> <?php echo $sku; ?>">
             <?php // Product Image ?>
             <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(135); ?>" width="135" height="135" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" /></a>
@@ -94,7 +125,7 @@
         <!-- <ul class="products-grid"> -->
         <?php endif ?>
         <?php //if($_product->isSaleable()): ?>
-        <?php $sku = Mage::getModel('catalog/product')->load($_product->getId())->getSku(); ?>
+        <?php $sku = $_product->getSku(); ?>
         <li class="item <?php echo $sku; ?>">
             <!-- <li class="item<?php //if(($i-1)%$_columnCount==0): ?> first<?php //elseif($i%$_columnCount==0): ?> last<?php //endif; ?>"> -->
             <div class="products-grid-image-container">
@@ -111,7 +142,7 @@
                                 $productQty += $child->getStockItem()->getStockQty();
                             }
                         }else{
-                            $productQty =  (int)Mage::getModel('cataloginventory/stock_item')->loadByProduct($_product)->getQty();
+                            $productQty = (int)$_product->getQty();
                         }
 
                         //$productQty =  (int)Mage::getModel('cataloginventory/stock_item')->loadByProduct($_product)->getQty();
