@@ -89,11 +89,13 @@ class Bronto_Product_Model_Observer
 
         // Cron or no cron... it must be enabled
         if (!$helper->isEnabled('store', $store->getId())) {
-            continue;
+            return $results;
         }
 
         $api = $helper->getApi(null, 'store', $store->getId());
         $tagObject = $api->getContentTagObject();
+        $appEmulation = Mage::getSingleton('core/app_emulation');
+        $emulatedInfo = $appEmulation->startEnvironmentEmulation($store->getId());
         foreach ($recTags as $recTag) {
             $results['total']++;
             try {
@@ -113,6 +115,7 @@ class Bronto_Product_Model_Observer
                 $results['error']++;
             }
         }
+        $appEmulation->stopEnvironmentEmulation($emulatedInfo);
 
         return $results;
     }

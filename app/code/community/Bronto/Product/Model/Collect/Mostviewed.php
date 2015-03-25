@@ -9,15 +9,12 @@ class Bronto_Product_Model_Collect_Mostviewed extends Bronto_Product_Model_Colle
      */
     public function collect()
     {
-        $mostViewed = Mage::getResourceModel('reports/product_collection')
-            ->addStoreFilter($this->getStoreId())
-            ->setPageSize($this->getRemainingCount())
-            ->addViewsCount(date('Y-m-d', strtotime('-' . self::DAYS_THRESHOLD . ' days')), date('Y-m-d'));
+        $mostViewed = Mage::getResourceModel('reports/report_product_viewed_collection')
+            ->addStoreFilter(array($this->getStoreId()))
+            ->setDateRange(date('Y-m-d', strtotime('-' . self::DAYS_THRESHOLD . ' days')), date('Y-m-d'))
+            ->setPageSize($this->getRemainingCount());
 
         // Add Status and visibility filters
-        Mage::getSingleton('catalog/product_status')->addVisibleFilterToCollection($mostViewed);
-        Mage::getSingleton('catalog/product_visibility')->addVisibleInCatalogFilterToCollection($mostViewed);
-        Mage::getModel('cataloginventory/stock')->addInStockFilterToCollection($mostViewed);
         return $this->_fillProducts($mostViewed);
     }
 }
