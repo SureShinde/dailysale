@@ -417,11 +417,15 @@ class Bronto_Product_Adminhtml_RecommendationsController extends Mage_Adminhtml_
                     'deliveryType' => 'selected'
             ));
 
+            $appEmulation = Mage::getSingleton('core/app_emulation');
+            $emulatedInfo = $appEmulation->startEnvironmentEmulation($storeId);
             Mage::helper('bronto_product')->collectAndSetFields(
                 $grid->getSelectedRecommendation(),
                 $grid->getOptionalProducts(),
                 $delivery,
-                $this->getRequest()->getParam('store', 0));
+                $storeId);
+            $appEmulation->stopEnvironmentEmulation($emulatedInfo);
+
             $deliveryObject->add($delivery);
             $json['success'] = true;
             $json['message'] = Mage::getBlockSingleton('core/messages')
@@ -461,7 +465,10 @@ class Bronto_Product_Adminhtml_RecommendationsController extends Mage_Adminhtml_
                 ->addError('Content does not appear to be formatted correctly.')
                 ->getGroupedHtml();
         } else {
+            $appEmulation = Mage::getSingleton('core/app_emulation');
+            $emulatedInfo = $appEmulation->startEnvironmentEmulation($model->getStoreId());
             $html = $this->getHelper()->processTagContent($model, $model->getStoreId());
+            $appEmulation->stopEnvironmentEmulation($emulatedInfo);
         }
         $this->getResponse()->setBody($html);
     }

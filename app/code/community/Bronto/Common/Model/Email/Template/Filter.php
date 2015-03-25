@@ -127,6 +127,18 @@ class Bronto_Common_Model_Email_Template_Filter extends Mage_Core_Model_Email_Te
     }
 
     /**
+     * Respect the design package and theme
+     */
+    protected function _respectDesignTheme()
+    {
+        // When emailing from the admin, we need to ensure that we're using templates from the frontend
+        Mage::getDesign()
+            ->setPackageName($this->getStore()->getConfig('design/package/name'))
+            ->setTheme($this->getStore()->getConfig('design/theme/template'))
+            ->setArea('frontend');
+    }
+
+    /**
      * @return array
      */
     protected function _processAvailable()
@@ -539,12 +551,7 @@ class Bronto_Common_Model_Email_Template_Filter extends Mage_Core_Model_Email_Te
             $this->setField('orderStatusLabel', $order->getStatusLabel());
             $this->setField('orderItems', $this->_filterOrderItems($order));
 
-            // When emailing from the admin, we need to ensure that we're using templates from the frontend
-            Mage::getDesign()
-                ->setPackageName($this->getStore()->getConfig('design/package/name'))
-                ->setTheme($this->getStore()->getConfig('design/theme/default'))
-                ->setArea('frontend');
-
+            $this->_respectDesignTheme();
             $totals = $this->_getTotalsBlock(Mage::getSingleton('core/layout'), $order, 'sales/order_totals', 'order_totals');
             $this->setField('orderTotals', $totals->toHtml());
 
@@ -716,11 +723,7 @@ class Bronto_Common_Model_Email_Template_Filter extends Mage_Core_Model_Email_Te
                 $items->setTemplate('bronto/reminder/items.phtml');
                 $items->setQuote($item->getQuote());
 
-                // When emailing from the admin, we need to ensure that we're using templates from the frontend
-                Mage::getDesign()
-                    ->setPackageName($this->getStore()->getConfig('design/package/name'))
-                    ->setTheme($this->getStore()->getConfig('design/theme/default'))
-                    ->setArea('frontend');
+                $this->_respectDesignTheme();
                 $this->setField("cartItems", $items->toHtml());
             }
 
@@ -803,11 +806,7 @@ class Bronto_Common_Model_Email_Template_Filter extends Mage_Core_Model_Email_Te
                 $items->setTemplate('bronto/reminder/items.phtml');
                 $items->setWishlist($item->getWishlist());
 
-                // When emailing from the admin, we need to ensure that we're using templates from the frontend
-                Mage::getDesign()
-                    ->setPackageName($this->getStore()->getConfig('design/package/name'))
-                    ->setTheme($this->getStore()->getConfig('design/theme/default'))
-                    ->setArea('frontend');
+                $this->_respectDesignTheme();
                 $this->setField("wishlistItems", $items->toHtml());
             }
 
@@ -867,12 +866,7 @@ class Bronto_Common_Model_Email_Template_Filter extends Mage_Core_Model_Email_Te
         $items->addItemRender('grouped', 'sales/order_email_items_order_grouped', 'email/order/items/order/default.phtml');
         $items->addItemRender('bundle', 'bundle/sales_order_items_renderer', 'bundle/email/order/items/order/default.phtml');
 
-        // When emailing from the admin, we need to ensure that we're using templates from the frontend
-        Mage::getDesign()
-            ->setPackageName($this->getStore()->getConfig('design/package/name'))
-            ->setTheme($this->getStore()->getConfig('design/theme/default'))
-            ->setArea('frontend');
-
+        $this->_respectDesignTheme();
         $totals = $this->_getTotalsBlock($layout, $order, 'sales/order_totals', 'order_totals');
         $items->append($totals, 'order_totals');
 
@@ -957,12 +951,7 @@ class Bronto_Common_Model_Email_Template_Filter extends Mage_Core_Model_Email_Te
         $items->addItemRender('grouped', 'sales/order_email_items_order_grouped', 'email/order/items/invoice/default.phtml');
         $items->addItemRender('bundle', 'bundle/sales_order_items_renderer', 'bundle/email/order/items/invoice/default.phtml');
 
-        // When emailing from the admin, we need to ensure that we're using templates from the frontend
-        Mage::getDesign()
-            ->setPackageName($this->getStore()->getConfig('design/package/name'))
-            ->setTheme($this->getStore()->getConfig('design/theme/default'))
-            ->setArea('frontend');
-
+        $this->_respectDesignTheme();
         $totals = $this->_getTotalsBlock($layout, $order, 'sales/order_invoice_totals', 'invoice_totals');
         $items->append($totals, 'invoice_totals');
 
@@ -1047,12 +1036,7 @@ class Bronto_Common_Model_Email_Template_Filter extends Mage_Core_Model_Email_Te
         $items->addItemRender('grouped', 'sales/order_email_items_order_grouped', 'email/order/items/shipment/default.phtml');
         $items->addItemRender('bundle', 'bundle/sales_order_items_renderer', 'bundle/email/order/items/shipment/default.phtml');
 
-        // When emailing from the admin, we need to ensure that we're using templates from the frontend
-        Mage::getDesign()
-            ->setPackageName($this->getStore()->getConfig('design/package/name'))
-            ->setTheme($this->getStore()->getConfig('design/theme/default'))
-            ->setArea('frontend');
-
+        $this->_respectDesignTheme();
         return $items->toHtml();
     }
 
@@ -1094,12 +1078,7 @@ class Bronto_Common_Model_Email_Template_Filter extends Mage_Core_Model_Email_Te
         $items->addItemRender('grouped', 'sales/order_email_items_order_grouped', 'email/order/items/creditmemo/default.phtml');
         $items->addItemRender('bundle', 'bundle/sales_order_items_renderer', 'bundle/email/order/items/creditmemo/default.phtml');
 
-        // When emailing from the admin, we need to ensure that we're using templates from the frontend
-        Mage::getDesign()
-            ->setPackageName($this->getStore()->getConfig('design/package/name'))
-            ->setTheme($this->getStore()->getConfig('design/theme/default'))
-            ->setArea('frontend');
-
+        $this->_respectDesignTheme();
         $totals = $this->_getTotalsBlock($layout, $order, 'sales/order_creditmemo_totals', 'creditmemo_totals');
         $items->append($totals, 'creditmemo_totals');
 
@@ -1203,7 +1182,16 @@ class Bronto_Common_Model_Email_Template_Filter extends Mage_Core_Model_Email_Te
      */
     protected function _getProductUrl($product)
     {
-        return $this->_getSimpleProduct($product)->getProductUrl();
+        $helper = Mage::helper('bronto_common/product');
+        if (!$helper->isVisibleInidividually($product)) {
+            $config = $helper->getConfigurableProduct($product);
+            if ($config->getId() != $product->getId()) {
+                $product = $config;
+            } else {
+                $product = $helper->getGroupedProduct($product);
+            }
+        }
+        return Mage::helper('catalog/product')->getProductUrl($product);
     }
 
     /**

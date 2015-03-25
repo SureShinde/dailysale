@@ -24,6 +24,7 @@ class Bronto_Common_Block_Adminhtml_System_Config_Guide extends Mage_Adminhtml_B
         'bronto_verify',
         'bronto_coupon',
         'bronto_popup',
+        'bronto_cartrecovery',
         'bronto_product',
         'bronto_reviews',
     );
