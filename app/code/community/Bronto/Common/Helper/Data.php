@@ -53,6 +53,12 @@ class Bronto_Common_Helper_Data
     const XML_PATH_COUPON_SITE_HASH = 'bronto_coupon/settings/site_hash';
 
     /**
+     * Cart Recovery
+     */
+    const XML_PATH_CART_RECOVERY_CODE = 'bronto_cartrecovery/settings/code';
+    const XML_PATH_CART_RECOVERY_OTHER = 'bronto_cartrecovery/settings/other';
+
+    /**
      * Module Human Readable Name
      */
     protected $_name = 'Bronto Extension for Magento';
@@ -130,6 +136,26 @@ class Bronto_Common_Helper_Data
     public function getCouponSiteHash()
     {
         return $this->getAdminScopedConfig(self::XML_PATH_COUPON_SITE_HASH);
+    }
+
+    /**
+     * Get the Cart Recovery code for the account
+     *
+     * @return string
+     */
+    public function getCartRecoveryCode()
+    {
+        return $this->getAdminScopedConfig(self::XML_PATH_CART_RECOVERY_CODE);
+    }
+
+    /**
+     * Get the Cart Recovery other line item attribute code
+     *
+     * @return string
+     */
+    public function getLineItemAttributeCode()
+    {
+        return $this->getAdminScopedConfig(self::XML_PATH_CART_RECOVERY_OTHER);
     }
 
     /**
@@ -884,6 +910,8 @@ class Bronto_Common_Helper_Data
             $store = Mage::app()->getStore($scopeParams['store']);
             if ($store->getId()) {
                 $scopeParams['store_id'] = $store->getId();
+            } else {
+                $scopeParams['store_id'] = Mage::app()->getStore()->getId();
             }
             $scopeParams['scope'] = 'store';
         } elseif ($scopeParams['website'] !== false) {
