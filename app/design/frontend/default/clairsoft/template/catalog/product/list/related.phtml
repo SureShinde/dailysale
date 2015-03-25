@@ -79,7 +79,7 @@
                         <?php //endif; ?>
                     <?php //endif; ?>
                 </div>
-                <?php if(!$_item->isComposite() && $_item->isSaleable()): ?>
+                <?php if( ($_item->isSaleable()) OR ($_item->isComposite()) ) : ?>
                     <a class="view-deal-btn" href="<?php echo $_product->getProductUrl() ?>">View Deal</a>
                 <?php else: ?>
                     <a class="soldout-btn">Sold Out</a>

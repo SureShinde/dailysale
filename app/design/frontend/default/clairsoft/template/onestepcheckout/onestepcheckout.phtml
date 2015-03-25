@@ -837,10 +837,13 @@
 			}
             if (country)
                 document.getElementById(type + ':country_id').value = country;
-            if (type == 'billing')
+            if (type == 'billing') {
                 billingRegionUpdater.update();
-            if (type == 'shipping')
-                shippingRegionUpdater.update();
+            }
+            if (type == 'shipping') {
+                shippingRegionUpdater.update()
+            }
+
 
             var params = {country: country, region_id: region_id};
             var request = new Ajax.Request(
@@ -883,8 +886,6 @@
 
                } else {
                    document.getElementById(type + ':street1').value = '';
-
-
                }
            });
 		   
@@ -897,9 +898,7 @@
                    document.getElementById(type + ':street1').value = '';
                }
            });
-		   
             save_address_information(save_address_url, update_address_shipping, update_address_payment, update_address_review);
-
         }
     </script>
 <?php endif; ?>

@@ -67,4 +67,16 @@
             </bestsellers_settings_grp>
         </bestsellers_settings_sec>
     </default>
+    <adminhtml>
+        <events>
+            <admin_system_config_changed_section_bestsellers_settings_sec>
+                <observers>
+                    <bestsellers_admin_system_config_changed_section_bestsellers_settings_sec>
+                        <class>bestsellercron/observer</class>
+                        <method>adminSystemConfigChangedBestsellersSettingsSec</method>
+                    </bestsellers_admin_system_config_changed_section_bestsellers_settings_sec>
+                </observers>
+            </admin_system_config_changed_section_bestsellers_settings_sec>
+        </events>
+    </adminhtml>
 </config>

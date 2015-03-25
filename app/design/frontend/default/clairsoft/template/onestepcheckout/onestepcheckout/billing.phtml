@@ -64,7 +64,7 @@
                                     <?php endif ?>
                                 </label><br/>
                                 <select id="billing:region_id" name="billing[region_id]" title="<?php echo $this->__('State/Province') ?>" class="<?php if ($helper->getFieldRequire($fields[$i]['value'])) echo "validate-select"; ?>" style="display:none;width:135px;" >
-                                    <option value=""><?php echo $this->__('Please select region, state or province') ?></option>
+                                    <option value="0"><?php echo $this->__('Please select region, state or province') ?></option>
                                 </select>
                                 <?php if (!$helper->enableGeoip()): ?>
                                     <script type="text/javascript">
@@ -390,6 +390,9 @@ Event.observe(document, "dom:loaded", function() {
                 var place = autocompleteBilling.getPlace();
                 var street, city, region_id, region, country, postal_code, sublocality;
 
+                if (place.address_components === undefined){
+                    return;
+                }
                 for (var i = 0; i < place.address_components.length; i++) {
                     var addressType = place.address_components[i].types[0];
                     if (componentBillingForm[addressType]) {
@@ -405,6 +408,9 @@ Event.observe(document, "dom:loaded", function() {
                             else
                                 street = place.address_components[i][componentBillingForm['route']];
                         }
+                        var str = document.getElementById('billing:street1').value;
+                        var res = str.split(",");
+
                         if (addressType == 'locality')
                             city = place.address_components[i][componentBillingForm['locality']];
                         if (addressType == 'administrative_area_level_1') {
@@ -419,7 +425,9 @@ Event.observe(document, "dom:loaded", function() {
                             sublocality = place.address_components[i][componentBillingForm['sublocality']];
                     }
                 }
-                fillAddress('billing', street, city, region_id, region, country, postal_code, sublocality);
+                if (region_id !== undefined && city !== undefined){
+                    fillAddress('billing', res[0], city, region_id, region, country, postal_code, sublocality);
+                }
             }
         </script>
     <?php endif; ?>
