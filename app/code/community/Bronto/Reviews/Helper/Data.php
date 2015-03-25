@@ -41,6 +41,11 @@ class Bronto_Reviews_Helper_Data
     const XML_PATH_POST_SENDER_NAME  = 'bronto_reviews/%s/sender_name';
 
     /**
+     * Multiplier
+     */
+    const XML_PATH_POST_MULTIPLIER = 'bronto_reviews/reorder/multipler';
+
+    /**
      * Gets the canonical name for the Bronto Review module
      *
      * @return string
@@ -48,6 +53,19 @@ class Bronto_Reviews_Helper_Data
     public function getName()
     {
         return $this->__('Bronto Post-Purchase Emails');
+    }
+
+    /**
+     * Determine if email can be sent through bronto
+     *
+     * @param Mage_Core_Model_Email_Template $template
+     * @param string|int                     $storeId
+     *
+     * @return boolean
+     */
+    public function canSendBronto(Mage_Core_Model_Email_Template $template, $storeId = null)
+    {
+        return true;
     }
 
     /**
@@ -62,14 +80,6 @@ class Bronto_Reviews_Helper_Data
     {
         // Get Enabled Scope
         return (bool)$this->getAdminScopedConfig(self::XML_PATH_ENABLED, $scope, $scopeId);
-    }
-
-    /**
-     * @see parent
-     */
-    public function canSendBronto(Mage_Core_Model_Email_Template $template, $storeId = null)
-    {
-        return true;
     }
 
     /**
@@ -531,6 +541,33 @@ class Bronto_Reviews_Helper_Data
             return $this->getPostSendLimit($post->getPostType(), 'store', $storeId);
         }
         return (int)$post->getSendLimit();
+    }
+
+    /**
+     * Gets the multiplier for a reorder reminder
+     *
+     * @param $scope string
+     * @param $scopeId int
+     * @return boolean
+     */
+    public function getPostMultiplier($scope='default', $scopeId=0)
+    {
+        return $this->getAdminScopedConfig(self::XML_PATH_POST_MULTIPLIER, $scope, $scopeId);
+    }
+
+    /**
+     * Gets the default post multiplier for a post
+     *
+     * @param Bronto_Reviews_Model_Post_Purchase $post
+     * @param int $store_id
+     * @return boolean
+     */
+    public function getDefaultMultiplier($post, $storeId=0)
+    {
+        if (is_null($post->getMultiplyByQty())) {
+            return $this->getPostMultiplier('store', $storeId);
+        }
+        return (int)$post->getMultiplyByQty();
     }
 
     /**

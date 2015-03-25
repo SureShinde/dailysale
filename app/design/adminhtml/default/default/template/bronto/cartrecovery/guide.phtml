@@ -1,0 +1,73 @@
+<?php /* @var $this Bronto_Common_Block_Adminhtml_System_Config_Guide */ ?>
+
+<?php if ($this->isBrontoSection('bronto_cartrecovery')): ?>
+    /**
+     * Introduce them to the guide and provide instructions
+     */
+    guiders.createGuider({
+        buttons: [
+            {name: "<?php echo $this->__("Let's Get Started!") ?>", onclick: guiders.next},
+            {name: "<?php echo $this->__("No Thanks") ?>", onclick: guiders.hideAll}
+        ],
+        buttonCustomHTML: dontShowButtonHtml,
+        description: "<?php echo $this->__('This module provides you quick access to add your Bronto Cart Recovery script.') ?>",
+        id: "start",
+        next: "bronto_cartrecovery-script",
+        overlay: true, closeOnEscape: true,
+        title: "Bronto Extension - <?php echo $this->__('Cart Recovery') ?>",
+        width: 600
+    });
+
+    /**
+     * Submit Script
+     */
+    guiders.createGuider({
+        attachTo: '#bronto_cartrecovery_settings_code',
+        buttons: [
+            {name: "<?php echo $this->__('Back') ?>"},
+            {name: "<?php echo $this->__('Next') ?>", onclick: function() {
+                if (jQuery('#bronto_cartrecovery_settings_code').val() == '') {
+                    alert("Don't forget to add your script!");
+                } else {
+                    guiders.next();
+                }
+            }},
+            {name: "<?php echo $this->__('Close') ?>"}
+        ],
+        autoFocus: true,
+        highlight: '#bronto_cartrecovery_settings_code',
+        overlay: true, closeOnEscape: true,
+        description: "<?php echo $this->__('Once you have your Cart Recovery script, you can simply paste it here.') ?>",
+        id: "bronto_cartrecovery-script",
+        next: "bronto_cartrecovery-save_config_first",
+        position: 10,
+        title: "<?php echo $this->__('Pasting your script') ?>",
+        width: 200
+    });
+
+    /**
+     * Save Configuration
+     */
+    guiders.createGuider({
+        attachTo: 'button.save',
+        buttons: [
+            {name: "<?php echo $this->__('Back') ?>"},
+            {name: "<?php echo $this->__('Save Config') ?>", onclick: function() {
+                configForm.submit()
+            }},
+            {name: "<?php echo $this->__('Next') ?>"}
+        ],
+        autoFocus: true,
+        highlight: 'button.save',
+        overlay: true, closeOnEscape: true,
+        description: "<?php echo $this->__("Now that you have added your script, you need to save it.  Click `Save Config` now.") ?>",
+        id: "bronto_cartrecovery-save_config_first",
+        next: "scope",
+        position: 5,
+        title: "<?php echo $this->__('Save Config') ?>"
+    });
+
+    <?php if ($this->canShowGuide()): ?>
+        guiders.show('start');
+    <?php endif; ?>
+<?php endif; ?>

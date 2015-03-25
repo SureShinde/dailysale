@@ -220,6 +220,11 @@ abstract class Bronto_Reviews_Block_Adminhtml_Reviews_Form_Abstract
               'label' => $this->_helper->__('Custom Value')
             ),
         );
+        $elementType = 'text';
+        if (array_key_exists('type', $elementDef)) {
+            $elementType = $elementDef['type'];
+            unset($elementDef['type']);
+        }
         $originalKey = $elementDef['name'];
         $elementDef['name'] = "{$this->getPostType()}_{$elementDef['name']}";
         $overrideKey = "{$elementDef['name']}_override";
@@ -232,7 +237,7 @@ abstract class Bronto_Reviews_Block_Adminhtml_Reviews_Form_Abstract
         $post->setData("{$originalKey}_override", is_null($post->getData($originalKey)) ? 'default' : 'custom');
         $elementDef['label'] .= ' Value';
         unset($elementDef['note']);
-        $element = $fieldset->addField($elementDef['name'], 'text', $elementDef);
+        $element = $fieldset->addField($elementDef['name'], $elementType, $elementDef);
         $this->_dependsOnEnablement($override)->_dependence
             ->addFieldMap($element->getHtmlId(), $element->getName())
             ->addFieldDependence($element->getName(), $override->getName(), 'custom');
