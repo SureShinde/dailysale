@@ -1,0 +1,216 @@
+<?php
+/**
+ * Unirgy LLC
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.unirgy.com/LICENSE-M1.txt
+ *
+ * @category   Unirgy
+ * @package    Unirgy_DropshipPo
+ * @copyright  Copyright (c) 2008-2009 Unirgy LLC (http://www.unirgy.com)
+ * @license    http:///www.unirgy.com/LICENSE-M1.txt
+ */
+?>
+<?php $hlp = Mage::helper('udropship');
+$isViewCost = Mage::getSingleton('admin/session')->isAllowed('sales/order/actions/udpo_view_cost');
+$qtyLast = !$isViewCost ? 'last' : '';
+?>
+<div class="grid np">
+  <div class="hor-scroll">
+    <table cellspacing="0" class="data order-tables">
+        <col />
+        <col />
+        <?php if ($isViewCost): ?>
+        <col width="1" />
+        <?php endif ?>
+        <col width="1" />
+        <col width="1" />
+        <?php if ($isViewCost): ?>
+        <col width="1" />
+        <?php endif ?>
+        <thead>
+            <tr class="headings">
+                <th><?php echo $this->helper('sales')->__('Product') ?></th>
+                <th><?php echo $this->helper('udpo')->__('Vendor') ?></th>
+                <?php if ($isViewCost): ?>
+                <th class="a-right"><?php echo $this->helper('sales')->__('Cost') ?></th>
+                <?php endif ?>
+                <th class="a-center"><?php echo $this->helper('sales')->__('Qty') ?></th>
+                <th class="<?php echo $qtyLast?> a-center"><span class="nobr"><?php echo $this->helper('sales')->__('Qty to Po') ?></span></th>
+                <?php if ($isViewCost): ?>
+                <th class="last a-right"><?php echo $this->helper('sales')->__('Row Cost') ?></th>
+                <?php endif ?>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <td colspan="1">&nbsp;</td>
+                <td colspan="2" class="a-center"><?php echo $this->getUpdateButtonHtml() ?></td>
+                <td colspan="3">&nbsp;</td>
+            </tr>
+        </tfoot>
+        <?php $_items = $this->getOrder()->getAllItems() ?>
+        <?php $_i=0;foreach ($_items as $_item): if ($_item->getParentItem()): continue; endif; $_i++ ?>
+        <tbody class="<?php echo $_i%2?'odd':'even' ?>">
+            <?php echo $this->getItemHtml($_item) ?>
+        </tbody>
+        <?php endforeach; ?>
+    </table>
+  </div>
+</div>
+<br />
+<div class="box-left entry-edit">
+    <div class="entry-edit-head"><h4><?php echo $this->__('Purchase Order Comments') ?></h4></div>
+    <window.udpoFieldset>
+        <div id="order-history_form">
+            <span class="field-row">
+                <label class="normal" for="udpo_comment_text"><?php echo Mage::helper('sales')->__('Purchase Order Comments') ?></label>
+                <textarea id="udpo_comment_text" name="udpo[comment_text]" rows="3" cols="5" style="height:6em; width:99%;"><?php echo $this->getCommentText(); ?></textarea>
+            </span>
+            <div class="clear"></div>
+        </div>
+    </window.udpoFieldset>
+</div>
+
+<div class="box-right entry-edit">
+    <div class="order-totals">
+        <table cellspacing="0" width="100%">
+            <col />
+            <col width="1" />
+            <tfoot>
+                <tr>
+                <td class="label">
+                    <?php echo $this->helper('sales')->__('Order Shipping Amount') ?>
+                </td>
+                <td class="emph">
+                    <?php echo $hlp->displayPrices($this->getOrder(), $this->getOrder()->getBaseShippingAmount()) ?>
+                </td>
+                </tr>
+                <tr>
+                <td class="label">
+                    <strong><?php echo $this->helper('sales')->__('Total Shipping Amount') ?></strong>
+                </td>
+                <td class="emph">
+                    <strong><?php echo $hlp->displayPrices($this->getOrder(), $this->getOrder()->getTotalShippingAmount()) ?></strong>
+                </td>
+                </tr>
+                <?php if ($isViewCost): ?>
+                <tr>
+                <td class="label">
+                    <strong><?php echo $this->helper('sales')->__('Total Cost') ?></strong>
+                </td>
+                <td class="emph">
+                    <strong><?php echo $hlp->displayPrices($this->getOrder(), $this->getOrder()->getTotalCost()) ?></strong>
+                </td>
+                </tr>
+                <?php endif ?>
+            </tfoot>
+            <tbody>
+                <?php foreach($this->getOrder()->getUdpoVendorRates() as $vId => $vRate): ?>
+                <tr>
+                <td class="label" colspan=2>
+                    <strong><?php echo $this->helper('sales')->__('Purchase Order for %s', Mage::helper('udropship')->getVendor($vId)->getVendorName()) ?></strong>
+                    <br>
+                </td>
+                </tr>
+                <?php if ($vRate['udpo_methods'] !== false): ?>
+                <tr>
+                <td class="label">
+                    <?php echo $this->helper('sales')->__('Shipping Method') ?>
+                </td>
+                <td class="emph">
+                    <select name="vendor_rates[<?php echo $vId?>][udpo_method]" onchange="$(this).next().value=this.options[this.selectedIndex].text">
+                    <?php foreach ($vRate['udpo_methods'] as $sc => $systemMethods): ?>
+                        <optgroup label="<?php echo $systemMethods['__title']?>" style="background: lightgray">
+                        <?php foreach ($systemMethods as $scMc => $carrierMethods): ?>
+                            <?php if($scMc=='__title') continue ?>
+                            <?php foreach ($carrierMethods as $method => $methodName): ?>
+                                <?php if($method=='__selected') continue ?>
+                                <?php $_selected = (isset($vRate['udpo_method']) && $vRate['udpo_method']==$method || !isset($vRate['udpo_method']) && !empty($carrierMethods['__selected'])); if ($_selected) $_selMethodName = $methodName; if (!isset($fallbackSelMN)) $fallbackSelMN = $methodName ?>
+                                <option value="<?php echo $method?>" <?php if ($_selected): ?>selected<?php endif?>><?php echo $methodName?></option>
+                            <?php endforeach ?>
+                        <?php endforeach ?>
+                    <?php endforeach ?>
+                    </select>
+                    <input type="hidden" name="vendor_rates[<?php echo $vId?>][udpo_method_name]" value="<?php echo !empty($_selMethodName) ? $_selMethodName : (!empty($fallbackSelMN) ? $fallbackSelMN : '') ?>">
+                </td>
+                </tr>
+                <tr>
+                <td class="label">
+                    <?php echo $this->helper('sales')->__('Shipping Amount') ?>
+                </td>
+                <td class="emph">
+                    <input class="input-text" name="vendor_rates[<?php echo $vId?>][price]" value="<?php echo $vRate['price']*1 ?>" style="width: 60px; text-align: right;">
+                </td>
+                </tr>
+                <?php endif ?>
+                <?php if ($isViewCost): ?>
+                <tr>
+                <td class="label">
+                    <?php echo $this->helper('sales')->__('Total Cost') ?>
+                </td>
+                <td class="emph">
+                    <?php echo $hlp->displayPrices($this->getOrder(), $this->getOrder()->getTotalCostByVendor($vId)) ?>
+                </td>
+                </tr>
+                <?php endif ?>
+                <tr>
+                <td class="label" colspan=2>
+                    <div class="divider"></div>
+                </td>
+                <?php endforeach ?>
+            </tbody>
+        </table>
+        <div class="order-totals-bottom">
+            <div class="divider"></div>
+            <p>
+              <label class="normal" for="notify_vendor">Add Comments To Vendor Notification</label>
+              <input id="notify_vendor" name="udpo[comment_vendor_notify]" value="1" type="checkbox" />
+            </p>
+            <p>
+              <label class="normal" for="is_visible_to_vendor">Is Comments Visible To Vendor</label>
+              <input id="is_visible_to_vendor" name="udpo[comment_visible_to_vendor]" value="1" type="checkbox" />
+            </p>
+            <div class="a-right">
+            <?php echo $this->getChildHtml('submit_button') ?>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="clear"></div>
+
+<script type="text/javascript">
+//<![CDATA[
+var submitButtons = $$('.submit-button');
+var updateButtons = $$('.update-button');
+window.udpoFields = $$('.qty-input');
+
+updateButtons.each(function (elem) {elem.disabled=true;elem.addClassName('disabled');});
+
+window.checkButtonsRelation = function() {
+    var hasChanges = false;
+    window.udpoFields.each(function (elem) {
+        if (elem.baseValue != elem.value) {
+            hasChanges = true;
+        }
+    }.bind(this));
+    if (hasChanges) {
+        submitButtons.each(function (elem) {elem.disabled=true;elem.addClassName('disabled');});
+        updateButtons.each(function (elem) {elem.disabled=false;elem.removeClassName('disabled');});
+    }
+    else {
+        submitButtons.each(function (elem) {elem.disabled=false;elem.removeClassName('disabled');});
+        updateButtons.each(function (elem) {elem.disabled=true;elem.addClassName('disabled');});
+    }
+}
+
+for(var i=0;i<window.udpoFields.length;i++){
+    window.udpoFields[i].observe('change', window.checkButtonsRelation)
+    window.udpoFields[i].baseValue = window.udpoFields[i].value;
+}
+//]]>
+</script>

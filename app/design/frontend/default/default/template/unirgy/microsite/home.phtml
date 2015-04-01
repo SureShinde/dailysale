@@ -1,0 +1,20 @@
+<?php
+$_vendor = Mage::helper('umicrosite')->getCurrentVendor();
+$_productListBlock = $this->getChild('product_list');
+
+$storeCode = Mage::app()->getStore()->getCode();
+?>
+<h1 class="vendor-name">
+<?php echo $this->htmlEscape(Mage::helper('umicrosite')->getLandingPageTitle($_vendor)) ?>
+</h1>
+<?php if (Mage::helper('udropship')->isModuleActive('Unirgy_DropshipVendorRatings')):?>
+    <?php echo Mage::helper('udratings')->getReviewsSummaryHtml($_vendor);?>
+<?php endif ?>
+<div class="generic-box vendor-description">
+<img src="<?php echo Mage::getBaseUrl('media').'/'.$_vendor->getLogo() ?>" class="vendor-img"/>
+<?php echo $this->htmlEscape($_vendor->getDescription()) ?>
+</div>
+
+<div id="our-products">
+<?php echo $_productListBlock->toHtml() ?>
+</div>

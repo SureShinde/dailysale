@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<config>
+    <sections>
+        <web>
+            <groups>
+                <default>
+                    <fields>
+                        <umicrosite_default_landingpage translate="label" module="umicrosite">
+                            <label>Default Vendor Landing Page</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_cms_page</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </umicrosite_default_landingpage>
+                    </fields>
+                </default>
+            </groups>
+        </web>
+        <udsignup>
+            <tab>sales</tab>
+            <label>Vendor Registration</label>
+            <frontend_type>text</frontend_type>
+            <sort_order>333</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <form>
+                    <label>Registration Form</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>100</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <fieldsets translate="label">
+                            <label>Fieldsets</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>udmspro/adminhtml_systemConfigField_fieldsetsConfig</frontend_model>
+                            <backend_model>udmspro/systemConfig_backend_fieldsetsConfig</backend_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </fieldsets>
+                    </fields>
+                </form>
+            </groups>
+        </udsignup>
+        <udropship>
+            <groups>
+                <microsite>
+                    <fields>
+                        <skip_confirmation translate="label">
+                            <label>Skip confirmation email</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>24</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </skip_confirmation>
+                        <confirmation_template translate="label">
+                            <label>New Vendor Confirmation Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_template</source_model>
+                            <sort_order>27</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </confirmation_template>
+                        <reject_template translate="label">
+                            <label>New Vendor Reject Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_template</source_model>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </reject_template>
+                    </fields>
+                </microsite>
+            </groups>
+        </udropship>
+    </sections>
+</config>

@@ -1,0 +1,4 @@
+===== 1.0.1 =====
+  * Added use vacation status instead of disabled to eliminate further enable of actually disabled products
+
+===== 1.0 - Initial release =====

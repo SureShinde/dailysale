@@ -1,0 +1,13 @@
+<?php //die('1111111111111111111111111');?>
+
+<p id="noautopo_flag_wrapper" style="display: none">
+    <label for="noautopo_flag" class="normal"><?php echo Mage::helper('udpo')->__('Do Not Automatically Generate PO') ?></label>
+    <input type="checkbox" id="noautopo_flag" name="order[noautopo_flag]" value="1" />
+</p>
+
+<script type="text/javascript">
+    if ($('notify_customer')) {
+        $('notify_customer').up().insert({before: $('noautopo_flag_wrapper')})
+        $('noautopo_flag_wrapper').show()
+    }
+</script>

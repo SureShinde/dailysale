@@ -1,0 +1,10 @@
+<?php $_item = $this->getItem() ?>
+<tr class="border">
+    <td><?php echo $this->getColumnHtml($_item, 'configurable_name') ?></td>
+    <td><?php echo $this->getColumnHtml($_item, 'qty') ?></td>
+
+
+    <td class="last a-center">
+        <input type="text" class="input-text" name="rma[items][<?php echo $_item->getOrderItemId() ?>]" value="<?php echo $_item->getQty()*1 ?>" />
+    </td>
+</tr>

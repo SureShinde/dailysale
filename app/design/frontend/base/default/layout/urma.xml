@@ -1,0 +1,137 @@
+<?xml version="1.0"?>
+
+<layout version="0.1.0">
+    <sales_order_rma translate="label">
+        <label>Customer My Account Order RMA View</label>
+        <update handle="customer_account"/>
+        <reference name="my.account.wrapper">
+            <block type="sales/order_info" as="info" name="sales.order.info"/>
+            <block type="urma/order_rma" name="sales.order.rma">
+                <block type="urma/order_rma_items" name="rma_items" template="urma/sales/order/rma/items.phtml">
+                    <action method="addItemRender"><type>default</type><block>sales/order_item_renderer_default</block><template>urma/sales/order/rma/items/renderer/default.phtml</template></action>
+                    <block type="sales/order_comments" name="rma_comments" template="sales/order/comments.phtml" />
+                </block>
+            </block>
+        </reference>
+        <reference name="sales.order.info">
+            <action method="addLink" translate="label" module="sales"><name>view</name><path>*/*/view</path><label>Order Information</label></action>
+            <action method="addLink" translate="label" module="sales"><name>invoice</name><path>*/*/invoice</path><label>Invoices</label></action>
+            <action method="addLink" translate="label" module="sales"><name>shipment</name><path>*/*/shipment</path><label>Shipments</label></action>
+            <action method="addLink" translate="label" module="sales"><name>creditmemo</name><path>*/*/creditmemo</path><label>Refunds</label></action>
+            <action method="addLink" translate="label" module="urma"><name>rma</name><path></path><label>RMA</label></action>
+            <action method="setTemplate"><template>urma/sales/order/info.phtml</template></action>
+            <action method="setIsRmaPage"><flag>existing</flag></action>
+        </reference>
+    </sales_order_rma>
+    <sales_order_newrma translate="label">
+        <label>Customer My Account Order New RMA</label>
+        <update handle="customer_account"/>
+        <reference name="my.account.wrapper">
+            <block type="sales/order_info" as="info" name="sales.order.info"/>
+            <block type="urma/order_rma" name="sales.order.rma">
+                <block type="urma/order_rma_items" name="rma_items" template="urma/sales/order/rma/new/items.phtml">
+                    <action method="addItemRender"><type>default</type><block>sales/order_item_renderer_default</block><template>urma/sales/order/rma/new/items/renderer/default.phtml</template></action>
+                    <block type="sales/order_comments" name="rma_comments" template="sales/order/comments.phtml" />
+                </block>
+            </block>
+        </reference>
+        <reference name="sales.order.info">
+            <action method="addLink" translate="label" module="sales"><name>view</name><path>*/*/view</path><label>Order Information</label></action>
+            <action method="addLink" translate="label" module="sales"><name>invoice</name><path>*/*/invoice</path><label>Invoices</label></action>
+            <action method="addLink" translate="label" module="sales"><name>shipment</name><path>*/*/shipment</path><label>Shipments</label></action>
+            <action method="addLink" translate="label" module="sales"><name>creditmemo</name><path>*/*/creditmemo</path><label>Refunds</label></action>
+            <action method="addLink" translate="label" module="urma"><name>rma</name><path></path><label>RMA</label></action>
+            <action method="setTemplate"><template>urma/sales/order/info.phtml</template></action>
+            <action method="setIsRmaPage"><flag>new</flag></action>
+        </reference>
+    </sales_order_newrma>
+    <sales_order_view>
+        <reference name="sales.order.info">
+            <action method="addLink" translate="label" module="urma"><name>rma</name><path>*/*/rma</path><label>RMA</label></action>
+            <action method="setTemplate"><template>urma/sales/order/info.phtml</template></action>
+        </reference>
+    </sales_order_view>
+    <sales_order_creditmemo>
+        <reference name="sales.order.info">
+            <action method="addLink" translate="label" module="urma"><name>rma</name><path>*/*/rma</path><label>RMA</label></action>
+            <action method="setTemplate"><template>urma/sales/order/info.phtml</template></action>
+        </reference>
+    </sales_order_creditmemo>
+    <sales_order_invoice>
+        <reference name="sales.order.info">
+            <action method="addLink" translate="label" module="urma"><name>rma</name><path>*/*/rma</path><label>RMA</label></action>
+            <action method="setTemplate"><template>urma/sales/order/info.phtml</template></action>
+        </reference>
+    </sales_order_invoice>
+    <sales_order_shipment>
+        <reference name="sales.order.info">
+            <action method="addLink" translate="label" module="urma"><name>rma</name><path>*/*/rma</path><label>RMA</label></action>
+            <action method="setTemplate"><template>urma/sales/order/info.phtml</template></action>
+        </reference>
+    </sales_order_shipment>
+    <sales_email_order_rma_items>
+        <block type="urma/order_email_rma_items" name="items" template="urma/email/order/rma/items.phtml">
+            <action method="addItemRender"><type>default</type><block>sales/order_email_items_default</block><template>urma/email/order/items/rma/default.phtml</template></action>
+        </block>
+    </sales_email_order_rma_items>
+    <sales_order_history>
+        <reference name="sales.order.history">
+            <action method="setTemplate"><template>urma/sales/order/history.phtml</template></action>
+        </reference>
+    </sales_order_history>
+    <customer_account_index>
+        <reference name="customer_account_dashboard_top">
+            <action method="setTemplate"><template>urma/sales/order/recent.phtml</template></action>
+        </reference>
+    </customer_account_index>
+    <urma_tracking_ajax>
+        <reference name="root">
+            <action method="setTemplate"><template></template></action>
+        </reference>
+        <reference name="content">
+            <block type="shipping/tracking_ajax" name="shipping.tracking.ajax" template="urma/tracking/ajax.phtml" />
+        </reference>
+    </urma_tracking_ajax>
+    <urma_tracking_popup translate="label">
+        <label>RMA Tracking Popup</label>
+        <reference name="root">
+            <action method="setTemplate"><template>page/popup.phtml</template></action>
+        </reference>
+        <!--<reference name="head">
+            <action method="addJs"><script>scriptaculous/scriptaculous.js</script></action>
+        </reference>-->
+        <reference name="content">
+            <block type="shipping/tracking_popup" name="shipping.tracking.popup" template="urma/tracking/popup.phtml" />
+        </reference>
+    </urma_tracking_popup>
+
+    <!-- vendor portal -->
+
+    <urma_vendor_index>
+        <update handle="udropship_vendor" />
+        <reference name="head">
+            <action method="addItem"><type>js_css</type><name>calendar/calendar-win2k-1.css</name></action>
+            <action method="addItem"><type>js</type><name>calendar/calendar.js</name></action>
+            <action method="addItem"><type>js</type><name>calendar/calendar-setup.js</name></action>
+        </reference>
+        <reference name="content">
+            <block type="core/html_calendar" name="head.udropship.calendar" as="udropship.calendar" template="unirgy/dropship/calendar.phtml"></block>
+            <block type="core/template" template="unirgy/urma/vendor/urmas.phtml" name="dashboard">
+                <block type="urma/vendor_rma_pager" name="urma.grid.toolbar">
+                    <action method="checkCompat"/>
+                </block>
+                <block type="urma/vendor_rma_grid" template="unirgy/urma/vendor/rma/grid.phtml" name="urma.grid" as="urmas"/>
+            </block>
+        </reference>
+    </urma_vendor_index>
+    <urma_vendor_urmainfo>
+        <block type="urma/vendor_rma_info" template="unirgy/urma/vendor/rma/info.phtml" name="info"/>
+    </urma_vendor_urmainfo>
+    <urma_vendor_login>
+        <update handle="udropship_vendor_login" />
+    </urma_vendor_login>
+    <urma_vendor_login_ajax>
+        <update handle="udropship_vendor_login_ajax" />
+    </urma_vendor_login_ajax>
+
+</layout>
