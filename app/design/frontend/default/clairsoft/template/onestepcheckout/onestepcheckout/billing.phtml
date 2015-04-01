@@ -64,11 +64,11 @@
                                     <?php endif ?>
                                 </label><br/>
                                 <select id="billing:region_id" name="billing[region_id]" title="<?php echo $this->__('State/Province') ?>" class="<?php if ($helper->getFieldRequire($fields[$i]['value'])) echo "validate-select"; ?>" style="display:none;width:135px;" >
-                                    <option value=""><?php echo $this->__('Please select region, state or province') ?></option>
+                                    <option value="0"><?php echo $this->__('Please select region, state or province') ?></option>
                                 </select>
                                 <?php if (!$helper->enableGeoip()): ?>
                                     <script type="text/javascript">
-                                        $('billing:region_id').setAttribute('defaultValue', "0");
+                                        $('billing:region_id').setAttribute('defaultValue', "<?php echo $this->htmlEscape($this->getBillingAddress()->getRegionId()) ?>");
                                     </script>
                                 <?php endif; ?>
                                 <input type="text" id="billing:region" name="billing[region]" value="<?php echo $this->htmlEscape($this->getBillingAddress()->getRegion()) ?>"  title="<?php echo $this->__('State/Province') ?>" class="<?php if ($helper->getFieldRequire($fields[$i]['value'])) echo 'required-entry'; ?> input-text" style="display:none" />
@@ -425,8 +425,9 @@ Event.observe(document, "dom:loaded", function() {
                             sublocality = place.address_components[i][componentBillingForm['sublocality']];
                     }
                 }
-                fillAddress('billing', res[0], city, region_id, region, country, postal_code, sublocality);
-
+                if (region_id !== undefined && city !== undefined){
+                    fillAddress('billing', res[0], city, region_id, region, country, postal_code, sublocality);
+                }
             }
         </script>
     <?php endif; ?>

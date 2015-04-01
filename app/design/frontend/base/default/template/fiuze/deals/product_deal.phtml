@@ -2,11 +2,12 @@
     <?php
         $productActive = Mage::getResourceModel('fiuze_deals/deals_collection')
             ->addFilter('current_active', 1)->getFirstItem();
+        $locale = new Zend_Locale(Zend_Locale::BROWSER);
+        $date = new Zend_Date($productActive->getData('end_time'),$locale);
     ?>
     function timer() {
-        var now = new Date();
-        var nowDate = new Date(now.getTime() + now.getTimezoneOffset() * 60000);
-        var achiveDate = new Date('<?php echo $productActive->getData('end_time') ?>');//end time
+        var nowDate = new Date();
+        var achiveDate = new Date(<?php echo $date->getTimestamp() ?>*1000);//end time
         var result = (achiveDate - nowDate) + 1000;
         if (result < 0) {
             var elmntNew = document.getElementById('timer');
@@ -23,9 +24,9 @@
         elmnt.innerHTML = hours + ':' + minutes + ':' + seconds;
         setTimeout(timer, 1000);
     }
-    window.onload = function () {
+    jQuery(document.getElementById('timer')).ready(function() {
         timer();
-    };
+    });
 </script>
 
 

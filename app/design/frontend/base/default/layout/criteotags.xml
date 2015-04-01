@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* Web In Color
+*
+* NOTICE OF LICENSE
+*
+* This source file is subject to the EULA
+* that is bundled with this package in the file WIC-LICENSE.txt.
+* It is also available through the world-wide-web at this URL:
+* http://store.webincolor.fr/WIC-LICENSE.txt
+* 
+* @package		WIC_Criteotags
+* @copyright   Copyright (c) 2010-2014 Web In Color (http://www.webincolor.fr)
+* @author		Web In Color <contact@webincolor.fr>
+**/hor		Web In Color <contact@webincolor.fr>
+ */
+
+-->
+<layout version="0.1.0">
+		<default>		
+            <reference name="head">
+                <action method="addItem"><type>external_js</type><name>//static.criteo.net/js/ld/ld.js</name><params>async="true"</params></action>
+            </reference>
+		</default>
+		
+    <cms_index_index>
+		<reference name="head">
+			<block type="criteotags/tags_home" name="criteotags.tags.home" />
+		</reference>
+    </cms_index_index>
+    
+    <catalog_product_view>
+		<reference name="head">
+			<block type="criteotags/tags_product" name="criteotags.tags.product" />
+		</reference>    	
+    </catalog_product_view>
+
+    <catalog_category_layered>    
+		<reference name="head">
+			<block type="criteotags/tags_category" name="criteotags.tags.category" />
+		</reference>       	
+    </catalog_category_layered>
+    
+    <catalog_category_default>
+		<reference name="head">
+			<block type="criteotags/tags_category" name="criteotags.tags.category" />
+		</reference>    
+    </catalog_category_default>
+    
+    <checkout_cart_index>
+		<reference name="head">
+			<block type="criteotags/tags_cart" name="criteotags.tags.cart" />
+		</reference>
+    </checkout_cart_index>
+    
+	<checkout_onepage_success>
+		<reference name="head">
+			<block type="criteotags/tags_success" name="criteotags.tags.success" />
+		</reference>
+	</checkout_onepage_success>
+    
+    <checkout_multishipping_success>
+		<reference name="head">
+			<block type="criteotags/tags_success" name="criteotags.tags.success" />
+		</reference>
+    </checkout_multishipping_success>
+    
+    <catalogsearch_result_index>
+		<reference name="head">
+			<block type="criteotags/tags_category" name="criteotags.tags.category" />
+		</reference>    
+    </catalogsearch_result_index>
+    
+    <catalogsearch_advanced_result>
+		<reference name="head">
+			<block type="criteotags/tags_category" name="criteotags.tags.category" />
+		</reference>        
+    </catalogsearch_advanced_result>
+</layout>
