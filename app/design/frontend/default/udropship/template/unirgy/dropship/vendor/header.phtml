@@ -33,7 +33,7 @@ $_isTierShip = $_session->getVendor()->getAllowTiershipModify();
     <div class="utility-nav">
         <?php if ($_session->isLoggedIn()): ?>
         <strong><?php echo $this->htmlEscape($this->__('Logged in as %s', $_session->getVendor()->getVendorName())) ?></strong><span class="pipe">|</span>
-        <a href="http://unirgy.com/products/udropship/help.php" onclick="this.target='_blank'"><?php echo $this->__('Help')?></a><span class="pipe">|</span>
+        <a href="mailto:vendors@dailysale.com" onclick="this.target='_blank'"><?php echo $this->__('Help')?></a><span class="pipe">|</span>
         <a href="<?php echo $this->getUrl('udropship/vendor/logout')?>"><?php echo $this->__('Log out')?></a>
         <?php else: ?>
         <?php echo $this->__('Welcome to Dropship Vendor Interface') ?>
