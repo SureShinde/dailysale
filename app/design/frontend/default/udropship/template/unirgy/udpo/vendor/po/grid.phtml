@@ -146,12 +146,12 @@ $_dateFormat = Varien_Date::convertZendToStrFtime(Mage::app()->getLocale()->getD
                     <option value="udpoLabelBatch"><?php echo $_hlp->__('Create and Download Labels Batch')?></option>
                     <option value="existingLabelBatch"><?php echo $_hlp->__('Download Existing Labels Batch')?></option>
 <?php endif ?>
-                    <option value="updateUdpoStatus"><?php echo $_hlp->__('Update Status')?></option>
+<!--                    <option value="updateUdpoStatus">--><?php //echo $_hlp->__('Update Status')?><!--</option>-->
                     <?php if ($_hlp->isModuleActive('Unirgy_DropshipBatch')): ?>
                     <option value="udbatchExport"><?php echo $_hlp->__('Export Purchase Orders')?></option>
                     <?php endif ?>
-                    <option value="createShipment"><?php echo $_hlp->__('Create Shipments')?></option>
-                    <option value="createShipmentAndEmail"><?php echo $_hlp->__('Create Shipments and Send Customer Notifications')?></option>
+<!--                    <option value="createShipment">--><?php //echo $_hlp->__('Create Shipments')?><!--</option>-->
+<!--                    <option value="createShipmentAndEmail">--><?php //echo $_hlp->__('Create Shipments and Send Customer Notifications')?><!--</option>-->
                 </select>
                 <select id="batch_update_status" name="update_status">
                     <option value=""><?php echo $_hlp->__('* Automatic') ?></option>
