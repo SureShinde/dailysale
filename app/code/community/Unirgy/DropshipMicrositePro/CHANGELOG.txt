@@ -1,0 +1,61 @@
+===== 1.0.18 =====
+  * Added url key unique validation
+
+===== 1.0.17 =====
+  * Fixed captcha image refresh
+
+===== 1.0.16 =====
+  * Added CAPTCHA on registration form
+
+===== 1.0.15 =====
+  * Fixed presentation of preferred subdomain field
+  * Fixed proper treatment of 0 value options
+  * Fixed logo required not applied
+
+===== 1.0.14 =====
+  * Added landing page meta keywords, description
+  * Added compatibility with CE1.9 theme
+
+===== 1.0.13 =====
+  * Fixed missing generated password in confirmation email
+
+===== 1.0.12 =====
+  * Added "agree terms and conditions"
+
+===== 1.0.11 =====
+  * Fixed required validation for radios in registration page
+
+===== 1.0.10 =====
+  * Skipped email/url key/vendor name exist check in reg form when input empty
+  * Fixed error when using field in registration for with <source> explicitly set
+
+===== 1.0.9 =====
+  * Added configuration for optional confirmation
+
+===== 1.0.8 =====
+  * Fixed usage of multiselect registration fields
+
+===== 1.0.7 =====
+  * Fixed missing source model for vendor registration billing_region_id, billing_country_id fields
+
+===== 1.0.6 =====
+  * Added support for udropship option to set vendor billing address separate from shipping origin
+
+===== 1.0.5 =====
+  * Added new vendor reject status with reason and reject email
+  * Ability to resend confirmation and reject emails
+
+===== 1.0.4 =====
+  * Fixed registration validation failure when using https for vendor portal
+
+===== 1.0.3 =====
+  * Added support for radios vendor field type
+
+===== 1.0.2 =====
+  * Fixed compatibility with windows wampp/xampp magento installation
+
+===== 1.0.1 =====
+  * Fixed save custom labels in registration form definition
+  * Fixed compatibility with IE9 dynamic rows js
+
+===== 1.0 - Initial release =====

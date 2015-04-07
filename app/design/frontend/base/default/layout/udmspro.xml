@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<layout>
+
+    <umicrosite_vendor_register>
+        <reference name="head">
+            <action method="addItem"><type>js_css</type><name>calendar/calendar-win2k-1.css</name></action>
+            <action method="addItem"><type>js</type><name>calendar/calendar.js</name></action>
+            <action method="addItem"><type>js</type><name>calendar/lang/calendar-en.js</name></action>
+            <action method="addItem"><type>js</type><name>calendar/calendar-setup.js</name></action>
+        </reference>
+        <reference name="content">
+            <block type="core/html_calendar" name="head.calendar" as="calendar" template="page/js/calendar.phtml"/>
+            <remove name="register" />
+            <block type="udmspro/vendor_register" template="unirgy/udmspro/vendor/register.phtml" name="udmspro_register">
+                <block type="core/text_list" name="form.additional.info">
+                    <block type="captcha/captcha" name="captcha">
+                        <reference name="head">
+                            <action method="addJs"><file>mage/captcha.js</file></action>
+                        </reference>
+                        <action method="setFormId"><formId>umicrosite_registration_form</formId></action>
+                        <action method="setImgWidth"><width>230</width></action>
+                        <action method="setImgHeight"><width>50</width></action>
+                    </block>
+                </block>
+            </block>
+        </reference>
+    </umicrosite_vendor_register>
+
+</layout>

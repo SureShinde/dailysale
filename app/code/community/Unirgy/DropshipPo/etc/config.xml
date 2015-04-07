@@ -1,0 +1,638 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Unirgy LLC
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.unirgy.com/LICENSE-M1.txt
+ *
+ * @category   Unirgy
+ * @package    Unirgy_DropshipPo
+ * @copyright  Copyright (c) 2008-2009 Unirgy LLC (http://www.unirgy.com)
+ * @license    http:///www.unirgy.com/LICENSE-M1.txt
+ */
+
+-->
+<config>
+    <modules>
+        <Unirgy_DropshipPo>
+            <version>2.2.14</version>
+            <usimpleup remote="http://download.unirgy.com/simple/client_api/version/"
+                changelog="http://unirgy.com/support/portal/announcements"
+                uninstall="udpo/observer::usimpleup_uninstall"/>
+        </Unirgy_DropshipPo>
+    </modules>
+
+    <global>
+        <models>
+            <udpo>
+                <class>Unirgy_DropshipPo_Model</class>
+                <resourceModel>udpo_mysql4</resourceModel>
+            </udpo>
+            <udpo_mysql4>
+                <class>Unirgy_DropshipPo_Model_Mysql4</class>
+                <entities>
+                    <po><table>udropship_po</table></po>
+                    <po_grid><table>udropship_po_grid</table></po_grid>
+                    <po_item><table>udropship_po_item</table></po_item>
+                    <po_comment><table>udropship_po_comment</table></po_comment>
+                </entities>
+            </udpo_mysql4>
+            <udbatch>
+                <rewrite>
+                    <batch>Unirgy_DropshipPo_Model_Batch</batch>
+                </rewrite>
+            </udbatch>
+            <udropship>
+                <rewrite>
+                    <po>Unirgy_DropshipPo_Model_Po</po>
+                    <!-- statement>Unirgy_DropshipPo_Model_Statement</statement -->
+                </rewrite>
+            </udropship>
+            <udropship_mysql4>
+                <rewrite>
+                    <po>Unirgy_DropshipPo_Model_Mysql4_Po</po>
+                    <po_collection>Unirgy_DropshipPo_Model_Mysql4_Po_Collection</po_collection>
+                </rewrite>
+            </udropship_mysql4>
+            <sales>
+                <rewrite>
+                    <order>Unirgy_DropshipPo_Model_SalesOrder</order>
+                    <order_invoice_total_shipping>Unirgy_DropshipPo_Model_OrderInvoiceTotal_Shipping</order_invoice_total_shipping>
+                    <order_invoice>Unirgy_DropshipPo_Model_OrderInvoice</order_invoice>
+                </rewrite>
+            </sales>
+        </models>
+
+        <resources>
+            <udpo_setup>
+                <setup>
+                    <module>Unirgy_DropshipPo</module>
+                    <class>Mage_Sales_Model_Mysql4_Setup</class>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </udpo_setup>
+            <udpo_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </udpo_write>
+            <udpo_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </udpo_read>
+        </resources>
+
+        <blocks>
+            <udpo>
+                <class>Unirgy_DropshipPo_Block</class>
+            </udpo>
+        </blocks>
+
+        <helpers>
+            <udpo>
+                <class>Unirgy_DropshipPo_Helper</class>
+            </udpo>
+        </helpers>
+
+        <fieldsets>
+            <sales_convert_order_item>
+                <sku>
+                    <to_udpo_item>*</to_udpo_item>
+                </sku>
+                <name>
+                    <to_udpo_item>*</to_udpo_item>
+                </name>
+                <description>
+                    <to_udpo_item>*</to_udpo_item>
+                </description>
+                <weight>
+                    <to_udpo_item>*</to_udpo_item>
+                </weight>
+                <price>
+                    <to_udpo_item>*</to_udpo_item>
+                </price>
+                <base_price>
+                    <to_udpo_item>*</to_udpo_item>
+                </base_price>
+                <base_cost>
+                    <to_udpo_item>*</to_udpo_item>
+                </base_cost>
+                <is_virtual>
+                    <to_udpo_item>*</to_udpo_item>
+                </is_virtual>
+            </sales_convert_order_item>
+            <sales_convert_quote_item>
+                <udpo_seq_number><to_order_item>*</to_order_item></udpo_seq_number>
+            </sales_convert_quote_item>
+        </fieldsets>
+
+        <pdf>
+            <udpo>
+		        <default>udpo/pdf_poItems_default</default>
+		        <grouped>udpo/pdf_poItems_grouped</grouped>
+                <bundle>udpo/pdf_poItems_bundle</bundle>
+		    </udpo>
+        </pdf>
+
+        <udropship>
+            <vendor>
+                <fields>
+                    <attach_po_pdf>
+                        <label>Attach PO Pdf to Notifications</label>
+                        <type>select</type>
+                        <fieldset>integration</fieldset>
+                        <source>yesno</source>
+                        <position>3</position>
+                        <default>0</default>
+                    </attach_po_pdf>
+                    <batch_export_orders_export_on_po_status>
+                        <label>Export On Po Statuses</label>
+                        <type>multiselect</type>
+                        <fieldset>batch_export</fieldset>
+                        <source_model>udpo/source</source_model>
+                        <position>59</position>
+                        <default>999</default>
+                    </batch_export_orders_export_on_po_status>
+                    <batch_export_orders_po_status>
+                        <label>Change PO status on export</label>
+                        <type>select</type>
+                        <fieldset>batch_export</fieldset>
+                        <source_model>udpo/source</source_model>
+                        <source>po_statuses</source>
+                        <position>60</position>
+                        <default>10</default>
+                    </batch_export_orders_po_status>
+                    <batch_import_orders_po_status>
+                        <label>Change PO status on import</label>
+                        <type>select</type>
+                        <fieldset>batch_import</fieldset>
+                        <source_model>udpo/source</source_model>
+                        <source>po_statuses</source>
+                        <position>150</position>
+                        <default>1</default>
+                    </batch_import_orders_po_status>
+                    <statement_po_status>
+                        <name>statement_po_status</name>
+                        <label>Statement on following po statuses</label>
+                        <type>multiselect</type>
+                        <fieldset>statement</fieldset>
+                        <source_model>udpo/source</source_model>
+                        <position>41</position>
+                        <default>999</default>
+                    </statement_po_status>
+                    <payout_po_status>
+                        <name>payout_po_status</name>
+                        <label>Payout on following po statuses</label>
+                        <type>multiselect</type>
+                        <fieldset>payout</fieldset>
+                        <source_model>udpo/source</source_model>
+                        <source>po_statuses</source>
+                        <position>59</position>
+                        <default>1</default>
+                    </payout_po_status>
+                    <vendor_po_grid_sortby>
+                        <label>Default PO sort by in vendor interface</label>
+                        <source_model>udpo/source</source_model>
+                    </vendor_po_grid_sortby>
+                    <vendor_po_grid_sortdir>
+                        <label>Default PO sort direction in vendor interface</label>
+                    </vendor_po_grid_sortdir>
+                    <initial_shipment_status>
+                        <label>Initial Customer Shipment Status</label>
+                    </initial_shipment_status>
+                    <initial_po_status>
+                        <label>Initial PO Status</label>
+                        <type>select</type>
+                        <fieldset>integration</fieldset>
+                        <source_model>udpo/source</source_model>
+                        <position>38</position>
+                        <default>999</default>
+                    </initial_po_status>
+                    <initial_virtual_po_status>
+                        <label>Initial Virtual PO Status</label>
+                        <type>select</type>
+                        <fieldset>integration</fieldset>
+                        <source_model>udpo/source</source_model>
+                        <position>38</position>
+                        <default>999</default>
+                    </initial_virtual_po_status>
+                    <vendor_po_grid_status_filter>
+                        <label>Default PO status filter in vendor interface</label>
+                        <source_model>udpo/source</source_model>
+                    </vendor_po_grid_status_filter>
+                    <hide_udpo_pdf_shipping_amount>
+                        <label>Hide shipping amount in po pdf</label>
+                        <type>select</type>
+                        <fieldset>integration</fieldset>
+                        <source>yesno_useconfig</source>
+                        <position>3.4</position>
+                        <default>-1</default>
+                    </hide_udpo_pdf_shipping_amount>
+                    <new_order_notifications>
+                        <source_model>udpo/source</source_model>
+                        <frontend_model>udropship/adminhtml_vendor_helper_form_dependSelect</frontend_model>
+                        <depend_fields>
+                            <notify_by_udpo_status>-1</notify_by_udpo_status>
+                        </depend_fields>
+                    </new_order_notifications>
+                    <notify_by_udpo_status>
+                        <label>Notify vendor on PO Status</label>
+                        <type>multiselect</type>
+                        <fieldset>integration</fieldset>
+                        <source_model>udpo/source</source_model>
+                        <position>1.01</position>
+                        <default>999</default>
+                    </notify_by_udpo_status>
+
+                    <use_udpo_pdf_custom_text>
+                        <label>Use Vendor specific custom text on the bottom of purchase order PDF</label>
+                        <type>select</type>
+                        <frontend_model>udropship/adminhtml_vendor_helper_form_dependSelect</frontend_model>
+                        <depend_fields>
+                            <udpo_pdf_custom_text>1</udpo_pdf_custom_text>
+                        </depend_fields>
+                        <fieldset>integration</fieldset>
+                        <source_model>udropship/source</source_model>
+                        <source>yesno_useconfig</source>
+                        <position>150</position>
+                        <default>-1</default>
+                    </use_udpo_pdf_custom_text>
+
+                    <udpo_pdf_custom_text translate="label">
+                        <label>Vendor specific custom text on the bottom of purchase order PDF</label>
+                        <fieldset>integration</fieldset>
+                        <type>textarea</type>
+                        <position>160</position>
+                    </udpo_pdf_custom_text>
+                </fields>
+            </vendor>
+        </udropship>
+
+        <template>
+            <email>
+                <udropship_purchase_order_new_po_vendor_email_template module="udpo">
+                    <label>New PO Vendor Notification</label>
+                    <file>udpo_vendor_po.html</file>
+                    <type>html</type>
+                </udropship_purchase_order_new_po_vendor_email_template>
+                <udropship_purchase_order_po_comment_vendor_email_template module="udpo">
+                    <label>PO Comment Vendor Notification</label>
+                    <file>udpo_vendor_po_comment.html</file>
+                    <type>html</type>
+                </udropship_purchase_order_po_comment_vendor_email_template>
+            </email>
+        </template>
+
+        <events>
+            <udpo_po_cancel>
+                <observers>
+                    <udpo>
+                        <type>singleton</type>
+                        <class>udpo/observer</class>
+                        <method>udpo_po_cancel</method>
+                    </udpo>
+                </observers>
+            </udpo_po_cancel>
+            <udpo_order_save_after>
+                <observers>
+                    <udpo>
+                        <type>singleton</type>
+                        <class>udpo/observer</class>
+                        <method>udpo_order_save_after</method>
+                    </udpo>
+                </observers>
+            </udpo_order_save_after>
+            <sales_order_shipment_save_commit_after>
+                <observers>
+                    <udpo>
+                        <type>singleton</type>
+                        <class>udpo/observer</class>
+                        <method>sales_order_shipment_save_commit_after</method>
+                    </udpo>
+                </observers>
+            </sales_order_shipment_save_commit_after>
+            <udropship_shipment_status_save_after>
+                <observers>
+                    <udpo>
+                        <type>singleton</type>
+                        <class>udpo/observer</class>
+                        <method>udropship_shipment_status_save_after</method>
+                    </udpo>
+                </observers>
+            </udropship_shipment_status_save_after>
+            <udropship_shipment_label_request_failed>
+                <observers>
+                    <udpo>
+                        <type>singleton</type>
+                        <class>udpo/observer</class>
+                        <method>udropship_shipment_label_request_failed</method>
+                    </udpo>
+                </observers>
+            </udropship_shipment_label_request_failed>
+            <udpo_po_save_before>
+                <observers>
+                    <udpo>
+                        <type>singleton</type>
+                        <class>udpo/observer</class>
+                        <method>udpo_po_save_before</method>
+                    </udpo>
+                </observers>
+            </udpo_po_save_before>
+            <udpo_po_status_save_after>
+                <observers>
+                    <udpo>
+                        <type>singleton</type>
+                        <class>udpo/observer</class>
+                        <method>udpo_po_status_save_after</method>
+                    </udpo>
+                </observers>
+            </udpo_po_status_save_after>
+            <sales_model_service_quote_submit_before>
+                <observers>
+                    <udpo>
+                        <type>singleton</type>
+                        <class>udpo/observer</class>
+                        <method>sales_model_service_quote_submit_before</method>
+                    </udpo>
+                </observers>
+            </sales_model_service_quote_submit_before>
+            <checkout_type_multishipping_create_orders_single>
+                <observers>
+                    <udpo>
+                        <type>singleton</type>
+                        <class>udpo/observer</class>
+                        <method>sales_model_service_quote_submit_before</method>
+                    </udpo>
+                </observers>
+            </checkout_type_multishipping_create_orders_single>
+            <udpo_po_save_after>
+                <observers>
+                    <udpo>
+                        <type>singleton</type>
+                        <class>udpo/observer</class>
+                        <method>udpo_po_save_after</method>
+                    </udpo>
+                </observers>
+            </udpo_po_save_after>
+        </events>
+
+    </global>
+
+    <frontend>
+        <product>
+            <collection>
+                <attributes>
+                    <udropship_vendor/>
+                </attributes>
+            </collection>
+        </product>
+        <routers>
+            <udpo>
+                <use>standard</use>
+                <args>
+                    <module>Unirgy_DropshipPo</module>
+                    <frontName>udpo</frontName>
+                </args>
+            </udpo>
+        </routers>
+        <layout>
+            <updates>
+                <udpo>
+                    <file>udpo.xml</file>
+                </udpo>
+                <udpo_front>
+                    <file>udpo_front.xml</file>
+                </udpo_front>
+            </updates>
+        </layout>
+        <secure_url>
+            <udpo_vendor>/udpo/vendor/</udpo_vendor>
+        </secure_url>
+    </frontend>
+
+    <admin>
+        <routers>
+            <udpoadmin>
+                <use>admin</use>
+                <args>
+                    <module>Unirgy_DropshipPo_Adminhtml</module>
+                    <frontName>udpoadmin</frontName>
+                </args>
+            </udpoadmin>
+        </routers>
+    </admin>
+
+    <adminhtml>
+        <layout>
+            <updates>
+                <udpo>
+                    <file>udpo.xml</file>
+                </udpo>
+            </updates>
+        </layout>
+        <menu>
+            <sales>
+                <children>
+                    <udropship>
+                        <children>
+                            <udpo translate="title" module="udpo">
+                                <title>Purchase Orders</title>
+                                <action>udpoadmin/po</action>
+                                <sort_order>55</sort_order>
+                            </udpo>
+                        </children>
+                    </udropship>
+                </children>
+            </sales>
+            <report>
+                <children>
+                    <udropship module="udpo">
+                        <children>
+                            <advanced module="udpo">
+                                <title>Advanced PO Details</title>
+                                <sort_order>5</sort_order>
+                                <action>udpoadmin/report</action>
+                            </advanced>
+                            <advanced_item module="udpo">
+                                <title>Advanced PO Item Details</title>
+                                <sort_order>7</sort_order>
+                                <action>udpoadmin/report/item</action>
+                            </advanced_item>
+                            <general module="udpo">
+                                <title>Shipment Details</title>
+                            </general>
+                            <item module="udpo">
+                                <title>Shipment Item Details</title>
+                            </item>
+                        </children>
+                    </udropship>
+                </children>
+            </report>
+        </menu>
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <sales>
+                            <children>
+                                <order>
+                                    <children>
+                                        <actions>
+                                            <children>
+                                                <udpo module="udpo" translate="title"><title>Purchase Order</title></udpo>
+                                                <udpo_view_order_cost module="udpo" translate="title"><title>View Order Costs</title></udpo_view_order_cost>
+                                                <udpo_view_cost module="udpo" translate="title"><title>View PO Costs</title></udpo_view_cost>
+                                                <udpo_edit_cost module="udpo" translate="title"><title>Edit PO Costs</title></udpo_edit_cost>
+                                            </children>
+                                        </actions>
+                                    </children>
+                                </order>
+                                <udropship>
+                                    <children>
+                                        <udpo>
+                                            <title>Purchase Orders</title>
+                                            <sort_order>55</sort_order>
+                                        </udpo>
+                                    </children>
+                                </udropship>
+                            </children>
+                        </sales>
+                        <report>
+                            <children>
+                                <udropship translate="title">
+                                    <children>
+                                        <advanced module="udpo" translate="title">
+                                            <title>Advanced PO Details</title>
+                                            <sort_order>5</sort_order>
+                                        </advanced>
+                                        <advanced_item translate="title">
+                                            <title>Advanced PO Item Details</title>
+                                            <sort_order>7</sort_order>
+                                        </advanced_item>
+                                        <general>
+                                            <title>Shipment Details</title>
+                                        </general>
+                                    </children>
+                                </udropship>
+                            </children>
+                        </report>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+        <events>
+            <controller_action_layout_render_before_adminhtml_sales_order_view>
+                <observers><udpo><type>singleton</type><class>udpo/observer</class><method>adminhtml_order_add_create_po_button</method></udpo></observers>
+            </controller_action_layout_render_before_adminhtml_sales_order_view>
+            <controller_action_layout_render_before_udpoadmin_order_po_view>
+                <observers><udpo><type>singleton</type><class>udpo/observer</class><method>udpoadmin_order_po_view</method></udpo></observers>
+            </controller_action_layout_render_before_udpoadmin_order_po_view>
+            <controller_action_layout_render_before_udpoadmin_order_po_editCosts>
+                <observers><udpo><type>singleton</type><class>udpo/observer</class><method>udpoadmin_order_po_view</method></udpo></observers>
+            </controller_action_layout_render_before_udpoadmin_order_po_editCosts>
+            <controller_action_layout_render_before_udropshipadmin_adminhtml_vendor_index>
+                <observers><udpo><type>singleton</type><class>udpo/observer</class><method>adminhtml_version</method></udpo></observers>
+            </controller_action_layout_render_before_udropshipadmin_adminhtml_vendor_index>
+            <controller_action_layout_render_before_udpoadmin_order_po_newShipment>
+                <observers>
+                    <udpo>
+                        <type>singleton</type>
+                        <class>udropship/observer</class>
+                        <method>adminhtml_sales_order_shipment_view</method>
+                    </udpo>
+                </observers>
+            </controller_action_layout_render_before_udpoadmin_order_po_newShipment>
+            <core_block_abstract_to_html_after>
+                <observers>
+                    <udpo>
+                        <type>singleton</type>
+                        <class>udpo/observer</class>
+                        <method>core_block_abstract_to_html_after</method>
+                    </udpo>
+                </observers>
+            </core_block_abstract_to_html_after>
+            <sales_order_save_before>
+                <observers>
+                    <udpo>
+                        <type>singleton</type>
+                        <class>udpo/observer</class>
+                        <method>sales_order_save_before</method>
+                    </udpo>
+                </observers>
+            </sales_order_save_before>
+        </events>
+    </adminhtml>
+
+    <default>
+        <udropship>
+            <vendor>
+                <is_restrict_udpo_status>0</is_restrict_udpo_status>
+                <allow_forced_po_status_change>0</allow_forced_po_status_change>
+                <hide_udpo_pdf_shipping_amount>0</hide_udpo_pdf_shipping_amount>
+            </vendor>
+            <statement>
+                <statement_po_status>1</statement_po_status>
+            </statement>
+	        <purchase_order>
+	            <autoinvoice_shipment>0</autoinvoice_shipment>
+	            <autoinvoice_shipment_statuses>1</autoinvoice_shipment_statuses>
+	            <attach_po_pdf>0</attach_po_pdf>
+	            <ready_on_pdf>1</ready_on_pdf>
+	            <po_increment_type>order_based</po_increment_type>
+	            <shipment_increment_type>po_based</shipment_increment_type>
+	            <new_po_vendor_email_template>udropship_purchase_order_new_po_vendor_email_template</new_po_vendor_email_template>
+	            <po_comment_vendor_email_template>udropship_purchase_order_po_comment_vendor_email_template</po_comment_vendor_email_template>
+	        </purchase_order>
+	        <admin>
+                <vendor_comments_template><![CDATA[Dear Administrator,
+
+A dropship vendor has just submitted a comment regarding an order shipment.
+
+Vendor Name: {{vendor_name}}
+Order ID: {{order_id}}
+{{isPoAvailable}}Purchase Order ID: {{po_id}}
+{{/isPoAvailable}}Shipment ID: {{shipment_id}}
+
+Vendor URL: {{vendor_url}}
+Order URL: {{order_url}}
+{{isPoAvailable}}Purchase Order URL: {{po_url}}
+{{/isPoAvailable}}Shipment URL: {{shipment_url}}
+
+Comment: {{comment}}
+]]></vendor_comments_template>
+                <vendor_po_comments_subject><![CDATA[A comment from {{vendor_name}} regarding Purchase Order # {{po_id}}]]></vendor_po_comments_subject>
+                <vendor_po_comments_template><![CDATA[Dear Administrator,
+
+A dropship vendor has just submitted a comment regarding purchase order.
+
+Vendor Name: {{vendor_name}}
+Order ID: {{order_id}}
+Purchase Order ID: {{po_id}}
+
+Vendor URL: {{vendor_url}}
+Order URL: {{order_url}}
+Purchase Order URL: {{po_url}}
+
+Comment: {{comment}}
+]]></vendor_po_comments_template>
+                <interface_theme>default/default</interface_theme>
+                <notifications>1</notifications>
+            </admin>
+            <batch>
+                <export_on_po_status>3</export_on_po_status>
+            </batch>
+            <pocombine>
+                <notify_on_status>0</notify_on_status>
+                <after_notify_status>9</after_notify_status>
+            </pocombine>
+	    </udropship>
+    </default>
+</config>

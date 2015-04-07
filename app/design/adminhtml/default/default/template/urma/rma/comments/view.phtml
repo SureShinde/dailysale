@@ -1,0 +1,103 @@
+<?php if ($_entity = $this->getEntity()): ?>
+<div id="comments_block">
+    <span class="field-row">
+        <label class="normal" for="comment_status"><?php echo Mage::helper('sales')->__('Status') ?></label><br/>
+        <select name="comment[status]" class="select" id="comment_status"  onchange="selectRmaStatus(this)">
+            <?php foreach (Mage::getSingleton('urma/source')->setPath('rma_status')->toOptionHash() as $value=>$label): ?>
+            <option value="<?php echo $value?>"<?php if($value==$this->getEntity()->getRmaStatus()): ?> selected="selected"<?php endif; ?>><?php echo $label ?></option>
+            <?php endforeach ?>
+        </select>
+        <script type="text/javascript">
+        $('comment_status').origValue = $('comment_status').value
+        </script>
+    </span>
+    <span class="field-row" style="<?php if (!$_entity->isAllowedResolutionNotes()) echo 'display: none'?>">
+        <label class="normal" for="resolution_notes"><?php echo Mage::helper('sales')->__('Resolution notes') ?></label>
+        <textarea <?php if (!$_entity->isAllowedResolutionNotes()) echo 'disabled="disabled"'?> name="comment[resolution_notes]" rows="3" cols="5" style="height:6em; width:99%;" id="resolution_notes"><?php echo $this->htmlEscape($_entity->getResolutionNotes()) ?></textarea>
+    </span>
+    <span class="field-row">
+        <label class="normal" for="comment_comment"><?php echo Mage::helper('sales')->__('Comment Text') ?></label>
+        <textarea name="comment[comment]" rows="3" cols="5" style="height:6em; width:99%;" id="comment_comment"></textarea>
+    </span>
+    <div class="f-left">
+        <input name="comment[is_vendor_notified]" type="checkbox" id="vendor_comment_notify" value="1" onclick="syncRmaCheckboxes(this, 'vendor_comment_visible')" /><label class="normal" for="vendor_comment_notify"> <?php echo Mage::helper('sales')->__('Notify Vendor by Email') ?></label><br />
+        <input name="comment[is_visible_to_vendor]" type="checkbox" id="vendor_comment_visible" value="1" /><label class="normal" for="vendor_comment_visible"> <?php echo Mage::helper('sales')->__('Visible to Vendor') ?></label><br />
+        <?php if ($this->canSendCommentEmail()): ?>
+        <input name="comment[is_customer_notified]" type="checkbox" id="customer_comment_notify" value="1" onclick="syncRmaCheckboxes(this, 'comment_visible')" /> <label class="normal" for="customer_comment_notify"><?php echo Mage::helper('sales')->__('Notify Customer By Email') ?></label><br />
+        <input name="comment[is_visible_on_front]" type="checkbox" id="comment_visible" value="1" /><label class="normal" for="comment_visible"> <?php echo Mage::helper('sales')->__('Visible on frontend') ?></label><br />
+        <?php endif; ?>
+    </div>
+    <div class="f-right">
+        <?php echo $this->getChildHtml('submit_button') ?>
+    </div>
+    <div class="clear"></div>
+    <ul class="note-list">
+    <?php foreach ($_entity->getCommentsCollection(true) as $_comment): ?>
+        <li>
+            <strong><?php echo $this->helper('core')->formatDate($_comment->getCreatedAtDate(), 'medium') ?></strong>
+            <?php echo $this->helper('core')->formatTime($_comment->getCreatedAtDate(), 'medium') ?><span class="separator">|</span><strong><?php echo Mage::helper('urma')->__($_comment->getRmaStatus()) ?></strong><br/>
+            <small><?php echo $this->helper('sales')->__('Customer') ?>
+            <strong class="subdue">
+                <?php if ($_comment->getIsCustomerNotified()): ?>
+                <?php echo $this->helper('sales')->__('Notified') ?>
+                <img src="<?php echo $this->getSkinUrl('images/ico_success.gif') ?>" width="16" height="16" alt="" />
+                <?php else: ?>
+                <?php echo $this->helper('sales')->__('Not Notified') ?>
+                <?php endif; ?>
+            </strong></small>
+            <br/>
+            <?php echo Mage::helper('core')->escapeHtml($_comment->getComment(), array('b','br','strong','i','u')) ?>
+        </li>
+    <?php endforeach; ?>
+    </ul>
+<script type="text/javascript">
+function submitComment() {
+    if (validateShipmentStatusSubmit()) {
+        submitAndReloadArea($('comments_block').parentNode, '<?php echo $this->getUrl('urmaadmin/order_rma/addComment', array('rma_id'=>$_entity->getId())) ?>')
+    }
+}
+
+function selectRmaStatus(elem) {
+    option = elem.options[elem.selectedIndex];
+    var resolutionAllowedIds = <?php echo Mage::helper('urma')->getAllowedResolutionNotesStatusesIdsJson()?>;
+    if (<?php echo 1*$_entity->isAllowedResolutionNotes()?>) {
+        resolutionAllowedIds.push('');
+    }
+    if (-1!=resolutionAllowedIds.indexOf(option.value)) {
+        $('resolution_notes').enable();
+        $('resolution_notes').up('span').show();
+    }
+    else {
+        $('resolution_notes').disable();
+        $('resolution_notes').up('span').hide();
+    }
+}
+
+function syncRmaCheckboxes(src, dest)
+{
+    if ($(src).checked) {
+        $(dest).old_checked = $(dest).checked;
+        $(dest).checked = true;
+        $(dest).disable();
+    } else {
+        $(dest).checked = $(dest).old_checked;
+        $(dest).enable();
+    }
+}
+
+
+function validateShipmentStatusSubmit()
+{
+    if ($('comment_status').value == $('comment_status').origValue) return true
+    switch ($('comment_status').value) {
+        default:
+            return true;
+    }
+}
+
+if ($('submit_comment_button')) {
+    $('submit_comment_button').observe('click', submitComment);
+}
+</script>
+</div>
+<?php endif; ?>

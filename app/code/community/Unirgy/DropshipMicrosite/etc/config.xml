@@ -1,0 +1,584 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Unirgy LLC
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.unirgy.com/LICENSE-M1.txt
+ *
+ * @category   Unirgy
+ * @package    Unirgy_DropshipMicrosite
+ * @copyright  Copyright (c) 2008-2009 Unirgy LLC (http://www.unirgy.com)
+ * @license    http:///www.unirgy.com/LICENSE-M1.txt
+ */
+
+-->
+<config>
+    <modules>
+        <Unirgy_DropshipMicrosite>
+            <version>2.1.19</version>
+            <usimpleup remote="http://download.unirgy.com/simple/client_api/version/"
+                changelog="http://unirgy.com/support/portal/announcements"
+                uninstall="umicrosite/observer::usimpleup_uninstall"/>
+        </Unirgy_DropshipMicrosite>
+    </modules>
+
+    <global>
+        <blocks>
+            <umicrosite>
+                <class>Unirgy_DropshipMicrosite_Block</class>
+            </umicrosite>
+
+            <adminhtml>
+                <rewrite>
+                    <catalog_product_edit_tab_websites>Unirgy_DropshipMicrosite_Block_Adminhtml_Product_Websites</catalog_product_edit_tab_websites>
+                    <catalog_product_edit_tab_categories>Unirgy_DropshipMicrosite_Block_Adminhtml_Product_Categories</catalog_product_edit_tab_categories>
+<!--
+                    <cms_page_grid>Unirgy_DropshipMicrosite_Block_Adminhtml_Cms_Page_Grid</cms_page_grid>
+                    <cms_block_grid>Unirgy_DropshipMicrosite_Block_Adminhtml_Cms_Block_Grid</cms_block_grid>
+-->
+                </rewrite>
+            </adminhtml>
+            <googleanalytics>
+                <rewrite>
+                    <ga>Unirgy_DropshipMicrosite_Block_Ga</ga>
+                </rewrite>
+            </googleanalytics>
+        </blocks>
+
+        <helpers>
+            <umicrosite>
+                <class>Unirgy_DropshipMicrosite_Helper</class>
+            </umicrosite>
+        </helpers>
+
+        <models>
+            <umicrosite>
+                <class>Unirgy_DropshipMicrosite_Model</class>
+                <resourceModel>umicrosite_mysql4</resourceModel>
+            </umicrosite>
+            <umicrosite_mysql4>
+                <class>Unirgy_DropshipMicrosite_Model_Mysql4</class>
+                <resourceModel>umicrosite_mysql4</resourceModel>
+                <entities>
+                    <registration><table>udropship_vendor_registration</table></registration>
+                </entities>
+            </umicrosite_mysql4>
+<!--
+            <cms_mysql4>
+                <rewrite>
+                    <page>Unirgy_DropshipMicrosite_Model_Mysql4_Cms_Page</page>
+                </rewrite>
+            </cms_mysql4>
+-->
+            <catalog>
+                <rewrite>
+                    <layer>Unirgy_DropshipMicrosite_Model_Catalog_Layer</layer>
+                </rewrite>
+            </catalog>
+            <core>
+                <rewrite>
+                    <store>Unirgy_DropshipMicrosite_Model_Store</store>
+                    <url>Unirgy_DropshipMicrosite_Model_Url</url>
+                </rewrite>
+            </core>
+        </models>
+
+        <resources>
+            <umicrosite_setup>
+                <setup>
+                    <module>Unirgy_DropshipMicrosite</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </umicrosite_setup>
+            <umicrosite_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </umicrosite_write>
+            <umicrosite_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </umicrosite_read>
+        </resources>
+
+        <events>
+
+            <controller_front_init_routers>
+                <observers>
+                    <umicrosite>
+                        <type>singleton</type>
+                        <class>umicrosite/observer</class>
+                        <method>controller_front_init_before</method>
+                    </umicrosite>
+                </observers>
+            </controller_front_init_routers>
+
+            <adminhtml_controller_action_predispatch_start>
+                <observers>
+                    <umicrosite>
+                        <type>singleton</type>
+                        <class>umicrosite/observer</class>
+                        <method>adminhtml_controller_action_predispatch_start</method>
+                    </umicrosite>
+                </observers>
+            </adminhtml_controller_action_predispatch_start>
+
+            <catalog_block_product_list_collection>
+                <observers>
+                    <umicrosite>
+                        <type>singleton</type>
+                        <class>umicrosite/observer</class>
+                        <method>catalog_block_product_list_collection</method>
+                    </umicrosite>
+                </observers>
+            </catalog_block_product_list_collection>
+
+            <udropship_vendor_save_before>
+                <observers>
+                    <umicrosite>
+                        <type>singleton</type>
+                        <class>umicrosite/observer</class>
+                        <method>udropship_vendor_save_before</method>
+                    </umicrosite>
+                </observers>
+            </udropship_vendor_save_before>
+            <udropship_vendor_save_after>
+                <observers>
+                    <umicrosite>
+                        <type>singleton</type>
+                        <class>umicrosite/observer</class>
+                        <method>udropship_vendor_save_after</method>
+                    </umicrosite>
+                </observers>
+            </udropship_vendor_save_after>
+
+            <udropship_vendor_login>
+                <observers>
+                    <umicrosite>
+                        <type>singleton</type>
+                        <class>umicrosite/observer</class>
+                        <method>udropship_vendor_login</method>
+                    </umicrosite>
+                </observers>
+            </udropship_vendor_login>
+
+            <udropship_vendor_logout>
+                <observers>
+                    <umicrosite>
+                        <type>singleton</type>
+                        <class>umicrosite/observer</class>
+                        <method>udropship_vendor_logout</method>
+                    </umicrosite>
+                </observers>
+            </udropship_vendor_logout>
+        </events>
+
+        <template>
+            <email>
+               <udropship_microsite_signup_template  module="umicrosite">
+                   <label>Dropship Vendor Sign Up Email</label>
+                   <file>umicrosite_signup.html</file>
+                   <type>html</type>
+               </udropship_microsite_signup_template>
+               <udropship_microsite_welcome_template  module="umicrosite">
+                   <label>Dropship Vendor Welcome Email</label>
+                   <file>umicrosite_welcome.html</file>
+                   <type>html</type>
+               </udropship_microsite_welcome_template>
+            </email>
+        </template>
+
+        <udropship>
+            <vendor>
+                <fieldsets>
+                    <microsite>
+                        <legend>Microsite</legend>
+                        <position>100</position>
+                    </microsite>
+                </fieldsets>
+
+                <fields>
+                	<landing_page_title>
+                        <label>Landing page title</label>
+                        <type>text</type>
+                        <fieldset>microsite</fieldset>
+                        <position>200</position>
+                    </landing_page_title>
+                    <landing_meta_keywords>
+                        <label>Landing page Meta Keywords</label>
+                        <type>textarea</type>
+                        <fieldset>microsite</fieldset>
+                        <position>210</position>
+                    </landing_meta_keywords>
+                    <landing_meta_description>
+                        <label>Landing page Meta Description</label>
+                        <type>textarea</type>
+                        <fieldset>microsite</fieldset>
+                        <position>220</position>
+                    </landing_meta_description>
+                    <show_products_menu_item>
+                        <label>Enable "System View" menu item in vendor portal</label>
+                        <type>select</type>
+                        <fieldset>microsite</fieldset>
+                        <source>yesno_useconfig</source>
+                        <position>300</position>
+                        <default>-1</default>
+                    </show_products_menu_item>
+                    <limit_websites>
+                        <label>Limit Websites</label>
+                        <type>multiselect</type>
+                        <fieldset>microsite</fieldset>
+                        <source_model>umicrosite/source</source_model>
+                        <source>limit_websites</source>
+                        <position>400</position>
+                        <default></default>
+                    </limit_websites>
+                    <is_limit_categories>
+                        <label>Limit Categories</label>
+                        <type>select</type>
+                        <frontend_model>udropship/adminhtml_vendor_helper_form_dependSelect</frontend_model>
+                        <depend_fields>
+                            <limit_categories>1,2</limit_categories>
+                        </depend_fields>
+                        <fieldset>microsite</fieldset>
+                        <source_model>umicrosite/source</source_model>
+                        <source>is_limit_categories</source>
+                        <position>500</position>
+                        <default></default>
+                    </is_limit_categories>
+                    <limit_categories>
+                        <label>Limit Categories</label>
+                        <type>text</type>
+                        <frontend_model>umicrosite/adminhtml_vendor_helper_form_categoriesCheckboxes</frontend_model>
+                        <fieldset>microsite</fieldset>
+                        <source>yesno</source>
+                        <position>600</position>
+                        <default></default>
+                    </limit_categories>
+                    <google_analytics_enable>
+                        <label>Enable Google Analytics</label>
+                        <type>select</type>
+                        <fieldset>microsite</fieldset>
+                        <source>yesno</source>
+                        <position>700</position>
+                    </google_analytics_enable>
+                    <google_analytics_account_id>
+                        <label>Google Analytics Account Number</label>
+                        <type>text</type>
+                        <fieldset>microsite</fieldset>
+                        <position>710</position>
+                    </google_analytics_account_id>
+                </fields>
+            </vendor>
+        </udropship>
+    </global>
+
+    <admin>
+        <routers>
+            <umicrositeadmin>
+                <use>admin</use>
+                <args>
+                    <module>Unirgy_DropshipMicrosite</module>
+                    <frontName>umicrositeadmin</frontName>
+                </args>
+            </umicrositeadmin>
+        </routers>
+    </admin>
+
+    <adminhtml>
+        <menu>
+            <sales>
+                <children>
+                    <udropship>
+                        <children>
+                            <vendor_registration module="umicrosite">
+                                <title>Vendor Registrations</title>
+                                <sort_order>40</sort_order>
+                                <action>umicrositeadmin/adminhtml_registration</action>
+                            </vendor_registration>
+                        </children>
+                    </udropship>
+                </children>
+            </sales>
+        </menu>
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <sales>
+                            <children>
+                                <udropship>
+                                    <children>
+                                        <vendor_registration>
+                                            <title>Vendor Registrations</title>
+                                            <sort_order>40</sort_order>
+                                        </vendor_registration>
+                                    </children>
+                                </udropship>
+                            </children>
+                        </sales>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+        <events>
+            <controller_action_predispatch>
+                <observers>
+                    <auth>
+                        <class>umicrosite/adminObserver</class>
+                        <method>actionPreDispatchAdmin</method>
+                    </auth>
+                </observers>
+            </controller_action_predispatch>
+            <catalog_product_collection_load_before>
+                <observers>
+                    <umicrosite>
+                        <type>singleton</type>
+                        <class>umicrosite/observer</class>
+                        <method>catalog_product_collection_load_before</method>
+                    </umicrosite>
+                </observers>
+            </catalog_product_collection_load_before>
+
+            <adminhtml_catalog_product_edit_prepare_form>
+                <observers>
+                    <umicrosite>
+                        <type>singleton</type>
+                        <class>umicrosite/observer</class>
+                        <method>adminhtml_catalog_product_edit_prepare_form</method>
+                    </umicrosite>
+                </observers>
+            </adminhtml_catalog_product_edit_prepare_form>
+
+            <catalog_product_prepare_save>
+                <observers>
+                    <umicrosite>
+                        <type>singleton</type>
+                        <class>umicrosite/observer</class>
+                        <method>catalog_product_prepare_save</method>
+                    </umicrosite>
+                </observers>
+            </catalog_product_prepare_save>
+
+            <catalog_product_edit_action>
+                <observers>
+                    <umicrosite>
+                        <type>singleton</type>
+                        <class>umicrosite/observer</class>
+                        <method>catalog_product_edit_action</method>
+                    </umicrosite>
+                </observers>
+            </catalog_product_edit_action>
+
+            <admin_session_user_login_success>
+                <observers>
+                    <umicrosite>
+                        <type>singleton</type>
+                        <class>umicrosite/observer</class>
+                        <method>admin_session_user_login_success</method>
+                    </umicrosite>
+                </observers>
+            </admin_session_user_login_success>
+
+            <controller_action_predispatch_adminhtml_index_logout>
+                <observers>
+                    <umicrosite>
+                        <type>singleton</type>
+                        <class>umicrosite/observer</class>
+                        <method>controller_action_predispatch_adminhtml_index_logout</method>
+                    </umicrosite>
+                </observers>
+            </controller_action_predispatch_adminhtml_index_logout>
+
+            <controller_action_postdispatch_adminhtml_index_logout>
+                <observers>
+                    <umicrosite>
+                        <type>singleton</type>
+                        <class>umicrosite/observer</class>
+                        <method>controller_action_postdispatch_adminhtml_index_logout</method>
+                    </umicrosite>
+                </observers>
+            </controller_action_postdispatch_adminhtml_index_logout>
+
+            <core_block_abstract_prepare_layout_before>
+                <observers>
+                    <umicrosite>
+                        <type>singleton</type>
+                        <class>umicrosite/observer</class>
+                        <method>core_block_abstract_prepare_layout_before</method>
+                    </umicrosite>
+                </observers>
+            </core_block_abstract_prepare_layout_before>
+
+            <core_block_abstract_to_html_before>
+                <observers>
+                    <umicrosite>
+                        <type>singleton</type>
+                        <class>umicrosite/observer</class>
+                        <method>core_block_abstract_to_html_before</method>
+                    </umicrosite>
+                </observers>
+            </core_block_abstract_to_html_before>
+<!--
+            <cms_page_prepare_save>
+                <observers>
+                    <umicrosite>
+                        <type>singleton</type>
+                        <class>umicrosite/observer</class>
+                        <method>cms_page_prepare_save</method>
+                    </umicrosite>
+                </observers>
+            </cms_page_prepare_save>
+-->
+            <controller_action_layout_render_before_udropshipadmin_adminhtml_vendor_index>
+                <observers><umicrosite><type>singleton</type><class>umicrosite/observer</class><method>adminhtml_version</method></umicrosite></observers>
+            </controller_action_layout_render_before_udropshipadmin_adminhtml_vendor_index>
+        </events>
+    </adminhtml>
+
+    <frontend>
+        <events>
+            <catalog_category_flat_loadnodes_before>
+                <observers>
+                    <umicrosite>
+                        <type>singleton</type>
+                        <class>umicrosite/observer</class>
+                        <method>catalog_category_flat_loadnodes_before</method>
+                    </umicrosite>
+                </observers>
+            </catalog_category_flat_loadnodes_before>
+            <udropship_quote_item_setUdropshipVendor>
+                <observers>
+                    <umicrosite>
+                        <type>singleton</type>
+                        <class>umicrosite/observer</class>
+                        <method>udropship_quote_item_setUdropshipVendor</method>
+                    </umicrosite>
+                </observers>
+            </udropship_quote_item_setUdropshipVendor>
+            <catalog_product_type_prepare_lite_options>
+                <observers>
+                   <umicrosite>
+                       <type>singleton</type>
+                       <class>umicrosite/observer</class>
+                       <method>catalog_product_type_prepare_lite_options</method>
+                   </umicrosite>
+               </observers>
+            </catalog_product_type_prepare_lite_options>
+            <catalog_product_type_prepare_full_options>
+                <observers>
+                   <umicrosite>
+                       <type>singleton</type>
+                       <class>umicrosite/observer</class>
+                       <method>catalog_product_type_prepare_full_options</method>
+                   </umicrosite>
+               </observers>
+            </catalog_product_type_prepare_full_options>
+            <catalog_product_type_prepare_cart_options>
+                <observers>
+                    <umicrosite>
+                        <type>singleton</type>
+                        <class>umicrosite/observer</class>
+                        <method>catalog_product_type_prepare_cart_options</method>
+                    </umicrosite>
+                </observers>
+            </catalog_product_type_prepare_cart_options>
+            <catalog_controller_product_init>
+                <observers>
+                    <umicrosite>
+                        <type>singleton</type>
+                        <class>umicrosite/observer</class>
+                        <method>catalog_controller_product_init</method>
+                    </umicrosite>
+                </observers>
+            </catalog_controller_product_init>
+
+            <controller_action_layout_render_before>
+                <observers>
+                    <umicrosite>
+                        <type>singleton</type>
+                        <class>umicrosite/observer</class>
+                        <method>controller_action_layout_render_before</method>
+                    </umicrosite>
+                </observers>
+            </controller_action_layout_render_before>
+
+            <checkout_cart_add_product_complete>
+                <observers>
+                    <umicrosite>
+                        <type>singleton</type>
+                        <class>umicrosite/observer</class>
+                        <method>checkout_cart_add_product_complete</method>
+                    </umicrosite>
+                </observers>
+            </checkout_cart_add_product_complete>
+        </events>
+
+        <routers>
+            <umicrosite>
+                <use>standard</use>
+                <args>
+                    <module>Unirgy_DropshipMicrosite</module>
+                    <frontName>umicrosite</frontName>
+                </args>
+            </umicrosite>
+        </routers>
+        <layout>
+            <updates>
+                <umicrosite>
+                    <file>umicrosite.xml</file>
+                </umicrosite>
+                <umicrosite_front>
+                    <file>umicrosite_front.xml</file>
+                </umicrosite_front>
+            </updates>
+        </layout>
+        <secure_url>
+            <umicrosite_vendor>/umicrosite/vendor/</umicrosite_vendor>
+            <checkout_cart>/checkout/cart/</checkout_cart>
+        </secure_url>
+    </frontend>
+
+    <default>
+        <udropship>
+            <microsite>
+                <show_products_menu_item>0</show_products_menu_item>
+                <signup_template>udropship_microsite_signup_template</signup_template>
+                <welcome_template>udropship_microsite_welcome_template</welcome_template>
+                <update_store_base_url>1</update_store_base_url>
+                <registration_carriers>ups,usps,fedex</registration_carriers>
+                <registration_receiver></registration_receiver>
+                <registration_subject><![CDATA[New vendor registration from {{vendor_name}} on {{store_name}}]]></registration_subject>
+                <registration_template><![CDATA[Dear Administrator,
+
+A dropship vendor has just submitted a registration.
+
+Vendor Name: {{vendor_name}}
+Vendor Email: {{email}}
+
+Registration URL: {{registration_url}}
+All registrations URL: {{all_registrations_url}}
+
+Comments: {{comments}}
+]]></registration_template>
+            </microsite>
+        </udropship>
+        <captcha>
+            <frontend>
+                <areas>
+                    <umicrosite_registration_form>
+                        <label>Microsite Registration Form</label>
+                    </umicrosite_registration_form>
+                </areas>
+            </frontend>
+        </captcha>
+    </default>
+</config>

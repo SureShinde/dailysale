@@ -1,0 +1,5 @@
+<?php $isUrlPath = Mage::getStoreConfig('udropship/microsite/subdomain_level')==1; ?>
+<?php echo $this->getElement()->getLabelHtml(); ?> <br />
+<?php if ($isUrlPath): ?><strong><?php echo Mage::helper('umicrosite')->getDomainName() ?>/</strong><?php endif ?>
+<?php echo $this->getElementHtml() ?>
+<?php if (!$isUrlPath): ?><strong>.<?php echo Mage::helper('umicrosite')->getDomainName() ?></strong><?php endif ?>

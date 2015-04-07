@@ -1,0 +1,119 @@
+<?php
+/**
+ * Unirgy LLC
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.unirgy.com/LICENSE-M1.txt
+ *
+ * @category   Unirgy
+ * @package    Unirgy_DropshipPo
+ * @copyright  Copyright (c) 2008-2009 Unirgy LLC (http://www.unirgy.com)
+ * @license    http:///www.unirgy.com/LICENSE-M1.txt
+ */
+?>
+<?php if ($_entity = $this->getEntity()): ?>
+<div id="comments_block">
+    <span class="field-row">
+        <label class="normal" for="comment_status"><?php echo Mage::helper('sales')->__('Status') ?></label><br/>
+        <select name="comment[status]" class="select" id="comment_status" onchange="udpoStatusChanged(this)">
+        <?php foreach ($this->getStatuses() as $_code=>$_label): ?>
+            <option value="<?php echo $_code ?>"<?php if($_code==$this->getEntity()->getUdropshipStatus()): ?> selected="selected"<?php endif; ?>><?php echo $_label ?></option>
+        <?php endforeach; ?>
+        </select>
+        <input type="hidden" id="force_status_change_flag" name="force_status_change_flag" value="0" />
+        <script type="text/javascript">
+        $('comment_status').origValue = $('comment_status').value
+        </script>
+    </span>
+    <div class="f-left" id="comment-full-cancel" style="display:none; clear:both">
+        <small><?php echo $this->__('By default only items that do not have corresponding shipment items will be canceled')?></small><br /><br />
+        <input id="comment-nonshipped-cancel-cb" type="checkbox" name="comment[nonshipped_cancel]" value="1"> <label for="comment-nonshipped-cancel-cb"><?php echo $this->__('Nonshipped Cancel') ?></label><br/>
+        <small><?php echo $this->__('This will cancel non shipped shipments')?></small><br /><br />
+        <input id="comment-full-cancel-cb" type="checkbox" name="comment[full_cancel]" value="1"> <label for="comment-full-cancel-cb"><?php echo $this->__('Full Cancel')?></label><br/>
+        <small><?php echo $this->__('This will cancel even shipped shipments')?></small><br /><br />
+    </div>
+    <div style="clear:both"></div>
+    <span class="field-row">
+        <label class="normal" for="comment_comment"><?php echo Mage::helper('sales')->__('Comment Text') ?></label>
+        <textarea name="comment[comment]" rows="3" cols="5" style="height:6em; width:99%;" id="comment_comment"></textarea>
+    </span>
+    <div class="f-left">
+        <input name="comment[is_vendor_notified]" type="checkbox" id="comment_notify" value="1" /><label class="normal" for="comment_notify"> <?php echo Mage::helper('sales')->__('Notify Vendor by Email') ?></label><br />
+        <input name="comment[is_visible_to_vendor]" type="checkbox" id="comment_visible" value="1" /><label class="normal" for="comment_visible"> <?php echo Mage::helper('sales')->__('Visible to Vendor') ?></label>
+    </div>
+    <div class="f-right">
+        <?php echo $this->getChildHtml('submit_button') ?>
+    </div>
+    <div class="clear"></div>
+    <ul class="note-list">
+    <?php foreach ($_entity->getCommentsCollection(true) as $_comment): ?>
+        <li>
+            <strong><?php echo $this->helper('core')->formatDate($_comment->getCreatedAtDate(), 'medium') ?></strong>
+            <?php echo $this->helper('core')->formatTime($_comment->getCreatedAtDate(), 'medium') ?><span class="separator">|</span><strong><?php echo $_comment->getUdropshipStatus() ?></strong><br/><small><?php echo $this->helper('udropship')->__('Vendor') ?>
+            <strong class="subdue">
+                <?php if ($_comment->getIsVendorNotified()): ?>
+                <?php echo $this->helper('sales')->__('Notified') ?>
+                <img src="<?php echo $this->getSkinUrl('images/ico_success.gif') ?>" width="16" height="16" alt="" />
+                <?php else: ?>
+                <?php echo $this->helper('sales')->__('Not Notified') ?>
+                <?php endif; ?>
+            </strong></small>
+            <br/>
+            <?php echo $this->htmlEscape($_comment->getComment(), array('b','br','strong','i','u')) ?>
+        </li>
+    <?php endforeach; ?>
+    </ul>
+<script type="text/javascript">
+function submitComment() {
+    if (validatePoStatusSubmit()) {
+        submitAndReloadArea($('comments_block').parentNode, '<?php echo $this->getSubmitUrl() ?>')
+    }
+}
+
+window.allowedPoStatuses = $A(<?php echo Mage::helper('udpo')->getAllowedPoStatusesJson($this->getEntity(), false)?>);
+
+function validatePoStatusSubmit()
+{
+    if ($('comment_status').value == $('comment_status').origValue) return true
+    if (_validatePoStatusSubmit()) {
+        if (<?php echo (int)Mage::getStoreConfigFlag('udropship/vendor/allow_forced_po_status_change')?>
+            && window.allowedPoStatuses && -1 === window.allowedPoStatuses.indexOf($('comment_status').value)
+        ) {
+            if (confirm('<?php echo Mage::helper('udpo')->__('Such status change is not allowed. Please confirm forced transition') ?>')) {
+                $('force_status_change_flag').value = '1'
+                return true
+            } else {
+                return false
+            }
+        } else {
+            return true
+        }
+    } else {
+        return false
+    }
+}
+function _validatePoStatusSubmit()
+{
+    switch ($('comment_status').value) {
+        case '<?php echo Unirgy_DropshipPo_Model_Source::UDPO_STATUS_CANCELED ?>':
+            return confirm('<?php echo Mage::helper('udpo')->__('This will cancel purchase order and all shipments (if possible).') ?>');
+        case '<?php echo Unirgy_DropshipPo_Model_Source::UDPO_STATUS_SHIPPED ?>':
+            return confirm('<?php echo Mage::helper('udpo')->__('This will mark as shipped purchase order and all shipments (if possible).') ?>');
+        case '<?php echo Unirgy_DropshipPo_Model_Source::UDPO_STATUS_DELIVERED ?>':
+            return confirm('<?php echo Mage::helper('udpo')->__('This will mark as shipped purchase order and all shipments (if possible).') ?>');
+        default:
+            return true;
+    }
+}
+
+
+if ($('submit_comment_button')) {
+    $('submit_comment_button').observe('click', submitComment);
+}
+</script>
+</div>
+<?php endif; ?>

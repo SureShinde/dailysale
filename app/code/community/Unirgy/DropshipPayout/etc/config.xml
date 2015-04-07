@@ -1,0 +1,356 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Unirgy_DropshipPayout>
+            <version>2.1.10</version>
+            <usimpleup remote="http://download.unirgy.com/simple/client_api/version/"
+                changelog="http://unirgy.com/support/portal/announcements"
+                uninstall="udpayout/observer::usimpleup_uninstall"/>
+        </Unirgy_DropshipPayout>
+    </modules>
+
+    <global>
+        <blocks>
+            <udpayout>
+                <class>Unirgy_DropshipPayout_Block</class>
+            </udpayout>
+        </blocks>
+
+        <helpers>
+            <udpayout>
+                <class>Unirgy_DropshipPayout_Helper</class>
+            </udpayout>
+        </helpers>
+
+        <models>
+            <udpayout>
+                <class>Unirgy_DropshipPayout_Model</class>
+                <resourceModel>udpayout_mysql4</resourceModel>
+            </udpayout>
+            <udpayout_mysql4>
+                <class>Unirgy_DropshipPayout_Model_Mysql4</class>
+                <entities>
+                    <payout><table>udropship_payout</table></payout>
+                    <payout_row><table>udropship_payout_row</table></payout_row>
+                    <payout_adjustment><table>udropship_payout_adjustment</table></payout_adjustment>
+                </entities>
+            </udpayout_mysql4>
+        </models>
+
+        <resources>
+            <udpayout_setup>
+                <setup>
+                    <module>Unirgy_DropshipPayout</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </udpayout_setup>
+            <udpayout_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </udpayout_write>
+            <udpayout_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </udpayout_read>
+        </resources>
+
+        <udropship>
+            <vendor>
+                <fieldsets>
+                    <payout>
+                        <legend>Payout</legend>
+                        <position>17</position>
+                    </payout>
+                </fieldsets>
+                <fields>
+                    <payout_type>
+                        <label>Payout Type</label>
+                        <type>select</type>
+                        <fieldset>payout</fieldset>
+                        <source_model>udpayout/source</source_model>
+                        <position>10</position>
+                    </payout_type>
+                    <payout_method>
+                        <label>Payout Method</label>
+                        <type>select</type>
+                        <fieldset>payout</fieldset>
+                        <source_model>udpayout/source</source_model>
+                        <position>20</position>
+                        <default>offline</default>
+                    </payout_method>
+                    <payout_paypal_email>
+                        <label>Paypal Email</label>
+                        <type>text</type>
+                        <fieldset>payout</fieldset>
+                        <position>30</position>
+                    </payout_paypal_email>
+                    <payout_schedule_type>
+                        <label>Payout Schedule</label>
+                        <type>select</type>
+                        <fieldset>payout</fieldset>
+                        <source_model>udpayout/source</source_model>
+                        <frontend_model>udropship/adminhtml_vendor_helper_form_dependSelect</frontend_model>
+                        <depend_fields>
+                            <payout_schedule>-1</payout_schedule>
+                        </depend_fields>
+                        <position>40</position>
+                        <default>-1</default>
+                    </payout_schedule_type>
+                    <payout_schedule>
+                        <label>Payout Custom Schedule</label>
+                        <type>text</type>
+                        <fieldset>payout</fieldset>
+                        <position>41</position>
+                    </payout_schedule>
+                    <payout_po_status_type>
+                        <label>Payout po statuses source</label>
+                        <type>payout_po_status_type</type>
+                        <fieldset>payout</fieldset>
+                        <source_model>udpayout/source</source_model>
+                        <source>po_status_type</source>
+                        <position>50</position>
+                        <default>statement</default>
+                    </payout_po_status_type>
+                    <payout_shipment_status>
+                        <name>payout_po_status</name>
+                        <label>Payout on following shipment statuses</label>
+                        <type>multiselect</type>
+                        <fieldset>payout</fieldset>
+                        <source_model>udropship/source</source_model>
+                        <source>shipment_statuses</source>
+                        <position>60</position>
+                        <default>1</default>
+                    </payout_shipment_status>
+                    <payout_details>
+                        <label>Payout Additional Details</label>
+                        <type>textarea</type>
+                        <fieldset>payout</fieldset>
+                        <position>100</position>
+                    </payout_details>
+                </fields>
+            </vendor>
+            <payout>
+                <method>
+                    <paypal translate="title">
+                        <title>Paypal</title>
+                        <model>udpayout/method_paypal</model>
+                    </paypal>
+                    <check translate="title">
+                        <title>Check</title>
+                        <model>udpayout/method_offline</model>
+                    </check>
+                    <bank_transfer translate="title">
+                        <title>Bank Transfer</title>
+                        <model>udpayout/method_offline</model>
+                    </bank_transfer>
+                    <offline translate="title">
+                        <title>Offline</title>
+                        <model>udpayout/method_offline</model>
+                    </offline>
+                </method>
+            </payout>
+        </udropship>
+
+        <events>
+            <sales_order_shipment_save_after>
+                <observers>
+                    <udpayout>
+                        <type>singleton</type>
+                        <class>udpayout/observer</class>
+                        <method>sales_order_shipment_save_after</method>
+                    </udpayout>
+                </observers>
+            </sales_order_shipment_save_after>
+            <udropship_shipment_status_save_after>
+                <observers>
+                    <udpayout>
+                        <type>singleton</type>
+                        <class>udpayout/observer</class>
+                        <method>udropship_shipment_status_save_after</method>
+                    </udpayout>
+                </observers>
+            </udropship_shipment_status_save_after>
+
+            <udpo_po_save_after>
+                <observers>
+                    <udpayout>
+                        <type>singleton</type>
+                        <class>udpayout/observer</class>
+                        <method>udpo_po_save_after</method>
+                    </udpayout>
+                </observers>
+            </udpo_po_save_after>
+            <udpo_po_status_save_after>
+                <observers>
+                    <udpayout>
+                        <type>singleton</type>
+                        <class>udpayout/observer</class>
+                        <method>udpo_po_status_save_after</method>
+                    </udpayout>
+                </observers>
+            </udpo_po_status_save_after>
+
+            <udropship_vendor_statement_save_before>
+                <observers>
+                    <udpayout>
+                        <type>singleton</type>
+                        <class>udpayout/observer</class>
+                        <method>udropship_vendor_statement_save_before</method>
+                    </udpayout>
+                </observers>
+            </udropship_vendor_statement_save_before>
+
+            <udropship_vendor_statement_pos>
+                <observers>
+                    <udpayout>
+                        <type>singleton</type>
+                        <class>udpayout/observer</class>
+                        <method>udropship_vendor_statement_pos</method>
+                    </udpayout>
+                </observers>
+            </udropship_vendor_statement_pos>
+
+            <udropship_vendor_statement_row>
+                <observers>
+                    <udpayout>
+                        <type>singleton</type>
+                        <class>udpayout/observer</class>
+                        <method>udropship_vendor_statement_row</method>
+                    </udpayout>
+                </observers>
+            </udropship_vendor_statement_row>
+
+            <udropship_vendor_statement_item_row>
+                <observers>
+                    <udpayout>
+                        <type>singleton</type>
+                        <class>udpayout/observer</class>
+                        <method>udropship_vendor_statement_item_row</method>
+                    </udpayout>
+                </observers>
+            </udropship_vendor_statement_item_row>
+
+            <udropship_vendor_statement_row_format>
+                <observers>
+                    <udpayout>
+                        <type>singleton</type>
+                        <class>udpayout/observer</class>
+                        <method>udropship_vendor_statement_row_format</method>
+                    </udpayout>
+                </observers>
+            </udropship_vendor_statement_row_format>
+
+            <udropship_vendor_statement_collect_payouts>
+                <observers>
+                    <udpayout>
+                        <type>singleton</type>
+                        <class>udpayout/observer</class>
+                        <method>udropship_vendor_statement_collect_payouts</method>
+                    </udpayout>
+                </observers>
+            </udropship_vendor_statement_collect_payouts>
+        </events>
+
+    </global>
+
+    <frontend>
+        <routers>
+            <udpayout>
+                <use>standard</use>
+                <args>
+                    <module>Unirgy_DropshipPayout</module>
+                    <frontName>udpayout</frontName>
+                </args>
+            </udpayout>
+        </routers>
+    </frontend>
+
+    <admin>
+        <routers>
+            <udpayoutadmin>
+                <use>admin</use>
+                <args>
+                    <module>Unirgy_DropshipPayout_Adminhtml</module>
+                    <frontName>udpayoutadmin</frontName>
+                </args>
+            </udpayoutadmin>
+        </routers>
+    </admin>
+
+    <adminhtml>
+        <events>
+            <udropship_adminhtml_vendor_tabs_after>
+                <observers>
+                    <udpayout>
+                        <type>singleton</type>
+                        <class>udpayout/observer</class>
+                        <method>udropship_adminhtml_vendor_tabs_after</method>
+                    </udpayout>
+                </observers>
+            </udropship_adminhtml_vendor_tabs_after>
+            <controller_action_layout_render_before_udropshipadmin_adminhtml_vendor_index>
+                <observers><udpayout><type>singleton</type><class>udpayout/observer</class><method>adminhtml_version</method></udpayout></observers>
+            </controller_action_layout_render_before_udropshipadmin_adminhtml_vendor_index>
+        </events>
+        <menu>
+            <sales>
+                <children>
+                    <udropship>
+                        <children>
+                            <payouts>
+                                <title>Payouts</title>
+                                <sort_order>100</sort_order>
+                                <action>udpayoutadmin/payout</action>
+                            </payouts>
+                        </children>
+                    </udropship>
+                </children>
+            </sales>
+        </menu>
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <sales>
+                            <children>
+                                <udropship>
+                                    <children>
+                                        <payouts>
+                                            <title>Payouts</title>
+                                            <sort_order>53</sort_order>
+                                        </payouts>
+                                    </children>
+                                </udropship>
+                            </children>
+                        </sales>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+    </adminhtml>
+
+    <default>
+        <udropship>
+            <payout_paypal>
+                <use_ipn>0</use_ipn>
+            </payout_paypal>
+            <payout>
+                <payout_schedules><![CDATA[[{"code":"daily","title":"Daily","schedule":"0 7 * * *","sort_order":"0"},{"code":"biweekly","title":"Bi-Weekly","schedule":"0 7 * * 1,4","sort_order":"10"},{"code":"weekly","title":"Weekly","schedule":"0 7 * * 1","sort_order":"20"},{"code":"monthly","title":"Monthly","schedule":"0 7 1 * *","sort_order":"30"}]]]></payout_schedules>
+            </payout>
+        </udropship>
+    </default>
+
+    <crontab>
+        <jobs>
+            <udpayout_process_standard>
+                <schedule><cron_expr>* * * * *</cron_expr></schedule>
+                <run><model>udpayout/observer::processStandard</model></run>
+            </udpayout_process_standard>
+        </jobs>
+    </crontab>
+
+</config>

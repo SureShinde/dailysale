@@ -1,0 +1,132 @@
+<?xml version="1.0"?>
+<config>
+    <sections>
+        <udropship>
+            <groups>
+                <batch>
+                    <label>Orders Batch Options</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>100</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <default_email_sender>
+                            <label>Default Email Sender</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </default_email_sender>
+                        <default_email_subject>
+                            <label>Default Email Subject</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </default_email_subject>
+                        <default_export_orders_filename>
+                            <label>Default Export Orders Filename</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </default_export_orders_filename>
+                        <export_on_po_status>
+                            <label>Export On Po Statuses</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>udropship/source</source_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </export_on_po_status>
+                        <save_inventory_import_data>
+                            <label>Save inventory import data in batch</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </save_inventory_import_data>
+                        <invimport_allow_new_association>
+                            <label>Allow import new vendor/product association with inventory import</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>udbatch/source</source_model>
+                            <sort_order>55</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>This option applicable to multivendor add-on</comment>
+                        </invimport_allow_new_association>
+                        <invimport_vsku_multipid>
+                            <label>If import by vendor sku and it maps to multiple products</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>udbatch/source</source_model>
+                            <sort_order>55</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>This option applicable to multivendor add-on</comment>
+                        </invimport_vsku_multipid>
+                        <replace_nl2customchar translate="label">
+                            <label>Replace new line with custom char in fields during export</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>udropship/adminhtml_systemConfigFormField_dependSelect</frontend_model>
+                            <depend_fields>
+                                <udropship_batch_replace_nl2customchar_value>1</udropship_batch_replace_nl2customchar_value>
+                            </depend_fields>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>This supports only fields with simple format [var.name] (Magento CMS templating conventions {{var var.name}} not supported)</comment>
+                        </replace_nl2customchar>
+                        <replace_nl2customchar_value translate="label">
+                            <label>Custom char to replace new line in fields during export</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </replace_nl2customchar_value>
+                        <manual_import_templates translate="label">
+                            <label>Custom templates for manual import</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>udbatch/adminhtml_systemConfigFormField_importTemplates</frontend_model>
+                            <backend_model>udropship/systemConfig_backend_rowsSortable</backend_model>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </manual_import_templates>
+                        <manual_export_templates translate="label">
+                            <label>Custom templates for manual export</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>udbatch/adminhtml_systemConfigFormField_exportTemplates</frontend_model>
+                            <backend_model>udropship/systemConfig_backend_rowsSortable</backend_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </manual_export_templates>
+                        <statement_export_template>
+                            <label>Statement Export Template</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>udbatch/source</source_model>
+                            <sort_order>115</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </statement_export_template>
+                    </fields>
+                </batch>
+            </groups>
+        </udropship>
+    </sections>
+</config>

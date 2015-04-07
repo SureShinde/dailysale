@@ -1,0 +1,724 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Unirgy_DropshipBatch>
+            <version>2.2.5</version>
+            <usimpleup remote="http://download.unirgy.com/simple/client_api/version/"
+                changelog="http://unirgy.com/support/portal/announcements"
+                uninstall="udbatch/observer::usimpleup_uninstall"/>
+        </Unirgy_DropshipBatch>
+    </modules>
+
+    <global>
+        <blocks>
+            <udbatch>
+                <class>Unirgy_DropshipBatch_Block</class>
+            </udbatch>
+        </blocks>
+
+        <helpers>
+            <udbatch>
+                <class>Unirgy_DropshipBatch_Helper</class>
+            </udbatch>
+        </helpers>
+
+        <models>
+            <udbatch>
+                <class>Unirgy_DropshipBatch_Model</class>
+                <resourceModel>udbatch_mysql4</resourceModel>
+            </udbatch>
+            <udbatch_mysql4>
+                <class>Unirgy_DropshipBatch_Model_Mysql4</class>
+                <entities>
+                    <batch><table>udropship_batch</table></batch>
+                    <batch_dist><table>udropship_batch_dist</table></batch_dist>
+                    <batch_row><table>udropship_batch_row</table></batch_row>
+                    <batch_invrow><table>udropship_batch_invrow</table></batch_invrow>
+                </entities>
+            </udbatch_mysql4>
+        </models>
+
+        <resources>
+            <udbatch_setup>
+                <setup>
+                    <module>Unirgy_DropshipBatch</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </udbatch_setup>
+            <udbatch_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </udbatch_write>
+            <udbatch_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </udbatch_read>
+        </resources>
+
+        <udropship>
+<!--
+            <notification_methods>
+                <batch_order_export>
+                    <label>Batch Order Export</label>
+                    <callback>Unirgy_DropshipBatch_Model_Adapter::exportOrders</callback>
+                </batch_order_export>
+            </notification_methods>
+-->
+            <vendor>
+                <fieldsets>
+                    <batch_export>
+                        <legend>Batch Orders Export</legend>
+                        <position>1</position>
+                    </batch_export>
+                    <batch_import>
+                        <legend>Batch Orders Import</legend>
+                        <position>2</position>
+                    </batch_import>
+                    <!-- <inventory_export>
+                        <legend>Inventory Export</legend>
+                        <position>3</position>
+                    </inventory_export> -->
+                    <inventory_import>
+                        <legend>Inventory Import</legend>
+                        <position>4</position>
+                    </inventory_import>
+                </fieldsets>
+
+                <fields>
+                    <batch_export_orders_adapter>
+                        <label>Export Orders Adapter</label>
+                        <type>select</type>
+                        <fieldset>batch_export</fieldset>
+                        <source_model>udbatch/source</source_model>
+                        <position>10</position>
+                    </batch_export_orders_adapter>
+                    <batch_export_orders_method>
+                        <label>Export Orders Method</label>
+                        <type>select</type>
+                        <fieldset>batch_export</fieldset>
+                        <source_model>udbatch/source</source_model>
+                        <position>10</position>
+                    </batch_export_orders_method>
+                    <batch_export_orders_schedule>
+                        <label>Export Orders Schedule</label>
+                        <type>text</type>
+                        <fieldset>batch_export</fieldset>
+                        <position>20</position>
+                        <note><![CDATA[Use <a href="http://unirgy.com/wiki/udropship/batch/reference" target="udbatch_reference">reference</a> for schedule format]]></note>
+                    </batch_export_orders_schedule>
+                    <batch_export_orders_locations>
+                        <label>Export Orders Destination Locations</label>
+                        <type>textarea</type>
+                        <fieldset>batch_export</fieldset>
+                        <position>30</position>
+                        <class>nowrap</class>
+                        <note><![CDATA[Use <a href="http://unirgy.com/wiki/udropship/batch/reference" target="udbatch_reference">reference</a> for location format, separate multiple locations with new line]]></note>
+                    </batch_export_orders_locations>
+                    <batch_export_orders_use_wildcard>
+                        <label>Export Per PO</label>
+                        <type>select</type>
+                        <fieldset>batch_export</fieldset>
+                        <source>yesno</source>
+                        <position>32</position>
+                        <default>0</default>
+                    </batch_export_orders_use_wildcard>
+                    <batch_export_orders_header>
+                        <label>Export Orders Header</label>
+                        <type>textarea</type>
+                        <fieldset>batch_export</fieldset>
+                        <position>40</position>
+                        <note><![CDATA[Empty for no header in export file]]></note>
+                    </batch_export_orders_header>
+                    <batch_export_orders_template>
+                        <label>Export Orders Template</label>
+                        <type>textarea</type>
+                        <fieldset>batch_export</fieldset>
+                        <position>50</position>
+                        <note><![CDATA[Use <a href="http://unirgy.com/wiki/udropship/batch/reference" target="udbatch_reference">reference</a> for import template]]></note>
+                    </batch_export_orders_template>
+                    <batch_export_orders_totals_template>
+                        <label>Export Orders Totals Template</label>
+                        <type>textarea</type>
+                        <fieldset>batch_export</fieldset>
+                        <position>51</position>
+                        <note><![CDATA[Use <a href="http://unirgy.com/wiki/udropship/batch/reference" target="udbatch_reference">reference</a> for import template]]></note>
+                    </batch_export_orders_totals_template>
+                    <batch_export_orders_use_item_template>
+                        <label>Use Order Items Separate Template</label>
+                        <type>select</type>
+                        <source>yesno</source>
+                        <frontend_model>udropship/adminhtml_vendor_helper_form_dependSelect</frontend_model>
+                        <depend_fields>
+                            <batch_export_orders_item_template>1</batch_export_orders_item_template>
+                            <batch_export_orders_item_footer_template>1</batch_export_orders_item_footer_template>
+                        </depend_fields>
+                        <fieldset>batch_export</fieldset>
+                        <position>55</position>
+                    </batch_export_orders_use_item_template>
+                    <batch_export_orders_item_template>
+                        <label>Order Items Separate Template</label>
+                        <type>textarea</type>
+                        <fieldset>batch_export</fieldset>
+                        <position>56</position>
+                    </batch_export_orders_item_template>
+                    <batch_export_orders_item_footer_template>
+                        <label>Order Items Footer Template</label>
+                        <type>textarea</type>
+                        <fieldset>batch_export</fieldset>
+                        <position>57</position>
+                    </batch_export_orders_item_footer_template>
+                    <batch_export_orders_export_on_po_status>
+                        <label>Export On Po Statuses</label>
+                        <type>multiselect</type>
+                        <fieldset>batch_export</fieldset>
+                        <source_model>udropship/source</source_model>
+                        <position>59</position>
+                        <default>999</default>
+                    </batch_export_orders_export_on_po_status>
+                    <batch_export_orders_po_status>
+                        <label>Change PO status on export</label>
+                        <type>select</type>
+                        <fieldset>batch_export</fieldset>
+                        <source_model>udropship/source</source_model>
+                        <source>shipment_statuses</source>
+                        <position>60</position>
+                        <default>10</default>
+                    </batch_export_orders_po_status>
+                    <!--
+                    <batch_export_orders_mark_complete>
+                        <label>Mark Order Complete when all Order POs are Exported</label>
+                        <type>select</type>
+                        <fieldset>batch_export</fieldset>
+                        <source_model>udropship/source</source_model>
+                        <source>yesno</source>
+                        <position>70</position>
+                        <default>0</default>
+                    </batch_export_orders_mark_complete>
+                    -->
+
+                    <batch_import_orders_adapter>
+                        <label>Import Orders Adapter</label>
+                        <type>select</type>
+                        <fieldset>batch_import</fieldset>
+                        <source_model>udbatch/source</source_model>
+                        <position>100</position>
+                    </batch_import_orders_adapter>
+                    <batch_import_orders_method>
+                        <label>Import Orders Method</label>
+                        <type>select</type>
+                        <fieldset>batch_import</fieldset>
+                        <source_model>udbatch/source</source_model>
+                        <position>110</position>
+                    </batch_import_orders_method>
+                    <batch_import_orders_schedule>
+                        <label>Import Orders Schedule</label>
+                        <type>text</type>
+                        <fieldset>batch_import</fieldset>
+                        <position>120</position>
+                        <note><![CDATA[Use <a href="http://unirgy.com/wiki/udropship/batch/reference" target="udbatch_reference">reference</a> for schedule format]]></note>
+                    </batch_import_orders_schedule>
+                    <batch_import_orders_locations>
+                        <label>Import Orders Source Location</label>
+                        <type>text</type>
+                        <fieldset>batch_import</fieldset>
+                        <position>130</position>
+                        <note><![CDATA[Use <a href="http://unirgy.com/wiki/udropship/batch/reference" target="udbatch_reference">reference</a> for location format]]></note>
+                    </batch_import_orders_locations>
+                    <batch_import_orders_use_wildcard>
+                        <label>Use wildcard in source location</label>
+                        <type>select</type>
+                        <fieldset>batch_import</fieldset>
+                        <source>yesno</source>
+                        <position>132</position>
+                        <default>0</default>
+                    </batch_import_orders_use_wildcard>
+                    <batch_import_orders_track_dist_ts>
+                        <label>Import only recent files (track location files timestamps)</label>
+                        <type>select</type>
+                        <fieldset>batch_import</fieldset>
+                        <frontend_model>udropship/adminhtml_vendor_helper_form_dependSelect</frontend_model>
+                        <depend_fields>
+                            <batch_import_orders_dist_tz>1</batch_import_orders_dist_tz>
+                        </depend_fields>
+                        <source>yesno</source>
+                        <position>134</position>
+                        <default>0</default>
+                    </batch_import_orders_track_dist_ts>
+                    <batch_import_orders_dist_tz>
+                        <label>Source Location Timezone</label>
+                        <type>select</type>
+                        <fieldset>batch_import</fieldset>
+                        <source_model>adminhtml/system_config_source_locale_timezone</source_model>
+                        <source>yesno</source>
+                        <position>136</position>
+                    </batch_import_orders_dist_tz>
+                    <batch_import_orders_file_action>
+                        <label>Action on imported file</label>
+                        <type>select</type>
+                        <fieldset>batch_import</fieldset>
+                        <frontend_model>udropship/adminhtml_vendor_helper_form_dependSelect</frontend_model>
+                        <depend_fields>
+                            <batch_import_orders_rename_prefix>rename,rename_move</batch_import_orders_rename_prefix>
+                            <batch_import_orders_rename_suffix>rename,rename_move</batch_import_orders_rename_suffix>
+                            <batch_import_orders_move_folder>move,rename_move</batch_import_orders_move_folder>
+                        </depend_fields>
+                        <source_model>udbatch/source</source_model>
+                        <source>batch_imported_file_action</source>
+                        <position>140</position>
+                    </batch_import_orders_file_action>
+                    <batch_import_orders_move_folder>
+                        <label>Destination folder for imported file</label>
+                        <type>text</type>
+                        <fieldset>batch_import</fieldset>
+                        <position>141</position>
+                    </batch_import_orders_move_folder>
+                    <batch_import_orders_rename_prefix>
+                        <label>Filename prefix for rename</label>
+                        <type>text</type>
+                        <fieldset>batch_import</fieldset>
+                        <position>142</position>
+                    </batch_import_orders_rename_prefix>
+                    <batch_import_orders_rename_suffix>
+                        <label>Filename suffix for rename</label>
+                        <type>text</type>
+                        <fieldset>batch_import</fieldset>
+                        <position>143</position>
+                    </batch_import_orders_rename_suffix>
+                    <batch_import_orders_template>
+                        <label>Import Orders Template</label>
+                        <type>text</type>
+                        <fieldset>batch_import</fieldset>
+                        <position>145</position>
+                        <note><![CDATA[Use <a href="http://unirgy.com/wiki/udropship/batch/reference" target="udbatch_reference">reference</a> for import template]]></note>
+                    </batch_import_orders_template>
+                    <batch_import_orders_field_delimiter>
+                        <label>Import Orders Field Delimiter</label>
+                        <type>text</type>
+                        <fieldset>batch_import</fieldset>
+                        <position>146</position>
+                        <default>,</default>
+                    </batch_import_orders_field_delimiter>
+                    <batch_import_orders_po_status>
+                        <label>Change PO status on import</label>
+                        <type>select</type>
+                        <fieldset>batch_import</fieldset>
+                        <source_model>udropship/source</source_model>
+                        <source>shipment_statuses</source>
+                        <position>150</position>
+                        <default>1</default>
+                    </batch_import_orders_po_status>
+                    <batch_import_orders_skip_header>
+                        <label>Skip first row in import file</label>
+                        <type>select</type>
+                        <fieldset>batch_import</fieldset>
+                        <source_model>udropship/source</source_model>
+                        <source>yesno</source>
+                        <position>160</position>
+                        <default>0</default>
+                    </batch_import_orders_skip_header>
+
+
+                    <!-- Inventory export/import options
+                    <batch_export_inventory_method>
+                        <label>Export Inventory Method</label>
+                        <type>select</type>
+                        <fieldset>inventory_export</fieldset>
+                        <source_model>udbatch/source</source_model>
+                        <position>10</position>
+                    </batch_export_inventory_method>
+                    <batch_export_inventory_schedule>
+                        <label>Export Inventory Schedule</label>
+                        <type>text</type>
+                        <fieldset>inventory_export</fieldset>
+                        <position>20</position>
+                        <note><![CDATA[Use <a href="http://unirgy.com/wiki/udropship/batch/reference" target="udbatch_reference">reference</a> for schedule format]]></note>
+                    </batch_export_inventory_schedule>
+                    <batch_export_inventory_locations>
+                        <label>Export Inventory Destination Locations</label>
+                        <type>textarea</type>
+                        <fieldset>inventory_export</fieldset>
+                        <position>30</position>
+                        <class>nowrap</class>
+                        <note><![CDATA[Use <a href="http://unirgy.com/wiki/udropship/batch/reference" target="udbatch_reference">reference</a> for location format, separate multiple locations with new line]]></note>
+                    </batch_export_inventory_locations>
+                    <batch_export_inventory_header>
+                        <label>Export Inventory Header</label>
+                        <type>textarea</type>
+                        <fieldset>inventory_export</fieldset>
+                        <position>40</position>
+                        <note><![CDATA[Empty for no header in export file]]></note>
+                    </batch_export_inventory_header>
+                    <batch_export_inventory_template>
+                        <label>Export Inventory Template</label>
+                        <type>textarea</type>
+                        <fieldset>inventory_export</fieldset>
+                        <position>50</position>
+                        <note><![CDATA[Use <a href="http://unirgy.com/wiki/udropship/batch/reference" target="udbatch_reference">reference</a> for import template]]></note>
+                    </batch_export_inventory_template> -->
+
+                    <batch_import_inventory_adapter>
+                        <label>Import Orders Adapter</label>
+                        <type>select</type>
+                        <fieldset>inventory_import</fieldset>
+                        <source_model>udbatch/source</source_model>
+                        <position>100</position>
+                    </batch_import_inventory_adapter>
+                    <batch_import_inventory_method>
+                        <label>Import Inventory Method</label>
+                        <type>select</type>
+                        <fieldset>inventory_import</fieldset>
+                        <source_model>udbatch/source</source_model>
+                        <position>110</position>
+                    </batch_import_inventory_method>
+                    <batch_import_inventory_schedule>
+                        <label>Import Inventory Schedule</label>
+                        <type>text</type>
+                        <fieldset>inventory_import</fieldset>
+                        <position>120</position>
+                        <note><![CDATA[Use <a href="http://unirgy.com/wiki/udropship/batch/reference" target="udbatch_reference">reference</a> for schedule format]]></note>
+                    </batch_import_inventory_schedule>
+                    <batch_import_inventory_locations>
+                        <label>Import Inventory Source Location</label>
+                        <type>text</type>
+                        <fieldset>inventory_import</fieldset>
+                        <position>130</position>
+                        <note><![CDATA[Use <a href="http://unirgy.com/wiki/udropship/batch/reference" target="udbatch_reference">reference</a> for location format]]></note>
+                    </batch_import_inventory_locations>
+                    <batch_import_inventory_use_wildcard>
+                        <label>Use wildcard in source location</label>
+                        <type>select</type>
+                        <fieldset>inventory_import</fieldset>
+                        <source>yesno</source>
+                        <position>132</position>
+                        <default>0</default>
+                    </batch_import_inventory_use_wildcard>
+                    <batch_import_inventory_reindex>
+                        <label>Reindex Type</label>
+                        <type>select</type>
+                        <fieldset>inventory_import</fieldset>
+                        <source_model>udbatch/source</source_model>
+                        <position>135</position>
+                        <default>realtime</default>
+                    </batch_import_inventory_reindex>
+                    <batch_import_inventory_track_dist_ts>
+                        <label>Import only recent files (track location files timestamps)</label>
+                        <type>select</type>
+                        <fieldset>inventory_import</fieldset>
+                        <frontend_model>udropship/adminhtml_vendor_helper_form_dependSelect</frontend_model>
+                        <depend_fields>
+                            <batch_import_inventory_dist_tz>1</batch_import_inventory_dist_tz>
+                        </depend_fields>
+                        <source>yesno</source>
+                        <position>134</position>
+                        <default>0</default>
+                    </batch_import_inventory_track_dist_ts>
+                    <batch_import_inventory_dist_tz>
+                        <label>Source Location Timezone</label>
+                        <type>select</type>
+                        <fieldset>inventory_import</fieldset>
+                        <source_model>adminhtml/system_config_source_locale_timezone</source_model>
+                        <source>yesno</source>
+                        <position>136</position>
+                    </batch_import_inventory_dist_tz>
+                    <batch_import_inventory_file_action>
+                        <label>Action on imported file</label>
+                        <type>select</type>
+                        <fieldset>inventory_import</fieldset>
+                        <frontend_model>udropship/adminhtml_vendor_helper_form_dependSelect</frontend_model>
+                        <depend_fields>
+                            <batch_import_inventory_rename_prefix>rename,rename_move</batch_import_inventory_rename_prefix>
+                            <batch_import_inventory_rename_suffix>rename,rename_move</batch_import_inventory_rename_suffix>
+                            <batch_import_inventory_move_folder>move,rename_move</batch_import_inventory_move_folder>
+                        </depend_fields>
+                        <source_model>udbatch/source</source_model>
+                        <source>batch_imported_file_action</source>
+                        <position>140</position>
+                    </batch_import_inventory_file_action>
+                    <batch_import_inventory_move_folder>
+                        <label>Destination folder for imported file</label>
+                        <type>text</type>
+                        <fieldset>inventory_import</fieldset>
+                        <position>141</position>
+                    </batch_import_inventory_move_folder>
+                    <batch_import_inventory_rename_prefix>
+                        <label>Filename prefix for rename</label>
+                        <type>text</type>
+                        <fieldset>inventory_import</fieldset>
+                        <position>142</position>
+                    </batch_import_inventory_rename_prefix>
+                    <batch_import_inventory_rename_suffix>
+                        <label>Filename suffix for rename</label>
+                        <type>text</type>
+                        <fieldset>inventory_import</fieldset>
+                        <position>143</position>
+                    </batch_import_inventory_rename_suffix>
+                    <batch_import_inventory_template>
+                        <label>Import Inventory Template</label>
+                        <type>text</type>
+                        <fieldset>inventory_import</fieldset>
+                        <position>145</position>
+                        <note><![CDATA[Use <a href="http://unirgy.com/wiki/udropship/batch/reference" target="udbatch_reference">reference</a> for import template]]></note>
+                    </batch_import_inventory_template>
+                    <batch_import_inventory_field_delimiter>
+                        <label>Import Inventory Field Delimiter</label>
+                        <type>text</type>
+                        <fieldset>inventory_import</fieldset>
+                        <position>146</position>
+                        <default>,</default>
+                    </batch_import_inventory_field_delimiter>
+                    <batch_import_inventory_skip_header>
+                        <label>Skip first row in import file</label>
+                        <type>select</type>
+                        <fieldset>inventory_import</fieldset>
+                        <source_model>udropship/source</source_model>
+                        <source>yesno</source>
+                        <position>160</position>
+                        <default>0</default>
+                    </batch_import_inventory_skip_header>
+                    <!--batch_import_inventory_use_reserved_qty>
+                        <label>Consider Reserved Qty During Stock Qty Update</label>
+                        <type>select</type>
+                        <fieldset>inventory_import</fieldset>
+                        <source_model>udropship/source</source_model>
+                        <source>yesno</source>
+                        <position>170</position>
+                        <default>0</default>
+                    </batch_import_inventory_use_reserved_qty-->
+
+                </fields>
+            </vendor>
+            <batch_adapters>
+                <default>
+                    <label>* Default Adapter</label>
+                    <model>udbatch/adapter_default</model>
+                </default>
+            </batch_adapters>
+            <batch_adapters_import_orders>
+                <default>
+                    <label>* Default Adapter</label>
+                    <model>udbatch/adapter_importOrders_default</model>
+                </default>
+            </batch_adapters_import_orders>
+            <batch_adapters_import_inventory>
+                <default>
+                    <label>* Default Adapter</label>
+                    <model>udbatch/adapter_importInventory_default</model>
+                </default>
+            </batch_adapters_import_inventory>
+            <batch_adapters_export_stockpo>
+                <default>
+                    <label>* Default Adapter</label>
+                    <model>udbatch/adapter_exportStockpo_default</model>
+                </default>
+            </batch_adapters_export_stockpo>
+            <batch_adapters_import_stockpo>
+                <default>
+                    <label>* Default Adapter</label>
+                    <model>udbatch/adapter_importStockpo_default</model>
+                </default>
+            </batch_adapters_import_stockpo>
+        </udropship>
+        <events>
+            <udropship_order_save_after>
+                <observers>
+                    <udbatch>
+                        <type>singleton</type>
+                        <class>udbatch/observer</class>
+                        <method>udropship_order_save_after</method>
+                    </udbatch>
+                </observers>
+            </udropship_order_save_after>
+            <udpo_order_save_after>
+                <observers>
+                    <udbatch>
+                        <type>singleton</type>
+                        <class>udbatch/observer</class>
+                        <method>udpo_order_save_after</method>
+                    </udbatch>
+                </observers>
+            </udpo_order_save_after>
+            <udpo_po_save_after>
+                <observers>
+                    <udbatch>
+                        <type>singleton</type>
+                        <class>udbatch/observer</class>
+                        <method>udpo_po_save_after</method>
+                    </udbatch>
+                </observers>
+            </udpo_po_save_after>
+            <udpo_po_status_save_after>
+                <observers>
+                    <udbatch>
+                        <type>singleton</type>
+                        <class>udbatch/observer</class>
+                        <method>udpo_po_status_save_after</method>
+                    </udbatch>
+                </observers>
+            </udpo_po_status_save_after>
+            <sales_order_shipment_save_after>
+                <observers>
+                    <udbatch>
+                        <type>singleton</type>
+                        <class>udbatch/observer</class>
+                        <method>sales_order_shipment_save_after</method>
+                    </udbatch>
+                </observers>
+            </sales_order_shipment_save_after>
+            <udropship_shipment_status_save_after>
+                <observers>
+                    <udbatch>
+                        <type>singleton</type>
+                        <class>udbatch/observer</class>
+                        <method>udropship_shipment_status_save_after</method>
+                    </udbatch>
+                </observers>
+            </udropship_shipment_status_save_after>
+        </events>
+    </global>
+
+    <frontend>
+        <routers>
+            <udbatch>
+                <use>standard</use>
+                <args>
+                    <module>Unirgy_DropshipBatch</module>
+                    <frontName>udbatch</frontName>
+                </args>
+            </udbatch>
+        </routers>
+        <layout>
+            <updates>
+                <udbatch>
+                    <file>udbatch.xml</file>
+                </udbatch>
+            </updates>
+        </layout>
+        <translate>
+              <modules>
+                    <unirgy_dropshipbatch>
+                         <files>
+                               <default>Unirgy_DropshipBatch.csv</default>
+                         </files>
+                    </unirgy_dropshipbatch>
+              </modules>
+        </translate>
+        <secure_url>
+            <udbatch_vendor>/udbatch/vendor_batch/</udbatch_vendor>
+        </secure_url>
+    </frontend>
+
+    <admin>
+        <routers>
+            <udbatchadmin>
+                <use>admin</use>
+                <args>
+                    <module>Unirgy_DropshipBatch</module>
+                    <frontName>udbatchadmin</frontName>
+                </args>
+            </udbatchadmin>
+        </routers>
+    </admin>
+
+    <adminhtml>
+        <events>
+            <udropship_adminhtml_vendor_tabs_after>
+                <observers>
+                    <udbatch>
+                        <type>singleton</type>
+                        <class>udbatch/observer</class>
+                        <method>udropship_adminhtml_vendor_tabs_after</method>
+                    </udbatch>
+                </observers>
+            </udropship_adminhtml_vendor_tabs_after>
+
+            <controller_action_layout_render_before_udropshipadmin_adminhtml_vendor_index>
+                <observers><udbatch><type>singleton</type><class>udbatch/observer</class><method>adminhtml_version</method></udbatch></observers>
+            </controller_action_layout_render_before_udropshipadmin_adminhtml_vendor_index>
+        </events>
+        <menu>
+            <sales>
+                <children>
+                    <udropship>
+                        <children>
+                            <batch module="udbatch">
+                                <title>Batch Import/Export</title>
+                                <sort_order>60</sort_order>
+                                <children>
+                                    <batches>
+                                        <title>Batches</title>
+                                        <sort_order>10</sort_order>
+                                        <action>udbatchadmin/adminhtml_batch</action>
+                                    </batches>
+                                    <dists module="udbatch">
+                                        <title>Action History</title>
+                                        <sort_order>20</sort_order>
+                                        <action>udbatchadmin/adminhtml_dist</action>
+                                    </dists>
+                                </children>
+                            </batch>
+                        </children>
+                    </udropship>
+                </children>
+            </sales>
+        </menu>
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <sales>
+                            <children>
+                                <udropship>
+                                    <children>
+                                        <batch>
+                                            <title>Batch Import/Export</title>
+                                            <sort_order>60</sort_order>
+                                            <children>
+                                                <batches>
+                                                    <title>Batches</title>
+                                                    <sort_order>10</sort_order>
+                                                </batches>
+                                                <dists>
+                                                    <title>Action History</title>
+                                                    <sort_order>20</sort_order>
+                                                </dists>
+                                            </children>
+                                        </batch>
+                                    </children>
+                                </udropship>
+                            </children>
+                        </sales>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+    </adminhtml>
+
+    <crontab>
+        <jobs>
+            <udbatch_process_standard>
+                <schedule><cron_expr>* * * * *</cron_expr></schedule>
+                <run><model>udbatch/observer::processStandard</model></run>
+            </udbatch_process_standard>
+        </jobs>
+    </crontab>
+
+    <default>
+        <udropship>
+            <batch>
+                <default_email_sender>sample@server.com</default_email_sender>
+                <default_email_subject>New orders export</default_email_subject>
+                <export_on_po_status>3</export_on_po_status>
+                <save_inventory_import_data>1</save_inventory_import_data>
+                <replace_nl2customchar>0</replace_nl2customchar>
+                <replace_nl2customchar_value></replace_nl2customchar_value>
+                <invimport_vsku_multipid>0</invimport_vsku_multipid>
+                <statement_export_template>Statement Export</statement_export_template>
+                <manual_export_templates><![CDATA[[{"title":"Statement Export","sort_order":"0","template":"\"[order_id]\",\"{{var order.getCreatedAtFormated('long')}}\",\"[po_id]\",\"[po_status]\",\"[shipping.firstname]\",\"[shipping.lastname]\",\"[order.customer_email]\",\"[shipping.telephone]\",\"{{var shipping.getStreet1()}}\",\"{{var shipping.getStreet2()}}\",\"[shipping.city]\",\"{{var shipping.region_code}}\",\"{{var shipping.getPostcode()}}\",\"[shipping.country_id]\",[item.qty],\"[item.vendor_sku]\",\"[item.name]\",\"{{var product.getProductUrl()}}\",[item_totals.price],[item_totals.row_total],[item_totals.com_percent],[po_totals.subtotal],[po_totals.com_amount],[po_totals.trans_fee],[po_totals.shipping],[po_totals.tax],[po_totals.discount],[po_totals.adj_amount],[po_totals.total_payout]","header":"Order#,Order Date,PO#,PO Status,Firstname,Lastname,Email,Phone,Address 1,Address 2,City,State,Zip Code,Country,Qty,Sku,Product Name,Product URL,Price,Row Total,Item Commission Percent,Subtotal,Commission Amount,Transaction Fee,Shipping Amount,Tax,Discount,Adjustment,Total Payout","use_item_template":"0","item_template":"","footer_template":",,,,,,,,,,,,,,,,,,,,,,,,,,","totals_template":",,,,,,,,,,,,,,,,,,,,Totals,[grand_totals.subtotal],[grand_totals.com_amount],[grand_totals.trans_fee],[grand_totals.shipping],[grand_totals.tax],[grand_totals.discount],[grand_totals.adj_amount],[grand_totals.total_payout]"}]]]></manual_export_templates>
+            </batch>
+        </udropship>
+    </default>
+</config>
