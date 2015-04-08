@@ -6,6 +6,7 @@
 
 $installer = $this;
 
+Mage::getConfig()->loadModules()->cleanCache();
 $installer->startSetup();
 
 $tableRating = array(
@@ -52,3 +53,4 @@ try{
 }
 
 $installer->endSetup();
+Mage::getConfig()->cleanCache();
