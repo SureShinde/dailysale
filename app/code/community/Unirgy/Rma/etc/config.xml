@@ -1,0 +1,441 @@
+<?xml version="1.0"?>
+
+<config>
+    <modules>
+        <Unirgy_Rma>
+            <version>1.2.5</version>
+        </Unirgy_Rma>
+    </modules>
+
+    <global>
+        <models>
+            <urma>
+                <class>Unirgy_Rma_Model</class>
+                <resourceModel>urma_mysql4</resourceModel>
+            </urma>
+            <urma_mysql4>
+                <class>Unirgy_Rma_Model_Mysql4</class>
+                <entities>
+                    <rma><table>urma_rma</table></rma>
+                    <rma_grid><table>urma_rma_grid</table></rma_grid>
+                    <rma_item><table>urma_rma_item</table></rma_item>
+                    <rma_comment><table>urma_rma_comment</table></rma_comment>
+                    <rma_track><table>urma_rma_track</table></rma_track>
+                </entities>
+            </urma_mysql4>
+            <udropship>
+                <rewrite>
+                    <label_batch>Unirgy_Rma_Model_Label_Batch</label_batch>
+                    <label_fedex>Unirgy_Rma_Model_Label_Fedex</label_fedex>
+                    <label_ups>Unirgy_Rma_Model_Label_Ups</label_ups>
+                    <label_endicia>Unirgy_Rma_Model_Label_Endicia</label_endicia>
+                    <label_pdf>Unirgy_Rma_Model_Label_Pdf</label_pdf>
+                </rewrite>
+            </udropship>
+        </models>
+
+        <resources>
+            <urma_setup>
+                <setup>
+                    <module>Unirgy_Rma</module>
+                    <class>Mage_Sales_Model_Mysql4_Setup</class>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </urma_setup>
+            <urma_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </urma_write>
+            <urma_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </urma_read>
+        </resources>
+
+        <blocks>
+            <urma>
+                <class>Unirgy_Rma_Block</class>
+            </urma>
+            <sales>
+                <rewrite>
+                    <order_comments>Unirgy_Rma_Block_Order_Comments</order_comments>
+                    <order_info>Unirgy_Rma_Block_Order_Info</order_info>
+                </rewrite>
+            </sales>
+        </blocks>
+
+        <helpers>
+            <urma>
+                <class>Unirgy_Rma_Helper</class>
+            </urma>
+        </helpers>
+
+        <fieldsets>
+            <sales_convert_order_item>
+                <sku>
+                    <to_urma_item>*</to_urma_item>
+                </sku>
+                <name>
+                    <to_urma_item>*</to_urma_item>
+                </name>
+                <description>
+                    <to_urma_item>*</to_urma_item>
+                </description>
+                <weight>
+                    <to_urma_item>*</to_urma_item>
+                </weight>
+                <price>
+                    <to_urma_item>*</to_urma_item>
+                </price>
+                <base_price>
+                    <to_urma_item>*</to_urma_item>
+                </base_price>
+                <base_cost>
+                    <to_urma_item>*</to_urma_item>
+                </base_cost>
+                <is_virtual>
+                    <to_urma_item>*</to_urma_item>
+                </is_virtual>
+            </sales_convert_order_item>
+        </fieldsets>
+
+        <pdf>
+            <urma>
+		        <default>urma/pdf_rmaItems_default</default>
+		        <grouped>urma/pdf_rmaItems_grouped</grouped>
+		    </urma>
+        </pdf>
+
+        <template>
+            <email>
+                <sales_email_rma_template translate="label" module="urma">
+                   <label>New uReturn</label>
+                   <file>urma_new.html</file>
+                   <type>html</type>
+                </sales_email_rma_template>
+                <sales_email_rma_comment_template translate="label" module="urma">
+                   <label>uReturn Update</label>
+                   <file>urma_update.html</file>
+                   <type>html</type>
+                </sales_email_rma_comment_template>
+                <urma_general_new_rma_vendor_email_template module="urma">
+                    <label>New RMA Vendor Notification</label>
+                    <file>urma_vendor_rma.html</file>
+                    <type>html</type>
+                </urma_general_new_rma_vendor_email_template>
+                <urma_general_rma_comment_vendor_email_template module="urma">
+                    <label>RMA Comment Vendor Notification</label>
+                    <file>urma_vendor_rma_comment.html</file>
+                    <type>html</type>
+                </urma_general_rma_comment_vendor_email_template>
+            </email>
+        </template>
+
+        <events>
+        </events>
+
+        <udropship>
+            <vendor>
+                <fieldsets>
+                    <rma>
+                        <legend>Returns</legend>
+                        <position>500</position>
+                    </rma>
+                    <rma_fedex>
+                        <legend>Returns Fedex Specific</legend>
+                        <position>520</position>
+                    </rma_fedex>
+                    <rma_endicia>
+                        <legend>Returns Endicia Specific</legend>
+                        <position>540</position>
+                    </rma_endicia>
+                    <rma_ups>
+                        <legend>Returns UPS Specific</legend>
+                        <position>560</position>
+                    </rma_ups>
+                </fieldsets>
+                <fields>
+                    <vendor_rma_grid_sortby>
+                        <label>Default RMA sort by in vendor interface</label>
+                        <type>select</type>
+                        <fieldset>integration</fieldset>
+                        <source_model>urma/source</source_model>
+                        <position>61</position>
+                    </vendor_rma_grid_sortby>
+                    <vendor_rma_grid_sortdir>
+                        <label>Default RMA sort direction in vendor interface</label>
+                        <type>select</type>
+                        <fieldset>integration</fieldset>
+                        <source_model>urma/source</source_model>
+                        <position>61</position>
+                    </vendor_rma_grid_sortdir>
+                    <rma_use_fedex_account>
+                        <label>Use FedEx account for Returns</label>
+                        <type>select</type>
+                        <fieldset>rma_fedex</fieldset>
+                        <source_model>urma/source</source_model>
+                        <position>10</position>
+                        <default>global</default>
+                    </rma_use_fedex_account>
+                    <rma_use_endicia_account>
+                        <label>Use Endicia account for Returns</label>
+                        <type>select</type>
+                        <fieldset>rma_endicia</fieldset>
+                        <source_model>urma/source</source_model>
+                        <position>10</position>
+                        <default>global</default>
+                    </rma_use_endicia_account>
+                    <rma_use_ups_account>
+                        <label>Use UPS account for Returns</label>
+                        <type>select</type>
+                        <fieldset>rma_ups</fieldset>
+                        <source_model>urma/source</source_model>
+                        <position>10</position>
+                        <default>global</default>
+                    </rma_use_ups_account>
+                    <!--rma_use_address>
+                        <label>Use address for RMA</label>
+                        <type>select</type>
+                        <fieldset>rma</fieldset>
+                        <source_model>urma/source</source_model>
+                        <position>20</position>
+                        <default>origin</default>
+                        <frontend_model>udropship/adminhtml_vendor_helper_form_dependSelect</frontend_model>
+                        <depend_fields>
+                            <vendor_attn>custom</vendor_attn>
+                        </depend_fields>
+                    </rma_use_address>
+                    <vendor_attn>
+                        <fieldset>rma</fieldset>
+                        <label>Attention To</label>
+                        <type>text</type>
+                    </vendor_attn>
+                    <telephone>
+                        <label>Phone Number</label>
+                        <fieldset>rma</fieldset>
+                        <type>text</type>
+                    </telephone>
+                    <email>
+                        <label>Email Address</label>
+                        <fieldset>rma</fieldset>
+                        <type>text</type>
+                    </email>
+                    <street1>
+                        <fieldset>rma</fieldset>
+                        <label>Street Address</label>
+                        <type>text</type>
+                    </street1>
+                    <street2>
+                        <fieldset>rma</fieldset>
+                        <label>Street Address Line 2</label>
+                        <type>text</type>
+                    </street2>
+                    <city>
+                        <fieldset>rma</fieldset>
+                        <label>City</label>
+                        <type>text</type>
+                    </city>
+                    <zip>
+                        <fieldset>rma</fieldset>
+                        <label>Zip/Postal Code</label>
+                        <type>text</type>
+                    </zip>
+                    <region_id>
+                        <fieldset>rma</fieldset>
+                        <label>State/Province</label>
+                        <type>select</type>
+                    </region_id>
+                    <country_id>
+                        <fieldset>rma</fieldset>
+                        <label>Country</label>
+                        <type>select</type>
+                    </country_id-->
+                </fields>
+            </vendor>
+        </udropship>
+
+    </global>
+
+    <frontend>
+        <routers>
+            <urma>
+                <use>standard</use>
+                <args>
+                    <module>Unirgy_Rma</module>
+                    <frontName>urma</frontName>
+                </args>
+            </urma>
+            <sales>
+                <args>
+                    <modules>
+                        <urma before="Mage_Sales">Unirgy_Rma</urma>
+                    </modules>
+                </args>
+            </sales>
+        </routers>
+        <layout>
+            <updates>
+                <urma>
+                    <file>urma.xml</file>
+                </urma>
+            </updates>
+        </layout>
+        <secure_url>
+            <urma_customer>/urma/customer/</urma_customer>
+            <urma_vendor>/urma/vendor/</urma_vendor>
+        </secure_url>
+    </frontend>
+
+    <admin>
+        <routers>
+            <urmaadmin>
+                <use>admin</use>
+                <args>
+                    <module>Unirgy_Rma_Adminhtml</module>
+                    <frontName>urmaadmin</frontName>
+                </args>
+            </urmaadmin>
+        </routers>
+    </admin>
+
+    <adminhtml>
+        <layout>
+            <updates>
+                <urma>
+                    <file>urma.xml</file>
+                </urma>
+            </updates>
+        </layout>
+        <menu>
+            <sales>
+                <children>
+                    <udropship>
+                        <children>
+                            <urma translate="title" module="urma">
+                                <title>Returns</title>
+                                <action>urmaadmin/rma</action>
+                                <sort_order>500</sort_order>
+                            </urma>
+                        </children>
+                    </udropship>
+                </children>
+            </sales>
+        </menu>
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <sales>
+                            <children>
+                                <order>
+                                    <children>
+                                        <actions>
+                                            <children>
+                                                <urma module="urma" translate="title"><title>Returns</title></urma>
+                                            </children>
+                                        </actions>
+                                    </children>
+                                </order>
+                                <udropship>
+                                    <children>
+                                        <urma>
+                                            <title>Returns</title>
+                                            <sort_order>55</sort_order>
+                                        </urma>
+                                    </children>
+                                </udropship>
+                            </children>
+                        </sales>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <urma>
+                                            <title>uReturns</title>
+                                            <sort_order>60</sort_order>
+                                        </urma>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+        <events>
+            <controller_action_layout_render_before_adminhtml_sales_order_view>
+                <observers><urma><type>singleton</type><class>urma/observer</class><method>adminhtml_order_add_create_rma_button</method></urma></observers>
+            </controller_action_layout_render_before_adminhtml_sales_order_view>
+        </events>
+    </adminhtml>
+
+    <default>
+        <sales_email>
+            <rma>
+                <enabled>1</enabled>
+                <template>sales_email_rma_template</template>
+                <identity>sales</identity>
+                <copy_method>bcc</copy_method>
+            </rma>
+            <rma_comment>
+                <enabled>1</enabled>
+                <template>sales_email_rma_comment_template</template>
+                <identity>sales</identity>
+                <copy_method>bcc</copy_method>
+            </rma_comment>
+        </sales_email>
+        <urma>
+            <message>
+                <customer_success><![CDATA[Return(s) successfully created]]></customer_success>
+                <customer_no_items><![CDATA[No items selected to return]]></customer_no_items>
+                <new_instructions_html><![CDATA[Please select items you want to return by changing qty box to non-zero value in respective rows and items conditions. Also select reason to return. And leave comments if necessary. Once submit we will send you furtehr instructions.]]></new_instructions_html>
+            </message>
+            <general>
+                <new_rma_vendor_email_template>urma_general_new_rma_vendor_email_template</new_rma_vendor_email_template>
+                <rma_comment_vendor_email_template>urma_general_rma_comment_vendor_email_template</rma_comment_vendor_email_template>
+                <customer_new_hide_order_info>1</customer_new_hide_order_info>
+                <customer_hide_order_info>1</customer_hide_order_info>
+                <vendor_comments_receiver>general</vendor_comments_receiver>
+                <vendor_comments_subject><![CDATA[A comment from {{vendor_name}} regarding RMA # {{rma_id}} for order # {{order_id}}]]></vendor_comments_subject>
+                <vendor_comments_template><![CDATA[Dear Administrator,
+
+A dropship vendor has just submitted a comment regarding RMA.
+
+Vendor Name: {{vendor_name}}
+Order ID: {{order_id}}
+RMA ID: {{rma_id}}
+
+Vendor URL: {{vendor_url}}
+Order URL: {{order_url}}
+RMA URL: {{rma_url}}
+
+Comment: {{comment}}
+]]></vendor_comments_template>
+                <statuses><![CDATA[[{"code":"pending","title":"Pending","customer_notes":"","allow_resolution_notes":"0","show_receiver":"0","sort_order":"0"},{"code":"approved","title":"Approved","customer_notes":"","allow_resolution_notes":"1","show_receiver":"1","sort_order":"10"},{"code":"acknowledged","title":"Acknowledged","customer_notes":"","allow_resolution_notes":"0","show_receiver":"0","sort_order":"20"},{"code":"received","title":"Received","customer_notes":"","allow_resolution_notes":"1","show_receiver":"1","sort_order":"30"},{"code":"declined","title":"Declined","customer_notes":"","allow_resolution_notes":"1","show_receiver":"0","sort_order":"40"}]]]></statuses>
+                <reasons><![CDATA[[{"code":"exchange","title":"Exchange","sort_order":"0"},{"code":"refund","title":"Refund","sort_order":"10"}]]]></reasons>
+                <item_conditions><![CDATA[[{"code":"unopened","title":"Unopened","sort_order":"0"},{"code":"opened","title":"Opened","sort_order":"10"},{"code":"damaged","title":"Damaged","sort_order":"20"}]]]></item_conditions>
+            </general>
+            <fedex>
+                <fedex_test_mode>1</fedex_test_mode>
+                <fedex_pdf_label_width>4</fedex_pdf_label_width>
+                <fedex_pdf_label_height>6</fedex_pdf_label_height>
+            </fedex>
+            <endicia>
+                <endicia_api_url>https://www.envmgr.com/LabelService/EwsLabelService.asmx</endicia_api_url>
+                <endicia_pdf_label_width>4</endicia_pdf_label_width>
+                <endicia_pdf_label_height>6</endicia_pdf_label_height>
+                <endicia_stealth>1</endicia_stealth>
+            </endicia>
+            <ups>
+                <ups_api_url>https://wwwcie.ups.com/ups.app/xml/</ups_api_url>
+                <ups_pdf_label_width>4</ups_pdf_label_width>
+                <ups_pdf_label_height>7</ups_pdf_label_height>
+            </ups>
+        </urma>
+    </default>
+
+</config>

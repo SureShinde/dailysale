@@ -1,0 +1,740 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+    <sections>
+        <sales_email>
+            <groups>
+                <rma translate="label">
+                    <label>uReturns</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>20</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <enabled translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </enabled>
+                        <identity translate="label">
+                            <label>Returns Email Sender</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_identity</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </identity>
+                        <template translate="label">
+                            <label>Returns Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_template</source_model>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </template>
+                        <copy_to translate="label comment">
+                            <label>Send Returns Email Copy To</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Comma-separated.</comment>
+                        </copy_to>
+                        <copy_method translate="label">
+                            <label>Send Returns Email Copy Method</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_method</source_model>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </copy_method>
+                    </fields>
+                </rma>
+                <rma_comment translate="label">
+                    <label>uReturns Comments</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>30</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <enabled translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </enabled>
+                        <identity translate="label">
+                            <label>Returns Comment Email Sender</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_identity</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </identity>
+                        <template translate="label">
+                            <label>Returns Comment Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_template</source_model>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </template>
+                        <copy_to translate="label comment">
+                            <label>Send Returns Comment Email Copy To</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Comma-separated.</comment>
+                        </copy_to>
+                        <copy_method translate="label">
+                            <label>Send Returns Email Copy Method</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_method</source_model>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </copy_method>
+                    </fields>
+                </rma_comment>
+            </groups>
+        </sales_email>
+        <urma>
+            <tab>sales</tab>
+            <label>uReturns</label>
+            <frontend_type>text</frontend_type>
+            <sort_order>340</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <general translate="label">
+                    <label>General</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>5</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <vendor_comments_receiver>
+                            <label>Vendor Comments Receiver (store owner)</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_identity</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </vendor_comments_receiver>
+                        <vendor_comments_subject>
+                            <label>Vendor Comments Email Subject</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </vendor_comments_subject>
+                        <vendor_comments_template>
+                            <label>Vendor Comments Template</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </vendor_comments_template>
+                        <new_rma_vendor_email_template translate="label">
+                            <label>New RMA Vendor Notification Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_template</source_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </new_rma_vendor_email_template>
+                        <rma_comment_vendor_email_template translate="label">
+                            <label>RMA Comment Vendor Notification Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_template</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </rma_comment_vendor_email_template>
+                        <customer_hide_order_info>
+                            <label>Hide order information from customer on existing RMA page</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </customer_hide_order_info>
+                        <customer_new_hide_order_info>
+                            <label>Hide order information from customer on "Request New RMA" page</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </customer_new_hide_order_info>
+                        <statuses translate="label">
+                            <label>Statuses</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>urma/adminhtml_systemConfigFormField_optionsDefinition</frontend_model>
+                            <backend_model>udropship/systemConfig_backend_rowsSortable</backend_model>
+                            <sort_order>200</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment><![CDATA[You can use customer notes column to add per status notes/instructions in notification emails and RMA view in customer area. <br /> Use "Allow resolution notes" to allow/deny ability to add resolution comments/notes. RMA record specific (non-general as customer notes). Will be visible in same areas as customer notes]]></comment>
+                        </statuses>
+                        <reasons translate="label">
+                            <label>Reasons to return</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>urma/adminhtml_systemConfigFormField_optionsDefinition</frontend_model>
+                            <backend_model>udropship/systemConfig_backend_rowsSortable</backend_model>
+                            <sort_order>210</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </reasons>
+                        <item_conditions translate="label">
+                            <label>Item Conditions</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>urma/adminhtml_systemConfigFormField_optionsDefinition</frontend_model>
+                            <backend_model>udropship/systemConfig_backend_rowsSortable</backend_model>
+                            <sort_order>210</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </item_conditions>
+                    </fields>
+                </general>
+                <fedex>
+                    <label>Fedex Settings</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <fedex_test_mode>
+                            <label>Test Mode</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </fedex_test_mode>
+
+                        <fedex_user_key>
+                            <label>User Key</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </fedex_user_key>
+                        <fedex_user_password>
+                            <label>User Password</label>
+                            <frontend_type>password</frontend_type>
+                            <sort_order>22</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </fedex_user_password>
+                        <fedex_account_number>
+                            <label>Account Number</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>24</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </fedex_account_number>
+                        <fedex_meter_number>
+                            <label>Meter Number</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>26</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </fedex_meter_number>
+
+                        <fedex_dry_ice_weight>
+                            <label>Default Dry Ice Weight (KG)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </fedex_dry_ice_weight>
+
+                        <fedex_dropoff_type>
+                            <label>Drop Off Type</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>urma/source</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </fedex_dropoff_type>
+
+                        <fedex_label_stock_type>
+                            <label>Label Stock Type</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>urma/source</source_model>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </fedex_label_stock_type>
+                        <fedex_pdf_label_width>
+                            <label>PDF Label Width</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </fedex_pdf_label_width>
+                        <fedex_pdf_label_height>
+                            <label>PDF Label Height</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>80</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </fedex_pdf_label_height>
+
+                        <fedex_signature_option>
+                            <label>Signature Option</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>urma/source</source_model>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </fedex_signature_option>
+
+                        <fedex_notify_on>
+                            <label>Shipment notification types</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>urma/source</source_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </fedex_notify_on>
+
+                        <fedex_notify_email>
+                            <label>Shipment notification email(s)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>120</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Comma separated</comment>
+                        </fedex_notify_email>
+
+                        <fedex_itn>
+                            <label>ITN (Internal Transaction Number)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>150</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment><![CDATA[For shipments requiring an EEI/SED, enter the ITN number received from AES when you filed your shipment or the FTR (Foreign Trade Regulations) exemption number.<br/>Proper format: <strong>AES XYYYYMMDDNNNNNN</strong> where YYYYMMDD is date and NNNNNN are numbers generated by the AES.<br/>Apply at <a href="http://www.aesdirect.gov">http://www.aesdirect.gov</a>]]></comment>
+                        </fedex_itn>
+                    </fields>
+                </fedex>
+                <endicia>
+                    <label>Endicia Settings</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <endicia_api_url>
+                            <label>Endicia API URL</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </endicia_api_url>
+                        <endicia_test_mode>
+                            <label>Label Test Mode</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </endicia_test_mode>
+
+                        <endicia_requester_id>
+                            <label>Requester ID</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </endicia_requester_id>
+                        <endicia_account_id>
+                            <label>Account ID</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </endicia_account_id>
+                        <endicia_pass_phrase>
+                            <label>Pass Phrase</label>
+                            <frontend_type>text</frontend_type>
+                            <encrypted>1</encrypted>
+                            <type>password</type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </endicia_pass_phrase>
+                        <endicia_new_pass_phrase>
+                            <label>New Pass Phrase</label>
+                            <frontend_type>text</frontend_type>
+                            <encrypted>1</encrypted>
+                            <type>password</type>
+                            <sort_order>55</sort_order>
+                            <comment>Entering new passpharse will issue Endicia ChangePassPhraseXML API call</comment>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </endicia_new_pass_phrase>
+                        <endicia_new_pass_phrase_confirm>
+                            <label>Confirm New Pass Phrase</label>
+                            <frontend_type>text</frontend_type>
+                            <encrypted>1</encrypted>
+                            <type>password</type>
+                            <sort_order>56</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </endicia_new_pass_phrase_confirm>
+
+                        <endicia_label_type>
+                            <label>Label Type</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>urma/source</source_model>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </endicia_label_type>
+                        <endicia_mail_class>
+                            <label>Default Mail Class</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>urma/source</source_model>
+                            <sort_order>90</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </endicia_mail_class>
+                        <endicia_mailpiece_shape>
+                            <label>Default Mail Piece Shape</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>urma/source</source_model>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </endicia_mailpiece_shape>
+
+                        <endicia_stealth>
+                            <label>Stealth</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </endicia_stealth>
+                        <endicia_delivery_confirmation>
+                            <label>Delivery Confirmation</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>112</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </endicia_delivery_confirmation>
+                        <endicia_signature_confirmation>
+                            <label>Signature Confirmation</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>113</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </endicia_signature_confirmation>
+                        <endicia_return_receipt>
+                            <label>Return Receipt</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>114</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </endicia_return_receipt>
+                        <endicia_electronic_return_receipt>
+                            <label>Electronic Return Receipt</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>115</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </endicia_electronic_return_receipt>
+                        <endicia_insured_mail>
+                            <label>Insured Mail</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>urma/source</source_model>
+                            <sort_order>116</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </endicia_insured_mail>
+                        <endicia_restricted_delivery>
+                            <label>Restricted Delivery</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>117</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </endicia_restricted_delivery>
+                        <endicia_cod>
+                            <label>COD</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>118</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </endicia_cod>
+
+                        <endicia_balance_threshold>
+                            <label>Balance Threshold</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>120</sort_order>
+                            <comment><![CDATA[Leave empty to disable automatic funding of the account]]></comment>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </endicia_balance_threshold>
+                        <endicia_recredit_amount>
+                            <label>Recredit Amount</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>121</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </endicia_recredit_amount>
+
+                        <endicia_pdf_label_width>
+                            <label>PDF Label Width</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>150</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </endicia_pdf_label_width>
+                        <endicia_pdf_label_height>
+                            <label>PDF Label Height</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>151</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </endicia_pdf_label_height>
+                    </fields>
+                </endicia>
+                <ups>
+                    <label>UPS Settings</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <ups_api_url>
+                            <label>UPS API URL</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </ups_api_url>
+
+                        <ups_shipper_number>
+                            <label>UPS Shipper Number</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </ups_shipper_number>
+                        <ups_thirdparty_account_number>
+                            <label>3rd Party Account Number</label>
+                            <type>text</type>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </ups_thirdparty_account_number>
+                        <ups_thirdparty_country>
+                            <label>3rd Party Country</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_country</source_model>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </ups_thirdparty_country>
+                        <ups_thirdparty_postcode>
+                            <label>3rd Party Postal Code</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>6</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </ups_thirdparty_postcode>
+    
+                        <ups_insurance>
+                            <label>Insurance</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>11</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </ups_insurance>
+                        <ups_delivery_confirmation>
+                            <label>Delivery Confirmation</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>urma/source</source_model>
+                            <sort_order>12</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </ups_delivery_confirmation>
+                        <ups_verbal_confirmation>
+                            <label>Verbal Confirmation</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>13</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </ups_verbal_confirmation>
+    
+                        <ups_pickup>
+                            <label>Pickup Type</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>urma/source</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </ups_pickup>
+                        <ups_container>
+                            <label>Container Type</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>urma/source</source_model>
+                            <sort_order>21</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </ups_container>
+                        <ups_dest_type>
+                            <label>Destination Type</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>urma/source</source_model>
+                            <sort_order>22</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </ups_dest_type>
+    
+                        <ups_pdf_label_width>
+                            <label>PDF Label Width</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </ups_pdf_label_width>
+                        <ups_pdf_label_height>
+                            <label>PDF Label Height</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>51</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </ups_pdf_label_height>
+                    </fields>
+                </ups>
+                <message translate="label">
+                    <label>Messages</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>900</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <customer_success>
+                            <label>Customer success</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </customer_success>
+                        <customer_no_items>
+                            <label>Customer no items selected</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </customer_no_items>
+                        <new_instructions_html>
+                            <label>Customer instructions on "Request New RMA" page</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </new_instructions_html>
+                    </fields>
+                </message>
+            </groups>
+        </urma>
+    </sections>
+</config>

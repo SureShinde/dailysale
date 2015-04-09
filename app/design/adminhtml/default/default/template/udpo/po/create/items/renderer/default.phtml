@@ -1,0 +1,58 @@
+<?php
+/**
+ * Unirgy LLC
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.unirgy.com/LICENSE-M1.txt
+ *
+ * @category   Unirgy
+ * @package    Unirgy_DropshipPo
+ * @copyright  Copyright (c) 2008-2009 Unirgy LLC (http://www.unirgy.com)
+ * @license    http:///www.unirgy.com/LICENSE-M1.txt
+ */
+?>
+<?php $hlp = Mage::helper('udropship');
+$isEditCosts = Mage::getStoreConfigFlag('udropship/purchase_order/create_po_allow_change_costs') && Mage::getSingleton('admin/session')->isAllowed('sales/order/actions/udpo_edit_cost');
+$isViewCost = Mage::getSingleton('admin/session')->isAllowed('sales/order/actions/udpo_view_cost');
+$qtyLast = !$isViewCost ? 'last' : '';
+?>
+<?php $_item = $this->getItem() ?>
+<tr class="border">
+    <td><?php echo $this->getColumnHtml($_item, 'name') ?></td>
+    <td id="po-item-vendor-<?php echo $_item->getId()?>" class="po-item-vendor"><?php echo Mage::helper('udpo')->getOrderItemVendorName($_item) ?></td>
+    <?php if ($isViewCost): ?>
+    <?php if ($isEditCosts): ?>
+    <td nowrap="true" id="po-item-cost-<?php echo $_item->getId()?>" class="a-center po-item-cost">
+        <input style="width: 100px;" type="text" class="input-text qty-input" name="udpo[costs][<?php echo $_item->getId() ?>]" value="<?php echo $_item->getUdpoBaseCost()*1 ?>" alt="<?php echo $_item->getUdpoOrigBaseCost()*1 ?>" <?php if (!$_item->getUdpoCustomCost()): ?>disabled="disabled"<?php endif?> />
+        <input onclick="udpoToggleBaseCostInput(this)" type="checkbox" <?php if (!$_item->getUdpoCustomCost()): ?> checked<?php endif?>>
+    </td>
+    <?php else: ?>
+    <td id="po-item-cost-<?php echo $_item->getId()?>" class="a-right po-item-cost"><?php echo $hlp->displayPrices($this->getOrder(), $_item->getUdpoBaseCost()) ?></td>
+    <?php endif ?>
+    <?php endif ?>
+    <td><?php echo $this->getColumnHtml($_item, 'qty') ?></td>
+    <td class="<?php echo $qtyLast?> a-center">
+        <input type="text" class="input-text qty-input" name="udpo[items][<?php echo $_item->getId() ?>]" value="<?php echo $_item->getUdpoCreateQty()*1 ?>" />
+    </td>
+    <?php if ($isViewCost): ?>
+    <td class="last a-right"><?php echo $hlp->displayPrices($this->getOrder(), $_item->getUdpoBaseCost()*$_item->getUdpoCreateQty()) ?></td>
+    <?php endif ?>
+</tr>
+
+<script type="text/javascript">
+//<![CDATA[
+function udpoToggleBaseCostInput(cbx) {
+    $(cbx).previous().disabled = !$(cbx).previous().disabled;
+    if ($(cbx).previous().disabled) {
+        if ((new Number($(cbx).previous().value)).toFixed(2) != (new Number($(cbx).previous().alt)).toFixed(2)) {
+            $(cbx).previous().value = $(cbx).previous().alt
+            window.checkButtonsRelation()
+        }
+    }
+}
+//]]>
+</script>

@@ -1,0 +1,123 @@
+<?php
+/**
+ * Unirgy LLC
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.unirgy.com/LICENSE-M1.txt
+ *
+ * @category   Unirgy
+ * @package    Unirgy_DropshipPo
+ * @copyright  Copyright (c) 2008-2009 Unirgy LLC (http://www.unirgy.com)
+ * @license    http:///www.unirgy.com/LICENSE-M1.txt
+ */
+?>
+<?php $hlp = Mage::helper('udropship') ?>
+<div class="grid np">
+  <div class="hor-scroll">
+    <table cellspacing="0" class="data order-tables">
+        <col />
+        <col />
+        <col width="1" />
+        <col width="1" />
+        <col width="1" />
+        <col width="1" />
+        <thead>
+            <tr class="headings">
+                <th><?php echo $this->helper('sales')->__('Product') ?></th>
+                <th><?php echo $this->helper('udpo')->__('Vendor') ?></th>
+                <th class="a-right"><?php echo $this->helper('sales')->__('Cost') ?></th>
+                <th class="a-center"><?php echo $this->helper('sales')->__('Qty') ?></th>
+                <th class="last a-right"><?php echo $this->helper('sales')->__('Row Cost') ?></th>
+            </tr>
+        </thead>
+        <?php $_items = $this->getPo()->getAllItems() ?>
+        <?php $_i=0;foreach ($_items as $_item): if ($_item->getOrderItem()->getParentItem()): continue; endif; $_i++ ?>
+        <tbody class="<?php echo $_i%2?'odd':'even' ?>">
+            <?php echo $this->getItemHtml($_item) ?>
+        </tbody>
+        <?php endforeach; ?>
+    </table>
+  </div>
+</div>
+<br />
+<div class="box-left entry-edit">
+    <div class="entry-edit-head"><h4><?php echo $this->__('Purchase Order Comments') ?></h4></div>
+    <window.udpoFieldset>
+        <div id="order-history_form">
+            <span class="field-row">
+                <label class="normal" for="udpo_comment_text"><?php echo Mage::helper('sales')->__('Purchase Order Comments') ?></label>
+                <textarea id="udpo_comment_text" name="udpo[comment_text]" rows="3" cols="5" style="height:6em; width:99%;"><?php echo $this->getCommentText(); ?></textarea>
+            </span>
+            <div class="clear"></div>
+        </div>
+    </window.udpoFieldset>
+</div>
+
+<div class="box-right entry-edit">
+    <div class="order-totals">
+        <table cellspacing="0" width="100%">
+            <col />
+            <col width="1" />
+            <tfoot>
+                <tr>
+                <td class="label">
+                    <strong><?php echo $this->helper('sales')->__('Shipping Amount') ?></strong>
+                </td>
+                <td class="emph">
+                    <strong><input id="udpo_shipping_amount" name="udpo[shipping_amount]" value="<?php echo $this->getPo()->getShippingAmount() ?>" />
+                </td>
+                </tr>
+                <tr>
+                <td class="label">
+                    <strong><?php echo $this->helper('sales')->__('Total Cost') ?></strong>
+                </td>
+                <td class="emph">
+                    <strong id="udpo_total_cost"><?php echo $hlp->displayPrices($this->getOrder(), $this->getPo()->getTotalCost()) ?></strong>
+                </td>
+                </tr>
+            </tfoot>
+        </table>
+        <div class="order-totals-bottom">
+            <div class="divider"></div>
+            <p>
+              <label class="normal" for="notify_vendor">Send Comments To Vendor by Email</label>
+              <input id="notify_vendor" name="udpo[comment_vendor_notify]" value="1" type="checkbox" />
+            </p>
+            <p>
+              <label class="normal" for="is_visible_to_vendor">Is Comments Visible To Vendor</label>
+              <input id="is_visible_to_vendor" name="udpo[comment_visible_to_vendor]" value="1" type="checkbox" />
+            </p>
+            <div class="a-right">
+            <?php echo $this->getChildHtml('submit_button') ?>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="clear"></div>
+
+<script type="text/javascript">
+//<![CDATA[
+
+var udpoPriceTpl = new Template("<?php echo str_replace('%s', '#{price}', $this->getOrder()->getBaseCurrency()->getOutputFormat()) ?>")
+
+function udpoRecalcCosts(item) {
+    var trEl = item.up('tr')
+    if (trEl && trEl.id && trEl.id.startsWith('udpo_item_')) {
+        trEl.select('.udpo_item_rowcost')[0].update(udpoPriceTpl.evaluate({price: (item.value*trEl.select('.udpo_item_qty')[0].innerHTML).toFixed(2)}))
+        trEl.select('.udpo_item_rowcost')[0].writeAttribute('alt', item.value*trEl.select('.udpo_item_qty')[0].innerHTML)
+    }
+    var udpoTotalCost = new Number(0)
+    trEl.up('table').select('tr').each(function(tr){
+        if (tr.id && tr.id.startsWith('udpo_item_')) {
+            udpoTotalCost += tr.select('.udpo_item_rowcost')[0].readAttribute('alt')*1
+        }
+    })
+    $('udpo_total_cost').update(udpoPriceTpl.evaluate({price: udpoTotalCost.toFixed(2)}))
+}
+
+//]]>
+</script>

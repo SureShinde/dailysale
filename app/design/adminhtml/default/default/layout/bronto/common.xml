@@ -3,8 +3,8 @@
     <adminhtml_system_config_edit>
         <reference name="head">
             <action method="addCss"><stylesheet>bronto/bronto.css</stylesheet></action>
-            <action method="addItem"><type>skin_js</type><script>bronto/js/jquery-1.10.2.js</script></action>
-            <action method="addItem"><type>skin_js</type><script>bronto/js/jquery-noconflict.js</script></action>
+            <!--<action method="addItem"><type>skin_js</type><script>bronto/js/jquery-1.10.2.js</script></action>-->
+            <!--<action method="addItem"><type>skin_js</type><script>bronto/js/jquery-noconflict.js</script></action>-->
             <action method="addItem"><type>skin_js</type><script>bronto/js/guider/guiders.js</script></action>
             <action method="addCss"><stylesheet>bronto/js/guider/guiders.css</stylesheet></action>
         </reference>

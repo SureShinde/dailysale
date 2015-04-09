@@ -1,0 +1,51 @@
+<?php
+/**
+ * Unirgy LLC
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.unirgy.com/LICENSE-M1.txt
+ *
+ * @category   Unirgy
+ * @package    Unirgy_DropshipPo
+ * @copyright  Copyright (c) 2008-2009 Unirgy LLC (http://www.unirgy.com)
+ * @license    http:///www.unirgy.com/LICENSE-M1.txt
+ */
+?>
+<?php $hlp = Mage::helper('udropship') ?>
+<?php $_item  = $this->getItem() ?>
+<?php $_order = $_item->getOrder() ?>
+<?php $_orderItem = $_item->getOrderItem() ?>
+<?php $_product = $_item->getProduct() ?>
+<?php $_productUrl = $_product && $_product->getProductUrl() ? $_product->getProductUrl() : '' ?>
+<tr>
+    <td align="left" valign="top" style="padding:3px 9px">
+        <strong>
+            <?php if ($_productUrl): ?><a href="<?php echo $_productUrl?>" target="__blank"><?php endif; ?>
+            <?php echo $this->htmlEscape($_item->getName()) ?>
+            <?php if ($_productUrl): ?></a><?php endif; ?>
+        </strong>
+        <?php if ($this->getItemOptions()): ?>
+        <dl style="margin:0; padding:0;">
+            <?php foreach ($this->getItemOptions() as $option): ?>
+            <dt><strong><em><?php echo $option['label'] ?></em></strong></dt>
+            <dd style="margin:0; padding:0 0 0 9px;"><?php echo $option['value'] ?></dd>
+            <?php endforeach; ?>
+        </dl>
+        <?php endif; ?>
+        <?php echo $this->htmlEscape($_item->getDescription()) ?>
+        <?php if ($_orderItem->getGiftMessageId() && $_giftMessage = $this->helper('giftmessage/message')->getGiftMessage($_orderItem->getGiftMessageId())): ?>
+        <br /><strong style="color:#444; font-size:13px;"><?php echo $this->__('Gift Message') ?></strong>
+        <br /><?php echo $this->__('From:'); ?> <?php echo $this->htmlEscape($_giftMessage->getSender()) ?>
+        <br /><?php echo $this->__('To:'); ?> <?php echo $this->htmlEscape($_giftMessage->getRecipient()) ?>
+        <br /><?php echo $this->__('Message:'); ?><br /> <?php echo $this->htmlEscape($_giftMessage->getMessage()) ?>
+        <?php endif; ?>
+    </td>
+    <td align="left" valign="top" style="padding:3px 9px"><?php echo $this->htmlEscape($this->getSku($_item)) ?></td>
+    <td align="right" valign="top" style="padding:3px 9px"><?php echo $hlp->displayPrices($_order, $_item->getBaseCost()) ?></td>
+    <td align="center" valign="top" style="padding:3px 9px"><?php echo $_item->getQty()*1 ?></td>
+    <td align="right" valign="top" style="padding:3px 9px"><?php echo $hlp->displayPrices($_order, $_item->getBaseCost()*$_item->getQty()) ?></td>
+</tr>

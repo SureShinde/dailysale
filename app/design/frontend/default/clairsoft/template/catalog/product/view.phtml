@@ -113,7 +113,7 @@
         </div>
 <?php endforeach;?>
         
-        <?php echo $this->getChildHtml('product_additional_data') ?>
+
     </div>
 
             <?php echo $this->getChildHtml('other');?>
@@ -136,6 +136,7 @@
             <?php //echo $this->getChildChildHtml('container2', '', true, true) ?>
         <?php //endif;?>
     </form>
+    <?php echo $this->getChildHtml('product_additional_data') ?>
     <script type="text/javascript">
     //<![CDATA[
         var productAddToCartForm = new VarienForm('product_addtocart_form');
