@@ -172,7 +172,7 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
                     if ($qty > 0) {
                         if(!is_null($productSimple->getId())){
                             if(!is_null($items[$productSimple->getId()])){
-                                $items[$productSimple->getId()]->setParent($qty->getId());
+                                $items[$productSimple->getId()]->setParent($product->getId());
                                 $items[$productSimple->getId()]->setProfit($items[$productSimple->getId()]->getProfit()+$qty);
                             }else{
                                 $object = new Varien_Object();
