@@ -6,6 +6,10 @@
             <action method="addJs" ifconfig="customer/captcha/enable">
                 <file>mage/captcha.js</file>
             </action>
+            <action method="addItem" ifconfig="customer/captcha/enable">
+                <type>skin_js</type>
+                <name>js/fiuze/captcha.js</name>
+            </action>
         </reference>
     </default>
 </layout>

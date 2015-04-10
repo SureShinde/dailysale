@@ -61,6 +61,30 @@
                     </captcha_controller_action_predispatch_signin_json_forgotpassword>
                 </observers>
             </controller_action_predispatch_signin_json_forgotpassword>
+            <controller_action_predispatch_onestepcheckout_ajax_login>
+                <observers>
+                    <captcha_controller_action_predispatch_onestepcheckout_ajax_login>
+                        <class>Fiuze_All_Model_Observer</class>
+                        <method>onestepcheckoutAjaxLogin</method>
+                    </captcha_controller_action_predispatch_onestepcheckout_ajax_login>
+                </observers>
+            </controller_action_predispatch_onestepcheckout_ajax_login>
+            <controller_action_predispatch_onestepcheckout_ajax_forgotPassword>
+                <observers>
+                    <captcha_controller_action_predispatch_onestepcheckout_ajax_forgotPassword>
+                        <class>Fiuze_All_Model_Observer</class>
+                        <method>onestepcheckoutAjaxForgotPassword</method>
+                    </captcha_controller_action_predispatch_onestepcheckout_ajax_forgotPassword>
+                </observers>
+            </controller_action_predispatch_onestepcheckout_ajax_forgotPassword>
+            <controller_action_predispatch_onestepcheckout_index_saveOrder>
+                <observers>
+                    <captcha_controller_action_predispatch_onestepcheckout_index_saveOrder>
+                        <class>Fiuze_All_Model_Observer</class>
+                        <method>onestepcheckoutIndexSaveOrder</method>
+                    </captcha_controller_action_predispatch_onestepcheckout_index_saveOrder>
+                </observers>
+            </controller_action_predispatch_onestepcheckout_index_saveOrder>
         </events>
     </global>
 
