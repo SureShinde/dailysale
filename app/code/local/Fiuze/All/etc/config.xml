@@ -37,6 +37,30 @@
                     </fiuze_all_order_creditmemo_refund>
                 </observers>
             </sales_order_creditmemo_save_after>
+            <controller_action_predispatch_signin_json_login>
+                <observers>
+                    <captcha_controller_action_predispatch_signin_json_login>
+                        <class>Fiuze_All_Model_Observer</class>
+                        <method>checkUserLogin</method>
+                    </captcha_controller_action_predispatch_signin_json_login>
+                </observers>
+            </controller_action_predispatch_signin_json_login>
+            <controller_action_predispatch_signin_json_register>
+                <observers>
+                    <captcha_controller_action_predispatch_signin_json_register>
+                        <class>Fiuze_All_Model_Observer</class>
+                        <method>userRegister</method>
+                    </captcha_controller_action_predispatch_signin_json_register>
+                </observers>
+            </controller_action_predispatch_signin_json_register>
+            <controller_action_predispatch_signin_json_forgotpassword>
+                <observers>
+                    <captcha_controller_action_predispatch_signin_json_forgotpassword>
+                        <class>Fiuze_All_Model_Observer</class>
+                        <method>forgotPassword</method>
+                    </captcha_controller_action_predispatch_signin_json_forgotpassword>
+                </observers>
+            </controller_action_predispatch_signin_json_forgotpassword>
         </events>
     </global>
 
@@ -49,8 +73,6 @@
                     <frontName>fiuze_all</frontName>
                 </args>
             </fiuze_all>
-        </routers>
-        <routers>
             <captcha>
                 <use>standard</use>
                 <args>
@@ -59,6 +81,16 @@
                 </args>
             </captcha>
         </routers>
+        <layout>
+            <updates>
+                <captcha>
+                    <file>captcha.xml</file>
+                </captcha>
+                <fiuze_all>
+                    <file>fiuze/captcha.xml</file>
+                </fiuze_all>
+            </updates>
+        </layout>
     </frontend>
 
     <default>
@@ -80,6 +112,7 @@
                     <user_forgotpassword>1</user_forgotpassword>
                     <guest_checkout>1</guest_checkout>
                     <register_during_checkout>1</register_during_checkout>
+                    <user_login>1</user_login>
                 </always_for>
             </captcha>
         </customer>

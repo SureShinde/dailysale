@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<layout version="0.1.0">
+    <default>
+        <reference name="head">
+            <action method="addJs" ifconfig="customer/captcha/enable">
+                <file>mage/captcha.js</file>
+            </action>
+        </reference>
+    </default>
+</layout>

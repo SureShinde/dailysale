@@ -13,7 +13,8 @@
 				<label for="pass" class="required"><?php echo $this->__('Password') ?><em>*</em></label>
 				<input type="password" name="login[password]" class="input-text required-entry validate-password" id="pass" title="<?php echo $this->__('Password') ?>" />
 			</div>
-		</div>	
+		</div>
+        <?php echo $this->getLayout()->createBlock('captcha/captcha')->setFormId('user_login')->toHtml();?>
 		<div class="clear"></div>
 		<div class="f-p"><a href="<?php echo $this->getForgotPasswordUrl() ?>" id="forgot-password" class="f-left"><?php echo $this->__('Recover Your Password') ?></a></div>
 		<!-- <div class="recover-password"><a href="/customer/account/existingUser">Recover your old DailySale.com account here</a></div> -->
