@@ -205,20 +205,26 @@ class Bronto_Common_Helper_Coupon extends Bronto_Common_Helper_Data
     /**
      * Sets the coupon code either in the session or on the quote
      *
+     * @param int $ruleId
      * @param string $couponCode
      */
-    public function applyCode($couponCode = null)
+    public function applyCode($ruleId = null, $couponCode = null)
     {
         $session = Mage::getSingleton('core/session');
         if (is_null($couponCode)) {
             $couponCode = $session->getCouponCode();
+            $ruleId = $session->getRuleId();
         } else {
             $session->setCouponCode($couponCode);
+            $session->setRuleId($ruleId);
         }
         $quote = Mage::getSingleton('checkout/cart')->getQuote();
         if ($quote && $couponCode) {
             $quote->setCouponCode($couponCode)->save();
-            $session->unsCouponCode($couponCode);
+            if ($this->_isRuleApplied($ruleId)) {
+                $session->unsCouponCode($couponCode);
+                $session->unsRuleId($ruleId);
+            }
         }
     }
 
@@ -270,8 +276,8 @@ class Bronto_Common_Helper_Coupon extends Bronto_Common_Helper_Data
                 $force = $request->has(self::FORCE_PARAM);
                 try {
                     $coupon = $this->_validateCode($couponCode, $force);
-                    if (!$this->isCouponApplied($couponCode)) {
-                        $this->applyCode($couponCode);
+                    if (!$this->isCouponApplied($coupon->getRuleId(), $couponCode)) {
+                        $this->applyCode($coupon->getRuleId(), $couponCode);
                         $session->addSuccess($this->getSuccessMessage($couponCode));
                     }
                     return true;
@@ -288,21 +294,34 @@ class Bronto_Common_Helper_Coupon extends Bronto_Common_Helper_Data
     }
 
     /**
+     * Internal method to determine if the rule was applied to a quote in the
+     * session
+     *
+     * @param int $ruleId
+     * @return boolean
+     */
+    private function _isRuleApplied($ruleId)
+    {
+        $quote = Mage::getSingleton('checkout/cart')->getQuote();
+        if ($quote) {
+            return in_array($ruleId, explode(',', $quote->getAppliedRuleIds()));
+        }
+        return false;
+    }
+
+    /**
      * Has this coupon already been applied
      *
+     * @param int $ruleId
      * @param string $couponCode
      * @return boolean
      */
-    public function isCouponApplied($couponCode)
+    public function isCouponApplied($ruleId, $couponCode)
     {
         $session = Mage::getSingleton('core/session');
-        $quote = Mage::getSingleton('checkout/cart')->getQuote();
         if ($session->getCouponCode() == $couponCode) {
             return true;
         }
-        if ($quote) {
-            return $quote->getCouponCode() && $quote->getCouponCode() == $couponCode;
-        }
-        return false;
+        return $this->_isRuleApplied($ruleId);
     }
 }

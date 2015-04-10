@@ -1,0 +1,38 @@
+<?php /* @var $this Bronto_Common_Block_Cart_Recovery */ ?>
+
+<?php if ($this->shouldWriteDom()) : ?>
+  <div id="bronto-cart-recovery-shadow" style="display: none;">
+    <?php if ($this->getOrder()) : ?>
+    <div id="bronto-cart-recovery-order-id"><?php echo $this->getOrder()->getIncrementId(); ?></div>
+    <?php endif; ?>
+    <?php if ($this->getQuote()) : ?>
+      <div id="bronto-cart-recovery-cart-url"><?php echo $this->getCheckoutUrl(); ?></div>
+    <?php endif; ?>
+    <?php if ($this->getQuote()) : ?>
+      <div id="bronto-cart-recovery-cart-id"><?php echo $this->getQuote()->getId(); ?></div>
+    <?php endif; ?>
+    <div id="bronto-cart-recovery-line-items">
+      <?php foreach ($this->getSalesObject()->getAllVisibleItems() as $lineItem): ?>
+        <div class="bronto-cart-recovery-line-item">
+          <div class="bronto-cart-recovery-line-item-sku"><?php echo $lineItem->getSku(); ?></div>
+          <div class="bronto-cart-recovery-line-item-name"><?php echo htmlentities($lineItem->getName()); ?></div>
+          <div class="bronto-cart-recovery-line-item-description"><?php echo htmlentities($this->getDescription($lineItem)); ?></div>
+          <div class="bronto-cart-recovery-line-item-category"><?php echo htmlentities($this->renderCategories($lineItem)); ?></div>
+          <div class="bronto-cart-recovery-line-item-url"><?php echo $this->getProductUrl($lineItem); ?></div>
+          <div class="bronto-cart-recovery-line-item-image"><?php echo $this->getImage($lineItem); ?></div>
+          <div class="bronto-cart-recovery-line-item-other"><?php echo $this->getOther($lineItem); ?></div>
+          <div class="bronto-cart-recovery-line-item-unit-price"><?php echo $lineItem->getOriginalPrice(); ?></div>
+          <div class="bronto-cart-recovery-line-item-sale-price"><?php echo $lineItem->getPrice(); ?></div>
+          <div class="bronto-cart-recovery-line-item-quantity"><?php echo $this->getQty($lineItem); ?></div>
+          <div class="bronto-cart-recovery-line-item-total-price"><?php echo $lineItem->getRowTotal(); ?></div>
+        </div>
+      <?php endforeach; ?>
+    </div>
+    <div id="bronto-cart-recovery-currency"><?php echo $this->getCurrencyCode(); ?></div>
+    <div id="bronto-cart-recovery-discount-amount"><?php echo $this->getDiscountAmount(); ?></div>
+    <div id="bronto-cart-recovery-subtotal"><?php echo $this->getSalesObject()->getSubtotal(); ?></div>
+    <div id="bronto-cart-recovery-tax-amount"><?php echo $this->getSalesObject()->getTaxAmount(); ?></div>
+    <div id="bronto-cart-recovery-grand-total"><?php echo $this->getSalesObject()->getGrandTotal(); ?></div>
+  </div>
+  <?php echo $this->getCartRecoveryCode(); ?>
+<?php endif; ?>

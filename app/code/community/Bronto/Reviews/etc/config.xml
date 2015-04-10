@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Bronto_Reviews>
-            <version>0.0.2</version>
+            <version>0.1.0</version>
         </Bronto_Reviews>
     </modules>
     <global>
@@ -154,6 +154,7 @@
                 <status>complete</status>
                 <cancel_status>closed</cancel_status>
                 <period>30</period>
+                <multipler>1</multipler>
                 <adjustment>0</adjustment>
                 <identity>general</identity>
             </reorder>
