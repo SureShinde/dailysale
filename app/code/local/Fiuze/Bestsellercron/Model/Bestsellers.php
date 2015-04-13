@@ -62,7 +62,9 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
     protected function _applyCriteria($items) {
         if ($this->_criteria == 'revenue') {
             $bestSellers = $this->_maxRevenue($items);
-        } else {
+        } else if('qty'){
+            $bestSellers = $this->_maxQty($items);
+        } else if('profit'){
             $bestSellers = $this->_maxProfit($items);
         }
         $result = $this->_changeFormatArray($bestSellers);
@@ -133,6 +135,60 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
             }else{
                 if(!is_null($product->getId())){
                     $items[$product->getId()] += $this->_getRowTotalWithDiscountInclTax($orderItem);
+                }
+            }
+        }
+
+        return $items;
+    }
+
+    /**
+     * Apply max qty criteria
+     *
+     * example array(
+     *      [product ID] => sales_flat_order_item price (include discount and tax)
+     * )
+     *
+     * @param array $orderItems
+     * @return array
+     */
+    protected function _maxQty($orderItems) {
+        $items = array();
+
+        foreach ($orderItems as $orderItem) {
+            $product = $orderItem->getProduct();
+            /**
+             * @todo will be set real price if cost doesn't exist
+             *          check cost in the live db
+             */
+            if($product->getTypeId()=='configurable'){
+                $itemsSimple = Mage::getResourceModel('sales/order_item_collection')
+                    ->addFieldToFilter('created_at', array('gteq' => $this->_getPeriod()))
+                    ->addFieldToFilter('parent_item_id', array('eq' => $orderItem->getId()))
+                    ->getItems();
+                foreach($itemsSimple as $simple){
+                    $productSimple = $simple->getProduct();
+                    $qty = (float) $simple->getQtyOrdered();
+                    if ($qty > 0) {
+                        if(!is_null($productSimple->getId())){
+                            if(!is_null($items[$productSimple->getId()])){
+                                $items[$productSimple->getId()]->setParent($product->getId());
+                                $items[$productSimple->getId()]->setProfit($items[$productSimple->getId()]->getProfit()+$qty);
+                            }else{
+                                $object = new Varien_Object();
+                                $object->setParent($product->getId());
+                                $object->setProfit($qty);
+                                $items[$productSimple->getId()]=$object;
+                            }
+                        }
+                    }
+                }
+            }else{
+                $qty   = $orderItem->getQtyOrdered();
+                if ($qty > 0) {
+                    if(!is_null($product->getId())){
+                        $items[$product->getId()] += $qty;
+                    }
                 }
             }
         }

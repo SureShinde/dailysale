@@ -6,6 +6,11 @@
         </Fiuze_Bestsellercron>
     </modules>
     <global>
+        <blocks>
+            <bestsellercron>
+                <class>Fiuze_Bestsellercron_Block</class>
+            </bestsellercron>
+        </blocks>
         <helpers>
             <bestsellercron>
                 <class>Fiuze_Bestsellercron_Helper</class>
