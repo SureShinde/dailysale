@@ -21,6 +21,7 @@
 						<li>
 							<label class="required" for="id_onestepcheckout_email"><?php echo $this->__('Email address'); ?> <em>*</em></label>					
 							<input type="text" class="input-text required-entry validate-email" name="onestepcheckout_email" id="id_onestepcheckout_email" />
+                            <?php echo $this->getLayout()->createBlock('captcha/captcha')->setFormId('user_forgotpassword')->toHtml(); ?>
 						</li>
 						<li class="last">
 							<p><a href="javascript:void(0);" id="onestepcheckout-return-login-link"><span>&nbsp;</span><?php echo $this->__('Return to login'); ?></a></p>
@@ -54,6 +55,7 @@
 								<label class="required" for="id_onestepcheckout_password"><?php echo $this->__('Password'); ?> <em>*</em></label>
 								<input type="password" tabindex="101" name="onestepcheckout_password" class="input-text required-entry validate-password" id="id_onestepcheckout_password" />
 							</div>
+                            <?php echo $this->getLayout()->createBlock('captcha/captcha')->setFormId('user_login')->toHtml();?>
 						</li>
 						<li class="last">
 						  <button class="button" tabindex="102" id="onestepcheckout-login-button" type="button"><?php echo $this->__('Login'); ?></button>

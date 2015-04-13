@@ -185,7 +185,8 @@
                         <label class="required"  for="billing:confirm_password"><?php echo $this->__('Confirm Password') ?> <em>*</span></em></label><br/>
                         <input type="password" name="billing[confirm_password]" title="<?php echo $this->__('Confirm Password') ?>" id="billing:confirm_password" class="input-text required-entry validate-cpassword" />
                     </div>
-                </li>			
+                    <?php echo $this->getLayout()->createBlock('captcha/captcha')->setFormId('guest_checkout')->toHtml(); ?>
+                </li>
             <?php endif ?>		
             <?php if ($this->isCustomerLoggedIn() && $this->customerHasAddresses()): ?>
                 <li class="control">
