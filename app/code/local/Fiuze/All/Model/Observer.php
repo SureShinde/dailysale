@@ -129,6 +129,9 @@ class Fiuze_All_Model_Observer{
         if(!$configValue){
             return;
         }
+        if(Mage::getSingleton('customer/session')->isLoggedIn()){
+            return;
+        }
         $controller = $observer->getControllerAction();
         $formId = 'guest_checkout';
         $captchaModel = Mage::helper('captcha')->getCaptcha($formId);
@@ -137,11 +140,7 @@ class Fiuze_All_Model_Observer{
             $controller->setFlag('', Mage_Core_Controller_Varien_Action::FLAG_NO_DISPATCH, true);
             Mage::getSingleton('core/session')->addError('Incorrect CAPTCHA.');
             Mage::app()->getResponse()->setRedirect(Mage::getUrl('*/*/index'));
-            //$controller->_redirectUrl('*/*/index');
-            //$controller->_redirectUrl(Mage::getUrl('checkout/onepage'));
-            //Mage::app()->getFrontController()->getResponse()->setRedirect(Mage::getUrl('checkout/onepage'))->sendResponse();
         }
-
     }
 
     /*
