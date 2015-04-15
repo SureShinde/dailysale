@@ -339,6 +339,61 @@ class Fiuze_Deals_Model_Observer
         }
     }
 
+    /**
+     * The deal quantity check product cart add
+     * @param Varien_Event_Observer $observer
+     */
+    public function productCartAdd(Varien_Event_Observer $observer)
+    {
+        $quoteItem = $observer->getEvent()->getItem();
+        $qty = $quoteItem->getQty();
+        $stockItem = $quoteItem->getProduct()->getStockItem();
+        $productId = $stockItem->getProductId();
+
+
+        $result = $this->checkQuoteItemQty($productId, $qty);
+        if ($result->getHasError()) {
+
+            $quoteItem->addErrorInfo(
+                'cataloginventory',
+                Mage_CatalogInventory_Helper_Data::ERROR_QTY,
+                $result->getMessage()
+            );
+
+            $quoteItem->getQuote()->addErrorInfo(
+                $result->getQuoteMessageIndex(),
+                'cataloginventory',
+                Mage_CatalogInventory_Helper_Data::ERROR_QTY,
+                $result->getQuoteMessage()
+            );
+        }
+    }
+
+
+    public function checkQuoteItemQty($productId, $qty)
+    {
+        $productDeals = Mage::getResourceModel('fiuze_deals/deals_collection')
+            ->addFilter('product_id', $productId)
+            ->addFilter('current_active', true)
+            ->getFirstItem();
+
+        $result = new Varien_Object();
+        $result->setHasError(false);
+        if ($productDeals->getData()) {
+            $qtyForCheck = $productDeals->getData('deals_qty');
+            if ($qty > $qtyForCheck) {
+                $result->setHasError(true)
+                    ->setMessage(
+                        Mage::helper('cataloginventory')->__('The minimum quantity allowed for purchase is %s.', $qtyForCheck * 1)
+                    )
+                    ->setErrorCode('qty_min')
+                    ->setQuoteMessage(Mage::helper('cataloginventory')->__('Some of the products cannot be ordered in requested quantity.'))
+                    ->setQuoteMessageIndex('qty');
+                return $result;
+            }
+        }
+        return $result;
+    }
 }
 
 
