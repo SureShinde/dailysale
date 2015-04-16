@@ -65,6 +65,7 @@ class ParadoxLabs_AuthorizeNetCim_Model_Gateway extends ParadoxLabs_TokenBase_Mo
 		'email'						=> array( 'maxLength' => 255 ),
 		'expirationDate'			=> array( 'maxLength' => 7 ),
 		'invoiceNumber'				=> array( 'maxLength' => 20, 'noSymbols' => true ),
+		'itemName'					=> array( 'maxLength' => 31, 'noSymbols' => true ),
 		'loginId'					=> array( 'maxLength' => 20, 'noSymbols' => true ),
 		'merchantCustomerId'		=> array( 'maxLength' => 20 ),
 		'nameOnAccount'				=> array( 'maxLength' => 22 ),
@@ -152,10 +153,15 @@ class ParadoxLabs_AuthorizeNetCim_Model_Gateway extends ParadoxLabs_TokenBase_Mo
 				$errorCode		= $this->_lastResponse['messages']['message']['code'];
 				$errorText		= $this->_lastResponse['messages']['message']['text'];
 				
-				// Log and spit out generic error. Skip certain warnings we can handle.
-				if( !empty($errorCode) && !in_array( $errorCode, array( 'E00027', 'E00039', 'E00040' ) ) ) {
+				/**
+				 * Log and spit out generic error. Skip certain warnings we can handle.
+				 */
+				$okayErrorCodes	= array( 'E00039', 'E00040' );
+				$okayErrorTexts	= array( 'The referenced transaction does not meet the criteria for issuing a credit.', 'The transaction cannot be found.' );
+				
+				if( !empty($errorCode) && !in_array( $errorCode, $okayErrorCodes ) && !in_array( $errorText, $okayErrorTexts ) ) {
 					Mage::helper('tokenbase')->log( $this->_code, sprintf( "API error: %s: %s\n%s", $errorCode, $errorText, $this->_log ) );
-					Mage::throwException( Mage::helper('tokenbase')->__( sprintf( 'Authorize.Net CIM Gateway: %s (%s)', $errorText, $errorCode ) ) );
+					throw Mage::exception( 'Mage_Payment_Model_Info', Mage::helper('tokenbase')->__( sprintf( 'Authorize.Net CIM Gateway: %s (%s)', $errorText, $errorCode ) ) );
 				}
 			}
 			
@@ -186,7 +192,7 @@ class ParadoxLabs_AuthorizeNetCim_Model_Gateway extends ParadoxLabs_TokenBase_Mo
 			$end	= strpos( $string, '</' . $val . '>', $start );
 			$tagLen	= strlen( $val ) + 2;
 			
-			if( $start !== false && $end > $start ) {
+			if( $start !== false && $end > ( $start + $tagLen + 4 ) ) {
 				$string = substr_replace( $string, 'XXXX', $start + $tagLen, $end - 4 - ($start + $tagLen) );
 			}
 		}
@@ -200,6 +206,30 @@ class ParadoxLabs_AuthorizeNetCim_Model_Gateway extends ParadoxLabs_TokenBase_Mo
 	protected function _interpretTransaction( $transactionResult )
 	{
 		/**
+		 * Check for not-found error first. If that error makes it here, that means they attempted to use a stored card
+		 * that could not be found (deleted, or account change, or such). Any way about it the card is no longer valid.
+		 */
+		if( $transactionResult['messages']['resultCode'] != 'Ok' ) {
+			$errorCode		= $transactionResult['messages']['message']['code'];
+			$errorText		= $transactionResult['messages']['message']['text'];
+			
+			if( $errorCode == 'E00040' && $errorText == 'Customer Profile ID or Customer Payment Profile ID not found.' ) {
+				if( $this->getCard() ) {
+					/**
+					 * We know the card is not valid, so hide and get rid of it.
+					 * Except we're in the middle of a transaction... so any change will just be rolled back. Save it for a little later.
+					 * @see ParadoxLabs_TokenBase_Model_Observer_CardLoad::checkQueuedForDeletion()
+					 */
+					Mage::unregister('queue_card_deletion');
+					Mage::register( 'queue_card_deletion', $this->getCard() );
+				}
+				
+				Mage::helper('tokenbase')->log( $this->_code, sprintf( "API error: %s: %s\n%s", $errorCode, $errorText, $this->_log ) );
+				throw Mage::exception( 'Mage_Payment_Model_Info', Mage::helper('tokenbase')->__( sprintf( 'Sorry, we were unable to find your payment record. Please re-enter your payment info and try again.' ) ) );
+			}
+		}
+		
+		/**
 		 * Turn the direct response string into an array, as best we can.
 		 */
 		$directResponse = isset( $transactionResult['directResponse'] ) ? $transactionResult['directResponse'] : '';
@@ -211,8 +241,9 @@ class ParadoxLabs_AuthorizeNetCim_Model_Gateway extends ParadoxLabs_TokenBase_Mo
 			$directResponse	= explode( substr( $directResponse, 1, 1 ), $directResponse );
 		}
 		
-		if( empty( $directResponse) || count( $directResponse ) == 0 ) {
-			Mage::throwException( Mage::helper('tokenbase')->__( 'Authorize.Net CIM Gateway: Transaction failed; no direct response.' ) );
+		if( empty( $directResponse ) || count( $directResponse ) == 0 ) {
+			Mage::helper('tokenbase')->log( $this->_code, sprintf( "Authorize.Net CIM Gateway: Transaction failed; no direct response.\n%s", $this->_log ) );
+			throw Mage::exception( 'Mage_Payment_Model_Info', Mage::helper('tokenbase')->__( 'Authorize.Net CIM Gateway: Transaction failed; no direct response. Please re-enter your payment info and try again.' ) );
 		}
 		
 		/**
@@ -258,11 +289,11 @@ class ParadoxLabs_AuthorizeNetCim_Model_Gateway extends ParadoxLabs_TokenBase_Mo
 			if( $transactionResult['messages']['resultCode'] != 'Ok' 							// Error result
 				|| in_array( $response->getResponseCode(), array( 2, 3 ) )						// OR error/decline response code
 				|| ( !in_array( $response->getTransactionType(), array( 'credit', 'void' ) )	// OR no transID or auth code on a charge txn
-					&& ( $response->getTransactionId() == '' || $response->getAuthCode() == '' ) ) ) {
+					&& ( $response->getTransactionId() == '' || ( $response->getAuthCode() == '' && $response->getMethod() != 'ECHECK' ) ) ) ) {
 				$response->setIsError( true );
 				
 				Mage::helper('tokenbase')->log( $this->_code, sprintf( "Transaction error: %s\n%s\n%s", $response->getResponseReasonText(), json_encode( $response->getData() ), $this->_log ) );
-				Mage::throwException( Mage::helper('tokenbase')->__( 'Authorize.Net CIM Gateway: Transaction failed. ' . $response->getResponseReasonText() ) );
+				throw Mage::exception( 'Mage_Payment_Model_Info', Mage::helper('tokenbase')->__( 'Authorize.Net CIM Gateway: Transaction failed. ' . $response->getResponseReasonText() ) );
 			}
 		}
 		
@@ -403,7 +434,9 @@ class ParadoxLabs_AuthorizeNetCim_Model_Gateway extends ParadoxLabs_TokenBase_Mo
 			 * Is this a full refund? If so, just void it. Nobody will see the difference.
 			 */
 			if( $amount == $payment->getCreditmemo()->getInvoice()->getBaseGrandTotal() ) {
-				return $this->clearParameters()->setCard( $this->getCard() )->void( $payment );
+				$transactionId = $this->getParameter('transId');
+				
+				return $this->clearParameters()->setCard( $this->getCard() )->void( $payment, $transactionId );
 			}
 			else {
 				$response->setIsError( true );
@@ -416,11 +449,14 @@ class ParadoxLabs_AuthorizeNetCim_Model_Gateway extends ParadoxLabs_TokenBase_Mo
 		return $response;
 	}
 	
-	public function void( $payment )
+	public function void( $payment, $realTransactionId=null )
 	{
 		$this->setParameter( 'transactionType', 'profileTransVoid' );
 		
-		if( $payment->getTransactionId() != '' ) {
+		if( !is_null( $realTransactionId ) ) {
+			$this->setParameter( 'transId', $realTransactionId );
+		}
+		elseif( $payment->getTransactionId() != '' ) {
 			$this->setParameter( 'transId', $payment->getTransactionId() );
 		}
 		elseif( $this->hasTransactionId() ) {
@@ -474,7 +510,8 @@ class ParadoxLabs_AuthorizeNetCim_Model_Gateway extends ParadoxLabs_TokenBase_Mo
 			return preg_replace( '/[^0-9]/', '', $result['messages']['message']['text'] );
 		}
 		else {
-			Mage::helper('tokenbase')->log( $this->_code, $this->_log );
+			$this->logLogs();
+			
 			Mage::throwException( Mage::helper('tokenbase')->__( 'Authorize.Net CIM Gateway: Unable to create customer profile. %s', $result['messages']['message']['text'] ) );
 		}
 	}
@@ -523,16 +560,18 @@ class ParadoxLabs_AuthorizeNetCim_Model_Gateway extends ParadoxLabs_TokenBase_Mo
 			$params['paymentProfile']['payment'] = array(
 				'bankAccount'				=> array(
 					'accountType'				=> $this->getParameter('accountType'),
+					'routingNumber'				=> $this->getParameter('routingNumber'),
+					'accountNumber'				=> $this->getParameter('accountNumber'),
 					'nameOnAccount'				=> $this->getParameter('nameOnAccount'),
 					'echeckType'				=> $this->getParameter('echeckType'),
 					'bankName'					=> $this->getParameter('bankName'),
-					'routingNumber'				=> $this->getParameter('routingNumber'),
-					'accountNumber'				=> $this->getParameter('accountNumber'),
 				),
 			);
 		}
 		
 		$result = $this->_runTransaction( 'createCustomerPaymentProfileRequest', $params );
+		
+		$paymentId = null;
 		
 		if( isset( $result['customerPaymentProfileId'] ) ) {
 			$paymentId = $result['customerPaymentProfileId'];
@@ -549,38 +588,14 @@ class ParadoxLabs_AuthorizeNetCim_Model_Gateway extends ParadoxLabs_TokenBase_Mo
 			 * Authorize.Net does not return the ID in this duplicate error message, contrary to documentation.
 			 */
 			if( empty( $paymentId ) ) {
-				$profile	= $this->getCustomerProfile();
-				$lastFour	= substr( $this->getParameter('cardNumber'), -4 );
+				$paymentId = $this->findDuplicateCard();
 				
-				if( isset( $profile['profile']['paymentProfiles'] ) && count( $profile['profile']['paymentProfiles'] ) > 0 ) {
-					if( isset( $profile['profile']['paymentProfiles']['billTo'] ) ) {
-						$card		= $profile['profile']['paymentProfiles'];
-						$paymentId	= $card['customerPaymentProfileId'];
-						
-						// Update the card record to ensure CVV and expiry are up to date.
-						$this->setParameter( 'customerPaymentProfileId', $paymentId );
-						$this->updateCustomerPaymentProfile();
-					}
-					else {
-						foreach( $profile['profile']['paymentProfiles'] as $card ) {
-							if( isset( $card['payment']['creditCard'] ) && $lastFour == substr( $card['payment']['creditCard']['cardNumber'], -4 ) ) {
-								$paymentId	= $card['customerPaymentProfileId'];
-								
-								// Update the card record to ensure CVV and expiry are up to date.
-								$this->setParameter( 'customerPaymentProfileId', $paymentId );
-								$this->updateCustomerPaymentProfile();
-								
-								break;
-							}
-						}
-					}
+				if( $paymentId !== false ) {
+					// Update the card record to ensure CVV and expiry are up to date.
+					$this->setParameter( 'customerPaymentProfileId', $paymentId );
+					$this->updateCustomerPaymentProfile();
 				}
 			}
-		}
-		
-		if( empty( $paymentId ) ) {
-			Mage::helper('tokenbase')->log( $this->_code, $this->_log );
-			Mage::throwException( Mage::helper('tokenbase')->__( 'Authorize.Net CIM Gateway: Unable to create payment record.' ) );
 		}
 		
 		return $paymentId;
@@ -639,9 +654,37 @@ class ParadoxLabs_AuthorizeNetCim_Model_Gateway extends ParadoxLabs_TokenBase_Mo
 			}
 		}
 		else {
-			Mage::helper('tokenbase')->log( $this->_code, $this->_log );
+			$this->logLogs();
+			
 			Mage::throwException( Mage::helper('tokenbase')->__( 'Authorize.Net CIM Gateway: Unable to create shipping address record.' ) );
 		}
+	}
+	
+	/**
+	 * Find a duplicate CIM record matching the one we just tried to create.
+	 */
+	public function findDuplicateCard()
+	{
+		$profile	= $this->getCustomerProfile();
+		$lastFour	= substr( $this->getParameter('cardNumber'), -4 );
+		
+		if( isset( $profile['profile']['paymentProfiles'] ) && count( $profile['profile']['paymentProfiles'] ) > 0 ) {
+			// If there's only one, just stop. It has to be the match.
+			if( isset( $profile['profile']['paymentProfiles']['billTo'] ) ) {
+				$card = $profile['profile']['paymentProfiles'];
+				return $card['customerPaymentProfileId'];
+			}
+			else {
+				// Otherwise, compare end of the card number for each until one matches.
+				foreach( $profile['profile']['paymentProfiles'] as $card ) {
+					if( isset( $card['payment']['creditCard'] ) && $lastFour == substr( $card['payment']['creditCard']['cardNumber'], -4 ) ) {
+						return $card['customerPaymentProfileId'];
+					}
+				}
+			}
+		}
+		
+		return false;
 	}
 	
 	public function createCustomerProfileTransaction()
@@ -696,6 +739,7 @@ class ParadoxLabs_AuthorizeNetCim_Model_Gateway extends ParadoxLabs_TokenBase_Mo
 		if( !is_null( $this->_lineItems ) && count( $this->_lineItems ) > 0 ) {
 			$params['transaction'][ $type ]['lineItems'] = array();
 			
+			$count = 0;
 			foreach( $this->_lineItems as $item ) {
 				if( $item instanceof Varien_Object == false ) {
 					continue;
@@ -712,12 +756,20 @@ class ParadoxLabs_AuthorizeNetCim_Model_Gateway extends ParadoxLabs_TokenBase_Mo
 					continue;
 				}
 				
+				if( ++$count > 30 ) {
+					break;
+				}
+				
 				$params['transaction'][ $type ]['lineItems'][] = array(
-					'itemId'				=> substr( $item->getSku(), 0, 31 ),
-					'name'					=> substr( $item->getName(), 0, 31 ),
+					'itemId'				=> $this->setParameter( 'itemName', $item->getSku() )->getParameter('itemName'),
+					'name'					=> $this->setParameter( 'itemName', $item->getName() )->getParameter('itemName'),
 					'quantity'				=> $this->formatAmount( $qty ),
-					'unitPrice'				=> $this->formatAmount( $item->getPrice() - $item->getDiscountAmount() ),
+					'unitPrice'				=> $this->formatAmount( max( 0, $item->getPrice() - ( $item->getDiscountAmount() / $qty ) ) ),
 				);
+			}
+			
+			if( count( $params['transaction'][ $type ]['lineItems'] ) < 1 ) {
+				unset( $params['transaction'][ $type ]['lineItems'] );
 			}
 		}
 		
@@ -749,7 +801,7 @@ class ParadoxLabs_AuthorizeNetCim_Model_Gateway extends ParadoxLabs_TokenBase_Mo
 			$params['transaction'][ $type ]['splitTenderId'] = $this->getParameter('splitTenderId');
 		}
 		
-		if( $this->hasParameter('approvalCode') && !in_array( $type, array( 'profileTransRefund', 'profileTransPriorAuthCapture', 'profileTransAuthOnly' ) ) ) {
+		if( $this->hasParameter('approvalCode') && strlen( $this->getParameter('approvalCode') ) == 6 && !in_array( $type, array( 'profileTransRefund', 'profileTransPriorAuthCapture', 'profileTransAuthOnly' ) ) ) {
 			$params['transaction'][ $type ]['approvalCode'] = $this->getParameter('approvalCode');
 		}
 		
@@ -842,7 +894,7 @@ class ParadoxLabs_AuthorizeNetCim_Model_Gateway extends ParadoxLabs_TokenBase_Mo
 		return $this->_runTransaction( 'updateCustomerProfileRequest', $params );
 	}
 	
-	public function updateCustomerPaymentProfile( $type='credit' )
+	public function updateCustomerPaymentProfile()
 	{
 		$params = array(
 			'customerProfileId'			=> $this->getParameter('customerProfileId'),
@@ -864,7 +916,7 @@ class ParadoxLabs_AuthorizeNetCim_Model_Gateway extends ParadoxLabs_TokenBase_Mo
 			),
 		);
 		
-		if( $type == 'credit' ) {
+		if( $this->hasParameter('cardNumber') ) {
 			$params['paymentProfile']['payment'] = array(
 				'creditCard'				=> array(
 					'cardNumber'				=> $this->getParameter('cardNumber'),
@@ -876,15 +928,15 @@ class ParadoxLabs_AuthorizeNetCim_Model_Gateway extends ParadoxLabs_TokenBase_Mo
 				$params['paymentProfile']['payment']['creditCard']['cardCode'] = $this->getParameter('cardCode');
 			}
 		}
-		elseif( $type == 'echeck' ) {
+		elseif( $this->hasParameter('accountNumber') ) {
 			$params['paymentProfile']['payment'] = array(
 				'bankAccount'				=> array(
 					'accountType'				=> $this->getParameter('accountType'),
+					'routingNumber'				=> $this->getParameter('routingNumber'),
+					'accountNumber'				=> $this->getParameter('accountNumber'),
 					'nameOnAccount'				=> $this->getParameter('nameOnAccount'),
 					'echeckType'				=> $this->getParameter('echeckType'),
 					'bankName'					=> $this->getParameter('bankName'),
-					'routingNumber'				=> $this->getParameter('routingNumber'),
-					'accountNumber'				=> $this->getParameter('accountNumber'),
 				),
 			);
 		}

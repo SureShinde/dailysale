@@ -2,7 +2,7 @@
 <config>
 	<modules>
 		<ParadoxLabs_TokenBase>
-			<version>2.0.1.20141029</version>
+			<version>2.1.0.20150415</version>
 		</ParadoxLabs_TokenBase>
 	</modules>
 	<global>
@@ -61,17 +61,61 @@
 					</tokenbase_refund>
 				</observers>
 			</sales_order_creditmemo_refund>
+			<tokenbase_before_load_active_cards>
+				<observers>
+					<tokenbase_check_queue_deletion>
+						<class>tokenbase/observer_cardLoad</class>
+						<method>checkQueuedForDeletion</method>
+					</tokenbase_check_queue_deletion>
+				</observers>
+			</tokenbase_before_load_active_cards>
 		</events>
 		<fieldsets>
 			<sales_convert_quote_payment>
 				<tokenbase_id>
 					<to_order_payment>*</to_order_payment>
 				</tokenbase_id>
+				<echeck_account_name>
+					<to_order_payment>*</to_order_payment>
+				</echeck_account_name>
+				<echeck_bank_name>
+					<to_order_payment>*</to_order_payment>
+				</echeck_bank_name>
+				<echeck_account_type>
+					<to_order_payment>*</to_order_payment>
+				</echeck_account_type>
+				<echeck_routing_number>
+					<to_order_payment>*</to_order_payment>
+				</echeck_routing_number>
+				<echeck_routing_no>
+					<to_order_payment>*</to_order_payment>
+				</echeck_routing_no>
+				<echeck_account_no>
+					<to_order_payment>*</to_order_payment>
+				</echeck_account_no>
 			</sales_convert_quote_payment>
 			<sales_convert_order_payment>
 				<tokenbase_id>
 					<to_quote_payment>*</to_quote_payment>
 				</tokenbase_id>
+				<echeck_account_name>
+					<to_quote_payment>*</to_quote_payment>
+				</echeck_account_name>
+				<echeck_bank_name>
+					<to_quote_payment>*</to_quote_payment>
+				</echeck_bank_name>
+				<echeck_account_type>
+					<to_quote_payment>*</to_quote_payment>
+				</echeck_account_type>
+				<echeck_routing_number>
+					<to_quote_payment>*</to_quote_payment>
+				</echeck_routing_number>
+				<echeck_routing_no>
+					<to_quote_payment>*</to_quote_payment>
+				</echeck_routing_no>
+				<echeck_account_no>
+					<to_quote_payment>*</to_quote_payment>
+				</echeck_account_no>
 			</sales_convert_order_payment>
 		</fieldsets>
 		<!-- Define implementing payment methods - each method will add its entry to this. -->
@@ -93,6 +137,13 @@
 			</tokenbase_clean>
 		</jobs>
 	</crontab>
+	<default>
+		<payment_services>
+			<tokenbase>
+				<clean_old_cards>1</clean_old_cards>
+			</tokenbase>
+		</payment_services>
+	</default>
 	<frontend>
 		<routers>
 			<!-- Attach our account management page onto the Customer module. -->

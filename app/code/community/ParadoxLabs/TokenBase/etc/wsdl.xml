@@ -21,6 +21,7 @@
 					<element name="label" type="xsd:string" minOccurs="0" />
 					<element name="cc_type" type="xsd:string" minOccurs="0" />
 					<element name="cc_last4" type="xsd:string" minOccurs="0" />
+					<element name="hash" type="xsd:string" minOccurs="0" />
 				</all>
 			</complexType>
 			<complexType name="tokenbaseCardAddressEntity">
@@ -55,10 +56,11 @@
 					<element name="cc_type" type="xsd:string" minOccurs="0" />
 					<element name="cc_exp_year" type="xsd:string" minOccurs="0" />
 					<element name="cc_exp_month" type="xsd:string" minOccurs="0" />
-					<element name="bank_name" type="xsd:string" minOccurs="0" />
-					<element name="account_type" type="xsd:string" minOccurs="0" />
-					<element name="account_number" type="xsd:string" minOccurs="0" />
-					<element name="routing_number" type="xsd:string" minOccurs="0" />
+					<element name="echeck_account_name" type="xsd:string" minOccurs="0" />
+					<element name="echeck_bank_name" type="xsd:string" minOccurs="0" />
+					<element name="echeck_routing_no" type="xsd:string" minOccurs="0" />
+					<element name="echeck_account_no" type="xsd:string" minOccurs="0" />
+					<element name="echeck_account_type" type="xsd:string" minOccurs="0" />
 				</all>
 			</complexType>
 			<complexType name="tokenbaseCardEntityArray">
@@ -73,10 +75,11 @@
 				<all>
 					<element name="card_id" type="xsd:string" minOccurs="0" />
 					<element name="save" type="xsd:string" minOccurs="0" />
-					<element name="bank_name" type="xsd:string" minOccurs="0" />
-					<element name="account_type" type="xsd:string" minOccurs="0" />
-					<element name="account_number" type="xsd:string" minOccurs="0" />
-					<element name="routing_number" type="xsd:string" minOccurs="0" />
+					<element name="echeck_account_name" type="xsd:string" minOccurs="0" />
+					<element name="echeck_bank_name" type="xsd:string" minOccurs="0" />
+					<element name="echeck_routing_no" type="xsd:string" minOccurs="0" />
+					<element name="echeck_account_no" type="xsd:string" minOccurs="0" />
+					<element name="echeck_account_type" type="xsd:string" minOccurs="0" />
 				</all>
 			</complexType>
 			<complexType name="shoppingCartPaymentEntity">
