@@ -14,7 +14,7 @@
 					<option value=""><?php echo $this->__('-- Select One --'); ?></option>
 					<?php foreach( $this->getStoredCards() as $card ): ?>
 						<?php $card = $card->getTypeInstance(); ?>
-						<option value="<?php echo $card->getId(); ?>" <?php if( $card->getId() == $this->getInfoData('tokenbase_id') || count( $this->getStoredCards() ) == 1 ): ?>selected="selected"<?php endif; ?>><?php echo $card->getLabel(); ?></option>
+						<option value="<?php echo $card->getHash(); ?>" <?php if( $card->getId() == $this->getInfoData('tokenbase_id') || count( $this->getStoredCards() ) == 1 ): ?>selected="selected"<?php endif; ?>><?php echo $card->getLabel(); ?></option>
 					<?php endforeach; ?>
 				</select>
 			</div>

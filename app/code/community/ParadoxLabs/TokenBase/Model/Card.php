@@ -78,7 +78,11 @@ class ParadoxLabs_TokenBase_Model_Card extends Mage_Core_Model_Abstract
 	 */
 	public function setAddress( Mage_Customer_Model_Address_Abstract $address )
 	{
-		return parent::setAddress( serialize( $address->getData() ) );
+		$addressData = $address->getData();
+		
+		Mage::helper('tokenbase')->cleanupArray( $addressData );
+		
+		return parent::setAddress( serialize( $addressData ) );
 	}
 	
 	/**
@@ -180,7 +184,7 @@ class ParadoxLabs_TokenBase_Model_Card extends Mage_Core_Model_Abstract
 				$this->setAdditional( 'cc_last4', $payment->getCcLast4() );
 			}
 			
-			if( intval( $payment->getCcExpMonth() ) > 0 && intval( $payment->getCcExpYear() ) > date('Y') ) {
+			if( $payment->getCcExpYear() > date('Y') || ( $payment->getCcExpYear() == date('Y') && $payment->getCcExpMonth() >= date('n') ) ) {
 				$this->setAdditional( 'cc_exp_year', $payment->getCcExpYear() )
 					 ->setAdditional( 'cc_exp_month', $payment->getCcExpMonth() )
 					 ->setExpires( sprintf( "%s-%s-%s 23:59:59", $payment->getCcExpYear(), $payment->getCcExpMonth(), date( 't', strtotime( $payment->getCcExpYear() . '-' . $payment->getCcExpMonth() ) ) ) );
@@ -324,7 +328,7 @@ class ParadoxLabs_TokenBase_Model_Card extends Mage_Core_Model_Abstract
 	 */
 	public function updateLastUse()
 	{
-		$this->setLastUse( Varien_Date::now() );
+		$this->setLastUse( ParadoxLabs_TokenBase_Helper_Data::now() );
 		
 		return $this;
 	}
@@ -335,6 +339,16 @@ class ParadoxLabs_TokenBase_Model_Card extends Mage_Core_Model_Abstract
 	public function queueDeletion()
 	{
 		$this->setActive(0);
+		
+		return $this;
+	}
+	
+	/**
+	 * Load card by security hash.
+	 */
+	public function loadByHash( $hash )
+	{
+		$this->_getResource()->loadByHash( $this, $hash );
 		
 		return $this;
 	}
@@ -385,13 +399,20 @@ class ParadoxLabs_TokenBase_Model_Card extends Mage_Core_Model_Abstract
 		}
 		
 		/**
+		 * Create unique hash for security purposes.
+		 */
+		if( $this->getHash() == '' ) {
+			$this->setHash( sha1( 'tokenbase' . time() . $this->getCustomerId() . $this->getCustomerEmail() . $this->getMethod() . $this->getProfileId() . $this->getPaymentId() ) );
+		}
+		
+		/**
 		 * Update dates.
 		 */
 		if( $this->isObjectNew() ) {
-			$this->setCreatedAt( Varien_Date::now() );
+			$this->setCreatedAt( ParadoxLabs_TokenBase_Helper_Data::now() );
 		}
 		
-		$this->setUpdatedAt( Varien_Date::now() );
+		$this->setUpdatedAt( ParadoxLabs_TokenBase_Helper_Data::now() );
 		
 		return $this;
 	}

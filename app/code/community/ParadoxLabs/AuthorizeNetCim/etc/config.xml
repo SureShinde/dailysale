@@ -2,7 +2,7 @@
 <config>
 	<modules>
 		<ParadoxLabs_AuthorizeNetCim>
-			<version>2.0.1.20141029</version>
+			<version>2.1.0.20150415</version>
 		</ParadoxLabs_AuthorizeNetCim>
 	</modules>
 	<global>
@@ -10,17 +10,26 @@
 			<authnetcim>
 				<class>ParadoxLabs_AuthorizeNetCim_Block</class>
 			</authnetcim>
+			<authnetcim_ach>
+				<class>ParadoxLabs_AuthorizeNetCim_Block_Ach</class>
+			</authnetcim_ach>
 		</blocks>
 		<helpers>
 			<authnetcim>
 				<class>ParadoxLabs_AuthorizeNetCim_Helper</class>
 			</authnetcim>
+			<authnetcim_ach>
+				<class>ParadoxLabs_AuthorizeNetCim_Helper</class>
+			</authnetcim_ach>
 		</helpers>
 		<models>
 			<authnetcim>
 				<class>ParadoxLabs_AuthorizeNetCim_Model</class>
 				<resourceModel>authnetcim_mysql4</resourceModel>
 			</authnetcim>
+			<authnetcim_ach>
+				<class>ParadoxLabs_AuthorizeNetCim_Model_Ach</class>
+			</authnetcim_ach>
 			<authnetcim_mysql4>
 				<class>ParadoxLabs_AuthorizeNetCim_Model_Mysql4</class>
 				<entities>
@@ -81,6 +90,7 @@
 		<tokenbase>
 			<methods>
 				<authnetcim />
+				<authnetcim_ach />
 			</methods>
 		</tokenbase>
 	</global>
@@ -102,12 +112,27 @@
 				<currency>USD</currency>
 				<allow_unsaved>1</allow_unsaved>
 				<show_branding>0</show_branding>
-			</authnetcim>
-			<authnetcim_advanced>
 				<require_ccv>0</require_ccv>
 				<send_shipping_address>0</send_shipping_address>
 				<send_line_items>1</send_line_items>
-			</authnetcim_advanced>
+			</authnetcim>
+			<authnetcim_ach>
+				<active>0</active>
+				<title>Bank Account (eCheck)</title>
+				<login backend_model="adminhtml/system_config_backend_encrypted" />
+				<model>authnetcim_ach/method</model>
+				<order_status>pending</order_status>
+				<payment_action>authorize</payment_action>
+				<test>0</test>
+				<validation_mode>liveMode</validation_mode>
+				<trans_key backend_model="adminhtml/system_config_backend_encrypted" />
+				<allowspecific>0</allowspecific>
+				<currency>USD</currency>
+				<allow_unsaved>1</allow_unsaved>
+				<show_branding>0</show_branding>
+				<send_shipping_address>0</send_shipping_address>
+				<send_line_items>1</send_line_items>
+			</authnetcim_ach>
 		 </payment>
 	</default>
 	<frontend>

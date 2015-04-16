@@ -19,7 +19,7 @@
 
 class ParadoxLabs_TokenBase_Model_Api_Api extends Mage_Api_Model_Resource_Abstract
 {
-	protected $_cardMap	= array( 'id', 'customer_id', 'customer_email', 'customer_ip', 'profile_id', 'payment_id', 'method', 'created_at', 'updated_at', 'last_use', 'expires', 'additional' );
+	protected $_cardMap	= array( 'id', 'customer_id', 'customer_email', 'customer_ip', 'profile_id', 'payment_id', 'method', 'created_at', 'updated_at', 'last_use', 'expires', 'additional', 'hash' );
 	protected $_addrMap	= array( 'firstname', 'lastname', 'street', 'city', 'region', 'postcode', 'country_id', 'telephone', 'fax', 'region_id' );
 	
 	/**

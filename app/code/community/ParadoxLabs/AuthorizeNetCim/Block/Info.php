@@ -25,7 +25,7 @@ class ParadoxLabs_AuthorizeNetCim_Block_Info extends ParadoxLabs_TokenBase_Block
 		$data		= array();
 		
 		// If this is admin, show different info.
-		if( Mage::app()->getStore()->isAdmin() ) {
+		if( $this->_isEcheck() !== true && Mage::app()->getStore()->isAdmin() ) {
 			$avs	= $this->getInfo()->getAdditionalInformation('avs_result_code');
 			$ccv	= $this->getInfo()->getAdditionalInformation('card_code_response_code');
 			$cavv	= $this->getInfo()->getAdditionalInformation('cavv_response_code');
