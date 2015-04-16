@@ -65,7 +65,7 @@ class IWD_Signin_JsonController extends Mage_Core_Controller_Front_Action
 			$this->getResponse()->setBody(Mage::helper('core')->jsonEncode($response));
 			return;
 		}
-		
+
 		
 		$session = $this->_getSession();
 		
