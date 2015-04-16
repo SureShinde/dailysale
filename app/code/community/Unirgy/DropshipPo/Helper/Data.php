@@ -364,7 +364,9 @@ class Unirgy_DropshipPo_Helper_Data extends Mage_Core_Helper_Abstract
                 break;
             }
         } else {
+        	/* Unirgy instruction, comment this line out
             $this->processPoStatusSave($udpo, Unirgy_DropshipPo_Model_Source::UDPO_STATUS_READY, true);
+            */
         }
 
         Mage::dispatchEvent('udpo_po_shipment_save_after', array('order'=>$order, 'udpo'=>$udpo, 'shipments'=>$shipments));
