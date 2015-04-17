@@ -1267,6 +1267,7 @@ ul.tabs {
   clear: both; }
   /* line 475, ../sass/product_detail.scss */
   #product_tabs_custom_contents .tab-feature-list li {
+    list-style: disc;
     margin-left: 15px;
     clear: left; }
 /* line 481, ../sass/product_detail.scss */
