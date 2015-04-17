@@ -133,7 +133,7 @@
                                         <em>*</em>
                                     <?php endif; ?>
                                 </label><br/>
-                                <input type="text" id="billing:<?php echo $fields[$i]['value']; ?>" name="billing[<?php echo $fields[$i]['value']; ?>]" value="<?php echo $this->htmlEscape($this->getBillingAddress()->getData($fields[$i]['value'])) ?>" title="<?php echo $this->__($fieldValue[$fields[$i]['value']]) ?>" class="input-text <?php if ($helper->getFieldRequire($fields[$i]['value']) || $fields[$i]['value'] == 'firstname' || $fields[$i]['value'] == 'lastname' || $fields[$i]['value'] == 'email') echo 'required-entry'; if($fields[$i]['value'] == 'email') echo ' leadSpendEmail-noconfig'; ?>" />
+                                <input type="text" id="billing:<?php echo $fields[$i]['value']; ?>" name="billing[<?php echo $fields[$i]['value']; ?>]" value="<?php echo $this->htmlEscape($this->getBillingAddress()->getData($fields[$i]['value'])) ?>" title="<?php echo $this->__($fieldValue[$fields[$i]['value']]) ?>" class="input-text <?php if ($helper->getFieldRequire($fields[$i]['value']) || $fields[$i]['value'] == 'firstname' || $fields[$i]['value'] == 'lastname' || $fields[$i]['value'] == 'email') echo 'required-entry'; if($fields[$i]['value'] == 'email') echo ''; ?>" />
                                 <?php if ($helper->enableGeoip()): ?>
                                     <?php if (($fields[$i]['value'] == 'postcode') && $helper->allowDetectByPostcode()): ?>
                                         <span id="billing_<?php echo $fields[$i]['value'] ?>_autocomplete_indicator" class="autocomplete-indicator" style="display:none;">
