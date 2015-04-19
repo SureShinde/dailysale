@@ -9,7 +9,6 @@
  */
 class Fiuze_Deals_Model_Observer
 {
-
     const CRON_STRING_PATH = 'fiuze_deals_cron_time/fiuze_deals_cron_time_grp/scheduler';
 
     /**
@@ -92,15 +91,26 @@ class Fiuze_Deals_Model_Observer
             try {
                 Mage::getModel('core/config_data')
                     ->load(self::CRON_STRING_PATH, 'path')
-                    ->setValue($cronExprString)
                     ->setPath(self::CRON_STRING_PATH)
+                    ->setValue($cronExprString)->cleanModelCache()
                     ->save();
-
-                $this->_clearCache();
+                $store = Mage::app()->getStore();
+                $store->setConfig(self::CRON_STRING_PATH, $cronExprString);
             } catch (Exception $e) {
                 Mage::logException($e);
                 Mage::throwException(Mage::helper('adminhtml')->__('Unable to save the cron expression.'));
             }
+
+            //generate task for fiuze_deals_scheduler
+            $schedules = Mage::getModel('cron/schedule')->getCollection()
+                ->addFieldToFilter('status', Mage_Cron_Model_Schedule::STATUS_PENDING)
+                ->addOrder('scheduled_at', 'ASC');
+            foreach ($schedules as $key => $schedule) {
+                if($schedule->getJobCode() == 'fiuze_deals_scheduler'){
+                    $schedule->delete();
+                }
+            };
+            Mage::getModel('fiuze_deals/cron')->generate();
 
             // Overwrite products from the selected category (active product is not stored)
             $category = $helper->getCategoryCron();
@@ -278,7 +288,11 @@ class Fiuze_Deals_Model_Observer
         $productDeals->setData('deals_active', false);
         $productDeals->setData('sort_order', $product->getPositionProduct());
         $productDeals->setData('current_active', 0);
-        $productDeals->setData('origin_special_price', (float)$product->getSpecialPrice());
+        if(!$product->getSpecialPrice()){
+            $productDeals->setData('origin_special_price', (float)$product->getPrice());
+        }else{
+            $productDeals->setData('origin_special_price', (float)$product->getSpecialPrice());
+        }
         try {
             $productDeals->save();
         } catch (Exception $e) {
@@ -394,6 +408,7 @@ class Fiuze_Deals_Model_Observer
         }
         return $result;
     }
+
 }
 
 

@@ -97,7 +97,7 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Edit_Form extends Mage_Adminhtml_Block_W
 
         $fieldset->addField('deal_price', 'text', array(
             'label' => $helper->__('Deal Price ').Mage::app()->getStore()->getBaseCurrency()->getCode(),
-            'class' => 'required-entry validate-number',
+            'class' => 'required-entry validate-number validate-digits-range  digits-range-1-',
             'required' => true,
             'name' => 'deal_price',));
 

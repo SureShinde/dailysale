@@ -39,6 +39,11 @@
                     </deals>
                 </entities>
             </fiuze_deals_resource>
+            <cron_resource>
+                <rewrite>
+                    <schedule_collection>Fiuze_Deals_Model_Resource_Cron_Schedule_Collection</schedule_collection>
+                </rewrite>
+            </cron_resource>
         </models>
         <resources>
             <fiuze_deals_setup>

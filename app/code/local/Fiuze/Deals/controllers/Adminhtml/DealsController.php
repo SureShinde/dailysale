@@ -201,7 +201,7 @@ class Fiuze_Deals_Adminhtml_DealsController extends Mage_Adminhtml_Controller_Ac
                         $productDeals->setData('current_active', 0);
                         $productDeals->save();
                         Mage::dispatchEvent('fiuze_deals_save_after', array('object'=>$productDeals));
-                        //Mage::getSingleton('fiuze_deals/cron')->dailyCatalogUpdate();
+                        Mage::getSingleton('fiuze_deals/cron')->dailyCatalogUpdate();
                     }else{
                         $productDeals->save();
                     }
