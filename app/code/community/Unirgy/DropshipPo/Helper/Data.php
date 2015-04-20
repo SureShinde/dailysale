@@ -415,7 +415,7 @@ class Unirgy_DropshipPo_Helper_Data extends Mage_Core_Helper_Abstract
             && !$shipment->getOrder()->getPayment()->canCapture()
         ) {
             $udpo->addComment($this->__('Cannot autoinvoice shipment # %s: order payment method does not allow online capture', $shipment->getIncrementId()), false, false);
-            //            $udpo->saveComments();
+            $udpo->saveComments();
             return false;
         }
 
@@ -430,7 +430,7 @@ class Unirgy_DropshipPo_Helper_Data extends Mage_Core_Helper_Abstract
                 $invoice->getOrder()->getPayment()->unsParentTransactionId();
                 $invoice->getOrder()->getPayment()->unsTransactionId();
 
-                if ($invoice->getBaseGrandTotal()>0 && $shipment->getOrder()->getPayment()->canCapture()) {
+                if ($invoice->getBaseGrandTotal()>0) {
                     $invoice->setRequestedCaptureCase(Mage_Sales_Model_Order_Invoice::CAPTURE_ONLINE);
                 } else {
                     $invoice->setRequestedCaptureCase(Mage_Sales_Model_Order_Invoice::CAPTURE_OFFLINE);
