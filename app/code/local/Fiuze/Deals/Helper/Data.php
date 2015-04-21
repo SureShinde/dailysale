@@ -157,6 +157,7 @@ class Fiuze_Deals_Helper_Data extends Mage_Core_Helper_Abstract{
             $schedules = Mage::getModel('cron/schedule')->getCollection()
                 ->addFieldToFilter('job_code', 'fiuze_deals_scheduler')
                 ->addFieldToFilter('status', Mage_Cron_Model_Schedule::STATUS_PENDING)
+                ->addFieldToFilter('scheduled_at', array('gteq' => Mage::getModel('core/date')->gmtDate()))
                 ->addOrder('scheduled_at', 'ASC');
             foreach($schedules as $schedule){
                 $now = time();

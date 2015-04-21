@@ -90,16 +90,21 @@ class Fiuze_Deals_Model_Cron extends Mage_Core_Model_Abstract
     {
         $product = Mage::getModel('catalog/product')->load($item->getData('product_id'));
         $productSpecialPrice = $product->getSpecialPrice();
-        if (!$productSpecialPrice) {
-            $productSpecialPrice = $product->getPrice();
-        }
-        if ($specialPrice) {
+        if ($endDate) {
+            $item->setData('origin_special_price', $productSpecialPrice);
             $product->setSpecialPrice($specialPrice);
+            $item->setEndTime((($endDate) ? Mage::helper('fiuze_deals')->getEndDealTime() : 0));
+            $item->setCurrentActive($isCurrent);
+        }else{
+            if($item->getData('origin_special_price') == 0){
+                $product->setSpecialPrice(null);
+            }else{
+                $product->setSpecialPrice($specialPrice);
+            }
+            $item->setData('origin_special_price', $product->getSpecialPrice());
+            $item->setEndTime((($endDate) ? Mage::helper('fiuze_deals')->getEndDealTime() : 0));
+            $item->setCurrentActive($isCurrent);
         }
-
-        $item->setData('origin_special_price', $productSpecialPrice);
-        $item->setEndTime((($endDate) ? Mage::helper('fiuze_deals')->getEndDealTime() : 0));
-        $item->setCurrentActive($isCurrent);
 
         try {
             $product->save();
