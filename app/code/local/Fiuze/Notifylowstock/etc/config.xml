@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Fiuze_Notifylowstock>
+            <version>0.1.0</version>
+        </Fiuze_Notifylowstock>
+    </modules>
+    <global>
+        <models>
+            <fiuze_notifylowstock>
+                <class>Fiuze_Notifylowstock_Model</class>
+                <resourceModel>fiuze_notifylowstock_resource</resourceModel>
+            </fiuze_notifylowstock>
+        </models>
+        <blocks>
+            <fiuze_notifylowstock>
+                <class>Fiuze_Notifylowstock_Block</class>
+            </fiuze_notifylowstock>
+        </blocks>
+        <helpers>
+            <fiuze_notifylowstock>
+                <class>Fiuze_Notifylowstock_Helper</class>
+            </fiuze_notifylowstock>
+        </helpers>
+        <resources>
+            <fiuze_notifylowstock_setup>
+                <setup>
+                    <module>Fiuze_Notifylowstock</module>
+                </setup>
+            </fiuze_notifylowstock_setup>
+        </resources>
+        <template>
+            <email>
+                <notifylowstock_core_custom_template translate="label" module="fiuze_notifylowstock">
+                    <label>Notify Low Stock</label>
+                    <file>notifylowstock/notifylowstock.html</file>
+                    <type>html</type>
+                </notifylowstock_core_custom_template>
+            </email>
+        </template>
+    </global>
+    <frontend>
+        <routers>
+            <test>
+                <use>standard</use>
+                <args>
+                    <frontName>stock</frontName>
+                    <module>Fiuze_Notifylowstock</module>
+                </args>
+            </test>
+        </routers>
+        <layout>
+            <updates>
+                <fiuze_notifylowstock>
+                    <file>fiuze/notifylowstock.xml</file>
+                </fiuze_notifylowstock>
+            </updates>
+        </layout>
+    </frontend>
+
+    <default>
+        <notifylowstock>
+            <core>
+                <email_address_list>example@mail.com</email_address_list>
+                <module_enabled>1</module_enabled>
+                <quantity>3</quantity>
+                <scheduler>0 12 * * * *</scheduler>
+                <custom_identity>general</custom_identity>
+                <custom_template>customer_account_share_custom_template</custom_template>
+            </core>
+        </notifylowstock>
+    </default>
+
+    <crontab>
+        <jobs>
+            <fiuze_notifylowstock>
+                <schedule>
+                    <config_path>notifylowstock/core/scheduler</config_path>
+                </schedule>
+                <run>
+                    <model>fiuze_notifylowstock/cron::sendEmail</model>
+                </run>
+            </fiuze_notifylowstock>
+        </jobs>
+    </crontab>
+
+</config>

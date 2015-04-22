@@ -56,6 +56,21 @@ class ParadoxLabs_AuthorizeNetCim_Helper_Data extends Mage_Core_Helper_Abstract
 		'B'	=> 'Passed (info only)',
 	);
 	
+	protected $_cimCardTypeMap = array(
+		'American Express'	=> 'AE',
+		'Discover'			=> 'DI',
+		'Diners Club'		=> 'DC',
+		'JCB'				=> 'JCB',
+		'MasterCard'		=> 'MC',
+		'Visa'				=> 'VI',
+	);
+	
+	protected $_achAccountTypes = array(
+		'checking'			=> 'Checking',
+		'savings'			=> 'Savings',
+		'businessChecking'	=> 'Business Checking',
+	);
+	
 	/**
 	 * Translate AVS response codes shown on admin order pages.
 	 */
@@ -90,5 +105,33 @@ class ParadoxLabs_AuthorizeNetCim_Helper_Data extends Mage_Core_Helper_Abstract
 		}
 		
 		return $code;
+	}
+	
+	/**
+	 * Map CC Type to Magento's.
+	 */
+	public function mapCcTypeToMagento( $type )
+	{
+		if( !empty( $type ) && isset( $this->_cimCardTypeMap[ $type ] ) ) {
+			return $this->_cimCardTypeMap[ $type ];
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Return valid ACH account types.
+	 */
+	public function getAchAccountTypes( $code=null )
+	{
+		if( !is_null( $code ) ) {
+			if( isset( $this->_achAccountTypes[ $code ] ) ) {
+				return $this->_achAccountTypes[ $code ];
+			}
+			
+			return $code;
+		}
+		
+		return $this->_achAccountTypes;
 	}
 }
