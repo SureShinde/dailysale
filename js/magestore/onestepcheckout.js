@@ -191,6 +191,21 @@ function save_address_information(save_address_url, update_address_shipping, upd
         $('onestepcheckout-button-place-order').removeClassName('onestepcheckout-btn-checkout');
         $('onestepcheckout-button-place-order').addClassName('place-order-loader');
     }
+
+    var region_obj = document.getElementById('billing:region_id');
+    var region_select;
+    for (var i=0; i < region_obj.options.length; i++)
+    {
+        document.getElementById('billing:region_id').options[i].selected=false;
+        if (region_obj.options[i].text == parameters['billing[region]']){
+            region_select = region_obj.options[i].value;
+        }
+    }
+    if (region_select !== undefined){
+        document.getElementById('billing:region_id').options[region_select].selected=true;
+        parameters['billing[region_id]']=region_select;
+    }
+
     var request = new Ajax.Request(save_address_url, {
         parameters: parameters,
         onSuccess: function(transport) {
