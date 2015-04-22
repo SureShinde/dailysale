@@ -15,7 +15,7 @@
  * @license    http:///www.unirgy.com/LICENSE-M1.txt
  */
  
-class Unirgy_DropshipPo_Model_Pdf_Po extends Mage_Sales_Model_Order_Pdf_Shipment
+class Unirgy_DropshipPo_Model_Pdf_Po extends Mage_Sales_Model_Order_Pdf_Abstract
 {
     protected function insertLogo(&$page, $store = null)
     {
@@ -105,34 +105,34 @@ class Unirgy_DropshipPo_Model_Pdf_Po extends Mage_Sales_Model_Order_Pdf_Shipment
         $object->setFont($font, $size);
         return $font;
     }
-
-    protected $_currentShipment;
-
-    public function getPdf($shipments = array())
+    
+    protected $_currentPo;
+    
+    public function getPdf($udpos = array())
     {
         $this->_beforeGetPdf();
-        $this->_initRenderer('shipment');
+        $this->_initRenderer('udpo');
 
         $pdf = new Zend_Pdf();
-        if (method_exists($this, '_setPdf')) $this->_setPdf($pdf);
+        $this->_setPdf($pdf);
         $style = new Zend_Pdf_Style();
         $this->_setFontBold($style, 10);
-        foreach ($shipments as $shipment) {
-            if ($shipment->getStoreId()) {
-                Mage::app()->getLocale()->emulate($shipment->getStoreId());
+        foreach ($udpos as $udpo) {
+            if ($udpo->getStoreId()) {
+                Mage::app()->getLocale()->emulate($udpo->getStoreId());
             }
             $page = $pdf->newPage(Zend_Pdf_Page::SIZE_A4);
             $pdf->pages[] = $page;
+            
+            $this->_currentPo = $udpo;
 
-            $this->_currentShipment = $shipment;
-
-            $order = $shipment->getOrder();
+            $order = $udpo->getOrder();
 
             /* Add image */
-            $this->insertLogo($page, $shipment->getStore());
+            $this->insertLogo($page, $udpo->getStore());
 
             /* Add address */
-            $this->insertAddress($page, $shipment->getStore());
+            $this->insertAddress($page, $udpo->getStore());
 
             $top = $this->y ? $this->y : 815;
             /* Add head */
@@ -140,10 +140,10 @@ class Unirgy_DropshipPo_Model_Pdf_Po extends Mage_Sales_Model_Order_Pdf_Shipment
 
             $page->setFillColor(new Zend_Pdf_Color_GrayScale(1));
             $this->_setFontRegular($page);
-            $page->drawText(Mage::helper('sales')->__('Packingslip # ') . $shipment->getIncrementId(), 35, ($top-=25), 'UTF-8');
+            $page->drawText(Mage::helper('udpo')->__('Purchase Order # ') . $udpo->getIncrementId(), 35, ($top-=25), 'UTF-8');
 
             /* Add table */
-            $page->setFillColor(new Zend_Pdf_Color_RGB(0.93, 0.92, 0.92));
+            $page->setFillColor(new Zend_Pdf_Color_Rgb(0.93, 0.92, 0.92));
             $page->setLineColor(new Zend_Pdf_Color_GrayScale(0.5));
             $page->setLineWidth(0.5);
 
@@ -151,45 +151,137 @@ class Unirgy_DropshipPo_Model_Pdf_Po extends Mage_Sales_Model_Order_Pdf_Shipment
             /* Add table head */
             $page->drawRectangle(25, $this->y, 570, $this->y-15);
             $this->y -=10;
-            $page->setFillColor(new Zend_Pdf_Color_RGB(0.4, 0.4, 0.4));
-            $page->drawText(Mage::helper('sales')->__('Qty'), 35, $this->y, 'UTF-8');
-            $page->drawText(Mage::helper('sales')->__('Products'), 60, $this->y, 'UTF-8');
-            $page->drawText(Mage::helper('sales')->__('SKU'), 470, $this->y, 'UTF-8');
+            $page->setFillColor(new Zend_Pdf_Color_Rgb(0.4, 0.4, 0.4));
+            $page->drawText(Mage::helper('sales')->__('Products'), 35, $this->y, 'UTF-8');
+            $page->drawText(Mage::helper('sales')->__('SKU'), 255, $this->y, 'UTF-8');
+            $page->drawText(Mage::helper('sales')->__('Cost'), 380, $this->y, 'UTF-8');
+            $page->drawText(Mage::helper('sales')->__('Qty'), 470, $this->y, 'UTF-8');
+            $page->drawText(Mage::helper('sales')->__('Row Cost'), 535, $this->y, 'UTF-8');
 
             $this->y -=15;
 
             $page->setFillColor(new Zend_Pdf_Color_GrayScale(0));
 
             /* Add body */
-            foreach ($shipment->getAllItems() as $item){
+            foreach ($udpo->getAllItems() as $item){
                 if ($item->getOrderItem()->getParentItem()) {
                     continue;
                 }
 
-                if ($this->y<65+10*count($this->getCustomTextArray($shipment))) {
-                    $this->drawCustomText($shipment, $page);
+                if ($this->y<75+10*count($this->getCustomTextArray($udpo))) {
+                    $this->drawCustomText($udpo, $page);
                     $page = $this->newPage(array('table_header' => true));
                 }
 
                 /* Draw item */
                 $page = $this->_drawItem($item, $page, $order);
             }
-            $this->drawCustomText($shipment, $page);
+            $this->drawCustomText($udpo, $page);
+            
+            $page = $this->insertTotals($page, $udpo);
         }
 
         $this->_afterGetPdf();
 
-        if ($shipment->getStoreId()) {
+        if ($udpo->getStoreId()) {
             Mage::app()->getLocale()->revert();
         }
         return $pdf;
     }
+    
+    public function insertTotals($page, $udpo)
+    {
+        $lineBlock = array(
+            'height' => 15,
+            'lines'  => array(array(
+                array(
+                    'text'      => Mage::helper('udpo')->__('Total Cost'),
+                    'feed'      => 475,
+                    'align'     => 'right',
+                    'font_size' => 7,
+                    'font'      => 'bold'
+                ),
+                array(
+                    'text'      => $udpo->getOrder()->getBaseCurrency()->formatTxt($udpo->getTotalCost()),
+                    'feed'      => 565,
+                    'align'     => 'right',
+                    'font_size' => 7,
+                    'font'      => 'bold'
+                ),
+            ))
+        );
 
+        if ($udpo->getIsManual()) {
+            $lineBlock[0]['lines'][] = array(
+                array(
+                    'text'      => Mage::helper('udpo')->__('Total Shipping'),
+                    'feed'      => 475,
+                    'align'     => 'right',
+                    'font_size' => 7,
+                    'font'      => 'bold'
+                ),
+                array(
+                    'text'      => $udpo->getOrder()->getBaseCurrency()->formatTxt($udpo->getBaseShippingAmount()),
+                    'feed'      => 565,
+                    'align'     => 'right',
+                    'font_size' => 7,
+                    'font'      => 'bold'
+                ),
+            );
+            $lineBlock[0]['lines'][] = array(
+                array(
+                    'text'      => Mage::helper('udpo')->__('Grand Total'),
+                    'feed'      => 475,
+                    'align'     => 'right',
+                    'font_size' => 7,
+                    'font'      => 'bold'
+                ),
+                array(
+                    'text'      => $udpo->getOrder()->getBaseCurrency()->formatTxt($udpo->getTotalCost()+$udpo->getBaseShippingAmount()),
+                    'feed'      => 565,
+                    'align'     => 'right',
+                    'font_size' => 7,
+                    'font'      => 'bold'
+                ),
+            );
+        }
+        
+        return $this->drawLineBlocks($page, array($lineBlock));
+    }
+    
+    public function newPage(array $settings = array())
+    {
+        /* Add new table head */
+        $page = $this->_getPdf()->newPage(Zend_Pdf_Page::SIZE_A4);
+        $this->_getPdf()->pages[] = $page;
+        $this->y = 800;
+
+        if (!empty($settings['table_header'])) {
+            $this->_setFontRegular($page);
+            $page->setFillColor(new Zend_Pdf_Color_Rgb(0.93, 0.92, 0.92));
+            $page->setLineColor(new Zend_Pdf_Color_GrayScale(0.5));
+            $page->setLineWidth(0.5);
+            $page->drawRectangle(25, $this->y, 570, $this->y-15);
+            $this->y -=10;
+
+            $page->setFillColor(new Zend_Pdf_Color_Rgb(0.4, 0.4, 0.4));
+            $page->drawText(Mage::helper('sales')->__('Products'), 35, $this->y, 'UTF-8');
+            $page->drawText(Mage::helper('sales')->__('SKU'), 255, $this->y, 'UTF-8');
+            $page->drawText(Mage::helper('sales')->__('Cost'), 380, $this->y, 'UTF-8');
+            $page->drawText(Mage::helper('sales')->__('Qty'), 470, $this->y, 'UTF-8');
+            $page->drawText(Mage::helper('sales')->__('Row Cost'), 535, $this->y, 'UTF-8');
+
+            $page->setFillColor(new Zend_Pdf_Color_GrayScale(0));
+            $this->y -=20;
+        }
+
+        return $page;
+    }
+    
     protected function insertOrder(&$page, $order, $putOrderId = true)
     {
         $this->y = $this->y ? $this->y : 815;
         $top = $this->y;
-
         /* @var $order Mage_Sales_Model_Order */
         $page->setFillColor(new Zend_Pdf_Color_GrayScale(0.5));
 
@@ -198,21 +290,12 @@ class Unirgy_DropshipPo_Model_Pdf_Po extends Mage_Sales_Model_Order_Pdf_Shipment
         $page->setFillColor(new Zend_Pdf_Color_GrayScale(1));
         $this->_setFontRegular($page);
 
-        if (Mage::helper('udropship')->isUdpoActive()) {
-            $po = Mage::helper('udpo')->getShipmentPo($this->_currentShipment);
-        }
 
         if ($putOrderId) {
             $page->drawText(Mage::helper('sales')->__('Order # ').$order->getRealOrderId(), 35, ($top -= 10), 'UTF-8');
-            if (!empty($po)) {
-                $page->drawText(Mage::helper('udpo')->__('Purchase Order # ').$po->getIncrementId(), 135, $top, 'UTF-8');
-            }
         }
         //$page->drawText(Mage::helper('sales')->__('Order Date: ') . date( 'D M j Y', strtotime( $order->getCreatedAt() ) ), 35, 760, 'UTF-8');
         $page->drawText(Mage::helper('sales')->__('Order Date: ') . Mage::helper('core')->formatDate($order->getCreatedAtStoreDate(), 'medium', false), 35, ($top -= 30), 'UTF-8');
-        if (!empty($po)) {
-            $page->drawText(Mage::helper('udpo')->__('Purchase Order Date: ') . Mage::helper('core')->formatDate($po->getCreatedAtStoreDate(), 'medium', false), 135, $top, 'UTF-8');
-        }
 
         $page->setFillColor(new Zend_Pdf_Color_Rgb(0.93, 0.92, 0.92));
         $page->setLineColor(new Zend_Pdf_Color_GrayScale(0.5));
@@ -224,7 +307,7 @@ class Unirgy_DropshipPo_Model_Pdf_Po extends Mage_Sales_Model_Order_Pdf_Shipment
 
         /* Billing Address */
         $billingAddress = $this->_formatAddress(
-            Mage::helper('udropship')->formatCustomerAddress($order->getBillingAddress(), 'pdf', $this->_currentShipment->getUdropshipVendor())
+            Mage::helper('udropship')->formatCustomerAddress($order->getBillingAddress(), 'pdf', $this->_currentPo->getUdropshipVendor())
         );
 
         /* Payment */
@@ -243,7 +326,7 @@ class Unirgy_DropshipPo_Model_Pdf_Po extends Mage_Sales_Model_Order_Pdf_Shipment
         if (!$order->getIsVirtual()) {
             /* Shipping Address */
             $shippingAddress = $this->_formatAddress(
-                Mage::helper('udropship')->formatCustomerAddress($order->getShippingAddress(), 'pdf', $this->_currentShipment->getUdropshipVendor())
+                Mage::helper('udropship')->formatCustomerAddress($order->getShippingAddress(), 'pdf', $this->_currentPo->getUdropshipVendor())
             );
 
             $shippingMethod  = $order->getShippingDescription();
@@ -330,10 +413,10 @@ class Unirgy_DropshipPo_Model_Pdf_Po extends Mage_Sales_Model_Order_Pdf_Shipment
 
             $yShipments = $this->y;
 
-            $curVendor = Mage::helper('udropship')->getVendor($this->_currentShipment->getUdropshipVendor());
-            if (!$curVendor->getHidePackingslipAmount()) {
-                $totalShippingChargesText = "(" . Mage::helper('sales')->__('Total Shipping Charges') . " " . $order->getBaseCurrency()->formatTxt($order->getBaseShippingAmount()) . ")";
-
+            $curVendor = Mage::helper('udropship')->getVendor($this->_currentPo->getUdropshipVendor());
+            if (!$curVendor->getHideUdpoPdfShippingAmount()) {
+                $totalShippingChargesText = "(" . Mage::helper('sales')->__('Total Shipping Charges') . " " . $order->formatPriceTxt($order->getShippingAmount()) . ")";
+    
                 $page->drawText($totalShippingChargesText, 285, $yShipments-7, 'UTF-8');
             }
             $yShipments -=10;
@@ -404,14 +487,14 @@ class Unirgy_DropshipPo_Model_Pdf_Po extends Mage_Sales_Model_Order_Pdf_Shipment
     }
 
     protected $_customTextArr = array();
-    protected function getCustomTextArray($shipment)
+    protected function getCustomTextArray($po)
     {
-        if (!isset($this->_customTextArr[$shipment->getId()])) {
-            $customText = Mage::getStoreConfig('udropship/vendor/packingslip_custom_text', $shipment->getStoreId());
-            $curVendor = Mage::helper('udropship')->getVendor($shipment->getUdropshipVendor());
-            $vUsePSCT = $curVendor->getData('use_packingslip_custom_text');
+        if (!isset($this->_customTextArr[$po->getId()])) {
+            $customText = Mage::getStoreConfig('udropship/purchase_order/udpo_pdf_custom_text', $po->getStoreId());
+            $curVendor = Mage::helper('udropship')->getVendor($po->getUdropshipVendor());
+            $vUsePSCT = $curVendor->getData('use_udpo_pdf_custom_text');
             if ($vUsePSCT==1) {
-                $customText = $curVendor->getData('packingslip_custom_text');
+                $customText = $curVendor->getData('udpo_pdf_custom_text');
             } elseif ($vUsePSCT==0) {
                 $customText = '';
             }
@@ -422,9 +505,9 @@ class Unirgy_DropshipPo_Model_Pdf_Po extends Mage_Sales_Model_Order_Pdf_Shipment
                     $customTextArr[] = $_cti;
                 }
             }
-            $this->_customTextArr[$shipment->getId()] = $customTextArr;
+            $this->_customTextArr[$po->getId()] = $customTextArr;
         }
-        return $this->_customTextArr[$shipment->getId()];
+        return $this->_customTextArr[$po->getId()];
     }
 
     protected function drawCustomText($shipment, $page)

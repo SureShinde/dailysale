@@ -39,6 +39,11 @@
                     </deals>
                 </entities>
             </fiuze_deals_resource>
+            <cron_resource>
+                <rewrite>
+                    <schedule_collection>Fiuze_Deals_Model_Resource_Cron_Schedule_Collection</schedule_collection>
+                </rewrite>
+            </cron_resource>
         </models>
         <resources>
             <fiuze_deals_setup>
@@ -136,6 +141,14 @@
                     </fiuzedeals_fiuze_cataloginventory_stock_item_save_after>
                 </observers>
             </cataloginventory_stock_item_save_after>
+            <sales_quote_item_qty_set_after>
+                <observers>
+                    <fiuzedeals_fiuze_product_cart_add>
+                        <class>Fiuze_Deals_Model_Observer</class>
+                        <method>productCartAdd</method>
+                    </fiuzedeals_fiuze_product_cart_add>
+                </observers>
+            </sales_quote_item_qty_set_after>
         </events>
     </global>
 

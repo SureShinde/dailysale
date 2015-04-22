@@ -6,9 +6,10 @@
         $date = new Zend_Date($productActive->getData('end_time'),$locale);
     ?>
     function timer() {
-        var nowDate = new Date();
-        var achiveDate = new Date(<?php echo $date->getTimestamp() ?>*1000);//end time
-        var result = (achiveDate - nowDate) + 1000;
+        var timeEnd = <?php echo ($date->getTimestamp()) * 1000;  ?> ;
+        var nowDate = new Date().getTime();
+        var achiveDate = new Date(timeEnd);//end time
+        var result = (achiveDate - nowDate);
         if (result < 0) {
             var elmntNew = document.getElementById('timer');
             elmntNew.innerHTML = ' 00:00:00 ';
