@@ -1,0 +1,18 @@
+<?php $_item = $this->getItem() ?>
+<?php $_oiId = $_item->getOrderItem()->getId() ?>
+<?php $itemConditionOptions = Mage::getSingleton('urma/source')->setPath('rma_item_condition')->toOptionHash(true) ?>
+<tr class="border">
+    <td><?php echo $this->getColumnHtml($_item, 'name') ?></td>
+    <td><?php echo $this->getColumnHtml($_item, 'qty') ?></td>
+
+    <td class="a-center">
+        <select id="rma-items_condition-<?php echo $_oiId?>" name="rma[items_condition][<?php echo $_oiId?>]">
+            <?php foreach ($itemConditionOptions as $icCode=>$icTitle): ?>
+                <option value="<?php echo $icCode?>"><?php echo $this->htmlEscape($icTitle)?></option>
+            <?php endforeach ?>
+        </select>
+    </td>
+    <td class="last a-center">
+        <input type="text" class="input-text" name="rma[items][<?php echo $_item->getOrderItemId() ?>]" value="<?php echo 0 ?>" onchange="if (parseFloat(this.value)>0) $('rma-items_condition-<?php echo $_oiId?>').addClassName('validate-select'); else $('rma-items_condition-<?php echo $_oiId?>').removeClassName('validate-select'); " />
+    </td>
+</tr>

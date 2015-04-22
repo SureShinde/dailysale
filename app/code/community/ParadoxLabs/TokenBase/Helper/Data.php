@@ -21,7 +21,7 @@ class ParadoxLabs_TokenBase_Helper_Data extends Mage_Core_Helper_Abstract
 {
 	protected $_address	= null;
 	protected $_card	= null;
-	protected $_cards	= null;
+	protected $_cards	= array();
 	
 	/**
 	 * Return active payment methods (if any) implementing tokenbase.
@@ -59,7 +59,19 @@ class ParadoxLabs_TokenBase_Helper_Data extends Mage_Core_Helper_Abstract
 				return Mage::registry('current_order')->getStoreId();
 			}
 			elseif( Mage::registry('current_customer') != false ) {
-				return Mage::registry('current_customer')->getStoreId();
+				$storeId = Mage::registry('current_customer')->getStoreId();
+				
+				// Customers registered through the admin will have store_id=0 with a valid website_id. Try to use that.
+				if( $storeId < 1 ) {
+					$websiteId	= Mage::registry('current_customer')->getWebsiteId();
+					$store		= Mage::getModel('core/website')->load( $websiteId )->getDefaultStore();
+					
+					if( $store instanceof Varien_Object ) {
+						$storeId = $store->getId();
+					}
+				}
+				
+				return $storeId;
 			}
 			elseif( Mage::registry('current_invoice') != false ) {
 				return Mage::registry('current_invoice')->getStoreId();
@@ -187,6 +199,7 @@ class ParadoxLabs_TokenBase_Helper_Data extends Mage_Core_Helper_Abstract
 			}
 			else {
 				$this->_card = Mage::getModel( $method . '/card' );
+				$this->_card->setMethod( $method );
 			}
 			
 			/**
@@ -218,6 +231,7 @@ class ParadoxLabs_TokenBase_Helper_Data extends Mage_Core_Helper_Abstract
 					
 					$newPayment = Mage::getModel('sales/quote_payment');
 					$newPayment->setQuote( Mage::getSingleton('checkout/session')->getQuote() );
+					$newPayment->getQuote()->getBillingAddress()->setCountryId( $this->_card->getAddress('country_id') );
 					$newPayment->importData( $cardData );
 					
 					$this->_card->importPaymentInfo( $newPayment );
@@ -233,26 +247,26 @@ class ParadoxLabs_TokenBase_Helper_Data extends Mage_Core_Helper_Abstract
 	 */
 	public function getActiveCustomerCardsByMethod( $method=null )
 	{
-		if( is_null( $this->_cards ) ) {
-			$method = is_null( $method ) ? Mage::registry('tokenbase_method') : $method;
-			
+		$method = is_null( $method ) ? Mage::registry('tokenbase_method') : $method;
+		
+		if( !is_array( $this->_cards ) || !isset( $this->_cards[ $method ] ) ) {
 			Mage::dispatchEvent( 'tokenbase_before_load_active_cards', array( 'method' => $method, 'customer' => $this->getCurrentCustomer() ) );
 			
-			$this->_cards = Mage::getModel('tokenbase/card')->getCollection();
+			$this->_cards[ $method ] = Mage::getModel('tokenbase/card')->getCollection();
 			
-			if( Mage::app()->getStore()->isAdmin() && Mage::getSingleton('adminhtml/session_quote')->hasQuoteId() && Mage::getSingleton('adminhtml/session_quote')->getQuote()->getPayment()->getTokenbaseId() > 0 ) {
+			if( Mage::app()->getStore()->isAdmin() && Mage::getSingleton('adminhtml/session_quote')->hasQuoteId() && Mage::getSingleton('adminhtml/session_quote')->getQuote()->getPayment()->getTokenbaseId() > 0 && !(Mage::registry('current_customer') instanceof Mage_Customer_Model_Customer) ) {
 				$tokenbaseId = Mage::getSingleton('adminhtml/session_quote')->getQuote()->getPayment()->getTokenbaseId();
 				
 				if( $this->getCurrentCustomer()->getId() > 0 ) {
 					// Manual select -- only because collections don't let us do the complex condition. (soz.)
-					$this->_cards->getSelect()->where( sprintf( "id='%s' or (active=1 and customer_id='%s')", $tokenbaseId, $this->getCurrentCustomer()->getId() ) );
+					$this->_cards[ $method ]->getSelect()->where( sprintf( "id='%s' or (active=1 and customer_id='%s')", $tokenbaseId, $this->getCurrentCustomer()->getId() ) );
 				}
 				else {
-					$this->_cards->addFieldToFilter( 'id', $tokenbaseId );
+					$this->_cards[ $method ]->addFieldToFilter( 'id', $tokenbaseId );
 				}
 			}
 			elseif( $this->getCurrentCustomer()->getId() > 0 ) {
-				$this->_cards->addFieldToFilter( 'active', 1 )
+				$this->_cards[ $method ]->addFieldToFilter( 'active', 1 )
 							 ->addFieldToFilter( 'customer_id', $this->getCurrentCustomer()->getId() );
 			}
 			else {
@@ -260,13 +274,13 @@ class ParadoxLabs_TokenBase_Helper_Data extends Mage_Core_Helper_Abstract
 			}
 			
 			if( !is_null( $method ) ) {
-				$this->_cards->addFieldToFilter( 'method', $method );
+				$this->_cards[ $method ]->addFieldToFilter( 'method', $method );
 			}
 			
-			Mage::dispatchEvent( 'tokenbase_after_load_active_cards', array( 'method' => $method, 'customer' => $this->getCurrentCustomer(), 'cards' => $this->_cards ) );
+			Mage::dispatchEvent( 'tokenbase_after_load_active_cards', array( 'method' => $method, 'customer' => $this->getCurrentCustomer(), 'cards' => $this->_cards[ $method ] ) );
 		}
 		
-		return $this->_cards;
+		return $this->_cards[ $method ];
 	}
 	
 	/**
@@ -295,11 +309,85 @@ class ParadoxLabs_TokenBase_Helper_Data extends Mage_Core_Helper_Abstract
 	}
 	
 	/**
+	 * Wrapper for a method only added in Magento CE 1.7.
+	 */
+	public function getAttributeValidationClass($attributeCode)
+	{
+		$addrHelper = Mage::helper('customer/address');
+		
+		if( method_exists( $addrHelper, 'getAttributeValidationClass' ) ) {
+			return $addrHelper->getAttributeValidationClass( $attributeCode );
+		}
+		
+		$attribute = Mage::getSingleton('eav/config')->getAttribute('customer_address', $attributeCode);
+		$class = $attribute ? $attribute->getFrontend()->getClass() : '';
+		
+		if (in_array($attributeCode, array('firstname', 'middlename', 'lastname', 'prefix', 'suffix', 'taxvat'))) {
+			if ($class && !$attribute->getIsVisible()) {
+				$class = '';
+			}
+			
+			$customerAttribute = Mage::getSingleton('eav/config')->getAttribute('customer', $attributeCode);
+			$class .= $customerAttribute && $customerAttribute->getIsVisible() ? $customerAttribute->getFrontend()->getClass() : '';
+			$class = implode(' ', array_unique(array_filter(explode(' ', $class))));
+		}
+		
+		return $class;
+	}
+	
+	/**
 	 * Get customer country dropdown
 	 */
 	public function getCountryHtmlSelect( $name, $default='US', $id=null )
 	{
 		return $this->getAddressBlock()->getCountryHtmlSelect( $default, $name, $id );
+	}
+	
+	/**
+	 * Get whether the current page is (appears to be) a checkout.
+	 */
+	public function getIsCheckout()
+	{
+		if( Mage::app()->getStore()->isAdmin() == false ) {
+			if( strpos( $_SERVER['REQUEST_URI'], 'checkout' ) !== false ) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Wrapper for a method only added in Magento CE 1.6...
+	 */
+	public static function now( $withoutTime=false )
+	{
+		if( method_exists( 'Varien_Date', 'now' ) ) {
+			return Varien_Date::now( $withoutTime );
+		}
+		
+		$format = $withoutTime ? 'Y-m-d' : 'Y-m-d H:i:s';
+		
+		return date($format);
+	}
+	
+	/**
+	 * Recursively cleanup array from objects
+	 */
+	public function cleanupArray(&$array)
+	{
+		if( !$array ) {
+			return;
+		}
+		
+		foreach( $array as $key => $value ) {
+			if( is_object( $value ) ) {
+				unset( $array[ $key ] );
+			}
+			elseif( is_array( $value ) ) {
+				$this->cleanupArray( $array[ $key ] );
+			}
+		}
 	}
 	
 	/**

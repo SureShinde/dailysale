@@ -64,17 +64,22 @@ class ParadoxLabs_AuthorizeNetCim_Model_Method extends ParadoxLabs_TokenBase_Mod
 		if( $this->getAdvancedConfigData('send_shipping_address') && $payment->getOrder()->getIsVirtual() == false ) {
 			$address = $payment->getOrder()->getShippingAddress();
 			
-			if( $address->getCustomerAddressId() > 0 ) {
-				$address = Mage::getModel('customer/address')->load( $address->getCustomerAddressId() );
+			if( $address->getCustomerAddressId() != '' ) {
+				$customerAddress = Mage::getModel('customer/address')->load( $address->getCustomerAddressId() );
+				
+				if( $customerAddress && $customerAddress->getId() == $address->getCustomerAddressId() && $customerAddress->getStreet(1) != '' ) {
+					$address = $customerAddress;
+				}
 			}
 			
-			if( $address->getAuthnetcimShippingId() == '' ) {
+			if( $address->getAuthnetcimShippingId() == '' && $address->getStreet(1) != '' ) {
 				$this->_log( sprintf( '_createShippingAddress(%s %s)', get_class( $address ), $address->getId() ) );
 				
 				$this->gateway()->setParameter( 'customerProfileId', $this->getCard()->getProfileId() );
 				
 				$this->gateway()->setParameter( 'shipToFirstName', $address->getFirstname() );
 				$this->gateway()->setParameter( 'shipToLastName', $address->getLastname() );
+				$this->gateway()->setParameter( 'shipToCompany', $address->getCompany() );
 				$this->gateway()->setParameter( 'shipToAddress', $address->getStreet(1) );
 				$this->gateway()->setParameter( 'shipToCity', $address->getCity() );
 				$this->gateway()->setParameter( 'shipToState', $address->getRegion() );
@@ -91,7 +96,9 @@ class ParadoxLabs_AuthorizeNetCim_Model_Method extends ParadoxLabs_TokenBase_Mod
 				$shippingId = $address->getAuthnetcimShippingId();
 			}
 			
-			$this->gateway()->setParameter( 'customerShippingAddressId', $shippingId );
+			if( !empty( $shippingId ) ) {
+				$this->gateway()->setParameter( 'customerShippingAddressId', $shippingId );
+			}
 		}
 		
 		return $this;
@@ -105,6 +112,16 @@ class ParadoxLabs_AuthorizeNetCim_Model_Method extends ParadoxLabs_TokenBase_Mod
 		$this->_createShippingAddress( $payment );
 		
 		return parent::_beforeAuthorize( $payment, $amount );
+	}
+	
+	/**
+	 * Catch execution after authorizing to look for card type.
+	 */
+	protected function _afterAuthorize( Varien_Object $payment, $amount, Varien_Object $response )
+	{
+		$payment = $this->_fixLegacyCcType( $payment, $response );
+		
+		return parent::_afterAuthorize( $payment, $amount, $response );
 	}
 	
 	/**
@@ -151,6 +168,28 @@ class ParadoxLabs_AuthorizeNetCim_Model_Method extends ParadoxLabs_TokenBase_Mod
 			$payment->getOrder()->setExtOrderId( sprintf( '%s:', $response->getTransactionId() ) );
 		}
 		
+		$payment = $this->_fixLegacyCcType( $payment, $response );
+		
 		return parent::_afterCapture( $payment, $amount, $response );
+	}
+	
+	/**
+	 * Save type for legacy cards if we don't have it. Run after auth/capture transactions.
+	 */
+	protected function _fixLegacyCcType( $payment, $response )
+	{
+		if( $this->getCard()->getAdditional('cc_type') == null && $response->getCardType() != '' ) {
+			$ccType = Mage::helper( $this->_code )->mapCcTypeToMagento( $response->getCardType() );
+			
+			if( !is_null( $ccType ) ) {
+				$this->getCard()->setAdditional( 'cc_type', $ccType )
+								->setNoSync( true )
+								->save();
+				
+				$payment->getOrder()->getPayment()->setCcType( $ccType );
+			}
+		}
+		
+		return $payment;
 	}
 }

@@ -2,6 +2,11 @@
 <layout version="0.1.0">
     <default>
         <reference name="before_body_end">
+            <block type="bronto_common/cart_recovery" name="bronto.cartrecovery" as="bronto_cartrecovery">
+                <action method="setTemplate">
+                    <template>bronto/common/recovery.phtml</template>
+                </action>
+            </block>
             <block type="bronto_common/popup" name="bronto.popup" as="bronto_popup">
                 <action method="setTemplate">
                     <template>bronto/common/popup.phtml</template>
@@ -9,4 +14,16 @@
             </block>
         </reference>
     </default>
+    <checkout_onepage_success>
+        <reference name="content">
+            <block type="bronto_common/cart_recovery" name="bronto.cartrecovery.success" as="bronto_cartrecovery_success">
+                <action method="setTemplate">
+                    <template>bronto/common/recovery.phtml</template>
+                </action>
+                <action method="setDisplayOrder">
+                    <value>1</value>
+                </action>
+            </block>
+        </reference>
+    </checkout_onepage_success>
 </layout>

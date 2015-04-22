@@ -8,68 +8,74 @@
 	</h4>
 </div>
 <div class="fieldset">
-	<input type="hidden" name="card_id" value="<?php echo $this->getCard()->getId(); ?>" />
+	<input type="hidden" name="<?php echo $this->getCode(); ?>[card_id]" value="<?php echo $this->getCard()->getId(); ?>" />
 	
 	<h4><?php echo $this->__('Cardholder Information') ?></h4>
 	<table class="form-list" cellspacing="0">
 		<tr>
 			<td class="label"><label for="<?php echo $this->getCode(); ?>_fn"><?php echo $this->__('First Name') ?> <span class="required">*</span></label></td>
 			<td class="value">
-				<input type="text" id="<?php echo $this->getCode(); ?>_fn" name="billing[firstname]" class="input-text" value="<?php echo $this->escapeHtml( $this->getCard()->getAddress('firstname') ); ?>" />
+				<input type="text" id="<?php echo $this->getCode(); ?>_fn" name="<?php echo $this->getCode(); ?>[billing][firstname]" class="input-text" value="<?php echo $this->escapeHtml( $this->getCard()->getAddress('firstname') ); ?>" />
 			</td>
 		</tr>
 		<tr>
 			<td class="label"><label for="<?php echo $this->getCode(); ?>_ln"><?php echo $this->__('Last Name') ?> <span class="required">*</span></label></td>
 			<td class="value">
-				<input type="text" id="<?php echo $this->getCode(); ?>_ln" name="billing[lastname]" class="input-text" value="<?php echo $this->escapeHtml( $this->getCard()->getAddress('lastname') ); ?>" />
+				<input type="text" id="<?php echo $this->getCode(); ?>_ln" name="<?php echo $this->getCode(); ?>[billing][lastname]" class="input-text" value="<?php echo $this->escapeHtml( $this->getCard()->getAddress('lastname') ); ?>" />
+			</td>
+		</tr>
+		<tr>
+			<td class="label"><label for="<?php echo $this->getCode(); ?>_company"><?php echo $this->__('Company') ?></label></td>
+			<td class="value">
+				<input type="text" id="<?php echo $this->getCode(); ?>_company" name="<?php echo $this->getCode(); ?>[billing][company]" class="input-text" value="<?php echo $this->escapeHtml( $this->getCard()->getAddress('company') ); ?>" />
 			</td>
 		</tr>
 		<tr>
 			<td class="label"><label for="<?php echo $this->getCode(); ?>_street"><?php echo $this->__('Street Address') ?> <span class="required">*</span></label></td>
 			<td class="value">
-				<input type="text" id="<?php echo $this->getCode(); ?>_street" name="billing[street][]" class="input-text" value="<?php echo $this->escapeHtml( $this->getCard()->getAddress('street') ); ?>" />
+				<input type="text" id="<?php echo $this->getCode(); ?>_street" name="<?php echo $this->getCode(); ?>[billing][street][]" class="input-text" value="<?php echo $this->escapeHtml( $this->getCard()->getAddress('street') ); ?>" />
 			</td>
 		</tr>
 		<tr>
 			<td class="label"><label for="<?php echo $this->getCode(); ?>_city"><?php echo $this->__('City') ?> <span class="required">*</span></label></td>
 			<td class="value">
-				<input type="text" id="<?php echo $this->getCode(); ?>_city" name="billing[city]" class="input-text" value="<?php echo $this->escapeHtml( $this->getCard()->getAddress('city') ); ?>" />
+				<input type="text" id="<?php echo $this->getCode(); ?>_city" name="<?php echo $this->getCode(); ?>[billing][city]" class="input-text" value="<?php echo $this->escapeHtml( $this->getCard()->getAddress('city') ); ?>" />
 			</td>
 		</tr>
 		<tr>
 			<td class="label"><label for="<?php echo $this->getCode(); ?>_region_id"><?php echo $this->__('State/Province') ?> <span class="required">*</span></label></td>
 			<td class="value">
-				<select class="validate-select" title="State/Province" name="billing[region_id]" id="<?php echo $this->getCode(); ?>_region_id">
+				<select class="validate-select" title="State/Province" name="<?php echo $this->getCode(); ?>[billing][region_id]" id="<?php echo $this->getCode(); ?>_region_id">
 					<option value=""><?php echo $this->__('Please select region, state or province') ?></option>
 				</select>
 				<script type="text/javascript">
 					$('<?php echo $this->getCode(); ?>_region_id').setAttribute('defaultValue', '<?php echo $this->getCard()->getAddress("region_id"); //Mage::getModel("directory/region")->loadByName( $this->getCard()->getAddress("region_code"), $this->getCard()->getAddress("country_id") )->getId(); ?>');
 				</script>
-				<input type="text" class="input-text" title="State/Province" value="<?php echo $this->escapeHtml( $this->getCard()->getAddress('region') ); ?>" name="billing[region]" id="<?php echo $this->getCode(); ?>_region" />
+				<input type="text" class="input-text" title="State/Province" value="<?php echo $this->escapeHtml( $this->getCard()->getAddress('region') ); ?>" name="<?php echo $this->getCode(); ?>[billing][region]" id="<?php echo $this->getCode(); ?>_region" />
 			</td>
 		</tr>
 		<tr>
 			<td class="label"><label for="<?php echo $this->getCode(); ?>_postcode"><?php echo $this->__('Zip/Postal Code') ?> <span class="required">*</span></label></td>
 			<td class="value">
-				<input type="text" id="<?php echo $this->getCode(); ?>_postcode" name="billing[postcode]" class="input-text" value="<?php echo $this->escapeHtml( $this->getCard()->getAddress('postcode') ); ?>" />
+				<input type="text" id="<?php echo $this->getCode(); ?>_postcode" name="<?php echo $this->getCode(); ?>[billing][postcode]" class="input-text" value="<?php echo $this->escapeHtml( $this->getCard()->getAddress('postcode') ); ?>" />
 			</td>
 		</tr>
 		<tr>
 			<td class="label"><label for="<?php echo $this->getCode(); ?>_country"><?php echo $this->__('Country') ?> <span class="required">*</span></label></td>
 			<td class="value">
-				<?php echo Mage::helper('tokenbase')->getCountryHtmlSelect( 'billing[country_id]', $this->getCard()->getAddress('country_id'), $this->getCode().'_country' ); ?>
+				<?php echo Mage::helper('tokenbase')->getCountryHtmlSelect( $this->getCode() . '[billing][country_id]', $this->getCard()->getAddress('country_id'), $this->getCode().'_country' ); ?>
 			</td>
 		</tr>
 		<tr>
 			<td class="label"><label for="<?php echo $this->getCode(); ?>_telephone"><?php echo $this->__('Telephone') ?> <span class="required">*</span></label></td>
 			<td class="value">
-				<input type="text" id="<?php echo $this->getCode(); ?>_telephone" name="billing[telephone]" class="input-text" value="<?php echo $this->escapeHtml( $this->getCard()->getAddress('telephone') ); ?>" />
+				<input type="text" id="<?php echo $this->getCode(); ?>_telephone" name="<?php echo $this->getCode(); ?>[billing][telephone]" class="input-text" value="<?php echo $this->escapeHtml( $this->getCard()->getAddress('telephone') ); ?>" />
 			</td>
 		</tr>
 		<tr>
 			<td class="label"><label for="<?php echo $this->getCode(); ?>_fax"><?php echo $this->__('Fax') ?></label></td>
 			<td class="value">
-				<input type="text" id="<?php echo $this->getCode(); ?>_fax" name="billing[fax]" class="input-text" value="<?php echo $this->escapeHtml( $this->getCard()->getAddress('fax') ); ?>" />
+				<input type="text" id="<?php echo $this->getCode(); ?>_fax" name="<?php echo $this->getCode(); ?>[billing][fax]" class="input-text" value="<?php echo $this->escapeHtml( $this->getCard()->getAddress('fax') ); ?>" />
 			</td>
 		</tr>
 	</table>
@@ -77,15 +83,15 @@
 	<h4><?php echo $this->__('Credit Card Information') ?></h4>
 	<?php if( $this->isEdit() ): ?>
 		<div>
-			<input type="radio" name="payment[sameCard]" value="1" id="<?php echo $this->getCode(); ?>_sameCard_1" checked="checked" /> <label for="<?php echo $this->getCode(); ?>_sameCard_1"><?php echo $this->__( 'Continue using payment data %s', $this->getCard()->getLabel() ); ?></label><br />
-			<input type="radio" name="payment[sameCard]" value="0" id="<?php echo $this->getCode(); ?>_sameCard_0" /> <label for="<?php echo $this->getCode(); ?>_sameCard_0"><?php echo $this->__('Change payment data'); ?></label>
+			<input type="radio" name="<?php echo $this->getCode(); ?>[payment][sameCard]" value="1" id="<?php echo $this->getCode(); ?>_sameCard_1" checked="checked" /> <label for="<?php echo $this->getCode(); ?>_sameCard_1"><?php echo $this->__( 'Continue using payment data %s', $this->getCard()->getLabel() ); ?></label><br />
+			<input type="radio" name="<?php echo $this->getCode(); ?>[payment][sameCard]" value="0" id="<?php echo $this->getCode(); ?>_sameCard_0" /> <label for="<?php echo $this->getCode(); ?>_sameCard_0"><?php echo $this->__('Change payment data'); ?></label>
 		</div>
 	<?php endif; ?>
-	<table class="form-list" cellspacing="0" <?php if( $this->isEdit() ): ?>style="display:none"<?php endif; ?> id="ccInfo">
+	<table class="form-list" cellspacing="0" <?php if( $this->isEdit() ): ?>style="display:none"<?php endif; ?> id="<?php echo $this->getCode(); ?>_ccInfo">
 		<tr>
 			<td class="label"><label for="<?php echo $this->getCode(); ?>_cc_type"><?php echo $this->__('Credit Card Type') ?> <span class="required">*</span></label></td>
 			<td class="value">
-				<select id="<?php echo $this->getCode(); ?>_cc_type" name="payment[cc_type]">
+				<select id="<?php echo $this->getCode(); ?>_cc_type" name="<?php echo $this->getCode(); ?>[payment][cc_type]">
 					<option value=""><?php echo $this->__('--Please Select--')?></option>
 					<?php foreach( Mage::helper('tokenbase')->getCcAvailableTypes( $this->getCode() ) as $k => $v ): ?>
 						<option value="<?php echo $k ?>" <?php if( $k == $this->getCard()->getAdditional('cc_type') ): ?>selected="selected"<?php endif; ?>><?php echo $v ?></option>
@@ -96,13 +102,13 @@
 		<tr>
 			<td class="label"><label for="<?php echo $this->getCode(); ?>_cc_number"><?php echo $this->__('Credit Card Number') ?> <span class="required">*</span></label></td>
 			<td class="value">
-				<input type="text" id="<?php echo $this->getCode(); ?>_cc_number" name="payment[cc_number]" title="<?php echo $this->__('Credit Card Number') ?>" class="input-text <?php if( !$this->isEdit() ): ?>validate-cc-number<?php endif; ?>" value="<?php echo $this->getCard()->getLabel(); ?>" autocomplete="off" />
+				<input type="text" id="<?php echo $this->getCode(); ?>_cc_number" name="<?php echo $this->getCode(); ?>[payment][cc_number]" title="<?php echo $this->__('Credit Card Number') ?>" class="input-text <?php if( !$this->isEdit() ): ?>validate-cc-number<?php endif; ?>" value="<?php echo $this->getCard()->getLabel(); ?>" autocomplete="off" />
 			</td>
 		</tr>
 		<tr>
 			<td class="label"><label for="<?php echo $this->getCode(); ?>_expiration"><?php echo $this->__('Expiration Date') ?> <span class="required">*</span></label></td>
 			<td class="value">
-				<select id="<?php echo $this->getCode(); ?>_expiration" name="payment[cc_exp_month]" class="month" style="width:150px">
+				<select id="<?php echo $this->getCode(); ?>_expiration" name="<?php echo $this->getCode(); ?>[payment][cc_exp_month]" class="month" style="width:150px">
 					<option value=""><?php echo $this->__('Month') ?></option>
 					<?php $_ccExpMonth = $this->getCard()->getAdditional('cc_exp_month') ?>
 					<?php foreach( Mage::helper('tokenbase')->getCcMonths() as $k=>$v ): ?>
@@ -110,7 +116,7 @@
 					<?php endforeach ?>
 				</select> 
 				
-				<select id="<?php echo $this->getCode(); ?>_expiration_yr" name="payment[cc_exp_year]" class="year" style="width:80px">
+				<select id="<?php echo $this->getCode(); ?>_expiration_yr" name="<?php echo $this->getCode(); ?>[payment][cc_exp_year]" class="year" style="width:80px">
 					<option value=""><?php echo $this->__('Year') ?></option>
 					<?php $_ccExpYear = $this->getCard()->getAdditional('cc_exp_year') ?>
 					<?php foreach( Mage::helper('tokenbase')->getCcYears() as $k=>$v ): ?>
@@ -123,18 +129,18 @@
 			<tr>
 				<td class="label"><label for="<?php echo $this->getCode(); ?>_cc_cid"><?php echo $this->__('Card Verification Number') ?> <span class="required">*</span></label></td>
 				<td class="value">
-					<input type="text" title="<?php echo $this->__('Card Verification Number') ?>" class="input-text cvv" id="<?php echo $this->getCode(); ?>_cc_cid" name="payment[cc_cid]" value="" style="width:50px" autocomplete="off" />
+					<input type="text" title="<?php echo $this->__('Card Verification Number') ?>" class="input-text cvv" id="<?php echo $this->getCode(); ?>_cc_cid" name="<?php echo $this->getCode(); ?>[payment][cc_cid]" value="" style="width:50px" autocomplete="off" />
 				</td>
 			</tr>
 		<?php endif; ?>
 	</table>
 	<?php $requireCvv = Mage::helper('payment')->getMethodInstance( $this->getCode() )->getAdvancedConfigData('require_ccv'); ?>
 	<?php if( $this->isEdit() && Mage::helper('payment')->getMethodInstance( $this->getCode() )->getConfigData('useccv') && $requireCvv ): ?>
-		<table class="form-list" cellspacing="0" id="ccInfoCcv">
+		<table class="form-list" cellspacing="0" id="<?php echo $this->getCode(); ?>_ccInfoCcv">
 			<tr>
 				<td class="label"><label for="<?php echo $this->getCode(); ?>_saved_cc_cid"><?php echo $this->__('Card Verification Number') ?> <span class="required">*</span></label></td>
 				<td class="value">
-					<input type="text" title="<?php echo $this->__('Card Verification Number') ?>" class="input-text cvv" id="<?php echo $this->getCode(); ?>_saved_cc_cid" name="payment[saved_cc_cid]" value="" style="width:50px" autocomplete="off" />
+					<input type="text" title="<?php echo $this->__('Card Verification Number') ?>" class="input-text cvv" id="<?php echo $this->getCode(); ?>_saved_cc_cid" name="<?php echo $this->getCode(); ?>[payment][saved_cc_cid]" value="" style="width:50px" autocomplete="off" />
 				</td>
 			</tr>
 		</table>
@@ -156,16 +162,24 @@
 	
 	$$('#<?php echo $this->getCode(); ?>_sameCard_0, #<?php echo $this->getCode(); ?>_sameCard_1').each(function(el) {
 		$(el).observe( 'change', function(e) {
-			$('ccInfo').toggle();
-			$('ccInfoCcv').toggle();
+			$('<?php echo $this->getCode(); ?>_ccInfo').toggle();
+			$('<?php echo $this->getCode(); ?>_ccInfoCcv').toggle();
 		});
 	});
 	
+	function <?php echo $this->getCode(); ?>_clearAddrValidation() {
+		$('<?php echo $this->getCode(); ?>_region_id').removeClassName('required-entry').removeClassName('validate-select');
+		$('<?php echo $this->getCode(); ?>_country').removeClassName('required-entry').removeClassName('validate-select');
+		$('<?php echo $this->getCode(); ?>_region').removeClassName('required-entry');
+	}
+	
 	/* Prevent the region from holding up submit... unfortunately no better way to do this. */
 	document.observe("dom:loaded", function() {
-		$('<?php echo $this->getCode(); ?>_region_id').removeClassName('required-entry').removeClassName('validate-select');
-		$('<?php echo $this->getCode(); ?>_region').removeClassName('required-entry');
-		setInterval( "$('<?php echo $this->getCode(); ?>_region_id').removeClassName('required-entry').removeClassName('validate-select');$('<?php echo $this->getCode(); ?>_region').removeClassName('required-entry');", 10000 );
+		<?php echo $this->getCode(); ?>_clearAddrValidation();
+		
+		setInterval( function() {
+			<?php echo $this->getCode(); ?>_clearAddrValidation();
+		}, 10000 );
 	});
 //]]>
 </script>

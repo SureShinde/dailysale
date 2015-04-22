@@ -1,0 +1,53 @@
+<?php  $_rma = $this->getRma() ?>
+<?php  $_vendor = $_rma->getVendor() ?>
+<?php  $_order = $this->getRma()->getOrder() ?>
+<div>
+    <?php echo $this->getChildHtml('order_info') ?>
+    <div class="box-left">
+            <div class="entry-edit">
+                <div class="entry-edit-head">
+                    <h4 class="icon-head head-payment-method"><?php echo $this->helper('urma')->__('Return Sender') ?></h4>
+                </div>
+                <fieldset>
+                    <div><?php echo $_order->getShippingAddress()->getFormated(true) ?></div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="box-right">
+            <div class="entry-edit">
+                <div class="entry-edit-head">
+                    <h4 class="icon-head head-shipping-method"><?php echo $this->helper('urma')->__('Return Receiver') ?></h4>
+                </div>
+                <fieldset>
+                    <div><?php echo $_vendor->getFormatedAddress('html') ?></div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="clear"></div>
+
+        <div class="box-left">
+            <div class="entry-edit">
+                <div class="entry-edit-head">
+                    <h4 class="icon-head head-po-tracking"><?php echo $this->helper('urma')->__('Return Tracking Info') ?></h4>
+                </div>
+                <fieldset>
+                    <div><?php echo $this->getChildHtml('rma_tracking') ?></div>
+                </fieldset>
+            </div>
+        </div>
+    <div class="clear"></div>
+
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-products"><?php echo $this->helper('urma')->__('Return Items') ?></h4>
+        </div>
+    </div>
+
+    <?php echo $this->getChildHtml('rma_items') ?>
+
+    <div class="box-left entry-edit">
+        <div class="entry-edit-head"><h4><?php echo $this->__('Return History') ?></h4></div>
+        <fieldset><?php echo $this->getChildHtml('order_comments') ?></fieldset>
+    </div>
+    <div class="clear"></div>
+</div>

@@ -92,7 +92,13 @@ class Magestore_Onestepcheckout_IndexController extends Mage_Core_Controller_Fro
     public function is_valid_emailAction() {
         $validator = new Zend_Validate_EmailAddress();
         $email_address = $this->getRequest()->getPost('email_address');
+        $towerdata = Mage::getSingleton('fiuze_towerdata/api')->callApiMail($email_address);
         $message = 'Invalid';
+        if(!$towerdata['success']){
+            $message = 'invalid';
+        }else{
+            $message = 'valid';
+        }
         if ($email_address != '') {
             // Check if email is in valid format
             if (!$validator->isValid($email_address)) {
@@ -101,11 +107,10 @@ class Magestore_Onestepcheckout_IndexController extends Mage_Core_Controller_Fro
                 //if email is valid, check if this email is registered
                 if ($this->_emailIsRegistered($email_address)) {
                     $message = 'exists';
-                } else {
-                    $message = 'valid';
                 }
             }
         }
+
         $result = array('message' => $message);
         $this->getResponse()->setBody(Zend_Json::encode($result));
     }

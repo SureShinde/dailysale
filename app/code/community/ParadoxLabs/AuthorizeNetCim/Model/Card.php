@@ -25,7 +25,7 @@ class ParadoxLabs_AuthorizeNetCim_Model_Card extends ParadoxLabs_TokenBase_Model
 	public function importLegacyData( Varien_Object $payment )
 	{
 		// Customer ID -- pull from customer if possible, otherwise go to Authorize.Net.
-		if( $this->getCustomer()->getAuthnetcimProfileId() != '' ) {
+		if( intval( $this->getCustomer()->getAuthnetcimProfileId() ) > 0 ) {
 			$this->setProfileId( $this->getCustomer()->getAuthnetcimProfileId() );
 		}
 		else {
@@ -36,7 +36,7 @@ class ParadoxLabs_AuthorizeNetCim_Model_Card extends ParadoxLabs_TokenBase_Model
 		$this->setPaymentId( $payment->getOrder()->getExtCustomerId() );
 		
 		if( $this->getProfileId() == '' || $this->getPaymentId() == '' ) {
-            Mage::helper('tokenbase')->log( $this->getMethod(), 'Authorize.Net CIM: Unable to covert legacy data for processing. Please seek support.' );
+			Mage::helper('tokenbase')->log( $this->getMethod(), 'Authorize.Net CIM: Unable to covert legacy data for processing. Please seek support.' );
 			Mage::throwException( Mage::helper('tokenbase')->__( 'Authorize.Net CIM: Unable to covert legacy data for processing. Please seek support.' ) );
 		}
 		
@@ -48,7 +48,7 @@ class ParadoxLabs_AuthorizeNetCim_Model_Card extends ParadoxLabs_TokenBase_Model
 			$this->setAdditional( 'cc_last4', $payment->getCcLast4() );
 		}
 		
-		if( intval( $payment->getCcExpMonth() ) > 0 && intval( $payment->getCcExpYear() ) > date('Y') ) {
+		if( $payment->getCcExpYear() > date('Y') || ( $payment->getCcExpYear() == date('Y') && $payment->getCcExpMonth() >= date('n') ) ) {
 			$this->setAdditional( 'cc_exp_year', $payment->getCcExpYear() )
 				 ->setAdditional( 'cc_exp_month', $payment->getCcExpMonth() )
 				 ->setExpires( sprintf( "%s-%s-%s 23:59:59", $payment->getCcExpYear(), $payment->getCcExpMonth(), date( 't', strtotime( $payment->getCcExpYear() . '-' . $payment->getCcExpMonth() ) ) ) );
@@ -62,8 +62,8 @@ class ParadoxLabs_AuthorizeNetCim_Model_Card extends ParadoxLabs_TokenBase_Model
 	 */
 	protected function _beforeSave()
 	{
-		// Sync only if we have an info instance for payment data.
-		if( $this->hasInfoInstance() ) {
+		// Sync only if we have an info instance for payment data, and haven't already.
+		if( $this->hasInfoInstance() && $this->getNoSync() != true ) {
 			$this->_createCustomerPaymentProfile();
 		}
 		
@@ -121,12 +121,12 @@ class ParadoxLabs_AuthorizeNetCim_Model_Card extends ParadoxLabs_TokenBase_Model
 				}
 			}
 			else {
-                Mage::helper('tokenbase')->log( $this->getMethod(), 'Authorize.Net CIM Gateway: Unable to create customer profile.' );
+				Mage::helper('tokenbase')->log( $this->getMethod(), 'Authorize.Net CIM Gateway: Unable to create customer profile.' );
 				Mage::throwException( Mage::helper('tokenbase')->__( 'Authorize.Net CIM Gateway: Unable to create customer profile.' ) );
 			}
 		}
 		else {
-            Mage::helper('tokenbase')->log( $this->getMethod(), 'Authorize.Net CIM Gateway: Unable to create customer profile; email or user ID is required.' );
+			Mage::helper('tokenbase')->log( $this->getMethod(), 'Authorize.Net CIM Gateway: Unable to create customer profile; email or user ID is required.' );
 			Mage::throwException( Mage::helper('tokenbase')->__( 'Authorize.Net CIM Gateway: Unable to create customer profile; email or user ID is required.' ) );
 		}
 		
@@ -138,6 +138,8 @@ class ParadoxLabs_AuthorizeNetCim_Model_Card extends ParadoxLabs_TokenBase_Model
 	 */
 	protected function _createCustomerPaymentProfile( $retry=true )
 	{
+		Mage::helper('tokenbase')->log( $this->getMethod(), sprintf( '_createCustomerPaymentProfile(%s) (profile_id %s, payment_id %s)', var_export( $retry, 1 ), var_export( $this->getProfileId(), 1 ), var_export( $this->getPaymentId(), 1 ) ) );
+		
 		$this->getMethodInstance()->setCard( $this );
 		
 		$gateway = $this->getMethodInstance()->gateway();
@@ -166,6 +168,7 @@ class ParadoxLabs_AuthorizeNetCim_Model_Card extends ParadoxLabs_TokenBase_Model
 			
 			$gateway->setParameter( 'billToFirstName', $address->getFirstname() );
 			$gateway->setParameter( 'billToLastName', $address->getLastname() );
+			$gateway->setParameter( 'billToCompany', $address->getCompany() );
 			$gateway->setParameter( 'billToAddress', $address->getStreet(1) );
 			$gateway->setParameter( 'billToCity', $address->getCity() );
 			$gateway->setParameter( 'billToState', $address->getRegion() );
@@ -175,9 +178,8 @@ class ParadoxLabs_AuthorizeNetCim_Model_Card extends ParadoxLabs_TokenBase_Model
 			$gateway->setParameter( 'billToFaxNumber', $address->getFax() );
 			
 			$gateway->setParameter( 'validationMode', $this->getMethodInstance()->getConfigData('validation_mode') );
-			$gateway->setParameter( 'cardNumber', $this->getInfoInstance()->getCcNumber() );
-			$gateway->setParameter( 'cardCode', $this->getInfoInstance()->getCcCid() );
-			$gateway->setParameter( 'expirationDate', sprintf( "%04d-%02d", $this->getInfoInstance()->getCcExpYear(), $this->getInfoInstance()->getCcExpMonth() ) );
+			
+			$this->_setPaymentInfoOnCreate( $gateway );
 			
 			$paymentId = $gateway->createCustomerPaymentProfile();
 		}
@@ -192,6 +194,7 @@ class ParadoxLabs_AuthorizeNetCim_Model_Card extends ParadoxLabs_TokenBase_Model
 			
 			$gateway->setParameter( 'billToFirstName', $address->getFirstname() );
 			$gateway->setParameter( 'billToLastName', $address->getLastname() );
+			$gateway->setParameter( 'billToCompany', $address->getCompany() );
 			$gateway->setParameter( 'billToAddress', $address->getStreet(1) );
 			$gateway->setParameter( 'billToCity', $address->getCity() );
 			$gateway->setParameter( 'billToState', $address->getRegion() );
@@ -200,29 +203,7 @@ class ParadoxLabs_AuthorizeNetCim_Model_Card extends ParadoxLabs_TokenBase_Model
 			$gateway->setParameter( 'billToPhoneNumber', $address->getTelephone() );
 			$gateway->setParameter( 'billToFaxNumber', $address->getFax() );
 			
-			if( strlen( $this->getInfoInstance()->getCcNumber() ) >= 12 ) {
-				$gateway->setParameter( 'cardNumber', $this->getInfoInstance()->getCcNumber() );
-			}
-			else {
-				// If we were not given a full CC number, grab the masked value from Authorize.Net.
-				$profile = $gateway->getCustomerPaymentProfile();
-				
-				if( isset( $profile['paymentProfile'] ) && isset( $profile['paymentProfile']['payment']['creditCard'] ) ) {
-					$gateway->setParameter( 'cardNumber', $profile['paymentProfile']['payment']['creditCard']['cardNumber'] );
-				}
-				else {
-					Mage::throwException( Mage::helper('tokenbase')->__( 'Authorize.Net CIM Gateway: Could not load payment record.' ) );
-				}
-			}
-			
-			if( $this->getInfoInstance()->getCcExpYear() != '' && $this->getInfoInstance()->getCcExpMonth() != '' ) {
-				$gateway->setParameter( 'expirationDate', sprintf( "%04d-%02d", $this->getInfoInstance()->getCcExpYear(), $this->getInfoInstance()->getCcExpMonth() ) );
-			}
-			else {
-				$gateway->setParameter( 'expirationDate', 'XXXX' );
-			}
-			
-			$gateway->setParameter( 'cardCode', $this->getInfoInstance()->getCcCid() );
+			$this->_setPaymentInfoOnUpdate( $gateway );
 			
 			$gateway->updateCustomerPaymentProfile();
 			
@@ -237,15 +218,67 @@ class ParadoxLabs_AuthorizeNetCim_Model_Card extends ParadoxLabs_TokenBase_Model
 		if( $retry === true && isset( $response['messages']['message']['code'] ) && $response['messages']['message']['code'] == 'E00040' ) {
 			$this->setProfileId( '' );
 			$this->setPaymentId( '' );
-			$this->_createCustomerPaymentProfile( false );
+			
+			if( $this->getCustomer()->getId() > 0 && $this->getCustomer()->getAuthnetcimProfileId() != '' ) {
+				$this->getCustomer()->setAuthnetcimProfileId( '' );
+			}
+			
+			return $this->_createCustomerPaymentProfile( false );
 		}
 		
 		if( !empty( $paymentId ) ) {
 			$this->setPaymentId( $paymentId );
+			$this->setNoSync( true );
 		}
 		else {
+			$gateway->logLogs();
+			
 			Mage::throwException( Mage::helper('tokenbase')->__( 'Authorize.Net CIM Gateway: Unable to create payment record.' ) );
 		}
+		
+		return $this;
+	}
+	
+	/**
+	 * On card save, set payment data to the gateway. (Broken out for extensibility)
+	 */
+	protected function _setPaymentInfoOnCreate( $gateway )
+	{
+		$gateway->setParameter( 'cardNumber', $this->getInfoInstance()->getCcNumber() );
+		$gateway->setParameter( 'cardCode', $this->getInfoInstance()->getCcCid() );
+		$gateway->setParameter( 'expirationDate', sprintf( "%04d-%02d", $this->getInfoInstance()->getCcExpYear(), $this->getInfoInstance()->getCcExpMonth() ) );
+		
+		return $this;
+	}
+	
+	/**
+	 * On card update, set payment data to the gateway. (Broken out for extensibility)
+	 */
+	protected function _setPaymentInfoOnUpdate( $gateway )
+	{
+		if( strlen( $this->getInfoInstance()->getCcNumber() ) >= 12 ) {
+			$gateway->setParameter( 'cardNumber', $this->getInfoInstance()->getCcNumber() );
+		}
+		else {
+			// If we were not given a full CC number, grab the masked value from Authorize.Net.
+			$profile = $gateway->getCustomerPaymentProfile();
+			
+			if( isset( $profile['paymentProfile'] ) && isset( $profile['paymentProfile']['payment']['creditCard'] ) ) {
+				$gateway->setParameter( 'cardNumber', $profile['paymentProfile']['payment']['creditCard']['cardNumber'] );
+			}
+			else {
+				Mage::throwException( Mage::helper('tokenbase')->__( 'Authorize.Net CIM Gateway: Could not load payment record.' ) );
+			}
+		}
+		
+		if( $this->getInfoInstance()->getCcExpYear() != '' && $this->getInfoInstance()->getCcExpMonth() != '' ) {
+			$gateway->setParameter( 'expirationDate', sprintf( "%04d-%02d", $this->getInfoInstance()->getCcExpYear(), $this->getInfoInstance()->getCcExpMonth() ) );
+		}
+		else {
+			$gateway->setParameter( 'expirationDate', 'XXXX' );
+		}
+		
+		$gateway->setParameter( 'cardCode', $this->getInfoInstance()->getCcCid() );
 		
 		return $this;
 	}

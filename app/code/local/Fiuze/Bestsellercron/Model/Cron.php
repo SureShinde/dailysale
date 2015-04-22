@@ -43,6 +43,7 @@ class Fiuze_Bestsellercron_Model_Cron extends Mage_Core_Model_Abstract{
     protected function _clearBestSellerCategory(){
         $productCollection = Mage::getResourceModel('catalog/product_collection')
             ->addAttributeToFilter('bestsellercron_flag', true)
+            ->addAttributeToSelect('*')
             ->addCategoryFilter($this->_bestSellerCategory);
 
 
@@ -95,6 +96,7 @@ class Fiuze_Bestsellercron_Model_Cron extends Mage_Core_Model_Abstract{
 
         Mage::app()->setCurrentStore(Mage::getModel('core/store')->load(Mage_Core_Model_App::ADMIN_STORE_ID));
         $category = Mage::getModel('catalog/category')->setStoreId(Mage_Core_Model_App::ADMIN_STORE_ID)->load($this->_bestSellerCategory->getId());
+
 
         $flipped_arr = array_flip($bestSellers);
         $category->setPostedProducts($flipped_arr);

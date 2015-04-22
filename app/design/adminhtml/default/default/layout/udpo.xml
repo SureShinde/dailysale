@@ -1,0 +1,142 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Unirgy LLC
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.unirgy.com/LICENSE-M1.txt
+ *
+ * @category   Unirgy
+ * @package    Unirgy_DropshipPo
+ * @copyright  Copyright (c) 2008-2009 Unirgy LLC (http://www.unirgy.com)
+ * @license    http:///www.unirgy.com/LICENSE-M1.txt
+ */
+-->
+
+<layout>
+    <adminhtml_sales_order_view>
+        <reference name="sales_order_tabs">
+            <action method="addTab"><name>udpo_po</name><block>udpo/adminhtml_salesOrderViewTab_udpos</block></action>
+        </reference>
+    </adminhtml_sales_order_view>
+    <udpoadmin_order_po_editcosts>
+        <reference name="content">
+            <block type="udpo/adminhtml_po_editcosts" name="udpo_po_editcosts">
+                <block type="udpo/adminhtml_po_editcosts_form" name="form" template="udpo/po/editcosts/form.phtml">
+                    <block type="udpo/adminhtml_SalesOrderView_info" name="order_info" template="udropship/sales/order/view/info.phtml"></block>
+                    <block type="adminhtml/sales_order_payment" name="order_payment"></block>
+                    <block type="udpo/adminhtml_po_editcosts_items" name="order_items" template="udpo/po/editcosts/items.phtml">
+                        <action method="addItemRender"><type>default</type><block>adminhtml/sales_items_renderer_default</block><template>udpo/po/editcosts/items/renderer/default.phtml</template></action>
+                        <action method="addColumnRender"><column>name</column><block>adminhtml/sales_items_column_name</block><template>sales/items/column/name.phtml</template></action>
+                    </block>
+                </block>
+            </block>
+        </reference>
+    </udpoadmin_order_po_editcosts>
+    <udpoadmin_order_po_new>
+        <reference name="content">
+            <block type="udpo/adminhtml_po_create" name="udpo_po_create">
+                <block type="udpo/adminhtml_po_create_form" name="form" template="udpo/po/create/form.phtml">
+                    <block type="udpo/adminhtml_SalesOrderView_info" name="order_info" template="sales/order/view/info.phtml"></block>
+                    <block type="adminhtml/sales_order_payment" name="order_payment"></block>
+                    <block type="udpo/adminhtml_po_create_items" name="order_items" template="udpo/po/create/items.phtml">
+                        <action method="addItemRender"><type>default</type><block>adminhtml/sales_items_renderer_default</block><template>udpo/po/create/items/renderer/default.phtml</template></action>
+                        <action method="addItemRender"><type>bundle</type><block>udpo/adminhtml_po_bundle_itemsRenderer</block><template>udpo/po/create/items/renderer/bundle.phtml</template></action>
+                        <action method="addColumnRender"><column>qty</column><block>adminhtml/sales_items_column_qty</block><template>udpo/sales/items/column/qty.phtml</template></action>
+                        <action method="addColumnRender"><column>name</column><block>adminhtml/sales_items_column_name</block><template>sales/items/column/name.phtml</template></action>
+                    </block>
+                </block>
+            </block>
+        </reference>
+    </udpoadmin_order_po_new>
+    <udpoadmin_order_po_updateqty>
+        <block type="udpo/adminhtml_po_create_items" name="order_items" template="udpo/po/create/items.phtml">
+            <action method="addItemRender"><type>default</type><block>adminhtml/sales_items_renderer_default</block><template>udpo/po/create/items/renderer/default.phtml</template></action>
+            <action method="addItemRender"><type>bundle</type><block>udpo/adminhtml_po_bundle_itemsRenderer</block><template>udpo/po/create/items/renderer/bundle.phtml</template></action>
+            <action method="addColumnRender"><column>qty</column><block>adminhtml/sales_items_column_qty</block><template>udpo/sales/items/column/qty.phtml</template></action>
+            <action method="addColumnRender"><column>name</column><block>adminhtml/sales_items_column_name</block><template>sales/items/column/name.phtml</template></action>
+        </block>
+    </udpoadmin_order_po_updateqty>
+    <udpoadmin_order_po_view>
+        <reference name="content">
+            <block type="udpo/adminhtml_po_view" name="sales_po_edit"></block>
+        </reference>
+        <reference name="left">
+            <block type="udpo/adminhtml_po_view_tabs" name="udpo_po_view_tabs">
+                <block type="udpo/adminhtml_po_view_tab_info" name="udpo_po_tab_info" template="udpo/po/view/tab/info.phtml">
+                    <block type="udpo/adminhtml_SalesOrderView_info" name="order_info" template="udropship/sales/order/view/info.phtml"></block>
+                    <block type="adminhtml/sales_order_payment" name="order_payment"></block>
+                    <block type="udpo/adminhtml_po_view_items" name="udpo_items" template="udpo/po/view/items.phtml">
+                        <action method="addItemRender"><type>default</type><block>adminhtml/sales_items_renderer_default</block><template>udpo/po/view/items/renderer/default.phtml</template></action>
+                        <action method="addItemRender"><type>bundle</type><block>udpo/adminhtml_po_bundle_itemsRenderer</block><template>udpo/po/view/items/renderer/bundle.phtml</template></action>
+                        <action method="addColumnRender"><column>qty</column><block>adminhtml/sales_items_column_qty</block><template>udpo/sales/items/column/qty.phtml</template></action>
+                        <action method="addColumnRender"><column>name</column><block>adminhtml/sales_items_column_name</block><template>sales/items/column/name.phtml</template></action>
+                    </block>
+                    <block type="udpo/adminhtml_po_comments_view"  name="order_comments" template="udpo/po/comments/view.phtml">
+                        <action method="setParentType"><type>udpo</type></action>
+                    </block>
+                </block>
+                <action method="addTab"><name>po_tab_info</name><block>udpo_po_tab_info</block></action>
+                <action method="addTab"><name>order_invoices</name><block>udpo/adminhtml_po_view_tab_invoices</block></action>
+                <action method="addTab"><name>order_shipments</name><block>udpo/adminhtml_po_view_tab_shipments</block></action>
+            </block>
+        </reference>
+    </udpoadmin_order_po_view>
+    <udpoadmin_order_po_addcomment>
+        <block type="udpo/adminhtml_po_view_comments" name="udpo_comments">
+            <block type="udpo/adminhtml_po_comments_view"  name="order_comments" template="udpo/po/comments/view.phtml"></block>
+        </block>
+    </udpoadmin_order_po_addcomment>
+
+
+    <udpoadmin_change_qty_column_renderer>
+        <reference name="order_items">
+            <action method="addColumnRender"><column>qty</column><block>adminhtml/sales_items_column_qty</block><template>udpo/sales/items/column/qty.phtml</template></action>
+        </reference>
+    </udpoadmin_change_qty_column_renderer>
+    <adminhtml_sales_order_view>
+        <update handle="udpoadmin_change_qty_column_renderer"/>
+        <!--remove name="udmulti_js" /-->
+    </adminhtml_sales_order_view>
+    <adminhtml_sales_order_invoice_new>
+        <update handle="udpoadmin_change_qty_column_renderer"/>
+    </adminhtml_sales_order_invoice_new>
+    <adminhtml_sales_order_invoice_updateqty>
+        <update handle="udpoadmin_change_qty_column_renderer"/>
+    </adminhtml_sales_order_invoice_updateqty>
+    <adminhtml_sales_order_shipment_new>
+        <update handle="udpoadmin_change_qty_column_renderer"/>
+    </adminhtml_sales_order_shipment_new>
+    <adminhtml_sales_order_creditmemo_new>
+        <update handle="udpoadmin_change_qty_column_renderer"/>
+    </adminhtml_sales_order_creditmemo_new>
+    <adminhtml_sales_order_creditmemo_updateqty>
+        <update handle="udpoadmin_change_qty_column_renderer"/>
+    </adminhtml_sales_order_creditmemo_updateqty>
+    
+    <udpoadmin_order_po_newshipment>
+        <reference name="content">
+            <block type="udpo/adminhtml_shipment_create" name="sales_shipment_create">
+                <block type="udpo/adminhtml_shipment_createForm" name="form" template="sales/order/shipment/create/form.phtml">
+                    <block type="udpo/adminhtml_SalesOrderView_info" name="order_info" template="udropship/sales/order/view/info.phtml"></block>
+                    <block type="adminhtml/sales_order_payment" name="order_payment"></block>
+                    <block type="adminhtml/sales_order_shipment_create_tracking" name="shipment_tracking" template="sales/order/shipment/create/tracking.phtml"></block>
+                    <block type="adminhtml/sales_order_shipment_create_items" name="order_items" template="sales/order/shipment/create/items.phtml">
+                        <action method="addItemRender"><type>default</type><block>adminhtml/sales_items_renderer_default</block><template>sales/order/shipment/create/items/renderer/default.phtml</template></action>
+                        <action method="addItemRender"><type>bundle</type><block>bundle/adminhtml_sales_order_items_renderer</block><template>bundle/sales/shipment/create/items/renderer.phtml</template></action>
+                        <action method="addColumnRender"><column>qty</column><block>adminhtml/sales_items_column_qty</block><template>sales/items/column/qty.phtml</template></action>
+                        <action method="addColumnRender"><column>name</column><block>adminhtml/sales_items_column_name</block><template>sales/items/column/name.phtml</template></action>
+                    </block>
+                </block>
+            </block>
+            <block type="adminhtml/template" template="udpo/po/shipmentTotals.phtml" />
+        </reference>
+        <update handle="udpoadmin_change_qty_column_renderer"/>
+    </udpoadmin_order_po_newshipment>
+    
+    
+</layout>

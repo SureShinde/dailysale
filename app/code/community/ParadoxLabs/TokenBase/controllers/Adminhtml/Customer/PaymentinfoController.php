@@ -29,7 +29,7 @@ class ParadoxLabs_TokenBase_Adminhtml_Customer_PaymentinfoController extends Mag
 		$customer = Mage::getModel('customer/customer');
 		$customer->load( $this->getRequest()->getParam('id') );
 		if( !$customer || $customer->getId() < 1 || $customer->getId() != $this->getRequest()->getParam('id') ) {
-			echo json_encode( array( 'success' => false, 'message' => $this->__('Could not load customer.') ) );
+			$this->getResponse()->setBody( json_encode( array( 'success' => false, 'message' => $this->__('Could not load customer.') ) ) );
 			exit;
 		}
 		
@@ -111,13 +111,13 @@ class ParadoxLabs_TokenBase_Adminhtml_Customer_PaymentinfoController extends Mag
 					Mage::register( 'active_card', $card );
 				}
 				else {
-					echo json_encode( array( 'success' => false, 'message' => $this->__('Invalid Request.') ) );
+					$this->getResponse()->setBody( json_encode( array( 'success' => false, 'message' => $this->__('Invalid Request.') ) ) );
 					return;
 				}
 			}
 		}
 		else {
-			echo json_encode( array( 'success' => false, 'message' => $this->__('Invalid Request.') ) );
+			$this->getResponse()->setBody( json_encode( array( 'success' => false, 'message' => $this->__('Invalid Request.') ) ) );
 			return;
 		}
 		
@@ -130,8 +130,9 @@ class ParadoxLabs_TokenBase_Adminhtml_Customer_PaymentinfoController extends Mag
 	 */
 	public function saveAction()
 	{
-		$id			= intval( $this->getRequest()->getParam('card_id') );
 		$method		= $this->getRequest()->getParam('method');
+		$input 		= $this->getRequest()->getParam( $method );
+		$id			= intval( $input['card_id'] );
 		
 		if( $this->_formKeyIsValid() === true && $this->_methodIsValid() === true ) {
 			/**
@@ -148,7 +149,7 @@ class ParadoxLabs_TokenBase_Adminhtml_Customer_PaymentinfoController extends Mag
 					/**
 					 * Process address data
 					 */
-					$newAddrId	= intval( Mage::app()->getRequest()->getParam('shipping_address_id') );
+					$newAddrId	= isset( $input['shipping_address_id'] ) ? intval( $input['shipping_address_id'] ) : 0;
 					
 					// Existing address
 					if( $newAddrId > 0 ) {
@@ -163,7 +164,7 @@ class ParadoxLabs_TokenBase_Adminhtml_Customer_PaymentinfoController extends Mag
 						$newAddr = Mage::getModel('customer/address');
 						$newAddr->setCustomerId( $customer->getId() );
 						
-						$data = Mage::app()->getRequest()->getPost( 'billing', array() );
+						$data = isset( $input['billing'] ) ? $input['billing'] : array();
 						
 						$addressForm    = Mage::getModel('customer/form');
 						$addressForm->setFormCode('customer_address_edit');
@@ -186,7 +187,7 @@ class ParadoxLabs_TokenBase_Adminhtml_Customer_PaymentinfoController extends Mag
 					/**
 					 * Process payment data
 					 */
-					$cardData = Mage::app()->getRequest()->getParam('payment');
+					$cardData = isset( $input['payment'] ) ? $input['payment'] : array();
 					$cardData['method']		= $method;
 					$cardData['card_id']	= $card->getId();
 					
@@ -196,6 +197,7 @@ class ParadoxLabs_TokenBase_Adminhtml_Customer_PaymentinfoController extends Mag
 					
 					$newPayment = Mage::getModel('sales/quote_payment');
 					$newPayment->setQuote( Mage::getSingleton('checkout/session')->getQuote() );
+                    $newPayment->getQuote()->getBillingAddress()->setCountryId( $newAddr->getCountryId() );
 					$newPayment->importData( $cardData );
 					
 					/**
@@ -210,20 +212,20 @@ class ParadoxLabs_TokenBase_Adminhtml_Customer_PaymentinfoController extends Mag
 					Mage::getSingleton('customer/session')->unsTokenbaseFormData();
 				}
 				else {
-					echo json_encode( array( 'success' => false, 'message' => $this->__('Invalid Request.') ) );
+					$this->getResponse()->setBody( json_encode( array( 'success' => false, 'message' => $this->__('Invalid Request.') ) ) );
 					return;
 				}
 			}
 			catch( Exception $e ) {
-				Mage::getSingleton('customer/session')->setTokenbaseFormData( Mage::app()->getRequest()->getPost() );
+				Mage::getSingleton('customer/session')->setTokenbaseFormData( $input );
 				
 				Mage::helper('tokenbase')->log( $method, (string)$e );
-				echo json_encode( array( 'success' => false, 'message' => $this->__( 'ERROR: %s', $e->getMessage() ) ) );
+				$this->getResponse()->setBody( json_encode( array( 'success' => false, 'message' => $this->__( 'ERROR: %s', $e->getMessage() ) ) ) );
 				return;
 			}
 		}
 		else {
-			echo json_encode( array( 'success' => false, 'message' => $this->__('Invalid Request.') ) );
+			$this->getResponse()->setBody( json_encode( array( 'success' => false, 'message' => $this->__('Invalid Request.') ) ) );
 			return;
 		}
 		
@@ -251,23 +253,23 @@ class ParadoxLabs_TokenBase_Adminhtml_Customer_PaymentinfoController extends Mag
 						 ->save();
 				}
 				else {
-					echo json_encode( array( 'success' => false, 'error' => $this->__('Invalid Request.') ) );
+					$this->getResponse()->setBody( json_encode( array( 'success' => false, 'error' => $this->__('Invalid Request.') ) ) );
 					return;
 				}
 			}
 			catch( Exception $e ) {
 				Mage::helper('tokenbase')->log( $method, (string)$e );
 				
-				echo json_encode( array( 'success' => false, 'error' => $this->__( 'ERROR: %s', $e->getMessage() ) ) );
+				$this->getResponse()->setBody( json_encode( array( 'success' => false, 'error' => $this->__( 'ERROR: %s', $e->getMessage() ) ) ) );
 				return;
 			}
 		}
 		else {
-			echo json_encode( array( 'success' => false, 'error' => $this->__('Invalid Request.') ) );
+			$this->getResponse()->setBody( json_encode( array( 'success' => false, 'error' => $this->__('Invalid Request.') ) ) );
 			return;
 		}
 		
-		echo json_encode( array( 'success' => true, 'error' => $this->__('Payment record deleted.') ) );
+		$this->getResponse()->setBody( json_encode( array( 'success' => true, 'error' => $this->__('Payment record deleted.') ) ) );
 		return;
 	}
 	

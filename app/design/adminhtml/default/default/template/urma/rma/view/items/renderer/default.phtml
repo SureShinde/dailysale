@@ -1,0 +1,13 @@
+<?php $_item = $this->getItem() ?>
+<tr class="border">
+    <td><?php echo $this->getColumnHtml($_item, 'name') ?></td>
+    <td><?php echo $this->htmlEscape($_item->getItemConditionName()) ?></td>
+    <td class="last">
+        <table cellspacing="0" class="qty-table">
+            <tr>
+                <td style="white-space:nowrap"><?php echo Mage::helper('urma')->__('Return Sent') ?></td>
+                <td><strong><?php echo $_item->getQty()*1 ?></strong></td>
+            </tr>
+        </table>
+    </td>
+</tr>

@@ -1,0 +1,142 @@
+===== 2.1.19 =====
+  * Added vendors list page
+
+===== 2.1.18 =====
+  * Fixed product collection filter applied on product view page
+  * Fixed captcha image refresh
+
+===== 2.1.17 =====
+  * Added CAPTCHA on registration form
+
+===== 2.1.16 =====
+  * Added ability to insert canonical tag on landing page
+
+===== 2.1.15 =====
+  * Added landing page Google Analytics
+  * Added landing page meta keywords, description
+  * Fixed categories tab in vendor portal system view product edit
+
+===== 2.1.14 =====
+  * Fixed default url when custom microsite router frontname
+
+===== 2.1.13 =====
+  * Added filter compatibility for flat categories
+
+===== 2.1.12 =====
+  * Removed orphaned rewrite
+
+===== 2.1.11 =====
+  * Added enable/disable categories on frontend option
+  * Fixed website tab in vendor portal manage products
+  * Fixed welcome email sent with refect email during vendor refect
+  * Added compatibility with ajaxcart when landing page is subdomain
+
+===== 2.1.10 =====
+  * Added log license exceptions
+
+===== 2.1.9 =====
+  * Fixed shipping methods save during auto approval
+
+===== 2.1.8 =====
+  * Added logic to eliminate setting of umicrosite in Config/Web/Default Web URL
+  * Added logic to optimize is landing page check (eliminate vendor model load)
+
+===== 2.1.7 =====
+  * Added code to support vendor/product associations indexer
+  * Fixed apply catalogrules problem during save from vendor portal "system view" in case staging website selected
+
+===== 2.1.6 =====
+  * Fixed multiselect usage in new registration template send to admin
+
+===== 2.1.5 =====
+  * Added vendor auto-approve configuration
+
+===== 2.1.4 =====
+  * Added supported logic for PRO "new vendor reject status with reason and reject email"
+
+===== 2.1.3 =====
+  * Fixed vendor landing page product listing with root category is_anchor=no
+
+===== 2.1.2 =====
+  * Fixed compatibility with latest shipping methods format changes
+
+===== 2.1.1 =====
+  * Added decision and stock collect/check refactoring to support forced_vendor_id on cart items
+    and mixing with normal quote items
+
+===== 2.1.0 =====
+  * Added support for marketplace suit of add-ons
+  * Added breadcrumbs in microsite landing page
+
+===== 2.0.8 =====
+  * Fixed 404 product page in vendor microsite
+    when using bare udropship or multivendor decision method turned off
+    and udropship/microsite/front_show_all_products=yes
+
+===== 2.0.6 =====
+  * Fixed pages return 404 when update store base URL = No and using subdomains
+
+===== 2.0.5 =====
+  * Fixed infinite loop in store->getBaseUrl
+
+===== 2.0.4 =====
+  * Fixed pagination on microsite when update store base url = No
+  * Fixed product view page Not Found related to udropship/microsite/front_show_all_products option
+  * Added redirect to vendor login instead of admin login when session expire due to inactivity
+
+===== 2.0.0 =====
+  * Fixed vendor custom theme for admin area (Manage Products setting)
+  * Fixed "Product attributes to HIDE from vendors" compatibility with 1.6.x
+  * Added "From URL Path (domain.com/vendor)" option to udropship/microsite/subdomain_level
+  * Added option 'udropship/microsite/front_show_all_products' to show all associated products
+    vendor defined both in udropship_vendor attribute and in multivendor assignment
+  * Added option "Stick microsite products in cart"
+    Products that added to cart from vendor microsite will be stuck to that vendor regardless of decision method.
+    "Yes and display vendor" - will display vendor name as item custom option.
+  * Added "Limit Categories" vendor preference
+  * Added "Limit Websites" vendor preference and filter store switcher
+
+===== 1.4.4 =====
+  * Added layered navigation on microsite home page (root category must be anchor!)
+  * Fixed product list sorting and paging on microsite home page
+
+===== 1.4.3 =====
+  * Fixed htmlEscape() in templates for 1.3.x
+
+===== 1.4.2 =====
+  * Fixed logging out to 404 Page not found on some installations
+
+===== 1.4.1 =====
+  * Added Vendor landing page custom title
+
+===== 1.4.0 =====
+  * Changes for uDropship 1.9.1.0 (vendor autocomplete control)
+
+===== 1.3.5 =====
+  * Added product list block for vendor home page
+
+===== 1.3.4 =====
+  * Added configuration to hide product attributes when vendors edit products
+  * Added vendor configuration to show/hide PRODUCTS menu item in vendor interface
+  * Improved creation of vendor URLs in template
+
+===== 1.3.3 =====
+  * Fixed intermittent issue with single sign-on between vendor and admin interface
+
+===== 1.3.2 =====
+  * Fixed compatibility with CE 1.4.1.0 and EE 1.8.0.0 for product collections
+
+===== 1.3.1 =====
+  * Added configuration to change base store URL to vendor subdomain
+
+===== 1.3.0 =====
+  * Fixed compatibility with custom admin modules
+
+===== 1.2.1 =====
+  * Fixed intermittent admin staging website error message
+
+===== 1.2.0 =====
+  * Added Mage::helper('umicrosite')->getProductUrl($product)
+
+===== 1.1.1 =====
+  * Added a Staging Website for Vendors' New Products

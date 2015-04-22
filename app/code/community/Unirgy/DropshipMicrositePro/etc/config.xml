@@ -1,0 +1,377 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Unirgy LLC
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.unirgy.com/LICENSE-M1.txt
+ *
+ * @category   Unirgy
+ * @package    Unirgy_DropshipMicrositePro
+ * @copyright  Copyright (c) 2008-2009 Unirgy LLC (http://www.unirgy.com)
+ * @license    http:///www.unirgy.com/LICENSE-M1.txt
+ */
+
+-->
+<config>
+    <modules>
+        <Unirgy_DropshipMicrositePro>
+            <version>1.0.18</version>
+        </Unirgy_DropshipMicrositePro>
+    </modules>
+
+    <global>
+        <cms>
+            <page>
+                <tempate_filter>udmspro/templateFilter</tempate_filter>
+            </page>
+            <block>
+                <tempate_filter>udmspro/templateFilter</tempate_filter>
+            </block>
+        </cms>
+        <models>
+            <udmspro>
+                <class>Unirgy_DropshipMicrositePro_Model</class>
+                <resourceModel>udmspro_mysql4</resourceModel>
+            </udmspro>
+            <udmspro_mysql4>
+                <class>Unirgy_DropshipMicrositePro_Model_Mysql4</class>
+            </udmspro_mysql4>
+            <umicrosite>
+                <rewrite>
+                    <registration>Unirgy_DropshipMicrositePro_Model_Registration</registration>
+                </rewrite>
+            </umicrosite>
+        </models>
+
+        <resources>
+            <udmspro_setup>
+                <setup>
+                    <module>Unirgy_DropshipMicrositePro</module>
+                    <class>Mage_Sales_Model_Mysql4_Setup</class>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </udmspro_setup>
+            <udmspro_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </udmspro_write>
+            <udmspro_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </udmspro_read>
+        </resources>
+
+        <blocks>
+            <udmspro>
+                <class>Unirgy_DropshipMicrositePro_Block</class>
+            </udmspro>
+        </blocks>
+
+        <helpers>
+            <udmspro>
+                <class>Unirgy_DropshipMicrositePro_Helper</class>
+            </udmspro>
+        </helpers>
+
+        <udropship>
+            <vendor>
+                <fields>
+                    <cms_landing_page>
+                        <label>CMS Landing Page</label>
+                        <type>select</type>
+                        <fieldset>microsite</fieldset>
+                        <source_model>umicrosite/source</source_model>
+                        <source>cms_landing_page</source>
+                        <position>210</position>
+                        <default></default>
+                    </cms_landing_page>
+                    <vendor_name>
+                        <label>Vendor Name</label>
+                        <fieldset>vendor_info</fieldset>
+                        <type>text</type>
+                        <reg_class>udvendor_name-unique</reg_class>
+                    </vendor_name>
+                    <telephone>
+                        <label>Phone Number</label>
+                        <fieldset>vendor_info</fieldset>
+                        <type>text</type>
+                        <reg_class>validate-digits</reg_class>
+                    </telephone>
+                    <email>
+                        <label>Email Address</label>
+                        <fieldset>vendor_info</fieldset>
+                        <type>text</type>
+                        <reg_class>validate-email udemail-unique</reg_class>
+                    </email>
+                    <password>
+                        <label>Password</label>
+                        <fieldset>vendor_info</fieldset>
+                        <type>password</type>
+                    </password>
+                    <password_confirm>
+                        <label>Confirm Password</label>
+                        <fieldset>vendor_info</fieldset>
+                        <type>password</type>
+                        <reg_class>validate-cpassword</reg_class>
+                    </password_confirm>
+                    <carrier_code>
+                        <fieldset>vendor_info</fieldset>
+                        <label>Preferred Shipping Carrier</label>
+                        <type>select</type>
+                        <reg_source_model>umicrosite/source</reg_source_model>
+                        <reg_use_selector>1</reg_use_selector>
+                    </carrier_code>
+                    <url_key>
+                        <reg_label>Preferred subdomain name</reg_label>
+                        <type>text</type>
+                        <reg_frontend_model>udmspro/vendor_register_form_urlkey</reg_frontend_model>
+                        <reg_class>validate-urlkey udvendor_urlkey-unique</reg_class>
+                    </url_key>
+                    <description>
+                        <label>Shop Description</label>
+                        <fieldset>microsite</fieldset>
+                        <type>textarea</type>
+                    </description>
+                    <vendor_attn>
+                        <fieldset>shipping_origin</fieldset>
+                        <label>Attention To</label>
+                        <type>text</type>
+                    </vendor_attn>
+                    <street1>
+                        <fieldset>shipping_origin</fieldset>
+                        <label>Street Address</label>
+                        <type>text</type>
+                    </street1>
+                    <street2>
+                        <fieldset>shipping_origin</fieldset>
+                        <label>Street Address Line 2</label>
+                        <type>text</type>
+                    </street2>
+                    <city>
+                        <fieldset>shipping_origin</fieldset>
+                        <label>City</label>
+                        <type>text</type>
+                    </city>
+                    <zip>
+                        <fieldset>shipping_origin</fieldset>
+                        <label>Zip/Postal Code</label>
+                        <type>text</type>
+                    </zip>
+                    <region_id>
+                        <fieldset>shipping_origin</fieldset>
+                        <label>State/Province</label>
+                        <type>select</type>
+                        <reg_source_model>udmspro/source</reg_source_model>
+                        <reg_frontend_model>udmspro/vendor_register_form_region</reg_frontend_model>
+                        <reg_use_selector>1</reg_use_selector>
+                    </region_id>
+                    <country_id>
+                        <fieldset>shipping_origin</fieldset>
+                        <label>Country</label>
+                        <type>select</type>
+                        <reg_source_model>udmspro/source</reg_source_model>
+                        <reg_frontend_model>udmspro/vendor_register_form_country</reg_frontend_model>
+                    </country_id>
+
+                    <billing_use_shipping>
+                        <fieldset>billing_address</fieldset>
+                        <label>Country</label>
+                        <type>select</type>
+                        <reg_source_model>udropship/source</reg_source_model>
+                    </billing_use_shipping>
+                    <billing_vendor_attn>
+                        <fieldset>billing_address</fieldset>
+                        <label>Attention To</label>
+                        <type>text</type>
+                    </billing_vendor_attn>
+                    <billing_street1>
+                        <fieldset>billing_address</fieldset>
+                        <label>Street Address</label>
+                        <type>text</type>
+                    </billing_street1>
+                    <billing_street2>
+                        <fieldset>billing_address</fieldset>
+                        <label>Street Address Line 2</label>
+                        <type>text</type>
+                    </billing_street2>
+                    <billing_city>
+                        <fieldset>billing_address</fieldset>
+                        <label>City</label>
+                        <type>text</type>
+                    </billing_city>
+                    <billing_zip>
+                        <fieldset>billing_address</fieldset>
+                        <label>Zip/Postal Code</label>
+                        <type>text</type>
+                    </billing_zip>
+                    <billing_region_id>
+                        <fieldset>billing_address</fieldset>
+                        <label>State/Province</label>
+                        <type>select</type>
+                        <reg_source_model>udmspro/source</reg_source_model>
+                        <reg_frontend_model>udmspro/vendor_register_form_region</reg_frontend_model>
+                        <reg_use_selector>1</reg_use_selector>
+                    </billing_region_id>
+                    <billing_country_id>
+                        <fieldset>billing_address</fieldset>
+                        <label>Country</label>
+                        <type>select</type>
+                        <reg_source_model>udmspro/source</reg_source_model>
+                        <reg_frontend_model>udmspro/vendor_register_form_country</reg_frontend_model>
+                    </billing_country_id>
+                    <agree_terms_conditions>
+                        <label><![CDATA[I agree <a href="{{url}}">Terms and Conditions</a>]]></label>
+                        <fieldset>vendor_info</fieldset>
+                        <reg_source_model>udmspro/source</reg_source_model>
+                        <source>agree_terms_conditions</source>
+                        <type>select</type>
+                        <reg_frontend_model>udmspro/vendor_register_form_termcond</reg_frontend_model>
+                    </agree_terms_conditions>
+                </fields>
+            </vendor>
+        </udropship>
+
+        <template>
+            <email>
+                <udropship_microsite_signup_template>
+                   <file>udmspro_signup.html</file>
+               </udropship_microsite_signup_template>
+               <udropship_microsite_welcome_template>
+                   <file>udmspro_welcome.html</file>
+               </udropship_microsite_welcome_template>
+               <udropship_microsite_confirmation_template module="umicrosite">
+                   <label>Dropship Vendor Confirmation Email</label>
+                   <file>udmspro_confirmation.html</file>
+                   <type>html</type>
+               </udropship_microsite_confirmation_template>
+                <udropship_microsite_reject_template module="umicrosite">
+                    <label>Dropship Vendor Reject Email</label>
+                    <file>udmspro_reject.html</file>
+                    <type>html</type>
+                </udropship_microsite_reject_template>
+            </email>
+        </template>
+
+        <events>
+        </events>
+
+    </global>
+
+    <frontend>
+        <secure_url>
+            <udmspro_vendor>/udmspro/vendor/</udmspro_vendor>
+        </secure_url>
+        <events>
+            <cms_page_render>
+                <observers>
+                    <udmspro>
+                        <type>singleton</type>
+                        <class>udmspro/observer</class>
+                        <method>cms_page_render</method>
+                    </udmspro>
+                </observers>
+            </cms_page_render>
+        </events>
+        <routers>
+            <udmspro>
+                <use>standard</use>
+                <args>
+                    <module>Unirgy_DropshipMicrositePro</module>
+                    <frontName>udmspro</frontName>
+                    <modules>
+                        <udmspro before="Unirgy_DropshipMicrosite">Unirgy_DropshipMicrositePro</udmspro>
+                    </modules>
+                </args>
+            </udmspro>
+            <umicrosite>
+                <args>
+                    <modules>
+                        <udmspro before="Unirgy_DropshipMicrosite">Unirgy_DropshipMicrositePro</udmspro>
+                    </modules>
+                </args>
+            </umicrosite>
+        </routers>
+        <layout>
+            <updates>
+                <udmspro>
+                    <file>udmspro.xml</file>
+                </udmspro>
+                <udmspro_front>
+                    <file>udmspro_front.xml</file>
+                </udmspro_front>
+            </updates>
+        </layout>
+    </frontend>
+
+    <admin>
+        <routers>
+            <udmsproadmin>
+                <use>admin</use>
+                <args>
+                    <module>Unirgy_DropshipMicrositePro_Adminhtml</module>
+                    <frontName>udmsproadmin</frontName>
+                </args>
+            </udmsproadmin>
+        </routers>
+    </admin>
+
+    <adminhtml>
+        <layout>
+            <updates>
+                <udmspro>
+                    <file>udmspro.xml</file>
+                </udmspro>
+            </updates>
+        </layout>
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <udsignup>
+                                            <title>Vendor Registration</title>
+                                            <sort_order>53</sort_order>
+                                        </udsignup>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+        <events>
+        </events>
+    </adminhtml>
+
+    <default>
+        <udropship>
+            <microsite>
+                <confirmation_template>udropship_microsite_confirmation_template</confirmation_template>
+                <reject_template>udropship_microsite_reject_template</reject_template>
+            </microsite>
+	    </udropship>
+        <udsignup>
+            <form>
+                <fieldsets><![CDATA[[{"title":"Vendor Registration","sort_order":"0","top_columns_def":[],"bottom_columns_def":[],"left_columns_def":[{"column_field":"vendor_name","is_required":"1","use_custom_label":"1","custom_label":"Shop Name","sort_order":"0"},{"column_field":"telephone","is_required":"1","custom_label":"","sort_order":"10"},{"column_field":"email","is_required":"1","custom_label":"","sort_order":"20"},{"column_field":"carrier_code","is_required":"1","custom_label":"","sort_order":"30"},{"column_field":"url_key","is_required":"1","custom_label":"","sort_order":"40"},{"column_field":"comments","custom_label":"","sort_order":"50"}],"right_columns_def":[{"column_field":"vendor_attn","is_required":"1","custom_label":"","sort_order":"0"},{"column_field":"street1","is_required":"1","custom_label":"","sort_order":"10"},{"column_field":"street2","custom_label":"","sort_order":"20"},{"column_field":"city","is_required":"1","custom_label":"","sort_order":"30"},{"column_field":"zip","is_required":"1","custom_label":"","sort_order":"40"},{"column_field":"region_id","custom_label":"","sort_order":"50"},{"column_field":"country_id","is_required":"1","custom_label":"","sort_order":"60"},{"column_field":"logo","is_required":"1","custom_label":"","sort_order":"70"}],"fields_extra":{"vendor_name":{"use_custom_label":"1","custom_label":"Shop Name"},"telephone":{"use_custom_label":null,"custom_label":""},"email":{"use_custom_label":null,"custom_label":""},"carrier_code":{"use_custom_label":null,"custom_label":""},"url_key":{"use_custom_label":null,"custom_label":""},"comments":{"use_custom_label":null,"custom_label":""},"vendor_attn":{"use_custom_label":null,"custom_label":""},"street1":{"use_custom_label":null,"custom_label":""},"street2":{"use_custom_label":null,"custom_label":""},"city":{"use_custom_label":null,"custom_label":""},"zip":{"use_custom_label":null,"custom_label":""},"region_id":{"use_custom_label":null,"custom_label":""},"country_id":{"use_custom_label":null,"custom_label":""},"logo":{"use_custom_label":null,"custom_label":""}},"required_fields":["vendor_name","telephone","email","carrier_code","url_key","vendor_attn","street1","city","zip","country_id","logo"],"left_columns":["vendor_name","telephone","email","carrier_code","url_key","comments"],"right_columns":["vendor_attn","street1","street2","city","zip","region_id","country_id","logo"]}]]]></fieldsets>
+            </form>
+        </udsignup>
+        <web>
+            <default>
+                <umicrosite_default_landingpage>default-microsite-vendor-landing-page</umicrosite_default_landingpage>
+            </default>
+        </web>
+    </default>
+</config>

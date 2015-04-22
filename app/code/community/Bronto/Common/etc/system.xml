@@ -422,7 +422,7 @@
             <label>Coupon Management</label>
             <tab>bronto</tab>
             <frontend_type>text</frontend_type>
-            <sort_order>899</sort_order>
+            <sort_order>898</sort_order>
             <show_in_default>1</show_in_default>
             <show_in_website>1</show_in_website>
             <show_in_store>1</show_in_store>
@@ -632,11 +632,71 @@
                 </apply_coupon>
             </groups>
         </bronto_coupon>
+        <bronto_cartrecovery module="bronto_common">
+            <label>Cart Recovery Integration</label>
+            <tab>bronto</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>900</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <about>
+                    <frontend_type>text</frontend_type>
+                    <frontend_model>bronto_common/adminhtml_system_config_about</frontend_model>
+                    <sort_order>0</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                </about>
+                <settings>
+                    <label>Settings</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <comment><![CDATA[With Cart Recovery, you can recover more
+                      revenue
+                      by sending reminders to customers that have abandoned their
+                      shopping cart. To learn more, visit the <a
+                        target="_blank" href="https://appcenter.bronto.com/apps/cart-recovery">Bronto
+                        App Center</a> and contact your account manager.<br>
+                        <strong>Disclaimer</strong>: When using Cart Recovery,
+                        you will want to disable the Reminder Emails and Order
+                        Import modules of this extension. Please contact Support
+                        if you have any questions.<br>]]></comment>
+                    <fields>
+                        <code>
+                            <label>Cart Recovery Script</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </code>
+                        <other>
+                            <label>Other Product Attribute</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bronto_common/system_config_source_attributes</source_model>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Select the product attribute that will
+                              represent the <em>lineItemProductOther</em> field for line
+                              items.]]></comment>
+                        </other>
+                    </fields>
+                </settings>
+            </groups>
+        </bronto_cartrecovery>
         <bronto_popup module="bronto_common">
             <label>Pop-up Manager Integration</label>
             <tab>bronto</tab>
             <frontend_type>text</frontend_type>
-            <sort_order>898</sort_order>
+            <sort_order>899</sort_order>
             <show_in_default>1</show_in_default>
             <show_in_website>1</show_in_website>
             <show_in_store>1</show_in_store>

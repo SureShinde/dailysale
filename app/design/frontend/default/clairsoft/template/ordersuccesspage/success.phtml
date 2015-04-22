@@ -87,9 +87,11 @@ $orderObj = Mage::getModel('sales/order')->loadByIncrementId($this->getOrderId()
   adroll_custom_data = {"ORDER_ID": <?php echo($this->getOrderId()); ?>};
 </script>
 
-<!-- FlexOffers.com tracking pixel -->
+<!-- BEGIN OF FLEXOFFERS.COM TRACKING CODE -->
 
-<img src="http://track.flexlinks.com/tracker.aspx?AID={3BCF6C5F-1458-4D9B-AAED-D98B70BF50B9}&AMT=<?php echo($subtotal); ?>&UID=<?php echo($this->getOrderId()); ?>" width="1" height="1" alt=""/> <!-- END OF FLEXOFFERS.COM TRACKING CODE -->
+<img src="http://track.flexlinks.com/tracker.aspx?AID=b6c1c199-5003-49c0-bcb1-87f1839155cf&AMT=<?php echo($subtotal); ?>&CMM=&UID=<?php echo($this->getOrderId()); ?>" width="1" height="1" alt=""/>
+
+<!-- END OF FLEXOFFERS.COM TRACKING CODE -->
 
 <!-- Google Code for Daily Sale Conversion Conversion Page -->
 <script type="text/javascript">
@@ -147,3 +149,27 @@ var google_remarketing_only = false;
 
 </div>
 <!-- END Google Trusted Stores Order -->
+
+<!-- Google Code for Remarketing Tag -->
+
+<script type="text/javascript">
+var google_tag_params = {
+ecomm_totalvalue: <?php echo($subtotal); ?>
+};
+</script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 1003172301;
+var google_custom_params = window.google_tag_params;
+var google_remarketing_only = true;
+/* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/1003172301/?value=0&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+
+<!-- End Google Code for Remarketing Tag -->

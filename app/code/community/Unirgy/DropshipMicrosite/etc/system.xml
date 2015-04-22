@@ -1,0 +1,215 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Unirgy LLC
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.unirgy.com/LICENSE-M1.txt
+ *
+ * @category   Unirgy
+ * @package    Unirgy_DropshipMicrosite
+ * @copyright  Copyright (c) 2008-2009 Unirgy LLC (http://www.unirgy.com)
+ * @license    http:///www.unirgy.com/LICENSE-M1.txt
+ */
+-->
+<config>
+    <sections>
+        <udropship>
+            <groups>
+                <microsite>
+                    <label>MicroSite Options</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>50</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <show_products_menu_item>
+                            <label>Enable "System View" menu item in vendor portal</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>If enabled this option gives vendors limited access to admin area to create new products, update existing (filtered by Dropship Vendor attribute). The option may be overridden on vendor level.</comment>
+                        </show_products_menu_item>
+                        <subdomain_level>
+                            <label>Subdomain level to use for vendor</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>umicrosite/source</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </subdomain_level>
+                        
+                        <landing_page_title>
+                            <label>Landing page title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>15</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </landing_page_title>
+                        <landing_meta_keywords>
+                            <label>Landing page Meta Keywords</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>16</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </landing_meta_keywords>
+                        <landing_meta_description>
+                            <label>Landing page Meta Description</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>17</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </landing_meta_description>
+
+                        <template_vendor>
+                            <label>Use this vendor as a template for new registrations</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>umicrosite/source</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </template_vendor>
+                        <update_store_base_url translate="label">
+                            <label>Update Store Base URL</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>21</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </update_store_base_url>
+
+                        <auto_approve>
+                            <label>Automatically approve vendor applications</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>umicrosite/source</source_model>
+                            <sort_order>22</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </auto_approve>
+
+                        <signup_template translate="label">
+                            <label>Registration Confirmation Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_template</source_model>
+                            <sort_order>25</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </signup_template>
+                        <welcome_template translate="label">
+                            <label>New Vendor Welcome Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_template</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </welcome_template>
+
+                        <registration_carriers>
+                            <label>Carriers to allow during vendor registration</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>umicrosite/source</source_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </registration_carriers>
+
+                        <registration_receiver>
+                            <label>New Registrations Receiver(s)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Comma separated</comment>
+                        </registration_receiver>
+                        <registration_subject>
+                            <label>New Registrations Email Subject</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </registration_subject>
+                        <registration_template>
+                            <label>New Registrations Template</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>120</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </registration_template>
+
+                        <staging_website translate="label">
+                            <label>Staging Website</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>umicrosite/source</source_model>
+                            <sort_order>150</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </staging_website>
+                        <hide_product_attributes translate="label">
+                            <label>Product attributes to HIDE from vendors</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>umicrosite/source</source_model>
+                            <sort_order>170</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </hide_product_attributes>
+                        <front_show_all_products translate="label">
+                            <label>Show all vendor products on frontend (including multivendor associations)</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>180</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </front_show_all_products>
+                        <filter_vendor_categories translate="label">
+                            <label>Enable filter vendor categories on frontend</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>500</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </filter_vendor_categories>
+                    </fields>
+                </microsite>
+                <stock>
+                    <fields>
+                        <stick_microsite>
+                            <label>Stick microsite products in cart</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>umicrosite/source</source_model>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Products that added to cart from vendor microsite will be stuck to that vendor regardless of decision method &lt;br&gt; "Yes and display vendor" - will display vendor name as item custom option </comment>
+                        </stick_microsite>
+                    </fields>
+                </stock>
+            </groups>
+        </udropship>
+    </sections>
+</config>

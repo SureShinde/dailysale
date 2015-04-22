@@ -50,7 +50,7 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
         $tax          = ($item->getTaxAmount() ? $item->getTaxAmount() : 0);
         $baseRowTotal = ($item->getRowTotal() - $item->getDiscountAmount() + $tax);
 
-        return (float) ($baseRowTotal / $item->getQtyOrdered());
+        return (float) ($baseRowTotal);
     }
 
     /**
@@ -62,12 +62,36 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
     protected function _applyCriteria($items) {
         if ($this->_criteria == 'revenue') {
             $bestSellers = $this->_maxRevenue($items);
-        } else {
+        } else if('qty'){
+            $bestSellers = $this->_maxQty($items);
+        } else if('profit'){
             $bestSellers = $this->_maxProfit($items);
         }
-
-        arsort($bestSellers);
-        return $bestSellers;
+        $result = $this->_changeFormatArray($bestSellers);
+        arsort($result);
+        return $result;
+    }
+    /**
+     * @param array $bestSellers
+     * @return array
+     */
+    private function _changeFormatArray($bestSellers)
+    {
+        $result = array();
+        for (reset($bestSellers); $key = key($bestSellers); next($bestSellers) ) {
+            if($bestSellers[$key] instanceof Varien_Object){
+                $profit = $bestSellers[$key]->getProfit();
+                $parent = $bestSellers[$key]->getParent();
+                if($result[$parent]){
+                    $result[$parent] = ($result[$parent] > $profit) ? $result[$parent] : $profit;
+                }else{
+                    $result[$parent] = $profit;
+                }
+            }else{
+                $result[$key] = $bestSellers[$key];
+            }
+        }
+        return $result;
     }
 
     /**
@@ -84,8 +108,89 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
         $items = array();
 
         foreach ($orderItems as $orderItem) {
-            $product                  = $orderItem->getProduct();
-            $items[$product->getId()] = $this->_getRowTotalWithDiscountInclTax($orderItem);
+            $product = $orderItem->getProduct();
+            if($product->getTypeId()=='configurable'){
+                $itemsSimple = Mage::getResourceModel('sales/order_item_collection')
+                    ->addFieldToFilter('created_at', array('gteq' => $this->_getPeriod()))
+                    ->addFieldToFilter('parent_item_id', array('eq' => $orderItem->getId()))
+                    ->getItems();
+                foreach($itemsSimple as $simple){
+                    $productSimple = $simple->getProduct();
+                    $profit = (float) $this->_getRowTotalWithDiscountInclTax($orderItem);
+
+                    if ($profit > 0) {
+                        if(!is_null($productSimple->getId())){
+                            if(!is_null($items[$productSimple->getId()])){
+                                $items[$productSimple->getId()]->setParent($product->getId());
+                                $items[$productSimple->getId()]->setProfit($items[$productSimple->getId()]->getProfit()+$profit);
+                            }else{
+                                $object = new Varien_Object();
+                                $object->setParent($product->getId());
+                                $object->setProfit($profit);
+                                $items[$productSimple->getId()]=$object;
+                            }
+                        }
+                    }
+                }
+            }else{
+                if(!is_null($product->getId())){
+                    $items[$product->getId()] += $this->_getRowTotalWithDiscountInclTax($orderItem);
+                }
+            }
+        }
+
+        return $items;
+    }
+
+    /**
+     * Apply max qty criteria
+     *
+     * example array(
+     *      [product ID] => sales_flat_order_item price (include discount and tax)
+     * )
+     *
+     * @param array $orderItems
+     * @return array
+     */
+    protected function _maxQty($orderItems) {
+        $items = array();
+
+        foreach ($orderItems as $orderItem) {
+            $product = $orderItem->getProduct();
+            /**
+             * @todo will be set real price if cost doesn't exist
+             *          check cost in the live db
+             */
+            if($product->getTypeId()=='configurable'){
+                $itemsSimple = Mage::getResourceModel('sales/order_item_collection')
+                    ->addFieldToFilter('created_at', array('gteq' => $this->_getPeriod()))
+                    ->addFieldToFilter('parent_item_id', array('eq' => $orderItem->getId()))
+                    ->getItems();
+                foreach($itemsSimple as $simple){
+                    $productSimple = $simple->getProduct();
+                    $qty = (float) $simple->getQtyOrdered();
+                    if ($qty > 0) {
+                        if(!is_null($productSimple->getId())){
+                            if(!is_null($items[$productSimple->getId()])){
+                                $items[$productSimple->getId()]->setParent($product->getId());
+                                $items[$productSimple->getId()]->setProfit($items[$productSimple->getId()]->getProfit()+$qty);
+                            }else{
+                                $object = new Varien_Object();
+                                $object->setParent($product->getId());
+                                $object->setProfit($qty);
+                                $items[$productSimple->getId()]=$object;
+                            }
+                        }
+                    }
+                }
+            }else{
+                $qty   = $orderItem->getQtyOrdered();
+                if ($qty > 0) {
+                    if(!is_null($product->getId())){
+                        $items[$product->getId()] += $qty;
+                    }
+                }
+            }
         }
 
         return $items;
@@ -106,16 +211,43 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
 
         foreach ($orderItems as $orderItem) {
             $product = $orderItem->getProduct();
-
             /**
              * @todo will be set real price if cost doesn't exist
              *          check cost in the live db
              */
-            $cost   = ($product->getCost()) ? $product->getCost() : $product->getPrice();
-            $profit = (float) ($this->_getRowTotalWithDiscountInclTax($orderItem) - $cost);
+            if($product->getTypeId()=='configurable'){
+                $itemsSimple = Mage::getResourceModel('sales/order_item_collection')
+                    ->addFieldToFilter('created_at', array('gteq' => $this->_getPeriod()))
+                    ->addFieldToFilter('parent_item_id', array('eq' => $orderItem->getId()))
+                    ->getItems();
+                foreach($itemsSimple as $simple){
+                    $productSimple = $simple->getProduct();
+                    $cost   = ($productSimple->getCost()) ? $productSimple->getCost() : $productSimple->getPrice();
+                    $profit = (float) ($this->_getRowTotalWithDiscountInclTax($orderItem) - $cost * $simple->getQtyOrdered());
 
-            if ($profit > 0) {
-                $items[$product->getId()] = $profit;
+                    if ($profit > 0) {
+                        if(!is_null($productSimple->getId())){
+                            if(!is_null($items[$productSimple->getId()])){
+                                $items[$productSimple->getId()]->setParent($product->getId());
+                                $items[$productSimple->getId()]->setProfit($items[$productSimple->getId()]->getProfit()+$profit);
+                            }else{
+                                $object = new Varien_Object();
+                                $object->setParent($product->getId());
+                                $object->setProfit($profit);
+                                $items[$productSimple->getId()]=$object;
+                            }
+                        }
+                    }
+                }
+            }else{
+                $cost   = ($product->getCost()) ? $product->getCost() : $product->getPrice();
+                $profit = (float) ($this->_getRowTotalWithDiscountInclTax($orderItem) - $cost) * $orderItem->getQtyOrdered();
+
+                if ($profit > 0) {
+                    if(!is_null($product->getId())){
+                        $items[$product->getId()] += $profit;
+                    }
+                }
             }
         }
 

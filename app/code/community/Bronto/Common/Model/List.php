@@ -1,5 +1,4 @@
-<?php
-
+<?php 
 class Bronto_Common_Model_List
 {
     private $_helper;
@@ -7,10 +6,13 @@ class Bronto_Common_Model_List
 
     public function __construct($params = array())
     {
+        $settings = null;
         if (count($params) >= 2) {
             list($module, $settings) = $params;
         } else {
             $module = $params[0];
+        }
+        if (is_null($settings)) {
             $settings = 'settings';
         }
         $this->_path = "{$module}/{$settings}/exclusion";
