@@ -1269,6 +1269,8 @@ ul.tabs {
   #product_tabs_custom_contents .tab-feature-list li {
     margin-left: 15px;
     clear: left; }
+  #product_tabs_custom_contents li {
+    list-style: disc !important;}
 
 /* line 484, ../sass/product_detail.scss */
 .block-related {
