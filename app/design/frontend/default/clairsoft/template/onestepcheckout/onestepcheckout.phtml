@@ -451,11 +451,12 @@
             //save address when change state/region field
     <?php if ($this->isAjaxBillingField('state/region')): ?>
                 //save billing when state / region is changed
+                var rr =1;
                 if ($('billing:region_id'))
                     Event.observe('billing:region_id', 'change', function() {
                         //check empty fields
                         var empty = checkEmptyFields($('billing-new-address-form'));
-                        if (empty == false || reload_payment == 2)
+                        if (empty == false || reload_payment == 2  || reload_payment == 1)
                             save_address_information(save_address_url, update_address_shipping, update_address_payment, update_address_review);
                     });
                 if ($('billing:region'))
