@@ -196,7 +196,7 @@ function save_address_information(save_address_url, update_address_shipping, upd
     var region_select;
     for (var i=0; i < region_obj.options.length; i++)
     {
-        document.getElementById('billing:region_id').options[i].selected=false;
+        //document.getElementById('billing:region_id').options[i].selected=false;
         if (region_obj.options[i].text == parameters['billing[region]']){
             region_select = region_obj.options[i].value;
         }
@@ -204,6 +204,9 @@ function save_address_information(save_address_url, update_address_shipping, upd
     if (region_select !== undefined){
         document.getElementById('billing:region_id').options[region_select].selected=true;
         parameters['billing[region_id]']=region_select;
+    }
+    if(parameters['billing[region_id]'] == ""){
+        parameters['billing[region_id]']
     }
 
     var request = new Ajax.Request(save_address_url, {
