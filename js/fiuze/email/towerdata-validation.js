@@ -3,7 +3,7 @@ Validation.add("validate-email", "Please enter a valid email address. For exampl
     var ok = false;
     new Ajax.Request(url, {
         method: "get",
-    asynchronous: true,
+    asynchronous: false,
         onSuccess: function(transport) {
         var obj = response = eval("(" + transport.responseText + ")");
         validateTrueEmailMsg = obj.status_desc;
@@ -30,7 +30,8 @@ Validation.add("validate-email", "Please enter a valid email address. For exampl
         if ($("advice-validate-email-_accountemail")) {
             $("advice-validate-email-_accountemail").remove();
         }
+
     }
 });
-return ok;
+    return ok;
 });
