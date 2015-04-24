@@ -140,8 +140,8 @@ $_dateFormat = Varien_Date::convertZendToStrFtime(Mage::app()->getLocale()->getD
                 </strong>
                 <select id="submit_action" name="submit_action">
                     <option value=""><?php echo $_hlp->__('* No action')?></option>
-                    <option value="udpoMultiPdf"><?php echo $_hlp->__('PDF Purchase Orders')?></option>
-                    <option value="packingSlips"><?php echo $_hlp->__('Download Packing Slips')?></option>
+                    <option value="udpoMultiPdf"><?php echo $_hlp->__('Download Packing Slips')?></option>
+<!--                    <option value="packingSlips">--><?php //echo $_hlp->__('Download Packing Slips')?><!--</option>-->
 <?php if ($_vendor->getLabelType()): ?>
                     <option value="udpoLabelBatch"><?php echo $_hlp->__('Create and Download Labels Batch')?></option>
                     <option value="existingLabelBatch"><?php echo $_hlp->__('Download Existing Labels Batch')?></option>
