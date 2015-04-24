@@ -246,7 +246,7 @@ class Unirgy_DropshipPo_Model_Pdf_Po extends Mage_Sales_Model_Order_Pdf_Shipment
                 Mage::helper('udropship')->formatCustomerAddress($order->getShippingAddress(), 'pdf', $this->_currentShipment->getUdropshipVendor())
             );
 
-            $shippingMethod  = $order->getShippingDescription();
+            //$shippingMethod  = $order->getShippingDescription();
         }
 
         $page->setFillColor(new Zend_Pdf_Color_GrayScale(0));
@@ -257,7 +257,7 @@ class Unirgy_DropshipPo_Model_Pdf_Po extends Mage_Sales_Model_Order_Pdf_Shipment
             $page->drawText(Mage::helper('sales')->__('SHIP TO:'), 285, ($top-15) , 'UTF-8');
         }
         else {
-            $page->drawText(Mage::helper('sales')->__('Payment Method:'), 285, ($top-15) , 'UTF-8');
+            //$page->drawText(Mage::helper('sales')->__('Payment Method:'), 285, ($top-15) , 'UTF-8');
         }
 
         if (!$order->getIsVirtual()) {
@@ -299,8 +299,8 @@ class Unirgy_DropshipPo_Model_Pdf_Po extends Mage_Sales_Model_Order_Pdf_Shipment
             $this->y -=15;
             $this->_setFontBold($page);
             $page->setFillColor(new Zend_Pdf_Color_GrayScale(0));
-            $page->drawText(Mage::helper('sales')->__('Payment Method'), 35, $this->y, 'UTF-8');
-            $page->drawText(Mage::helper('sales')->__('Shipping Method:'), 285, $this->y , 'UTF-8');
+            //$page->drawText(Mage::helper('sales')->__('Payment Method'), 35, $this->y, 'UTF-8');
+            //$page->drawText(Mage::helper('sales')->__('Shipping Method:'), 285, $this->y , 'UTF-8');
 
             $this->y -=10;
             $page->setFillColor(new Zend_Pdf_Color_GrayScale(1));
@@ -326,7 +326,7 @@ class Unirgy_DropshipPo_Model_Pdf_Po extends Mage_Sales_Model_Order_Pdf_Shipment
         if (!$order->getIsVirtual()) {
             $this->y -=15;
 
-            $page->drawText($shippingMethod, 285, $this->y, 'UTF-8');
+            //$page->drawText($shippingMethod, 285, $this->y, 'UTF-8');
 
             $yShipments = $this->y;
 
@@ -334,48 +334,48 @@ class Unirgy_DropshipPo_Model_Pdf_Po extends Mage_Sales_Model_Order_Pdf_Shipment
             if (!$curVendor->getHidePackingslipAmount()) {
                 $totalShippingChargesText = "(" . Mage::helper('sales')->__('Total Shipping Charges') . " " . $order->getBaseCurrency()->formatTxt($order->getBaseShippingAmount()) . ")";
 
-                $page->drawText($totalShippingChargesText, 285, $yShipments-7, 'UTF-8');
+                //$page->drawText($totalShippingChargesText, 285, $yShipments-7, 'UTF-8');
             }
             $yShipments -=10;
             $tracks = $order->getTracksCollection();
-            if (count($tracks)) {
-                $page->setFillColor(new Zend_Pdf_Color_Rgb(0.93, 0.92, 0.92));
-                $page->setLineWidth(0.5);
-                $page->drawRectangle(285, $yShipments, 510, $yShipments - 10);
-                $page->drawLine(380, $yShipments, 380, $yShipments - 10);
-                //$page->drawLine(510, $yShipments, 510, $yShipments - 10);
-
-                $this->_setFontRegular($page);
-                $page->setFillColor(new Zend_Pdf_Color_GrayScale(0));
-                //$page->drawText(Mage::helper('sales')->__('Carrier'), 290, $yShipments - 7 , 'UTF-8');
-                $page->drawText(Mage::helper('sales')->__('Title'), 290, $yShipments - 7, 'UTF-8');
-                $page->drawText(Mage::helper('sales')->__('Number'), 385, $yShipments - 7, 'UTF-8');
-
-                $yShipments -=17;
-                $this->_setFontRegular($page, 6);
-                foreach ($order->getTracksCollection() as $track) {
-
-                    $CarrierCode = $track->getCarrierCode();
-                    if ($CarrierCode!='custom')
-                    {
-                        $carrier = Mage::getSingleton('shipping/config')->getCarrierInstance($CarrierCode);
-                        $carrierTitle = $carrier->getConfigData('title');
-                    }
-                    else
-                    {
-                        $carrierTitle = Mage::helper('sales')->__('Custom Value');
-                    }
-
-                    //$truncatedCarrierTitle = substr($carrierTitle, 0, 35) . (strlen($carrierTitle) > 35 ? '...' : '');
-                    $truncatedTitle = substr($track->getTitle(), 0, 45) . (strlen($track->getTitle()) > 45 ? '...' : '');
-                    //$page->drawText($truncatedCarrierTitle, 285, $yShipments , 'UTF-8');
-                    $page->drawText($truncatedTitle, 300, $yShipments , 'UTF-8');
-                    $page->drawText($track->getNumber(), 395, $yShipments , 'UTF-8');
-                    $yShipments -=7;
-                }
-            } else {
-                $yShipments -= 7;
-            }
+            //            if (count($tracks)) {
+            //                $page->setFillColor(new Zend_Pdf_Color_Rgb(0.93, 0.92, 0.92));
+            //                $page->setLineWidth(0.5);
+            //                $page->drawRectangle(285, $yShipments, 510, $yShipments - 10);
+            //                $page->drawLine(380, $yShipments, 380, $yShipments - 10);
+            //                //$page->drawLine(510, $yShipments, 510, $yShipments - 10);
+            //
+            //                $this->_setFontRegular($page);
+            //                $page->setFillColor(new Zend_Pdf_Color_GrayScale(0));
+            //                //$page->drawText(Mage::helper('sales')->__('Carrier'), 290, $yShipments - 7 , 'UTF-8');
+            //                $page->drawText(Mage::helper('sales')->__('Title'), 290, $yShipments - 7, 'UTF-8');
+            //                $page->drawText(Mage::helper('sales')->__('Number'), 385, $yShipments - 7, 'UTF-8');
+            //
+            //                $yShipments -=17;
+            //                $this->_setFontRegular($page, 6);
+            //                foreach ($order->getTracksCollection() as $track) {
+            //
+            //                    $CarrierCode = $track->getCarrierCode();
+            //                    if ($CarrierCode!='custom')
+            //                    {
+            //                        $carrier = Mage::getSingleton('shipping/config')->getCarrierInstance($CarrierCode);
+            //                        $carrierTitle = $carrier->getConfigData('title');
+            //                    }
+            //                    else
+            //                    {
+            //                        $carrierTitle = Mage::helper('sales')->__('Custom Value');
+            //                    }
+            //
+            //                    //$truncatedCarrierTitle = substr($carrierTitle, 0, 35) . (strlen($carrierTitle) > 35 ? '...' : '');
+            //                    $truncatedTitle = substr($track->getTitle(), 0, 45) . (strlen($track->getTitle()) > 45 ? '...' : '');
+            //                    //$page->drawText($truncatedCarrierTitle, 285, $yShipments , 'UTF-8');
+            //                    $page->drawText($truncatedTitle, 300, $yShipments , 'UTF-8');
+            //                    $page->drawText($track->getNumber(), 395, $yShipments , 'UTF-8');
+            //                    $yShipments -=7;
+            //                }
+            //            } else {
+            //                $yShipments -= 7;
+            //            }
 
             $currentY = min($yPayments, $yShipments);
 
