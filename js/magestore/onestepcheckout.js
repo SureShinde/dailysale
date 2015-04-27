@@ -73,7 +73,13 @@ function get_billing_data(parameters) {
                 street_count = street_count + 1;
             }
             else {
-                parameters[item.name] = item.value;
+                if (item.name == 'billing[region]'){
+                    var indexSelect = document.getElementById('billing:region_id').selectedIndex;
+                    var value = document.getElementById('billing:region_id').options[indexSelect].text;
+                    parameters[item.name] = value;
+                }else{
+                    parameters[item.name] = item.value;
+                }
             }
         }
     }
@@ -94,7 +100,13 @@ function get_billing_data(parameters) {
                 street_count = street_count + 1;
             }
             else {
-                parameters[item.name] = item.value;
+                if (item.name == 'billing[region]'){
+                    var indexSelect = document.getElementById('billing:region_id').selectedIndex;
+                    var value = document.getElementById('billing:region_id').options[indexSelect].text;
+                    parameters[item.name] = value;
+                }else{
+                    parameters[item.name] = item.value;
+                }
             }
         }
     }
