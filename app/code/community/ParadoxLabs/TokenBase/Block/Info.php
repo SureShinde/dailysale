@@ -19,6 +19,8 @@
 
 class ParadoxLabs_TokenBase_Block_Info extends Mage_Payment_Block_Info_Cc
 {
+	protected $_isEcheck = false;
+	
 	protected function _prepareSpecificInformation($transport = null)
 	{
 		if( null !== $this->_paymentSpecificInformation ) {
@@ -36,18 +38,25 @@ class ParadoxLabs_TokenBase_Block_Info extends Mage_Payment_Block_Info_Cc
 				'info'		=> $this->getInfo(),
 			) );
 		
-		$ccType = $this->getCcTypeName();
-		if( !empty( $ccType ) && $ccType != 'N/A' ) {
-			$data[Mage::helper('payment')->__('Credit Card Type')] = $ccType;
-		}
 		
 		// If this is an eCheck, show different info.
-		if( $this->getInfo()->getCcLast4() ) {
-			if( $this->getInfo()->getAdditionalInformation('method') == 'ECHECK' ) {
-				$data[Mage::helper('payment')->__('Paid By')] = Mage::helper('payment')->__('eCheck');
-				$data[Mage::helper('payment')->__('Account Number')] = sprintf( 'x-%s', $this->getInfo()->getCcLast4() );
+		if( $this->_isEcheck() === true ) {
+			if( $this->getInfo()->getEcheckBankName() != '' ) {
+				$data[Mage::helper('payment')->__('Bank Name')] = $this->getInfo()->getEcheckBankName();
 			}
-			else {
+			elseif( $this->getInfo()->getAdditionalInformation('echeck_bank_name') != '' ) {
+				$data[Mage::helper('payment')->__('Bank Name')] = $this->getInfo()->getAdditionalInformation('echeck_bank_name');
+			}
+			
+			$data[Mage::helper('payment')->__('Account Number')] = sprintf( 'x-%s', $this->getInfo()->getAdditionalInformation('echeck_account_number_last4') );
+		}
+		else {
+			$ccType = $this->getCcTypeName();
+			if( !empty( $ccType ) && $ccType != 'N/A' ) {
+				$data[Mage::helper('payment')->__('Credit Card Type')] = $ccType;
+			}
+			
+			if( $this->getInfo()->getCcLast4() ) {
 				$data[Mage::helper('payment')->__('Credit Card Number')] = sprintf( 'XXXX-%s', $this->getInfo()->getCcLast4() );
 			}
 		}
@@ -68,5 +77,10 @@ class ParadoxLabs_TokenBase_Block_Info extends Mage_Payment_Block_Info_Cc
 			) );
 		
 		return $transport;
+	}
+	
+	protected function _isEcheck()
+	{
+		return $this->_isEcheck;
 	}
 }
