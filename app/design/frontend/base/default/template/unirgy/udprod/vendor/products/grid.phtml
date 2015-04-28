@@ -41,9 +41,9 @@ $showVsku = $_hlp->isShowVendorSkuColumnInProductsTab() && (Mage::helper('udrops
         <div class="col-2">
             <ul class="form-list">
                 <li>
-                    <label for="filter-price-from"><?php echo $_hlp->__('Price') ?></label><br/>
-                    <input id="filter-price-from" name="filter_price_from" title="<?php echo $_hlp->__('From Price') ?>" type="text" class="input-text" style="width:80px;" value="<?php echo $this->getRequest()->getParam('filter_price_from') ?>" /> -
-                    <input id="filter-price-to" name="filter_price_to" title="<?php echo $_hlp->__('To Price') ?>" type="text" class="input-text" style="width:80px;" value="<?php echo $this->getRequest()->getParam('filter_price_to') ?>" />
+                    <label for="filter-price-from"><?php echo $_hlp->__('Cost') ?></label><br/>
+                    <input id="filter-price-from" name="filter_price_from" title="<?php echo $_hlp->__('From Cost') ?>" type="text" class="input-text" style="width:80px;" value="<?php echo $this->getRequest()->getParam('filter_price_from') ?>" /> -
+                    <input id="filter-price-to" name="filter_price_to" title="<?php echo $_hlp->__('To Cost') ?>" type="text" class="input-text" style="width:80px;" value="<?php echo $this->getRequest()->getParam('filter_price_to') ?>" />
                 </li>
                 <li>
                     <label for="filter-stock_status"><?php echo $_hlp->__('Stock Status') ?></label><br/>
@@ -185,7 +185,7 @@ $showVsku = $_hlp->isShowVendorSkuColumnInProductsTab() && (Mage::helper('udrops
                 <th><?php echo $this->__('Vendor SKU')?></th>
             <?php endif ?>
             <th><?php echo $this->__('Product Name')?></th>
-            <th><?php echo $this->__('Price')?></th>
+            <th><?php echo $this->__('Cost')?></th>
             <th><?php echo $this->__('System Status')?></th>
             <th><?php echo $this->__('Stock Status')?></th>
             <th><?php echo $this->__('Stock Qty')?></th>
@@ -203,7 +203,7 @@ $showVsku = $_hlp->isShowVendorSkuColumnInProductsTab() && (Mage::helper('udrops
                 <td><?php echo $this->htmlEscape($_p->getVendorSku()); ?></td>
             <?php endif ?>
             <td><a href="<?php echo $this->getUrl('udprod/vendor/productEdit', array('id'=>$_p->getId(0)))?>"><?php echo $this->htmlEscape($_p->getName()); ?></a></td>
-            <td><?php echo $_cHlp->currency($_p->getPrice()) ?></td>
+            <td><?php echo $_cHlp->currency($_p->getCost()) ?></td>
             <td><?php echo $this->htmlEscape($_prSrc->setPath('system_status')->getOptionLabel($_p->getStatus()*1)) ?></td>
             <td>
                 <?php if ($_p->getStatus()==1):?>
