@@ -909,14 +909,22 @@
         if (message == 'valid') {
             $('email-error-message').update('');
             $('valid_email_address_image').show();
-            if($('emailvalid'))
+            if($('emailvalid')){
                 $('emailvalid').value = 'valid';
+                $('onestepcheckout-button-place-order').disabled = false;
+                $('onestepcheckout-button-place-order').addClassName('onestepcheckout-btn-checkout');
+                $('onestepcheckout-button-place-order').removeClassName('place-order-loader');
+            }
         }
         else if (message == 'invalid') {
             $('valid_email_address_image').hide();
             $('email-error-message').update('<?php echo $this->__('<p>Invalid Email Address</p>') ?>');
-            if($('emailvalid'))
+            if($('emailvalid')){
                 $('emailvalid').value = 'invalid';
+                $('onestepcheckout-button-place-order').disabled = true;
+                $('onestepcheckout-button-place-order').removeClassName('onestepcheckout-btn-checkout');
+                $('onestepcheckout-button-place-order').addClassName('place-order-loader');
+            }
         }
         else if (message == 'exists') {
             if($('emailvalid'))

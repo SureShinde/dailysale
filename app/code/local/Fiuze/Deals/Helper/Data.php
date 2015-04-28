@@ -8,9 +8,7 @@
  * @author     Webinse Team <info@webinse.com>
  */
 class Fiuze_Deals_Helper_Data extends Mage_Core_Helper_Abstract{
-
     const XML_ROOT = 'fiuze_deals_cron_time/fiuze_deals_cron_time_grp';
-
     protected $_rootConfig = null;
 
     /**
@@ -64,7 +62,6 @@ class Fiuze_Deals_Helper_Data extends Mage_Core_Helper_Abstract{
      */
     public function getRouteUrl($store = null){
         return Mage::getUrl($this->getRoute(), array('_store' => $store));
-
     }
 
     /**
@@ -100,7 +97,6 @@ class Fiuze_Deals_Helper_Data extends Mage_Core_Helper_Abstract{
             $category = Mage::getModel('catalog/category')->load((int)$this->_rootConfig->getCategory());
             Mage::register('category_cron', $category);
         }
-
         return Mage::registry('category_cron');
     }
 
@@ -124,18 +120,24 @@ class Fiuze_Deals_Helper_Data extends Mage_Core_Helper_Abstract{
      */
     public function getCronExpr(){
         list($hh, $mm, $ss) = explode(',', $this->getTimeCron());
-        $mm += $hh * 60;
-
-        $cronExprArray = array(
-            intval($mm) ? '/' . intval($mm) : '*', # Minute
-            '*', # Hour
-            '*', # Day of the Month
-            '*', # Month of the Year
-            '*', # Day of the Week
-        );
+        if(intval($hh)>0){
+            $cronExprArray = array(
+                $mm, # Minute
+                '*/'.intval($hh), # Hour
+                '*', # Day of the Month
+                '*', # Month of the Year
+                '*', # Day of the Week
+            );
+        }else{
+            $cronExprArray = array(
+                '*/' .intval($mm), # Minute
+                '*', # Hour
+                '*', # Day of the Month
+                '*', # Month of the Year
+                '*', # Day of the Week
+            );
+        }
         $cronExprString = join(' ', $cronExprArray);
-        $cronExprString = '*' . $cronExprString;
-
         return $cronExprString;
     }
 
@@ -145,11 +147,31 @@ class Fiuze_Deals_Helper_Data extends Mage_Core_Helper_Abstract{
      * @return Zend_Date
      */
     public function getEndDealTime(){
-        list($hh, $mm, $ss) = explode(",", $this->getTimeCron());
-        $mm += $hh * 60;
-        $date = new Zend_Date();
-        $date->add($mm, Zend_Date::MINUTE);
-
+        $schedule = Mage::getModel('cron/schedule')->getCollection()
+            ->addFieldToFilter('job_code', 'fiuze_deals_scheduler')
+            ->addFieldToFilter('status', Mage_Cron_Model_Schedule::STATUS_PENDING)
+            ->addFieldToFilter('scheduled_at', array('gteq' => Mage::getModel('core/date')->gmtDate()))
+            ->addOrder('scheduled_at', 'ASC')->getFirstItem();
+        if(!$schedule->getData()){
+            Mage::getModel('fiuze_deals/cron')->generate();
+            $schedules = Mage::getModel('cron/schedule')->getCollection()
+                ->addFieldToFilter('job_code', 'fiuze_deals_scheduler')
+                ->addFieldToFilter('status', Mage_Cron_Model_Schedule::STATUS_PENDING)
+                ->addFieldToFilter('scheduled_at', array('gteq' => Mage::getModel('core/date')->gmtDate()))
+                ->addOrder('scheduled_at', 'ASC');
+            foreach($schedules as $schedule){
+                $now = time();
+                $time = strtotime($schedule->getScheduledAt());
+                if ($time < $now - 10){
+                    $schedule->delete();
+                    $schedule = next($schedules);
+                    $date = new Zend_Date($schedule->getScheduledAt());
+                    return $date;
+                }
+                break;
+            }
+        }
+        $date = new Zend_Date($schedule->getScheduledAt());
         return $date;
     }
 
@@ -168,7 +190,6 @@ class Fiuze_Deals_Helper_Data extends Mage_Core_Helper_Abstract{
         ){
             return false;
         }
-
         return true;
     }
 

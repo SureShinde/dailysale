@@ -9,7 +9,6 @@
  */
 class Fiuze_Deals_Model_Observer
 {
-
     const CRON_STRING_PATH = 'fiuze_deals_cron_time/fiuze_deals_cron_time_grp/scheduler';
 
     /**
@@ -92,15 +91,26 @@ class Fiuze_Deals_Model_Observer
             try {
                 Mage::getModel('core/config_data')
                     ->load(self::CRON_STRING_PATH, 'path')
-                    ->setValue($cronExprString)
                     ->setPath(self::CRON_STRING_PATH)
+                    ->setValue($cronExprString)->cleanModelCache()
                     ->save();
-
-                $this->_clearCache();
+                $store = Mage::app()->getStore();
+                $store->setConfig(self::CRON_STRING_PATH, $cronExprString);
             } catch (Exception $e) {
                 Mage::logException($e);
                 Mage::throwException(Mage::helper('adminhtml')->__('Unable to save the cron expression.'));
             }
+
+            //generate task for fiuze_deals_scheduler
+            $schedules = Mage::getModel('cron/schedule')->getCollection()
+                ->addFieldToFilter('status', Mage_Cron_Model_Schedule::STATUS_PENDING)
+                ->addOrder('scheduled_at', 'ASC');
+            foreach ($schedules as $key => $schedule) {
+                if($schedule->getJobCode() == 'fiuze_deals_scheduler'){
+                    $schedule->delete();
+                }
+            };
+            Mage::getModel('fiuze_deals/cron')->generate();
 
             // Overwrite products from the selected category (active product is not stored)
             $category = $helper->getCategoryCron();
@@ -169,6 +179,8 @@ class Fiuze_Deals_Model_Observer
         //if save admin/catalog_product/edit
         $this->_changeQtyStock($product);
 
+        $this->_changeSpecialPrice($product);
+
         //if change catalog product (del)
         $paramTab = Mage::app()->getRequest()->getParam('tab');
         if (isset($paramTab) && $paramTab == 'product_info_tabs_categories') {
@@ -206,8 +218,10 @@ class Fiuze_Deals_Model_Observer
             if ($productActive->getData()) {
                 $qty = $productParam['stock_data']['qty'];
                 $isInStock = $productParam['stock_data']['is_in_stock'];
-                if ($isInStock == 0) {
-                    Mage::getModel('fiuze_deals/cron')->dailyCatalogUpdate();
+                if($isInStock){
+                    if ($isInStock == 0) {
+                        Mage::getModel('fiuze_deals/cron')->dailyCatalogUpdate();
+                    }
                 }
             }
         }
@@ -274,7 +288,11 @@ class Fiuze_Deals_Model_Observer
         $productDeals->setData('deals_active', false);
         $productDeals->setData('sort_order', $product->getPositionProduct());
         $productDeals->setData('current_active', 0);
-        $productDeals->setData('origin_special_price', (float)$product->getSpecialPrice());
+        if(!$product->getSpecialPrice()){
+            $productDeals->setData('origin_special_price', (float)$product->getPrice());
+        }else{
+            $productDeals->setData('origin_special_price', (float)$product->getSpecialPrice());
+        }
         try {
             $productDeals->save();
         } catch (Exception $e) {
@@ -317,6 +335,78 @@ class Fiuze_Deals_Model_Observer
                 }
             }
         }
+    }
+
+    //Change origin_special_price in deals
+    private function _changeSpecialPrice($product)
+    {
+        $productDeals = Mage::getResourceModel('fiuze_deals/deals_collection')
+            ->addFilter('product_id', $product->getId())
+            ->getFirstItem();
+        if ($productDeals->getData()) {
+            try{
+                $productDeals->setData('origin_special_price', $product->getData('special_price'));
+                $productDeals->save();
+            }catch (Exception $ex){
+                Mage::logException($ex);
+            }
+        }
+    }
+
+    /**
+     * The deal quantity check product cart add
+     * @param Varien_Event_Observer $observer
+     */
+    public function productCartAdd(Varien_Event_Observer $observer)
+    {
+        $quoteItem = $observer->getEvent()->getItem();
+        $qty = $quoteItem->getQty();
+        $stockItem = $quoteItem->getProduct()->getStockItem();
+        $productId = $stockItem->getProductId();
+
+
+        $result = $this->checkQuoteItemQty($productId, $qty);
+        if ($result->getHasError()) {
+
+            $quoteItem->addErrorInfo(
+                'cataloginventory',
+                Mage_CatalogInventory_Helper_Data::ERROR_QTY,
+                $result->getMessage()
+            );
+
+            $quoteItem->getQuote()->addErrorInfo(
+                $result->getQuoteMessageIndex(),
+                'cataloginventory',
+                Mage_CatalogInventory_Helper_Data::ERROR_QTY,
+                $result->getQuoteMessage()
+            );
+        }
+    }
+
+
+    public function checkQuoteItemQty($productId, $qty)
+    {
+        $productDeals = Mage::getResourceModel('fiuze_deals/deals_collection')
+            ->addFilter('product_id', $productId)
+            ->addFilter('current_active', true)
+            ->getFirstItem();
+
+        $result = new Varien_Object();
+        $result->setHasError(false);
+        if ($productDeals->getData()) {
+            $qtyForCheck = $productDeals->getData('deals_qty');
+            if ($qty > $qtyForCheck) {
+                $result->setHasError(true)
+                    ->setMessage(
+                        Mage::helper('cataloginventory')->__('The minimum quantity allowed for purchase is %s.', $qtyForCheck * 1)
+                    )
+                    ->setErrorCode('qty_min')
+                    ->setQuoteMessage(Mage::helper('cataloginventory')->__('Some of the products cannot be ordered in requested quantity.'))
+                    ->setQuoteMessageIndex('qty');
+                return $result;
+            }
+        }
+        return $result;
     }
 
 }
