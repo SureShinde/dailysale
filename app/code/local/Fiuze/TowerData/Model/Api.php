@@ -23,7 +23,7 @@ class Fiuze_TowerData_Model_Api extends Mage_Core_Model_Abstract{
             $response = $this->getApi()->callApi(false, false, $email);
             $email = $response->email;
             if($email->status_code == 45){
-                $result['success'] = false;
+                $result['success'] = true;
                 $result['status_desc'] = $email->status_desc;
             }else
             if ($email->ok) {

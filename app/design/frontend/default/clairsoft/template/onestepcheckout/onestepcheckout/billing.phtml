@@ -241,6 +241,9 @@
 Event.observe(document, "dom:loaded", function() {
             var url = '<?php echo $this->getUrl('onestepcheckout/index/is_valid_email', array('_secure' => true)) ?>';
             var email_address = $('billing:email').value;
+            if(email_address.length == 0){
+                return;
+            }
             var parameters = {email_address: email_address};
             var request = new Ajax.Request(
                     url,
@@ -251,6 +254,9 @@ Event.observe(document, "dom:loaded", function() {
                     });
         });
                             Event.observe('billing:email', 'blur', function() {
+                                if(this.value.length == 0){
+                                    return;
+                                }
                                 var url = '<?php echo $this->getUrl('onestepcheckout/index/is_valid_email', array('_secure' => true)) ?>';
                                 var email_address = $('billing:email').value;
                                 var parameters = {email_address: email_address};
