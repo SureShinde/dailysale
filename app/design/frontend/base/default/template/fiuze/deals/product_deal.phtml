@@ -13,7 +13,7 @@
         if (result < 0) {
             var elmntNew = document.getElementById('timer');
             elmntNew.innerHTML = ' 00:00:00 ';
-            setTimeout(reload, 1000);
+            setTimeout(reload, 5000);
             return undefined;
         }
         var seconds = Math.floor((result / 1000) % 60);
@@ -24,7 +24,7 @@
         if (hours < 10) hours = '0' + hours;
         var elmnt = document.getElementById('timer');
         elmnt.innerHTML = hours + ':' + minutes + ':' + seconds;
-        setTimeout(timer, 2000);
+        setTimeout(timer, 1000);
     }
     jQuery(document.getElementById('timer')).ready(function() {
         timer();
