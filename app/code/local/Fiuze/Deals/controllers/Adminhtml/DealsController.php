@@ -213,23 +213,7 @@ class Fiuze_Deals_Adminhtml_DealsController extends Mage_Adminhtml_Controller_Ac
                 $this->_getSession()->addError($e->getMessage());
             }
         }
-        $dealResource = Mage::getResourceModel('fiuze_deals/deals_collection');
-        if ($dealResource->addFilter('current_active', 1)->getSize() == 0) {
-            $item = Mage::getResourceModel('fiuze_deals/deals_collection')
-                ->addFieldToFilter('deals_qty',array('gt' => 0))
-                ->addFilter('deals_active', 1)
-                ->getFirstItem();
-            if($item->getData()){
-                $product = Mage::getModel('catalog/product')->load($item->getData('product_id'));
-                $productSpecialPrice = $product->getSpecialPrice();
-                $product->setSpecialPrice($item->getData('deals_price'));
-                $item->setData('origin_special_price', $productSpecialPrice);
-                $item->setEndTime(Mage::helper('fiuze_deals')->getEndDealTime());
-                $item->setCurrentActive(1);
-                $item->save();
-                $product->save();
-            }
-        }
+        $this->_resetDealRotation();
         $this->_redirect('*/*/list');
     }
 
@@ -246,6 +230,40 @@ class Fiuze_Deals_Adminhtml_DealsController extends Mage_Adminhtml_Controller_Ac
                 $product->save();
             }catch (Exception $ex){
                 Mage::logException($ex);
+            }
+        }
+    }
+
+    public function resetDealRotationAction()
+    {
+        $productDeal = Mage::getResourceModel('fiuze_deals/deals_collection')
+                        ->addFilter('deals_active', 1);
+        foreach($productDeal as $item){
+            $item->setEndTime(null);
+            $item->setCurrentActive(0);
+            $item->save();
+        }
+        $this->_resetDealRotation();
+        $this->_redirect('*/*/list');
+    }
+
+    private function _resetDealRotation(){
+        $dealResource = Mage::getResourceModel('fiuze_deals/deals_collection');
+        if ($dealResource->addFilter('current_active', 1)->getSize() == 0) {
+            $item = Mage::getResourceModel('fiuze_deals/deals_collection')
+                ->addFieldToFilter('deals_qty',array('gt' => 0))
+                ->addFilter('deals_active', 1)
+                ->addOrder('sort_order', Varien_Data_Collection::SORT_ORDER_ASC)
+                ->getFirstItem();
+            if($item->getData()){
+                $product = Mage::getModel('catalog/product')->load($item->getData('product_id'));
+                $productSpecialPrice = $product->getSpecialPrice();
+                $product->setSpecialPrice($item->getData('deals_price'));
+                $item->setData('origin_special_price', $productSpecialPrice);
+                $item->setEndTime(Mage::helper('fiuze_deals')->getEndDealTime());
+                $item->setCurrentActive(1);
+                $item->save();
+                $product->save();
             }
         }
     }

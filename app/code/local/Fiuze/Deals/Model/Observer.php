@@ -283,7 +283,7 @@ class Fiuze_Deals_Model_Observer
         $productDeals->setData('product_id', (int)$product->getEntityId());
         $productDeals->setData('category_id', (isset($params['category_id'])) ? $params['category_id'] : 0);
         $productDeals->setData('product_name', $product->getName());
-        $productDeals->setData('deals_price', (float)$product->getPrice());
+        $productDeals->setData('deals_price', (int)$product->getPrice());
         $productDeals->setData('deals_qty', (int)$product->getQty());
         $productDeals->setData('deals_active', false);
         $productDeals->setData('sort_order', $product->getPositionProduct());
@@ -398,7 +398,7 @@ class Fiuze_Deals_Model_Observer
             if ($qty > $qtyForCheck) {
                 $result->setHasError(true)
                     ->setMessage(
-                        Mage::helper('cataloginventory')->__('The minimum quantity allowed for purchase is %s.', $qtyForCheck * 1)
+                        Mage::helper('cataloginventory')->__('The Maximum quantity allowed for purchase is %s.', $qtyForCheck * 1)
                     )
                     ->setErrorCode('qty_min')
                     ->setQuoteMessage(Mage::helper('cataloginventory')->__('Some of the products cannot be ordered in requested quantity.'))
