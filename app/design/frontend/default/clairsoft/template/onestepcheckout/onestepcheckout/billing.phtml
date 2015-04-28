@@ -423,6 +423,17 @@ Event.observe(document, "dom:loaded", function() {
                     }
                 }
                 if (region_id !== undefined && city !== undefined){
+                    var region_obj = document.getElementById('billing:region_id');
+                    var region_select;
+                    for (var i=0; i < region_obj.options.length; i++)
+                    {
+                        if (region_obj.options[i].text == region){
+                            region_select = region_obj.options[i].value;
+                        }
+                    }
+                    if (region_select !== undefined){
+                        document.getElementById('billing:region_id').options[region_select].selected=true;
+                    }
                     fillAddress('billing', res[0], city, region_id, region, country, postal_code, sublocality);
                 }
             }
