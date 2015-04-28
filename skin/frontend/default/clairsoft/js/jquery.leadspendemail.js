@@ -66,6 +66,8 @@
 			// get element ID, and NAME
 			elementID = $( this.element ).attr( "id" );
 			elementName = $( this.element ).attr( "name" );
+            elementName = elementName.replace("[", ":");
+            elementName = elementName.replace("]", "");
 			
 			resultInputSuffix = "-result";
 			
@@ -92,7 +94,7 @@
 									   "\" id=\"" 	+ resultElementID +
 									   "\" name=\"" + resultElementName + "</div>";
 
-            resultElementHtml = "<div class=\"validation-advice\" id=\"" + resultElementID + "\">Please enter a valid email address.</div>";
+            resultElementHtml = "<div style=\"opacity: 0; display:none;\" class=\"validation-advice\" id=\"" + "advice-leadSpendEmail-"+elementName + "\">Please enter a valid email address.</div>";
 			this.resultElement = $( resultElementHtml );
 			this.resultElement.hide();
 			$( this.element ).after( this.resultElement );
@@ -147,7 +149,9 @@
 
             if ( $( this.resultElement ).val() != "pending" ){
                 if ( $( this.resultElement ).val() != "verified" ){
-                    this.resultElement.show();
+                     this.resultElement.show().stop()
+                         .animate({opacity: 1},500);
+                        //advice-required-entry-billing:email
                 }else{
                     this.resultElement.hide();
                 }
@@ -245,4 +249,16 @@
 // Validate all leadSpendEmail fields by default
 jQuery( document ).ready( function(){
     jQuery( ".leadSpendEmail-noconfig" ).leadSpendEmail( {debug: false, timeout: 5, delaySubmit: true} );
+    jQuery( ".leadSpendEmail-noconfig" ).removeClass( "required-entry" );
+    Validation.add('leadSpendEmail', null, function(v) {
+        var elementName ='advice-leadSpendEmail-' + jQuery('.leadSpendEmail').attr( "name" );
+        elementName = elementName.replace("[", ":");
+        elementName = elementName.replace("]", "");
+        if(Validation.get('IsEmpty').test(v) || $(elementName).visible() ){
+            return false;
+        }else{
+            return true;
+        }
+        //Validation.get('IsEmpty').test(v);
+    })
 } );
