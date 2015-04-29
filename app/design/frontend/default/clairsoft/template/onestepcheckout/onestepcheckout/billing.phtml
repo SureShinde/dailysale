@@ -133,7 +133,7 @@
                                         <em>*</em>
                                     <?php endif; ?>
                                 </label><br/>
-                                <input type="text" id="billing:<?php echo $fields[$i]['value']; ?>" name="billing[<?php echo $fields[$i]['value']; ?>]" value="<?php echo $this->htmlEscape($this->getBillingAddress()->getData($fields[$i]['value'])) ?>" title="<?php echo $this->__($fieldValue[$fields[$i]['value']]) ?>" class="input-text <?php if ($helper->getFieldRequire($fields[$i]['value']) || $fields[$i]['value'] == 'firstname' || $fields[$i]['value'] == 'lastname' || $fields[$i]['value'] == 'email') echo 'required-entry'; if($fields[$i]['value'] == 'email') echo ''; ?>" />
+                                <input type="text" id="billing:<?php echo $fields[$i]['value']; ?>" name="billing[<?php echo $fields[$i]['value']; ?>]" value="<?php echo $this->htmlEscape($this->getBillingAddress()->getData($fields[$i]['value'])) ?>" title="<?php echo $this->__($fieldValue[$fields[$i]['value']]) ?>" class="input-text <?php if ($helper->getFieldRequire($fields[$i]['value']) || $fields[$i]['value'] == 'firstname' || $fields[$i]['value'] == 'lastname' || $fields[$i]['value'] == 'email') echo 'required-entry'; if($fields[$i]['value'] == 'email') echo ' validate-email '; ?>" />
                                 <?php if ($helper->enableGeoip()): ?>
                                     <?php if (($fields[$i]['value'] == 'postcode') && $helper->allowDetectByPostcode()): ?>
                                         <span id="billing_<?php echo $fields[$i]['value'] ?>_autocomplete_indicator" class="autocomplete-indicator" style="display:none;">
@@ -148,6 +148,10 @@
                                         <div id="billing:<?php echo $fields[$i]['value'] . '_autocomplete'; ?>" class="autocomplete" style="display:none; position:absolute; background-color:#FFFFFF; max-height:230px; overflow:auto; border:1px solid #B6B6B6"></div>
                                     <?php endif; ?>
                                 <?php endif; ?>
+                            <?php if ($fields[$i]['value'] == 'email'): ?>
+                                <span id="valid_email_address_image" style="display:none;"><img src="<?php echo $this->getSkinUrl('images/onestepcheckout/valid.gif') ?>" title="<?php echo $this->__('Valid Email Address'); ?>" alt="<?php echo $this->__('Valid Email Address'); ?>" width="18"/></span>
+                                <div id="email-error-message" class="error-message"></div>
+                            <?php endif ?>
                             <?php endif ?>
                         </div>
                         <?php if (($i % 2 != 0) || (($i % 2 == 0) && (!$fields[$i + 1]['value'] || $fields[$i + 1]['value'] == '0' || (Mage::getSingleton('customer/session')->isLoggedIn() && $fields[$i + 1]['value'] == 'email')))): ?>
@@ -237,6 +241,9 @@
 Event.observe(document, "dom:loaded", function() {
             var url = '<?php echo $this->getUrl('onestepcheckout/index/is_valid_email', array('_secure' => true)) ?>';
             var email_address = $('billing:email').value;
+            if(email_address.length == 0){
+                return;
+            }
             var parameters = {email_address: email_address};
             var request = new Ajax.Request(
                     url,
@@ -247,6 +254,9 @@ Event.observe(document, "dom:loaded", function() {
                     });
         });
                             Event.observe('billing:email', 'blur', function() {
+                                if(this.value.length == 0){
+                                    return;
+                                }
                                 var url = '<?php echo $this->getUrl('onestepcheckout/index/is_valid_email', array('_secure' => true)) ?>';
                                 var email_address = $('billing:email').value;
                                 var parameters = {email_address: email_address};

@@ -29,13 +29,13 @@
                             <validate>required-entry</validate>
                         </route>
                         <cron_time translate="label">
-                            <label>Time Period</label>
-                            <frontend_type>time</frontend_type>
+                            <label>Time Cron</label>
+                            <frontend_type>timefiuze</frontend_type>
                             <sort_order>20</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
-                            <comment>hh : mm : ss</comment>
+                            <comment>every hh : mm</comment>
                             <validate>required-entry</validate>
                         </cron_time>
                         <scheduler>

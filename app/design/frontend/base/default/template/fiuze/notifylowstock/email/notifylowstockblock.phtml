@@ -1,0 +1,72 @@
+<?php
+$_productArray = $this->getObject();
+?>
+
+<table cellspacing="0" cellpadding="0" border="0" width="100%">
+    <thead>
+    <tr>
+        <th align="left" bgcolor="#d9e5ee"
+            style="width:50px; padding:5px 9px 6px 9px; border:1px solid #bebcb7; border-bottom:none; line-height:1em;">
+            entity_id:
+        </th>
+        <th align="left" bgcolor="#d9e5ee"
+            style="padding:5px 9px 6px 9px; border:1px solid #bebcb7; border-bottom:none; line-height:1em;">
+            name:
+        </th>
+        <th align="left" bgcolor="#d9e5ee"
+            style="width:80px; padding:5px 9px 6px 9px; border:1px solid #bebcb7; border-bottom:none; line-height:1em;">
+            sku:
+        </th>
+        <th align="left" bgcolor="#d9e5ee"
+            style="width:40px; padding:5px 9px 6px 9px; border:1px solid #bebcb7; border-bottom:none; line-height:1em;">
+            qty:
+        </th>
+        <th align="left" bgcolor="#d9e5ee"
+            style="width:80px; padding:5px 9px 6px 9px; border:1px solid #bebcb7; border-bottom:none; line-height:1em;">
+            is_salable:
+        </th>
+        <th align="left" bgcolor="#d9e5ee"
+            style="width:80px; padding:5px 9px 6px 9px; border:1px solid #bebcb7; border-bottom:none; line-height:1em;">
+            created_at:
+        </th>
+        <th align="left" bgcolor="#d9e5ee"
+            style="width:80px; padding:5px 9px 6px 9px; border:1px solid #bebcb7; border-bottom:none; line-height:1em;">
+            updated_at:
+        </th>
+        <th align="left" bgcolor="#d9e5ee"
+            style="padding:5px 9px 6px 9px; border:1px solid #bebcb7; border-bottom:none; line-height:1em;">
+            category:
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($_productArray as $_product): ?>
+        <tr>
+            <td valign="top" style="padding:7px 9px 9px 9px; border:1px solid #bebcb7; border-top:0; background:#f8f7f5;">
+                <?php echo $_product->getEntityId(); ?>
+            </td>
+            <td valign="top" style="padding:7px 9px 9px 9px; border:1px solid #bebcb7; border-top:0; background:#f8f7f5;">
+                <?php echo $_product->getName(); ?>
+            </td>
+            <td valign="top" style="padding:7px 9px 9px 9px; border:1px solid #bebcb7; border-top:0; background:#f8f7f5;">
+                <?php echo $_product->getSku(); ?>
+            </td>
+            <td valign="top" style="padding:7px 9px 9px 9px; border:1px solid #bebcb7; border-top:0; background:#f8f7f5;">
+                <?php echo (int)$_product->getQty(); ?>
+            </td>
+            <td valign="top" style="padding:7px 9px 9px 9px; border:1px solid #bebcb7; border-top:0; background:#f8f7f5;">
+                <?php echo $_product->getIsSalable(); ?>
+            </td>
+            <td valign="top" style="padding:7px 9px 9px 9px; border:1px solid #bebcb7; border-top:0; background:#f8f7f5;">
+                <?php echo $_product->getCreatedAt(); ?>
+            </td>
+            <td valign="top" style="padding:7px 9px 9px 9px; border:1px solid #bebcb7; border-top:0; background:#f8f7f5;">
+                <?php echo $_product->getUpdatedAt(); ?>
+            </td>
+            <td valign="top" style="padding:7px 9px 9px 9px; border:1px solid #bebcb7; border-top:0; background:#f8f7f5;">
+                <?php echo $_product->getPath(); ?>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>
