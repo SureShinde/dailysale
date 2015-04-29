@@ -97,6 +97,10 @@ class ParadoxLabs_AuthorizeNetCim_Model_Observer_Legacy
 				 * Create a card record for each
 				 */
 				foreach( $cards as $k => $card ) {
+					if( !isset( $card['payment']['creditCard'] ) ) {
+						continue;
+					}
+					
 					$storedCard = Mage::getModel( 'authnetcim/card' );
 					$storedCard->setMethod( 'authnetcim' )
 							   ->setCustomer( $customer )
