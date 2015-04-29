@@ -244,6 +244,7 @@ class Magestore_Onestepcheckout_IndexController extends Mage_Core_Controller_Fro
         $shipping_method = $this->getRequest()->getPost('shipping_method', false);
         $billing_address_id = $this->getRequest()->getPost('billing_address_id', false);
 
+        //$this->getOnepage()->setQuote(Mage::getModel('checkout/session')->getQuote());
         if(isset($billing_data['onestepcheckout_comment']))
             Mage::getModel('checkout/session')->setOSCCM($billing_data['onestepcheckout_comment']);
         
@@ -293,6 +294,7 @@ class Magestore_Onestepcheckout_IndexController extends Mage_Core_Controller_Fro
         if ($shipping_method && $shipping_method != '') {
             Mage::helper('onestepcheckout')->saveShippingMethod($shipping_method);
         }
+
         $this->loadLayout(false);
         $this->renderLayout();
     }
@@ -305,6 +307,7 @@ class Magestore_Onestepcheckout_IndexController extends Mage_Core_Controller_Fro
         $shipping_method = $this->getRequest()->getPost('shipping_method', '');
         $payment_method = $this->getRequest()->getPost('payment_method', false);
         $p_method_customercredit = $this->getRequest()->getPost('p_method_customercredit');
+
 
         $old_shipping_method = $this->getOnepage()->getQuote()->getShippingAddress()->getShippingMethod();
         $billing_data = $this->getRequest()->getPost('billing', false);
