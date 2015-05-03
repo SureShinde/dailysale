@@ -1,0 +1,224 @@
+===== 2.2.14 =====
+  * Added actions 'Create Shipments' and 'Create Shipments and Send Customer Notifications' in vendor portal orders grid
+
+===== 2.2.13 =====
+  * Added per vendor "Export On Po Statuses" preference
+
+===== 2.2.12 =====
+  * Fixed simple items option dispaly in PO pages
+  * Fixed po status not changed to shipped when default shipment status is shipped
+
+===== 2.2.11 =====
+  * Added split po dry run
+
+===== 2.2.10 =====
+  * Added advanced item report permission
+
+===== 2.2.9 =====
+  * Fixed bundle PO create when there is a child that has no items to PO and from different vendor
+
+===== 2.2.8 =====
+  * Fixed duplicate vendor notification emails when notify by status and attach shipping label or packing slip
+
+===== 2.2.7 =====
+  * Added new weight/value sync logic on PO page generate label form (vendor portal)
+
+===== 2.2.6 =====
+  * Fixed intermittent "Fatal error: Call to a member function getNewShipmentFlag()" bug
+
+===== 2.2.5 =====
+  * Added support to vendor reports module
+
+===== 2.2.4 =====
+  * Fixed PO PDF when billing longer then shipping address
+
+===== 2.2.3 =====
+  * Fixed 2.2.2 bug shipping calculation does not include tax when shipping include tax
+
+===== 2.2.2 =====
+  * Added better processing of shipping tax in statements
+  * Fixed bundle item pdf renderer
+  * Fixed bundle weigths for labels
+
+===== 2.2.1 =====
+  * Fixed vendor portal order view ship partial does not show input fields
+
+===== 2.2.0 =====
+  * Added bundles support
+
+===== 2.1.13 =====
+  * Fixed missing generate label "Shipping Method" selectbox in vendor portal when order udropship method was deleted
+
+===== 2.1.12 =====
+  * Added "Allow use of all PO udropship method associated system carriers when generate label" global config option
+
+===== 2.1.11 =====
+  * Fixed edit costs permission
+  * Fixed Unknown column 'main_table.base_price' in 'order clause' when filter on item price in "Advanced PO Item Details Report"
+
+===== 2.1.10 =====
+  * Added option to include discount in statement
+
+===== 2.1.9 =====
+  * Added option to show totals in vendor portal order view
+
+===== 2.1.8 =====
+  * Added new permissions "View Order Costs", "View PO Costs", "Edit PO Costs"
+  * Fixed item name (if too long) in PO PDF overlap sku
+
+===== 2.1.7 =====
+  * Added "Default Virtual PO Status" configuration option
+  * Added show "VIRTUAL PO" delivery method for virtual POs instead of "unknown" and properly filter
+  * Fixed PO status stay in "partially shipped" status when all shipped and have virtual item
+
+===== 2.1.6 =====
+  * Fixed inventory sync during po cancel
+
+===== 2.1.5 =====
+  * Added processing [%bold%] as instruction to draw some lines of custom text in PDF with bold font
+
+===== 2.1.4 =====
+  * Added custom text on vendor PO PDF
+
+===== 2.1.3 =====
+  * Added item report
+  * Fixed costs format for multicurrency orders
+  * Added workaround to generate labels for non-dropship POs
+  * Fixed reports display problem
+
+===== 2.1.2 =====
+  * Added select carrier/title when add tracking number in vendor portal
+  * Fixed po increment_id display in adminhtml grids
+
+===== 2.1.1 =====
+  * Fixed per vendor custom notification email setting
+
+===== 2.1.0 =====
+  * Added rewrite for sales/order model to modify how magento change order status
+  * Added support logic for marketplace changes
+  * Fixed Advanced PO report vendor filter
+
+===== 2.0.10 =====
+  * Added default global setting for "Statement calculation based on" and "Statement on following po/shipment statuses"
+  * Fixed system shipping method not shows in PO PDF
+
+===== 2.0.10.bndl.2 =====
+  * Added rewrite for sales/order model to modify how magento change order status
+  * Added support logic for marketplace changes
+  * Fixed Advanced PO report vendor filter
+
+===== 2.0.10.bndl.1 =====
+  * Added bundles support
+
+===== 2.0.9 =====
+  * Fixed create shipment does not create shipment in vendor interface when "partial qty" not set
+  * Fixed recently broken udpos grid tab in order view
+
+===== 2.0.8 =====
+  * Added configuration for each package in FedEx MPS
+  * Fixed vendor_simple_sku
+
+===== 2.0.6 =====
+  * Added vendor email notification by PO status
+  * Added logic to support new Unirgy_DropshipStockPo add-ons
+
+===== 2.0.4 =====
+  * Added show available vendors with stock check/reassign option in order view page
+    will do reassign for order items only and for qtys not POed
+
+===== 2.0.0 =====
+  * Added option "Hide vendors that failed stock check on admin area Create PO page"
+  * Added show gift messages in vendor notification emails
+  * Added options to 'Configuration > Drop Shipping > Product Stock Options'
+    - 'Vendor Decision Method For Reassign' separate decision method used to check vendors stock when doing reassign
+    - 'Skip Stock Check For Reassign'
+  * Fixed invoiceShipment
+    - capture offline when garnd_total=0
+    - wrap in transaction in case it's executed not from transaction context
+  * Added "Do Not Automatically Generate PO" flag in admin order create page
+  * Added ability to modify costs of existing POs
+  * Fixed udpos tab grid action on order page
+
+===== 1.6.4 =====
+  * Moved everything from Unirgy_DropshipPo_Model_Batch to Unirgy_DropshipBatch_Model_Batch with conditions check
+  * Extended udropship/purchase_order/autoinvoice_shipment option
+    this allows invoice whole order on first shipment as a workaround
+    to support payment methods that does not have partial capture
+  * Added checks and special treatment of virtual items
+  * Added option udropship/purchase_order/create_po_allow_change_costs
+    Allow change costs when manualy create po
+  * Added format costs as prices on po view, add row cost column on po view page
+  * Added ability to resend vendor po notifications
+  * Added separate hide_udpo_pdf_shipping_amount option to hide amounts in po pdf
+  * Fixed Transactional Emails not showing up in System > Transactional Emails > Add New Template
+  * Fixed grid rows update after import with DropshipBatch
+  * Fixed udpos grid tab on order page
+
+===== 1.6.0 =====
+  * Added configuration to not allow vendors to change PO status (from/to)
+  * Added integration with new module uDropship PO MPS
+  * Added error notifications by email (label_request_failed,poll_tracking_failed,poll_tracking_limit_exceeded)
+  * Fixed Mage_Sales_Model_Order_Invoice::isLast() magento core bug for partial invoicing
+  * Fixed auto-invoicing in some cases
+  * Fixed compatibility with 1.3.2.4
+  * Fixed showing transactional emails in System > Transactional Emails > Add New Template
+
+===== 1.5.3 =====
+  * Fixed getVendorShipmentCollection in vendor interface
+  * Fixed mass action submit to use the default filter
+  * Fixed attaching PO PDF to vendor notification email
+
+===== 1.5.1 =====
+  * Fixed htmlEscape() in templates for 1.3.x
+  * Fixed default values for PO status on Batch import/export
+  * Fixed default filter status can't be cleared in vendor interface
+  * Fixed adminhtml create po page for udsplit orders and other cases when can't determine selected shipping method
+  * Added statement date (PO ready) field to POs, improved statements and payouts logic
+
+===== 1.5.0 =====
+  * Fixed export CSV and Excel actions in grid
+  * Fixed error when creating shipment with no checkboxes
+  * Fixed handling not allowed status changes in vendor interface on "Create Shipment" action
+  * Added initial new PO status per vendor
+  * Added option to force PO status change when it's not allowed
+  * Added configuration per vendor for default PO sorting, PO status filter in vendor interface
+
+===== 1.4.2 =====
+  * Fixed sending vendor PO comments to admin
+
+===== 1.4.1 =====
+  * Fixed issues with SQL reinstalls
+
+===== 1.4.0 =====
+  * Added specifying shipping label options in vendor interface for UPS, USPS, FedEx
+
+===== 1.3.0 =====
+  * Fixed incorrect vendor assignment when creating PO shipment and order items have different vendors
+  * Removed "Create PO" button from order page when order is not made using uDropship method
+  * Added creating PO shipments from admin
+  * Added reference to PO from admin shipment view page
+  * Added separate "Add PO Comment" button in PO Info (vendor interface)
+  * Fixed udpo::getShippingAmountLeft (didn't skip canceled shipments)
+  * Added event udropship_shipment_label_request_failed in Unirgy_Dropship_Model_Label_Batch::processShipments
+  * Added when shipment create issued by create label request and it failed - unregister and delete shipment
+
+===== 1.2.2 =====
+  * Fixed batch printing packings slips and shipping labels
+
+===== 1.2.1 =====
+  * Fixed sending PO comments to vendor from admin
+
+===== 1.2.0 =====
+  * Fixed cancelling POs workflow
+
+===== 1.1.1 =====
+  * Fixed login issue for lins in PO email notifications
+
+===== 1.1.0 =====
+  * Added separate handling of multiple PO action and status update in vendor interface
+
+===== 1.0.1 =====
+  * Added global configuration to restrict PO statuses in vendor interface
+
+===== 1.0.0 =====
+  * Initial release

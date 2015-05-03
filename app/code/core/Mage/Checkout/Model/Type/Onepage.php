@@ -338,6 +338,7 @@ class Mage_Checkout_Model_Type_Onepage
             }
         }
 
+        $this->getQuote()->setBillingAddress($address);
         $this->getQuote()->collectTotals();
         $this->getQuote()->save();
 
@@ -564,7 +565,10 @@ class Mage_Checkout_Model_Type_Onepage
             return array('error' => 1, 'message' => $validateRes);
         }
 
-        $this->getQuote()->collectTotals()->save();
+        $this->getQuote()->setShippingAddress($address);
+        $this->getQuote()->collectTotals();
+        $this->getQuote()->save();
+
 
         $this->getCheckout()
             ->setStepData('shipping', 'complete', true)

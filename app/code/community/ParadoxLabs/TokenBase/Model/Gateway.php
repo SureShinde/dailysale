@@ -71,7 +71,7 @@ abstract class ParadoxLabs_TokenBase_Model_Gateway extends Mage_Core_Model_Abstr
 		);
 		
 		if( isset( $parameters['_endpoint'] ) ) {
-			$this->_endpoint = $_endpoint;
+			$this->_endpoint = $parameters['_endpoint'];
 		}
 		else {
 			$this->_endpoint = ( $this->_testMode === true ? $this->_endpointTest : $this->_endpointLive );
@@ -187,6 +187,16 @@ abstract class ParadoxLabs_TokenBase_Model_Gateway extends Mage_Core_Model_Abstr
 	public function getLastResponse()
 	{
 		return $this->_lastResponse;
+	}
+	
+	/**
+	 * Print stored logs to the gateway log.
+	 */
+	public function logLogs()
+	{
+		Mage::helper('tokenbase')->log( $this->_code, $this->_log );
+		
+		return $this;
 	}
 	
 	/**

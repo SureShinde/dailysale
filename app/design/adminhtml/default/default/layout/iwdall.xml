@@ -4,7 +4,7 @@
 	<default>
 	
 		<reference name="head">
-			<action method="addJs"><script>iwd/all/jquery-1.10.2.min.js</script></action>
+			<!--<action method="addJs"><script>iwd/all/jquery-1.10.2.min.js</script></action>-->
 			<action method="addJs"><script>iwd/all/bootstrap.min.js</script></action>
 			<action method="addJs"><script>iwd/all/adminhtml/notification.js</script></action>
 			<action method="addCss"><name>iwd/all/iwdall.css</name></action>

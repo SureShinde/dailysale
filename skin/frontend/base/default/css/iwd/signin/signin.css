@@ -2,7 +2,7 @@
 .signin.md-show{visibility:visible}
 .signin.md-show + .md-overlay{position:fixed;width:100%;height:100%;visibility:hidden;top:0;left:0;z-index:9500;opacity:0;background:rgba(0,0,0,0.6);-webkit-transition:all .3s;-moz-transition:all .3s;transition:all .3s}
 .signin.md-show + .md-overlay{opacity:1;visibility:visible}
-.signin .md-content{color:#fff;background:#fff;position:relative;border-radius:3px;margin:0 auto;}
+.signin .md-content{background:#fff;position:relative;border-radius:3px;margin:0 auto;}
 .signin .md-content-wrapper{padding:0 35px 20px;}
 .signin .md-content h3{text-align:center;font-size:2.4em;font-weight:300;opacity:0.8;background:rgba(0,0,0,0.1);border-radius:3px 3px 0 0;margin:0;padding:.4em}
 .signin.md-effect-7{top:20px;-webkit-transform:translateX(-50%);-moz-transform:translateX(-50%);-ms-transform:translateX(-50%);transform:translateX(-50%)}

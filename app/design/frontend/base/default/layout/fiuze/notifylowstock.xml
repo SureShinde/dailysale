@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <fiuze_notifylowstock_template>
+        <block type='core/template' name='parent' template='fiuze/notifylowstock/email/notifylowstockblock.phtml'/>
+    </fiuze_notifylowstock_template>
+</layout>

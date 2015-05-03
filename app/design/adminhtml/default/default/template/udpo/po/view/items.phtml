@@ -1,0 +1,54 @@
+<?php
+/**
+ * Unirgy LLC
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.unirgy.com/LICENSE-M1.txt
+ *
+ * @category   Unirgy
+ * @package    Unirgy_DropshipPo
+ * @copyright  Copyright (c) 2008-2009 Unirgy LLC (http://www.unirgy.com)
+ * @license    http:///www.unirgy.com/LICENSE-M1.txt
+ */
+?>
+<?php
+$isViewCost = Mage::getSingleton('admin/session')->isAllowed('sales/order/actions/udpo_view_cost');
+$qtyLast = !$isViewCost ? 'last' : '';
+?>
+<div class="grid np">
+  <div class="hor-scroll">
+    <table cellspacing="0" class="data order-tables">
+        <col />
+        <?php if ($isViewCost): ?>
+        <col />
+        <?php endif ?>
+        <col width="1" />
+        <?php if ($isViewCost): ?>
+        <col width="1" />
+        <?php endif ?>
+        <thead>
+            <tr class="headings">
+                <th><?php echo $this->helper('sales')->__('Product') ?></th>
+                <?php if ($isViewCost): ?>
+                <th><?php echo $this->helper('udpo')->__('Cost') ?></th>
+                <?php endif ?>
+                <th class="<?php echo $qtyLast?> a-center"><span class="nobr"><?php echo $this->helper('sales')->__('Qty') ?></span></th>
+                <?php if ($isViewCost): ?>
+                <th class="last a-right"><?php echo $this->helper('sales')->__('Row Cost') ?></th>
+                <?php endif ?>
+            </tr>
+        </thead>
+        <?php $_items = $this->getPo()->getAllItems() ?>
+        <?php $_i=0;foreach ($_items as $_item): if ($_item->getOrderItem()->getParentItem()): continue; endif; $_i++ ?>
+            <tbody class="<?php echo $_i%2?'odd':'even' ?>">
+                <?php echo $this->getItemHtml($_item) ?>
+            </tbody>
+        <?php endforeach; ?>
+    </table>
+  </div>
+</div>
+<br />

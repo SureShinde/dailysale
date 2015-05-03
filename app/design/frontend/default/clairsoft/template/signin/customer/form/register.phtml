@@ -13,7 +13,7 @@
                 <li>
                     <label for="email_address" class="required"><em>*</em><?php echo $this->__('Email Address') ?></label>
                     <div class="input-box">
-                        <input type="text" name="email" id="email_address" value="<?php echo $this->htmlEscape($this->getFormData()->getEmail()) ?>" title="<?php echo $this->__('Email Address') ?>" class="input-text required-entry leadSpendEmail-noconfig" />
+                        <input type="text" name="email" id="email_address" value="<?php echo $this->htmlEscape($this->getFormData()->getEmail()) ?>" title="<?php echo $this->__('Email Address') ?>" class="input-text required-entry validate-email" />
                     </div>
                 </li>
                 <?php if ($this->isNewsletterEnabled()): ?>
@@ -129,7 +129,7 @@
                         </div>
                     </div>
                 </li>
-                
+                <?php echo $this->getLayout()->createBlock('captcha/captcha')->setFormId('user_create')->toHtml(); ?>
             </ul>
  			<?php echo $this->getChildHtml('persistent.remember.me'); ?>	
         </div>

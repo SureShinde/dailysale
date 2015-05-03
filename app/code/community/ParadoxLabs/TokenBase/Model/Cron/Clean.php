@@ -24,6 +24,10 @@ class ParadoxLabs_TokenBase_Model_Cron_Clean extends Mage_Core_Model_Abstract
 	 */
 	public function cleanData()
 	{
+		if( Mage::getStoreConfig('payment_services/tokenbase/clean_old_cards') != 1 ) {
+			return;
+		}
+		
 		/**
 		 * Prune inactive cards older than 120 days (beyond auth and refund periods)
 		 */

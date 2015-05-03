@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Unirgy LLC
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.unirgy.com/LICENSE-M1.txt
+ *
+ * @category   Unirgy
+ * @package    Unirgy_Dropship
+ * @copyright  Copyright (c) 2008-2009 Unirgy LLC (http://www.unirgy.com)
+ * @license    http:///www.unirgy.com/LICENSE-M1.txt
+ */
+ -->
+<config>
+    <sections>
+        <udropship>
+            <groups>
+                <purchase_order module="udpo" translate="label">
+                    <label>Purchase Order Options</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>25</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <autoinvoice_shipment translate="label">
+                            <label>Autoinvoice shipment</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>udpo/adminhtml_systemConfigFormField_autoinvoice</frontend_model>
+                            <source_model>udpo/source</source_model>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </autoinvoice_shipment>
+                        <autoinvoice_shipment_statuses translate="label">
+                            <label>Auto-Invoice on these shipment statuses</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>udropship/source</source_model>
+                            <sort_order>6</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </autoinvoice_shipment_statuses>
+                        <default_po_status module="udpo" translate="label">
+                            <label>Default PO Status</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>udpo/source</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </default_po_status>
+                        <default_virtual_po_status module="udpo" translate="label">
+                            <label>Default Virtual PO Status</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>udpo/source</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </default_virtual_po_status>
+                        <po_increment_type module="udpo" translate="label">
+                            <label>PO Increment Type</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>udpo/source</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </po_increment_type>
+                        <shipment_increment_type module="udpo" translate="label">
+                            <label>Shipment Increment Type</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>udpo/source</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </shipment_increment_type>
+                        <attach_po_pdf translate="label">
+                            <label>Attach PO Pdf to Vendor Notification</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </attach_po_pdf>
+                        <ready_on_pdf translate="label">
+                            <label>Make PO Ready to Ship on Printing PO PDF</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>45</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </ready_on_pdf>
+                        <new_po_vendor_email_template translate="label">
+                            <label>New PO Vendor Notification Template</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_template</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </new_po_vendor_email_template>
+                        <po_comment_vendor_email_template translate="label">
+                            <label>PO Comment Vendor Notification Template</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_template</source_model>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </po_comment_vendor_email_template>
+                        <create_po_allow_change_costs translate="label">
+                            <label>Allow change costs when manualy create po</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </create_po_allow_change_costs>
+
+                        <udpo_pdf_custom_text translate="label">
+                            <label>Default custom text on the bottom of purchase order PDF</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </udpo_pdf_custom_text>
+                    </fields>
+                </purchase_order>
+                <statement>
+                    <fields>
+                        <statement_po_status translate="label">
+                            <label>Default Statement on following PO statuses</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>udpo/source</source_model>
+                            <sort_order>59</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </statement_po_status>
+                    </fields>
+                </statement>
+                <vendor>
+                    <fields>
+                        <default_shipment_status>
+                            <label>Default Customer Shipment Status</label>
+                        </default_shipment_status>
+                        <is_restrict_udpo_status translate="label">
+                            <label>Restrict PO statuses in vendor interface</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>udropship/adminhtml_systemConfigFormField_dependSelect</frontend_model>
+                            <depend_fields>
+                                <udropship_vendor_restrict_udpo_status>1</udropship_vendor_restrict_udpo_status>
+                            </depend_fields>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>390</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </is_restrict_udpo_status>
+                        <restrict_udpo_status translate="label">
+                            <label>Available PO statuses in vendor interface</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>udpo/source</source_model>
+                            <sort_order>400</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </restrict_udpo_status>
+                        <allow_forced_po_status_change translate="label">
+                            <label>Allowed forced PO status change</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>410</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </allow_forced_po_status_change>
+                        <hide_udpo_pdf_shipping_amount translate="label">
+                            <label>Hide shipping amount in po pdf</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>364</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </hide_udpo_pdf_shipping_amount>
+                    </fields>
+                </vendor>
+                <batch>
+                    <fields>
+                        <export_on_po_status>
+                            <source_model>udpo/source</source_model>
+                        </export_on_po_status>
+                    </fields>
+                </batch>
+                <admin>
+                    <fields>
+                        <vendor_comments_subject>
+                            <label>Vendor Shipment Comments Email Subject</label>
+                        </vendor_comments_subject>
+                        <vendor_comments_template>
+                            <label>Vendor Shipment Comments Template</label>
+                        </vendor_comments_template>
+                        <vendor_po_comments_subject>
+                            <label>Vendor PO Comments Email Subject</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>34</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </vendor_po_comments_subject>
+                        <vendor_po_comments_template>
+                            <label>Vendor PO Comments Template</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>37</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </vendor_po_comments_template>
+                    </fields>
+                </admin>
+                <pocombine>
+                    <fields>
+                        <notify_on_status>
+                            <source_model>udpo/source</source_model>
+                        </notify_on_status>
+                        <after_notify_status>
+                            <source_model>udpo/source</source_model>
+                        </after_notify_status>
+                    </fields>
+                </pocombine>
+                <stock translate="label">
+                    <fields>
+                        <manual_udpo_hide_failed_vendors>
+                            <label>Hide vendors that failed stock check on admin area Create PO page</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </manual_udpo_hide_failed_vendors>
+                    </fields>
+                </stock>
+            </groups>
+        </udropship>
+    </sections>
+</config>
