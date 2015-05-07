@@ -28,7 +28,7 @@
                             <show_in_store>1</show_in_store>
                             <validate>required-entry</validate>
                         </category>
-                        <scheduler>
+                        <scheduler translate="label">
                             <label>Task Schedule (cron syntax)</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>60</sort_order>
@@ -45,7 +45,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                            <comment>Match expressions in the same order as displayed in the configuration.</comment>
+                            <comment>Displays in the same order as in the configuration. Sorting inside of category is performing in order of chosen criteria.</comment>
                         </general>
                     </fields>
                 </bestsellers_settings_grp>

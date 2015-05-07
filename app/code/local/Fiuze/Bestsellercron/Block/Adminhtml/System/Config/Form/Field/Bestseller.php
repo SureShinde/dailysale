@@ -42,14 +42,12 @@ class Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Bestseller e
         $this->addColumn('days_period', array(
             'label' => Mage::helper('bestsellercron')->__('Days Period'),
             'style' => 'width:120px',
+            'class' => ' required-entry validate-digits'
         ));
-        //        $this->addColumn('task_schedule', array(
-        //            'label' => Mage::helper('bestsellercron')->__('Task Schedule'),
-        //            'style' => 'width:120px',
-        //        ));
         $this->addColumn('number_of_products', array(
             'label' => Mage::helper('bestsellercron')->__('Number of products'),
             'style' => 'width:120px',
+            'class' => ' required-entry validate-digits'
         ));
         $this->_addAfter = false;
         $this->_addButtonLabel = Mage::helper('adminhtml')->__('Add Item');

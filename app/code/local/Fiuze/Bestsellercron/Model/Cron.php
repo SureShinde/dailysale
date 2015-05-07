@@ -23,6 +23,10 @@ class Fiuze_Bestsellercron_Model_Cron extends Mage_Core_Model_Abstract{
     }
 
     public function bestSellers(){
+        if(!$this->_bestSellerCategoryConfig->getValue()){
+            Mage::log('Fiuze_Bestsellercron: Please choose _bestSellerCategoryConfig in the System->Configuration->Catalog->Fiuze Bestsellers Cron tab.');
+            return false;
+        }
         if(!$this->_bestSellerCategory->getId()){
             Mage::log('Fiuze_Bestsellercron: Please choose category in the System->Configuration->Catalog->Fiuze Bestsellers Cron tab.');
             return false;
