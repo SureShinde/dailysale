@@ -20,6 +20,7 @@ class Bronto_Order_Helper_Data extends Bronto_Common_Helper_Data implements Bron
     const XML_PATH_DESCRIPTION   = 'bronto_order/import/description';
     const XML_PATH_INCL_DISCOUNT = 'bronto_order/import/incl_discount';
     const XML_PATH_INCL_TAX      = 'bronto_order/import/incl_tax';
+    const XML_PATH_INCL_SHIPPING = 'bronto_order/import/incl_shipping';
 
     const XML_PATH_CRON_STRING   = 'crontab/jobs/bronto_order_import/schedule/cron_expr';
     const XML_PATH_CRON_MODEL    = 'crontab/jobs/bronto_order_import/run/model';
@@ -163,6 +164,14 @@ class Bronto_Order_Helper_Data extends Bronto_Common_Helper_Data implements Bron
     public function isTaxIncluded($scope = 'default', $scopeId = 0)
     {
         return (bool)$this->getAdminScopedConfig(self::XML_PATH_INCL_TAX, $scope, $scopeId);
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isShippingIncluded($scope = 'default', $scopeId = 0)
+    {
+        return (bool)$this->getAdminScopedConfig(self::XML_PATH_INCL_SHIPPING, $scope, $scopeId);
     }
 
     /**

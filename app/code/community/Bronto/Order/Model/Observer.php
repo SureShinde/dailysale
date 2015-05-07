@@ -8,6 +8,7 @@ class Bronto_Order_Model_Observer
 {
 
     const NOTICE_IDENTIFIER = 'bronto_order';
+    const ERROR_APPENDER = ' This is most likely caused by an invalid character in the request.';
 
     private $_helper;
 
@@ -222,6 +223,31 @@ class Bronto_Order_Model_Observer
                 'price'       => $this->_helper->getItemPrice($item, $basePrefix, $inclTaxes, $inclDiscounts)
             );
         }
+        if ($inclShipping && $order->getState() == Mage_Sales_Model_Order::STATE_COMPLETE && $order->hasShipments()) {
+            $shippingObject = new Varien_Object(array(
+                'qty_ordered' => 1,
+                'base_row_total' => $order->getBaseShippingAmount(),
+                'row_total' => $order->getShippingAmount(),
+                'base_tax_amount' => $order->getBaseShippingTaxAmount(),
+                'tax_amount' => $order->getShippingTaxAmount(),
+                'base_discount_amount' => $order->getBaseShippingDiscountAmount(),
+                'discount_amount' => $order->getShippingDiscountAmount()
+            ));
+            $descriptions = array();
+            foreach ($order->getTracksCollection() as $track) {
+                if ($track->hasTrackNumber() && $track->hasTitle()) {
+                    $descriptions[] = "{$track->getTitle()} - {$track->getTrackNumber()}";
+                }
+            }
+            $shipmentItem = array(
+                'sku' => 'SHIPPING',
+                'name' => $order->getShippingDescription(),
+                'description' => implode("<br/>", $descriptions),
+                'quantity' => 1,
+                'price' => $this->_helper->getItemPrice($shippingObject, $basePrefix, $inclTaxes, $inclDiscounts)
+            );
+            $brontoOrderItems[] = $shipmentItem;
+        }
         $brontoOrder->products = $brontoOrderItems;
         $brontoOrder->persist();
     }
@@ -238,6 +264,40 @@ class Bronto_Order_Model_Observer
         $importDate = Mage::getSingleton('core/date')->gmtDate();
         $orderRow->setBrontoImported($importDate)->save();
         $this->_helper->writeInfo("  Skipping order id {$order->getId()} #{$order->getIncrementId()}: {$reason}");
+    }
+
+    /**
+     * Supressed the order
+     *
+     * @param Mage_Sales_Model_Order $order
+     * @param Bronto_Order_Model_Queue $orderRow
+     * @param string $reason
+     */
+    protected function _supressOrder($order, $orderRow, $reason)
+    {
+        $orderRow
+            ->setBrontoImported(null)
+            ->setBrontoSuppressed($reason)
+            ->save();
+        $this->_helper->writeInfo("  Supressing order id {$order->getId()} #{$order->getIncrementId()}: {$reason}");
+    }
+
+    /**
+     * Skips all of the orders in the cache
+     *
+     * @param array $orderCache
+     * @param string $message
+     */
+    protected function _suppressedOrders($orderCache, $message)
+    {
+        foreach ($orderCache as $cachedOrder) {
+            $order = Mage::getModel('sales/order')->load($cachedOrder['orderId']);
+            $row = Mage::getModel('bronto_order/queue')->getOrderRow(
+                $cachedOrder['orderId'],
+                $cachedOrder['quoteId'],
+                $cachedOrder['storeId']);
+            $this->_supressOrder($order, $row, $message);
+        }
     }
 
     /**
@@ -309,6 +369,7 @@ class Bronto_Order_Model_Observer
         $basePrefix      = $this->_helper->getPriceAttribute('store', $store->getId());
         $inclTaxes       = $this->_helper->isTaxIncluded('store', $store->getId());
         $inclDiscounts   = $this->_helper->isDiscountIncluded('store', $store->getId());
+        $inclShipping    = $this->_helper->isShippingIncluded('store', $store->getId());
         $uploadMax       = $this->_helper->getBulkLimit('store', $store->getId());
         $orderCache      = array();
         $allStates       = Mage::getModel('bronto_order/system_config_source_order_state')->toArray();
@@ -343,15 +404,25 @@ class Bronto_Order_Model_Observer
                     $this->_skipOrder($order, $orderRow, "Invalid increment ID");
                     $result['success']++;
                 } else if (array_key_exists($order->getState(), $importStateMap)) {
-                    $this->_persistOrder($order, $brontoOrder, $orderRow, array(
-                        'productHelper' => $productHelper,
-                        'descriptionAttr' => $descriptionAttr,
-                        'basePrefix' => $basePrefix,
-                        'inclTaxes' => $inclTaxes,
-                        'inclDiscounts' => $inclDiscounts,
-                        'storeId' => $storeId,
-                    ));
-                    $orderCache[] = array('orderId' => $orderId, 'quoteId' => $quoteId, 'storeId' => $storeId);
+                    try {
+                        $this->_persistOrder($order, $brontoOrder, $orderRow, array(
+                            'productHelper' => $productHelper,
+                            'descriptionAttr' => $descriptionAttr,
+                            'basePrefix' => $basePrefix,
+                            'inclTaxes' => $inclTaxes,
+                            'inclDiscounts' => $inclDiscounts,
+                            'inclShipping' => $inclShipping,
+                            'storeId' => $storeId,
+                        ));
+                        $orderCache[] = array('orderId' => $orderId, 'quoteId' => $quoteId, 'storeId' => $storeId);
+                    } catch (Exception $e) {
+                      // Mark import as *not* imported
+                      $orderRow->setBrontoImported(null);
+                      $orderRow->save();
+
+                      // increment number of errors
+                      $result['error']++;
+                    }
                 } else if (array_key_exists($order->getState(), $deleteStateMap)) {
                     if ($this->_deleteOrder($order, $brontoOrder, $orderRow)) {
                         $result['success']++;
@@ -373,13 +444,11 @@ class Bronto_Order_Model_Observer
                     }
                 } catch (Exception $e) {
                     $this->_helper->writeError($e);
-
-                    // Mark import as *not* imported
-                    $orderRow->setBrontoImported(null);
-                    $orderRow->save();
-
-                    // increment number of errors
-                    $result['error']++;
+                    $this->_helper->writeVerboseDebug('===== FAILED IMPORT =====', 'bronto_order_api.log');
+                    $this->_helper->writeVerboseDebug(var_export($orderObject->getApi()->getLastRequest(), true), 'bronto_order_api.log');
+                    if ($e->getCode() == 107) {
+                        $this->_suppressedOrders($orderCache, $e->getMessage() . self::ERROR_APPENDER);
+                    }
                 }
             } else {
                 $this->_skipOrder($order, $orderRow, "Invalid order");
@@ -389,7 +458,16 @@ class Bronto_Order_Model_Observer
 
         // Final flush (for any we miss)
         if (!empty($orderCache)) {
-            $result = $this->_flushOrders($orderObject, $orderCache, $result);
+            try {
+                $result = $this->_flushOrders($orderObject, $orderCache, $result);
+            } catch (Exception $e) {
+                $this->_helper->writeError($e);
+                $this->_helper->writeVerboseDebug('===== FAILED IMPORT =====', 'bronto_order_api.log');
+                $this->_helper->writeVerboseDebug(var_export($orderObject->getApi()->getLastRequest(), true), 'bronto_order_api.log');
+                if ($e->getCode() == 107) {
+                    $this->_suppressedOrders($orderCache, $e->getMessage() . self::ERROR_APPENDER);
+                }
+            }
         }
 
         // Log results

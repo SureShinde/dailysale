@@ -183,7 +183,9 @@ abstract class Bronto_Product_Model_Collect_Abstract {
             if ($this->_remainingCount - count($products) <= 0) {
                 break;
             }
-            if ($productOrId instanceof Mage_Reports_Model_Event) {
+            if ($productOrId instanceof Mage_Adminhtml_Model_Report_Item) {
+                $productId = $productOrId->getProductId();
+            } else if ($productOrId instanceof Mage_Reports_Model_Event) {
                 $productId = $productOrId->getObjectId();
             } else if (is_numeric($productOrId)) {
                 $productId = $productOrId;

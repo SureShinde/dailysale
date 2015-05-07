@@ -28,11 +28,14 @@ class Bronto_Reviews_Model_Observer
     public function processPostOrders($observer)
     {
         if ($observer->getOrder()) {
+            $appEmulation = Mage::getSingleton('core/app_emulation');
+            $emulatedInfo = $appEmulation->startEnvironmentEmulation($observer->getOrder()->getStoreId());
             try {
                 $this->_processOrder($observer->getOrder());
             } catch (Exception $e) {
                 $this->_helper->writeError("Failed to examine order: {$e->getMessage()}");
             }
+            $appEmulation->stopEnvironmentEmulation($emulatedInfo);
         }
     }
 
@@ -97,7 +100,7 @@ class Bronto_Reviews_Model_Observer
                     if (isset($processTypes[$post->getPostType()])) {
                         $processed[$post->getPostType()] = true;
                         $days = $this->_helper->getDefaultPostPeriod($post, $storeId);
-                        if ($post->getPostType() == Bronto_Reviews_Model_Post_Purchase::TYPE_REORDER) {
+                        if ($post->getPostType() == Bronto_Reviews_Model_Post_Purchase::TYPE_REORDER && $this->_helper->getDefaultMultiplier($post, $storeId)) {
                             $days *= ($item->getQtyOrdered() * 1);
                         }
                         $days += $this->_helper->getDefaultAdjustment($post, $storeId);
@@ -399,7 +402,9 @@ class Bronto_Reviews_Model_Observer
             'active',
             'period',
             'content',
+            'adjustment',
             'message',
+            'multiply_by_qty',
             'period_type',
             'send_limit'
         );
