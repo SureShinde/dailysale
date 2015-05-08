@@ -8,9 +8,9 @@
  * Please refer to http://www.magentocommerce.com for more information.
  *
  * @category  Mirasvit
- * @package   Advanced Product Feeds
- * @version   1.1.2
- * @build     486
+ * @package   Full Page Cache
+ * @version   1.0.1
+ * @build     348
  * @copyright Copyright (C) 2015 Mirasvit (http://mirasvit.com/)
  */
 
