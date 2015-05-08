@@ -306,7 +306,7 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
         $time = $configArray[$keyRow]['time_period'];
 
         //calculate necessary period
-        $timestamp = Mage::getModel('core/date')->timestamp();
+        $timestamp =  strtotime(Mage::getModel('core/date')->gmtDate());
         $period    = date('Y-m-d H:i:s', strtotime('-' . $days . ' days -' . $time[0] . ' hours -' . $time[1] . ' minutes -' . $time[2] . ' seconds', $timestamp));
 
         return $period;
