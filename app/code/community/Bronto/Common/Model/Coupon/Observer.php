@@ -23,9 +23,9 @@ class Bronto_Common_Model_Coupon_Observer
     protected function _isApplicable($action)
     {
         return (
+            $action->getLayout()->getArea() == self::TARGET_AREA &&
             $this->_helper->isEnabled() &&
-            $this->_helper->isObservingController() &&
-            $action->getLayout()->getArea() == self::TARGET_AREA
+            $this->_helper->isObservingController()
         );
     }
 
