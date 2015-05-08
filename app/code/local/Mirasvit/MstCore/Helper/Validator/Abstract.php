@@ -8,9 +8,9 @@
  * Please refer to http://www.magentocommerce.com for more information.
  *
  * @category  Mirasvit
- * @package   Advanced Product Feeds
- * @version   1.1.2
- * @build     486
+ * @package   Full Page Cache
+ * @version   1.0.1
+ * @build     348
  * @copyright Copyright (C) 2015 Mirasvit (http://mirasvit.com/)
  */
 
@@ -173,12 +173,8 @@ class Mirasvit_MstCore_Helper_Validator_Abstract extends Mage_Core_Helper_Abstra
         $catalogSearchXml = new Zend_Config_Xml($catalogSearchLayoutFile, $handleName);
         $catalogSearchArray = $catalogSearchXml->toArray();
 
-        array_walk_recursive(
-            $catalogSearchArray,
-            function ($el) use (&$container) {
-                $container[] = $el;
-            }
-        );
+        $iterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($catalogSearchArray));
+        $container = iterator_to_array($iterator, false);
 
         $appEmulation->stopEnvironmentEmulation($initialEnvironmentInfo);
 

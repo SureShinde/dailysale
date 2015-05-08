@@ -8,9 +8,9 @@
  * Please refer to http://www.magentocommerce.com for more information.
  *
  * @category  Mirasvit
- * @package   Advanced Product Feeds
- * @version   1.1.2
- * @build     486
+ * @package   Full Page Cache
+ * @version   1.0.1
+ * @build     348
  * @copyright Copyright (C) 2015 Mirasvit (http://mirasvit.com/)
  */
 
@@ -107,6 +107,9 @@ class Mirasvit_MstCore_Helper_Validator_Crc extends Mirasvit_MstCore_Helper_Vali
             $origCrc = $ar[0];
             $file = $ar[1];
             if (strpos($file, '/Test/')) {
+                continue;
+            }
+            if (strpos($file, 'Helper/Code.php')) {
                 continue;
             }
             if (count($filters)) {
