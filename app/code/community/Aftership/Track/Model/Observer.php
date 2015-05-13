@@ -45,7 +45,7 @@ class Aftership_Track_Model_Observer {
     /** For vendor
      * @param Varien_Event_Observer $observer
      */
-    public function salesOrderShipmentTrackSaveBefore(Varien_Event_Observer $observer) {
+    public function salesOrderShipmentTrackSaveAfterVendor(Varien_Event_Observer $observer) {
         ob_start();
 
         $magento_track = $observer->getEvent()->getTrack();
