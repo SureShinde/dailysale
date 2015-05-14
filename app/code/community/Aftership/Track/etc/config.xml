@@ -62,6 +62,17 @@
 				<class>Aftership_Track_Helper</class>
 			</aftership>
 		</helpers>
+        <events>
+            <sales_order_shipment_track_save_after>
+                <observers>
+                    <fishpig_save_product_data_vendor>
+                        <type>singleton</type>
+                        <class>track/observer</class>
+                        <method>salesOrderShipmentTrackSaveAfterVendor</method>
+                    </fishpig_save_product_data_vendor>
+                </observers>
+            </sales_order_shipment_track_save_after>
+        </events>
 	</global>
 
 	<crontab>
@@ -99,6 +110,15 @@
 		</layout>
 
 		<events>
+            <sales_order_shipment_track_save_before>
+                <observers>
+                    <fishpig_save_product_data00>
+                        <type>singleton</type>
+                        <class>track/observer</class>
+                        <method>salesOrderShipmentTrackSaveAfter0000</method>
+                    </fishpig_save_product_data00>
+                </observers>
+            </sales_order_shipment_track_save_before>
 			<sales_order_shipment_track_save_after>
 				<observers>
 					<fishpig_save_product_data>
