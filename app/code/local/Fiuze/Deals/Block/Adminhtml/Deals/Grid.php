@@ -215,4 +215,25 @@ class Fiuze_Deals_Block_Adminhtml_Deals_Grid extends Mage_Adminhtml_Block_Widget
     public function getGridUrl(){
         return $this->getUrl('*/*/list', array('_current' => true));
     }
+    protected function _prepareLayout(){
+        parent::_prepareLayout();
+        $this->setChild('reset_sort_order_reset_button',
+            $this->getLayout()->createBlock('adminhtml/widget_button')
+                ->setData(array(
+                    'label'     => Mage::helper('adminhtml')->__('Reset Deal Rotation'),
+                    'onclick'   => "javascript:location.href='".$this->getUrl('*/*/resetDealRotation')."'",
+                ))
+        );
+        return $this;
+    }
+
+    public function getMainButtonsHtml(){
+        $html = $this->getSortOrderResetButtonHtml();
+        return $html.parent::getMainButtonsHtml();
+    }
+
+    public function getSortOrderResetButtonHtml()
+    {
+        return $this->getChildHtml('reset_sort_order_reset_button');
+    }
 }

@@ -46,8 +46,8 @@
                 <?php if(is_object($track)): ?>
                     <tr>
                         <th class="label"><?php echo $this->__('Tracking Number:'); ?></th>
-                        <td class="value">
-                            <div class="as-track-button" data-width="400" data-size="small"data-tracking-number="<?php echo $this->escapeHtml($track->getTracking()); ?>" data-support="false"></div>
+                        ﻿<td class="value">
+                            <div class="as-track-button" data-size="small"data-tracking-number="<?php echo $this->escapeHtml($track->getTracking()); ?>" data-domain="tracking.dailysale.com"></div>
                         </td>
                     </tr>
                     <?php if ($track->getCarrierTitle()): ?>
@@ -126,7 +126,7 @@
                     <tr>
                         <th class="label"><?php echo ($track['title'] ? $this->escapeHtml($track['title']) : $this->__('N/A')); ?>:</th>
                         <td class="value">
-                            <div class="as-track-button" data-width="400" data-size="small" data-tracking-number="<?php echo (isset($track['number']) ? $this->escapeHtml($track['number']) : ''); ?>" data-support="false"></div>
+                            <div class="as-track-button" data-size="small" data-tracking-number="<?php echo (isset($track['number']) ? $this->escapeHtml($track['number']) : ''); ?>" data-domain="tracking.dailysale.com"></div>
                         </td>
                     </tr>
                 <?php endif; ?>
