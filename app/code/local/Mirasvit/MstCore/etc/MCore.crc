@@ -1,7 +1,4 @@
 c10d8ecccfd908e9b8f375fa026063b0  app/etc/modules/Mirasvit_MstCore.xml
-47c67eced3487d01bc36c73ecf572a23  app/design/frontend/base/default/template/mstcore/toolbar.phtml
-e4064ea8b8c190674fc8086ce7312c27  app/design/frontend/base/default/template/mstcore/toolbar/panel/timer.phtml
-9d5740dab2e008ee4aae11b9a313554c  app/design/frontend/base/default/template/mstcore/toolbar/panel/sql.phtml
 320ebcc6bde71d242c3a3fc3db7aec28  app/design/adminhtml/default/default/layout/mstcore.xml
 15adfe404d5d28017aa2d2c3f35b93d2  app/design/adminhtml/default/default/template/mstcore/config.phtml
 fe55ef0afe84e775dda78e20378692cb  app/design/adminhtml/default/default/template/mstcore/validator.phtml
@@ -63,11 +60,11 @@ cf9b6eba51d331a79ae23890f8c8da4c  app/code/local/Mirasvit/MstCore/Helper/Urlrewr
 229e860ffea397823c75a3638463dda9  app/code/local/Mirasvit/MstCore/Helper/Parsevariables.php
 8e7faaa4e2b84c6d027a92e2019af2e5  app/code/local/Mirasvit/MstCore/Helper/Validator.php
 faa50b66aaebefba0bef38d633b2a1f1  app/code/local/Mirasvit/MstCore/Helper/Logger.php
-5857e7fc72b5cc47a2e203e69afc63fc  app/code/local/Mirasvit/MstCore/Helper/Attachment.php
+e41f31d53d8d4db1dbd743caeb78d930  app/code/local/Mirasvit/MstCore/Helper/Attachment.php
 efd17f6b6392acf7c2e07acd04bdf11d  app/code/local/Mirasvit/MstCore/Helper/Data.php
-61048fd9bacd37421ca73854b42e557b  app/code/local/Mirasvit/MstCore/Helper/Validator/Crc.php
+4c5402a9e8ca8ddef498c90284188a20  app/code/local/Mirasvit/MstCore/Helper/Validator/Crc.php
 26785419738179083675f7659875e7ae  app/code/local/Mirasvit/MstCore/Helper/Validator/Conflict.php
-dd6a50644bac6b70390871cba7d33f6d  app/code/local/Mirasvit/MstCore/Helper/Validator/Abstract.php
+06584f36602ae15b4e9890fe8b2faee4  app/code/local/Mirasvit/MstCore/Helper/Validator/Abstract.php
 190b0d63ff209c1375118184cc55e9d0  app/code/local/Mirasvit/MstCore/Helper/Cron.php
 6bdb354496abc3c942d9cb624ecf554e  app/code/local/Mirasvit/MstCore/Helper/Version.php
 bb61ae815ee124111d5fba6c099fb535  app/code/local/Mirasvit/MstCore/Helper/Code.php
