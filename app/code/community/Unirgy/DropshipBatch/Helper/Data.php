@@ -209,6 +209,28 @@ class Unirgy_DropshipBatch_Helper_Data extends Mage_Core_Helper_Abstract
                 $this->_batch->setSkipFileactionsFlag(false);
             }
             if ($r->getParam('import_orders_textarea')) {
+                $content = $r->getParam('import_orders_textarea');//\r\n
+                $trackingNumbersContent = preg_split("/[\s,]+/", "$content");
+                $_hlp = Mage::helper('udropship');
+                $_poHlp = Mage::helper('udpo');
+                $_udpos = Mage::helper('core')->decorateArray($_poHlp->getVendorPoCollection(), '');
+
+                $trackingNumbers = array();
+                foreach($_udpos as $_po){
+                    $_shipments = Mage::helper('core')->decorateArray($_po->getShipmentsCollection());
+                    foreach($_shipments as $_shipment){
+                        $_tracking = $_hlp->getVendorTracksCollection($_shipment);
+                        foreach ($_tracking as $_t){
+                            $trackingNumbers[] = $_t->getTrackNumber();
+                        }
+                    }
+                }
+                $result = array_intersect($trackingNumbers,$trackingNumbersContent);
+                $incorrect = array_diff($trackingNumbersContent, $result);
+                if (count($incorrect)) {
+                    Mage::throwException($this->__('Invalid tracking number: ' . implode(", ", $incorrect)));
+                }
+
                 $filename = Mage::getConfig()->getVarDir('udbatch').'/import_orders-'.date('YmdHis').'.txt';
                 @file_put_contents($filename, $r->getParam('import_orders_textarea'));
                 try {
