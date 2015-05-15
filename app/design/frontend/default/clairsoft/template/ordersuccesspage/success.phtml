@@ -173,3 +173,12 @@ var google_remarketing_only = true;
 </noscript>
 
 <!-- End Google Code for Remarketing Tag -->
+
+<!-- Experiment Engine tracking -->
+
+<script>
+window.EEngine = window.EEngine || [];
+EEngine.trackRevenue('dailysale_purchase', <?php echo($subtotal); ?>); 
+</script>
+
+<!-- End EEngine tracking -->
