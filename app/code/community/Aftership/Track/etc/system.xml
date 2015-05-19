@@ -51,6 +51,16 @@
 							<show_in_website>1</show_in_website>
 							<show_in_store>0</show_in_store>
 						</cron_job_enable>
+                        <cron_schedule translate="label">
+                            <label>Task Schedule</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>45</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>cron syntax</comment>
+                            <validate>required-entry</validate>
+                        </cron_schedule>
 						<cron_job_frequency>
 							<label>Cron Job Frequency</label>
 							<frontend_type>Select</frontend_type>

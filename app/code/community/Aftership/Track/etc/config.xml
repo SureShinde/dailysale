@@ -75,18 +75,18 @@
         </events>
 	</global>
 
-	<crontab>
-		<jobs>
-			<aftershiptrackcron>
-				<schedule>
-					<cron_expr>0 */3 * * *</cron_expr>
-				</schedule>
-				<run>
-					<model>aftershiptrackcron/observer::cron</model>
-				</run>
-			</aftershiptrackcron>
-		</jobs>
-	</crontab>
+    <crontab>
+        <jobs>
+            <aftershiptrackcron>
+                <schedule>
+                    <config_path>aftership_options/messages/cron_schedule</config_path>
+                </schedule>
+                <run>
+                    <model>aftershiptrackcron/observer::cron</model>
+                </run>
+            </aftershiptrackcron>
+        </jobs>
+    </crontab>
 
 	<frontend>
 		<routers>
@@ -110,15 +110,6 @@
 		</layout>
 
 		<events>
-            <sales_order_shipment_track_save_before>
-                <observers>
-                    <fishpig_save_product_data00>
-                        <type>singleton</type>
-                        <class>track/observer</class>
-                        <method>salesOrderShipmentTrackSaveAfter0000</method>
-                    </fishpig_save_product_data00>
-                </observers>
-            </sales_order_shipment_track_save_before>
 			<sales_order_shipment_track_save_after>
 				<observers>
 					<fishpig_save_product_data>
@@ -157,4 +148,12 @@
 			</resources>
 		</acl>
 	</adminhtml>
+
+    <default>
+        <aftership_options>
+            <messages>
+                <cron_schedule>0 */3 * * *</cron_schedule>
+            </messages>
+        </aftership_options>
+    </default>
 </config>
