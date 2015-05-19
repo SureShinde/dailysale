@@ -217,32 +217,47 @@ class Unirgy_DropshipBatch_Helper_Data extends Mage_Core_Helper_Abstract
                 $_udpos = Mage::helper('core')->decorateArray($_poHlp->getVendorPoCollection(), '');
 
                 $incorrect = array();
+                //check order id
+                $orderCorrect = array();
+                $orderCorrectRow = array();
+                $ordersId = array();
+                foreach($trackingNumbersContent as $row) {
+                    $rowOrder = split(";", $row);
+                    $ordersId[] = $rowOrder[0];
+                    foreach ($_udpos as $orderRow) {
+                        if ($orderRow->getOrderIncrementId() == $rowOrder[0]) {
+                            $orderCorrect[] = $rowOrder[0];
+                            $orderCorrectRow[] = $row;
+                        }
+                    }
+                }
+                $orderCorrect = array_unique($orderCorrect);
+                $result = array_intersect($orderCorrect,$ordersId);
+                $incorrect = array_diff($ordersId, $result);
+                if (count($incorrect)){
+                    Mage::throwException($this->__('Invalid $order(s) id: ' . implode(", ", $orderCorrectRow)));
+                }
+
+                //check track id
+                unset($incorrect);
+                $incorrect = array();
                 foreach($trackingNumbersContent as $row){
                     $rowOrder = split(";", $row);
                     foreach($_udpos as $_po) {
                         $orderId = $_po->getOrderIncrementId();
-                        //check order id
-                        $orderCheck = false;
-                        foreach ($orders as $orderRow) {
-                            if ($orderId == $orderRow[0]) {
-                                $orderCheck = true;
-                            }
-                        }
-                        if ($orderCheck) {
-                            foreach ($_udpos as $_po) {
-                                $orderId = $_po->getOrderIncrementId();
-                                if ($orderId == $rowOrder[0]) {
-                                    $_shipments = Mage::helper('core')->decorateArray($_po->getShipmentsCollection());
-                                    foreach ($_shipments as $_shipment) {
-                                        $_tracking = $_hlp->getVendorTracksCollection($_shipment);
-                                        foreach ($_tracking as $_t) {
-                                            $trackingNumbers[] = $_t->getTrackNumber();
-                                            $checkArr[] = $rowOrder[1];
-                                            $result = array_intersect($trackingNumbers, $checkArr);
-                                            unset($checkArr);
-                                            if (!count($result)) {
-                                                $incorrect[] = $row;
-                                            }
+                        foreach ($_udpos as $_po) {
+                            $orderId = $_po->getOrderIncrementId();
+                            if ($orderId == $rowOrder[0]) {
+                                $_shipments = Mage::helper('core')->decorateArray($_po->getShipmentsCollection());
+                                foreach ($_shipments as $_shipment) {
+                                    $_tracking = $_hlp->getVendorTracksCollection($_shipment);
+                                    foreach ($_tracking as $_t) {
+                                        $trackingNumbers[] = $_t->getTrackNumber();
+                                        $checkArr[] = $rowOrder[1];
+                                        $result = array_intersect($trackingNumbers, $checkArr);
+                                        unset($checkArr);
+                                        if (!count($result)) {
+                                            $incorrect[] = $row;
                                         }
                                     }
                                 }
@@ -250,9 +265,10 @@ class Unirgy_DropshipBatch_Helper_Data extends Mage_Core_Helper_Abstract
                         }
                     }
                 }
+
                 $incorrect = array_unique($incorrect);
                 if (count($incorrect)){
-                    Mage::throwException($this->__('Invalid row(s): ' . implode(", ", $incorrect)));
+                    Mage::throwException($this->__('Invalid tracking id: ' . implode(", ", $incorrect)));
                 }
                 $filename = Mage::getConfig()->getVarDir('udbatch').'/import_orders-'.date('YmdHis').'.txt';
                 @file_put_contents($filename, $r->getParam('import_orders_textarea'));
