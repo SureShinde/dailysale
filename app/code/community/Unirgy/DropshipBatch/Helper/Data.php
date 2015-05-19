@@ -219,27 +219,35 @@ class Unirgy_DropshipBatch_Helper_Data extends Mage_Core_Helper_Abstract
                 $incorrect = array();
                 foreach($trackingNumbersContent as $row){
                     $rowOrder = split(";", $row);
-                    $orderCheck = false;
-                    foreach($_udpos as $_po){
+                    foreach($_udpos as $_po) {
                         $orderId = $_po->getOrderIncrementId();
-                        if($orderId == $rowOrder[0]){
-                            $_shipments = Mage::helper('core')->decorateArray($_po->getShipmentsCollection());
-                            foreach($_shipments as $_shipment){
-                                $_tracking = $_hlp->getVendorTracksCollection($_shipment);
-                                foreach ($_tracking as $_t){
-                                    $trackingNumbers[] = $_t->getTrackNumber();
-                                    $checkArr[] = $rowOrder[1];
-                                    $result = array_intersect($trackingNumbers,$checkArr);
-                                    unset($checkArr);
-                                    $incorrect[] = $row;
+                        //check order id
+                        $orderCheck = false;
+                        foreach ($orders as $orderRow) {
+                            if ($orderId == $orderRow[0]) {
+                                $orderCheck = true;
+                            }
+                        }
+                        if ($orderCheck) {
+                            foreach ($_udpos as $_po) {
+                                $orderId = $_po->getOrderIncrementId();
+                                if ($orderId == $rowOrder[0]) {
+                                    $_shipments = Mage::helper('core')->decorateArray($_po->getShipmentsCollection());
+                                    foreach ($_shipments as $_shipment) {
+                                        $_tracking = $_hlp->getVendorTracksCollection($_shipment);
+                                        foreach ($_tracking as $_t) {
+                                            $trackingNumbers[] = $_t->getTrackNumber();
+                                            $checkArr[] = $rowOrder[1];
+                                            $result = array_intersect($trackingNumbers, $checkArr);
+                                            unset($checkArr);
+                                            if (!count($result)) {
+                                                $incorrect[] = $row;
+                                            }
+                                        }
+                                    }
                                 }
                             }
-                        }else{
-                            $orderCheck = false;
                         }
-                    }
-                    if(!$orderCheck){
-                        $incorrect[] = $row;
                     }
                 }
                 $incorrect = array_unique($incorrect);
