@@ -34,19 +34,25 @@
  * @author     MageWorx Dev Team <dev@mageworx.com>
  */
 
-class MageWorx_Adminhtml_Block_System_Config_Form_Fieldset_Mageworx_Abstract
-	extends Mage_Adminhtml_Block_System_Config_Form_Fieldset
+class MageWorx_Adminhtml_Model_System_Config_Source_Cms_Blocks
 {
+    protected $_options;
 
-    protected function _getFooterHtml($element)
+    public function toOptionArray($isMultiselect=false)
     {
-        $html = parent::_getFooterHtml($element);
-        $html .= Mage::helper('adminhtml/js')->getScript("
-            $$('td.form-buttons')[0].update('');
-            $('{$element->getHtmlId()}' + '-head').setStyle('background: none;');
-            $('{$element->getHtmlId()}' + '-head').writeAttribute('onclick', 'return false;');
-            $('{$element->getHtmlId()}').show();
-        ");
-        return $html;
+        if (!$this->_options) {
+            $storeCode = Mage::app()->getRequest()->getParam('store');
+            $collection = Mage::getModel('cms/block')->getCollection();
+            $collection->addStoreFilter(Mage::app()->getStore($storeCode)->getId());
+            $collection->addFieldToFilter('is_active', array('eq' => 1));
+            $this->_options = $collection->loadData()->toOptionArray(false);
+        }
+
+        $options = $this->_options;
+        if(!$isMultiselect){
+            array_unshift($options, array('value'=>'', 'label'=> Mage::helper('adminhtml')->__('--Please Select--')));
+        }
+
+        return $options;
     }
 }
