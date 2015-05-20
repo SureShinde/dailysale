@@ -245,6 +245,7 @@ class Unirgy_DropshipBatch_Helper_Data extends Mage_Core_Helper_Abstract
                     $rowOrder = split(";", $row);
                     foreach($_udpos as $_po) {
                         $orderId = $_po->getOrderIncrementId();
+                        $trackingNumbers= array();
                         foreach ($_udpos as $_po) {
                             $orderId = $_po->getOrderIncrementId();
                             if ($orderId == $rowOrder[0]) {
@@ -253,20 +254,15 @@ class Unirgy_DropshipBatch_Helper_Data extends Mage_Core_Helper_Abstract
                                     $_tracking = $_hlp->getVendorTracksCollection($_shipment);
                                     foreach ($_tracking as $_t) {
                                         $trackingNumbers[] = $_t->getTrackNumber();
-                                        $test = array();
-                                        $test[] = $rowOrder[1];
-                                        $check = array_intersect($trackingNumbers, $test);
-                                        if (count($check)) {
-                                            $checkArr[] = $rowOrder[1];
-                                            $result = array_intersect($trackingNumbers, $checkArr);
-                                            unset($checkArr);
-                                            if (!count($result)) {
-                                                $incorrect[] = $row;
-                                            }
-                                        }
                                     }
                                 }
                             }
+                        }
+                        $test = array();
+                        $test[] = $rowOrder[1];
+                        $check = array_intersect($trackingNumbers, $test);
+                        if (!count($check)) {
+                            $incorrect[] = $row;
                         }
                     }
                 }
