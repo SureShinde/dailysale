@@ -210,7 +210,7 @@ class Unirgy_DropshipBatch_Helper_Data extends Mage_Core_Helper_Abstract
             }
             if ($r->getParam('import_orders_textarea')) {
                 $result = true;
-                $content = $r->getParam('import_orders_textarea');//\r\n
+                $content = trim($r->getParam('import_orders_textarea'));
                 $trackingNumbersContent = preg_split("/[\s,]+/", $content);
                 $_hlp = Mage::helper('udropship');
                 $_poHlp = Mage::helper('udpo');
