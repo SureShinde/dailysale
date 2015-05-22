@@ -28,15 +28,6 @@
                             <show_in_store>1</show_in_store>
                             <validate>required-entry</validate>
                         </category>
-                        <scheduler translate="label">
-                            <label>Task Schedule (cron syntax)</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>60</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
-                            <validate>required-entry</validate>
-                        </scheduler>
                         <general translate="comment">
                             <label></label>
                             <frontend_model>bestsellercron/adminhtml_system_config_form_field_bestseller</frontend_model>

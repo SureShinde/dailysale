@@ -13,7 +13,7 @@ class Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Bestseller e
     protected $_criteriaGroupRenderer;
 
     /**
-     * @var Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Criteriagroup
+     * @var Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Timeperiodgroup
      */
     protected $_timePeriodGroupRenderer;
 
@@ -43,6 +43,11 @@ class Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Bestseller e
             'label' => Mage::helper('bestsellercron')->__('Days Period'),
             'style' => 'width:120px',
             'class' => ' required-entry validate-digits'
+        ));
+        $this->addColumn('task_schedule', array(
+            'label' => Mage::helper('bestsellercron')->__('Task Schedule'),
+            'style' => 'width:120px',
+            'class' => ' required-entry'
         ));
         $this->addColumn('number_of_products', array(
             'label' => Mage::helper('bestsellercron')->__('Number of products'),

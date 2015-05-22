@@ -22,24 +22,64 @@ class Fiuze_Bestsellercron_Model_Cron extends Mage_Core_Model_Abstract{
         parent::__construct();
     }
 
-    public function bestSellers(){
-        if(!$this->_bestSellerCategoryConfig->getValue()){
-            Mage::log('Fiuze_Bestsellercron: Please choose _bestSellerCategoryConfig in the System->Configuration->Catalog->Fiuze Bestsellers Cron tab.');
-            return false;
+    public function bestSellers($arguments){//_1432281709685_685
+        //if($arguments instanceof Mage_Cron_Model_Schedule){
+            if(!$this->_bestSellerCategoryConfig->getValue()){
+                Mage::log('Fiuze_Bestsellercron: Please choose _bestSellerCategoryConfig in the System->Configuration->Catalog->Fiuze Bestsellers Cron tab.');
+                return false;
+            }
+            if(!$this->_bestSellerCategory->getId()){
+                Mage::log('Fiuze_Bestsellercron: Please choose category in the System->Configuration->Catalog->Fiuze Bestsellers Cron tab.');
+                return false;
+            }
+            $jobCode = '_1432281709685_685';//$arguments->getJobCode();
+            $bestSellerConfig = $this->_bestSellerCategoryConfig;
+            if(!is_null($bestSellerConfig)){
+                $valueArray = $bestSellerConfig->getValue();
+                if(array_key_exists($jobCode, $valueArray)){
+                    $currentConfig = $valueArray[$jobCode];
+                    //set admin area if method run in the controller
+                    Mage::app()->setCurrentStore(Mage_Core_Model_App::ADMIN_STORE_ID);
+                    $bestsellersModel = Mage::getModel('bestsellercron/bestsellers')->setCurrentConfig($currentConfig);
+                    $bestSellersArray =$bestsellersModel->getBestSellers();
+
+                    //$this->_clearBestSellerCategory();
+                    $this->_assignBestSellersToCategory($bestSellersArray);
+                    $this->_sortCategoryConfig($bestSellersArray, $currentConfig);
+                }
+            }
+        //}
+
+        return true;
+    }
+
+    /**
+     * Sorted category by bestSeller
+     * @param $bestSellers
+     * @param $currentConfig
+     * @return bool
+     * @throws Exception
+     */
+    protected function _sortCategoryConfig($bestSellers, $currentConfig){
+        $flipped_arr = array_flip($bestSellers);
+        $maxValue = max($flipped_arr) + 1;
+        $category = Mage::getModel('catalog/category')->setStoreId(Mage_Core_Model_App::ADMIN_STORE_ID)->load($currentConfig['category']);
+
+        $productCollection = Mage::getResourceModel('catalog/product_collection')
+            ->setStoreId(Mage_Core_Model_App::ADMIN_STORE_ID)
+            ->addCategoryFilter($category);
+        $idProduct = array_keys ($productCollection->getItems());
+        $idProduct = array_flip($idProduct);
+        $idProduct = array_fill_keys(array_keys($idProduct), $maxValue);
+
+        for (reset($idProduct); $key = key($idProduct); next($idProduct) ) {
+            if(array_key_exists($key, $flipped_arr)){
+                $idProduct[$key] = $flipped_arr[$key];
+            }
         }
-        if(!$this->_bestSellerCategory->getId()){
-            Mage::log('Fiuze_Bestsellercron: Please choose category in the System->Configuration->Catalog->Fiuze Bestsellers Cron tab.');
-            return false;
-        }
 
-        //set admin area if method run in the controller
-        Mage::app()->setCurrentStore(Mage_Core_Model_App::ADMIN_STORE_ID);
-
-        $this->_clearBestSellerCategory();
-        $bestsellersModel = Mage::getModel('bestsellercron/bestsellers')->setBestSellerCategoryConfig($this->_bestSellerCategoryConfig);
-        $bestSellersArray =$bestsellersModel->getBestSellers();
-        $this->_assignBestSellersToCategory($bestSellersArray);
-
+        $category->setPostedProducts($idProduct);
+        $category->save();
         return true;
     }
 
@@ -106,12 +146,7 @@ class Fiuze_Bestsellercron_Model_Cron extends Mage_Core_Model_Abstract{
         Mage::app()->setCurrentStore(Mage::getModel('core/store')->load(Mage_Core_Model_App::ADMIN_STORE_ID));
         $category = Mage::getModel('catalog/category')->setStoreId(Mage_Core_Model_App::ADMIN_STORE_ID)->load($this->_bestSellerCategory->getId());
 
-        $sort = array();
-        foreach($bestSellers as $item) {
-            $sort = array_merge($sort, $item);
-        }
-
-        $flipped_arr = array_flip($sort);
+        $flipped_arr = array_flip($bestSellers);
         $category->setPostedProducts($flipped_arr);
         $category->save();
 

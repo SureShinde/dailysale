@@ -8,4 +8,13 @@ class Fiuze_Bestsellercron_Model_Observer
         }
         Mage::app()->getCacheInstance()->cleanType('config');
     }
+
+    public function controllerFrontInitBefore(Varien_Event_Observer $observer)
+    {
+        if($observer->getEvent()->getName() != 'admin_system_config_changed_section_bestsellers_settings_sec'){
+            return;
+        }
+        Mage::app()->getCacheInstance()->cleanType('config');
+    }
+
 }
