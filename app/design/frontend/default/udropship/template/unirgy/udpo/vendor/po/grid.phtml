@@ -140,16 +140,16 @@ $_dateFormat = Varien_Date::convertZendToStrFtime(Mage::app()->getLocale()->getD
                 </strong>
                 <select id="submit_action" name="submit_action">
                     <option value=""><?php echo $_hlp->__('* No action')?></option>
-                    <option value="udpoMultiPdf"><?php echo $_hlp->__('Download Packing Slips')?></option>
+<!--                    <option value="udpoMultiPdf">--><?php //echo $_hlp->__('Download Packing Slips')?><!--</option>-->
 <!--                    <option value="packingSlips">--><?php //echo $_hlp->__('Download Packing Slips')?><!--</option>-->
 <?php if ($_vendor->getLabelType()): ?>
                     <option value="udpoLabelBatch"><?php echo $_hlp->__('Create and Download Labels Batch')?></option>
                     <option value="existingLabelBatch"><?php echo $_hlp->__('Download Existing Labels Batch')?></option>
 <?php endif ?>
 <!--                    <option value="updateUdpoStatus">--><?php //echo $_hlp->__('Update Status')?><!--</option>-->
-                    <?php if ($_hlp->isModuleActive('Unirgy_DropshipBatch')): ?>
-                    <option value="udbatchExport"><?php echo $_hlp->__('Export Orders')?></option>
-                    <?php endif ?>
+<!--                    --><?php //if ($_hlp->isModuleActive('Unirgy_DropshipBatch')): ?>
+<!--                    <option value="udbatchExport">--><?php //echo $_hlp->__('Export Orders')?><!--</option>-->
+<!--                    --><?php //endif ?>
 <!--                    <option value="createShipment">--><?php //echo $_hlp->__('Create Shipments')?><!--</option>-->
 <!--                    <option value="createShipmentAndEmail">--><?php //echo $_hlp->__('Create Shipments and Send Customer Notifications')?><!--</option>-->
                 </select>
