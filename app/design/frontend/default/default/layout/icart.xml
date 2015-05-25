@@ -156,26 +156,26 @@
     
     <checkout_icart_added>
         <block type="icart/wrapper" name="product.added" template="icart/product_added.phtml" output="toHtml">
-            
+            <block type="icart/displayoption" name="checkout.cart.displayoption" as="displayoption" template="icart/displayoption_added.phtml"/>
+
             <block type="checkout/cart_sidebar" name="cart_sidebar" template="checkout/cart/sidebar.phtml" before="-">
                 <action method="addItemRender"><type>simple</type><block>checkout/cart_item_renderer</block><template>checkout/cart/sidebar/default.phtml</template></action>
                 <action method="addItemRender"><type>grouped</type><block>checkout/cart_item_renderer_grouped</block><template>checkout/cart/sidebar/default.phtml</template></action>
                 <action method="addItemRender"><type>configurable</type><block>checkout/cart_item_renderer_configurable</block><template>checkout/cart/sidebar/default.phtml</template></action>
                 <block type="core/text_list" name="cart_sidebar.extra_actions" as="extra_actions"/>
             </block>
-            
+
             <block type="icart/checkout_cart" name="checkout.cart">
-                <action method="setCartTemplate"><value>checkout/cart.phtml</value></action>                
-                
-                
+                <action method="setCartTemplate"><value>checkout/cart.phtml</value></action>
+
                 <action method="chooseTemplate" ifconfig="mageworx_customers/customercredit_credit/enable_credit"/>
                 <action method="setChildBlock" ifconfig="mageworx_customers/customercredit_credit/enable_credit"><alias>cart_credit</alias><block>customercredit/checkout_cart_credit</block><template>customercredit/checkout/cart_credit.phtml</template></action>
-                
+
                 <action method="setCartTemplate" ifconfig="mageworx_sales/donations/enabled"><value>donations/checkout-cart.phtml</value></action>
                 <action method="setChildBlock" ifconfig="mageworx_sales/donations/enabled"><alias>donation</alias><block>donations/donation</block><template>donations/donation.phtml</template></action>
 
-                
-                
+
+
                 <action method="setEmptyTemplate"><value>checkout/cart/noItems.phtml</value></action>
                 <action method="chooseTemplate"/>
                 <action method="addItemRender"><type>simple</type><block>checkout/cart_item_renderer</block><template>checkout/cart/item/default.phtml</template></action>
@@ -224,10 +224,10 @@
             </block>
             <block type="icart/checkout_cart" name="checkout.cart">
                 <action method="setCartTemplate"><value>checkout/cart.phtml</value></action>
-                
+
                 <action method="setCartTemplate" ifconfig="mageworx_sales/donations/enabled"><value>donations/checkout-cart.phtml</value></action>
                 <action method="setChildBlock" ifconfig="mageworx_sales/donations/enabled"><alias>donation</alias><block>donations/donation</block><template>donations/donation.phtml</template></action>
-                
+
                 <action method="setEmptyTemplate"><value>checkout/cart/noItems.phtml</value></action>
                 <action method="chooseTemplate"/>
                 <action method="addItemRender"><type>simple</type><block>checkout/cart_item_renderer</block><template>checkout/cart/item/default.phtml</template></action>

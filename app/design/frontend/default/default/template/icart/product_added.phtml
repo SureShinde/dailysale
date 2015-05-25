@@ -51,7 +51,7 @@ echo $this->getMessagesBlock()->getGroupedHtml();
             <button type="button" title="<?php echo $this->escapeHtml($this->__('Compare')) ?>" class="button" onclick="popWin('<?php echo $this->helper('catalog/product_compare')->getListUrl() ?>','compare','top:0,left:0,width=820,height=600,resizable=yes,scrollbars=yes')"><span><span><?php echo $this->__('Compare') ?></span></span></button>
         <?php } ?>    
     <?php } elseif (strpos($requestUrl, '/add/')) {?>
-        <button onclick="location.href='<?php echo $this->getUrl('checkout/cart')?>'" class="button" title="<?php echo $this->escapeHtml($this->__('Go to Shopping Cart')) ?>" type="button"><span><span><?php echo $this->__('Go to Shopping Cart') ?></span></span></button>
+        <?php echo $this->getChildHtml('displayoption') ?>
     <?php } ?>
 </div>
 
