@@ -136,8 +136,9 @@
     <default>
         <mageworx_customers>
             <icart>
-                <enabled>1</enabled>
+                <enabled>0</enabled>
                 <auto_hide>10</auto_hide>
+                <enabled_display>0</enabled_display>
                 <show_products_block>0</show_products_block>
             </icart>
         </mageworx_customers>
