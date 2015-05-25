@@ -8,6 +8,14 @@ class Fiuze_Bestsellercron_Model_System_Config_Backend_General extends Mage_Admi
     protected function _beforeSave()
     {
         $value = $this->getValue();
+        foreach($value as $key => &$item){
+            if($item['checkbox'] == 'on'){
+                $item['checkbox'] = 'checked';
+            }else{
+                $item['checkbox'] = '';
+            }
+        }
+
         if (is_array($value)) {
             unset($value['__empty']);
         }
