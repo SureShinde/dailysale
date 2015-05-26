@@ -376,10 +376,10 @@ class Unirgy_DropshipBatch_Model_Batch extends Mage_Core_Model_Abstract
     }
     protected function _exportOrders($type='export_orders')
     {
-//        if (!$this->getRowsLog() && !$this->getRowsText()) {
-//            $this->setBatchStatus('empty')->save();
-//            return $this;
-//        }
+        if (!$this->getRowsLog() && !$this->getRowsText()) {
+            $this->setBatchStatus('empty')->save();
+            return $this;
+        }
 
         $this->setBatchStatus('exporting')->save();
 
