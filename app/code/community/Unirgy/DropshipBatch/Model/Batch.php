@@ -360,6 +360,7 @@ class Unirgy_DropshipBatch_Model_Batch extends Mage_Core_Model_Abstract
         } else {
             $rowsText = $this->getData('rows_text');
         }
+
         return $rowsText;
     }
 
@@ -375,10 +376,10 @@ class Unirgy_DropshipBatch_Model_Batch extends Mage_Core_Model_Abstract
     }
     protected function _exportOrders($type='export_orders')
     {
-        if (!$this->getRowsLog() && !$this->getRowsText()) {
-            $this->setBatchStatus('empty')->save();
-            return $this;
-        }
+//        if (!$this->getRowsLog() && !$this->getRowsText()) {
+//            $this->setBatchStatus('empty')->save();
+//            return $this;
+//        }
 
         $this->setBatchStatus('exporting')->save();
 
@@ -406,7 +407,7 @@ class Unirgy_DropshipBatch_Model_Batch extends Mage_Core_Model_Abstract
             try {
                 $d->setDistStatus('exporting')->save();
                 $l = $d->getLocation();
-                $l = str_replace('{TS}', date('YmdHis'), $l);
+                $l = str_replace('{TS}', Mage::getModel('core/date')->date('YmdHis',Mage::getStoreConfig('general/locale/timezone')), $l);
                 if (preg_match('#^mailto:([^?]+)(.*)$#', $l, $m)) {
                     if ($m[2] && $m[2][0]=='?') {
                         $m[2] = substr($m[2], 1);

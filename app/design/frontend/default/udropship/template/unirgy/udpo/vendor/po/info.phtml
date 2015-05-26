@@ -284,7 +284,7 @@ $fcBlock->setFieldValue(array(
                             <th><?php echo $_hlp->__('Shipment ID') ?></th>
                             <th class="a-center"><span class="nobr"><?php echo $_hlp->__('Qty') ?></span></th>
                             <th><?php echo $_hlp->__('Tracking IDs') ?></th>
-                            <th>&nbsp;</th>
+<!--                            <th>&nbsp;</th>-->
                         </tr>
                     </thead>
                     <tbody>
@@ -337,7 +337,7 @@ $fcBlock->setFieldValue(array(
                                 </ul>
                                 <?php endif ?>
                             </td>
-                            <td><a style="white-space:nowrap" href="<?php echo $this->getUrl('udpo/vendor/pdf', array('shipment_id'=>$_shipment->getId()))?>"><strong><?php echo $_hlp->__('Packing Slip')?></strong></a></td>
+<!--                            <td><a style="white-space:nowrap" href="--><?php //echo $this->getUrl('udpo/vendor/pdf', array('shipment_id'=>$_shipment->getId()))?><!--"><strong>--><?php //echo $_hlp->__('Packing Slip')?><!--</strong></a></td>-->
                         </tr>
                     <?php endforeach; ?>
                     </tbody>
