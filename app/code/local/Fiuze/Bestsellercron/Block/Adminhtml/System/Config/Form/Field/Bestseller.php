@@ -23,6 +23,10 @@ class Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Bestseller e
     protected $_timePeriodGroupRenderer;
 
 
+    public function __construct() {
+        parent::__construct();
+        $this->setTemplate('fiuze/bestsellercron/system/config/form/field/array.phtml');
+    }
 
     /**
      * Prepare to render

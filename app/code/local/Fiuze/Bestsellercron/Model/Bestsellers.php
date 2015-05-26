@@ -21,6 +21,19 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
         parent::__construct();
     }
 
+    protected function _getItemsOrder($period, $categoryId){
+        $productCollection = Mage::getResourceModel('catalog/product_collection')
+            ->setStoreId(Mage_Core_Model_App::ADMIN_STORE_ID)
+            ->addCategoryFilter(Mage::getModel('catalog/category')->load($categoryId));
+        $idProduct = array_keys ($productCollection->getItems());
+        $itemsOrder = Mage::getResourceModel('sales/order_item_collection')
+            ->addFieldToFilter('created_at', array('gteq' => $period))
+            ->addFieldToFilter('parent_item_id', array('null' => true))
+            ->addFieldToFilter('product_id', array('in' => $idProduct))
+            ->getItems();
+        return $itemsOrder;
+    }
+
     /**
      * Retrieve best sellers array which contains product id and profit/revenue
      * 
@@ -30,16 +43,12 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
         //get order item by category
         $itemsOrderRow = array();
         $item = $this->getCurrentConfig();
-
-        $productCollection = Mage::getResourceModel('catalog/product_collection')
-            ->setStoreId(Mage_Core_Model_App::ADMIN_STORE_ID)
-            ->addCategoryFilter(Mage::getModel('catalog/category')->load($item['category']));
-        $idProduct = array_keys ($productCollection->getItems());
-        $itemsOrder = Mage::getResourceModel('sales/order_item_collection')
-            ->addFieldToFilter('created_at', array('gteq' => $this->_getPeriod()))
-            ->addFieldToFilter('parent_item_id', array('null' => true))
-            ->addFieldToFilter('product_id', array('in' => $idProduct))
-            ->getItems();
+        $isTimePeriod = $item['checkbox'];
+        if($isTimePeriod == 'checked'){
+            $itemsOrder = $this->_getItemsOrder($this->_getPeriod(90), $item['category']);
+        }else{
+            $itemsOrder = $this->_getItemsOrder($this->_getPeriod(), $item['category']);
+        }
 
         $bestSellers = $this->_applyCriteria($itemsOrder);
         //get slice of best sellers array using number of products option
@@ -295,10 +304,17 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
      * 
      * @return string
      */
-    protected function _getPeriod() {
+    protected function _getPeriod($day = null) {
         $config = $this->getCurrentConfig();
         $days = (int)$configArray['days_period'];
         $time = $configArray['time_period'];
+
+        if(!is_null($day)){
+            $days = 90;
+            $time[0] = 0;
+            $time[1] = 0;
+            $time[2] = 0;
+        }
 
         //calculate necessary period
         $timestamp = Mage::getModel('core/date')->timestamp();

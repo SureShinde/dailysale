@@ -26,7 +26,7 @@ class Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Checkboxgrou
         }
         $selectedHtml .= '#{checkbox}' ;
         $html = '<div style="text-align: center;">';
-        $html .= '<input name="' . $this->getName() . '" type="checkbox" '.$selectedHtml.'>';
+        $html .= '<input name="' . $this->getName() . '" type="checkbox" onclick="clickCheckbox(this, #{_id})" '.$selectedHtml.'>';
         $html .= '</div>';
         return $html;
     }
