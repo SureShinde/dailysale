@@ -23,18 +23,23 @@ class Fiuze_Bestsellercron_Model_System_Config_Backend_General extends Mage_Admi
         if($this->вuplicate_array_unique($value)){
             Mage::throwException('Notice: Duplicate categories are prohibited.');
         }
+
         $modName = 'Fiuze_Bestsellercron';
         $config = Mage::getConfig();
         $configFile = $config->getModuleDir('etc', $modName).DS.'config.xml';
 
         $localXml = BP . DS . 'app' . DS . 'etc'.DS.'local.xml';
+        //check permission for local.xml
+        if(!is_writable($localXml)) {
+            Mage::throwException('To create a dynamic schedule for crons file '.$localXml.' must have the permission to 0777');
+        }
+
         $mergeModel = Mage::getModel('core/config_base');
         $mergeModel->loadFile($localXml);
 
         //clean crontab
         $mergeModel->setNode('crontab', '');
         $xmlData = $mergeModel->getNode()->asNiceXml();
-        $perm;
         if (file_exists($localXml)) {
             $perm = fileperms($localXml);
         }
