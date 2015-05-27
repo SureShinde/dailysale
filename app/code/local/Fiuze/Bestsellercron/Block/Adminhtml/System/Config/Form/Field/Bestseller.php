@@ -13,6 +13,11 @@ class Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Bestseller e
     protected $_categoryGroupRenderer;
 
     /**
+     * @var Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Categoryexcludegroup
+     */
+    protected $_categoryExcludeGroupRenderer;
+
+    /**
      * @var Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Criteriagroup
      */
     protected $_criteriaGroupRenderer;
@@ -42,6 +47,11 @@ class Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Bestseller e
             'label' => Mage::helper('bestsellercron')->__('Criteria'),
             'style' => 'width:120px',
             'renderer' => $this->_getCriteriaGroupRenderer(),
+        ));
+        $this->addColumn('category_exclude', array(
+            'label' => Mage::helper('bestsellercron')->__('Category Exclude'),
+            'style' => 'width:120px',
+            'renderer' => $this->_getCategoryExcludeGroupRenderer()->setSelect($this->getArrayRows()),
         ));
         $this->addColumn('time_period', array(
             'label' => Mage::helper('bestsellercron')->__('Time Period'),
@@ -111,6 +121,24 @@ class Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Bestseller e
     /**
      * Retrieve group column renderer
      *
+     * @return Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Categoryexcludegroup
+     */
+    protected function _getCategoryExcludeGroupRenderer()
+    {
+        if (is_null($this->_categoryExcludeGroupRenderer)) {
+            $this->_categoryExcludeGroupRenderer = $this->getLayout()->createBlock(
+                'bestsellercron/adminhtml_system_config_form_field_categoryexcludegroup', '',
+                array('is_render_to_js_template' => true)
+            );
+            $this->_categoryExcludeGroupRenderer->setClass('category_group_select');
+            $this->_categoryExcludeGroupRenderer->setExtraParams('style="width:120px"');
+        }
+        return $this->_categoryExcludeGroupRenderer;
+    }
+
+    /**
+     * Retrieve group column renderer
+     *
      * @return Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Criteriagroup
      */
     protected function _getCriteriaGroupRenderer()
@@ -159,6 +187,10 @@ class Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Bestseller e
             'option_extra_attr_' . $this->_getCriteriaGroupRenderer()->calcOptionHash($row->getData('criteria')),
             'selected="selected"'
         );
+        $row->setData(
+            'option_extra_attr_' . $this->_getCategoryExcludeGroupRenderer()->calcOptionHash($row->getData('category_exclude')),
+            'selected="selected"'
+        );
         $timePeriod =$row->getData('time_period');
         $row->setData(
             'option_extra_attr_' . $this->_getTimePeriodGroupRenderer()->calcOptionHash(0, $timePeriod[0]),
@@ -173,5 +205,4 @@ class Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Bestseller e
             'selected="selected"'
         );
     }
-
 }

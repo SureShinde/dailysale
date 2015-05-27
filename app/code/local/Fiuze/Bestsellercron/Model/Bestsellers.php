@@ -21,17 +21,32 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
         parent::__construct();
     }
 
-    protected function _getItemsOrder($period, $categoryId){
+    protected function _getItemsOrder($period, $categoryId, $categoryExecuteId){
+        $productExecuteCollection = Mage::getResourceModel('catalog/product_collection')
+            ->setStoreId(Mage_Core_Model_App::ADMIN_STORE_ID)
+            ->addCategoryFilter(Mage::getModel('catalog/category')->load($categoryExecuteId));
+        $idExecuteProduct = array_keys ($productExecuteCollection->getItems());
+
         $productCollection = Mage::getResourceModel('catalog/product_collection')
             ->setStoreId(Mage_Core_Model_App::ADMIN_STORE_ID)
             ->addCategoryFilter(Mage::getModel('catalog/category')->load($categoryId));
         $idProduct = array_keys ($productCollection->getItems());
+        $idProduct = array_diff($idProduct, $idExecuteProduct);
         $itemsOrder = Mage::getResourceModel('sales/order_item_collection')
             ->addFieldToFilter('created_at', array('gteq' => $period))
             ->addFieldToFilter('parent_item_id', array('null' => true))
             ->addFieldToFilter('product_id', array('in' => $idProduct))
             ->getItems();
         return $itemsOrder;
+    }
+
+    protected function _getItemsMissing($categoryId, $productOrderId){
+        $productCollection = Mage::getResourceModel('catalog/product_collection')
+            ->setStoreId(Mage_Core_Model_App::ADMIN_STORE_ID)
+            ->addCategoryFilter(Mage::getModel('catalog/category')->load($categoryId));
+        $idProduct = array_keys ($productCollection->getItems());
+        $idProduct = array_diff($idProduct, $productOrderId);
+        return $idProduct;
     }
 
     /**
@@ -45,9 +60,9 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
         $item = $this->getCurrentConfig();
         $isTimePeriod = $item['checkbox'];
         if($isTimePeriod == 'checked'){
-            $itemsOrder = $this->_getItemsOrder($this->_getPeriod(90), $item['category']);
+            $itemsOrder = $this->_getItemsOrder($this->_getPeriod(90), $item['category'], $item['category_exclude']);
         }else{
-            $itemsOrder = $this->_getItemsOrder($this->_getPeriod(), $item['category']);
+            $itemsOrder = $this->_getItemsOrder($this->_getPeriod(), $item['category'], $item['category_exclude']);
         }
 
         $bestSellers = $this->_applyCriteria($itemsOrder);
@@ -56,8 +71,14 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
         $tmp = array_slice($bestSellers, 0, $numberProduct, true);
         $bestSellersSlice = array_keys($tmp);
 
+        if(count($bestSellersSlice) < $numberProduct){
+            $result = $this->_getItemsMissing($item['category'], $bestSellersSlice);
+            $merge = array_merge($bestSellersSlice, $result);
+            $merge = array_slice($merge, 0, $numberProduct, true);
+        }
+
         //retrieve all keys from array
-        return $bestSellersSlice;
+        return $merge;
     }
 
     /**
@@ -306,8 +327,8 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
      */
     protected function _getPeriod($day = null) {
         $config = $this->getCurrentConfig();
-        $days = (int)$configArray['days_period'];
-        $time = $configArray['time_period'];
+        $days = (int)$config['days_period'];
+        $time = $config['time_period'];
 
         if(!is_null($day)){
             $days = 90;
