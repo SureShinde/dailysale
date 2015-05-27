@@ -23,7 +23,7 @@ class Fiuze_Bestsellercron_Model_Cron extends Mage_Core_Model_Abstract{
     }
 
     public function bestSellers($arguments){
-        //if($arguments instanceof Mage_Cron_Model_Schedule){
+        if($arguments instanceof Mage_Cron_Model_Schedule){
             if(!$this->_bestSellerCategoryConfig->getValue()){
                 Mage::log('Fiuze_Bestsellercron: Please choose _bestSellerCategoryConfig in the System->Configuration->Catalog->Fiuze Bestsellers Cron tab.');
                 return false;
@@ -32,7 +32,7 @@ class Fiuze_Bestsellercron_Model_Cron extends Mage_Core_Model_Abstract{
                 Mage::log('Fiuze_Bestsellercron: Please choose category in the System->Configuration->Catalog->Fiuze Bestsellers Cron tab.');
                 return false;
             }
-            $jobCode = '_1432281709685_685';//$arguments->getJobCode();
+            $jobCode = $arguments->getJobCode();
             $bestSellerConfig = $this->_bestSellerCategoryConfig;
             if(!is_null($bestSellerConfig)){
                 $valueArray = $bestSellerConfig->getValue();
@@ -48,7 +48,7 @@ class Fiuze_Bestsellercron_Model_Cron extends Mage_Core_Model_Abstract{
                     $this->_sortCategoryConfig($bestSellersArray, $currentConfig);
                 }
             }
-       // }
+        }
 
         return true;
     }
