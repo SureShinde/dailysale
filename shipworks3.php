@@ -723,7 +723,6 @@
             writeElement("Quantity", (int)$item->getQtyOrdered());
             writeElement("UnitPrice", $unitPrice);
 			writeElement("UnitCost", $unitCost);
-            writeElement("DropshipVendor", $product->getUdropshipVendor());
 
 			if (!$weight)
 			{
