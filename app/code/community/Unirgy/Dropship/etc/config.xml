@@ -2013,7 +2013,7 @@ Limit: {{limit}} days
         <routers>
             <udropship>
                 <args>
-                    <frontName>vendor</frontName>
+                    <frontName>portal</frontName>
                 </args>
             </udropship>
         </routers>
