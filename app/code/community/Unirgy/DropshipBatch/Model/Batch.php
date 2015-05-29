@@ -407,7 +407,7 @@ class Unirgy_DropshipBatch_Model_Batch extends Mage_Core_Model_Abstract
             try {
                 $d->setDistStatus('exporting')->save();
                 $l = $d->getLocation();
-                $l = str_replace('{TS}', Mage::getModel('core/date')->date('YmdHis',Mage::getStoreConfig('general/locale/timezone')), $l);
+                $l = str_replace('{TS}', Mage::app()->getLocale()->storeDate(null, null, true, null)->toString('yyyyMMddHHmmss'), $l);
                 if (preg_match('#^mailto:([^?]+)(.*)$#', $l, $m)) {
                     if ($m[2] && $m[2][0]=='?') {
                         $m[2] = substr($m[2], 1);
