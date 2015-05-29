@@ -239,22 +239,24 @@ class Aftership_Track_Model_Observer {
 		$response = $this->_callApiCreateTracking($api_key, $track->getTrackingNumber(), $carrier_code, $country_id, $telephone, $email, $title, $order_id, $customer_name);
         $responseJson = Mage::helper('core')->jsonDecode($response);
         $http_status = $responseJson['meta']['code'];
+        $configValue = Mage::getStoreConfig('aftership_options/messages/aftership_validation');
 		//save, 422: repeated
-		if ($http_status == '201' || $http_status == '422') {
-			$track->setPosted(self::POSTED_DONE)->save();
-		}else{
-            $track->delete();
-            if ($track->getPackageCount()>1) {
-                foreach (Mage::getResourceModel('sales/order_shipment_track_collection')
-                             ->addAttributeToFilter('master_tracking_id', $track->getMasterTrackingId())
-                         as $_track
-                ) {
-                    $_track->delete();
+        if($configValue){
+            if ($http_status == '201' || $http_status == '422') {
+                $track->setPosted(self::POSTED_DONE)->save();
+            }else{
+                if ($track->getPackageCount()>1) {
+                    foreach (Mage::getResourceModel('sales/order_shipment_track_collection')
+                                 ->addAttributeToFilter('master_tracking_id', $track->getMasterTrackingId())
+                             as $_track
+                    ) {
+                        $_track->delete();
+                    }
                 }
+                $track->delete();
+                Mage::throwException($responseJson['meta']['message']);
             }
-            Mage::throwException($responseJson['meta']['message']);
         }
-
 		return $http_status;
 	}
 

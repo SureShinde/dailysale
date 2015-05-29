@@ -1219,7 +1219,7 @@ class Unirgy_Dropship_Helper_Data extends Mage_Core_Helper_Abstract
                 if (!empty($sendmail)) {
                     $transport->parameters = '-f'.$action->getFrom();
                 }
-                //$action->send($transport);
+                $action->send($transport);
             } elseif (is_array($action)) { //array($object, $method, $args)
                 call_user_func_array(array($action[0], $action[1]), !empty($action[2]) ? $action[2] : array());
             }
