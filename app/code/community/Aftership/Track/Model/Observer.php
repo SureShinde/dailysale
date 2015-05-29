@@ -244,6 +244,14 @@ class Aftership_Track_Model_Observer {
 			$track->setPosted(self::POSTED_DONE)->save();
 		}else{
             $track->delete();
+            if ($track->getPackageCount()>1) {
+                foreach (Mage::getResourceModel('sales/order_shipment_track_collection')
+                             ->addAttributeToFilter('master_tracking_id', $track->getMasterTrackingId())
+                         as $_track
+                ) {
+                    $_track->delete();
+                }
+            }
             Mage::throwException($responseJson['meta']['message']);
         }
 

@@ -517,11 +517,24 @@ class Unirgy_Dropship_VendorController extends Unirgy_Dropship_Controller_Vendor
             }
 
             $session->setHighlight($highlight);
+            $this->_forward('shipmentInfo');
         } catch (Exception $e) {
+            if(!(count($shipment->getTracksCollection()->getItems()) > 1)){
+                $r = $this->getRequest();
+                $id = $r->getParam('id');
+                $udpo = Mage::getModel('udpo/po')->load($id);
+                $store = Mage::app()->getStore();
+                Mage::app()->setCurrentStore(Mage_Core_Model_App::ADMIN_STORE_ID);
+                $po = Mage::getModel('udpo/po')->load($id);
+                $order = $shipment->getOrder();
+                $shipment->delete();
+                $po->delete();
+                Mage::app()->setCurrentStore($store);
+            }
             $session->addError($e->getMessage());
+            $this->_redirect('*/*/udpoInfo');
+            //$this->_forward('udpoInfo');
         }
-
-        $this->_forward('shipmentInfo');
     }
 
     /**

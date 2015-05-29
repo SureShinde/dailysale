@@ -325,14 +325,30 @@ class Unirgy_DropshipPo_VendorController extends Unirgy_Dropship_VendorControlle
 
             $session->setHighlight($highlight);
         } catch (Exception $e) {
+            $r = $this->getRequest();
+            $id = $r->getParam('id');
+            $po = Mage::getModel('udpo/po')->load($id);
+            Mage::helper('udropship')->assignVendorSkus($po);
+            Mage::helper('udropship/item')->hideVendorIdOption($po);
             $store = Mage::app()->getStore();
+
             Mage::app()->setCurrentStore(Mage_Core_Model_App::ADMIN_STORE_ID);
-            foreach($udpo->getAllItems() as $item){
+            foreach($po->getOrder() as $item){
                 $item->setQtyShipped(0);
+                //$item->setQtyToShip(1);
                 $item->setQtyCanceled(0);
                 $item->save();
             }
-            $udpo->save();
+            $shipment->delete();
+            $po->save();
+//            $item->getOrder();
+//            foreach($udpo->getShipmentsCollection() as $item){
+//                if(!(count($item->getTracksCollection()->getItems())>1)){
+//                    $order = $item->getOrder()->getItems();
+//                    $item->delete();
+//                }
+//            }
+            $po->save();
 
             Mage::app()->setCurrentStore($store);
             $session->addError($e->getMessage());

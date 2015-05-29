@@ -194,6 +194,73 @@ class Unirgy_DropshipBatch_Helper_Data extends Mage_Core_Helper_Abstract
             if (!empty($_FILES['import_orders_upload']['tmp_name'])) {
                 $filename = Mage::getConfig()->getVarDir('udbatch').'/'.$_FILES['import_orders_upload']['name'];
                 @move_uploaded_file($_FILES['import_orders_upload']['tmp_name'], $filename);
+                try{
+                    $csv = new Varien_File_Csv();
+                    $csv->setDelimiter(";");
+                    $trackingNumbersContent = $csv->getData($filename);
+                }catch (Exception $ex){
+
+                }
+                $incorrect = array();
+                //check order id
+                $_hlp = Mage::helper('udropship');
+                $_poHlp = Mage::helper('udpo');
+                $_udpos = Mage::helper('core')->decorateArray($_poHlp->getVendorPoCollection(), '');
+                $orderCorrect = array();
+                $orderCorrectRow = array();
+                $ordersId = array();
+                foreach($trackingNumbersContent as $row) {
+                    $ordersId[] = $row[0];
+                    foreach ($_udpos as $orderRow) {
+                        if ($orderRow->getOrderIncrementId() == $row[0]) {
+                            $orderCorrect[] = $row[0];
+                            $orderCorrectRow[] = $row[0].";".$row[1];
+                        }
+                    }
+                }
+                $orderCorrect = array_unique($orderCorrect);
+                $result = array_intersect($orderCorrect,$ordersId);
+                $incorrect = array_diff($ordersId, $result);
+                if (count($incorrect)){
+                    unlink ($filename);
+                    Mage::throwException($this->__('Invalid $order(s) id: ' . implode(", ", $orderCorrectRow)));
+                }
+
+                //check track id
+                unset($incorrect);
+                $incorrect = array();
+                foreach($trackingNumbersContent as $row){
+                    foreach($_udpos as $_po) {
+                        $orderId = $_po->getOrderIncrementId();
+                        $trackingNumbers= array();
+                        foreach ($_udpos as $_po) {
+                            $orderId = $_po->getOrderIncrementId();
+                            if ($orderId == $row[0]) {
+                                $_shipments = Mage::helper('core')->decorateArray($_po->getShipmentsCollection());
+                                foreach ($_shipments as $_shipment) {
+                                    $_tracking = $_hlp->getVendorTracksCollection($_shipment);
+                                    foreach ($_tracking as $_t) {
+                                        $trackingNumbers[] = $_t->getTrackNumber();
+                                    }
+                                }
+                            }
+                        }
+                        $test = array();
+                        $test[] = $row[1];
+                        $check = array_intersect($trackingNumbers, $test);
+                        if (!count($check)) {
+                            $incorrect[] =  $row[0].";".$row[1];
+                        }
+                    }
+                }
+
+                $incorrect = array_unique($incorrect);
+                if (count($incorrect)){
+                    unlink ($filename);
+                    Mage::throwException($this->__('Invalid tracking id: ' . implode(", ", $incorrect)));
+                }
+
+                @move_uploaded_file($_FILES['import_orders_upload']['tmp_name'], $filename);
                 try {
                     $this->importVendorOrdersSFA($vendor, $filename);
                     $this->_batch->setStatus('success');
