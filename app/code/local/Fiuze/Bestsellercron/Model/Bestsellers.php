@@ -8,11 +8,12 @@
  * @author     Alena Tsareva <alena.tsareva@webinse.com>
  */
 class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
-
+    const XML_PATH_GENERAL = 'bestsellers_settings_sec/bestsellers_settings_grp/general';
     const XML_PATH_NUMBER_PRODUCTS = 'bestsellers_settings_sec/bestsellers_settings_grp/products';
     const XML_PATH_TIME_PERIOD     = 'bestsellers_settings_sec/bestsellers_settings_grp/time';
     const XML_PATH_DAYS_PERIOD     = 'bestsellers_settings_sec/bestsellers_settings_grp/days';
     const XML_PATH_CRITERIA        = 'bestsellers_settings_sec/bestsellers_settings_grp/criteria';
+
 
     private $_criteria;
 
