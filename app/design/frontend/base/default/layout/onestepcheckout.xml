@@ -49,7 +49,6 @@
             <action method="addCss">
                 <stylesheet>css/magestore/onestepcheckout.css</stylesheet>
             </action>	
-			<action method="addCss"><stylesheet>css/phoenix/wirecard_checkout_page/stylesheet.css</stylesheet></action>
             <action method="addCss">
                 <stylesheet>css/magestore/mobileonestepcheckout.css</stylesheet>
                 <!--params>media="only screen and (min-width: 0px) and (max-width: 680px)"</params-->
@@ -105,19 +104,10 @@
                         <block type="checkout/cart_totals" name="checkout.onepage.review.info.totals" as="totals" template="onestepcheckout/onestepcheckout/review/totals.phtml"/>
                     </block>
                 </block>
-                <block type="tco/iframe" name="tco.iframe" as="tco_iframe">
-                    <action method="setBlockId">
-                        <block_id>tcoiframe</block_id>
-                    </action>
-                </block>
-                <!-- Amazon payment button-->
-                    <block type="amazon_payments/button" name="amazon_button" template="amazon_payments/button.phtml"/>				
-		<!-- /Amazon payment button-->					
             </block>			           
         </reference>
         <reference name="before_body_end">
             <block type="core/template" template="onestepcheckout/login_popup.phtml" name="login-popup" />
-			<block type="wirecard_checkout_page/seamless_script" name="wirecard_checkout_page_js" template="wirecard_checkout_page/seamless/script.phtml" />
         </reference>
     </onestepcheckout_index_index>    
     
