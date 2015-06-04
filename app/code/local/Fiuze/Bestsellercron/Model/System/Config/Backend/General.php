@@ -8,6 +8,19 @@ class Fiuze_Bestsellercron_Model_System_Config_Backend_General extends Mage_Admi
     protected function _beforeSave()
     {
         $value = $this->getValue();
+        $bestSellerCategoryId = Mage::getStoreConfig(Fiuze_Bestsellercron_Model_Bestsellers::XML_PATH_BESTSELLER_CATEGORY);
+        $bestSellerRowId = Mage::getStoreConfig(Fiuze_Bestsellercron_Model_Bestsellers::XML_PATH_BESTSELLER_ROWID);
+        if(array_key_exists($bestSellerRowId , $value)){
+            $bestSellerRow = &$value[$bestSellerRowId];
+            if(!array_key_exists('category' , $bestSellerRow)){
+                $bestSellerRow['category'] = $bestSellerCategoryId;
+            }
+        }
+        else{
+            Mage::throwException('Error best Seller Row Id.');
+        }
+
+
         foreach($value as $key => &$item){
             if($item['checkbox'] == 'on'){
                 $item['checkbox'] = 'checked';
@@ -20,7 +33,7 @@ class Fiuze_Bestsellercron_Model_System_Config_Backend_General extends Mage_Admi
             unset($value['__empty']);
         }
 
-        if($this->вuplicate_array_unique($value)){
+        if($this->duplicate_array_unique($value)){
             Mage::throwException('Notice: Duplicate categories are prohibited.');
         }
 
@@ -74,7 +87,7 @@ class Fiuze_Bestsellercron_Model_System_Config_Backend_General extends Mage_Admi
      * @param string $keyCheck
      * @return bool
      */
-    private function вuplicate_array_unique($array, $keyCheck = 'category')
+    private function duplicate_array_unique($array, $keyCheck = 'category')
     {
         $tmpValue = array();
         $tmpArray  = $array;
