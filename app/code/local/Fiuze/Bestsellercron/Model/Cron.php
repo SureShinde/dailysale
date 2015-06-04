@@ -13,17 +13,19 @@ class Fiuze_Bestsellercron_Model_Cron extends Mage_Core_Model_Abstract{
     const XML_PATH_CATEGORY_FORM = 'bestsellers_settings_sec/bestsellers_settings_grp/general';
 
     private $_bestSellerCategory;
+    private $_bestSellerCategoryRowId;
     private $_bestSellerCategoryConfig;
 
     public function __construct(){
-        $this->_bestSellerCategory = Mage::getModel('catalog/category')->load(Mage::getStoreConfig(self::XML_PATH_CATEGORY));
+        $this->_bestSellerCategory = Mage::getModel('catalog/category')->load(Mage::getStoreConfig(Fiuze_Bestsellercron_Model_Bestsellers::XML_PATH_BESTSELLER_CATEGORY));
         $this->_bestSellerCategoryConfig = Mage::getModel('bestsellercron/system_config_backend_general')
             ->load(self::XML_PATH_CATEGORY_FORM, 'path');
+        $this->_bestSellerCategoryRowId = Mage::getStoreConfig(Fiuze_Bestsellercron_Model_Bestsellers::XML_PATH_BESTSELLER_ROWID);
         parent::__construct();
     }
 
     public function bestSellers($arguments){
-        if($arguments instanceof Mage_Cron_Model_Schedule){
+        //if($arguments instanceof Mage_Cron_Model_Schedule){
             if(!$this->_bestSellerCategoryConfig->getValue()){
                 Mage::log('Fiuze_Bestsellercron: Please choose _bestSellerCategoryConfig in the System->Configuration->Catalog->Fiuze Bestsellers Cron tab.');
                 return false;
@@ -32,23 +34,34 @@ class Fiuze_Bestsellercron_Model_Cron extends Mage_Core_Model_Abstract{
                 Mage::log('Fiuze_Bestsellercron: Please choose category in the System->Configuration->Catalog->Fiuze Bestsellers Cron tab.');
                 return false;
             }
-            $jobCode = $arguments->getJobCode();
+            //$jobCode = $arguments->getJobCode();
+            $jobCode = '_1433342662710_710';//'_1431656231726_726';//$arguments->getJobCode();
             $bestSellerConfig = $this->_bestSellerCategoryConfig;
-            if(!is_null($bestSellerConfig)){
-                $valueArray = $bestSellerConfig->getValue();
-                if(array_key_exists($jobCode, $valueArray)){
+        if(!is_null($bestSellerConfig)) {
+            //set admin area if method run in the controller
+            Mage::app()->setCurrentStore(Mage_Core_Model_App::ADMIN_STORE_ID);
+            $valueArray = $bestSellerConfig->getValue();
+            if(array_key_exists($jobCode, $valueArray)) {
+                //if category bestseller
+                if ($jobCode == $this->_bestSellerCategoryRowId) {
                     $currentConfig = $valueArray[$jobCode];
-                    //set admin area if method run in the controller
-                    Mage::app()->setCurrentStore(Mage_Core_Model_App::ADMIN_STORE_ID);
                     $bestsellersModel = Mage::getModel('bestsellercron/bestsellers')->setCurrentConfig($currentConfig);
                     $bestSellersArray =$bestsellersModel->getBestSellers();
 
                     //$this->_clearBestSellerCategory();
                     $this->_assignBestSellersToCategory($bestSellersArray);
                     $this->_sortCategoryConfig($bestSellersArray, $currentConfig);
+                }else{
+                    $currentConfig = $valueArray[$jobCode];
+                    $bestsellersModel = Mage::getModel('bestsellercron/bestsellers')->setCurrentConfig($currentConfig);
+                    $bestSellersArray = $bestsellersModel->getBestSellers();
+                    $this->_sortCategoryConfig($bestSellersArray, $currentConfig);
                 }
             }
+
         }
+
+        //}
 
         return true;
     }

@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Fiuze_Bestsellercron>
-            <version>0.2.0</version>
+            <version>0.2.1</version>
         </Fiuze_Bestsellercron>
     </modules>
     <global>
@@ -72,14 +72,14 @@
     </default>
     <adminhtml>
         <events>
-            <admin_system_config_changed_section_bestsellers_settings_sec>
+            <core_block_abstract_prepare_layout_after>
                 <observers>
-                    <bestsellers_admin_system_config_changed_section_bestsellers_settings_sec>
+                    <bestsellers_core_block_abstract_prepare_layout_after>
                         <class>bestsellercron/observer</class>
-                        <method>adminSystemConfigChangedBestsellersSettingsSec</method>
-                    </bestsellers_admin_system_config_changed_section_bestsellers_settings_sec>
+                        <method>coreBlockAbstractPrepareLayoutAfter</method>
+                    </bestsellers_core_block_abstract_prepare_layout_after>
                 </observers>
-            </admin_system_config_changed_section_bestsellers_settings_sec>
+            </core_block_abstract_prepare_layout_after>
         </events>
     </adminhtml>
 </config>

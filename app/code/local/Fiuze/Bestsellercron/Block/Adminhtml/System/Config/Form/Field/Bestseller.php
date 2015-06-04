@@ -40,42 +40,36 @@ class Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Bestseller e
     {
         $this->addColumn('category', array(
             'label' => Mage::helper('bestsellercron')->__('Category'),
-            'style' => 'width:120px',
+//            'style' => 'width:120px',
             'renderer' => $this->_getCategoryGroupRenderer()->setSelect($this->getArrayRows()),
         ));
         $this->addColumn('criteria', array(
             'label' => Mage::helper('bestsellercron')->__('Criteria'),
-            'style' => 'width:120px',
+//            'style' => 'width:120px',
             'renderer' => $this->_getCriteriaGroupRenderer(),
-        ));
-        $this->addColumn('category_exclude', array(
-            'label' => Mage::helper('bestsellercron')->__('Category Exclude'),
-            'style' => 'width:120px',
-            'renderer' => $this->_getCategoryExcludeGroupRenderer()->setSelect($this->getArrayRows()),
         ));
         $this->addColumn('time_period', array(
             'label' => Mage::helper('bestsellercron')->__('Time Period'),
-            'style' => 'width:120px',
+//            'style' => 'width:120px',
             'renderer' => $this->_getTimePeriodGroupRenderer(),
         ));
         $this->addColumn('days_period', array(
             'label' => Mage::helper('bestsellercron')->__('Days Period'),
-            'style' => 'width:120px',
+//            'style' => 'width:120px',
             'class' => ' required-entry validate-digits'
         ));
-        $this->addColumn('checkbox', array(
-            'label' => Mage::helper('bestsellercron')->__('Checkbox'),
-            'style' => 'width:120px',
-            'renderer' => $this->_getCheckboxGroupRenderer(),//->setSelect($this->getArrayRows()),
+        $this->addColumn('history', array(
+            'label' => Mage::helper('bestsellercron')->__('History'),
+//            'style' => 'width:120px',
         ));
         $this->addColumn('task_schedule', array(
             'label' => Mage::helper('bestsellercron')->__('Task Schedule'),
-            'style' => 'width:120px',
+//            'style' => 'width:120px',
             'class' => ' required-entry'
         ));
         $this->addColumn('number_of_products', array(
             'label' => Mage::helper('bestsellercron')->__('Number of products'),
-            'style' => 'width:120px',
+//            'style' => 'width:120px',
             'class' => ' required-entry validate-digits'
         ));
         $this->_addAfter = false;

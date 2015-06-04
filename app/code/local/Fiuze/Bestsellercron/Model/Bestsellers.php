@@ -13,6 +13,9 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
     const XML_PATH_TIME_PERIOD     = 'bestsellers_settings_sec/bestsellers_settings_grp/time';
     const XML_PATH_DAYS_PERIOD     = 'bestsellers_settings_sec/bestsellers_settings_grp/days';
     const XML_PATH_CRITERIA        = 'bestsellers_settings_sec/bestsellers_settings_grp/criteria';
+    const XML_PATH_BESTSELLER_CATEGORY = 'bestsellers_settings_sec/bestsellers_settings_grp/bestseller_category';
+    const XML_PATH_BESTSELLER_ROWID = 'bestsellers_settings_sec/bestsellers_settings_grp/bestseller_rowid';
+
 
 
     private $_criteria;
@@ -22,17 +25,13 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
         parent::__construct();
     }
 
-    protected function _getItemsOrder($period, $categoryId, $categoryExecuteId){
-        $productExecuteCollection = Mage::getResourceModel('catalog/product_collection')
-            ->setStoreId(Mage_Core_Model_App::ADMIN_STORE_ID)
-            ->addCategoryFilter(Mage::getModel('catalog/category')->load($categoryExecuteId));
-        $idExecuteProduct = array_keys ($productExecuteCollection->getItems());
-
+    protected function _getItemsOrder($period, $categoryId, $fullCategory = false){
         $productCollection = Mage::getResourceModel('catalog/product_collection')
-            ->setStoreId(Mage_Core_Model_App::ADMIN_STORE_ID)
-            ->addCategoryFilter(Mage::getModel('catalog/category')->load($categoryId));
+            ->setStoreId(Mage_Core_Model_App::ADMIN_STORE_ID);
+        if(!$fullCategory){
+            $productCollection->addCategoryFilter(Mage::getModel('catalog/category')->load($categoryId));
+        }
         $idProduct = array_keys ($productCollection->getItems());
-        $idProduct = array_diff($idProduct, $idExecuteProduct);
         $itemsOrder = Mage::getResourceModel('sales/order_item_collection')
             ->addFieldToFilter('created_at', array('gteq' => $period))
             ->addFieldToFilter('parent_item_id', array('null' => true))
@@ -59,27 +58,62 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
         //get order item by category
         $itemsOrderRow = array();
         $item = $this->getCurrentConfig();
-        $isTimePeriod = $item['checkbox'];
-        if($isTimePeriod == 'checked'){
-            $itemsOrder = $this->_getItemsOrder($this->_getPeriod(90), $item['category'], $item['category_exclude']);
-        }else{
-            $itemsOrder = $this->_getItemsOrder($this->_getPeriod(), $item['category'], $item['category_exclude']);
-        }
+        //if category bestseller
+        if(Mage::getStoreConfig(Fiuze_Bestsellercron_Model_Bestsellers::XML_PATH_BESTSELLER_CATEGORY) == $item['category']){
+            $itemsOrder = $this->_getItemsOrder($this->_getPeriod(), $item['category'], true);
 
+        }else{
+            $itemsOrder = $this->_getItemsOrder($this->_getPeriod(), $item['category'], false);
+        }
         $bestSellers = $this->_applyCriteria($itemsOrder);
         //get slice of best sellers array using number of products option
         $numberProduct = (int)$item['number_of_products'];
         $tmp = array_slice($bestSellers, 0, $numberProduct, true);
         $bestSellersSlice = array_keys($tmp);
-
-        if(count($bestSellersSlice) < $numberProduct){
-            $result = $this->_getItemsMissing($item['category'], $bestSellersSlice);
-            $merge = array_merge($bestSellersSlice, $result);
-            $merge = array_slice($merge, 0, $numberProduct, true);
+        $merge = array_slice($bestSellersSlice, 0, $numberProduct, true);
+        //if result<$numberProduct
+        if(count($merge) < $numberProduct){
+            $isTimePeriodHistory = $item['history'];
+            if($isTimePeriodHistory){
+                $itemsOrderHistory = $this->_getItemsOrder($this->_getPeriod($isTimePeriodHistory), $item['category'], true);
+                $bestSellersHistory = $this->_applyCriteria($itemsOrderHistory);
+                //get slice of best sellers array using number of products option
+                $tmp = array_slice($bestSellersHistory, 0, $numberProduct, true);
+                $bestSellersSliceHistory = array_keys($tmp);
+                $result = array_diff($bestSellersSliceHistory,$merge);
+                $mergeHistory = array_slice($result, 0, $numberProduct, true);
+                $mergeHistory = array_merge($merge, $mergeHistory);
+                $merge = array_slice($mergeHistory, 0, $numberProduct, true);
+            }
         }
 
-        //retrieve all keys from array
         return $merge;
+    }
+
+    protected function _getProduct($history){
+        $item = $this->getCurrentConfig();
+        $itemsOrder = $this->_getItemsOrder($this->_getPeriod(), $item['category'], $history);
+        $bestSellers = $this->_applyCriteria($itemsOrder);
+        //get slice of best sellers array using number of products option
+        $numberProduct = (int)$item['number_of_products'];
+        $tmp = array_slice($bestSellers, 0, $numberProduct, true);
+        $bestSellersSlice = array_keys($tmp);
+        $merge = array_slice($bestSellersSlice, 0, $numberProduct, true);
+        //if result<$numberProduct
+        if(count($merge) < $numberProduct){
+            $isTimePeriodHistory = $item['history'];
+            if($isTimePeriodHistory){
+                $itemsOrderHistory = $this->_getItemsOrder($this->_getPeriod($isTimePeriodHistory), $item['category'], true);
+                $bestSellersHistory = $this->_applyCriteria($itemsOrderHistory);
+                //get slice of best sellers array using number of products option
+                $tmp = array_slice($bestSellersHistory, 0, $numberProduct, true);
+                $bestSellersSliceHistory = array_keys($tmp);
+                $result = array_diff($bestSellersSliceHistory,$merge);
+                $mergeHistory = array_slice($result, 0, $numberProduct, true);
+                $mergeHistory = array_merge($merge, $mergeHistory);
+                $merge = array_slice($mergeHistory, 0, $numberProduct, true);
+            }
+        }
     }
 
     /**
