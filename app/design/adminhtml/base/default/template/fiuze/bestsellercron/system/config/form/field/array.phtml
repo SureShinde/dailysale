@@ -82,7 +82,8 @@ $_colspan = $_colspan > 1 ? 'colspan="' . $_colspan . '"' : '';
 
     }
     document.observe("dom:loaded", function() {
-        $$('#row_bestsellers_settings_sec_bestsellers_settings_grp_general .label')[0].remove()
+        $$('#row_bestsellers_settings_sec_bestsellers_settings_grp_general .label')[0].remove();
+        $$('#_1431656231726_726 td')[0].firstChild.setAttribute("disabled", "true");
         $$('#_1431656231726_726 button')[0].removeClassName('delete');
         $$('#_1431656231726_726 button')[0].addClassName('back');
         $$('#_1431656231726_726 button')[0].setAttribute("onclick", "")
