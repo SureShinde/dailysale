@@ -60,12 +60,12 @@
             <td><?php echo $this->escapeHtml($this->getCarrierTitle($_track->getCarrierCode())) ?></td>
             <td><?php echo $this->escapeHtml($_track->getTitle()) ?></td>
             <td>
-                <?php if ($_track->isCustom()): ?>
-                <?php echo $this->escapeHtml($_track->getNumber()) ?>
-                <?php else: ?>
+                <!--                --><?php //if ($_track->isCustom()): ?>
+                <!--                --><?php //echo $this->escapeHtml($_track->getNumber()) ?>
+                <!--                --><?php //else: ?>
                 <a href="#" onclick="popWin('<?php echo $this->helper('shipping')->getTrackingPopupUrlBySalesModel($_track) ?>','trackorder','width=800,height=600,resizable=yes,scrollbars=yes')"><?php echo $this->escapeHtml($_track->getNumber()) ?></a>
                 <div id="shipment_tracking_info_response_<?php echo $_track->getId() ?>"></div>
-                <?php endif; ?>
+                <!--                --><?php //endif; ?>
             </td>
             <td class="last"><a href="#" onclick="deleteTrackingNumber('<?php echo $this->getRemoveUrl($_track) ?>'); return false;"><?php echo Mage::helper('sales')->__('Delete') ?></a></td>
         </tr>
