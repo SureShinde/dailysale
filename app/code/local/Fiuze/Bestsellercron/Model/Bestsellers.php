@@ -56,12 +56,10 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
      */
     public function getBestSellers() {
         //get order item by category
-        $itemsOrderRow = array();
         $item = $this->getCurrentConfig();
         //if category bestseller
         if(Mage::getStoreConfig(Fiuze_Bestsellercron_Model_Bestsellers::XML_PATH_BESTSELLER_CATEGORY) == $item['category']){
             $itemsOrder = $this->_getItemsOrder($this->_getPeriod(), $item['category'], true);
-
         }else{
             $itemsOrder = $this->_getItemsOrder($this->_getPeriod(), $item['category'], false);
         }
@@ -75,7 +73,12 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
         if(count($merge) < $numberProduct){
             $isTimePeriodHistory = $item['history'];
             if($isTimePeriodHistory){
-                $itemsOrderHistory = $this->_getItemsOrder($this->_getPeriod($isTimePeriodHistory), $item['category'], true);
+                //if category bestseller
+                if(Mage::getStoreConfig(Fiuze_Bestsellercron_Model_Bestsellers::XML_PATH_BESTSELLER_CATEGORY) == $item['category']){
+                    $itemsOrderHistory = $this->_getItemsOrder($this->_getPeriod($isTimePeriodHistory), $item['category'], true);
+                }else{
+                    $itemsOrderHistory = $this->_getItemsOrder($this->_getPeriod($isTimePeriodHistory), $item['category'], false);
+                }
                 $bestSellersHistory = $this->_applyCriteria($itemsOrderHistory);
                 //get slice of best sellers array using number of products option
                 $tmp = array_slice($bestSellersHistory, 0, $numberProduct, true);
