@@ -33,7 +33,7 @@
 ?>
 <?php
     $categoryId = $this->getCategoryId();
-    //$_productCollection=$this->getLoadedProductCollection();
+    $_productCollection=$this->getLoadedProductCollection();
     $_productCollection = Mage::getResourceModel('catalog/product_collection')
         ->joinField(
             'qty',
@@ -49,11 +49,13 @@
             'is_in_stock',
             'product_id=entity_id',
             '{{table}}.is_in_stock=1',
-            'left'
+            'inner'
         )
         ->addAttributeToFilter('status', array('in' => '1'))
         ->addAttributeToFilter('visibility', array('neq' => Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE))
         ->addAttributeToSelect('special_price')
+        ->addAttributeToSelect('special_from_date')
+        ->addAttributeToSelect('special_to_date')
         ->addAttributeToSelect('name')
         ->addAttributeToSelect('price')
         ->addAttributeToSelect('msrp')

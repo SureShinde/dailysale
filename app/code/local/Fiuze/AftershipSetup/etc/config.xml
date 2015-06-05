@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Fiuze_AftershipSetup>
+            <version>0.1.2</version>
+        </Fiuze_AftershipSetup>
+    </modules>
+    <global>
+        <models>
+            <fiuze_aftershipsetup>
+                <class>Fiuze_AftershipSetup_Model</class>
+            </fiuze_aftershipsetup>
+        </models>
+        <helpers>
+            <fiuze_aftershipsetup>
+                <class>Fiuze_AftershipSetup_Helper</class>
+            </fiuze_aftershipsetup>
+        </helpers>
+        <resources>
+            <fiuze_aftershipsetup_setup>
+                <setup>
+                    <module>Fiuze_AftershipSetup</module>
+                </setup>
+            </fiuze_aftershipsetup_setup>
+        </resources>
+    </global>
+</config>

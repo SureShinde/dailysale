@@ -1,0 +1,69 @@
+<?php
+$form = $this->getElement()->getForm();
+$topElements = $this->getElement()->getTopColumn();
+$bottomElements = $this->getElement()->getBottomColumn();
+$lcElements = $this->getElement()->getLeftColumn();
+$rcElements = $this->getElement()->getRightColumn();
+$lcElements = $this->getElement()->getLeftColumn();
+$rcElements = $this->getElement()->getRightColumn();
+?>
+<div class="generic-box udmspro-register-fieldset" alt="<?php echo $this->getElement()->getLegend()?>">
+<h3><?php echo $this->getElement()->getLegend()?></h3>
+<table style="width:100%"><tbody>
+
+<?php if (!empty($topElements)): ?>
+<tr><td colspan="2">
+<ul class="form-list">
+<?php foreach($topElements as $topElement): ?>
+<li id="<?php echo $topElement.'-container'?>" class="wide">
+<?php echo $this->getChildElementJs($topElement); ?>
+<?php echo $this->getChildElementHtml($topElement); ?>
+</li>
+<?php endforeach ?>
+</ul>
+</td><td>
+<?php endif ?>
+
+<tr><td>
+
+<?php if (!empty($lcElements)): ?>
+<ul class="form-list">
+<?php foreach($lcElements as $lcElement): ?>
+<li id="<?php echo $lcElement.'-container'?>">
+<?php echo $this->getChildElementJs($lcElement); ?>
+<?php echo $this->getChildElementHtml($lcElement); ?>
+</li>
+<?php endforeach ?>
+</ul>
+<?php endif ?>
+
+</td><td>
+
+<?php if (!empty($rcElements)): ?>
+<ul class="form-list">
+<?php foreach($rcElements as $rcElement): ?>
+<li id="<?php echo $rcElement.'-container'?>">
+<?php echo $this->getChildElementJs($rcElement); ?>
+<?php echo $this->getChildElementHtml($rcElement); ?>
+</li>
+<?php endforeach ?>
+</ul>
+<?php endif ?>
+
+</td></tr>
+
+<?php if (!empty($bottomElements)): ?>
+<tr><td colspan="2">
+<ul class="form-list">
+<?php foreach($bottomElements as $bottomElement): ?>
+<li id="<?php echo $bottomElement.'-container'?>" class="wide">
+<?php echo $this->getChildElementJs($bottomElement); ?>
+<?php echo $this->getChildElementHtml($bottomElement); ?>
+</li>
+<?php endforeach ?>
+</ul>
+</td><td>
+<?php endif ?>
+
+</tbody></table>
+</div>

@@ -23,4 +23,26 @@ class ParadoxLabs_TokenBase_Model_Resource_Card extends Mage_Core_Model_Mysql4_A
 	{
 		$this->_init('tokenbase/card', 'id');
 	}
+	
+	/**
+	 * Load card by hash
+	 */
+	public function loadByHash(ParadoxLabs_TokenBase_Model_Card $card, $hash)
+	{
+		$adapter = $this->_getReadAdapter();
+		$select  = $adapter->select()
+							->from( $this->getMainTable(), array( $this->getIdFieldName() ) )
+							->where('hash = :hash');
+		
+		$cardId  = $adapter->fetchOne( $select, array( 'hash' => $hash ) );
+		
+		if( $cardId ) {
+			$this->load( $card, $cardId );
+		}
+		else {
+			$card->setData( array() );
+		}
+		
+		return $this;
+	}
 }

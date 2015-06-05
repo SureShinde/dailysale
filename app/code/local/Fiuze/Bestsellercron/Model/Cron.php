@@ -103,6 +103,7 @@ class Fiuze_Bestsellercron_Model_Cron extends Mage_Core_Model_Abstract{
     protected function _clearBestSellerCategory(){
         $productCollection = Mage::getResourceModel('catalog/product_collection')
             ->addAttributeToFilter('bestsellercron_flag', true)
+            ->addAttributeToSelect('*')
             ->addCategoryFilter($this->_bestSellerCategory);
 
         foreach($productCollection as $product){

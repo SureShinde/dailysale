@@ -1,0 +1,51 @@
+<?php
+/**
+ * Unirgy LLC
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.unirgy.com/LICENSE-M1.txt
+ *
+ * @category   Unirgy
+ * @package    Unirgy_DropshipPo
+ * @copyright  Copyright (c) 2008-2009 Unirgy LLC (http://www.unirgy.com)
+ * @license    http:///www.unirgy.com/LICENSE-M1.txt
+ */
+?>
+<?php $hlp = Mage::helper('udropship');
+$isViewCost = Mage::getSingleton('admin/session')->isAllowed('sales/order/actions/udpo_view_cost');
+$qtyLast = !$isViewCost ? 'last' : '';
+?>
+<?php $_item = $this->getItem() ?>
+<tr class="border">
+    <td><?php echo $this->getColumnHtml($_item, 'name') ?></td>
+    <?php if ($isViewCost): ?>
+    <td><?php echo $hlp->displayPrices($this->getOrder(), $_item->getBaseCost()) ?></td>
+    <?php endif ?>
+    <td class="<?php echo $qtyLast?> ">
+        <table cellspacing="0" class="qty-table">
+            <tr>
+                <td style="white-space:nowrap"><?php echo Mage::helper('udpo')->__('PO Sent') ?></td>
+                <td><strong><?php echo $_item->getQty()*1 ?></strong></td>
+            </tr>
+            <?php if ((float) $_item->getQtyCanceled()): ?>
+            <tr>
+                <td style="white-space:nowrap"><?php echo Mage::helper('udpo')->__('PO Canceled') ?></td>
+                <td><strong><?php echo $_item->getQtyCanceled()*1 ?></strong></td>
+            </tr>
+            <?php endif; ?>
+            <?php if ((float) $_item->getQtyShipped()): ?>
+            <tr>
+                <td><?php echo Mage::helper('sales')->__('Shipped') ?></td>
+                <td><strong><?php echo $_item->getQtyShipped()*1 ?></strong></td>
+            </tr>
+            <?php endif; ?>
+        </table>
+    </td>
+    <?php if ($isViewCost): ?>
+    <td class="last a-right"><?php echo $hlp->displayPrices($this->getOrder(), $_item->getBaseCost()*$_item->getQty()) ?></td>
+    <?php endif ?>
+</tr>

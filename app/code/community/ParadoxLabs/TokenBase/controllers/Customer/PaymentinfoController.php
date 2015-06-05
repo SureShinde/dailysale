@@ -111,8 +111,10 @@ class ParadoxLabs_TokenBase_Customer_PaymentinfoController extends Mage_Core_Con
 			 ->_title( $methodTitle );
 		
 		$breadcrumbs = $this->getLayout()->getBlock('breadcrumbs');
-		$breadcrumbs->addCrumb( 'tokenbase', array( 'label' => Mage::helper('tokenbase')->__('My Payment Data'), 'title' => Mage::helper('tokenbase')->__('My Payment Data'), 'link' => Mage::getUrl('*/*') ) );
-		$breadcrumbs->addCrumb( 'tokenbase_method', array( 'label' => $methodTitle, 'title' => $methodTitle, 'link' => Mage::getUrl( '*/*/*', array( 'method' => Mage::registry('tokenbase_method') ) ) ) );
+		if( $breadcrumbs && $breadcrumbs instanceof Mage_Core_Block_Template ) {
+			$breadcrumbs->addCrumb( 'tokenbase', array( 'label' => Mage::helper('tokenbase')->__('My Payment Data'), 'title' => Mage::helper('tokenbase')->__('My Payment Data'), 'link' => Mage::getUrl('*/*') ) );
+			$breadcrumbs->addCrumb( 'tokenbase_method', array( 'label' => $methodTitle, 'title' => $methodTitle, 'link' => Mage::getUrl( '*/*/*', array( 'method' => Mage::registry('tokenbase_method') ) ) ) );
+		}
 		
 		$this->renderLayout();
 	}
@@ -221,6 +223,7 @@ class ParadoxLabs_TokenBase_Customer_PaymentinfoController extends Mage_Core_Con
 					
 					$newPayment = Mage::getModel('sales/quote_payment');
 					$newPayment->setQuote( Mage::getSingleton('checkout/session')->getQuote() );
+					$newPayment->getQuote()->getBillingAddress()->setCountryId( $newAddr->getCountryId() );
 					$newPayment->importData( $cardData );
 					
 					/**

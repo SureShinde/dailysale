@@ -113,7 +113,7 @@
         </div>
 <?php endforeach;?>
         
-        <?php echo $this->getChildHtml('product_additional_data') ?>
+
     </div>
 
             <?php echo $this->getChildHtml('other');?>
@@ -127,15 +127,19 @@
         <div class="product-img-box">
             <?php echo $this->getChildHtml('media') ?>
         </div>
-        <div class="upsells">
-            <?php echo $this->getChildHtml('upsell_products') ?>
-        </div>
 
-        <div class="clearer"></div>
+
+        <!--<div class="clearer"></div>-->
         <?php //if ($_product->isSaleable() && $this->hasOptions()):?>
             <?php //echo $this->getChildChildHtml('container2', '', true, true) ?>
         <?php //endif;?>
     </form>
+    <div class="product-view product-shop">
+        <?php echo $this->getChildHtml('product_additional_data') ?>
+    </div>
+    <div class="upsells">
+        <?php echo $this->getChildHtml('upsell_products') ?>
+    </div>
     <script type="text/javascript">
     //<![CDATA[
         var productAddToCartForm = new VarienForm('product_addtocart_form');

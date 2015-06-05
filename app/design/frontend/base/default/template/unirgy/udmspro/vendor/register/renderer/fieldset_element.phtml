@@ -1,0 +1,28 @@
+<?php $el = $this->getElement(); $fc = (array)$el->getData('field_config');
+$lessThen = 0;
+foreach (array('length_lte', 'length_lt', 'symlength_lte', 'symlength_lt') as $ltKey) {
+    if (isset($fc[$ltKey]) && is_numeric($fc[$ltKey])) {
+        $lessThen = $fc[$ltKey];
+        break;
+    }
+}
+$greaterThen = 0;
+foreach (array('length_gte', 'length_gt', 'symlength_gte', 'symlength_gt') as $ltKey) {
+    if (isset($fc[$ltKey]) && is_numeric($fc[$ltKey])) {
+        $greaterThen = $fc[$ltKey];
+        break;
+    }
+}
+?>
+<?php echo $this->getElement()->getLabelHtml(); ?> <br />
+<?php echo $this->getElementHtml() ?>
+<?php echo $this->getAfterElementHtml() ?>
+<?php if ($this->getElement()->getId()=='description'): ?>
+    <br />
+    <div style="position: relative">
+    <?php foreach (array_unique(explode(' ', $this->getElement()->getClass())) as $valClass): ?>
+    <div style="position: absolute; display: none;" class="validation-advice absolute-advice" id="advice-<?php echo $valClass?>-description"><?php echo $this->__('Shop description must be between %s char and %s char', $greaterThen, $lessThen) ?></div>
+    <?php endforeach ?>
+    </div>
+    <br />
+<?php endif ?>
