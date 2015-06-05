@@ -369,7 +369,7 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
         $time = $config['time_period'];
 
         if(!is_null($day)){
-            $days = 90;
+            $days = $day;
             $time[0] = 0;
             $time[1] = 0;
             $time[2] = 0;
