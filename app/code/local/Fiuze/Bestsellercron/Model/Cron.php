@@ -133,17 +133,22 @@ class Fiuze_Bestsellercron_Model_Cron extends Mage_Core_Model_Abstract{
      * @return boolean
      */
     protected function _assignBestSellersToCategory($bestSellers){
-        if(count($bestSellers)>0){
+        if(count($bestSellers) > 0){
             $productCollectionResource = Mage::getResourceModel('catalog/product_collection');
             $orValueArray = array();
             foreach($bestSellers as $item) {
-                $parentIds = Mage::getModel('catalog/product_type_grouped')->getParentIdsByChild($item);
-                if (!$parentIds) {
+                $product = Mage::getModel('catalog/product')->load($item);
+                if($product->getTypeId() == 'configurable'){
                     $parentIds = Mage::getModel('catalog/product_type_configurable')->getParentIdsByChild($item);
-                    if (isset($parentIds[0])) {
-                        $parent = Mage::getModel('catalog/product')->load($parentIds[0]);
-                        $categoryIds = $parent->getCategoryIds();
-                        array_push($orValueArray, array('in' => $parent->getId()));
+                    if(count($parentIds) != 0){
+                        if (isset($parentIds[0])) {
+                            $parent = Mage::getModel('catalog/product')->load($parentIds[0]);
+                            if($parent->getId()){
+                                array_push($orValueArray, array('in' => $parent->getId()));
+                            }
+                        }
+                    }else{
+                        array_push($orValueArray, array('in' => $item));
                     }
                 }else{
                     array_push($orValueArray, array('in' => $item));
