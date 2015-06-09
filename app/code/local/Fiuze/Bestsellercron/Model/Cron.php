@@ -35,7 +35,7 @@ class Fiuze_Bestsellercron_Model_Cron extends Mage_Core_Model_Abstract{
                 return false;
             }
             $jobCode = $arguments->getJobCode();
-            //$jobCode = '_1431656231726_726';
+            //$jobCode = '_1433778918409_409';//'_1431656231726_726';
             $bestSellerConfig = $this->_bestSellerCategoryConfig;
             if(!is_null($bestSellerConfig)) {
                 //set admin area if method run in the controller
@@ -46,22 +46,39 @@ class Fiuze_Bestsellercron_Model_Cron extends Mage_Core_Model_Abstract{
                     if ($jobCode == $this->_bestSellerCategoryRowId) {
                         $currentConfig = $valueArray[$jobCode];
                         $bestsellersModel = Mage::getModel('bestsellercron/bestsellers')->setCurrentConfig($currentConfig);
-                        $bestSellersArray =$bestsellersModel->getBestSellers();
-
-                        //$this->_clearBestSellerCategory();
+                        $bestSellersArray =$bestsellersModel->getBestSellers(true);
+                        $this->_changeConfigurableProduct($bestSellersArray);
                         $this->_assignBestSellersToCategory($bestSellersArray);
                         $this->_sortCategoryConfig($bestSellersArray, $currentConfig);
                     }else{
                         $currentConfig = $valueArray[$jobCode];
                         $bestsellersModel = Mage::getModel('bestsellercron/bestsellers')->setCurrentConfig($currentConfig);
                         $bestSellersArray = $bestsellersModel->getBestSellers();
+                        $this->_changeConfigurableProduct($bestSellersArray);
                         $this->_sortCategoryConfig($bestSellersArray, $currentConfig);
                     }
                 }
             }
         }
-
         return true;
+    }
+
+    /**
+     * Get the parent product if it configurable
+     * @param $bestSellers
+     */
+    protected function _changeConfigurableProduct(&$bestSellers){
+        foreach($bestSellers as $key => $item) {
+            $parentIds = Mage::getModel('catalog/product_type_configurable')->getParentIdsByChild($item);
+            if(count($parentIds) > 0){
+                if (isset($parentIds[0])) {
+                    $parent = Mage::getModel('catalog/product')->load($parentIds[0]);
+                    if($parent->getId()){
+                        $bestSellers[$key] = (int)$parent->getId();
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -137,23 +154,9 @@ class Fiuze_Bestsellercron_Model_Cron extends Mage_Core_Model_Abstract{
             $productCollectionResource = Mage::getResourceModel('catalog/product_collection');
             $orValueArray = array();
             foreach($bestSellers as $item) {
-                $product = Mage::getModel('catalog/product')->load($item);
-                if($product->getTypeId() == 'configurable'){
-                    $parentIds = Mage::getModel('catalog/product_type_configurable')->getParentIdsByChild($item);
-                    if(count($parentIds) != 0){
-                        if (isset($parentIds[0])) {
-                            $parent = Mage::getModel('catalog/product')->load($parentIds[0]);
-                            if($parent->getId()){
-                                array_push($orValueArray, array('in' => $parent->getId()));
-                            }
-                        }
-                    }else{
-                        array_push($orValueArray, array('in' => $item));
-                    }
-                }else{
-                    array_push($orValueArray, array('in' => $item));
-                }
+                array_push($orValueArray, array('in' => $item));
             }
+
             $productCollectionResource->addAttributeToFilter('entity_id', $orValueArray);
             $productCollectionResource->addAttributeToSelect('*');
             $productCollection = $productCollectionResource->getItems();
@@ -161,7 +164,6 @@ class Fiuze_Bestsellercron_Model_Cron extends Mage_Core_Model_Abstract{
             foreach($productCollection as $product){
                 $categoryIds = $product->getCategoryIds();
                 array_push($categoryIds, $this->_bestSellerCategory->getId());
-
                 try{
                     $product->setCategoryIds($categoryIds)
                         ->setBestsellercronFlag(true)
