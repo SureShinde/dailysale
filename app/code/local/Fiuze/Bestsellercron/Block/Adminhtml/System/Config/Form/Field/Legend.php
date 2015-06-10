@@ -48,9 +48,7 @@ class Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Legend
     public function render(Varien_Data_Form_Element_Abstract $element)
     {
         $html = "";
-		$html = $this->_getHeaderHtml($element);
         $html.= $this->_getFieldHtml($element);
-
         return $html;
     }
 
@@ -70,7 +68,7 @@ class Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Legend
         return $html;
     }
 
-    protected function _getFieldHtml($fieldset)
+    protected function _getFieldHtml($fieldset, $value = "")
     {
         $field = $fieldset->addField($value, 'label',
             array(
