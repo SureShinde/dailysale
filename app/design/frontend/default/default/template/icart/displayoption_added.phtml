@@ -1,0 +1,9 @@
+
+
+<?php if($this->getDisplayOption()) { ?>
+    <button onclick="location.href='<?php echo $this->getUrl('checkout/onepage')?>//'" class="button" title="<?php echo $this->escapeHtml($this->__('Go to Checkout')) ?>" type="button"><span><span><?php echo $this->__('Go to Checkout') ?></span></span></button>
+<?php }else{ ?>
+    <button onclick="location.href='<?php echo $this->getUrl('checkout/cart')?>//'" class="button" title="<?php echo $this->escapeHtml($this->__('Go to Shopping Cart')) ?>" type="button"><span><span><?php echo $this->__('Go to Shopping Cart') ?></span></span></button>
+<?php } ?>
+
+
