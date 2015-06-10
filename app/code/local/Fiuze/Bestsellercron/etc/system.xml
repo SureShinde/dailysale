@@ -26,7 +26,6 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                            <comment>Displays in the same order as in the configuration. Sorting inside of category is performing in order of chosen criteria.</comment>
                         </general>
                         <legend translate="label">
                             <frontend_type>text</frontend_type>

@@ -34,6 +34,8 @@
  * @author     MageWorx Dev Team <dev@mageworx.com>
  */
 
+
+
 class Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Legend
 	extends Mage_Adminhtml_Block_System_Config_Form_Fieldset
 {
@@ -45,12 +47,9 @@ class Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Legend
 
     public function render(Varien_Data_Form_Element_Abstract $element)
     {
+        $html = "";
 		$html = $this->_getHeaderHtml($element);
-
-        $html.= $this->_getFieldHtml($element, "asdasdasd");
-        $html.= $this->_getFieldHtml($element, "22222");
-
-        $html .= $this->_getFooterHtml($element);
+        $html.= $this->_getFieldHtml($element);
 
         return $html;
     }
@@ -58,7 +57,7 @@ class Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Legend
     protected function _getFieldRenderer()
     {
     	if (empty($this->_fieldRenderer)) {
-    		$this->_fieldRenderer = Mage::getBlockSingleton('adminhtml/system_config_form_field');
+    		$this->_fieldRenderer = Mage::getBlockSingleton('bestsellercron/adminhtml_system_config_form_field_fieldlegend');
     	}
     	return $this->_fieldRenderer;
     }
@@ -71,15 +70,15 @@ class Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Legend
         return $html;
     }
 
-    protected function _getFieldHtml($fieldset, $value)
+    protected function _getFieldHtml($fieldset)
     {
         $field = $fieldset->addField($value, 'label',
             array(
                 'name'          => 'nameLegend',
-                'label'         => 'nameLegend',
-                'value'         => $value,
             ))->setRenderer($this->_getFieldRenderer());
 
 		return $field->toHtml();
     }
+
+
 }
