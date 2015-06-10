@@ -418,8 +418,13 @@ Event.observe(document, "dom:loaded", function() {
                         var str = document.getElementById('billing:street1').value;
                         var res = str.split(",");
 
-                        if (addressType == 'locality')
+                        if (addressType == 'locality') {
                             city = place.address_components[i][componentBillingForm['locality']];
+                        }else if (addressType == 'administrative_area_level_1'){
+                            if(city == undefined){
+                                city = place.address_components[i]['long_name'];
+                            }
+                        }
                         if (addressType == 'administrative_area_level_1') {
                             region_id = place.address_components[i]['short_name'];
                             region = place.address_components[i]['long_name'];
@@ -442,7 +447,9 @@ Event.observe(document, "dom:loaded", function() {
                         }
                     }
                     if (region_select !== undefined){
-                        document.getElementById('billing:region_id').options[region_select].selected=true;
+                        if (document.getElementById('billing:region_id').options[region_select] !== undefined) {
+                            document.getElementById('billing:region_id').options[region_select].selected = true;
+                        }
                     }
                     fillAddress('billing', res[0], city, region_id, region, country, postal_code, sublocality);
                 }

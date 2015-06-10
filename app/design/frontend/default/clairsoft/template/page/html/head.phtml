@@ -125,32 +125,15 @@ window._fbq.push(['track', 'PixelInitialized', {}]);
 </script>
 <!-- END: Google Trusted Stores -->
 
-<!-- Adroll Smart Pixel -->
-
-<script type="text/javascript">
-adroll_adv_id = "E3M62ZQJ25HOXEMXRJAVQ2";
-adroll_pix_id = "QXQPAX4K7NEZ5APU6YEVRO";
-(function () {
-var oldonload = window.onload;
-window.onload = function(){
-__adroll_loaded=true;
-var scr = document.createElement("script");
-var host = (("https:" == document.location.protocol) ? "https://s.adroll.com" : "http://a.adroll.com");
-scr.setAttribute('async', 'true');
-scr.type = "text/javascript";
-scr.src = host + "/j/roundtrip.js";
-((document.getElementsByTagName('head') || [null])[0] ||
-document.getElementsByTagName('script')[0].parentNode).appendChild(scr);
-if(oldonload){oldonload()}};
-}());
-</script>
-
-<!-- end adroll smart pixel -->
-
 <!-- Bing Ads tracking pixel -->
 
 <script>(function(w,d,t,r,u){var f,n,i;w[u]=w[u]||[],f=function(){var o={ti:"4021715"};o.q=w[u],w[u]=new UET(o),w[u].push("pageLoad")},n=d.createElement(t),n.src=r,n.async=1,n.onload=n.onreadystatechange=function(){var s=this.readyState;s&&s!=="loaded"&&s!=="complete"||(f(),n.onload=n.onreadystatechange=null)},i=d.getElementsByTagName(t)[0],i.parentNode.insertBefore(n,i)})(window,document,"script","//bat.bing.com/bat.js","uetq");</script>
 
+<!-- end bing pixel -->
+
+<!-- EEngine tracking -->
+<script src="//embed.experimentengine.com/js/3vE75p.js"></script>
+<!-- end EEngine -->
 <!-- end bing pixel -->
 
 <!-- Google Code for Remarketing Tag -->

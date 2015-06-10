@@ -27,17 +27,33 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
      * @return array
      */
     public function getBestSellers() {
-        $items = Mage::getResourceModel('sales/order_item_collection')
-                ->addFieldToFilter('created_at', array('gteq' => $this->_getPeriod()))
-                ->addFieldToFilter('parent_item_id', array('null' => true));
+        //get order item by category
+        $itemsOrderRow = array();
+        foreach($this->getBestSellerCategoryConfig()->getValue() as $key => $item){
+            $productCollection = Mage::getResourceModel('catalog/product_collection')
+                ->setStoreId(Mage_Core_Model_App::ADMIN_STORE_ID)
+                ->addCategoryFilter(Mage::getModel('catalog/category')->load($item['category']));
+            $idProduct = array_keys ($productCollection->getItems());
+            $itemsOrder = Mage::getResourceModel('sales/order_item_collection')
+                ->addFieldToFilter('created_at', array('gteq' => $this->_getPeriod($key)))
+                ->addFieldToFilter('parent_item_id', array('null' => true))
+                ->addFieldToFilter('product_id', array('in' => $idProduct))
+                ->getItems();
+            $itemsOrderRow[$key]=$itemsOrder;
+        }
 
-        $bestSellers = $this->_applyCriteria($items);
-
-        //get slice of best sellers array using number of products option
-        $bestSellersSlice = array_slice($bestSellers, 0, Mage::getStoreConfig(self::XML_PATH_NUMBER_PRODUCTS), true);
+        $bestSellersSlice = array();
+        foreach($this->getBestSellerCategoryConfig()->getValue() as $key => $item) {
+            $bestSellers = $this->_applyCriteria($key, $itemsOrderRow[$key]);
+            //get slice of best sellers array using number of products option
+            $configArray = $this->getBestSellerCategoryConfig()->getValue();
+            $numberProduct = (int)$configArray[$key]['number_of_products'];
+            $tmp = array_slice($bestSellers, 0, $numberProduct, true);
+            $bestSellersSlice[$key] = array_keys($tmp);
+        }
 
         //retrieve all keys from array
-        return array_keys($bestSellersSlice);
+        return $bestSellersSlice;
     }
 
     /**
@@ -59,14 +75,21 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
      * @param array $items
      * @return array
      */
-    protected function _applyCriteria($items) {
-        if ($this->_criteria == 'revenue') {
-            $bestSellers = $this->_maxRevenue($items);
-        } else if('qty'){
-            $bestSellers = $this->_maxQty($items);
-        } else if('profit'){
-            $bestSellers = $this->_maxProfit($items);
+    protected function _applyCriteria($keyRow, $items) {
+        $configArray = $this->getBestSellerCategoryConfig()->getValue();
+        $criteria = $configArray[$keyRow]['criteria'];
+        switch($criteria){
+            case 'revenue':
+                $bestSellers = $this->_maxRevenue($keyRow, $items);
+                break;
+            case 'qty':
+                $bestSellers = $this->_maxQty($keyRow, $items);
+                break;
+            case 'profit':
+                $bestSellers = $this->_maxProfit($keyRow, $items);
+                break;
         }
+
         $result = $this->_changeFormatArray($bestSellers);
         arsort($result);
         return $result;
@@ -104,15 +127,21 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
      * @param array $orderItems
      * @return array
      */
-    protected function _maxRevenue($orderItems) {
+    protected function _maxRevenue($keyRow, $orderItems) {
+        $configArray = $this->getBestSellerCategoryConfig()->getValue();
         $items = array();
 
         foreach ($orderItems as $orderItem) {
             $product = $orderItem->getProduct();
             if($product->getTypeId()=='configurable'){
+                $productCollection = Mage::getResourceModel('catalog/product_collection')
+                    ->setStoreId(Mage_Core_Model_App::ADMIN_STORE_ID)
+                    ->addCategoryFilter(Mage::getModel('catalog/category')->load($configArray[$keyRow]['category']));
+                $idProduct = array_keys ($productCollection->getItems());
                 $itemsSimple = Mage::getResourceModel('sales/order_item_collection')
-                    ->addFieldToFilter('created_at', array('gteq' => $this->_getPeriod()))
+                    ->addFieldToFilter('created_at', array('gteq' => $this->_getPeriod($keyRow)))
                     ->addFieldToFilter('parent_item_id', array('eq' => $orderItem->getId()))
+                    ->addFieldToFilter('product_id', array('in' => $idProduct))
                     ->getItems();
                 foreach($itemsSimple as $simple){
                     $productSimple = $simple->getProduct();
@@ -152,7 +181,8 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
      * @param array $orderItems
      * @return array
      */
-    protected function _maxQty($orderItems) {
+    protected function _maxQty($keyRow, $orderItems) {
+        $configArray = $this->getBestSellerCategoryConfig()->getValue();
         $items = array();
 
         foreach ($orderItems as $orderItem) {
@@ -162,9 +192,14 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
              *          check cost in the live db
              */
             if($product->getTypeId()=='configurable'){
+                $productCollection = Mage::getResourceModel('catalog/product_collection')
+                    ->setStoreId(Mage_Core_Model_App::ADMIN_STORE_ID)
+                    ->addCategoryFilter(Mage::getModel('catalog/category')->load($configArray[$keyRow]['category']));
+                $idProduct = array_keys ($productCollection->getItems());
                 $itemsSimple = Mage::getResourceModel('sales/order_item_collection')
-                    ->addFieldToFilter('created_at', array('gteq' => $this->_getPeriod()))
+                    ->addFieldToFilter('created_at', array('gteq' => $this->_getPeriod($keyRow)))
                     ->addFieldToFilter('parent_item_id', array('eq' => $orderItem->getId()))
+                    ->addFieldToFilter('product_id', array('in' => $idProduct))
                     ->getItems();
                 foreach($itemsSimple as $simple){
                     $productSimple = $simple->getProduct();
@@ -206,7 +241,8 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
      * @param array $orderItems
      * @return array
      */
-    protected function _maxProfit($orderItems) {
+    protected function _maxProfit($keyRow, $orderItems) {
+        $configArray = $this->getBestSellerCategoryConfig()->getValue();
         $items = array();
 
         foreach ($orderItems as $orderItem) {
@@ -216,9 +252,14 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
              *          check cost in the live db
              */
             if($product->getTypeId()=='configurable'){
+                $productCollection = Mage::getResourceModel('catalog/product_collection')
+                    ->setStoreId(Mage_Core_Model_App::ADMIN_STORE_ID)
+                    ->addCategoryFilter(Mage::getModel('catalog/category')->load($configArray[$keyRow]['category']));
+                $idProduct = array_keys ($productCollection->getItems());
                 $itemsSimple = Mage::getResourceModel('sales/order_item_collection')
-                    ->addFieldToFilter('created_at', array('gteq' => $this->_getPeriod()))
+                    ->addFieldToFilter('created_at', array('gteq' => $this->_getPeriod($keyRow)))
                     ->addFieldToFilter('parent_item_id', array('eq' => $orderItem->getId()))
+                    ->addFieldToFilter('product_id', array('in' => $idProduct))
                     ->getItems();
                 foreach($itemsSimple as $simple){
                     $productSimple = $simple->getProduct();
@@ -259,12 +300,13 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
      * 
      * @return string
      */
-    protected function _getPeriod() {
-        $days = (int) Mage::getStoreConfig(self::XML_PATH_DAYS_PERIOD);
-        $time = explode(',', Mage::getStoreConfig(self::XML_PATH_TIME_PERIOD));
+    protected function _getPeriod($keyRow) {
+        $configArray = $this->getBestSellerCategoryConfig()->getValue();
+        $days = (int)$configArray[$keyRow]['days_period'];
+        $time = $configArray[$keyRow]['time_period'];
 
         //calculate necessary period
-        $timestamp = Mage::getModel('core/date')->timestamp();
+        $timestamp =  strtotime(Mage::getModel('core/date')->gmtDate());
         $period    = date('Y-m-d H:i:s', strtotime('-' . $days . ' days -' . $time[0] . ' hours -' . $time[1] . ' minutes -' . $time[2] . ' seconds', $timestamp));
 
         return $period;
