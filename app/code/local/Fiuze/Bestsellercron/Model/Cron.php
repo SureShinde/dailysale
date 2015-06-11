@@ -48,6 +48,7 @@ class Fiuze_Bestsellercron_Model_Cron extends Mage_Core_Model_Abstract{
                         $bestsellersModel = Mage::getModel('bestsellercron/bestsellers')->setCurrentConfig($currentConfig);
                         $bestSellersArray =$bestsellersModel->getBestSellers(true);
                         $this->_changeConfigurableProduct($bestSellersArray);
+                        $this->_clearBestSellerCategory();
                         $this->_assignBestSellersToCategory($bestSellersArray);
                         $this->_sortCategoryConfig($bestSellersArray, $currentConfig);
                     }else{

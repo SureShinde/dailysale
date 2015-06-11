@@ -16,5 +16,11 @@ class Fiuze_Bestsellercron_Model_Observer
         }
         Mage::app()->getCacheInstance()->cleanType('config');
     }
+    public function catalogProductCollectionLoadAfter(Varien_Event_Observer $observer){
+        //$productCollection = $observer->getData('collection');
+        //foreach($productCollection as $item){
 
+        //}
+        //catalog_block_product_list_collection
+    }
 }

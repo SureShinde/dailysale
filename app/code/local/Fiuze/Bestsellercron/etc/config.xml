@@ -38,6 +38,14 @@
                     </bestsellers_controller_front_init_before>
                 </observers>
             </controller_front_init_before>
+            <catalog_block_product_list_collection>
+                <observers>
+                    <bestsellers_catalog_product_collection_load_after>
+                        <class>bestsellercron/observer</class>
+                        <method>catalogProductCollectionLoadAfter</method>
+                    </bestsellers_catalog_product_collection_load_after>
+                </observers>
+            </catalog_block_product_list_collection>
         </events>
     </global>
     <frontend>
