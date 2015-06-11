@@ -88,14 +88,14 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
                 $bestSellersHistory = $this->_applyCriteria($itemsOrderHistory, $this->_getPeriod($isTimePeriodHistory));
                 //get slice of best sellers array using number of products option
                 if($fullCategory){
-                    $tmp = array_slice($bestSellers, 0, $numberProduct, true);
+                    $tmp = array_slice($bestSellersHistory, 0, $numberProduct, true);
                     $bestSellersSliceHistory = array_keys($tmp);
                     $result = array_diff($bestSellersSliceHistory,$merge);
                     $mergeHistory = array_slice($result, 0, $numberProduct, true);
                     $mergeHistory = array_merge($merge, $mergeHistory);
                     $merge = array_slice($mergeHistory, 0, $numberProduct, true);
                 }else{
-                    $tmp = array_slice($bestSellers, 0, count($bestSellers), true);
+                    $tmp = array_slice($bestSellersHistory, 0, count($bestSellers), true);
                     $bestSellersSliceHistory = array_keys($tmp);
                     $result = array_diff($bestSellersSliceHistory,$merge);
                     $mergeHistory = array_slice($result, 0, count($bestSellers), true);
