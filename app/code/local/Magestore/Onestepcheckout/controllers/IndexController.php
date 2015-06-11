@@ -107,8 +107,6 @@ class Magestore_Onestepcheckout_IndexController extends Mage_Core_Controller_Fro
                 //if email is valid, check if this email is registered
                 if ($this->_emailIsRegistered($email_address)) {
                     $message = 'exists';
-                } else {
-                    $message = 'valid';
                 }
             }
         }
