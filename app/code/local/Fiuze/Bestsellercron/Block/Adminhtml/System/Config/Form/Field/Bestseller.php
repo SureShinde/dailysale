@@ -70,7 +70,7 @@ class Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Bestseller e
         $this->addColumn('number_of_products', array(
             'label' => Mage::helper('bestsellercron')->__('Number of products'),
 //            'style' => 'width:120px',
-            'class' => ' required-entry validate-digits'
+            'class' => 'validate-digits'
         ));
         $this->_addAfter = false;
         $this->_addButtonLabel = Mage::helper('adminhtml')->__('Add Item');

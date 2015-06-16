@@ -322,8 +322,9 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
                     ->getItems();
                 foreach($itemsSimple as $simple){
                     $productSimple = $simple->getProduct();
-                    $cost   = ($productSimple->getCost()) ? $productSimple->getCost() : $productSimple->getPrice();
-                    $profit = (float) ($this->_getRowTotalWithDiscountInclTax($orderItem) - $cost * $simple->getQtyOrdered());
+                    $cost   = ($productSimple->getCost()) ? $productSimple->getCost() : ($this->_getRowTotalWithDiscountInclTax($orderItem));
+                    $qtyCost   = ($productSimple->getCost()) ? $simple->getQtyOrdered() : (1);
+                    $profit = (float) ($this->_getRowTotalWithDiscountInclTax($orderItem) - $cost * $qtyCost);
 
                     if ($profit > 0) {
                         if(!is_null($productSimple->getId())){
@@ -341,7 +342,8 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
                 }
             }else{
                 $cost   = ($product->getCost()) ? $product->getCost() : ($this->_getRowTotalWithDiscountInclTax($orderItem));
-                $profit = (float) $this->_getRowTotalWithDiscountInclTax($orderItem) - $cost;
+                $qtyCost   = ($product->getCost()) ? $orderItem->getQtyOrdered() : (1);
+                $profit = (float) ($this->_getRowTotalWithDiscountInclTax($orderItem) - $cost * $qtyCost);
 
                 if ($profit > 0) {
                     if(!is_null($product->getId())){

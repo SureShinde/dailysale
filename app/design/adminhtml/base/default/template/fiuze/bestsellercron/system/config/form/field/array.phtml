@@ -81,7 +81,18 @@ $_colspan = $_colspan > 1 ? 'colspan="' . $_colspan . '"' : '';
         }
 
     }
+
     document.observe("dom:loaded", function() {
+        var arrTr = $$("#row_bestsellers_settings_sec_bestsellers_settings_grp_general tr");
+        arrTr.each(function(tr){
+            if(tr.id == '_1431656231726_726'){
+                if(tr.childElementCount == 8){
+                    if(tr.children[6].firstChild.nodeName == 'INPUT'){
+                        tr.children[6].firstChild.addClassName('required-entry');
+                    }
+                }
+            }
+        });
         $$('#row_bestsellers_settings_sec_bestsellers_settings_grp_general .label')[0].remove();
         $$('#_1431656231726_726 td')[0].firstChild.setAttribute("disabled", "true");
         $$('#_1431656231726_726 button')[0].removeClassName('delete');

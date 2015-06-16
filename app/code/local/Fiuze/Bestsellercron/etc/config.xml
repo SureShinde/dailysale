@@ -20,6 +20,11 @@
             <bestsellercron>
                 <class>Fiuze_Bestsellercron_Model</class>
             </bestsellercron>
+            <catalog>
+                <rewrite>
+                    <category>Fiuze_Bestsellercron_Model_Catalog_Category</category>
+                </rewrite>
+            </catalog>
         </models>
         <resources>
             <bestsellercron_setup>
