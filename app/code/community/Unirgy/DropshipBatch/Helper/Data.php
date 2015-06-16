@@ -205,7 +205,7 @@ class Unirgy_DropshipBatch_Helper_Data extends Mage_Core_Helper_Abstract
                 //check order id
                 $_hlp = Mage::helper('udropship');
                 $_poHlp = Mage::helper('udpo');
-                $_udpos = Mage::helper('core')->decorateArray($_poHlp->getVendorPoCollection(), '');
+                $_udpos = Mage::helper('core')->decorateArray($_poHlp->getVendorPoCollection(true), '');
                 $orderCorrect = array();
                 $orderCorrectRow = array();
                 $ordersId = array();
@@ -281,7 +281,7 @@ class Unirgy_DropshipBatch_Helper_Data extends Mage_Core_Helper_Abstract
                 $trackingNumbersContent = preg_split("/[\s,]+/", $content);
                 $_hlp = Mage::helper('udropship');
                 $_poHlp = Mage::helper('udpo');
-                $_udpos = Mage::helper('core')->decorateArray($_poHlp->getVendorPoCollection(), '');
+                $_udpos = Mage::helper('core')->decorateArray($_poHlp->getVendorPoCollection(true), '');
 
                 $incorrect = array();
                 //check order id
@@ -289,7 +289,7 @@ class Unirgy_DropshipBatch_Helper_Data extends Mage_Core_Helper_Abstract
                 $orderCorrectRow = array();
                 $ordersId = array();
                 foreach($trackingNumbersContent as $row) {
-                    $rowOrder = split(";", $row);
+                    $rowOrder = split(";", trim($row));
                     $ordersId[] = $rowOrder[0];
                     foreach ($_udpos as $orderRow) {
                         if ($orderRow->getOrderIncrementId() == $rowOrder[0]) {
@@ -302,7 +302,7 @@ class Unirgy_DropshipBatch_Helper_Data extends Mage_Core_Helper_Abstract
                 $result = array_intersect($orderCorrect,$ordersId);
                 $incorrect = array_diff($ordersId, $result);
                 if (count($incorrect)){
-                    Mage::throwException($this->__('Invalid $order(s) id: ' . implode(", ", $orderCorrectRow)));
+                    Mage::throwException($this->__('Invalid $order(s) id: ' . implode(", ", $incorrect)));
                 }
 
                 //check track id
