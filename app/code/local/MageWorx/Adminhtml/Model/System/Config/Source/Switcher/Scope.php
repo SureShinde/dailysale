@@ -21,32 +21,26 @@
  * or send an email to sales@mageworx.com
  *
  * @category   MageWorx
- * @package    MageWorx_Adminhtml
+ * @package    MageWorx_GeoIP
  * @copyright  Copyright (c) 2009 MageWorx (http://www.mageworx.com/)
  * @license    http://www.mageworx.com/LICENSE-1.0.html
  */
 
 /**
- * MageWorx Adminhtml extension
+ * GeoIP extension
  *
  * @category   MageWorx
- * @package    MageWorx_Adminhtml
+ * @package    MageWorx_GeoIP
  * @author     MageWorx Dev Team <dev@mageworx.com>
  */
 
-class MageWorx_Adminhtml_Block_System_Config_Form_Fieldset_Mageworx_Abstract
-	extends Mage_Adminhtml_Block_System_Config_Form_Fieldset
+class MageWorx_Adminhtml_Model_System_Config_Source_Switcher_Scope
 {
-
-    protected function _getFooterHtml($element)
+    public function toOptionArray()
     {
-        $html = parent::_getFooterHtml($element);
-        $html .= Mage::helper('adminhtml/js')->getScript("
-            $$('td.form-buttons')[0].update('');
-            $('{$element->getHtmlId()}' + '-head').setStyle('background: none;');
-            $('{$element->getHtmlId()}' + '-head').writeAttribute('onclick', 'return false;');
-            $('{$element->getHtmlId()}').show();
-        ");
-        return $html;
+        return array(
+            array('value'=>'0', 'label'=>Mage::helper('core')->__('Global')),
+            array('value'=>'1', 'label'=>Mage::helper('core')->__('Website')),
+        );
     }
 }

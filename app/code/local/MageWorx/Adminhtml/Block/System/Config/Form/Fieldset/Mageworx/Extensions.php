@@ -22,7 +22,7 @@
  *
  * @category   MageWorx
  * @package    MageWorx_Adminhtml
- * @copyright  Copyright (c) 2010 MageWorx (http://www.mageworx.com/)
+ * @copyright  Copyright (c) 2009 MageWorx (http://www.mageworx.com/)
  * @license    http://www.mageworx.com/LICENSE-1.0.html
  */
 
@@ -50,8 +50,8 @@ class MageWorx_Adminhtml_Block_System_Config_Form_Fieldset_Mageworx_Extensions
 		sort($modules);
 
         foreach ($modules as $moduleName) {
-            list($namespace, $extension) = explode('_', $moduleName, 2);
-        	if ($namespace != 'MageWorx') {
+            $name = explode('_', $moduleName, 2);
+        	if (!isset($name) || $name[0] != 'MageWorx') {
         		continue;
         	}
         	$html.= $this->_getFieldHtml($element, $moduleName);
