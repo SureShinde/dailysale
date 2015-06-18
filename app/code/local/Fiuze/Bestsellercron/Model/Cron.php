@@ -43,10 +43,13 @@ class Fiuze_Bestsellercron_Model_Cron extends Mage_Core_Model_Abstract{
                 $valueArray = $bestSellerConfig->getValue();
                 if(array_key_exists($jobCode, $valueArray)) {
                     //if category bestseller
-                    if ($jobCode == $this->_bestSellerCategoryRowId) {
+                    $itemConfig = $valueArray[$jobCode];
+                    $searchOfStore = $itemConfig['checkbox'] ? true : false;
+                    if ($searchOfStore) {
                         $currentConfig = $valueArray[$jobCode];
                         $bestsellersModel = Mage::getModel('bestsellercron/bestsellers')->setCurrentConfig($currentConfig);
-                        $bestSellersArray =$bestsellersModel->getBestSellers(true);
+                        $bestsellersModel->setBestSellersCategory($searchOfStore);
+                        $bestSellersArray =$bestsellersModel->getBestSellers();
                         $this->_changeConfigurableProduct($bestSellersArray);
                         $this->_clearBestSellerCategory();
                         $this->_assignBestSellersToCategory($bestSellersArray);
@@ -54,6 +57,7 @@ class Fiuze_Bestsellercron_Model_Cron extends Mage_Core_Model_Abstract{
                     }else{
                         $currentConfig = $valueArray[$jobCode];
                         $bestsellersModel = Mage::getModel('bestsellercron/bestsellers')->setCurrentConfig($currentConfig);
+                        $bestsellersModel->setBestSellersCategory($searchOfStore);
                         $bestSellersArray = $bestsellersModel->getBestSellers();
                         $this->_changeConfigurableProduct($bestSellersArray);
                         $this->_sortCategoryConfig($bestSellersArray, $currentConfig);

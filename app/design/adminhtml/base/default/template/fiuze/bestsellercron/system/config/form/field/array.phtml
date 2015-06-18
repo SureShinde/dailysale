@@ -69,17 +69,23 @@ $_colspan = $_colspan > 1 ? 'colspan="' . $_colspan . '"' : '';
     function clickCheckbox(check, item){
         var element = $(item);
         if(check.checked) {
-            element.children[4].children[0].disable();
-            element.children[3].children[1].children[0].disable();
-            element.children[3].children[1].children[1].disable();
-            element.children[3].children[1].children[2].disable();
+            element.children[7].children[0].children[0].disable();
+            element.children[7].children[0].children[1].enable();
         }else{
-            element.children[4].children[0].enable();
-            element.children[3].children[1].children[0].enable();
-            element.children[3].children[1].children[1].enable();
-            element.children[3].children[1].children[2].enable();
+            element.children[7].children[0].children[0].enable();
+            if(element.children[7].children[0].children[0].checked){
+                element.children[7].children[0].children[1].disable();
+            }
         }
+    }
 
+    function clickCheckboxNumberOfProducts(check, item){
+        var element = $(item);
+        if(check.checked) {
+            element.children[7].children[0].children[1].disable();
+        }else{
+            element.children[7].children[0].children[1].enable();
+        }
     }
 
     document.observe("dom:loaded", function() {
@@ -95,17 +101,19 @@ $_colspan = $_colspan > 1 ? 'colspan="' . $_colspan . '"' : '';
         });
         $$('#row_bestsellers_settings_sec_bestsellers_settings_grp_general .label')[0].remove();
         $$('#_1431656231726_726 td')[0].firstChild.setAttribute("disabled", "true");
-        $$('#_1431656231726_726 button')[0].removeClassName('delete');
-        $$('#_1431656231726_726 button')[0].addClassName('back');
-        $$('#_1431656231726_726 button')[0].setAttribute("onclick", "")
-        var checkboxes =$$("input[type=checkbox]");
+        var checkboxes =$$(".checkbox_products[type=checkbox]");
         checkboxes.each(function(box){
             if(box.checked){
                 var tr = $(box.parentElement.parentElement.parentElement);
-                tr.children[4].children[0].disable();
-                tr.children[3].children[1].children[0].disable();
-                tr.children[3].children[1].children[1].disable();
-                tr.children[3].children[1].children[2].disable();
+                tr.children[7].children[0].children[1].disable();
+            }
+        });
+        var searchOfStore =$$(".search_of_store[type=checkbox]");
+        searchOfStore.each(function(box){
+            if(box.checked){
+                var tr = $(box.parentElement.parentElement.parentElement);
+                tr.children[7].children[0].children[0].disable();
+                tr.children[7].children[0].children[1].enable();
             }
         });
     });
@@ -149,6 +157,10 @@ var arrayRow<?php echo $_htmlId ?> = {
         // insert before last row
         if ('' == insertAfterId) {
             Element.insert($('addRow<?php echo $_htmlId ?>'), {before: this.template.evaluate(templateData)});
+            var checkboxNumberOfProducts = $$( "#" + templateData._id  + " .checkbox_products[type=checkbox]")[0];
+            checkboxNumberOfProducts.checked = true;
+            checkboxNumberOfProducts.parentElement.children[1].disable();
+            //clickCheckboxNumberOfProducts(true, $$( "#" + templateData._id  + " .checkbox_products[type=checkbox]")[0]);
         }
         // insert after specified row
         else {
@@ -158,7 +170,6 @@ var arrayRow<?php echo $_htmlId ?> = {
 <?php if ($this->_addAfter):?>
         Event.observe('addAfterBtn' + templateData._id, 'click', this.add.bind(this, '', templateData._id));
 <?php endif;?>
-
         this.rowsCount += 1;
     },
 

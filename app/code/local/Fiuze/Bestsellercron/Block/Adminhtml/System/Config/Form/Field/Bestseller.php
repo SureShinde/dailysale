@@ -27,6 +27,11 @@ class Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Bestseller e
      */
     protected $_timePeriodGroupRenderer;
 
+    /**
+     * @var Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Numberproductsgroup
+     */
+    protected $_numberProductsGroupRenderer;
+
 
     public function __construct() {
         parent::__construct();
@@ -40,37 +45,38 @@ class Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Bestseller e
     {
         $this->addColumn('category', array(
             'label' => Mage::helper('bestsellercron')->__('Category'),
-//            'style' => 'width:120px',
             'renderer' => $this->_getCategoryGroupRenderer()->setSelect($this->getArrayRows()),
+        ));
+        $this->addColumn('best_checkbox', array(
+            'label' => Mage::helper('bestsellercron')->__('Search the store'),
+            'renderer' => $this->_getCheckboxGroupRenderer(),
         ));
         $this->addColumn('criteria', array(
             'label' => Mage::helper('bestsellercron')->__('Criteria'),
-//            'style' => 'width:120px',
             'renderer' => $this->_getCriteriaGroupRenderer(),
         ));
         $this->addColumn('time_period', array(
             'label' => Mage::helper('bestsellercron')->__('Time Period'),
-//            'style' => 'width:120px',
             'renderer' => $this->_getTimePeriodGroupRenderer(),
         ));
         $this->addColumn('days_period', array(
             'label' => Mage::helper('bestsellercron')->__('Days Period'),
-//            'style' => 'width:120px',
-            'class' => ' required-entry validate-digits'
+            'class' => ' required-entry validate-digits',
+            'style' => 'width:50px'
         ));
         $this->addColumn('history', array(
             'label' => Mage::helper('bestsellercron')->__('History'),
-//            'style' => 'width:120px',
+            'style' => 'width:50px'
         ));
         $this->addColumn('task_schedule', array(
             'label' => Mage::helper('bestsellercron')->__('Task Schedule'),
-//            'style' => 'width:120px',
-            'class' => ' required-entry'
+            'class' => ' required-entry',
+            'style' => 'width:80px'
         ));
         $this->addColumn('number_of_products', array(
             'label' => Mage::helper('bestsellercron')->__('Number of products'),
-//            'style' => 'width:120px',
-            'class' => 'validate-digits'
+            'class' => 'validate-digits',
+            'renderer' => $this->_getNumberProductsGroupRenderer(),
         ));
         $this->_addAfter = false;
         $this->_addButtonLabel = Mage::helper('adminhtml')->__('Add Item');
@@ -151,7 +157,7 @@ class Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Bestseller e
     /**
      * Retrieve group column renderer
      *
-     * @return Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Criteriagroup
+     * @return Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Timeperiodgroup
      */
     protected function _getTimePeriodGroupRenderer()
     {
@@ -164,6 +170,23 @@ class Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Bestseller e
             $this->_timePeriodGroupRenderer->setExtraParams('style="width:140px"');
         }
         return $this->_timePeriodGroupRenderer;
+    }
+
+    /**
+     * Retrieve group column renderer
+     *
+     * @return Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Numberproductsgroup
+     */
+    protected function _getNumberProductsGroupRenderer()
+    {
+        if (is_null($this->_numberProductsGroupRenderer)) {
+            $this->_numberProductsGroupRenderer = $this->getLayout()->createBlock(
+                'bestsellercron/adminhtml_system_config_form_field_numberproductsgroup', '',
+                array('is_render_to_js_template' => true)
+            );
+            $this->_numberProductsGroupRenderer->setClass('category_group_numberproducts');
+        }
+        return $this->_numberProductsGroupRenderer;
     }
 
     /**
@@ -181,10 +204,6 @@ class Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Bestseller e
             'option_extra_attr_' . $this->_getCriteriaGroupRenderer()->calcOptionHash($row->getData('criteria')),
             'selected="selected"'
         );
-        $row->setData(
-            'option_extra_attr_' . $this->_getCategoryExcludeGroupRenderer()->calcOptionHash($row->getData('category_exclude')),
-            'selected="selected"'
-        );
         $timePeriod =$row->getData('time_period');
         $row->setData(
             'option_extra_attr_' . $this->_getTimePeriodGroupRenderer()->calcOptionHash(0, $timePeriod[0]),
@@ -198,5 +217,42 @@ class Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Bestseller e
             'option_extra_attr_' . $this->_getTimePeriodGroupRenderer()->calcOptionHash(2, $timePeriod[2]),
             'selected="selected"'
         );
+        $numberOfProducts = $row->getData('number_of_products');
+        $row->setData(
+            'option_extra_attr_' . $this->_getNumberProductsGroupRenderer()->calcOptionHash('count_products'),
+            $numberOfProducts['count_products']
+        );
+        $row->setData(
+            'option_extra_attr_' . $this->_getNumberProductsGroupRenderer()->calcOptionHash('checkbox'),
+            $numberOfProducts['checkbox']
+        );
+    }
+    /**
+     * Obtain existing data from form element
+     *
+     * Each row will be instance of Varien_Object
+     *
+     * @return array
+     */
+    public function getArrayRows()
+    {
+        if (null !== $this->_arrayRowsCache) {
+            return $this->_arrayRowsCache;
+        }
+        $result = array();
+        /** @var Varien_Data_Form_Element_Abstract */
+        $element = $this->getElement();
+        if ($element->getValue() && is_array($element->getValue())) {
+            foreach ($element->getValue() as $rowId => $row) {
+                foreach ($row as $key => $value) {
+                    $row[$key] = $value;
+                }
+                $row['_id'] = $rowId;
+                $result[$rowId] = new Varien_Object($row);
+                $this->_prepareArrayRow($result[$rowId]);
+            }
+        }
+        $this->_arrayRowsCache = $result;
+        return $this->_arrayRowsCache;
     }
 }

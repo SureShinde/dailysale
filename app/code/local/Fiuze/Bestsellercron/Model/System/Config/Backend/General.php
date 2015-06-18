@@ -20,8 +20,13 @@ class Fiuze_Bestsellercron_Model_System_Config_Backend_General extends Mage_Admi
             Mage::throwException('Error best Seller Row Id.');
         }
 
-
         foreach($value as $key => &$item){
+            $numberOfProducts = &$item['number_of_products'];
+            if($numberOfProducts['checkbox'] == 'on'){
+                $numberOfProducts['checkbox'] = 'checked';
+            }else{
+                $numberOfProducts['checkbox'] = '';
+            }
             if($item['checkbox'] == 'on'){
                 $item['checkbox'] = 'checked';
             }else{

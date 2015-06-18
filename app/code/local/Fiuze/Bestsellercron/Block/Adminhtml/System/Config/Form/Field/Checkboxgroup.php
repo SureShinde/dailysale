@@ -24,9 +24,9 @@ class Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Checkboxgrou
         if (!$this->_beforeToHtml()) {
             return '';
         }
-        $selectedHtml .= '#{checkbox}' ;
+        $selectedHtml = '#{checkbox}' ;
         $html = '<div style="text-align: center;">';
-        $html .= '<input name="' . $this->getName() . '" type="checkbox" onclick="clickCheckbox(this, #{_id})" '.$selectedHtml.'>';
+        $html .= '<input class="search_of_store" name="' . $this->getName() . '" type="checkbox" onclick="clickCheckbox(this, #{_id})" '.$selectedHtml.'>';
         $html .= '</div>';
         return $html;
     }

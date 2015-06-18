@@ -24,7 +24,7 @@ class Fiuze_Bestsellercron_Model_Observer
         $bestSellerCategoryConfig = Mage::getModel('bestsellercron/system_config_backend_general')
             ->load(Fiuze_Bestsellercron_Model_Cron::XML_PATH_CATEGORY_FORM, 'path');
         foreach($bestSellerCategoryConfig->getValue() as $key => $item){
-            if(Mage::getStoreConfig(Fiuze_Bestsellercron_Model_Bestsellers::XML_PATH_BESTSELLER_ROWID) == $item['category']){
+            if($item['checkbox']){
                 return ;
             }
             if($_category->getId() == $item['category']){

@@ -13,7 +13,7 @@ class Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Categorygrou
 
         $optionArray = array();
         foreach ($categories as $category) {
-            if (!$category->getName()) {
+            if (!$category->getName() || ($category->getId() == 1)) {
                 continue;
             }
 
