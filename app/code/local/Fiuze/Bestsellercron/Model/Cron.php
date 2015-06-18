@@ -17,7 +17,6 @@ class Fiuze_Bestsellercron_Model_Cron extends Mage_Core_Model_Abstract{
     private $_bestSellerCategoryConfig;
 
     public function __construct(){
-        $this->_bestSellerCategory = Mage::getModel('catalog/category')->load(Mage::getStoreConfig(Fiuze_Bestsellercron_Model_Bestsellers::XML_PATH_BESTSELLER_CATEGORY));
         $this->_bestSellerCategoryConfig = Mage::getModel('bestsellercron/system_config_backend_general')
             ->load(self::XML_PATH_CATEGORY_FORM, 'path');
         $this->_bestSellerCategoryRowId = Mage::getStoreConfig(Fiuze_Bestsellercron_Model_Bestsellers::XML_PATH_BESTSELLER_ROWID);
@@ -25,7 +24,7 @@ class Fiuze_Bestsellercron_Model_Cron extends Mage_Core_Model_Abstract{
     }
 
     public function bestSellers($arguments){
-        if($arguments instanceof Mage_Cron_Model_Schedule){
+        //if($arguments instanceof Mage_Cron_Model_Schedule){
             if(!$this->_bestSellerCategoryConfig->getValue()){
                 Mage::log('Fiuze_Bestsellercron: Please choose _bestSellerCategoryConfig in the System->Configuration->Catalog->Fiuze Bestsellers Cron tab.');
                 return false;
@@ -34,8 +33,8 @@ class Fiuze_Bestsellercron_Model_Cron extends Mage_Core_Model_Abstract{
                 Mage::log('Fiuze_Bestsellercron: Please choose category in the System->Configuration->Catalog->Fiuze Bestsellers Cron tab.');
                 return false;
             }
-            $jobCode = $arguments->getJobCode();
-            //$jobCode ='_1431656231726_726';//'_1433778918409_409';//
+            //$jobCode = $arguments->getJobCode();
+            $jobCode ='_1431656231726_726';//'_1433778918409_409';//
             $bestSellerConfig = $this->_bestSellerCategoryConfig;
             if(!is_null($bestSellerConfig)) {
                 //set admin area if method run in the controller
@@ -46,6 +45,7 @@ class Fiuze_Bestsellercron_Model_Cron extends Mage_Core_Model_Abstract{
                     $itemConfig = $valueArray[$jobCode];
                     $searchOfStore = $itemConfig['checkbox'] ? true : false;
                     if ($searchOfStore) {
+                        $this->_bestSellerCategory = Mage::getModel('catalog/category')->load($itemConfig['category']);
                         $currentConfig = $valueArray[$jobCode];
                         $bestsellersModel = Mage::getModel('bestsellercron/bestsellers')->setCurrentConfig($currentConfig);
                         $bestsellersModel->setBestSellersCategory($searchOfStore);
@@ -64,7 +64,7 @@ class Fiuze_Bestsellercron_Model_Cron extends Mage_Core_Model_Abstract{
                     }
                 }
             }
-        }
+        //}
         return true;
     }
 

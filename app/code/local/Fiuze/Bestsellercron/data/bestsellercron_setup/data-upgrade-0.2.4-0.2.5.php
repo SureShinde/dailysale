@@ -14,7 +14,7 @@ $config =Mage::getModel('core/config_data')
     ->save();
 $store->setConfig(Fiuze_Bestsellercron_Model_Bestsellers::XML_PATH_GENERAL, $value);
 
-Mage::app()->getCacheInstance()->cleanType('config');Mage::app()->getCacheInstance()->cleanType('config');
+Mage::app()->getCacheInstance()->cleanType('config');
 
 $installer->endSetup();
 
