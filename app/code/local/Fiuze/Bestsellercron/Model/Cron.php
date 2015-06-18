@@ -29,10 +29,6 @@ class Fiuze_Bestsellercron_Model_Cron extends Mage_Core_Model_Abstract{
                 Mage::log('Fiuze_Bestsellercron: Please choose _bestSellerCategoryConfig in the System->Configuration->Catalog->Fiuze Bestsellers Cron tab.');
                 return false;
             }
-            if(!$this->_bestSellerCategory->getId()){
-                Mage::log('Fiuze_Bestsellercron: Please choose category in the System->Configuration->Catalog->Fiuze Bestsellers Cron tab.');
-                return false;
-            }
             $jobCode = $arguments->getJobCode();
             //$jobCode ='_1431656231726_726';//'_1433778918409_409';//
             $bestSellerConfig = $this->_bestSellerCategoryConfig;
