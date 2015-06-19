@@ -25,13 +25,13 @@ class Fiuze_Bestsellercron_Model_Observer
             ->load(Fiuze_Bestsellercron_Model_Cron::XML_PATH_CATEGORY_FORM, 'path');
         foreach($bestSellerCategoryConfig->getValue() as $key => $item){
             if($item['checkbox']){
-                return ;
+                continue;
             }
             if($_category->getId() == $item['category']){
                 $countProduct = $item['number_of_products'];
-                if($countProduct){
+                if($countProduct['count_products']){
                     $productCollection = $observer->getData('collection');
-                    $productCollection->setPageSize($countProduct);
+                    $productCollection->setPageSize($countProduct['count_products']);
                 }
             }
         }
