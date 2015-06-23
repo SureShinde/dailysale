@@ -2,6 +2,6 @@
     "name": "educoder/pest",
     "description": "A proper REST client for PHP.",
     "require": {
-
+        "aftership/aftership-php-sdk": "4.0.0"
     }
 }
