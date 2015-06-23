@@ -1,3 +1,8 @@
 # Crawlers Setup
 User-agent: *
-Disallow: /
+Disallow: /dsadmin
+Disallow: /media
+Disallow: /skin
+Disallow: /portal
+Disallow: /vendor
+Disallow: /umicrosite

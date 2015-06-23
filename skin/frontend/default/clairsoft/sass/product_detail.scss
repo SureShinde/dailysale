@@ -444,6 +444,10 @@ ul.tabs{
 
 	#product_tabs_custom_contents{
 
+		li{
+			list-style: disc !important;
+		}
+
 		.product-specs{
 			// border: 1px solid red;
 			// display: inline-block;
