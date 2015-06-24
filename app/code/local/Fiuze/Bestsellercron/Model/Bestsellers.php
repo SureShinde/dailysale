@@ -76,7 +76,7 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
             $merge = array_slice($bestSellersSlice, 0, count($bestSellers), true);
         }
         //if result<$numberProduct
-        if(count($merge) < $numberProduct){
+        if(count($merge) < $numberProduct || !$item['checkbox']){
             $isTimePeriodHistory = $item['history'];
             if($isTimePeriodHistory){
                 //if category bestseller
@@ -100,7 +100,11 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
                     $result = array_diff($bestSellersSliceHistory,$merge);
                     $mergeHistory = array_slice($result, 0, count($bestSellers), true);
                     $mergeHistory = array_merge($merge, $mergeHistory);
-                    $merge = array_slice($mergeHistory, 0, count($bestSellers), true);
+                    if($item['checkbox']){
+                        $merge = array_slice($mergeHistory, 0, count($bestSellers), true);
+                    }else{
+                        $merge = $mergeHistory;
+                    }
                 }
             }
         }
@@ -119,7 +123,7 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
         if($config['checkbox']){
             $value = $numberOfProducts['count_products'];
         }else{
-            if($numberOfProducts['checkbox'] == 'checked'){
+            if($numberOfProducts['checkbox'] != 'checked'){
                 $value = $numberOfProducts['count_products'];
             }
         }

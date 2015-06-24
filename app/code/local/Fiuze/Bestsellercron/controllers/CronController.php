@@ -4,10 +4,10 @@ class Fiuze_Bestsellercron_CronController extends Mage_Core_Controller_Front_Act
 {
     public function indexAction()
     {
-        Mage::getConfig()->init()->loadEventObservers('crontab');
-        Mage::app()->addEventArea('crontab');
-        Mage::dispatchEvent('default');
-//        $model = Mage::getModel('bestsellercron/cron');
-//        $model->bestSellers();
+//        Mage::getConfig()->init()->loadEventObservers('crontab');
+//        Mage::app()->addEventArea('crontab');
+//        Mage::dispatchEvent('default');
+        $model = Mage::getModel('bestsellercron/cron');
+        $model->bestSellers();
     }
 }
