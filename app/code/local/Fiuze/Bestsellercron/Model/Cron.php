@@ -30,7 +30,6 @@ class Fiuze_Bestsellercron_Model_Cron extends Mage_Core_Model_Abstract{
                 return false;
             }
             $jobCode = $arguments->getJobCode();
-            //$jobCode ='_1434722217762_762';//'_1434711639427_427';//'_1433778918409_409';//_1435132562381_381
             $bestSellerConfig = $this->_bestSellerCategoryConfig;
             if(!is_null($bestSellerConfig)) {
                 //set admin area if method run in the controller

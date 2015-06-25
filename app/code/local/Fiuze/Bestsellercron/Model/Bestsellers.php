@@ -16,9 +16,11 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
     const XML_PATH_BESTSELLER_CATEGORY = 'bestsellers_settings_sec/bestsellers_settings_grp/bestseller_category';
     const XML_PATH_BESTSELLER_ROWID = 'bestsellers_settings_sec/bestsellers_settings_grp/bestseller_rowid';
 
-
-
     private $_criteria;
+    /** Id Product For Category
+     * @var array
+     */
+    private $idProductForCategory = array();
 
     public function __construct() {
         $this->_criteria = Mage::getStoreConfig(self::XML_PATH_CRITERIA);
@@ -26,12 +28,11 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
     }
 
     protected function _getItemsOrder($period, $categoryId, $fullCategory = false){
-        $productCollection = Mage::getResourceModel('catalog/product_collection')
-            ->setStoreId(Mage_Core_Model_App::ADMIN_STORE_ID);
         if(!$fullCategory){
-            $productCollection->addCategoryFilter(Mage::getModel('catalog/category')->load($categoryId));
+            $idProduct = $this->_getIdProductForCategory($categoryId);
+        }else{
+            $idProduct = $this->_getIdProductForCategory();
         }
-        $idProduct = array_keys ($productCollection->getItems());
         $itemsOrder = Mage::getResourceModel('sales/order_item_collection')
             ->addFieldToFilter('created_at', array('gteq' => $period))
             ->addFieldToFilter('parent_item_id', array('null' => true))
@@ -214,12 +215,12 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
         foreach ($orderItems as $orderItem) {
             $product = $orderItem->getProduct();
             if($product->getTypeId()=='configurable'){
-                $productCollection = Mage::getResourceModel('catalog/product_collection')
-                    ->setStoreId(Mage_Core_Model_App::ADMIN_STORE_ID);
                 if(!$fullCategory){
-                    $productCollection->addCategoryFilter(Mage::getModel('catalog/category')->load($config['category']));
+                    $idProduct = $this->_getIdProductForCategory($config['category']);
+                }else{
+                    $idProduct = $this->_getIdProductForCategory();
                 }
-                $idProduct = array_keys ($productCollection->getItems());
+
                 $itemsSimple = Mage::getResourceModel('sales/order_item_collection')
                     ->addFieldToFilter('created_at', array('gteq' => $period))
                     ->addFieldToFilter('parent_item_id', array('eq' => $orderItem->getId()))
@@ -274,12 +275,12 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
              *          check cost in the live db
              */
             if($product->getTypeId()=='configurable'){
-                $productCollection = Mage::getResourceModel('catalog/product_collection')
-                    ->setStoreId(Mage_Core_Model_App::ADMIN_STORE_ID);
                 if(!$fullCategory){
-                    $productCollection->addCategoryFilter(Mage::getModel('catalog/category')->load($config['category']));
+                    $idProduct = $this->_getIdProductForCategory($config['category']);
+                }else{
+                    $idProduct = $this->_getIdProductForCategory();
                 }
-                $idProduct = array_keys ($productCollection->getItems());
+
                 $itemsSimple = Mage::getResourceModel('sales/order_item_collection')
                     ->addFieldToFilter('created_at', array('gteq' => $period))
                     ->addFieldToFilter('parent_item_id', array('eq' => $orderItem->getId()))
@@ -315,6 +316,29 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
         return $items;
     }
 
+    /** Id Product For Category
+     * @var array
+     */
+    protected function _getIdProductForCategory($idCategory = false) {
+        if(!$idCategory){
+            if(!$this->idProductForCategory["false"]){
+                $productCollection = Mage::getResourceModel('catalog/product_collection')
+                    ->setStoreId(Mage_Core_Model_App::ADMIN_STORE_ID);
+                $this->idProductForCategory["false"] = array_keys ($productCollection->getItems());
+            }
+            return $this->idProductForCategory["false"];
+        }
+
+        if(!$this->idProductForCategory[$idCategory]){
+            $productCollection = Mage::getResourceModel('catalog/product_collection')
+                ->setStoreId(Mage_Core_Model_App::ADMIN_STORE_ID);
+            $productCollection->addCategoryFilter(Mage::getModel('catalog/category')->load($idCategory));
+            $this->idProductForCategory[$idCategory] = array_keys ($productCollection->getItems());
+        }
+        return $this->idProductForCategory[$idCategory];
+    }
+
+
     /**
      * Apply max profit criteria
      * 
@@ -336,12 +360,12 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
              *          check cost in the live db
              */
             if($product->getTypeId()=='configurable'){
-                $productCollection = Mage::getResourceModel('catalog/product_collection')
-                    ->setStoreId(Mage_Core_Model_App::ADMIN_STORE_ID);
                 if(!$fullCategory){
-                    $productCollection->addCategoryFilter(Mage::getModel('catalog/category')->load($config['category']));
+                    $idProduct = $this->_getIdProductForCategory($config['category']);
+                }else{
+                    $idProduct = $this->_getIdProductForCategory();
                 }
-                $idProduct = array_keys ($productCollection->getItems());
+
                 $itemsSimple = Mage::getResourceModel('sales/order_item_collection')
                     ->addFieldToFilter('created_at', array('gteq' => $period))
                     ->addFieldToFilter('parent_item_id', array('eq' => $orderItem->getId()))
