@@ -76,24 +76,11 @@ class Fiuze_Bestsellercron_Model_Cron extends Mage_Core_Model_Abstract{
                     $parent = Mage::getModel('catalog/product')->load($parentIds[0]);
                     if($parent->getId()){
                         $bestSellers[$key] = (int)$parent->getId();
-                        $keyParentSearch = array_keys($bestSellers,(int)$parent->getId());
-                        //remove repetition are below the current
-                        if($keyParentSearch){
-                            reset($keyParentSearch);
-                            $result = key($keyParentSearch);
-                            foreach($bestSellers as $key1 => $value){
-                                if($value == $bestSellers[$keyParentSearch[$result]] && $key1 != $result){
-                                    unset($bestSellers[$key1]);
-                                }
-                            }
-                        }
                     }
                 }
             }
         }
     }
-
-
 
 
     /**
