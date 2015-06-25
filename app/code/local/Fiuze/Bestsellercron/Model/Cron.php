@@ -82,7 +82,7 @@ class Fiuze_Bestsellercron_Model_Cron extends Mage_Core_Model_Abstract{
                             reset($keyParentSearch);
                             $result = key($keyParentSearch);
                             foreach($bestSellers as $key1 => $value){
-                                if($value == $bestSellers[$result] && $key1 != $result){
+                                if($value == $bestSellers[$keyParentSearch[$result]] && $key1 != $result){
                                     unset($bestSellers[$key1]);
                                 }
                             }
