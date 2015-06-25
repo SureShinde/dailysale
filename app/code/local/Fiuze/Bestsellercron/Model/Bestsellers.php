@@ -95,13 +95,17 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
                     $mergeHistory = array_merge($merge, $mergeHistory);
                     $merge = array_slice($mergeHistory, 0, $numberProduct, true);
                 }else{
-                    $tmp = array_slice($bestSellersHistory, 0, count($bestSellers), true);
+                    if($item['checkbox']){
+                        $tmp = array_slice($bestSellersHistory, 0, $item['count_products'], true);
+                    }else{
+                        $tmp = $bestSellersHistory;
+                    }
                     $bestSellersSliceHistory = array_keys($tmp);
                     $result = array_diff($bestSellersSliceHistory,$merge);
                     $mergeHistory = array_slice($result, 0, count($bestSellers), true);
                     $mergeHistory = array_merge($merge, $mergeHistory);
                     if($item['checkbox']){
-                        $merge = array_slice($mergeHistory, 0, count($bestSellers), true);
+                        $merge = array_slice($mergeHistory, 0, $item['count_products'], true);
                     }else{
                         $merge = $mergeHistory;
                     }

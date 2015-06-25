@@ -30,7 +30,7 @@ class Fiuze_Bestsellercron_Model_Cron extends Mage_Core_Model_Abstract{
                 return false;
             }
             $jobCode = $arguments->getJobCode();
-            //$jobCode ='_1434711639427_427';//'_1433778918409_409';//
+            //$jobCode ='_1434722217762_762';//'_1434711639427_427';//'_1433778918409_409';//_1435132562381_381
             $bestSellerConfig = $this->_bestSellerCategoryConfig;
             if(!is_null($bestSellerConfig)) {
                 //set admin area if method run in the controller
@@ -76,11 +76,25 @@ class Fiuze_Bestsellercron_Model_Cron extends Mage_Core_Model_Abstract{
                     $parent = Mage::getModel('catalog/product')->load($parentIds[0]);
                     if($parent->getId()){
                         $bestSellers[$key] = (int)$parent->getId();
+                        $keyParentSearch = array_keys($bestSellers,(int)$parent->getId());
+                        //remove repetition are below the current
+                        if($keyParentSearch){
+                            reset($keyParentSearch);
+                            $result = key($keyParentSearch);
+                            foreach($bestSellers as $key1 => $value){
+                                if($value == $bestSellers[$result] && $key1 != $result){
+                                    unset($bestSellers[$key1]);
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
     }
+
+
+
 
     /**
      * Sorted category by bestSeller
