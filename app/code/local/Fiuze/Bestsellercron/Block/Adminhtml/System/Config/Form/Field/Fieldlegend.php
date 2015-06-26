@@ -53,7 +53,7 @@ class Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Fieldlegend
         $html .= 'If checked — you get products from the whole store and show only setted amount of products (amount is setted in «Number of products»).';
         $html .= '</p>';
         $html .= '<p>';
-        $html .= 'BUT: if you will check this checkbox not on the empty category, but in simple category, this will uncheck all products from this category.';
+        $html .= 'BUT: if you will check this checkbox not on a specific category (like Bestseller), but in simple category, this will uncheck all products from this category.';
         $html .= '</p>';
         $html .= '<p>';
         $html .= '<b>"Criteria": </b> By what criteria to sort products in this category.';
