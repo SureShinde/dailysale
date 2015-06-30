@@ -169,10 +169,62 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
             case 'profit':
                 $bestSellers = $this->_maxProfit($items, $fullCategory, $period);
                 break;
+            case 'price':
+                $bestSellers = $this->_priceFilter($items, $fullCategory, $period);
+                break;
         }
-
         $result = $this->_changeFormatArray($bestSellers);
-        arsort($result);
+        switch($criteria){
+            //item between price
+            case 'price':
+                $priceFilter = explode("-",trim($config['price_filter']));
+                $sortReverse = false;
+                if(count($priceFilter)>1){
+                    if(!is_integer($priceFilter[0]) || !is_integer($priceFilter[1])){
+                        Mage::throwException("function _applyCriteria for price not integer");
+                    }
+                    $priceFilter[0] > $priceFilter[1]? $sortReverse = true : $sortReverse = false;
+                    switch($sortReverse){
+                        case false:
+                            asort($result);
+                            for (reset($result); $key = key($result); next($result) ){
+                                if($result[$key] < $priceFilter[0]){
+                                    unset($result[$key]);
+                                }
+                                if($result[$key] > $priceFilter[1]){
+                                    unset($result[$key]);
+                                }
+                            }
+                            reset($result);
+                            break;
+                        case true:
+                            arsort($result);
+                            for (reset($result); $key = key($result); next($result) ){
+                                if($result[$key] > $priceFilter[0]){
+                                    unset($result[$key]);
+                                }
+                                if($result[$key] < $priceFilter[1]){
+                                    unset($result[$key]);
+                                }
+                            }
+                            reset($result);
+                            break;
+                    }
+                }elseif(count($priceFilter)==1){
+                    if(!is_integer($priceFilter[0])){
+                        Mage::throwException("function _applyCriteria for price not integer");
+                    }
+                    asort($result);
+                    for (reset($result); $key = key($result); next($result) ){
+                        if($result[$key] != $priceFilter[0]){
+                            unset($result[$key]);
+                        }
+                    }
+                }
+                break;
+            default:
+                arsort($result);
+        }
         return $result;
     }
     /**
@@ -429,6 +481,64 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
         $period    = date('Y-m-d H:i:s', strtotime('-' . $days . ' days -' . $time[0] . ' hours -' . $time[1] . ' minutes -' . $time[2] . ' seconds', $timestamp));
 
         return $period;
+    }
+
+    /**
+     * Apply max revenue criteria
+     *
+     * example array(
+     *      [product ID] => sales_flat_order_item price (include discount and tax)
+     * )
+     *
+     * @param array $orderItems
+     * @return array
+     */
+    protected function _priceFilter($orderItems, $fullCategory, $period) {
+        $config = $this->getCurrentConfig();
+        $items = array();
+
+        foreach ($orderItems as $orderItem) {
+            $product = $orderItem->getProduct();
+            if($product->getTypeId()=='configurable'){
+                if(!$fullCategory){
+                    $idProduct = $this->_getIdProductForCategory($config['category']);
+                }else{
+                    $idProduct = $this->_getIdProductForCategory();
+                }
+
+                $itemsSimple = Mage::getResourceModel('sales/order_item_collection')
+                    ->addFieldToFilter('created_at', array('gteq' => $period))
+                    ->addFieldToFilter('parent_item_id', array('eq' => $orderItem->getId()))
+                    ->addFieldToFilter('product_id', array('in' => $idProduct))
+                    ->getItems();
+                foreach($itemsSimple as $simple){
+                    $productSimple = $simple->getProduct();
+                    $price = $orderItem->getPrice();
+                    if ($price) {
+                        if(!is_null($productSimple->getId())){
+                            if(!is_null($items[$productSimple->getId()])){
+                                $items[$productSimple->getId()]->setParent($product->getId());
+                                $items[$productSimple->getId()]->setProfit($price);
+                            }else{
+                                $object = new Varien_Object();
+                                $object->setParent($product->getId());
+                                $object->setProfit($price);
+                                $items[$productSimple->getId()]=$object;
+                            }
+                        }
+                    }
+                }
+            }else{
+                $price = $orderItem->getPrice();
+                if ($price) {
+                    if(!is_null($product->getId())){
+                        $items[$product->getId()] = $price;
+                    }
+                }
+            }
+        }
+
+        return $items;
     }
 
 }

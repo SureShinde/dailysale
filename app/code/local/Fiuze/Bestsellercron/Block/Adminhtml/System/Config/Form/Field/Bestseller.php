@@ -73,6 +73,11 @@ class Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Bestseller e
             'class' => ' required-entry',
             'style' => 'width:80px'
         ));
+        $this->addColumn('price_filter', array(
+            'label' => Mage::helper('bestsellercron')->__('Price Filter'),
+            'class' => ' required-entry',
+            'style' => 'width:50px'
+        ));
         $this->addColumn('number_of_products', array(
             'label' => Mage::helper('bestsellercron')->__('Number of products'),
             'class' => 'validate-digits',
@@ -148,7 +153,7 @@ class Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Bestseller e
                 'bestsellercron/adminhtml_system_config_form_field_criteriagroup', '',
                 array('is_render_to_js_template' => true)
             );
-            $this->_criteriaGroupRenderer->setClass('category_group_select');
+            $this->_criteriaGroupRenderer->setClass('criteria_group_select');
             $this->_criteriaGroupRenderer->setExtraParams('style="width:120px"');
         }
         return $this->_criteriaGroupRenderer;

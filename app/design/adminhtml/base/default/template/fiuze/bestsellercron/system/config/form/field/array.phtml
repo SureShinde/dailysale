@@ -69,12 +69,12 @@ $_colspan = $_colspan > 1 ? 'colspan="' . $_colspan . '"' : '';
     function clickCheckbox(check, item){
         var element = $(item);
         if(check.checked) {
-            element.children[7].children[0].children[0].disable();
-            element.children[7].children[0].children[1].enable();
+            element.children[8].children[0].children[0].disable();
+            element.children[8].children[0].children[1].enable();
         }else{
-            element.children[7].children[0].children[0].enable();
-            if(element.children[7].children[0].children[0].checked){
-                element.children[7].children[0].children[1].disable();
+            element.children[8].children[0].children[0].enable();
+            if(element.children[8].children[0].children[0].checked){
+                element.children[8].children[0].children[1].disable();
             }
         }
     }
@@ -82,9 +82,9 @@ $_colspan = $_colspan > 1 ? 'colspan="' . $_colspan . '"' : '';
     function clickCheckboxNumberOfProducts(check, item){
         var element = $(item);
         if(check.checked) {
-            element.children[7].children[0].children[1].disable();
+            element.children[8].children[0].children[1].disable();
         }else{
-            element.children[7].children[0].children[1].enable();
+            element.children[8].children[0].children[1].enable();
         }
     }
 
@@ -92,7 +92,7 @@ $_colspan = $_colspan > 1 ? 'colspan="' . $_colspan . '"' : '';
         var arrTr = $$("#row_bestsellers_settings_sec_bestsellers_settings_grp_general tr");
         arrTr.each(function(tr){
             if(tr.id == '_1431656231726_726'){
-                if(tr.childElementCount == 8){
+                if(tr.childElementCount == 9){
                     if(tr.children[6].firstChild.nodeName == 'INPUT'){
                         tr.children[6].firstChild.addClassName('required-entry');
                     }
@@ -104,17 +104,34 @@ $_colspan = $_colspan > 1 ? 'colspan="' . $_colspan . '"' : '';
         checkboxes.each(function(box){
             if(box.checked){
                 var tr = $(box.parentElement.parentElement.parentElement);
-                tr.children[7].children[0].children[1].disable();
+                tr.children[8].children[0].children[1].disable();
             }
         });
         var searchOfStore =$$(".search_of_store[type=checkbox]");
         searchOfStore.each(function(box){
             if(box.checked){
                 var tr = $(box.parentElement.parentElement.parentElement);
-                tr.children[7].children[0].children[0].disable();
-                tr.children[7].children[0].children[1].enable();
+                tr.children[8].children[0].children[0].disable();
+                tr.children[8].children[0].children[1].enable();
             }
         });
+
+        //Set the price criterion
+        $$(".criteria_group_select").each(function(select) {
+            if(select.selectedIndex != 3){
+                var tr = $(select.parentElement.parentElement);
+                tr.children[7].children[0].disable();
+            }
+        });
+        $$(".criteria_group_select").invoke('observe', 'change', function() {
+            var tr = $(this.parentElement.parentElement);
+            if(this.selectedIndex == 3){
+                tr.children[7].children[0].enable();
+            }else{
+                tr.children[7].children[0].disable();
+            }
+        });
+
     });
 
 </script>
