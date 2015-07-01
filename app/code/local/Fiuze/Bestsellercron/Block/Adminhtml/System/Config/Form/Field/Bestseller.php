@@ -32,6 +32,11 @@ class Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Bestseller e
      */
     protected $_numberProductsGroupRenderer;
 
+    /**
+     * @var Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Pricefiltergroup
+     */
+    protected $_pricefiltergroupRenderer;
+
 
     public function __construct() {
         parent::__construct();
@@ -76,7 +81,8 @@ class Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Bestseller e
         $this->addColumn('price_filter', array(
             'label' => Mage::helper('bestsellercron')->__('Price Filter'),
             'class' => ' required-entry',
-            'style' => 'width:50px'
+            'style' => 'width:50px',
+            'renderer' => $this->_getPricefiltergroupRenderer(),
         ));
         $this->addColumn('number_of_products', array(
             'label' => Mage::helper('bestsellercron')->__('Number of products'),
@@ -85,6 +91,24 @@ class Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Bestseller e
         ));
         $this->_addAfter = false;
         $this->_addButtonLabel = Mage::helper('adminhtml')->__('Add Item');
+    }
+
+    /**
+     * Retrieve group column renderer
+     *
+     * @return Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Checkboxgroup
+     */
+    protected function _getPricefiltergroupRenderer()
+    {
+        if (is_null($this->_pricefiltergroupRenderer)) {
+            $this->_pricefiltergroupRenderer = $this->getLayout()->createBlock(
+                'bestsellercron/adminhtml_system_config_form_field_pricefiltergroup', '',
+                array('is_render_to_js_template' => true)
+            );
+            //$this->_checkboxGroupRenderer->setClass('checkbox_group');
+            $this->_pricefiltergroupRenderer->setExtraParams('style="width:120px"');
+        }
+        return $this->_pricefiltergroupRenderer;
     }
 
     /**
@@ -231,6 +255,7 @@ class Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Bestseller e
             'option_extra_attr_' . $this->_getNumberProductsGroupRenderer()->calcOptionHash('checkbox'),
             $numberOfProducts['checkbox']
         );
+
     }
     /**
      * Obtain existing data from form element
