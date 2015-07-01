@@ -178,7 +178,7 @@ var google_remarketing_only = true;
 
 <script>
 window.EEngine = window.EEngine || [];
-EEngine.trackRevenue('dailysale_purchase', <?php echo($subtotal); ?>); 
+EEngine.trackRevenue('dailysale_purchase', <?php echo($subtotal * 100); ?>); 
 </script>
 
 <!-- End EEngine tracking -->
