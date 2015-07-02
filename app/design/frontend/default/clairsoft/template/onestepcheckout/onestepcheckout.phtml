@@ -70,7 +70,7 @@
     <li>
         <h1 class="checkout_header"><?php echo $this->getCheckoutTitle(); ?></h1>
         <p class="subtitle">
-            <?php echo $this->configData['checkout_description'] ? $this->configData['checkout_description'] : 'Please fill in the fields below and click Place order to complete your purchase!'; ?>
+            Please fill in the fields below and click "Pay Securely Now" to complete your purchase!
         </p>
     </li>
     <?php if ($this->isShowLoginLink() && !$this->isCustomerLoggedIn()): ?>
@@ -271,7 +271,7 @@
                                     <button style="float:left" onclick="oscPlaceOrder(this);" id="onestepcheckout-button-place-order" type="button" title="<?php echo $this->__('Place Order') ?>" class="btn-proceed-checkout onestepcheckout-btn-checkout onestepcheckout-place">
                             <span>
                                 <span>
-                                    <?php echo $this->__('Place order now') ?>
+                                    <?php echo $this->__('Pay Securely Now') ?>
                                 </span>
                             </span>
                                     </button>
@@ -325,7 +325,7 @@
                         <button style="float:left" onclick="oscPlaceOrder(this);" id="onestepcheckout-button-place-order" type="button" title="<?php echo $this->__('Place Order') ?>" class="btn-proceed-checkout onestepcheckout-btn-checkout onestepcheckout-place">
                             <span>
                                 <span>
-                                    <?php echo $this->__('Place order now') ?>
+                                    <?php echo $this->__('Pay Securely Now') ?>
                                 </span>
                             </span>
                         </button>      
