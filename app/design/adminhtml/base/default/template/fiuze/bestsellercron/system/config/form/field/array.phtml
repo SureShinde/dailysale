@@ -66,6 +66,18 @@ $_colspan = $_colspan > 1 ? 'colspan="' . $_colspan . '"' : '';
 </div>
 
 <script type="text/javascript">
+    function startCron(button){
+        var rowId = button.parentElement.parentElement.id;
+        var url = '/bestsellercron/cron';
+        new Ajax.Request(url, {
+            method: 'post',
+            parameters: {rowId: rowId},
+            onSuccess: function(response){
+                var t = d;
+            }
+        });
+    }
+
     function clickCheckbox(check, item){
         var element = $(item);
         if(check.checked) {

@@ -37,6 +37,11 @@ class Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Bestseller e
      */
     protected $_pricefiltergroupRenderer;
 
+    /**
+     * @var Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Startcron
+     */
+    protected $_startCronRenderer;
+
 
     public function __construct() {
         parent::__construct();
@@ -85,12 +90,27 @@ class Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Bestseller e
             'renderer' => $this->_getPricefiltergroupRenderer(),
         ));
         $this->addColumn('number_of_products', array(
-            'label' => Mage::helper('bestsellercron')->__('Number of products'),
+            'label' => Mage::helper('bestsellercron')->__('Number of Products'),
             'class' => 'validate-digits',
             'renderer' => $this->_getNumberProductsGroupRenderer(),
         ));
+        $this->addColumn('start_cron', array(
+            'label' => Mage::helper('bestsellercron')->__('Start Cron'),
+            'renderer' => $this->_getStartCronRenderer(),
+        ));
         $this->_addAfter = false;
         $this->_addButtonLabel = Mage::helper('adminhtml')->__('Add Item');
+    }
+
+    protected function _getStartCronRenderer()
+    {
+        if (is_null($this->_startCronRenderer)) {
+            $this->_startCronRenderer = $this->getLayout()->createBlock(
+                'bestsellercron/adminhtml_system_config_form_field_startcron', '',
+                array('is_render_to_js_template' => true)
+            );
+        }
+        return $this->_startCronRenderer;
     }
 
     /**

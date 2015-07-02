@@ -24,39 +24,43 @@ class Fiuze_Bestsellercron_Model_Cron extends Mage_Core_Model_Abstract{
     }
 
     public function bestSellers($arguments){
-        if($arguments instanceof Mage_Cron_Model_Schedule){
-            if(!$this->_bestSellerCategoryConfig->getValue()){
-                Mage::log('Fiuze_Bestsellercron: Please choose _bestSellerCategoryConfig in the System->Configuration->Catalog->Fiuze Bestsellers Cron tab.');
-                return false;
-            }
+        if(!$this->_bestSellerCategoryConfig->getValue()){
+            Mage::log('Fiuze_Bestsellercron: Please choose _bestSellerCategoryConfig in the System->Configuration->Catalog->Fiuze Bestsellers Cron tab.');
+            return false;
+        }
+        if($arguments instanceof Mage_Cron_Model_Schedule) {
             $jobCode = $arguments->getJobCode();
-            $bestSellerConfig = $this->_bestSellerCategoryConfig;
-            if(!is_null($bestSellerConfig)) {
-                //set admin area if method run in the controller
-                Mage::app()->setCurrentStore(Mage_Core_Model_App::ADMIN_STORE_ID);
-                $valueArray = $bestSellerConfig->getValue();
-                if(array_key_exists($jobCode, $valueArray)) {
-                    //if category bestseller
-                    $itemConfig = $valueArray[$jobCode];
-                    $searchOfStore = $itemConfig['checkbox'] ? true : false;
-                    if ($searchOfStore) {
-                        $this->_bestSellerCategory = Mage::getModel('catalog/category')->load($itemConfig['category']);
-                        $currentConfig = $valueArray[$jobCode];
-                        $bestsellersModel = Mage::getModel('bestsellercron/bestsellers')->setCurrentConfig($currentConfig);
-                        $bestsellersModel->setBestSellersCategory($searchOfStore);
-                        $bestSellersArray =$bestsellersModel->getBestSellers();
-                        $this->_changeConfigurableProduct($bestSellersArray);
-                        $this->_clearBestSellerCategory();
-                        $this->_assignBestSellersToCategory($bestSellersArray);
-                        $this->_sortCategoryConfig($bestSellersArray, $currentConfig);
-                    }else{
-                        $currentConfig = $valueArray[$jobCode];
-                        $bestsellersModel = Mage::getModel('bestsellercron/bestsellers')->setCurrentConfig($currentConfig);
-                        $bestsellersModel->setBestSellersCategory($searchOfStore);
-                        $bestSellersArray = $bestsellersModel->getBestSellers();
-                        $this->_changeConfigurableProduct($bestSellersArray);
-                        $this->_sortCategoryConfig($bestSellersArray, $currentConfig);
-                    }
+        }elseif(!is_null($arguments)){
+            $jobCode = $arguments;
+        }else{
+            return true;
+        }
+        $bestSellerConfig = $this->_bestSellerCategoryConfig;
+        if(!is_null($bestSellerConfig)) {
+            //set admin area if method run in the controller
+            Mage::app()->setCurrentStore(Mage_Core_Model_App::ADMIN_STORE_ID);
+            $valueArray = $bestSellerConfig->getValue();
+            if(array_key_exists($jobCode, $valueArray)) {
+                //if category bestseller
+                $itemConfig = $valueArray[$jobCode];
+                $searchOfStore = $itemConfig['checkbox'] ? true : false;
+                if ($searchOfStore) {
+                    $this->_bestSellerCategory = Mage::getModel('catalog/category')->load($itemConfig['category']);
+                    $currentConfig = $valueArray[$jobCode];
+                    $bestsellersModel = Mage::getModel('bestsellercron/bestsellers')->setCurrentConfig($currentConfig);
+                    $bestsellersModel->setBestSellersCategory($searchOfStore);
+                    $bestSellersArray =$bestsellersModel->getBestSellers();
+                    $this->_changeConfigurableProduct($bestSellersArray);
+                    $this->_clearBestSellerCategory();
+                    $this->_assignBestSellersToCategory($bestSellersArray);
+                    $this->_sortCategoryConfig($bestSellersArray, $currentConfig);
+                }else{
+                    $currentConfig = $valueArray[$jobCode];
+                    $bestsellersModel = Mage::getModel('bestsellercron/bestsellers')->setCurrentConfig($currentConfig);
+                    $bestsellersModel->setBestSellersCategory($searchOfStore);
+                    $bestSellersArray = $bestsellersModel->getBestSellers();
+                    $this->_changeConfigurableProduct($bestSellersArray);
+                    $this->_sortCategoryConfig($bestSellersArray, $currentConfig);
                 }
             }
         }
