@@ -68,7 +68,7 @@ $_colspan = $_colspan > 1 ? 'colspan="' . $_colspan . '"' : '';
 <script type="text/javascript">
     function startCron(button){
         var rowId = button.parentElement.parentElement.id;
-        var url = '/bestsellercron/cron';
+        var url = '<?php echo Mage::getUrl('bestsellercron/cron') ?>';
         new Ajax.Request(url, {
             method: 'post',
             parameters: {rowId: rowId},
