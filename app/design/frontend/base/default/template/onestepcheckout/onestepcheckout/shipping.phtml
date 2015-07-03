@@ -330,7 +330,7 @@
                         administrative_area_level_1: 'long_name',
                         country: 'short_name',
                         postal_code: 'short_name',
-                        sublocality: 'long_name'
+                        sublocality_level_1: 'long_name'
                 };
                 autocompleteShipping = new google.maps.places.Autocomplete(
                         (document.getElementById('shipping:street1')),
@@ -366,8 +366,10 @@
                         country = place.address_components[i][componentShippingForm['country']];
                         if (addressType == 'postal_code')
                         postal_code = place.address_components[i][componentShippingForm['postal_code']];
-                        if (addressType == 'sublocality')
-                        sublocality = place.address_components[i][componentBillingForm['sublocality']];
+                        if (addressType == 'sublocality_level_1'){
+							if(city == null)
+								city = place.address_components[i][componentShippingForm['sublocality_level_1']];
+						}
                 }
                 }
                 fillAddress('shipping', street, city, region_id, region, country, postal_code, sublocality)
