@@ -95,7 +95,7 @@ class Mirasvit_FeedExport_Model_Feed_Generator_Pattern extends Varien_Object
                     break;
             }
 
-            if (!$value || $value === null) {
+            if ($value === null || $value === '') {
                 $model = Mage::getSingleton('feedexport/feed_generator_pattern_global')->setFeed($this->getFeed());
                 $value = $model->getValue($pattern, $obj);
             }
@@ -156,11 +156,11 @@ class Mirasvit_FeedExport_Model_Feed_Generator_Pattern extends Varien_Object
             $path     = explode('/', $category->getPath());
 
             // check that category from this store
-            if (in_array($this->getStore()->getRootCategoryId(), $path)) {
+            // if (in_array($this->getStore()->getRootCategoryId(), $path)) {
                 $this->_categories[$categoryId] = $category;
-            } else {
-                $this->_categories[$categoryId] = false;
-            }
+            // } else {
+                // $this->_categories[$categoryId] = false;
+            // }
         }
 
         return $this->_categories[$categoryId];
