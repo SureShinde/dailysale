@@ -237,18 +237,18 @@
                             }
 <?php endif ?>
                         if ($('billing:email')) {
-Event.observe(document, "dom:loaded", function() {
-            var url = '<?php echo $this->getUrl('onestepcheckout/index/is_valid_email', array('_secure' => true)) ?>';
-            var email_address = $('billing:email').value;
-            var parameters = {email_address: email_address};
-            var request = new Ajax.Request(
-                    url,
-                    {
-                        parameters: parameters,
-                        onComplete: check_valid_email.bindAsEventListener($('billing:email')),
-                        onFailure: ''
-                    });
-        });
+							// Event.observe(document, "dom:loaded", function() {
+										// var url = '<?php echo $this->getUrl('onestepcheckout/index/is_valid_email', array('_secure' => true)) ?>';
+										// var email_address = $('billing:email').value;
+										// var parameters = {email_address: email_address};
+										// var request = new Ajax.Request(
+												// url,
+												// {
+													// parameters: parameters,
+													// onComplete: check_valid_email.bindAsEventListener($('billing:email')),
+													// onFailure: ''
+												// });
+									// });
                             Event.observe('billing:email', 'blur', function() {
                                 var url = '<?php echo $this->getUrl('onestepcheckout/index/is_valid_email', array('_secure' => true)) ?>';
                                 var email_address = $('billing:email').value;
@@ -375,7 +375,7 @@ Event.observe(document, "dom:loaded", function() {
                 administrative_area_level_1: 'short_name',
                 country: 'short_name',
                 postal_code: 'short_name',
-                sublocality: 'long_name'
+                sublocality_level_1: 'long_name'
             };
 
             autocompleteBilling = new google.maps.places.Autocomplete(
@@ -415,8 +415,10 @@ Event.observe(document, "dom:loaded", function() {
                             country = place.address_components[i][componentBillingForm['country']];
                         if (addressType == 'postal_code')
                             postal_code = place.address_components[i][componentBillingForm['postal_code']];
-                        if (addressType == 'sublocality')
-                            sublocality = place.address_components[i][componentBillingForm['sublocality']];
+                        if (addressType == 'sublocality_level_1'){
+							if(city == null)
+								city = place.address_components[i][componentBillingForm['sublocality_level_1']];
+						}
                     }
                 }
                 fillAddress('billing', street, city, region_id, region, country, postal_code, sublocality);

@@ -53,7 +53,7 @@
         background:none  !important;
     }
 	#notify-email-invalid{
-		width:250px !important;
+		width:290px !important;
 		height:70px !important;
 		position:fixed !important;
 		margin-left:-125px !important;
@@ -73,6 +73,9 @@
         height: 100% !important;
         z-index:9999998 !important;
         opacity: 0.65;
+	}
+	input, select {
+		height: auto;
 	}
 </style>
 
@@ -854,7 +857,7 @@
 <?php echo $this->getChildHtml('tco_iframe'); ?>
 
 <div id="notify-email-invalid" style="display:none;">
-<p style="float:left;padding-top:27px;color:#000;font-family:tahoma;margin-left:10px;"><span style="display:block;float:left;margin-right:2px;"><?php echo $this->__('Email is ') ?></span><img style="float:left;margin-right:2px;"src="<?php echo $this->getSkinUrl('images/onestepcheckout/invalidIcon.jpg'); ?>"/><?php echo $this->__(' please check it again!') ?></p>
+<p style="float:left;padding-top:27px;color:#000;font-family:tahoma;margin-left:10px;"><span style="display:block;float:left;margin-right:2px;"><?php echo $this->__('Email is invalid. Please check it again!') ?></p>
 </div>
 <div id="notify-email-invalid-overlay" style="display:none;"></div>
 <!-- Terms and conditions -->
@@ -933,11 +936,6 @@
 						}else{
 							document.getElementById(type + ':region_id').value = '';
 						}
-                        if (street) {
-                            document.getElementById(type + ':street1').value = street;
-                        } else {
-                            //document.getElementById(type + ':street1').value = '';
-                        }
                     }
                 },
                 onFailure: '',
@@ -979,7 +977,7 @@ var invalidEmailPopup = new Control.Modal($('notify-email-invalid'), {
 			$('onestepcheckout-button-place-order').removeClassName('place-order-loader');
 			if($('emailvalid'))
 			$('emailvalid').value = 'valid';
-			invalidEmailPopup.close();
+			// invalidEmailPopup.close();
 
         }
         else if (message == 'invalid') {
@@ -990,7 +988,7 @@ var invalidEmailPopup = new Control.Modal($('notify-email-invalid'), {
 			$('onestepcheckout-button-place-order').addClassName('place-order-loader');
 			if($('emailvalid'))
 			$('emailvalid').value = 'invalid';
-			invalidEmailPopup.open();
+			// invalidEmailPopup.open();
 
 		}
         else if (message == 'exists') {
