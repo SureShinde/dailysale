@@ -10,26 +10,26 @@
  * @category  Mirasvit
  * @package   Full Page Cache
  * @version   1.0.1
- * @build     348
+ * @build     374
  * @copyright Copyright (C) 2015 Mirasvit (http://mirasvit.com/)
  */
+
 
 
 class Mirasvit_Fpc_Model_Observer extends Varien_Debug
 {
     //1 - only primary tags
     //2 - all tags
-    protected $_cacheTagsLevel = 1;
+    protected $_cacheTagsLevel = 2;
 
     protected $_registerModelTagCalls = 0;
 
     public function __construct()
     {
         $this->_processor = Mage::getSingleton('fpc/processor');
-        $this->_config    = Mage::getSingleton('fpc/config');
+        $this->_config = Mage::getSingleton('fpc/config');
         $this->_isEnabled = Mage::app()->useCache('fpc');
     }
-
 
     protected function _getCookie()
     {
@@ -42,7 +42,7 @@ class Mirasvit_Fpc_Model_Observer extends Varien_Debug
     }
 
     /**
-     * Clean full page cache
+     * Clean full page cache.
      */
     public function cleanCache($observer)
     {
@@ -58,20 +58,21 @@ class Mirasvit_Fpc_Model_Observer extends Varien_Debug
         Mirasvit_Fpc_Model_Cache::getCacheInstance()->flush();
     }
 
-    public function flushCacheAfterCatalogRuleSave($observer) {
+    public function flushCacheAfterCatalogRuleSave($observer)
+    {
         $obj = $observer->getObject();
 
         if (is_object($obj) && get_class($obj) == 'Mage_CatalogRule_Model_Rule') {
             $jobCode = 'fpc_flush_cache';
             $scheduledAtInterval = 10; //minutes
             $schedule = Mage::getModel('cron/schedule')->getCollection()
-                        ->addFieldToFilter('job_code', array("eq" => $jobCode))
-                        ->addFieldToFilter('status', array("eq" => 'pending'))
+                        ->addFieldToFilter('job_code', array('eq' => $jobCode))
+                        ->addFieldToFilter('status', array('eq' => 'pending'))
                         ->getFirstItem();
             if (!$schedule->hasData()) {
-                     $timecreated   = strftime("%Y-%m-%d %H:%M:%S",  mktime(date("H"), date("i"), date("s"), date("m"), date("d"), date("Y")));
-                     $timescheduled = strftime("%Y-%m-%d %H:%M:%S", mktime(date("H"), date("i")+ $scheduledAtInterval, date("s"), date("m"), date("d"), date("Y")));
-                     Mage::getModel('cron/schedule')->setJobCode($jobCode)
+                $timecreated = strftime('%Y-%m-%d %H:%M:%S',  mktime(date('H'), date('i'), date('s'), date('m'), date('d'), date('Y')));
+                $timescheduled = strftime('%Y-%m-%d %H:%M:%S', mktime(date('H'), date('i') + $scheduledAtInterval, date('s'), date('m'), date('d'), date('Y')));
+                Mage::getModel('cron/schedule')->setJobCode($jobCode)
                             ->setCreatedAt($timecreated)
                             ->setScheduledAt($timescheduled)
                             ->setStatus(Mage_Cron_Model_Schedule::STATUS_PENDING)
@@ -81,7 +82,7 @@ class Mirasvit_Fpc_Model_Observer extends Varien_Debug
     }
 
     /**
-     * Invalidate full page cache
+     * Invalidate full page cache.
      */
     public function invalidateCache()
     {
@@ -89,7 +90,6 @@ class Mirasvit_Fpc_Model_Observer extends Varien_Debug
 
         return $this;
     }
-
 
     public function registerModelTag($observer)
     {
@@ -174,6 +174,17 @@ class Mirasvit_Fpc_Model_Observer extends Varien_Debug
         if ($observer->getDataObject() && $observer->getDataObject()->getProductId()) {
             $productId = $observer->getDataObject()->getProductId();
             Mirasvit_Fpc_Model_Cache::getCacheInstance()->clean('CATALOG_PRODUCT_'.$productId);
+        }
+    }
+
+    public function checkCronStatus() //check for fpc section in admin panel
+    {
+        if (($request = Mage::app()->getRequest())
+            && Mage::app()->getRequest()->getParam('section') == 'fpc') {
+                $cronStatus = Mage::helper('mstcore/cron')->checkCronStatus(false, false, 'Cron job is required for correct work of Full Page Cache.');
+                if ($cronStatus !== true) {
+                    Mage::getSingleton('adminhtml/session')->addError($cronStatus);
+                }
         }
     }
 }
