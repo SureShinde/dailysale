@@ -16,7 +16,7 @@ class Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Pricefilterg
         $columnName = $this->getColumnName();
         $column = $this->getColumn();
         //$name = $this->getInputName() . '[price_filter]';
-        $html = '<input disabled type="text" name="' . $inputName . '" value="#{' . $columnName . '}" ' .
+        $html = '<input type="text" name="' . $inputName . '" value="#{' . $columnName . '}" ' .
             ($column['size'] ? 'size="' . $column['size'] . '"' : '') . ' class="' .
             (isset($column['class']) ? $column['class'] : 'input-text') . '"'.
             (isset($column['style']) ? ' style="'.$column['style'] . '"' : '') . '/>';

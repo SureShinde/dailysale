@@ -169,61 +169,14 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
             case 'profit':
                 $bestSellers = $this->_maxProfit($items, $fullCategory, $period);
                 break;
-            case 'price':
-                $bestSellers = $this->_priceFilter($items, $fullCategory, $period);
-                break;
+//            case 'price':
+//                $bestSellers = $this->_priceFilter($items, $fullCategory, $period);
+//                break;
         }
         $result = $this->_changeFormatArray($bestSellers);
-        switch($criteria){
-            //item between price
-            case 'price':
-                $priceFilter = explode("-",trim($config['price_filter']));
-                $sortReverse = false;
-                if(count($priceFilter)>1){
-                    if(!is_integer((int)$priceFilter[0]) || !is_integer((int)$priceFilter[1])){
-                        Mage::throwException("function _applyCriteria for price not integer");
-                    }
-                    $priceFilter[0] > $priceFilter[1]? $sortReverse = true : $sortReverse = false;
-                    $arrayResult = array();
-                    switch($sortReverse){
-                        case false:
-                            asort($result);
-                            for (reset($result); $key = key($result); next($result) ){
-                                if($result[$key] >= $priceFilter[0] && $result[$key] <= $priceFilter[1]){
-                                    $arrayResult[$key] = $result[$key];
-                                }
-                            }
-                            asort($arrayResult);
-                            reset($result);
-                            break;
-                        case true:
-                            asort($result);
-                            for (reset($result); $key = key($result); next($result) ){
-                                if($result[$key] >= $priceFilter[1] && $result[$key] <= $priceFilter[0]){
-                                    $arrayResult[$key] = $result[$key];
-                                }
-                            }
-                            arsort($arrayResult);
-                            reset($result);
-                            break;
-                    }
-                }elseif(count($priceFilter)==1){
-                    if(!is_integer((int)$priceFilter[0])){
-                        Mage::throwException("function _applyCriteria for price not integer");
-                    }
-                    asort($result);
-                    for (reset($result); $key = key($result); next($result) ){
-                        if($result[$key] == $priceFilter[0]){
-                            $arrayResult[$key] = $result[$key];
-                        }
-                    }
-                    asort($arrayResult);
-                }
-                break;
-            default:
-                arsort($result);
-        }
-        return $arrayResult;
+
+        arsort($result);
+        return $result;
     }
     /**
      * @param array $bestSellers
@@ -539,4 +492,28 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
         return $items;
     }
 
+
+    /**
+     * Filter product by price
+     *
+     * @param $bestSellersArray
+     * @return array
+     */
+    public function filterBestsellersByPrice($bestSellersArray){
+        $priceFilter=$this->getCurrentConfig('price_filter');
+        $priceFilter = explode("-",trim($priceFilter));
+        foreach ($priceFilter as $filter){
+            if(!is_numeric($filter)){
+                Mage::throwException('Invalid price filter.');
+                return $bestSellersArray;
+            }
+        }
+        foreach ($bestSellersArray as $id) {
+            $product = Mage::getModel('catalog/product')->load($id);
+            if($product['price']>=$priceFilter['0'] AND $product['price']<=$priceFilter['1']) {
+                $bestsell[] = $product['entity_id'];
+            }
+        }
+        return $bestsell;
+    }
 }

@@ -129,20 +129,20 @@ $_colspan = $_colspan > 1 ? 'colspan="' . $_colspan . '"' : '';
         });
 
         //Set the price criterion
-        $$(".criteria_group_select").each(function(select) {
-            if(select.selectedIndex == 3){
-                var tr = $(select.parentElement.parentElement);
-                tr.children[7].children[0].enable();
-            }
-        });
-        $$(".criteria_group_select").invoke('observe', 'change', function() {
-            var tr = $(this.parentElement.parentElement);
-            if(this.selectedIndex == 3){
-                tr.children[7].children[0].enable();
-            }else{
-                tr.children[7].children[0].disable();
-            }
-        });
+//        $$(".criteria_group_select").each(function(select) {
+//            if(select.selectedIndex == 3){
+//                var tr = $(select.parentElement.parentElement);
+//                tr.children[7].children[0].enable();
+//            }
+//        });
+//        $$(".criteria_group_select").invoke('observe', 'change', function() {
+//            var tr = $(this.parentElement.parentElement);
+//            if(this.selectedIndex == 3){
+//                tr.children[7].children[0].enable();
+//            }else{
+//                tr.children[7].children[0].disable();
+//            }
+//        });
     });
 
 </script>
@@ -188,14 +188,14 @@ var arrayRow<?php echo $_htmlId ?> = {
             checkboxNumberOfProducts.checked = true;
             checkboxNumberOfProducts.parentElement.children[1].disable();
 
-            $$(".criteria_group_select").invoke('observe', 'change', function() {
-                var tr = $(this.parentElement.parentElement);
-                if(this.selectedIndex == 3){
-                    tr.children[7].children[0].enable();
-                }else{
-                    tr.children[7].children[0].disable();
-                }
-            });
+//            $$(".criteria_group_select").invoke('observe', 'change', function() {
+//                var tr = $(this.parentElement.parentElement);
+//                if(this.selectedIndex == 3){
+//                    tr.children[7].children[0].enable();
+//                }else{
+//                    tr.children[7].children[0].disable();
+//                }
+//            });
         }
         // insert after specified row
         else {

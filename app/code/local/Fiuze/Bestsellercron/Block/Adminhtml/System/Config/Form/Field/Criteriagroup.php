@@ -11,7 +11,7 @@ class Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Criteriagrou
             '0' => array('label' => 'Max Profit', 'value' => 'profit'),
             '1' => array('label' => 'Revenue', 'value' => 'revenue'),
             '3' => array('label' => 'Qty', 'value' => 'qty'),
-            '4' => array('label' => 'Price', 'value' => 'price'),
+//            '4' => array('label' => 'Price', 'value' => 'price'),
         );
         return $toOptionArray;
     }
