@@ -91,12 +91,20 @@ trackingControl = {
         <tr id="track_row_template" class="template no-display">
             <td>
                 <select name="tracking[__index__][carrier_code]" id="trackingC__index__" class="select carrier" style="width:110px;" disabled="disabled">
+                    <?php $vendor_id = Mage::getModel('udpo/po')->getCollection()->addAttributeToFilter('order_id',Mage::app()->getRequest()->getParam('order_id'))->getData();?>
+                    <?php $vendor_id = $vendor_id['0']['udropship_vendor']; ?>
+                    <?php $carrier_code = Mage::getModel('udropship/vendor')->load($vendor_id)->getCarrierCode(); ?>
                     <?php foreach ($this->getCarriers() as $_code=>$_name): ?>
-                    <option value="<?php echo $_code ?>"><?php echo $this->escapeHtml($_name) ?></option>
+                    <?php   if($carrier_code==$_code){?>
+                        <option selected value="<?php echo $_code ?>"><?php echo $this->escapeHtml($_name) ?></option>
+                            <?php $_name_vendor = $_name; ?>
+                            <?php }else{ ?>
+                        <option value="<?php echo $_code ?>"><?php echo $this->escapeHtml($_name) ?></option>
+                            <?php } ?>
                     <?php endforeach; ?>
                 </select>
             </td>
-            <td><input class="input-text number-title" type="text" name="tracking[__index__][title]" id="trackingT__index__" value="" disabled="disabled" /></td>
+            <td><input class="input-text number-title" type="text" name="tracking[__index__][title]" id="trackingT__index__" value="<?php echo $_name_vendor; ?>" disabled="disabled" /></td>
             <td><input class="input-text required-entry" type="text" name="tracking[__index__][number]" id="trackingN__index__" value="" disabled="disabled" /></td>
             <td class="last"><a href="#" onclick="trackingControl.deleteRow(event);return false"><?php echo $this->__('Delete') ?></a></td>
         </tr>
