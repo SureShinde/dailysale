@@ -528,13 +528,18 @@ $fcBlock->setFieldValue(array(
                         <label for="carrier-<?php echo $_id?>"><?php echo $_hlp->__('Carrier') ?></label>
                         <select id="carrier-<?php echo $_id?>" name="carrier" class="select" style="width:250px" onchange="selectCarrier(this, 'carrier_title-<?php echo $_id?>')">
                             <?php foreach ($this->getCarriers() as $_code=>$_name): ?>
+                                <?php if ($_vendor->getCarrierCode()==$_code){?>
+                            <option selected value="<?php echo $_code ?>"><?php echo $_name ?></option>
+                                    <?php $_carrierTitle= $_name; ?>
+                                <?php }else{ ?>
                             <option value="<?php echo $_code ?>"><?php echo $_name ?></option>
+                                <?php }?>
                             <?php endforeach; ?>
                         </select>
                     </li>
                     <li id="tracking_id-4-<?php echo $_id?>">
                         <label for="carrier_title-<?php echo $_id?>"><?php echo $_hlp->__('Carrier Title') ?></label>
-                        <input id="carrier_title-<?php echo $_id?>" name="carrier_title" value="" title="<?php echo $_hlp->__('Carrier Title') ?>" type="text" class="input-text" style="width:250px;" />
+                        <input id="carrier_title-<?php echo $_id?>" name="carrier_title" value="<?php echo "$_carrierTitle"; ?>" title="<?php echo $_hlp->__('Carrier Title') ?>" type="text" class="input-text" style="width:250px;" />
                     </li>
                     <li id="tracking_id-1-<?php echo $_id?>">
                         <label for="tracking_id-<?php echo $_id?>"><?php echo $_hlp->__('Add Tracking ID') ?></label>
