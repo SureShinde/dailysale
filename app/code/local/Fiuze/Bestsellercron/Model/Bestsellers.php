@@ -500,7 +500,7 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
      * @return array
      */
     public function filterBestsellersByPrice($bestSellersArray){
-        $priceFilter=$this->getCurrentConfig('price_filter');
+        $priceFilter = $this->getCurrentConfig('price_filter');
         $priceFilter = explode("-",trim($priceFilter));
         foreach ($priceFilter as $filter){
             if(!is_numeric($filter)){
@@ -508,12 +508,22 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
                 return $bestSellersArray;
             }
         }
-        foreach ($bestSellersArray as $id) {
-            $product = Mage::getModel('catalog/product')->load($id);
-            if($product['price']>=$priceFilter['0'] AND $product['price']<=$priceFilter['1']) {
-                $bestsell[] = $product['entity_id'];
+        if(count($priceFilter)==1){
+            foreach ($bestSellersArray as $id) {
+                $product = Mage::getModel('catalog/product')->load($id);
+                if($product['price']==$priceFilter['0']) {
+                    $bestsell[] = $product['entity_id'];
+                }
+            }
+        }else{
+            foreach ($bestSellersArray as $id) {
+                $product = Mage::getModel('catalog/product')->load($id);
+                if($product['price']>=$priceFilter['0'] AND $product['price']<=$priceFilter['1']) {
+                    $bestsell[] = $product['entity_id'];
+                }
             }
         }
+
         return $bestsell;
     }
 }

@@ -85,7 +85,6 @@ class Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Bestseller e
         ));
         $this->addColumn('price_filter', array(
             'label' => Mage::helper('bestsellercron')->__('Price Filter'),
-            'class' => ' required-entry',
             'style' => 'width:50px',
             'renderer' => $this->_getPricefiltergroupRenderer(),
         ));
