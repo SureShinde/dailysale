@@ -8,9 +8,9 @@
  * Please refer to http://www.magentocommerce.com for more information.
  *
  * @category  Mirasvit
- * @package   Full Page Cache
- * @version   1.0.1
- * @build     348
+ * @package   Fast Asynchronous Re-indexing
+ * @version   1.1.6
+ * @build     363
  * @copyright Copyright (C) 2015 Mirasvit (http://mirasvit.com/)
  */
 
@@ -22,11 +22,17 @@ class Mirasvit_MstCore_Helper_Data extends Mage_Core_Helper_Data
         $modules = Mage::getConfig()->getNode('modules')->children();
         $modulesArray = (array)$modules;
 
-        if(isset($modulesArray[$modulename]) && $modulesArray[$modulename]->is('active')) {
-            return true;
-        } else {
-            return false;
+        if(isset($modulesArray[$modulename])
+            && $modulesArray[$modulename]->is('active')
+            && $modulesArray[$modulename]->is('codePool')) {
+                $codePool = $modulesArray[$modulename]->codePool;
+                $configFile = Mage::getBaseDir('code'). DS . $codePool . DS . str_replace('_', DS, $modulename) . DS . 'etc' . DS . 'config.xml';
+                if (file_exists($configFile)) {
+                    return true;
+                }
         }
+
+        return false;
     }
 
     public function pr($arr, $ip = false, $die = false)
@@ -67,6 +73,54 @@ class Mirasvit_MstCore_Helper_Data extends Mage_Core_Helper_Data
             }
             $connection->query($query, array($row['scope'], $row['scope_id'], $newPath, $value));
         }
+    }
+
+    /**
+     * Return array of used cache systems: cache_name => cache_clear_method
+     *
+     * @return array
+     */
+    public function getUsedCaches()
+    {
+        $caches = array(
+            'APC'     => 'apc_clear_cache',
+            'OPcache' => 'opcache_reset',
+            'xCache'  => 'xcache_clear_cache',
+        );
+
+        foreach ($caches as $name => $method) {
+            if (!function_exists($method)) {
+                unset($caches[$name]);
+            }
+        }
+
+        return $caches;
+    }
+
+    public function getModules()
+    {
+        $modules = Mage::app()->getRequest()->getParam('modules');
+        if ($modules != '') {
+            $modules = explode(',', $modules);
+        }
+
+        if (count($modules) == 0) {
+            $mstdir = Mage::getBaseDir('app').DS.'code'.DS.'local'.DS.'Mirasvit';
+
+            if ($handle = opendir($mstdir)) {
+                while (false !== ($entry = readdir($handle))) {
+                    if (substr($entry, 0, 1) != '.') {
+                        if (!Mage::helper('mstcore')->isModuleInstalled("Mirasvit_$entry")) {
+                            continue;
+                        }
+                        $modules[] = $entry;
+                    }
+                }
+                closedir($handle);
+            }
+        }
+
+        return $modules;
     }
 }
 

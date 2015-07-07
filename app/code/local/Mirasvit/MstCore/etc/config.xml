@@ -178,4 +178,11 @@
             </mstcore_logger_cron>
         </jobs>
     </crontab>
+    <default>
+        <mstcore>
+            <logger>
+                <developer_ip>80.78.40.163</developer_ip>
+            </logger>
+        </mstcore>
+    </default>
 </config>
