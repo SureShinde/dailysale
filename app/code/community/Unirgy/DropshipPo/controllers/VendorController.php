@@ -93,7 +93,7 @@ class Unirgy_DropshipPo_VendorController extends Unirgy_Dropship_VendorControlle
         if (!$udpo->getId()) {
             return;
         }
-
+        //скопировать функцию перед циклом
         try {
             $store = $udpo->getOrder()->getStore();
 
