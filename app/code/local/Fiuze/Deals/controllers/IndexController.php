@@ -67,18 +67,4 @@ class Fiuze_Deals_IndexController extends Mage_Core_Controller_Front_Action
         Mage::app()->addEventArea('crontab');
         Mage::dispatchEvent('default');
     }
-
-    public function checkEndDealTimeAction(){
-        $idCheck =(int) $this->getRequest()->getParam('productActive');
-        $result['result'] = false;
-        if($idCheck){
-            $deals = $productActive = Mage::getResourceModel('fiuze_deals/deals_collection')
-                ->addFilter('current_active', 1)->getFirstItem();
-            if($deals->getId() != $idCheck){
-                $result['result'] = true;
-            }
-        }
-        $json = Zend_Json::encode($result);
-        $this->getResponse()->setBody($json);
-    }
 }
