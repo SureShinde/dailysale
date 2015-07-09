@@ -504,7 +504,6 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
         $priceFilter = explode("-",trim($priceFilter));
         foreach ($priceFilter as $filter){
             if(!is_numeric($filter)){
-                Mage::throwException('Invalid price filter.');
                 return $bestSellersArray;
             }
         }
