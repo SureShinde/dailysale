@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Mirasvit_AsyncIndex>
-            <active>true</active>
+            <active>false</active>
             <codePool>local</codePool>
             <depends />
         </Mirasvit_AsyncIndex>
