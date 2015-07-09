@@ -42,6 +42,37 @@ class Aftership_Track_Model_Observer {
 		ob_end_clean();
 	}
 
+    /** For vendor
+     * @param Varien_Event_Observer $observer
+     */
+    public function salesOrderShipmentTrackSaveAfterVendor(Varien_Event_Observer $observer) {
+        ob_start();
+
+        $magento_track = $observer->getEvent()->getTrack();
+
+        $magento_order = $magento_track->getShipment()->getOrder();
+        $website_config = $this->_getWebsiteConfig($magento_order);
+
+        $tracks = Mage::getModel('track/track')
+            ->getCollection()
+            ->addFieldToFilter('tracking_number', array('eq' => $this->_getTrackNo($magento_track)))
+            ->addFieldToFilter('order_id', array('eq' => $magento_order->getIncrementId()))
+            ->getItems();
+
+        if (empty($tracks)) {
+            $track = $this->_saveTrack($magento_track);
+        }
+        else {
+            $track = reset($tracks);
+        }
+
+        if ($website_config->status) {
+            $this->_sendTrack($track);
+        }
+
+        ob_end_clean();
+    }
+
 	/**
 	 * Cron to sync trackings
 	 */
@@ -205,12 +236,16 @@ class Aftership_Track_Model_Observer {
 		$order_id = $track->getOrderId();
 		$customer_name = $shipping_address->getFirstname() . ' ' . $shipping_address->getLastname();
 
-		$http_status = $this->_callApiCreateTracking($api_key, $track->getTrackingNumber(), $carrier_code, $country_id, $telephone, $email, $title, $order_id, $customer_name);
-
+		$response = $this->_callApiCreateTracking($api_key, $track->getTrackingNumber(), $carrier_code, $country_id, $telephone, $email, $title, $order_id, $customer_name);
+        $responseJson = Mage::helper('core')->jsonDecode($response);
+        $http_status = $responseJson['meta']['code'];
 		//save, 422: repeated
 		if ($http_status == '201' || $http_status == '422') {
 			$track->setPosted(self::POSTED_DONE)->save();
-		}
+		}else{
+            $track->delete();
+            Mage::throwException($responseJson['meta']['message']);
+        }
 
 		return $http_status;
 	}
@@ -267,7 +302,7 @@ class Aftership_Track_Model_Observer {
 		$http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 		curl_close($ch);
 
-		return $http_status;
+		return $response;
 	}
 
 	/**
