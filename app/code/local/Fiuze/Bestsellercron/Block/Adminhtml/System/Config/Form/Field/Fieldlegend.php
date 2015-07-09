@@ -71,6 +71,9 @@ class Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Fieldlegend
         $html .= '<b>"Task Schedule":</b>  Dynamic cron for each category. How often do you want to update information in your category.';
         $html .= '</p>';
         $html .= '<p>';
+        $html .= '<p><b>"Price filter": </b>';
+        $html .= 'Price filter works for all the 3 criterias. It is filtering the products and showing those which correspond to the price range that we set. When you want to set a number equal to 5, you just type 5, when want a range, then type 5-10, when less than 5, then 0-5, if more, then 5-1000 or the most expensive price.</p>';
+        $html .= '<p>So basically it will take into account days period, will check sales, take the products which let\'s say are in the price range of $5-10 and will sort them either by qty, revenue or max profit.</p>';
         $html .= '<b>"Number of products":</b> ';
         $html .= '</p>';
         $html .= '<p>';
