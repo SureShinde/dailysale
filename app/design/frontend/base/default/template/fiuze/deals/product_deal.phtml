@@ -13,7 +13,7 @@
         if (result < 0) {
             var elmntNew = document.getElementById('timer');
             elmntNew.innerHTML = ' 00:00:00 ';
-            setTimeout(reload, 1000);
+            setTimeout(reload, 5000);
             return undefined;
         }
         var seconds = Math.floor((result / 1000) % 60);
@@ -31,18 +31,6 @@
     });
 
     function reload(){
-        new Ajax.Request('/fiuze_deals/index/checkEndDealTime', {
-            parameters: {productActive: <?php echo $productActive->getId();  ?>},
-            onComplete: function(response) {
-                if (200 == response.status){
-                    var result = response.responseText.evalJSON();
-                    if(result.result == true){
-                        window.location.href = window.location.href;
-                    }else{
-                        setTimeout(reload, 1000);
-                    }
-                }
-                }
-            });
+        window.location.href = window.location.href;
     }
 </script>

@@ -563,19 +563,16 @@ function initShipmentForm(udpoId, shipmentId) {
 
 function validateShipmentSubmit(id)
 {
-    if($('change_status-'+id) != null){
-        switch ($('change_status-'+id).value) {
-            case '<?php echo Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_CANCELED ?>':
-                return confirm('<?php echo $this->jsQuoteEscape($_hlp->__('This will cancel shipment (if possible).')) ?>');
-            case '<?php echo Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_SHIPPED ?>':
-                return confirm('<?php echo $this->jsQuoteEscape($_hlp->__('This will mark shipment as shipped (and if possible change PO status as well).')) ?>');
-            case '<?php echo Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_DELIVERED ?>':
-                return confirm('<?php echo $this->jsQuoteEscape($_hlp->__('This will mark shipment as delivered (and if possible change PO status as well).')) ?>');
-            default:
-                return true;
-        }
+    switch ($('change_status-'+id).value) {
+        case '<?php echo Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_CANCELED ?>':
+            return confirm('<?php echo $this->jsQuoteEscape($_hlp->__('This will cancel shipment (if possible).')) ?>');
+        case '<?php echo Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_SHIPPED ?>':
+            return confirm('<?php echo $this->jsQuoteEscape($_hlp->__('This will mark shipment as shipped (and if possible change PO status as well).')) ?>');
+        case '<?php echo Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_DELIVERED ?>':
+            return confirm('<?php echo $this->jsQuoteEscape($_hlp->__('This will mark shipment as delivered (and if possible change PO status as well).')) ?>');
+        default:
+            return true;
     }
-    return true;
 }
 
 function useLabelShippingAmountChanged(cb)
