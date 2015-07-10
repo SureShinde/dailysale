@@ -329,7 +329,7 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
 //                    ->setStoreId(Mage_Core_Model_App::ADMIN_STORE_ID);
 //                $this->idProductForCategory["false"] = array_keys ($productCollection->getItems());
 
-                $this->idProductForCategory["false"] = Mage::getModel('sales/order')->getItemsCollection();
+                #$this->idProductForCategory["false"] = Mage::getModel('sales/order')->getItemsCollection();
                 $this->getCurrentConfig('days_period');
 
                 $data_for_form = $this->getCurrentConfig('days_period')*86400;
