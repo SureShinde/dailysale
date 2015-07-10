@@ -325,11 +325,25 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
     protected function _getIdProductForCategory($idCategory = false) {
         if(!$idCategory){
             if(!$this->idProductForCategory["false"]){
-                $productCollection = Mage::getResourceModel('catalog/product_collection')
-                    ->setStoreId(Mage_Core_Model_App::ADMIN_STORE_ID);
-                $this->idProductForCategory["false"] = array_keys ($productCollection->getItems());
+//                $productCollection = Mage::getResourceModel('catalog/product_collection')
+//                    ->setStoreId(Mage_Core_Model_App::ADMIN_STORE_ID);
+//                $this->idProductForCategory["false"] = array_keys ($productCollection->getItems());
+
+                $this->idProductForCategory["false"] = Mage::getModel('sales/order')->getItemsCollection();
+                $this->getCurrentConfig('days_period');
+
+                $data_for_form = $this->getCurrentConfig('days_period')*86400;
+
+                $usl = Mage::getModel('core/date')->timestamp(time()) - $data_for_form;
+                $usl = date('Y-m-d h:i:s', $usl);
+                $this->idProductForCategory["false"] = Mage::getModel('sales/order')->getItemsCollection()->addAttributeToFilter('created_at',array('gteq'=>$usl))->getData();
+
+                foreach ($this->idProductForCategory["false"] as $item){
+                    $id_product[] = $item['product_id'];
+                }
+
             }
-            return $this->idProductForCategory["false"];
+            return $id_product;
         }
 
         if(!$this->idProductForCategory[$idCategory]){
