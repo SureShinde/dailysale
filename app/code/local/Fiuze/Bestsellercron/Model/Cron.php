@@ -123,28 +123,31 @@ class Fiuze_Bestsellercron_Model_Cron extends Mage_Core_Model_Abstract{
      * @return boolean
      */
     protected function _clearBestSellerCategory(){
-        $productCollection = Mage::getResourceModel('catalog/product_collection')
-            ->addAttributeToFilter('bestsellercron_flag', true)
-            ->addAttributeToSelect('*')
-            ->addCategoryFilter($this->_bestSellerCategory);
-
-        foreach($productCollection as $product){
-            $categoryIds = $product->getCategoryIds();
-            $categoryKey = array_search($this->_bestSellerCategory->getId(), $categoryIds);
-
-            if($categoryKey === FALSE){
-                continue;
-            }
-
-            unset($categoryIds[$categoryKey]);
-            try{
-                $product->setCategoryIds($categoryIds)
-                    ->setBestsellercronFlag(false)
-                    ->save();
-            } catch(Exception $e){
-                Mage::logException($e);
-            }
-        }
+        $write = Mage::getSingleton('core/resource')->getConnection('core_write');
+        $query = "DELETE FROM catalog_category_product WHERE category_id= {$this->_bestSellerCategory->getId()}";
+        $write->query($query);
+//        $productCollection = Mage::getResourceModel('catalog/product_collection')
+//            ->addAttributeToFilter('bestsellercron_flag', true)
+//            ->addAttributeToSelect('*')
+//            ->addCategoryFilter($this->_bestSellerCategory);
+//
+//        foreach($productCollection as $product){
+//            $categoryIds = $product->getCategoryIds();
+//            $categoryKey = array_search($this->_bestSellerCategory->getId(), $categoryIds);
+//
+//            if($categoryKey === FALSE){
+//                continue;
+//            }
+//
+//            unset($categoryIds[$categoryKey]);
+//            try{
+//                $product->setCategoryIds($categoryIds)
+//                    ->setBestsellercronFlag(false)
+//                    ->save();
+//            } catch(Exception $e){
+//                Mage::logException($e);
+//            }
+//        }
 
         return true;
     }
@@ -168,15 +171,19 @@ class Fiuze_Bestsellercron_Model_Cron extends Mage_Core_Model_Abstract{
             $productCollection = $productCollectionResource->getItems();
 
             foreach($productCollection as $product){
-                $categoryIds = $product->getCategoryIds();
-                array_push($categoryIds, $this->_bestSellerCategory->getId());
-                try{
-                    $product->setCategoryIds($categoryIds)
-                        ->setBestsellercronFlag(true)
-                        ->save();
-                } catch(Exception $e){
-                    Mage::logException($e);
-                }
+//                $categoryIds = $product->getCategoryIds();
+//                array_push($categoryIds, $this->_bestSellerCategory->getId());
+//                try{
+//                    $product->setCategoryIds($categoryIds)
+//                        ->setBestsellercronFlag(true)
+//                        ->save();
+//                } catch(Exception $e){
+//                    Mage::logException($e);
+//                }
+
+                $write = Mage::getSingleton('core/resource')->getConnection('core_write');
+                $query = "INSERT INTO catalog_category_product (category_id, product_id, position) VALUES ('{$this->_bestSellerCategory->getId()}', '{$product->getId()}', '0')";
+                $write->query($query);
             }
 
             Mage::app()->setCurrentStore(Mage::getModel('core/store')->load(Mage_Core_Model_App::ADMIN_STORE_ID));

@@ -521,22 +521,38 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
                 return $bestSellersArray;
             }
         }
+        unset($filter);
         if(count($priceFilter)==1){
+            //price filter if one number
             foreach ($bestSellersArray as $id) {
                 $product = Mage::getModel('catalog/product')->load($id);
-                if($product['price']==$priceFilter['0']) {
+
+                if (isset($product['special_price'])) {
+                    $product_price = $product['special_price'];
+                } else {
+                    $product_price = $product['price'];
+                }
+
+                if($product_price==$priceFilter['0']) {
                     $bestsell[] = $product['entity_id'];
                 }
             }
-        }else{
+        }else {
+            //price filter if two number
             foreach ($bestSellersArray as $id) {
                 $product = Mage::getModel('catalog/product')->load($id);
-                if($product['price']>=$priceFilter['0'] AND $product['price']<=$priceFilter['1']) {
+
+                if (isset($product['special_price'])) {
+                    $product_price = $product['special_price'];
+                } else {
+                    $product_price = $product['price'];
+                }
+
+                if ($product_price >= $priceFilter['0'] AND $product_price <= $priceFilter['1']) {
                     $bestsell[] = $product['entity_id'];
                 }
             }
         }
-
         return $bestsell;
     }
 }
