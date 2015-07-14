@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Full Page Cache
+ *
+ * @author      ahofs
+ * @category    Fiuze
+ * @package     Fpc
+ * @copyright   Copyright (c) 2015 Fiuze
+ */
+-->
+<config>
+    <modules>
+        <Fiuze_Fpc>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <Mirasvit_Fpc />
+            </depends>
+        </Fiuze_Fpc>
+    </modules>
+</config>
