@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Full Page Cache
+ *
+ * @author      ahofs
+ * @category    Fiuze
+ * @package     Fpc
+ * @copyright   Copyright (c) 2015 Fiuze
+ */
+-->
+<config>
+    <sections>
+        <fpc>
+            <groups>
+                <cache_rules>
+                    <fields>
+                        <ignore_params translate="label comment" module="fpc">
+                            <label>Params to Ignore</label>
+                            <comment>Comma-separated.</comment>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </ignore_params>
+                    </fields>
+                </cache_rules>
+            </groups>
+        </fpc>
+    </sections>
+</config>
