@@ -1270,7 +1270,6 @@ ul.tabs {
   clear: both; }
   /* line 479, ../sass/product_detail.scss */
   #product_tabs_custom_contents .tab-feature-list li {
-    list-style: disc;
     margin-left: 15px;
     clear: left; }
 /* line 485, ../sass/product_detail.scss */
@@ -2112,6 +2111,46 @@ ul.tabs {
   background: none !important;
   background-color: transparent !important;
   line-height: 100% !important; }
+
+/* line 65, ../sass/checkout.scss */
+.onestepcheckout-index-index .page {
+  max-width: 960px;
+  width: 100%;
+  padding: 10px; }
+/* line 71, ../sass/checkout.scss */
+.onestepcheckout-index-index .top-container {
+  max-width: 960px;
+  width: 100%; }
+/* line 76, ../sass/checkout.scss */
+.onestepcheckout-index-index .top-links-container {
+  float: right;
+  display: inline-block;
+  margin-top: 0; }
+/* line 82, ../sass/checkout.scss */
+.onestepcheckout-index-index .top-links-container ul.links {
+  display: inline-block; }
+@media screen and (max-width: 960px) {
+  /* line 87, ../sass/checkout.scss */
+  .onestepcheckout-index-index .nav-container {
+    display: none; }
+  /* line 90, ../sass/checkout.scss */
+  .onestepcheckout-index-index div.header {
+    text-align: center; }
+  /* line 93, ../sass/checkout.scss */
+  .onestepcheckout-index-index div.header a.logo {
+    float: none; } }
+@media (max-width: 639px) {
+  /* line 98, ../sass/checkout.scss */
+  .onestepcheckout-index-index #one-step-checkout-form label,
+  .onestepcheckout-index-index #one-step-checkout-form .address-information ul li.create_account label {
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    display: inline-block;
+    max-width: 100%; }
+  /* line 106, ../sass/checkout.scss */
+  .onestepcheckout-index-index .cvv-what-is-this {
+    font-size: 12px; } }
 
 /* line 4, ../sass/checkout_success.scss */
 .checkout-onepage-success h2 {
