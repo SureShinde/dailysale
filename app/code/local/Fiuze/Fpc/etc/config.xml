@@ -23,6 +23,13 @@
                 </rewrite>
             </fpc>
         </helpers>
+        <models>
+            <fpc>
+                <rewrite>
+                    <processor>Fiuze_Fpc_Model_Processor</processor>
+                </rewrite>
+            </fpc>
+        </models>
     </global>
     <default>
         <fpc>

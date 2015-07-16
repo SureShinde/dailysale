@@ -25,4 +25,9 @@ class Fiuze_Fpc_Helper_Data extends Mirasvit_Fpc_Helper_Data
         $ignoredUrlParams = array_filter(array_unique(array_merge($paramsArray, $this->_ignoredUrlParams)));
         $this->_ignoredUrlParams = $ignoredUrlParams;
     }
+
+    public function getIgnoreParams()
+    {
+        return $this->_ignoredUrlParams;
+    }
 }
