@@ -17,6 +17,7 @@
 
 	.btn-proceed-checkout{
 		@include clairsoft-default-button;
+		margin-bottom: 10px;
 	}
 
 	input{
