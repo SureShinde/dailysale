@@ -128,18 +128,25 @@ class Unirgy_DropshipBatch_Vendor_BatchController extends Unirgy_Dropship_Contro
         }
     }
 	public function importOrdersPostAction(){
-
-        $data = explode("\r\n",trim($this->getRequest()->getParam('import_orders_textarea')));
-        $i=0;
-        //explode post data on order_number and track_id
-        foreach ($data as $sub_data){
-            $temp_var = explode(';',$sub_data);
-            $orders[$i]['order_number']=$temp_var['0'];
-            $orders[$i]['track_id']=$temp_var['1'];
-            $i++;
+        $r = $this->getRequest();
+        $hlp = Mage::helper('udropship');
+        $bHlp = Mage::helper('udbatch');
+        try {
+            $r->setParam('vendor_id', $this->_getSession()->getVendor()->getId());
+            $r->setParam('batch_type', 'import_orders');
+            $bHlp->processPost();
+        } catch (Exception $e) {
+            $this->_getSession()->addError($e->getMessage());
+            if ($bHlp->getBatch()) {
+                $this->_getSession()->addError(
+                    $bHlp->getBatch()->getErrorInfo($e->getMessage())
+                );
+            }
         }
-        //$orders - array of orders
-
+        if ($bHlp->getBatch() != null && $bHlp->getBatch()->getStatus() == 'success') {
+            $this->_getSession()->addSuccess($hlp->__('Processed %s import rows', $bHlp->getBatch()->getNumRows()));
+        }
+        $this->_redirect('udbatch/vendor_batch/importOrders');
     }
 
 	public function importStockPostAction()
