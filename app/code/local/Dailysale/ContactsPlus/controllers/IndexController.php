@@ -42,7 +42,7 @@ class Dailysale_ContactsPlus_IndexController extends Mage_Contacts_IndexControll
                     ->setReplyTo($post['email'])
                     ->sendTransactional(
                         Mage::getStoreConfig(self::XML_PATH_EMAIL_TEMPLATE),
-                        Mage::getStoreConfig(self::XML_PATH_EMAIL_SENDER),
+                        array( 'name'=>$post['name'],'email'=> $post['email'] ),
                         Mage::getStoreConfig(self::XML_PATH_EMAIL_RECIPIENT),
                         null,
                         array('data' => $postObject)
