@@ -29,6 +29,7 @@ $_hlp = Mage::helper('udropship');
                     <input type="submit" value="import" style="display:none" />
                     <button class="form-button" name="submit_action" type="submit" id="filter-search" value="import"><span><?php echo $_hlp->__('Import') ?></span></button>
                 </li>
+                <?php echo $this->getChildHtml("udbatch_aftershipstatus"); ?>
             </ul>
         </div>
     </div>

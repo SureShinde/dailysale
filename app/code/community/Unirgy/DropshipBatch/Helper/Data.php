@@ -211,6 +211,7 @@ class Unirgy_DropshipBatch_Helper_Data extends Mage_Core_Helper_Abstract
                 $content = trim($r->getParam('import_orders_textarea'));
                 $trackingNumbersContent = preg_split("/[\s,]+/", $content);
                 $this->trackigForImport($trackingNumbersContent);
+                Mage::register('tracking_numbers_content', Mage::app()->getStore()->getId());
             }
             if ($r->getParam('import_orders_locations')) {
                 try {
@@ -619,6 +620,9 @@ class Unirgy_DropshipBatch_Helper_Data extends Mage_Core_Helper_Abstract
 
         foreach ($trackingNumbersContent as $trackingOrder) {
             $currentRow = preg_split("/;/", $trackingOrder);
+            if(count($currentRow) != 2){
+                Mage::throwException($_poHlp->__("Некоректный ввод"));
+            }
             $currentOrderId = $currentRow[0];
             $currentTrackingNumber = $currentRow[1];
             foreach ($_udpos as $keyPo => $item) {
