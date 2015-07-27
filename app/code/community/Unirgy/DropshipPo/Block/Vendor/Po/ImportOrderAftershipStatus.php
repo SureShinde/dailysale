@@ -37,7 +37,7 @@ class Unirgy_DropshipPo_Block_Vendor_Po_ImportOrderAftershipStatus extends Mage_
                         $trackings = new AfterShip\Trackings($api_key);
                         $responseJson = $trackings->get_by_id($trackingId);
                         if(!$message){
-                            $message = 'All right';
+                            $message = 'sent successfully';
                         }
                         $resultStutus[$itemRow] = $message.'&#13;&#10;'.'Status --->'.$this->_getStatus($responseJson);
                         $messageMail[$trackingNumber]['status'] = $this->_getStatus($responseJson);
