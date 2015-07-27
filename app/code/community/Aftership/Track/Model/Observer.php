@@ -239,13 +239,14 @@ class Aftership_Track_Model_Observer {
 		$response = $this->_callApiCreateTracking($api_key, $track->getTrackingNumber(), $carrier_code, $country_id, $telephone, $email, $title, $order_id, $customer_name);
         $responseJson = Mage::helper('core')->jsonDecode($response);
         $http_status = $responseJson['meta']['code'];
+        $data = $responseJson['data'];
         $configValue = Mage::getStoreConfig('aftership_options/messages/aftership_validation');
 		//save, 422: repeated
         if($configValue){
             if ($http_status == '201' || $http_status == '422') {
                 $track->setPosted(self::POSTED_DONE)->save();
-            }else{
-                if ($track->getPackageCount()>1) {
+            }else {
+                if ($track->getPackageCount() > 1) {
                     foreach (Mage::getResourceModel('sales/order_shipment_track_collection')
                                  ->addAttributeToFilter('master_tracking_id', $track->getMasterTrackingId())
                              as $_track
@@ -253,10 +254,24 @@ class Aftership_Track_Model_Observer {
                         $_track->delete();
                     }
                 }
-                $track->delete();
-                Mage::throwException($responseJson['meta']['message']);
+                if ($track->getPackTracking() !== '1') {
+                    $track->setErrorTracking($responseJson['meta']['message']);
+                    $track->save();
+                    //Mage::throwException($responseJson['meta']['message']);
+                } else {
+                    $track->setErrorTracking($responseJson['meta']['message']);
+                    $track->save();
+                }
+            }
+            if($http_status == '201' && array_key_exists('tracking',$data)){
+                $tracking = $data['tracking'];
+                $track->setTrackingId(array_key_exists('id',$tracking)?$tracking['id']:0);
+                $track->setSlug(array_key_exists('slug',$tracking)?$tracking['slug']:0);
+                $track->setPackTracking(false);
+                $track->save();
             }
         }
+
 		return $http_status;
 	}
 

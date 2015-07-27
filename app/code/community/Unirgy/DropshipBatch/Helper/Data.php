@@ -211,7 +211,7 @@ class Unirgy_DropshipBatch_Helper_Data extends Mage_Core_Helper_Abstract
                 $content = trim($r->getParam('import_orders_textarea'));
                 $trackingNumbersContent = preg_split("/[\s,]+/", $content);
                 $this->trackigForImport($trackingNumbersContent);
-                Mage::register('tracking_numbers_content', Mage::app()->getStore()->getId());
+                Mage::getSingleton('core/session')->setData('tracking_numbers_content',$trackingNumbersContent);
             }
             if ($r->getParam('import_orders_locations')) {
                 try {
@@ -646,12 +646,22 @@ class Unirgy_DropshipBatch_Helper_Data extends Mage_Core_Helper_Abstract
                     if (array_key_exists($vendor->getCarrierCode(), $carriers)) {
                         $carrier = $vendor->getCarrierCode();
                         $title = $carriers[$carrier];
-                        $trackingId = trim($currentTrackingNumber);
+                        $trackingNumber = trim($currentTrackingNumber);
                         $track = Mage::getModel('sales/order_shipment_track')
-                            ->setNumber($trackingId)
+                            ->setNumber($trackingNumber)
                             ->setCarrierCode($carrier)
                             ->setTitle($title)
                             ->setUdropshipStatus(Unirgy_Dropship_Model_Source::TRACK_STATUS_READY);
+                        $trackItems = Mage::getModel('track/track')
+                            ->getCollection()
+                            ->addFieldToFilter('tracking_number', array('eq' => $trackingNumber))
+                            ->addFieldToFilter('order_id', array('eq' => $orderId))
+                            ->getItems();
+                        $trackItem = reset($trackItems);
+                        if($trackItem){
+                            $trackItem->setErrorTracking('Tracking already exists.');
+                            $trackItem->save();
+                        }
                         $shipment = $po;
                         if ($po instanceof Unirgy_DropshipPo_Model_Po) {
                             $_shipment = false;
@@ -677,7 +687,7 @@ class Unirgy_DropshipBatch_Helper_Data extends Mage_Core_Helper_Abstract
                             Mage::helper('udbatch')->__('Tracking ID %s was added', $track->getNumber())
                         );
                         Mage::helper('udropship')->processTrackStatus($track, true, true);
-                        $shipment->setData('__dummy', 1)->save();
+                        //$shipment->setData('__dummy', 1)->save();
                     }
                 }
             }
