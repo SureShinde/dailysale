@@ -4,6 +4,7 @@ require_once Mage::getBaseDir('lib').DS.'SweetTooth/pest/vendor/autoload.php';
 class Unirgy_DropshipPo_Block_Vendor_Po_ImportOrderAftershipStatus extends Mage_Core_Block_Template
 {
     public $messageMail;
+    private $_trackingNumbersContent;
 
     protected function _prepareLayout()
     {
@@ -14,11 +15,11 @@ class Unirgy_DropshipPo_Block_Vendor_Po_ImportOrderAftershipStatus extends Mage_
 
     public function checkStatusTrackNumber(){
         $resultStutus = array();
-        $trackingNumbersContent = Mage::getSingleton('core/session')->getTrackingNumbersContent();
+        $this->_trackingNumbersContent = Mage::getSingleton('core/session')->getTrackingNumbersContent();
 
-        if(!is_null($trackingNumbersContent)){
+        if(!is_null($this->_trackingNumbersContent)){
             $messageMail = array();
-            foreach($trackingNumbersContent as $itemRow){
+            foreach($this->_trackingNumbersContent as $itemRow){
                 Mage::getSingleton('core/session')->unsTrackingNumbersContent();
                 $api_key = Mage::app()->getWebsite(0)->getConfig('aftership_options/messages/api_key');
 
@@ -72,17 +73,18 @@ class Unirgy_DropshipPo_Block_Vendor_Po_ImportOrderAftershipStatus extends Mage_
      */
     public function sendTrackingNotificationEmail($tracks)
     {
-        $emailTemplate  = Mage::getModel('core/email_template')
-            ->loadDefault('aftership_tracking_email');
-        $emailTemplateVariables = array();
-        $emailTemplateVariables['object'] = $tracks;
+        if(!is_null($this->_trackingNumbersContent)) {
+            $emailTemplate = Mage::getModel('core/email_template')
+                ->loadDefault('aftership_tracking_email');
+            $emailTemplateVariables = array();
+            $emailTemplateVariables['object'] = $tracks;
 
-        $processedTemplate = $emailTemplate->getProcessedTemplate($emailTemplateVariables);
-        $vendor = Mage::getSingleton('udropship/session')->getVendor();
-        $emailTemplate->setSenderName($vendor->getVendorName());
-        $emailTemplate->setSenderEmail($vendor->getEmail());
-        $emailTemplate->setTemplateSubject($emailTemplateVariables);
-        $emailTemplate->send($vendor->getEmail(),$vendor->getVendorName(), $emailTemplateVariables);
+            $processedTemplate = $emailTemplate->getProcessedTemplate($emailTemplateVariables);
+            $vendor = Mage::getSingleton('udropship/session')->getVendor();
+            $emailTemplate->setSenderName($vendor->getVendorName());
+            $emailTemplate->setSenderEmail($vendor->getEmail());
+            $emailTemplate->setTemplateSubject($emailTemplateVariables);
+            $emailTemplate->send($vendor->getEmail(), $vendor->getVendorName(), $emailTemplateVariables);
+        }
     }
-
 }
