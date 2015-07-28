@@ -1,6 +1,6 @@
 # Crawlers Setup
 User-agent: *
-Disallow: /dsadmin
+
 #Disallow: /media
 Disallow: /skin
 Disallow: /portal
