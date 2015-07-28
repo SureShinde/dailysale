@@ -1,7 +1,6 @@
 # Crawlers Setup
 User-agent: *
 
-#Disallow: /media
 Disallow: /skin
 Disallow: /portal
 Disallow: /vendor
