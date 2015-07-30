@@ -182,6 +182,8 @@ function save_address_information(save_address_url, update_address_shipping, upd
     }
 
     if (update_address_review == 1) {
+
+
         var review = $('checkout-review-load');
         reviewLoad();
     }
@@ -252,7 +254,8 @@ function save_address_information(save_address_url, update_address_shipping, upd
     });
 }
 
-function save_shipping_method(shipping_method_url, update_shipping_payment, update_shipping_review) {
+function save_shipping_method(shipping_method_url, update_shipping_payment, update_shipping_review,type_box) {
+
     if (typeof update_shipping_payment == 'undefined') {
         var update_shipping_payment = false;
     }
@@ -324,6 +327,12 @@ function save_shipping_method(shipping_method_url, update_shipping_payment, upda
                 }
 				checkvalidEmail();
 
+            }
+            if($('p_method_customercredit').checked == true){
+                $('payment_form_customercredit').show();
+
+            }else{
+                $('payment_form_customercredit').hide();
             }
         }
     });
@@ -983,7 +992,7 @@ function minusproduct(id, url) {
                 });
     
 }
-
+/// ///
 function addproduct(id, url) {
         var qty = $('qty-item-'+id).value;
         var review = $('checkout-review-load');

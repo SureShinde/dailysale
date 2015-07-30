@@ -1,7 +1,6 @@
 <?php
 
 /**
- * Test controller
  *
  * @category   Fiuze
  * @package    Fiuze_All

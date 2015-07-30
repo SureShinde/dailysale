@@ -132,6 +132,15 @@
                         </li>
                     <?php endif ?>
                 <?php endfor ?>
+                <li id='shipping_fiuze_adress_server_error' style="background-color: #ff0000; padding: 10px; width: 80%; display: none">
+
+                </li>
+                <li id='shipping_fiuze_adress_error' style="background-color: #ff0000; padding: 10px; width: 80%; display: none">
+                    <span style="color: white"> Please enter an existing address </span>
+                </li>
+                <li id='shipping_fiuze_adress_progress' style="background-color: #1C76BB; padding: 10px; width: 80%; display: none">
+                    <span style="color: white"> Address is checked, please wait... </span>
+                </li>
                     <?php if ($checkCountry == 0): ?>
                     <div style="display:none;">
                     <?php echo $this->getCountryHtmlSelect('shipping') ?>

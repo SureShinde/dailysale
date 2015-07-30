@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <sections>
+        <fiuze_address_validation translate="label" module="fiuze_all">
+            <label>FIuze Address Validation </label>
+            <tab>catalog</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>2</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <license_group translate="label" module="fiuze_all">
+                    <label>License information</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1000</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <license_input translate="label">
+                            <label>Key license </label>
+                            <comment>Your API Key:</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </license_input>
+                        <wsdl_input translate="label">
+                            <label>WSDL URL: </label>
+                            <comment>Example trial WSDL URL: "https://trial.serviceobjects.com/AV3/api.svc?wsdl" (use trial url if empty)</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </wsdl_input>
+                        <name_input translate="label">
+                            <label>Business Name</label>
+                            <comment>Name of business associated with this address. Used to append Suite data.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>15</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </name_input>
+                    </fields>
+                </license_group>
+            </groups>
+        </fiuze_address_validation>
+    </sections>
+</config>

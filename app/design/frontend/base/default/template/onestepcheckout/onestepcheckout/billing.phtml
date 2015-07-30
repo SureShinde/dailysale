@@ -1,4 +1,8 @@
 <div class="billing_address">
+    <script>
+        /// ///
+        fiuze_address_validation_path = '<?php echo Mage::getBaseUrl()?>fiuze_addressvalidation/ajax/billing_ajax';
+    </script>
     <h3 id="billing_step_header" class="step_1"><?php echo($this->__("Billing Address")); ?></h3>
     <?php if ($this->customerHasAddresses()): ?>
         <p class="label"><?php echo $this->__('Select a billing address from your address book or enter a new address.') ?></p>
@@ -158,6 +162,15 @@
                     </li>
                 <?php endif ?>
             <?php endfor ?>
+            <li id='fiuze_adress_server_error' style="background-color: #ff0000; padding: 10px; width: 80%; display: none">
+
+            </li>
+            <li id='fiuze_adress_error' style="background-color: #ff0000; padding: 10px; width: 80%; display: none">
+                <span style="color: white"> Please enter an existing address </span>
+            </li>
+            <li id='fiuze_adress_progress' style="background-color: #1C76BB; padding: 10px; width: 80%; display: none">
+                <span style="color: white"> Address is checked, please wait... </span>
+            </li>
             <?php if ($checkCountry == 0): ?>
                 <div style="display:none;">
                     <?php echo $this->getCountryHtmlSelect('billing') ?>
