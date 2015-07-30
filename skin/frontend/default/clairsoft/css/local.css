@@ -186,9 +186,6 @@ body a:visited {
   padding: 5px;
   width: auto;
 }
-.col-left .block-account li:nth-child(7) {
-  display: none;
-}
 
 .authnetcim-manage-index h1 {
   color: #1b75bb;
