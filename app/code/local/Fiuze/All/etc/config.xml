@@ -85,6 +85,14 @@
                     </captcha_controller_action_predispatch_onestepcheckout_index_saveOrder>
                 </observers>
             </controller_action_predispatch_onestepcheckout_index_saveOrder>
+            <sales_quote_save_before>
+                <observers>
+                    <fiuze_all_sales_quote_save_before>
+                        <class>Fiuze_All_Model_Observer</class>
+                        <method>salesQuoteSaveBefore</method>
+                    </fiuze_all_sales_quote_save_before>
+                </observers>
+            </sales_quote_save_before>
         </events>
     </global>
 
