@@ -650,7 +650,7 @@ class Unirgy_DropshipBatch_Helper_Data extends Mage_Core_Helper_Abstract
                         $title = $carriers[$carrier];
                         $trackingNumber = trim($currentTrackingNumber);
 
-                        if($this->asTrackNumber($trackingNumber)){
+                        if($this->asTrackNumber($trackingNumber, $orderId)){
                             $track = Mage::getModel('sales/order_shipment_track')
                                 ->setNumber($trackingNumber)
                                 ->setCarrierCode($carrier)
@@ -708,12 +708,19 @@ class Unirgy_DropshipBatch_Helper_Data extends Mage_Core_Helper_Abstract
         }
     }
 
-    public function asTrackNumber($trackingNumbers){
+    public function asTrackNumber($trackingNumber, $orderId){
         $api_key = Mage::app()->getWebsite(0)->getConfig('aftership_options/messages/api_key');
         $courier = new AfterShip\Couriers($api_key);
-        $response = $courier->detect($api_key);
+        $response = $courier->detect($trackingNumber);
         $data = $response['data'];
         $data['total']? $result = true: $result = false;
+        if(!$result){
+            $track = Mage::getModel('track/track');
+            $track->setTrackingNumber($trackingNumber);
+            $track->setOrderId($orderId);
+            $track->setErrorTracking('Not validly.');
+            $track->save();
+        }
         return $result;
     }
 }

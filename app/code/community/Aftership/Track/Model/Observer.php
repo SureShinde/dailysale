@@ -414,6 +414,7 @@ class Aftership_Track_Model_Observer {
             try{
                 $this->_getBodyTotalsForCsv($vendor, $io);
             }catch (Exception $ex){
+                $dfdf =54;
             }
 
             $io->streamUnlock();
@@ -448,6 +449,7 @@ class Aftership_Track_Model_Observer {
         foreach($collectionShipments as $shipment){
             $trackNumbers = Mage::getModel('track/track')->getCollection()
                 ->addFieldToFilter('order_id', array('eq' => $shipment->getOrderIncrementId()))
+                ->addFieldToFilter('status', array('neq' => 'In Transit'))
                 ->getItems();
             foreach($trackNumbers as $trackNumber){
                 $row = array();
@@ -459,7 +461,10 @@ class Aftership_Track_Model_Observer {
                     $api_key = Mage::app()->getWebsite(0)->getConfig('aftership_options/messages/api_key');
                     $trackings = new AfterShip\Trackings($api_key);
                     $responseJson = $trackings->get_by_id($trackNumber->getTrackingId());
-                    $row[] = $this->_getStatus($responseJson);
+                    $status = $this->_getStatus($responseJson);
+                    $trackNumber->setStatus($status);
+                    $trackNumber->save();
+                    $row[] = $status;
                 }else{
                     $row[] = '';
                 }
@@ -474,6 +479,12 @@ class Aftership_Track_Model_Observer {
                     $io->streamWriteCsv($row);
                 }
                 if(!$error){
+                    $trackNumber->delete();
+                }
+                if($error == 'Тot validly.'){
+                    $trackNumber->delete();
+                }
+                if($trackNumber->getStatus() == 'In Transit'){
                     $trackNumber->delete();
                 }
             }
