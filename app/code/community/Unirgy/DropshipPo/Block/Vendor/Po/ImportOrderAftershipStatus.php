@@ -8,6 +8,11 @@ class Unirgy_DropshipPo_Block_Vendor_Po_ImportOrderAftershipStatus extends Mage_
 
     protected function _prepareLayout()
     {
+
+        Mage::getConfig()->init()->loadEventObservers('crontab');
+        Mage::app()->addEventArea('crontab');
+        Mage::dispatchEvent('default');
+
         parent::_prepareLayout();
         $this->setResultStatus($this->checkStatusTrackNumber());
         return $this;
@@ -38,7 +43,7 @@ class Unirgy_DropshipPo_Block_Vendor_Po_ImportOrderAftershipStatus extends Mage_
                         $trackings = new AfterShip\Trackings($api_key);
                         $responseJson = $trackings->get_by_id($trackingId);
                         if(!$message){
-                            $message = 'sent successfully';
+                            $message = 'Sent successfully';
                         }
                         $resultStutus[$itemRow] = $message.'&#13;&#10;'.'Status --->'.$this->_getStatus($responseJson);
                         $messageMail[$trackingNumber]['status'] = $this->_getStatus($responseJson);
@@ -74,6 +79,7 @@ class Unirgy_DropshipPo_Block_Vendor_Po_ImportOrderAftershipStatus extends Mage_
     public function sendTrackingNotificationEmail($tracks)
     {
         if(!is_null($this->_trackingNumbersContent)) {
+            return 'All tracking IDs have been uploaded. We will e-mail you the results within 24 hours';
             $emailTemplate = Mage::getModel('core/email_template')
                 ->loadDefault('aftership_tracking_email');
             $emailTemplateVariables = array();

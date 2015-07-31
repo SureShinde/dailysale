@@ -1,4 +1,5 @@
 <?php
+require_once Mage::getBaseDir('lib').DS.'SweetTooth/pest/vendor/autoload.php';
 
 class Aftership_Track_Model_Observer {
 
@@ -104,7 +105,7 @@ class Aftership_Track_Model_Observer {
 			$order = Mage::getModel('sales/order')->load($magento_track->getOrderId(), 'increment_id');
 			$website_config = $this->_getWebsiteConfig($order);
 
-			if ($website_config->cron_job_enable && $website_config->status) {
+			if ($website_config->status) {
 				$tracks = Mage::getModel('track/track')
 					->getCollection()
 					->addFieldToFilter('tracking_number', array('eq' => $this->_getTrackNo($magento_track)))
@@ -393,5 +394,155 @@ class Aftership_Track_Model_Observer {
 
 		return $track_no;
 	}
+
+    public function notificationMail(Varien_Event_Observer $observer){
+        $item = $observer->getEvent();
+        $collectionVendor = Mage::getModel('udropship/vendor')->getCollection()->getItems();
+
+        foreach($collectionVendor as $key => $vendor){
+            $csv = new Varien_File_Csv();
+
+            $io = new Varien_Io_File();
+            $path = Mage::getBaseDir('var') . DS . 'emailTracking';
+            $fileName = Mage::getModel('core/date')->gmtTimestamp().'_'.$key;
+            $file = $path . DS . $fileName . '.csv';
+            $io->setAllowCreateFolders(true);
+            $io->open(array('path' => $path));
+            $io->streamOpen($file, 'w+');
+            $io->streamLock(true);
+            $io->streamWriteCsv($this->_getHeadersForCsv());
+            try{
+                $this->_getBodyTotalsForCsv($vendor, $io);
+            }catch (Exception $ex){
+            }
+
+            $io->streamUnlock();
+            $io->streamClose();
+
+            if(file_exists($file)){
+                $mail = new Zend_Mail ();
+                $mail->setBodyHtml("", "UTF-8");
+                $mail->addTo($vendor->getEmail(), $vendor->getVendorName());
+                $mail->setSubject("Aftership tracking number");
+                $mail->createAttachment(
+                    file_get_contents($file),
+                    Zend_Mime::TYPE_OCTETSTREAM,
+                    Zend_Mime::DISPOSITION_ATTACHMENT,
+                    Zend_Mime::ENCODING_BASE64,
+                    $fileName.'.csv'
+                );
+                try {
+                    $mail->send();
+                } catch (Exception $ex) {}
+                unlink($file);
+            }
+        }
+    }
+
+    private function _getHeadersForCsv(){
+        $row = array('order_id','order_created_at','tracking_number','status','error_tracking');
+        return $row;
+    }
+    private function _getBodyTotalsForCsv($vendor, $io){
+        $collectionShipments = $this->getVendorShipmentCollection($vendor);
+        foreach($collectionShipments as $shipment){
+            $trackNumbers = Mage::getModel('track/track')->getCollection()
+                ->addFieldToFilter('order_id', array('eq' => $shipment->getOrderIncrementId()))
+                ->getItems();
+            foreach($trackNumbers as $trackNumber){
+                $row = array();
+                $row[] = $trackNumber->getOrderId();
+                $row[] = $shipment->getOrderCreatedAt();
+                $row[] = $trackNumber->getTrackingNumber();
+
+                if($trackNumber->getTrackingId()){
+                    $api_key = Mage::app()->getWebsite(0)->getConfig('aftership_options/messages/api_key');
+                    $trackings = new AfterShip\Trackings($api_key);
+                    $responseJson = $trackings->get_by_id($trackNumber->getTrackingId());
+                    $row[] = $this->_getStatus($responseJson);
+                }else{
+                    $row[] = '';
+                }
+
+                if($trackNumber->getErrorTracking() == 'Tracking already exists.'){
+                    $error = '';
+                }else{
+                    $error = $trackNumber->getErrorTracking();
+                }
+                $row[] = $error;
+                if(count($row)){
+                    $io->streamWriteCsv($row);
+                }
+                if(!$error){
+                    $trackNumber->delete();
+                }
+            }
+        }
+    }
+
+    private function _getStatus($responseJson){
+        $http_status = $responseJson['meta']['code'];
+        $data = $responseJson['data'];
+        if($http_status == '200' && array_key_exists('tracking',$data)){
+            $tracking = $data['tracking'];
+            return array_key_exists('tag',$tracking)?$tracking['tag']:'';
+        }
+        return '';
+    }
+
+    public function getVendorShipmentCollection($vendor)
+    {
+        $collection = Mage::getModel('sales/order_shipment')->getCollection();
+        $sqlMap = array();
+        if (!Mage::helper('udropship')->isSalesFlat()) {
+            $collection
+                ->addAttributeToSelect(array('order_id', 'total_qty', 'udropship_status', 'udropship_method', 'udropship_method_description'))
+                ->joinAttribute('order_increment_id', 'order/increment_id', 'order_id')
+                ->joinAttribute('order_created_at', 'order/created_at', 'order_id')
+                ->joinAttribute('shipping_method', 'order/shipping_method', 'order_id');
+        } else {
+            $orderTableQted = $collection->getResource()->getReadConnection()->quoteIdentifier('sales/order');
+            $sqlMap['order_increment_id'] = "$orderTableQted.increment_id";
+            $sqlMap['order_created_at']   = "$orderTableQted.created_at";
+            $collection->join('sales/order', "$orderTableQted.entity_id=main_table.order_id", array(
+                'order_increment_id' => 'increment_id',
+                'order_created_at' => 'created_at',
+                'shipping_method',
+            ));
+        }
+
+        $collection->addAttributeToFilter('udropship_vendor', $vendor->getId());
+
+        return $collection;
+    }
+
+    /**
+     * Sending email with Invoice data
+     *
+     * @return Mage_Sales_Model_Order_Invoice
+     */
+    public function sendTrackingNotificationEmail($tracks)
+    {
+        if(!is_null($this->_trackingNumbersContent)) {
+            $emailTemplate = Mage::getModel('core/email_template')
+                ->loadDefault('aftership_tracking_email');
+            $emailTemplateVariables = array();
+            $emailTemplateVariables['object'] = $tracks;
+
+            $processedTemplate = $emailTemplate->getProcessedTemplate($emailTemplateVariables);
+            $vendor = Mage::getSingleton('udropship/session')->getVendor();
+            $emailTemplate->setSenderName($vendor->getVendorName());
+            $emailTemplate->setSenderEmail($vendor->getEmail());
+            $emailTemplate->setTemplateSubject($emailTemplateVariables);
+            $emailTemplate->getMail()->createAttachment(
+                file_get_contents('temp/temp.csv'),
+                Zend_Mime::TYPE_OCTETSTREAM,
+                Zend_Mime::DISPOSITION_ATTACHMENT,
+                Zend_Mime::ENCODING_BASE64,
+                'file.csv'
+            );
+            $emailTemplate->send($vendor->getEmail(), $vendor->getVendorName(), $emailTemplateVariables);
+        }
+    }
 
 }

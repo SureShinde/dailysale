@@ -2,7 +2,7 @@
 <config>
 	<modules>
 		<Aftership_Track>
-			<version>0.3.6</version>
+			<version>0.3.7</version>
 		</Aftership_Track>
 	</modules>
 
@@ -21,6 +21,9 @@
 					<track>
 						<table>as_track</table>
 					</track>
+                    <schedule>
+                        <table>schedule_aftership</table>
+                    </schedule>
 					<!--<user>
 						<table>as_user</table>
 					</user>-->
@@ -79,13 +82,33 @@
         <jobs>
             <aftershiptrackcron>
                 <schedule>
-                    <config_path>aftership_options/messages/cron_schedule</config_path>
+                    <cron_expr>0 */3 * * *</cron_expr>
                 </schedule>
                 <run>
                     <model>aftershiptrackcron/observer::cron</model>
                 </run>
             </aftershiptrackcron>
         </jobs>
+        <events>
+            <default>
+                <observers>
+                    <cron_observer>
+                        <class>aftershiptrackcron/cronObserver</class>
+                        <method>runCronAftership</method>
+                    </cron_observer>
+                </observers>
+            </default>
+        </events>
+        <jobs_aftership>
+            <aftership_cron_notification_mail>
+                <schedule>
+                    <config_path>aftership_options/messages/cron_schedule</config_path>
+                </schedule>
+                <run>
+                    <model>aftershiptrackcron/observer::notificationMail</model>
+                </run>
+            </aftership_cron_notification_mail>
+        </jobs_aftership>
     </crontab>
 
 	<frontend>
@@ -152,7 +175,7 @@
     <default>
         <aftership_options>
             <messages>
-                <cron_schedule>0 */3 * * *</cron_schedule>
+                <cron_schedule>6,24,48</cron_schedule>
             </messages>
         </aftership_options>
     </default>
