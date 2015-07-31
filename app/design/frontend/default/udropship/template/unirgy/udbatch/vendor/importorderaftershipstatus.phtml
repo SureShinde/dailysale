@@ -3,7 +3,7 @@
 <?php  ob_start(); ?>
 <li>
     <label for="batch_status"><?php echo $_hlp->__('Status') ?></label><br/>
-    <textarea id="batch_status" name="batch_status" title="<?php echo $_hlp->__('Status Import') ?>" style="width:430px; height: 50em;"><?php $this->sendTrackingNotificationEmail($this->messageMail);?></textarea>
+    <textarea id="batch_status" name="batch_status" title="<?php echo $_hlp->__('Status Import') ?>" style="width:430px; height: 50em;"><?php echo $this->sendTrackingNotificationEmail($this->messageMail);?></textarea>
 </li>
 <?php $ff=  ob_get_clean(); ?>
 
