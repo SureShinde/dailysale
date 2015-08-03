@@ -494,7 +494,7 @@ class Aftership_Track_Model_Observer {
                 if(!$error){
                     $trackNumber->delete();
                 }
-                if($error == 'Тot validly.'){
+                if($error == 'Not valid.'){
                     $trackNumber->delete();
                 }
                 if($trackNumber->getStatus() == 'In Transit'){
