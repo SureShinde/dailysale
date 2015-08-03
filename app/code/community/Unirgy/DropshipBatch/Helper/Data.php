@@ -718,7 +718,7 @@ class Unirgy_DropshipBatch_Helper_Data extends Mage_Core_Helper_Abstract
             $track = Mage::getModel('track/track');
             $track->setTrackingNumber($trackingNumber);
             $track->setOrderId($orderId);
-            $track->setErrorTracking('Not validly.');
+            $track->setErrorTracking('Not valid.');
             $track->save();
         }
         return $result;
