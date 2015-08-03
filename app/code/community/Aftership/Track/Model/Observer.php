@@ -400,42 +400,55 @@ class Aftership_Track_Model_Observer {
         $collectionVendor = Mage::getModel('udropship/vendor')->getCollection()->getItems();
 
         foreach($collectionVendor as $key => $vendor){
-            $csv = new Varien_File_Csv();
-
-            $io = new Varien_Io_File();
-            $path = Mage::getBaseDir('var') . DS . 'emailTracking';
-            $fileName = Mage::getModel('core/date')->gmtTimestamp().'_'.$key;
-            $file = $path . DS . $fileName . '.csv';
-            $io->setAllowCreateFolders(true);
-            $io->open(array('path' => $path));
-            $io->streamOpen($file, 'w+');
-            $io->streamLock(true);
-            $io->streamWriteCsv($this->_getHeadersForCsv());
-            try{
-                $this->_getBodyTotalsForCsv($vendor, $io);
-            }catch (Exception $ex){
-                $dfdf =54;
+            //checking the quantity track number
+            $sendMail = false;
+            $collectionShipments = $this->getVendorShipmentCollection($vendor);
+            foreach($collectionShipments as $shipment) {
+                $trackCount = Mage::getModel('track/track')->getCollection()
+                    ->addFieldToFilter('order_id', array('eq' => $shipment->getOrderIncrementId()))
+                    ->addFieldToFilter('status', array('neq' => 'In Transit'))
+                    ->count();
+                if($trackCount){
+                    $sendMail = true;
+                }
             }
 
-            $io->streamUnlock();
-            $io->streamClose();
+            if($sendMail){
+                $io = new Varien_Io_File();
+                $path = Mage::getBaseDir('var') . DS . 'emailTracking';
+                $fileName = Mage::getModel('core/date')->gmtTimestamp().'_'.$key;
+                $file = $path . DS . $fileName . '.csv';
+                $io->setAllowCreateFolders(true);
+                $io->open(array('path' => $path));
+                $io->streamOpen($file, 'w+');
+                $io->streamLock(true);
+                $io->streamWriteCsv($this->_getHeadersForCsv());
+                try{
+                    $this->_getBodyTotalsForCsv($vendor, $io);
+                }catch (Exception $ex){
+                    Mage::logException($ex);
+                }
 
-            if(file_exists($file)){
-                $mail = new Zend_Mail ();
-                $mail->setBodyHtml("", "UTF-8");
-                $mail->addTo($vendor->getEmail(), $vendor->getVendorName());
-                $mail->setSubject("Aftership tracking number");
-                $mail->createAttachment(
-                    file_get_contents($file),
-                    Zend_Mime::TYPE_OCTETSTREAM,
-                    Zend_Mime::DISPOSITION_ATTACHMENT,
-                    Zend_Mime::ENCODING_BASE64,
-                    $fileName.'.csv'
-                );
-                try {
-                    $mail->send();
-                } catch (Exception $ex) {}
-                unlink($file);
+                $io->streamUnlock();
+                $io->streamClose();
+
+                if(file_exists($file)){
+                    $mail = new Zend_Mail ();
+                    $mail->setBodyHtml("", "UTF-8");
+                    $mail->addTo($vendor->getEmail(), $vendor->getVendorName());
+                    $mail->setSubject("Aftership tracking number");
+                    $mail->createAttachment(
+                        file_get_contents($file),
+                        Zend_Mime::TYPE_OCTETSTREAM,
+                        Zend_Mime::DISPOSITION_ATTACHMENT,
+                        Zend_Mime::ENCODING_BASE64,
+                        $fileName.'.csv'
+                    );
+                    try {
+                        $mail->send();
+                    } catch (Exception $ex) {}
+                    unlink($file);
+                }
             }
         }
     }
