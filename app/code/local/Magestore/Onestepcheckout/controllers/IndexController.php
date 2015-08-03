@@ -347,7 +347,13 @@ class Magestore_Onestepcheckout_IndexController extends Mage_Core_Controller_Fro
         $helper = Mage::helper('onestepcheckout');
 
         $billing_data = $this->getRequest()->getPost('billing', array());
+        //rewrite billing data on real data from database
+        $billing_data = Mage::getModel('fiuze_addressvalidation/addresses')->getRealAddress($billing_data);
+
         $shipping_data = $this->getRequest()->getPost('shipping', array());
+        //rewrite shipping data on real data from database
+        $shipping_data = Mage::getModel('fiuze_addressvalidation/addresses')->getRealAddress($shipping_data);
+
 
         if(isset($billing_data['onestepcheckout_comment']))
             Mage::getModel('checkout/session')->setOSCCM($billing_data['onestepcheckout_comment']);

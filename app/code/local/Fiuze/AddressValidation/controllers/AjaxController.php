@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: alex
- * Date: 27.07.15
- * Time: 18:07
- */
 
 class Fiuze_AddressValidation_AjaxController extends Mage_Core_Controller_Front_Action {
 
