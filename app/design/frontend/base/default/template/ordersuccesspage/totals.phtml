@@ -6,10 +6,11 @@
 * @copyright   Copyright (c) 2013 Sashas IT Support Inc. (http://www.sashas.org)
 * @license     http://opensource.org/licenses/GPL-3.0  GNU General Public License, version 3 (GPL-3.0)
 */
-?> 
-<?php foreach ($this->getTotals() as $_code => $_total): ?> 
+?>
+<?php $flag_internal = false; ?>
+<?php foreach ($this->getTotals() as $_code => $_total): ?>
     <?php if ($_total->getBlockName()): ?>
-        <?php echo $this->getChildHtml($_total->getBlockName(), false); ?>      
+        <?php echo $this->getChildHtml($_total->getBlockName(), false); ?>
     <?php else:?>
     <tr class="<?php echo $_code?>">
         <td <?php echo $this->getLabelProperties()?>>
@@ -27,5 +28,22 @@
             <?php endif?>
         </td>
     </tr>
+        <?php    if($flag_internal === false AND $_code=='subtotal' ){ ?>
+            <tr class="internal">
+                <td <?php echo $this->getLabelProperties()?>>
+                    Internal Credit
+                </td>
+                <td <?php echo $this->getValueProperties()?>>
+                    <?php $internal = (float)$this->getOrder()->getCustomerCreditAmount(); ?>
+                    <?php if(round($internal)==$internal){ ?>
+                        <?php echo '-$'.$internal.'.00'; ?>
+                    <?php }else{ ?>
+                        <?php    echo '-$'.$internal; ?>
+                    <?php } ?>
+                </td>
+            </tr>
+
+            <?php $flag_internal = true; ?>
+        <?php  } ?>
     <?php endif?>
 <?php endforeach?>
