@@ -41,10 +41,11 @@ strong {
 
 /* apply a natural box layout model to all elements */
 /* line 53, ../sass/local.scss */
-*, *:before, *:after {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box; }
+/**, *:before, *:after {*/
+  /*-moz-box-sizing: border-box;*/
+  /*-webkit-box-sizing: border-box;*/
+  /*box-sizing: border-box; */
+/*}*/
 
 /* line 57, ../sass/local.scss */
 div, ul, ol, li {
