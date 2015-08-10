@@ -213,136 +213,136 @@ $fcBlock->setFieldValue(array(
                     <col width="1" />
                     <col width="1" />
                     <thead>
-                        <tr>
-                            <th><?php echo $_hlp->__('Product Name') ?></th>
-                            <th><?php echo $_hlp->__('SKU') ?></th>
-                            <th class="a-center"><span class="nobr"><?php echo $_hlp->__('Qty') ?></span></th>
-                            <th class="a-center"><span class="nobr"><?php echo $_hlp->__('Shipped') ?></span></th>
-                        </tr>
+                    <tr>
+                        <th><?php echo $_hlp->__('Product Name') ?></th>
+                        <th><?php echo $_hlp->__('SKU') ?></th>
+                        <th class="a-center"><span class="nobr"><?php echo $_hlp->__('Qty') ?></span></th>
+                        <th class="a-center"><span class="nobr"><?php echo $_hlp->__('Shipped') ?></span></th>
+                    </tr>
                     </thead>
                     <tbody>
                     <?php foreach ($_items as $_item): ?>
                         <?php if ($_item->getOrderItem()->getParentItem()) continue; ?>
                         <?php echo $this->getItemHtml($_item) ?>
                         <?php echo $_item->getGiftMessageId() ?>
-<?php if (($_gId = $_item->getOrderItem()->getGiftMessageId()) && !empty($_giftMsg[$_gId])): ?>
-                        <tr><td colspan="3">
-                            <h4><a href="#" class="item-gift-message-trigger"><?php echo $_hlp->__('Show/Hide Gift Message for the item above') ?></a></h4>
-                            <div class="item-gift-message-content" style="display:none">
-                                <strong><?php echo $_hlp->__('From: %s', $this->htmlEscape($_giftMsg[$_gId]['sender'])) ?></strong><br/>
-                                <strong><?php echo $_hlp->__('To: %s', $this->htmlEscape($_giftMsg[$_gId]['recipient'])) ?></strong><br/>
-                                <p><?php echo nl2br($this->htmlEscape($_giftMsg[$_gId]['message'])) ?></p>
-                            </div>
-                        </td></tr>
-<?php endif ?>
-                    <?php if ($this->isShowTotals()): ?>
-                    <tr class="udropship-item-totals"><td>
-                        <ul>
-                        <?php foreach ($_item->getUdropshipTotals() as $udTotal): ?>
-                        <li>
-                        <nobr>
-                            <span class="label"><?php echo $this->escapeHtml($udTotal['label']) ?></span>
-                            <span class="value"><?php echo $udTotal['value'] ?></span>
-                        </nobr>
-                        </li>
-                        <?php endforeach ?>
-                        </ul>
-                    </td></tr>
-                    <?php endif ?>
+                        <?php if (($_gId = $_item->getOrderItem()->getGiftMessageId()) && !empty($_giftMsg[$_gId])): ?>
+                            <tr><td colspan="3">
+                                    <h4><a href="#" class="item-gift-message-trigger"><?php echo $_hlp->__('Show/Hide Gift Message for the item above') ?></a></h4>
+                                    <div class="item-gift-message-content" style="display:none">
+                                        <strong><?php echo $_hlp->__('From: %s', $this->htmlEscape($_giftMsg[$_gId]['sender'])) ?></strong><br/>
+                                        <strong><?php echo $_hlp->__('To: %s', $this->htmlEscape($_giftMsg[$_gId]['recipient'])) ?></strong><br/>
+                                        <p><?php echo nl2br($this->htmlEscape($_giftMsg[$_gId]['message'])) ?></p>
+                                    </div>
+                                </td></tr>
+                        <?php endif ?>
+                        <?php if ($this->isShowTotals()): ?>
+                            <tr class="udropship-item-totals"><td>
+                                    <ul>
+                                        <?php foreach ($_item->getUdropshipTotals() as $udTotal): ?>
+                                            <li>
+                                                <nobr>
+                                                    <span class="label"><?php echo $this->escapeHtml($udTotal['label']) ?></span>
+                                                    <span class="value"><?php echo $udTotal['value'] ?></span>
+                                                </nobr>
+                                            </li>
+                                        <?php endforeach ?>
+                                    </ul>
+                                </td></tr>
+                        <?php endif ?>
                     <?php endforeach; ?>
                     </tbody>
                     <?php if ($this->isShowTotals()): ?>
-                    <tfoot class="udropship-totals">
+                        <tfoot class="udropship-totals">
                         <?php foreach ($_po->getUdropshipTotals() as $udTotal): ?>
-                        <tr>
-                        <td align="left" colspan="3"><b><?php echo $this->escapeHtml($udTotal['label']) ?></b></td>
-                        <td align="right"><?php echo $udTotal['value'] ?></td>
-                        </tr>
+                            <tr>
+                                <td align="left" colspan="3"><b><?php echo $this->escapeHtml($udTotal['label']) ?></b></td>
+                                <td align="right"><?php echo $udTotal['value'] ?></td>
+                            </tr>
                         <?php endforeach ?>
-                    </tfoot>
+                        </tfoot>
                     <?php endif?>
                 </table>
 
-<?php if (($_gId = $_order->getGiftMessageId()) && !empty($_giftMsg[$_gId])): ?>
-                <br/>
-                <h4><?php echo $_hlp->__('Order Gift Message:') ?></h4>
-                <strong><?php echo $_hlp->__('From: %s', $this->htmlEscape($_giftMsg[$_gId]['sender'])) ?></strong><br/>
-                <strong><?php echo $_hlp->__('To: %s', $this->htmlEscape($_giftMsg[$_gId]['recipient'])) ?></strong><br/>
-                <p><?php echo nl2br($this->htmlEscape($_giftMsg[$_gId]['message'])) ?></p>
-<?php endif ?>
+                <?php if (($_gId = $_order->getGiftMessageId()) && !empty($_giftMsg[$_gId])): ?>
+                    <br/>
+                    <h4><?php echo $_hlp->__('Order Gift Message:') ?></h4>
+                    <strong><?php echo $_hlp->__('From: %s', $this->htmlEscape($_giftMsg[$_gId]['sender'])) ?></strong><br/>
+                    <strong><?php echo $_hlp->__('To: %s', $this->htmlEscape($_giftMsg[$_gId]['recipient'])) ?></strong><br/>
+                    <p><?php echo nl2br($this->htmlEscape($_giftMsg[$_gId]['message'])) ?></p>
+                <?php endif ?>
 
                 <br><br>
 
                 <?php if (count($_shipments)): ?>
-                <table cellspacing="0" class="data-table" <?php if (!empty($_highlight['tracking'])): ?>class="highlight"<?php endif ?>>
-                    <col width="35%" />
-                    <col width="10%" />
-                    <col width="40%" />
-                    <col width="15%" />
-                    <thead>
+                    <table cellspacing="0" class="data-table" <?php if (!empty($_highlight['tracking'])): ?>class="highlight"<?php endif ?>>
+                        <col width="35%" />
+                        <col width="10%" />
+                        <col width="40%" />
+                        <col width="15%" />
+                        <thead>
                         <tr>
                             <th><?php echo $_hlp->__('Shipment ID') ?></th>
                             <th class="a-center"><span class="nobr"><?php echo $_hlp->__('Qty') ?></span></th>
                             <th><?php echo $_hlp->__('Tracking IDs') ?></th>
-<!--                            <th>&nbsp;</th>-->
+                            <!--                            <th>&nbsp;</th>-->
                         </tr>
-                    </thead>
-                    <tbody>
-                    <?php foreach ($_shipments as $_shipment): ?>
-                        <tr class="<?php echo $_shipment->getIsEven() ? 'even' : 'odd'?>">
-                            <td class="a-center">
-                                <a href="javascript:void(0)" onclick="showShipmentInfo('<?php echo $_id ?>', '<?php echo $_shipment->getId() ?>')"><?php echo $_shipment->getIncrementId() ?></a><br>
-                                <?php echo $_hlp->__(isset($_shipmentStatuses[$_shipment->getUdropshipStatus()]) ? $_shipmentStatuses[$_shipment->getUdropshipStatus()] : 'Unknown') ?>
-                            </td>
-                            <td><?php echo $_shipment->getTotalQty()*1 ?></td>
-                            <td>
-                                <?php $_tracking = $_hlp->getVendorTracksCollection($_shipment) ?>
-                                <?php if (count($_tracking)): ?>
-                                <ul class="tracking-numbers">
-                                <?php $_prevTmtId = null; foreach ($_tracking as $_t): $_tId = $_t->getId(); $_tmtId = $_t->getMasterTrackingId(); $_pckCnt = $_t->getPackageCount(); $_tbId = $_t->getBatchId() ?>
-                                    <?php if ($_tmtId!=$_prevTmtId && !is_null($_tmtId) && $_pckCnt>1): ?>
-                                    <li id="old_tracking_id-<?php echo $_tId?>" <?php if (!empty($_highlight['tracking_'.$_tId])): ?>class="highlight"<?php endif ?> >
-                                        <!--<a class="toggle" href="#" onclick="return false"><span></span></a>-->
-                                        <nobr>
-                                        <?php if($_t->isCustom()): ?>
-                                            <?php echo $this->htmlEscape($_tmtId) ?>
-                                        <?php else: ?>
-                                            <a href="javascript:void(0)" onclick="popWin('<?php echo $this->helper('shipping')->getTrackingPopupUrlBySalesModel($_t) ?>','trackorder','width=800,height=600,left=0,top=0,resizable=yes,scrollbars=yes')" ><?php echo $this->htmlEscape($_tmtId) ?></a>
-                                        <?php endif; ?>
-                                        <?php if ($_t->getLabelFormat()): ?>
-                                        <a class="reprint" href="#" onclick="reprintLabelBatch(<?php echo $_id ?>, <?php echo $_tbId ?>); return false" title="<?php echo $_hlp->__('Print label')?>"><span></span></a>
-                                        <?php endif ?>
-                                        <a class="delete" href="#" onclick="udpoDeleteTrack(<?php echo $_id ?>, <?php echo $_tId ?>); return false" title="<?php echo !$_t->getLabelFormat() ? $_hlp->__('Delete tracking number') : $_hlp->__('Delete tracking number and void/refund label if possible') ?>"><span></span></a>
-                                        </nobr>
-                                    </li>
-                                    <?php $_prevTmtId = $_tmtId; continue; endif ?>
-                                    <li <?php if (!is_null($_tmtId) && $_pckCnt>1): ?>style="padding-left: 10px"<?php endif ?> id="old_tracking_id-<?php echo $_tId?>" <?php if (!empty($_highlight['tracking_'.$_tId])): ?>class="highlight"<?php endif ?> >
-                                        <!--<a class="toggle" href="#" onclick="return false"><span></span></a>-->
-                                        <nobr>
-                                        <?php if($_t->isCustom()): ?>
-                                            <?php echo $this->htmlEscape($_t->getNumber()) ?>
-                                        <?php else: ?>
-                                            <a href="javascript:void(0)" onclick="popWin('<?php echo $this->helper('shipping')->getTrackingPopupUrlBySalesModel($_t) ?>','trackorder','width=800,height=600,left=0,top=0,resizable=yes,scrollbars=yes')" ><?php echo $this->htmlEscape($_t->getNumber()) ?></a>
-                                        <?php endif; ?>
-                                        <?php if (is_null($_tmtId) || $_pckCnt==1): ?>
-                                        <?php if ($_t->getLabelFormat()): ?>
-                                        <a class="reprint" href="#" onclick="reprintLabel(<?php echo $_id ?>, <?php echo $_tId ?>); return false" title="<?php echo $_hlp->__('Print label')?>"><span></span></a>
-                                        <?php endif ?>
-                                        <a class="delete" href="#" onclick="udpoDeleteTrack(<?php echo $_id ?>, <?php echo $_tId ?>); return false" title="<?php echo !$_t->getLabelFormat() ? $_hlp->__('Delete tracking number') : $_hlp->__('Delete tracking number and void/refund label if possible') ?>"><span></span></a>
-                                        <?php endif ?>
-                                        </nobr>
-                                    </li>
-                                    <?php $_prevTmtId = $_tmtId ?>
-                                <?php endforeach ?>
-                                </ul>
-                                <?php endif ?>
-                            </td>
-<!--                            <td><a style="white-space:nowrap" href="--><?php //echo $this->getUrl('udpo/vendor/pdf', array('shipment_id'=>$_shipment->getId()))?><!--"><strong>--><?php //echo $_hlp->__('Packing Slip')?><!--</strong></a></td>-->
-                        </tr>
-                    <?php endforeach; ?>
-                    </tbody>
-                </table>
-                <br>
+                        </thead>
+                        <tbody>
+                        <?php foreach ($_shipments as $_shipment): ?>
+                            <tr class="<?php echo $_shipment->getIsEven() ? 'even' : 'odd'?>">
+                                <td class="a-center">
+                                    <a href="javascript:void(0)" onclick="showShipmentInfo('<?php echo $_id ?>', '<?php echo $_shipment->getId() ?>')"><?php echo $_shipment->getIncrementId() ?></a><br>
+                                    <?php echo $_hlp->__(isset($_shipmentStatuses[$_shipment->getUdropshipStatus()]) ? $_shipmentStatuses[$_shipment->getUdropshipStatus()] : 'Unknown') ?>
+                                </td>
+                                <td><?php echo $_shipment->getTotalQty()*1 ?></td>
+                                <td>
+                                    <?php $_tracking = $_hlp->getVendorTracksCollection($_shipment) ?>
+                                    <?php if (count($_tracking)): ?>
+                                        <ul class="tracking-numbers">
+                                            <?php $_prevTmtId = null; foreach ($_tracking as $_t): $_tId = $_t->getId(); $_tmtId = $_t->getMasterTrackingId(); $_pckCnt = $_t->getPackageCount(); $_tbId = $_t->getBatchId() ?>
+                                                <?php if ($_tmtId!=$_prevTmtId && !is_null($_tmtId) && $_pckCnt>1): ?>
+                                                    <li id="old_tracking_id-<?php echo $_tId?>" <?php if (!empty($_highlight['tracking_'.$_tId])): ?>class="highlight"<?php endif ?> >
+                                                        <!--<a class="toggle" href="#" onclick="return false"><span></span></a>-->
+                                                        <nobr>
+                                                            <?php if($_t->isCustom()): ?>
+                                                                <?php echo $this->htmlEscape($_tmtId) ?>
+                                                            <?php else: ?>
+                                                                <a href="javascript:void(0)" onclick="popWin('<?php echo $this->helper('shipping')->getTrackingPopupUrlBySalesModel($_t) ?>','trackorder','width=800,height=600,left=0,top=0,resizable=yes,scrollbars=yes')" ><?php echo $this->htmlEscape($_tmtId) ?></a>
+                                                            <?php endif; ?>
+                                                            <?php if ($_t->getLabelFormat()): ?>
+                                                                <a class="reprint" href="#" onclick="reprintLabelBatch(<?php echo $_id ?>, <?php echo $_tbId ?>); return false" title="<?php echo $_hlp->__('Print label')?>"><span></span></a>
+                                                            <?php endif ?>
+                                                            <a class="delete" href="#" onclick="udpoDeleteTrack(<?php echo $_id ?>, <?php echo $_tId ?>); return false" title="<?php echo !$_t->getLabelFormat() ? $_hlp->__('Delete tracking number') : $_hlp->__('Delete tracking number and void/refund label if possible') ?>"><span></span></a>
+                                                        </nobr>
+                                                    </li>
+                                                    <?php $_prevTmtId = $_tmtId; continue; endif ?>
+                                                <li <?php if (!is_null($_tmtId) && $_pckCnt>1): ?>style="padding-left: 10px"<?php endif ?> id="old_tracking_id-<?php echo $_tId?>" <?php if (!empty($_highlight['tracking_'.$_tId])): ?>class="highlight"<?php endif ?> >
+                                                    <!--<a class="toggle" href="#" onclick="return false"><span></span></a>-->
+                                                    <nobr>
+                                                        <?php if($_t->isCustom()): ?>
+                                                            <?php echo $this->htmlEscape($_t->getNumber()) ?>
+                                                        <?php else: ?>
+                                                            <a href="javascript:void(0)" onclick="popWin('<?php echo $this->helper('shipping')->getTrackingPopupUrlBySalesModel($_t) ?>','trackorder','width=800,height=600,left=0,top=0,resizable=yes,scrollbars=yes')" ><?php echo $this->htmlEscape($_t->getNumber()) ?></a>
+                                                        <?php endif; ?>
+                                                        <?php if (is_null($_tmtId) || $_pckCnt==1): ?>
+                                                            <?php if ($_t->getLabelFormat()): ?>
+                                                                <a class="reprint" href="#" onclick="reprintLabel(<?php echo $_id ?>, <?php echo $_tId ?>); return false" title="<?php echo $_hlp->__('Print label')?>"><span></span></a>
+                                                            <?php endif ?>
+                                                            <a class="delete" href="#" onclick="udpoDeleteTrack(<?php echo $_id ?>, <?php echo $_tId ?>); return false" title="<?php echo !$_t->getLabelFormat() ? $_hlp->__('Delete tracking number') : $_hlp->__('Delete tracking number and void/refund label if possible') ?>"><span></span></a>
+                                                        <?php endif ?>
+                                                    </nobr>
+                                                </li>
+                                                <?php $_prevTmtId = $_tmtId ?>
+                                            <?php endforeach ?>
+                                        </ul>
+                                    <?php endif ?>
+                                </td>
+                                <!--                            <td><a style="white-space:nowrap" href="--><?php //echo $this->getUrl('udpo/vendor/pdf', array('shipment_id'=>$_shipment->getId()))?><!--"><strong>--><?php //echo $_hlp->__('Packing Slip')?><!--</strong></a></td>-->
+                            </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                    <br>
                 <?php endif ?>
 
             </div>
@@ -352,33 +352,33 @@ $fcBlock->setFieldValue(array(
                 <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
 
                 <ul id="form-list-<?php echo $_id?>" class="form-list">
-<?php if ($_vendor->getLabelType() && $_po->canCreateShipment()): ?>
-                    <li>
-                        <label for="print_label-<?php echo $_id?>"><?php echo $_hlp->__('Generate Label') ?></label>
-                        <input id="print_label-<?php echo $_id?>" name="print_label" value="1" title="<?php echo $_hlp->__('Generate Label') ?>" type="checkbox" class="input-checkbox" onclick="toggleLabelForm(this, <?php echo $_id?>); toggleExtraLabelForm($('show_extra_params-<?php echo $_id?>'), '<?php echo $_id?>')"/>
-                    </li>
-<?php endif ?>
+                    <?php if ($_vendor->getLabelType() && $_po->canCreateShipment()): ?>
+                        <li>
+                            <label for="print_label-<?php echo $_id?>"><?php echo $_hlp->__('Generate Label') ?></label>
+                            <input id="print_label-<?php echo $_id?>" name="print_label" value="1" title="<?php echo $_hlp->__('Generate Label') ?>" type="checkbox" class="input-checkbox" onclick="toggleLabelForm(this, <?php echo $_id?>); toggleExtraLabelForm($('show_extra_params-<?php echo $_id?>'), '<?php echo $_id?>')"/>
+                        </li>
+                    <?php endif ?>
                     <?php if (!empty($availableMethods)): ?>
-                    <li id="label_info-7-<?php echo $_id?>" style="display:none">
-                        <label for="use_method_code-<?php echo $_id?>"><?php echo $_hlp->__('Shipping Method') ?></label>
-                        <select id="use_method_code-<?php echo $_id?>" name="use_method_code" title="<?php echo $_hlp->__('Shipping Method') ?>" onchange="syncExtraLabelForm('<?php echo $_id?>')">
-                            <?php foreach($availableMethods as $_amCode => $_amDesc): ?>
-                                <option value="<?php echo $_amCode?>" <?php if ($poShippingMethod==$_amCode): ?> selected<?php endif?>><?php echo $_amDesc?></option>
-                            <?php endforeach ?>
-                        </select>
-                        <br />
-                    </li>
+                        <li id="label_info-7-<?php echo $_id?>" style="display:none">
+                            <label for="use_method_code-<?php echo $_id?>"><?php echo $_hlp->__('Shipping Method') ?></label>
+                            <select id="use_method_code-<?php echo $_id?>" name="use_method_code" title="<?php echo $_hlp->__('Shipping Method') ?>" onchange="syncExtraLabelForm('<?php echo $_id?>')">
+                                <?php foreach($availableMethods as $_amCode => $_amDesc): ?>
+                                    <option value="<?php echo $_amCode?>" <?php if ($poShippingMethod==$_amCode): ?> selected<?php endif?>><?php echo $_amDesc?></option>
+                                <?php endforeach ?>
+                            </select>
+                            <br />
+                        </li>
                     <?php endif ?>
                     <?php if (!Mage::helper('udropship')->isUdpoMpsAvailable($carrierCode)): ?>
-                    <li id="label_info-1-<?php echo $_id?>" class="no-mps-specific" style="display:none">
-                        <label for="weight-<?php echo $_id?>"><?php echo $_hlp->__('Shipment Info')?></label>
-                        <div style="float: left">
+                        <li id="label_info-1-<?php echo $_id?>" class="no-mps-specific" style="display:none">
+                            <label for="weight-<?php echo $_id?>"><?php echo $_hlp->__('Shipment Info')?></label>
+                            <div style="float: left">
                         <span class="udlabel-dynamic-container-<?php echo $_id?>" style="display: none">
                         <?php echo $_hlp->__('Weight:') ?>
-                        <input id="weight-<?php echo $_id?>" name="weight" value="<?php echo $this->getRemainingWeight() ?>" title="<?php echo $_hlp->__('Weight') ?>" type="text" disabled="disabled" class="input-text udlabel-dymanic-weight-<?php echo $_id?>" style="width:50px;" /> LB
+                            <input id="weight-<?php echo $_id?>" name="weight" value="<?php echo $this->getRemainingWeight() ?>" title="<?php echo $_hlp->__('Weight') ?>" type="text" disabled="disabled" class="input-text udlabel-dymanic-weight-<?php echo $_id?>" style="width:50px;" /> LB
                         &nbsp;&nbsp;
-                        <?php echo $_hlp->__('Value:') ?>
-                        <input id="value-<?php echo $_id?>" name="value" value="<?php echo $this->getRemainingValue() ?>" title="<?php echo $_hlp->__('Declared Value') ?>" type="text" disabled="disabled" class="input-text udlabel-dymanic-value-<?php echo $_id?>" style="width:50px;"/> <?php echo $_order->getStoreCurrencyCode() ?>
+                            <?php echo $_hlp->__('Value:') ?>
+                            <input id="value-<?php echo $_id?>" name="value" value="<?php echo $this->getRemainingValue() ?>" title="<?php echo $_hlp->__('Declared Value') ?>" type="text" disabled="disabled" class="input-text udlabel-dymanic-value-<?php echo $_id?>" style="width:50px;"/> <?php echo $_order->getStoreCurrencyCode() ?>
                             <br />
                         </span>
                         <span class="udlabel-static-container-<?php echo $_id?>">
@@ -392,8 +392,8 @@ $fcBlock->setFieldValue(array(
                         <span class="udlabel-usecustom-weight-container-<?php echo $_id?>">
                             <input class="udlabel-usecustom-weight-checkbox-<?php echo $_id?>" type="checkbox" onclick="syncUseCustomWeight(this, <?php echo $_id?>)" /> <b><?php echo $this->__('Use Custom label weight/value') ?></b>
                         </span>
-                        </div>
-                    </li>
+                            </div>
+                        </li>
                     <?php endif ?>
                     <li id="label_info-2-<?php echo $_id?>" class="no-mps-specific" style="display:none">
                         <label for="length-<?php echo $_id?>"><?php echo $_hlp->__('Pkg. Dimensions')?></label>
@@ -407,12 +407,12 @@ $fcBlock->setFieldValue(array(
                         <input id="height-<?php echo $_id?>" name="height" value="<?php echo (float)$_vendor->getDefaultPkgHeight()?>" title="<?php echo $_hlp->__('Height') ?>" type="text" class="input-text" style="width:30px;" />
                     </li>
                     <?php if (!Mage::helper('udropship')->isUdpoMpsAvailable($carrierCode)): ?>
-                    <li id="label_info-6-<?php echo $_id?>" class="mps-specific" style="display:none">
-                        <?php
+                        <li id="label_info-6-<?php echo $_id?>" class="mps-specific" style="display:none">
+                            <?php
                             echo $fcBlock->toHtml();
-                        ?>
-                        <br />
-                    </li>
+                            ?>
+                            <br />
+                        </li>
                     <?php endif ?>
                     <li id="label_info-3-<?php echo $_id?>" style="display:none">
                         <label for="reference-<?php echo $_id?>"><?php echo $_hlp->__('Reference') ?></label>
@@ -424,144 +424,139 @@ $fcBlock->setFieldValue(array(
                         <br />
                     </li>
                     <?php $elIdx = 1; foreach (array(
-                        'endicia_stealth' => $vFieldsXml->descend('endicia_stealth'),
-                        'endicia_label_type' => $vFieldsXml->descend('endicia_label_type'),
-                        'endicia_mail_class' => $vFieldsXml->descend('endicia_mail_class'),
-                        'endicia_mailpiece_shape' => $vFieldsXml->descend('endicia_mailpiece_shape'),
-                        'endicia_delivery_confirmation' => $vFieldsXml->descend('endicia_delivery_confirmation'),
-                        'endicia_signature_confirmation' => $vFieldsXml->descend('endicia_signature_confirmation'),
-                        'endicia_return_receipt' => $vFieldsXml->descend('endicia_return_receipt'),
-                    'endicia_electronic_return_receipt' => $vFieldsXml->descend('endicia_electronic_return_receipt'),
-                        'endicia_insured_mail' => $vFieldsXml->descend('endicia_insured_mail'),
-                        'endicia_restricted_delivery' => $vFieldsXml->descend('endicia_restricted_delivery'),
-                        'endicia_cod' => $vFieldsXml->descend('endicia_cod'),
-                    ) as $extLabelOpt => $extLabelNode): ?>
+                                                   'endicia_stealth' => $vFieldsXml->descend('endicia_stealth'),
+                                                   'endicia_label_type' => $vFieldsXml->descend('endicia_label_type'),
+                                                   'endicia_mail_class' => $vFieldsXml->descend('endicia_mail_class'),
+                                                   'endicia_mailpiece_shape' => $vFieldsXml->descend('endicia_mailpiece_shape'),
+                                                   'endicia_delivery_confirmation' => $vFieldsXml->descend('endicia_delivery_confirmation'),
+                                                   'endicia_signature_confirmation' => $vFieldsXml->descend('endicia_signature_confirmation'),
+                                                   'endicia_return_receipt' => $vFieldsXml->descend('endicia_return_receipt'),
+                                                   'endicia_electronic_return_receipt' => $vFieldsXml->descend('endicia_electronic_return_receipt'),
+                                                   'endicia_insured_mail' => $vFieldsXml->descend('endicia_insured_mail'),
+                                                   'endicia_restricted_delivery' => $vFieldsXml->descend('endicia_restricted_delivery'),
+                                                   'endicia_cod' => $vFieldsXml->descend('endicia_cod'),
+                                               ) as $extLabelOpt => $extLabelNode): ?>
                         <?php
-                            $lblSource = Mage::getSingleton(
-                                $extLabelNode->source_model
+                        $lblSource = Mage::getSingleton(
+                            $extLabelNode->source_model
                                 ? (string)$extLabelNode->source_model
                                 : 'udropship/source'
-                            );
-                            if (is_callable(array($lblSource, 'setPath'))) {
+                        );
+                        if (is_callable(array($lblSource, 'setPath'))) {
                             $lblSource->setPath($extLabelNode->source ? (string)$extLabelNode->source : $extLabelOpt);
-                            }
-                            $extLabelLbl = (string)$extLabelNode->label;
+                        }
+                        $extLabelLbl = (string)$extLabelNode->label;
                         ?>
-                    <li id="label_info-ext-<?php echo $elIdx++?>-<?php echo $_id?>" class="carrier-specific carrier-specific-usps" style="display:none">
-                    <label for="extra_label_info[<?php echo $extLabelOpt.'-'.$_id?>]"><?php echo $_hlp->__($extLabelLbl) ?></label>
-                    <select disabled="disabled" id="extra_label_info[<?php echo $extLabelOpt.'-'.$_id?>]" name="extra_label_info[<?php echo $extLabelOpt?>]" title="<?php echo $_hlp->__($extLabelLbl) ?>">
-                            <?php foreach($lblSource->toOptionHash() as $_optId => $_optVal): ?>
-                            <option value="<?php echo $_optId?>" <?php if ($_optId==$_vendor->getData($extLabelOpt)): ?> selected<?php endif?>><?php echo $_optVal?></option>
-                            <?php endforeach ?>
-                        </select>
-                        <div class="clear" style="height: 5px"></div>
-                    </li>
+                        <li id="label_info-ext-<?php echo $elIdx++?>-<?php echo $_id?>" class="carrier-specific carrier-specific-usps" style="display:none">
+                            <label for="extra_label_info[<?php echo $extLabelOpt.'-'.$_id?>]"><?php echo $_hlp->__($extLabelLbl) ?></label>
+                            <select disabled="disabled" id="extra_label_info[<?php echo $extLabelOpt.'-'.$_id?>]" name="extra_label_info[<?php echo $extLabelOpt?>]" title="<?php echo $_hlp->__($extLabelLbl) ?>">
+                                <?php foreach($lblSource->toOptionHash() as $_optId => $_optVal): ?>
+                                    <option value="<?php echo $_optId?>" <?php if ($_optId==$_vendor->getData($extLabelOpt)): ?> selected<?php endif?>><?php echo $_optVal?></option>
+                                <?php endforeach ?>
+                            </select>
+                            <div class="clear" style="height: 5px"></div>
+                        </li>
                     <?php endforeach ?>
                     <?php foreach (array(
-                        'ups_insurance' => $vFieldsXml->descend('ups_insurance'),
-                        'ups_delivery_confirmation' => $vFieldsXml->descend('ups_delivery_confirmation'),
-                        'ups_verbal_confirmation' => $vFieldsXml->descend('ups_verbal_confirmation'),
-                        'ups_pickup' => $vFieldsXml->descend('ups_pickup'),
-                        'ups_container' => $vFieldsXml->descend('ups_container'),
-                        'ups_dest_type' => $vFieldsXml->descend('ups_dest_type'),
-                    ) as $extLabelOpt => $extLabelNode): ?>
+                                       'ups_insurance' => $vFieldsXml->descend('ups_insurance'),
+                                       'ups_delivery_confirmation' => $vFieldsXml->descend('ups_delivery_confirmation'),
+                                       'ups_verbal_confirmation' => $vFieldsXml->descend('ups_verbal_confirmation'),
+                                       'ups_pickup' => $vFieldsXml->descend('ups_pickup'),
+                                       'ups_container' => $vFieldsXml->descend('ups_container'),
+                                       'ups_dest_type' => $vFieldsXml->descend('ups_dest_type'),
+                                   ) as $extLabelOpt => $extLabelNode): ?>
                         <?php
-                            $lblSource = Mage::getSingleton(
-                                $extLabelNode->source_model
+                        $lblSource = Mage::getSingleton(
+                            $extLabelNode->source_model
                                 ? (string)$extLabelNode->source_model
                                 : 'udropship/source'
-                            );
-                            if (is_callable(array($lblSource, 'setPath'))) {
+                        );
+                        if (is_callable(array($lblSource, 'setPath'))) {
                             $lblSource->setPath($extLabelNode->source ? (string)$extLabelNode->source : $extLabelOpt);
-                            }
-                            $extLabelLbl = (string)$extLabelNode->label;
+                        }
+                        $extLabelLbl = (string)$extLabelNode->label;
                         ?>
-                    <li id="label_info-ext-<?php echo $elIdx++?>-<?php echo $_id?>" class="carrier-specific carrier-specific-ups" style="display:none">
-                    <label for="extra_label_info[<?php echo $extLabelOpt.'-'.$_id?>]"><?php echo $_hlp->__($extLabelLbl) ?></label>
-                    <select disabled="disabled" id="extra_label_info[<?php echo $extLabelOpt.'-'.$_id?>]" name="extra_label_info[<?php echo $extLabelOpt?>]" title="<?php echo $_hlp->__($extLabelLbl) ?>">
-                            <?php foreach($lblSource->toOptionHash() as $_optId => $_optVal): ?>
-                            <option value="<?php echo $_optId?>" <?php if ($_optId==$_vendor->getData($extLabelOpt)): ?> selected<?php endif?>><?php echo $_optVal?></option>
-                            <?php endforeach ?>
-                        </select>
-                        <div class="clear" style="height: 5px"></div>
-                    </li>
+                        <li id="label_info-ext-<?php echo $elIdx++?>-<?php echo $_id?>" class="carrier-specific carrier-specific-ups" style="display:none">
+                            <label for="extra_label_info[<?php echo $extLabelOpt.'-'.$_id?>]"><?php echo $_hlp->__($extLabelLbl) ?></label>
+                            <select disabled="disabled" id="extra_label_info[<?php echo $extLabelOpt.'-'.$_id?>]" name="extra_label_info[<?php echo $extLabelOpt?>]" title="<?php echo $_hlp->__($extLabelLbl) ?>">
+                                <?php foreach($lblSource->toOptionHash() as $_optId => $_optVal): ?>
+                                    <option value="<?php echo $_optId?>" <?php if ($_optId==$_vendor->getData($extLabelOpt)): ?> selected<?php endif?>><?php echo $_optVal?></option>
+                                <?php endforeach ?>
+                            </select>
+                            <div class="clear" style="height: 5px"></div>
+                        </li>
                     <?php endforeach ?>
                     <?php foreach (array(
-                        'fedex_dropoff_type' => $vFieldsXml->descend('fedex_dropoff_type'),
-                        'fedex_signature_option' => $vFieldsXml->descend('fedex_signature_option'),
-                        'fedex_insurance' => $vFieldsXml->descend('fedex_insurance'),
-                    ) as $extLabelOpt => $extLabelNode): ?>
+                                       'fedex_dropoff_type' => $vFieldsXml->descend('fedex_dropoff_type'),
+                                       'fedex_signature_option' => $vFieldsXml->descend('fedex_signature_option'),
+                                       'fedex_insurance' => $vFieldsXml->descend('fedex_insurance'),
+                                   ) as $extLabelOpt => $extLabelNode): ?>
                         <?php
-                            $lblSource = Mage::getSingleton(
-                                $extLabelNode->source_model
+                        $lblSource = Mage::getSingleton(
+                            $extLabelNode->source_model
                                 ? (string)$extLabelNode->source_model
                                 : 'udropship/source'
-                            );
-                            if (is_callable(array($lblSource, 'setPath'))) {
+                        );
+                        if (is_callable(array($lblSource, 'setPath'))) {
                             $lblSource->setPath($extLabelNode->source ? (string)$extLabelNode->source : $extLabelOpt);
-                            }
-                            $extLabelLbl = (string)$extLabelNode->label;
+                        }
+                        $extLabelLbl = (string)$extLabelNode->label;
                         ?>
-                    <li id="label_info-ext-<?php echo $elIdx++?>-<?php echo $_id?>" class="carrier-specific carrier-specific-fedex carrier-specific-fedexsoap" style="display:none">
-                    <label for="extra_label_info[<?php echo $extLabelOpt.'-'.$_id?>]"><?php echo $_hlp->__($extLabelLbl) ?></label>
-                    <select disabled="disabled" id="extra_label_info[<?php echo $extLabelOpt.'-'.$_id?>]" name="extra_label_info[<?php echo $extLabelOpt?>]" title="<?php echo $_hlp->__($extLabelLbl) ?>">
-                            <?php foreach($lblSource->toOptionHash() as $_optId => $_optVal): ?>
-                            <option value="<?php echo $_optId?>" <?php if ($_optId==$_vendor->getData($extLabelOpt)): ?> selected<?php endif?>><?php echo $_optVal?></option>
-                            <?php endforeach ?>
-                        </select>
-                        <div class="clear" style="height: 5px"></div>
-                    </li>
+                        <li id="label_info-ext-<?php echo $elIdx++?>-<?php echo $_id?>" class="carrier-specific carrier-specific-fedex carrier-specific-fedexsoap" style="display:none">
+                            <label for="extra_label_info[<?php echo $extLabelOpt.'-'.$_id?>]"><?php echo $_hlp->__($extLabelLbl) ?></label>
+                            <select disabled="disabled" id="extra_label_info[<?php echo $extLabelOpt.'-'.$_id?>]" name="extra_label_info[<?php echo $extLabelOpt?>]" title="<?php echo $_hlp->__($extLabelLbl) ?>">
+                                <?php foreach($lblSource->toOptionHash() as $_optId => $_optVal): ?>
+                                    <option value="<?php echo $_optId?>" <?php if ($_optId==$_vendor->getData($extLabelOpt)): ?> selected<?php endif?>><?php echo $_optVal?></option>
+                                <?php endforeach ?>
+                            </select>
+                            <div class="clear" style="height: 5px"></div>
+                        </li>
                     <?php endforeach ?>
                     <li id="label_info-4-<?php echo $_id?>" style="display:none">
                         <label for="use_label_shipping_amount-<?php echo $_id?>"><?php echo $_hlp->__('Use Label Amount') ?></label>
                         <input id="use_label_shipping_amount-<?php echo $_id?>" name="use_label_shipping_amount" value="1" title="<?php echo $_hlp->__('Use Label Shipping Amount') ?>" type="checkbox" class="input-checkbox" onchange="useLabelShippingAmountChanged(this)" />
                         <br />
                     </li>
-<?php if ($_po->canCreateShipment()): ?>
-                    <li id="shipping_amount-1-<?php echo $_id?>">
-                        <nobr>
-                        <label for="shipping_amount-<?php echo $_id?>"><?php echo $_hlp->__('Shipping Amount') ?></label>
-                        <input id="shipping_amount-<?php echo $_id?>" name="shipping_amount" value="<?php echo $this->getRemainingShippingAmount()?>" title="<?php echo $_hlp->__('Specify New Shipment Shipping Amount') ?>" type="text" class="input-text" />
-                        </nobr>
-                    </li>
-                    <li id="tracking_id-3-<?php echo $_id?>">
-                        <label for="carrier-<?php echo $_id?>"><?php echo $_hlp->__('Carrier') ?></label>
-                        <select id="carrier-<?php echo $_id?>" name="carrier" class="select" style="width:250px" onchange="selectCarrier(this, 'carrier_title-<?php echo $_id?>')">
-                            <?php foreach ($this->getCarriers() as $_code=>$_name): ?>
-                                <?php if ($_vendor->getCarrierCode()==$_code){?>
-                            <option selected value="<?php echo $_code ?>"><?php echo $_name ?></option>
-                                    <?php $_carrierTitle= $_name; ?>
-                                <?php }else{ ?>
-                            <option value="<?php echo $_code ?>"><?php echo $_name ?></option>
-                                <?php }?>
-                            <?php endforeach; ?>
-                        </select>
-                    </li>
-                    <li id="tracking_id-4-<?php echo $_id?>">
-                        <label for="carrier_title-<?php echo $_id?>"><?php echo $_hlp->__('Carrier Title') ?></label>
-                        <input id="carrier_title-<?php echo $_id?>" name="carrier_title" value="<?php echo "$_carrierTitle"; ?>" title="<?php echo $_hlp->__('Carrier Title') ?>" type="text" class="input-text" style="width:250px;" />
-                    </li>
-                    <li id="tracking_id-1-<?php echo $_id?>">
-                        <label for="tracking_id-<?php echo $_id?>"><?php echo $_hlp->__('Add Tracking ID') ?></label>
-                        <input id="tracking_id-<?php echo $_id?>" name="tracking_id" value="" title="<?php echo $_hlp->__('Add Tracking ID') ?>" type="text" class="input-text" style="width:250px;" />
-                    </li>
-<?php endif ?>
+                    <?php if ($_po->canCreateShipment()): ?>
+                        <li id="shipping_amount-1-<?php echo $_id?>">
+                            <nobr>
+                                <label for="shipping_amount-<?php echo $_id?>"><?php echo $_hlp->__('Shipping Amount') ?></label>
+                                <input id="shipping_amount-<?php echo $_id?>" name="shipping_amount" value="<?php echo $this->getRemainingShippingAmount()?>" title="<?php echo $_hlp->__('Specify New Shipment Shipping Amount') ?>" type="text" class="input-text" />
+                            </nobr>
+                        </li>
+                        <li id="tracking_id-3-<?php echo $_id?>">
+                            <label for="carrier-<?php echo $_id?>"><?php echo $_hlp->__('Carrier') ?></label>
+                            <select id="carrier-<?php echo $_id?>" name="carrier" class="select" style="width:250px" onchange="selectCarrier(this, 'carrier_title-<?php echo $_id?>')">
+                                <?php foreach ($this->getCarriers() as $_code=>$_name): ?>
+                                    <option value="<?php echo $_code ?>"><?php echo $_name ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </li>
+                        <li id="tracking_id-4-<?php echo $_id?>">
+                            <label for="carrier_title-<?php echo $_id?>"><?php echo $_hlp->__('Carrier Title') ?></label>
+                            <input id="carrier_title-<?php echo $_id?>" name="carrier_title" value="" title="<?php echo $_hlp->__('Carrier Title') ?>" type="text" class="input-text" style="width:250px;" />
+                        </li>
+                        <li id="tracking_id-1-<?php echo $_id?>">
+                            <label for="tracking_id-<?php echo $_id?>"><?php echo $_hlp->__('Add Tracking ID') ?></label>
+                            <input id="tracking_id-<?php echo $_id?>" name="tracking_id" value="<?php echo $_session->getData('tracking_id'); $_session->unsetData('tracking_id');?>" title="<?php echo $_hlp->__('Add Tracking ID') ?>" type="text" class="input-text" style="width:250px;" />
+                        </li>
+                    <?php endif ?>
                     <li>
                         <label for="comment-<?php echo $_id?>"><?php echo $_hlp->__('Add Comment<br/>(for retailer)') ?></label>
                         <textarea id="comment-<?php echo $_id?>" name="comment" class="textarea" style="width:250px; height:70px;" title="<?php echo $_hlp->__('Add Comment') ?>" ></textarea>
                     </li>
-<?php if (Mage::getStoreConfigFlag('udropship/vendor/manual_shipment_status')): ?>
-                    <li id="label_info-5-<?php echo $_id?>" style="display:none">
-                        <label for="is_shipped-<?php echo $_id?>"><?php echo $_hlp->__('Mark as Shipped') ?></label>
-                        <input id="is_shipped-<?php echo $_id?>" name="is_shipped" value="1" title="<?php echo $_hlp->__('Mark as Shipped') ?>" type="checkbox" class="input-checkbox" <?php if (Mage::getStoreConfigFlag('udropship/vendor/auto_shipment_complete')): ?>checked="checked"<?php endif ?>/>
-                    </li>
+                    <?php if (Mage::getStoreConfigFlag('udropship/vendor/manual_shipment_status')): ?>
+                        <li id="label_info-5-<?php echo $_id?>" style="display:none">
+                            <label for="is_shipped-<?php echo $_id?>"><?php echo $_hlp->__('Mark as Shipped') ?></label>
+                            <input id="is_shipped-<?php echo $_id?>" name="is_shipped" value="1" title="<?php echo $_hlp->__('Mark as Shipped') ?>" type="checkbox" class="input-checkbox" <?php if (Mage::getStoreConfigFlag('udropship/vendor/auto_shipment_complete')): ?>checked="checked"<?php endif ?>/>
+                        </li>
 
-                    <li id="tracking_id-2-<?php echo $_id?>">
-                        <label for="change_status-<?php echo $_id?>"><?php echo $_hlp->__('Change Status') ?></label>
-                        <select id="change_status-<?php echo $_id?>" name="status" title="<?php echo $_hlp->__('Change Status') ?>" class="select" onchange="udpoStatusChanged(this)"/>
+                        <li id="tracking_id-2-<?php echo $_id?>">
+                            <label for="change_status-<?php echo $_id?>"><?php echo $_hlp->__('Change Status') ?></label>
+                            <select id="change_status-<?php echo $_id?>" name="status" title="<?php echo $_hlp->__('Change Status') ?>" class="select" onchange="udpoStatusChanged(this)"/>
                             <option value=""><?php echo $_hlp->__('* Automatic') ?></option>
-                        <?php if (!Mage::getStoreConfigFlag('udropship/vendor/allow_forced_po_status_change')): ?>
-                            <?php
+                            <?php if (!Mage::getStoreConfigFlag('udropship/vendor/allow_forced_po_status_change')): ?>
+                                <?php
                                 $_allowedPoStatuses = $_poHlp->getAllowedPoStatuses($_po, false);
                                 $__statuses = array();
                                 foreach ($_statuses as $_status => $_statusLbl) {
@@ -569,34 +564,34 @@ $fcBlock->setFieldValue(array(
                                         $__statuses[$_status] = $_statusLbl;
                                     }
                                 }
-                            ?>
-                        <?php else: ?>
-                            <?php $__statuses = $_statuses ?>
-                        <?php endif ?>
-                        <?php foreach ($__statuses as $_k=>$_v): ?>
-                            <option value="<?php echo $_k ?>"><?php echo $_v ?></option>
-                        <?php endforeach ?>
-                        </select>
-                        <script type="text/javascript">
-                            if (!window.allowedPoStatuses) {
-                                window.allowedPoStatuses = {}
-                            }
-                            window.allowedPoStatuses['<?php echo $_id?>'] = <?php echo $_poHlp->getAllowedPoStatusesJson($_po, false)?>;
-                        </script>
-                        <input type="hidden" id="force_status_change_flag-<?php echo $_id?>" name="force_status_change_flag" value="0" />
-                    </li>
-                    <li id="full-cancel-<?php echo $_id?>" style="display:none">
-                        <small><?php echo $this->__('By default only items that do not have corresponding shipment items will be canceled')?></small><br /><br />
-                        <label for="nonshipped-cancel-cb-<?php echo $_id?>"><?php echo $this->__('Nonshipped Cancel')?></label> <input id="nonshipped-cancel-cb-<?php echo $_id?>" type="checkbox" name="nonshipped_cancel" value="1" /> <br/>
-                        <small><?php echo $this->__('This will cancel non shipped shipments')?></small><br /><br />
-                        <label for="full-cancel-cb-<?php echo $_id?>"><?php echo $this->__('Full Cancel')?></label> <input id="full-cancel-cb-<?php echo $_id?>" type="checkbox" name="full_cancel" value="1" /> <br/>
-                        <small><?php echo $this->__('This will cancel even shipped shipments')?></small>
-                    </li>
-<?php endif ?>
+                                ?>
+                            <?php else: ?>
+                                <?php $__statuses = $_statuses ?>
+                            <?php endif ?>
+                            <?php foreach ($__statuses as $_k=>$_v): ?>
+                                <option value="<?php echo $_k ?>"><?php echo $_v ?></option>
+                            <?php endforeach ?>
+                            </select>
+                            <script type="text/javascript">
+                                if (!window.allowedPoStatuses) {
+                                    window.allowedPoStatuses = {}
+                                }
+                                window.allowedPoStatuses['<?php echo $_id?>'] = <?php echo $_poHlp->getAllowedPoStatusesJson($_po, false)?>;
+                            </script>
+                            <input type="hidden" id="force_status_change_flag-<?php echo $_id?>" name="force_status_change_flag" value="0" />
+                        </li>
+                        <li id="full-cancel-<?php echo $_id?>" style="display:none">
+                            <small><?php echo $this->__('By default only items that do not have corresponding shipment items will be canceled')?></small><br /><br />
+                            <label for="nonshipped-cancel-cb-<?php echo $_id?>"><?php echo $this->__('Nonshipped Cancel')?></label> <input id="nonshipped-cancel-cb-<?php echo $_id?>" type="checkbox" name="nonshipped_cancel" value="1" /> <br/>
+                            <small><?php echo $this->__('This will cancel non shipped shipments')?></small><br /><br />
+                            <label for="full-cancel-cb-<?php echo $_id?>"><?php echo $this->__('Full Cancel')?></label> <input id="full-cancel-cb-<?php echo $_id?>" type="checkbox" name="full_cancel" value="1" /> <br/>
+                            <small><?php echo $this->__('This will cancel even shipped shipments')?></small>
+                        </li>
+                    <?php endif ?>
                     <li>
                         <label>&nbsp;</label>
                         <?php if ($_po->canCreateShipment()): ?>
-                        <button class="form-button" type="button" id="submit-<?php echo $_id ?>"><span><?php echo $_hlp->__('Create Shipment') ?></span></button>
+                            <button class="form-button" type="button" id="submit-<?php echo $_id ?>"><span><?php echo $_hlp->__('Create Shipment') ?></span></button>
                         <?php endif?>
                         <button class="form-button" type="button" id="addcomment-<?php echo $_id ?>"><span><?php echo $_hlp->__('Add PO Comment') ?></span></button>
                         <span class="shipment-info-loader" style="display:none" id="submit-loader-<?php echo $_id ?>"><?php echo $_hlp->__('Please wait, submitting...')?></span>
@@ -604,21 +599,21 @@ $fcBlock->setFieldValue(array(
                 </ul>
 
                 <?php if (count($_comments)): ?>
-                <br />
-                <h4><?php echo $_hlp->__('Comments history') ?></h4>
-                <table cellspacing="0" class="data-table" <?php if (!empty($_highlight['comment'])): ?>class="highlight"<?php endif ?>><tbody>
-                    <?php foreach ($_comments as $_c): ?>
-                    <tr <?php if (!empty($_highlight['comment_'.$_c->getId()])): ?>class="highlight"<?php endif ?> >
-                        <td>
-                            <nobr><strong><?php echo Mage::helper('core')->formatDate($_c->getCreatedAt(), 'short', true) ?></strong></nobr><br/>
-                            <nobr><strong><?php echo $_c->getUdropshipStatus()?></strong></nobr><br>
-                        </td>
-                        <td>
-                            <?php echo nl2br($this->htmlEscape($_c->getComment())) ?>
-                        </td>
-                    </tr>
-                    <?php endforeach ?>
-                </tbody></table>
+                    <br />
+                    <h4><?php echo $_hlp->__('Comments history') ?></h4>
+                    <table cellspacing="0" class="data-table" <?php if (!empty($_highlight['comment'])): ?>class="highlight"<?php endif ?>><tbody>
+                        <?php foreach ($_comments as $_c): ?>
+                            <tr <?php if (!empty($_highlight['comment_'.$_c->getId()])): ?>class="highlight"<?php endif ?> >
+                                <td>
+                                    <nobr><strong><?php echo Mage::helper('core')->formatDate($_c->getCreatedAt(), 'short', true) ?></strong></nobr><br/>
+                                    <nobr><strong><?php echo $_c->getUdropshipStatus()?></strong></nobr><br>
+                                </td>
+                                <td>
+                                    <?php echo nl2br($this->htmlEscape($_c->getComment())) ?>
+                                </td>
+                            </tr>
+                        <?php endforeach ?>
+                        </tbody></table>
                 <?php endif ?>
             </div>
         </div>

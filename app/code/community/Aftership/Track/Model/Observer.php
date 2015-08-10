@@ -569,4 +569,11 @@ class Aftership_Track_Model_Observer {
         }
     }
 
+    public function coreLayoutBlockCreateAfter(Varien_Event_Observer $observer){
+        $block = $observer->getBlock();
+        if($block instanceof Mage_Adminhtml_Block_Sales_Order_View_Tab_History){
+            $block->setTemplate('fiuze/aftership/sales/order/view/tab/history.phtml');
+        }
+    }
+
 }

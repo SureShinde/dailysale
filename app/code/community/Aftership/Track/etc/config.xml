@@ -7,6 +7,11 @@
 	</modules>
 
 	<global>
+        <blocks>
+            <aftership_track>
+                <class>Aftership_Track_Block</class>
+            </aftership_track>
+        </blocks>
 		<models>
 			<aftershiptrackcron>
 				<class>Aftership_Track_Model</class>
@@ -123,6 +128,18 @@
 		</routers>
 	</frontend>
 
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <track before="Mage_Adminhtml">Aftership_Track_Adminhtml</track>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+
 	<adminhtml>
 		<layout>
 			<updates>
@@ -133,6 +150,15 @@
 		</layout>
 
 		<events>
+            <core_layout_block_create_after>
+                <observers>
+                    <fiuze_block_create>
+                        <type>singleton</type>
+                        <class>track/observer</class>
+                        <method>coreLayoutBlockCreateAfter</method>
+                    </fiuze_block_create>
+                </observers>
+            </core_layout_block_create_after>
 			<sales_order_shipment_track_save_after>
 				<observers>
 					<fishpig_save_product_data>
