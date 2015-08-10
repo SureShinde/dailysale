@@ -10,6 +10,9 @@ class Fiuze_AddressValidation_AjaxController extends Mage_Core_Controller_Front_
         $address[3] = $this->getRequest()->getParam('3');
         $address[4] = $this->getRequest()->getParam('4');
 
+        if($address['1']==null){
+            $address = Mage::getModel('fiuze_addressvalidation/addresses')->getCustomerAddress($address);
+        }
         $result = Mage::getModel('fiuze_addressvalidation/addresses')->checkAddress($address);
         $this->getResponse()->setBody($result);
 

@@ -87,4 +87,35 @@ class Fiuze_AddressValidation_Model_Addresses extends Mage_Core_Model_Abstract
 
         return $data;
     }
+
+    public function getCustomerAddress($data){
+        $data = $data ['0'];
+        if(is_numeric($data)){
+            $customer_address = Mage::getModel('customer/address')->load($data)->getData();
+            $result['0'] = $customer_address['street'];
+            $result['1'] = $customer_address['country_id'];
+            $result['2'] = $customer_address['city'];
+            $result['3'] = $customer_address['postcode'];
+            $result['4'] = $customer_address['region_id'];
+            $result['5'] = $customer_address['firstname'];
+            $result['6'] = $customer_address['lastname'];
+            $result['7'] = $customer_address['telephone'];
+        }else{
+            $result = null;
+        }
+        return $result;
+    }
+
+    public function getAddressById($address_id,$address){
+        $add_data = $this->getCustomerAddress(array('0'=>$address_id));
+        $address['street']['0']  = $add_data['0'];
+        $address['country_id'] = $add_data['1'];
+        $address['city'] = $add_data['2'];
+        $address['postcode'] = $add_data['3'];
+        $address['region_id'] = $add_data['4'];
+        $address['firstname'] = $add_data['5'];
+        $address['lastname'] = $add_data['6'];
+        $address['telephone'] = $add_data['7'];
+        return $address;
+    }
 }

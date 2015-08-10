@@ -328,7 +328,7 @@
                                     <?php echo $this->__('Pay Securely Now') ?>
                                 </span>
                             </span>
-                        </button>      
+                        </button>
                     </div>
                     <div id="onestepcheckout-place-order-loading" style="display:none;margin-top:10px; ">
                         <!--img style="float:left;" src="<?php echo $styleUse; ?>loading-icon.gif"-->
@@ -578,88 +578,141 @@
 
     function oscPlaceOrder(element) {
 
+        $('fiuze_billing_address_write_error').hide();
+        $('fiuze_shipping_address_write_error').hide();
         fiuze_billing_valid = true;
         fiuze_shipping_valid = true;
 
         //start shipping
-        if ($('shipping:different_shipping').checked && $('shipping-address-select').value==""  ) {
-
-            //start shipping
-            console.log('shipping_check');
-            var addressShippingFiuzeCheck = ['shipping:street1', 'shipping:country_id', 'shipping:city', 'shipping:postcode', 'shipping:region_id', 'shipping:telephone' ,'shipping:firstname' ,'shipping:lastname'];
-            var shipping_err = false;
-            var shipping_address_data = [];
-            for (var i = 0; i < addressShippingFiuzeCheck.length; i++) {
-                if ($(addressShippingFiuzeCheck[i]).value === '') {
-                    shipping_err = true;
-                } else {
-                    shipping_address_data.push($(addressShippingFiuzeCheck[i]).value);
+        if ($('shipping:different_shipping').checked) {
+            if ($('shipping-address-select') == undefined || $('shipping-address-select').value == "") {
+                //start shipping
+                console.log('shipping_check');
+                var addressShippingFiuzeCheck = ['shipping:street1', 'shipping:country_id', 'shipping:city', 'shipping:postcode', 'shipping:region_id', 'shipping:telephone' ,'shipping:firstname' ,'shipping:lastname'];
+                var shipping_err = false;
+                var shipping_address_data = [];
+                for (var i = 0; i < addressShippingFiuzeCheck.length; i++) {
+                    if ($(addressShippingFiuzeCheck[i]).value === '') {
+                        shipping_err = true;
+                    } else {
+                        shipping_address_data.push($(addressShippingFiuzeCheck[i]).value);
+                    }
                 }
-            }
-            if (shipping_err === false) {
+                if (shipping_err === false) {
+                    fiuze_shipping_valid = false;
+                    $('shipping_fiuze_adress_progress').show();
+                    $('shipping_fiuze_adress_server_error').hide();
+                    $('shipping_fiuze_adress_error').hide();
+                    var shipping_request = new Ajax.Request(fiuze_address_validation_path, {
+                        parameters: shipping_address_data,
+                        onComplete: function (transport) {
+                            console.log('ajax run');
+                            $('shipping_fiuze_adress_progress').hide();
+                            if (transport.responseText == 'true') {
+                                console.log('ajax result true');
+                                fiuze_shipping_valid = true;
+                                placeOrder(element);
+                            } else if (transport.responseText == 'false') {
+                                console.log('ajax result false');
+                                $('shipping_fiuze_adress_error').show();
+                            } else {
+                                console.log('ajax result error');
+                                var message = '<span style="color: white"> Something went wrong, try again later.<br>Error code: ' + transport.responseText + '</span>';
+                                $('shipping_fiuze_adress_server_error').show().update(message);
+
+                            }
+                        }
+                    });
+
+                } else{
+                    placeOrder(element)
+                }
+                //end
+                //shipping
+            }else{
                 fiuze_shipping_valid = false;
-                $('shipping_fiuze_adress_progress').show();
-                $('shipping_fiuze_adress_server_error').hide();
-                $('shipping_fiuze_adress_error').hide();
-                /// ///
-                var shipping_request = new Ajax.Request(fiuze_address_validation_path, {
-                    parameters: shipping_address_data,
+                var fiuze_id_address = [];
+                fiuze_id_address.push($('shipping-address-select').value);
+                var request = new Ajax.Request(fiuze_address_validation_path, {
+                    parameters: fiuze_id_address,
                     onComplete: function (transport) {
-                        console.log('ajax run');
-                        $('shipping_fiuze_adress_progress').hide();
+                        $('fiuze_adress_progress').hide();
                         if (transport.responseText == 'true') {
                             console.log('ajax result true');
                             fiuze_shipping_valid = true;
                             placeOrder(element);
                         } else if (transport.responseText == 'false') {
-                            console.log('ajax result false');
-                            $('shipping_fiuze_adress_error').show();
-
+                            $('fiuze_shipping_address_write_error').show();
                         } else {
                             console.log('ajax result error');
                             var message = '<span style="color: white"> Something went wrong, try again later.<br>Error code: ' + transport.responseText + '</span>';
-                            $('shipping_fiuze_adress_server_error').show().update(message);
-
+                            $('fiuze_adress_server_error').show().update(message);
                         }
                     }
                 });
-
-
-            } else{
-                placeOrder(element)
             }
-            //end
-            //shipping
         }
         //end shipping
 
         //start billing
-        if($('billing-address-select') && $('billing-address-select').value=="" || $('billing:email') !==null) {
-            if($('billing:email') !==null){
-                var addressBillingFiuzeCheck = ['billing:street1', 'billing:country_id', 'billing:city', 'billing:postcode', 'billing:region_id', 'billing:telephone' ,'billing:firstname' ,'billing:lastname','billing:email'];
-            }else{
-                var addressBillingFiuzeCheck = ['billing:street1', 'billing:country_id', 'billing:city', 'billing:postcode', 'billing:region_id', 'billing:telephone' ,'billing:firstname' ,'billing:lastname'];
-            }
-           console.log('billing_check');
-            var err = false;
-            var address_data = [];
-            for (var i = 0; i < addressBillingFiuzeCheck.length; i++) {
-                if ($(addressBillingFiuzeCheck[i]).value === '') {
-                    err = true;
+        if($('billing-address-select') || $('billing:email') !==null) {
+            if($('billing-address-select') == undefined || $('billing-address-select').value=="") {
+                if ($('billing:email') !== null) {
+                    var addressBillingFiuzeCheck = ['billing:street1', 'billing:country_id', 'billing:city', 'billing:postcode', 'billing:region_id', 'billing:telephone', 'billing:firstname', 'billing:lastname', 'billing:email'];
                 } else {
-                    address_data.push($(addressBillingFiuzeCheck[i]).value);
+                    var addressBillingFiuzeCheck = ['billing:street1', 'billing:country_id', 'billing:city', 'billing:postcode', 'billing:region_id', 'billing:telephone', 'billing:firstname', 'billing:lastname'];
                 }
-            }
-            if (err === false) {
+                console.log('billing_check');
+                var err = false;
+                var address_data = [];
+                for (var i = 0; i < addressBillingFiuzeCheck.length; i++) {
+                    if ($(addressBillingFiuzeCheck[i]).value === '') {
+                        err = true;
+                    } else {
+                        address_data.push($(addressBillingFiuzeCheck[i]).value);
+                    }
+                }
+                if (err === false) {
+                    fiuze_billing_valid = false;
+                    $('fiuze_adress_progress').show();
+                    $('fiuze_adress_server_error').hide();
+                    $('fiuze_adress_error').hide();
+                    /// ///
+                    var request = new Ajax.Request(fiuze_address_validation_path, {
+                        parameters: address_data,
+                        onComplete: function (transport) {
+                            console.log('ajax run');
+                            $('fiuze_adress_progress').hide();
+                            if (transport.responseText == 'true') {
+
+                                console.log('ajax result true');
+                                fiuze_billing_valid = true;
+                                placeOrder(element);
+                            } else if (transport.responseText == 'false') {
+
+                                console.log('ajax result false');
+                                $('fiuze_adress_error').show();
+
+
+                            } else {
+                                console.log('ajax result error');
+                                var message = '<span style="color: white"> Something went wrong, try again later.<br>Error code: ' + transport.responseText + '</span>';
+                                $('fiuze_adress_server_error').show().update(message);
+
+                            }
+                        }
+                    });
+
+                } else {
+                    placeOrder(element);
+                }
+            }else {
                 fiuze_billing_valid = false;
-                $('fiuze_adress_progress').show();
-                $('fiuze_adress_server_error').hide();
-                $('fiuze_adress_error').hide();
-                /// ///
+                var fiuze_id_address = [];
+                fiuze_id_address.push($('billing-address-select').value);
                 var request = new Ajax.Request(fiuze_address_validation_path, {
-                    parameters: address_data,
+                    parameters: fiuze_id_address,
                     onComplete: function (transport) {
-                        console.log('ajax run');
                         $('fiuze_adress_progress').hide();
                         if (transport.responseText == 'true') {
 
@@ -667,10 +720,7 @@
                             fiuze_billing_valid = true;
                             placeOrder(element);
                         } else if (transport.responseText == 'false') {
-                            console.log('ajax result false');
-                            $('fiuze_adress_error').show();
-
-
+                            $('fiuze_billing_address_write_error').show();
                         } else {
                             console.log('ajax result error');
                             var message = '<span style="color: white"> Something went wrong, try again later.<br>Error code: ' + transport.responseText + '</span>';
@@ -679,9 +729,6 @@
                         }
                     }
                 });
-
-            } else{
-                placeOrder(element);
             }
         }
         //end billing

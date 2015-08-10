@@ -6,7 +6,7 @@
     <h3 id="billing_step_header" class="step_1"><?php echo($this->__("Billing Address")); ?></h3>
     <?php if ($this->customerHasAddresses()): ?>
         <p class="label"><?php echo $this->__('Select a billing address from your address book or enter a new address.') ?></p>
-        <ul>	
+        <ul>
             <li>
                 <p><?php echo $this->getAddressesHtmlSelect('billing') ?></p>			
             </li>
@@ -166,10 +166,10 @@
 
             </li>
             <li id='fiuze_adress_error' style="background-color: #ff0000; padding: 10px; width: 80%; display: none">
-                <span style="color: white"> Please enter an existing address </span>
+                <span style="color: white"> Please enter a valid address </span>
             </li>
-            <li id='fiuze_adress_progress' style="background-color: #1C76BB; padding: 10px; width: 80%; display: none">
-                <span style="color: white"> Address is checked, please wait... </span>
+            <li id='fiuze_adress_progress' >
+
             </li>
             <?php if ($checkCountry == 0): ?>
                 <div style="display:none;">
@@ -438,4 +438,7 @@
             }
         </script>
     <?php endif; ?>
+</div>
+<div id="fiuze_billing_address_write_error"  style="display: none;">
+    <span style="display: inline-block; padding:13px; margin:20px; background-color: rgb(255, 0, 0); color: white"> Please enter a valid address </span>
 </div>
