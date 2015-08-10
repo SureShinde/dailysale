@@ -721,6 +721,8 @@
                             placeOrder(element);
                         } else if (transport.responseText == 'false') {
                             $('fiuze_billing_address_write_error').show();
+                            $('billing-address-select').value = '';
+                            $('billing-new-address-form').show();
                         } else {
                             console.log('ajax result error');
                             var message = '<span style="color: white"> Something went wrong, try again later.<br>Error code: ' + transport.responseText + '</span>';
