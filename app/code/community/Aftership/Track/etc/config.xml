@@ -97,10 +97,10 @@
         <events>
             <default>
                 <observers>
-                    <cron_observer>
+                    <cron_observer_helper>
                         <class>aftershiptrackcron/cronObserver</class>
                         <method>runCronAftership</method>
-                    </cron_observer>
+                    </cron_observer_helper>
                 </observers>
             </default>
         </events>
