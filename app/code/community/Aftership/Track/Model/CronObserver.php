@@ -121,6 +121,7 @@ class Aftership_Track_Model_CronObserver {
             foreach($tamePeriod as $period){
                 $scheduleCount = Mage::getModel('track/scheduleAftership')->getCollection()
                     ->addFieldToFilter('status', Aftership_Track_Model_ScheduleAftership::STATUS_PENDING)
+                    ->addFieldToFilter('job_code', $jobCode)
                     ->addFieldToFilter('cron_expr', $period)->count();
                 if(!$scheduleCount){
                     $schedule = Mage::getModel('track/scheduleAftership');

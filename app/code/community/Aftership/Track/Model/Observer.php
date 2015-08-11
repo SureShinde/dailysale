@@ -445,7 +445,7 @@ class Aftership_Track_Model_Observer {
                         $fileName.'.csv'
                     );
                     try {
-                        $mail->send();
+                        //$mail->send();
                     } catch (Exception $ex) {}
                     unlink($file);
                 }
@@ -491,7 +491,7 @@ class Aftership_Track_Model_Observer {
                 if(count($row)){
                     $io->streamWriteCsv($row);
                 }
-                if(!$error){
+                if($error){
                     $trackNumber->delete();
                 }
                 if($error == 'Not valid.'){
@@ -576,4 +576,62 @@ class Aftership_Track_Model_Observer {
         }
     }
 
+    /**
+     * Sending email with Invoice data
+     *
+     * @return Mage_Sales_Model_Order_Invoice
+     */
+    public function changeStatusShip($tracks){
+        $collectionVendor = Mage::getModel('udropship/vendor')->getCollection()->getItems();
+
+        foreach($collectionVendor as $key => $vendor){
+            //checking the quantity track number
+            $collectionShipments = $this->getVendorShipmentCollection($vendor);
+            foreach($collectionShipments as $shipment){
+                $udpo = Mage::helper('udpo')->getShipmentPo($shipment);
+                $trackNumbers = Mage::getModel('track/track')->getCollection()
+                    ->addFieldToFilter('order_id', array('eq' => $shipment->getOrderIncrementId()))
+                    ->getItems();
+                $trackNumbersCuntStatusPending = 0;
+                $trackNumbersCuntStatusDelivered = 0;
+                foreach($trackNumbers as $trackNumber){
+                    if($trackNumber->getTrackingId()){
+                        $api_key = Mage::app()->getWebsite(0)->getConfig('aftership_options/messages/api_key');
+                        $trackings = new AfterShip\Trackings($api_key);
+                        $responseJson = $trackings->get_by_id($trackNumber->getTrackingId());
+                        $status = $this->_getStatus($responseJson);
+                        if($status !== 'Pending' && $status !== 'Delivered'){
+                            $trackNumbersCuntStatusPending++;
+                        }
+                        if($status === 'Delivered'){
+                            $trackNumbersCuntStatusDelivered++;
+                        }
+                        $trackNumber->setStatus($status);
+                        $trackNumber->save();
+                    }
+                }
+                if($trackNumbersCuntStatusPending == count($trackNumbers) && count($trackNumbers) > 0){
+                    $hlp = Mage::helper('udropship');
+                    $statusDelivered = Unirgy_DropshipPo_Model_Source::UDPO_STATUS_DELIVERED;
+                    $shipment->setUdropshipStatus($statusDelivered);
+                    $hlp->completeShipment($shipment, true, $statusDelivered);
+                    $sdsd = 54;
+                }
+                if($trackNumbersCuntStatusDelivered == count($trackNumbers) && count($trackNumbers) > 0){
+                    $hlp = Mage::helper('udropship');
+                    $statusCanceled = Unirgy_DropshipPo_Model_Source::UDPO_STATUS_CANCELED;
+                    Mage::helper('udpo')->revertCompleteShipment($shipment, true);
+                    Mage::helper('udpo')->cancelShipment($shipment, true);
+                    Mage::helper('udpo')->cancelPo($udpo, true);
+
+                    //$shipment->setUdropshipStatus($statusCanceled)->save();
+                    Mage::helper('udpo')->processPoStatusSave(Mage::helper('udpo')->getShipmentPo($shipment), Unirgy_DropshipPo_Model_Source::UDPO_STATUS_CANCELED, true, $vendor);
+
+                    //$hlp->completeOrderIfShipped($shipment, true);
+                    //$hlp->completeUdpoIfShipped($shipment, true);
+                    $sdsd = 54;
+                }
+            }
+        }
+    }
 }
