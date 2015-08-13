@@ -42,6 +42,7 @@ class Unirgy_Dropship_Model_Source extends Unirgy_Dropship_Model_Source_Abstract
     const SHIPMENT_STATUS_SHIPPED    = 1;
     const SHIPMENT_STATUS_CANCELED   = 6;
     const SHIPMENT_STATUS_DELIVERED  = 7;
+    const SHIPMENT_STATUS_PENDING_AFTERSHIP = 20;
 
     const TRACK_STATUS_PENDING   = 'P';
     const TRACK_STATUS_CANCELED  = 'C';
@@ -213,6 +214,7 @@ class Unirgy_Dropship_Model_Source extends Unirgy_Dropship_Model_Source_Abstract
                 self::SHIPMENT_STATUS_DELIVERED => $hlp->__('Delivered'),
                 self::SHIPMENT_STATUS_CANCELED  => $hlp->__('Canceled'),
                 self::SHIPMENT_STATUS_RETURNED  => $hlp->__('Returned'),
+                self::SHIPMENT_STATUS_PENDING_AFTERSHIP => $hlp->__('Pending Aftership')
             );
             if (in_array($this->getPath(), array('initial_shipment_status','statement_shipment_status','batch_export_orders_export_on_po_status'))) {
                 $options = array('999' => $hlp->__('* Default (global setting)')) + $options;

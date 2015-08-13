@@ -588,48 +588,57 @@ class Aftership_Track_Model_Observer {
             //checking the quantity track number
             $collectionShipments = $this->getVendorShipmentCollection($vendor);
             foreach($collectionShipments as $shipment){
-                $udpo = Mage::helper('udpo')->getShipmentPo($shipment);
                 $trackNumbers = Mage::getModel('track/track')->getCollection()
                     ->addFieldToFilter('order_id', array('eq' => $shipment->getOrderIncrementId()))
                     ->getItems();
-                $trackNumbersCuntStatusPending = 0;
-                $trackNumbersCuntStatusDelivered = 0;
+                $countDelivered = 0;
+                $countPending = 0;
                 foreach($trackNumbers as $trackNumber){
                     if($trackNumber->getTrackingId()){
                         $api_key = Mage::app()->getWebsite(0)->getConfig('aftership_options/messages/api_key');
                         $trackings = new AfterShip\Trackings($api_key);
                         $responseJson = $trackings->get_by_id($trackNumber->getTrackingId());
                         $status = $this->_getStatus($responseJson);
-                        if($status !== 'Pending' && $status !== 'Delivered'){
-                            $trackNumbersCuntStatusPending++;
-                        }
+                        //Имитация          /// ///
+                        //$status = 'In Transit';
+                        //Конец имитации    /// ///
                         if($status === 'Delivered'){
-                            $trackNumbersCuntStatusDelivered++;
+                            $countDelivered++;
+                        }
+                        if($status=='Pending'){
+                            $status = 'Pending Aftership';
+                            $countPending++;
                         }
                         $trackNumber->setStatus($status);
                         $trackNumber->save();
                     }
                 }
-                if($trackNumbersCuntStatusPending == count($trackNumbers) && count($trackNumbers) > 0){
-                    $hlp = Mage::helper('udropship');
-                    $statusDelivered = Unirgy_DropshipPo_Model_Source::UDPO_STATUS_DELIVERED;
-                    $shipment->setUdropshipStatus($statusDelivered);
-                    $hlp->completeShipment($shipment, true, $statusDelivered);
-                    $sdsd = 54;
-                }
-                if($trackNumbersCuntStatusDelivered == count($trackNumbers) && count($trackNumbers) > 0){
-                    $hlp = Mage::helper('udropship');
-                    $statusCanceled = Unirgy_DropshipPo_Model_Source::UDPO_STATUS_CANCELED;
-                    Mage::helper('udpo')->revertCompleteShipment($shipment, true);
-                    Mage::helper('udpo')->cancelShipment($shipment, true);
-                    Mage::helper('udpo')->cancelPo($udpo, true);
 
-                    //$shipment->setUdropshipStatus($statusCanceled)->save();
-                    Mage::helper('udpo')->processPoStatusSave(Mage::helper('udpo')->getShipmentPo($shipment), Unirgy_DropshipPo_Model_Source::UDPO_STATUS_CANCELED, true, $vendor);
+                if (count($trackNumbers) > 0) {
+                    if ($countPending == 0) {
+                        if ($countDelivered == count($trackNumbers)) {
+                            //delivered
+                            $shipment->setUdropshipStatus(Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_DELIVERED);
+                            $shipment->save();
 
-                    //$hlp->completeOrderIfShipped($shipment, true);
-                    //$hlp->completeUdpoIfShipped($shipment, true);
-                    $sdsd = 54;
+                            //close order
+                            $order = Mage::getModel('sales/order')->load($shipment->getOrderId());
+                            $order->setData('state', "complete");
+                            $order->setStatus("complete");
+                            //complete shipment
+                            $udpo = Mage::helper('udpo')->getShipmentPo($shipment);
+                            $udpo->setUdropshipStatus(Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_DELIVERED);
+                            $udpo->save();
+                            Mage::helper('udpo')->processPoStatusSave(Mage::helper('udpo')->getShipmentPo($shipment), Unirgy_DropshipPo_Model_Source::UDPO_STATUS_DELIVERED, true, $vendor);
+                            $history = $order->addStatusHistoryComment('Order marked as complete because shipment is delivered.', false);
+                            $history->setIsCustomerNotified(false);
+                            $order->save();
+                        } else {
+                            //shipped
+                            $shipment->setUdropshipStatus(Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_SHIPPED);
+                            $shipment->save();
+                        }
+                    }
                 }
             }
         }

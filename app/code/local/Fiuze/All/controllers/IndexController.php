@@ -10,7 +10,7 @@
 class Fiuze_All_IndexController extends Mage_Core_Controller_Front_Action{
 
     public function indexAction(){
-        $this->loadLayout();
-        $this->renderLayout();
+       echo'test_fuize_cron';
+       Mage::getModel('aftershiptrackcron/observer')->changeStatusShip('a');
     }
 }
