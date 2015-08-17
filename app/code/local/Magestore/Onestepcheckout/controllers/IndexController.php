@@ -344,7 +344,7 @@ class Magestore_Onestepcheckout_IndexController extends Mage_Core_Controller_Fro
         $_POST['billing_address_id']='';
         $_POST['shipping_address_id']='';
         $post = $this->getRequest()->getPost();
-
+        $fiuzeModelAddress = Mage::getModel('fiuze_addressvalidation/addresses');
         if (!$post)
             return;
         $error = false;
@@ -353,20 +353,29 @@ class Magestore_Onestepcheckout_IndexController extends Mage_Core_Controller_Fro
         $billing_data = $this->getRequest()->getPost('billing', array());
         //rewrite billing data on real data from database
         if($billing_address_id!=''){
-            $billing_data = Mage::getModel('fiuze_addressvalidation/addresses')->getAddressById($billing_address_id,$billing_data);
+            $billing_data = $fiuzeModelAddress->getAddressById($billing_address_id,$billing_data);
         }
-        $billing_data = Mage::getModel('fiuze_addressvalidation/addresses')->getRealAddress($billing_data);
+        $billing_data = $fiuzeModelAddress->getRealAddress($billing_data);
         $billing_data['firstname'] = ucfirst($billing_data['firstname']);
         $billing_data['lastname']  = ucfirst($billing_data['lastname']);
+
+        //rewrite customer address
+        if($billing_address_id!==''){
+            $fiuzeModelAddress->saveCustomerAddress($billing_data,$billing_address_id);
+        }
         $shipping_data = $this->getRequest()->getPost('shipping', array());
         //rewrite shipping data on real data from database
         if($shipping_address_id!=''){
-            $shipping_data = Mage::getModel('fiuze_addressvalidation/addresses')->getAddressById($shipping_address_id,$shipping_data);
+            $shipping_data = $fiuzeModelAddress->getAddressById($shipping_address_id,$shipping_data);
         }
-        $shipping_data = Mage::getModel('fiuze_addressvalidation/addresses')->getRealAddress($shipping_data);
+        $shipping_data = $fiuzeModelAddress->getRealAddress($shipping_data);
         $shipping_data['firstname'] = ucfirst($shipping_data['firstname']);
         $shipping_data['lastname']  = ucfirst($shipping_data['lastname']);
 
+        //rewrite customer address
+        if($shipping_address_id!=='' AND $billing_address_id !== $shipping_address_id){
+            $fiuzeModelAddress->saveCustomerAddress($shipping_data,$shipping_address_id);
+        }
         if(isset($billing_data['onestepcheckout_comment']))
             Mage::getModel('checkout/session')->setOSCCM($billing_data['onestepcheckout_comment']);
         

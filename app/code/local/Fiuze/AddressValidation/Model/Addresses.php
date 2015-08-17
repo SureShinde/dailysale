@@ -118,4 +118,15 @@ class Fiuze_AddressValidation_Model_Addresses extends Mage_Core_Model_Abstract
         $address['telephone'] = $add_data['7'];
         return $address;
     }
+
+    public function saveCustomerAddress($address_data,$address_id){
+        $address = Mage::getModel('customer/address')->load($address_id);
+ //       $address->delete();
+        $address->addData($address_data)
+            //->setCustomerId(Mage::getSingleton('customer/session')->getCustomer()->getId())
+//            ->setIsDefaultBilling('1')
+//            ->setIsDefaultShipping('1')
+//            ->setSaveInAddressBook('1')
+            ->save();
+    }
 }

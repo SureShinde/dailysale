@@ -128,7 +128,7 @@ class Zend_Mail_Transport_Sendmail extends Zend_Mail_Transport_Abstract
                 $this->parameters);
             restore_error_handler();
         }
-        $result=true;
+
         if ($this->_errstr !== null || !$result) {
             /**
              * @see Zend_Mail_Transport_Exception

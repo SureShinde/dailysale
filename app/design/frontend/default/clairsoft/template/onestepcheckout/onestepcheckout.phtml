@@ -655,7 +655,7 @@
         //end shipping
 
         //start billing
-        if($('billing-address-select') || $('billing:email') !==null) {
+
             if($('billing-address-select') == undefined || $('billing-address-select').value=="") {
                 if ($('billing:email') !== null) {
                     var addressBillingFiuzeCheck = ['billing:street1', 'billing:country_id', 'billing:city', 'billing:postcode', 'billing:region_id', 'billing:telephone', 'billing:firstname', 'billing:lastname', 'billing:email'];
@@ -732,7 +732,7 @@
                     }
                 });
             }
-        }
+
         //end billing
 
         placeOrder(element);
