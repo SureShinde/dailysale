@@ -77,14 +77,14 @@ class WIC_Criteotags_Block_Tags_Success extends Mage_Core_Block_Abstract {
 
             $info['id'] = $item->getProductId();
             $info['qty'] = (int) $item->getQtyOrdered();
-            $info['price'] = floatval($item->getPrice());
+            $info['price'] = floatval($item->getPrice()- $item->getDiscountAmount());
 
             // Load Product to product Type
             $product = Mage::getModel('catalog/product')->load($item->getProductId());
 
-            // Keep the parent price for child
-            if ($product->isGrouped() || $product->isConfigurable()) {
-                $parent['price'] = floatval($item->getPrice());
+            // Keep the parent price for child           
+            if ($product->getTypeId() == "grouped" || $product->getTypeId() == "configurable" || $product->getTypeId() == "bundle") {
+                $parent['price'] = floatval($item->getPrice()- $item->getDiscountAmount());
                 $parent['qty'] = (int) $item->getQtyOrdered();
             } elseif ($item->getParentItemId() && isset($parent)) {
                 $info['price'] = $parent['price'];
@@ -96,7 +96,7 @@ class WIC_Criteotags_Block_Tags_Success extends Mage_Core_Block_Abstract {
 
             switch ($_producttype) {
                 case 1 : // Child
-                    if (!$product->isGrouped() && !$product->isConfigurable()) {
+                    if ($product->getTypeId() != "grouped" && $product->getTypeId() != "configurable" && $product->getTypeId() != "bundle") {
 
                         $items[] = $info;
                     }

@@ -34,8 +34,8 @@ class WIC_Criteotags_Block_Tags_Cart extends Mage_Core_Block_Abstract {
             $html .= '{event: "viewBasket", ';
             $html .= 'product: [ ';
 
-            foreach ($this->getCartItems() as $_item) {
-
+            foreach ($this->getCartItems() as $_item) {                
+                
                 $html .= '{ id: "' . $_item['id'] . '", price: ' . $_item['price'] . ', quantity: ' . $_item['qty'] . ' },';
             }
 
@@ -55,18 +55,19 @@ class WIC_Criteotags_Block_Tags_Cart extends Mage_Core_Block_Abstract {
 
         $items = array();
 
-        foreach ($quote->getAllItems() as $item) {
+        foreach ($quote->getAllItems() as $item) { 
+            Mage::log($item->getProductId(). " : ".$item->getDiscountAmount());
 
             $info['id'] = $item->getProductId();
             $info['qty'] = (int) $item->getQty();
-            $info['price'] = floatval($item->getPrice());
+            $info['price'] = floatval($item->getPrice()- $item->getDiscountAmount());
 
             // Load Product to product Type
-            $product = Mage::getModel('catalog/product')->load($item->getProductId());
+            $product = Mage::getModel('catalog/product')->load($item->getProductId());            
 
-            // Keep the parent price for child
-            if ($product->isGrouped() || $product->isConfigurable()) {
-                $parent['price'] = floatval($item->getPrice());
+            // Keep the parent price for child            
+            if ($product->getTypeId() == "grouped" || $product->getTypeId() == "configurable" || $product->getTypeId() == "bundle") {
+                $parent['price'] = floatval($item->getPrice()- $item->getDiscountAmount());
                 $parent['qty'] = (int) $item->getQty();
             } elseif ($item->getParentItemId() && isset($parent)) {
                 $info['price'] = $parent['price'];
@@ -78,7 +79,7 @@ class WIC_Criteotags_Block_Tags_Cart extends Mage_Core_Block_Abstract {
 
             switch ($_producttype) {
                 case 1 : // Child
-                    if (!$product->isGrouped() && !$product->isConfigurable()) {
+                    if ($product->getTypeId() != "grouped" && $product->getTypeId() != "configurable" && $product->getTypeId() != "bundle") {
 
                         $items[] = $info;
                     }
@@ -99,7 +100,7 @@ class WIC_Criteotags_Block_Tags_Cart extends Mage_Core_Block_Abstract {
                     break;
             }
             unset($info);
-        }
+        }        
         return $items;
     }
 
