@@ -44,4 +44,13 @@
             </index>
         </routers>
     </frontend>
+    <default>
+        <fiuze_address_validation>
+            <license_group>
+                <wsdl_input>http://ws.serviceobjects.com/av3/api.svc?WSDL</wsdl_input>
+                <license_input>WS72-BEY2-KAH4</license_input>
+                <name_input>Dailysale</name_input>
+            </license_group>
+        </fiuze_address_validation>
+    </default>
 </config>
