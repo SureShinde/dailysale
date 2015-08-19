@@ -273,7 +273,7 @@ class Unirgy_DropshipPo_VendorController extends Unirgy_Dropship_VendorControlle
                     $this->__('%s added tracking ID %s', $vendor->getVendorName(), $number)
                 );
                 $shipment->save();
-                $session->addSuccess($this->__('Tracking ID has been added'));
+                $session->addSuccess($this->__('Tracking ID has been uploaded and we will email the results of the upload within 24 hours.'));
 
                 $highlight['tracking'] = true;
             }
