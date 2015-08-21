@@ -35,15 +35,12 @@ class Fiuze_AddressValidation_Model_Addresses extends Mage_Core_Model_Abstract
             if($matches['0']['status']==="1"){
                 return 'true';
             }elseif($matches['0']['status']==="0"){
-                return 'false';
+                return $matches['0']['desccode'];
             }else{
                 $soapClient = new SoapClient($wsdlUrl, array("trace" => 1));
                 $result = $soapClient->GetBestMatches($data);
-                if ($result->GetBestMatchesResult->Error->DescCode == 1) {
-                    return $result->GetBestMatchesResult->Error->Desc;
-                }
                 if ($result->GetBestMatchesResult->Error) {
-                    $response = 'false';
+                    $response = $result->GetBestMatchesResult->Error->Desc;
                     $status=false;
                 } else {
                     $response = 'true';
@@ -62,8 +59,9 @@ class Fiuze_AddressValidation_Model_Addresses extends Mage_Core_Model_Abstract
                     //set address from result
                 setRealAddress($result->GetBestMatchesResult->Addresses->Address->Address1)->
                 setRealCity($result->GetBestMatchesResult->Addresses->Address->City)->
-                setRealState($result->GetBestMatchesResult->Addresses->Address->State);
-                $this->setRealPostalcode($zip);
+                setRealState($result->GetBestMatchesResult->Addresses->Address->State)->
+                setDesccode($result->GetBestMatchesResult->Error->Desc)->
+                setRealPostalcode($zip);
                 $this->save();
 
                 return $response;

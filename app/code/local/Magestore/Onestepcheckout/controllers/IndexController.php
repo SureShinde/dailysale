@@ -339,8 +339,16 @@ class Magestore_Onestepcheckout_IndexController extends Mage_Core_Controller_Fro
     }
 
     public function saveOrderAction() {
-        $billing_address_id= $_POST['billing_address_id'];
-        $shipping_address_id = $_POST['shipping_address_id'];
+        if(isset($_POST['billing_address_id'])){
+            $billing_address_id= $_POST['billing_address_id'];
+        }else{
+            $billing_address_id= '';
+        }
+        if(isset($_POST['shipping_address_id'])){
+            $shipping_address_id= $_POST['shipping_address_id'];
+        }else {
+            $shipping_address_id = '';
+        }
         $_POST['billing_address_id']='';
         $_POST['shipping_address_id']='';
         $post = $this->getRequest()->getPost();

@@ -617,7 +617,7 @@
                                 $('shipping_fiuze_adress_error').show();
                             } else {
                                 console.log('ajax result error');
-                                var message = '<span style="color: white"> Something went wrong, try again later.<br>Error code: ' + transport.responseText + '</span>';
+                                var message = '<span style="color: white"> ' + transport.responseText + '</span>';
                                 $('shipping_fiuze_adress_server_error').show().update(message);
 
                             }
@@ -641,11 +641,9 @@
                             console.log('ajax result true');
                             fiuze_shipping_valid = true;
                             placeOrder(element);
-                        } else if (transport.responseText == 'false') {
-                            $('fiuze_shipping_address_write_error').show();
                         } else {
                             console.log('ajax result error');
-                            var message = '<span style="color: white"> Something went wrong, try again later.<br>Error code: ' + transport.responseText + '</span>';
+                            var message = '<span style="color: white"> ' + transport.responseText + '</span>';
                             $('fiuze_adress_server_error').show().update(message);
                         }
                     }
@@ -688,15 +686,9 @@
                                 console.log('ajax result true');
                                 fiuze_billing_valid = true;
                                 placeOrder(element);
-                            } else if (transport.responseText == 'false') {
-
-                                console.log('ajax result false');
-                                $('fiuze_adress_error').show();
-
-
                             } else {
                                 console.log('ajax result error');
-                                var message = '<span style="color: white"> Something went wrong, try again later.<br>Error code: ' + transport.responseText + '</span>';
+                                var message = '<span style="color: white">'  + transport.responseText + '</span>';
                                 $('fiuze_adress_server_error').show().update(message);
 
                             }
@@ -719,13 +711,9 @@
                             console.log('ajax result true');
                             fiuze_billing_valid = true;
                             placeOrder(element);
-                        } else if (transport.responseText == 'false') {
-                            $('fiuze_billing_address_write_error').show();
-                            $('billing-address-select').value = '';
-                            $('billing-new-address-form').show();
-                        } else {
+                        }else {
                             console.log('ajax result error');
-                            var message = '<span style="color: white"> Something went wrong, try again later.<br>Error code: ' + transport.responseText + '</span>';
+                            var message = '<span style="color: white">'  + transport.responseText + '</span>';
                             $('fiuze_adress_server_error').show().update(message);
 
                         }
