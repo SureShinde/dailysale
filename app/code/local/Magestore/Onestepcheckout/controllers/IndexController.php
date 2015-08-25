@@ -524,7 +524,11 @@ class Magestore_Onestepcheckout_IndexController extends Mage_Core_Controller_Fro
                 }
             }
             try {
-                $result = $this->getOnepage()->saveOrder();
+                $result = $this->getOnepage();
+                $fiuze_customer_email = $this->getRequest()->getParams();
+                $fiuze_customer_email = $fiuze_customer_email['billing']['email'];
+                $result->getCheckout()->getQuote()->setCustomerEmail($fiuze_customer_email);
+                $result->saveOrder();
                 $redirectUrl = $this->getOnepage()->getCheckout()->getRedirectUrl();
             } catch (Mage_Core_Exception $e) {
                 Mage::logException($e);
