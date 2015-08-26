@@ -712,6 +712,8 @@
                             fiuze_billing_valid = true;
                             placeOrder(element);
                         }else {
+                            $('billing-address-select').value = '';
+                            $('billing-new-address-form').show();
                             console.log('ajax result error');
                             var message = '<span style="color: white">'  + transport.responseText + '</span>';
                             $('fiuze_adress_server_error').show().update(message);
