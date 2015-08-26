@@ -610,9 +610,6 @@ class Aftership_Track_Model_Observer {
                         $trackings = new AfterShip\Trackings($api_key);
                         $responseJson = $trackings->get_by_id($trackNumber['tracking_id']);
                         $status = $this->_getStatus($responseJson);
-                        //Имитация          /// ///
-                        //$status = 'In Transit';
-                        //Конец имитации    /// ///
                         if($status === 'Delivered'){
                             $countDelivered++;
                         }
