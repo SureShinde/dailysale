@@ -33,20 +33,27 @@ class Fiuze_AddressValidation_Model_Addresses extends Mage_Core_Model_Abstract
                 getData();
             //create response
             if($matches['0']['status']==="1"){
-                return 'true';
+                $final_response =  'true';
             }elseif($matches['0']['status']==="0"){
-                return $matches['0']['desccode'];
+                $final_response =  $matches['0']['dvpnote'];
             }else{
                 $soapClient = new SoapClient($wsdlUrl, array("trace" => 1));
                 $result = $soapClient->GetBestMatches($data);
                 if ($result->GetBestMatchesResult->Error) {
                     $response = $result->GetBestMatchesResult->Error->Desc;
                     $status=false;
+
+                    $dvpCode = $result->GetBestMatchesResult->Error->Type;
+                    $dvpNote = $result->GetBestMatchesResult->Error->Desc;
                 } else {
                     $response = 'true';
                     $status=true;
+
+                    $dvpCode = $result->GetBestMatchesResult->Addresses->Address->DPVDesc;
+                    $dvpNote = $result->GetBestMatchesResult->Addresses->Address->DPVNotesDesc;
                 }
                 $zip = (string)$result->GetBestMatchesResult->Addresses->Address->Zip;
+
 
                 $this->
                     //set input data
@@ -60,13 +67,20 @@ class Fiuze_AddressValidation_Model_Addresses extends Mage_Core_Model_Abstract
                 setRealAddress($result->GetBestMatchesResult->Addresses->Address->Address1)->
                 setRealCity($result->GetBestMatchesResult->Addresses->Address->City)->
                 setRealState($result->GetBestMatchesResult->Addresses->Address->State)->
-                setDesccode($result->GetBestMatchesResult->Error->Desc)->
+                setDvpcode($dvpCode)->
+                setDvpnote($dvpNote)->
                 setRealPostalcode($zip);
                 $this->save();
 
-                return $response;
+                $final_response = $response;
             }
 
+            if($this->getId()){
+                Mage::getSingleton('checkout/session')->getQuote()->setDvpid($this->getId())->save();
+            }else{
+                Mage::getSingleton('checkout/session')->getQuote()->setDvpid($matches[0]['fiuze_addresses_id'])->save();
+            }
+            return  $final_response;
         }
     }
 

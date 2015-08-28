@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Fiuze_AddressValidation>
-            <version>0.3.0</version>
+            <version>0.4.0</version>
         </Fiuze_AddressValidation>
     </modules>
     <global>
@@ -32,6 +32,16 @@
                 </setup>
             </fiuze_addressvalidation_setup>
         </resources>
+        <events>
+            <sales_order_place_after>
+                <observers>
+                    <fiuze_add_dvp>
+                        <class>fiuze_addressvalidation/observer</class>
+                        <method>addDpvtoorder</method>
+                    </fiuze_add_dvp>
+                </observers>
+            </sales_order_place_after>
+        </events>
     </global>
     <frontend>
         <routers>

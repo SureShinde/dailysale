@@ -2,7 +2,15 @@
 	
 	$res = $this->getFraudResult();
 	$customer = $this->getCustomer();
-	
+    $result = array(
+        'code 1',
+        'code 2'
+        );
+$dvp = Mage::getModel('fiuze_addressvalidation/addresses')->getCollection()->addFieldToFilter('fiuze_addresses_id',Mage::getModel('sales/order')->load(Mage::app()->getRequest()->getParam('order_id'))->getDvpid())->getData();
+$dvp = $dvp['0'];
+$dvpcode = $dvp['dvpcode'];
+$dvpnote = $dvp['dvpnote'];
+
 ?>
 <h1>Detailed Maxmind Results</h1>
 <p>For detailed instructions about each field, please visit <a href="http://www.maxmind.com/app/ccv" target="_blank">Maxmind's integration page</a>.</p>
@@ -119,6 +127,32 @@
 	</div>
 </div>
 </div>
+
+<div class="clear"></div>
+
+<div class="box-left">
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-account">DVP Code and Note</h4>
+        </div>
+        <div class="fieldset">
+            <table cellspacing="0" class="form-list">
+                <tbody>
+                <tr>
+                    <td class="label"><label>DVP Code</label></td>
+                    <td><?php echo $dvpcode; ?></td>
+                </tr>
+                <tr>
+                    <td class="label"><label>DVP Note</label></td>
+                    <td><?php echo $dvpnote; ?></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
 
 <div class="clear"></div>
 
