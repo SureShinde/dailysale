@@ -631,20 +631,21 @@
                 //shipping
             }else{
                 fiuze_shipping_valid = false;
-                var fiuze_id_address = [];
-                fiuze_id_address.push($('shipping-address-select').value);
+                var fiuze_shipping_id_address = [];
+                fiuze_shipping_id_address.push($('shipping-address-select').value);
                 var request = new Ajax.Request(fiuze_address_validation_path, {
-                    parameters: fiuze_id_address,
+                    parameters: fiuze_shipping_id_address,
                     onComplete: function (transport) {
-                        $('fiuze_adress_progress').hide();
                         if (transport.responseText == 'true') {
                             console.log('ajax result true');
                             fiuze_shipping_valid = true;
                             placeOrder(element);
                         } else {
+                            $('shipping-address-select').value = '';
+                            $('shipping-new-address-form').show();
                             console.log('ajax result error');
-                            var message = '<span style="color: white"> ' + transport.responseText + '</span>';
-                            $('fiuze_adress_server_error').show().update(message);
+                            var shipping_message = '<span style="color: white"> ' + transport.responseText + '</span>';
+                            $('shipping_fiuze_adress_server_error').show().update(shipping_message);
                         }
                     }
                 });
@@ -653,8 +654,7 @@
         //end shipping
 
         //start billing
-
-            if($('billing-address-select') == undefined || $('billing-address-select').value=="") {
+        if($('billing-address-select') == undefined || $('billing-address-select').value=="") {
                 if ($('billing:email') !== null) {
                     var addressBillingFiuzeCheck = ['billing:street1', 'billing:country_id', 'billing:city', 'billing:postcode', 'billing:region_id', 'billing:telephone', 'billing:firstname', 'billing:lastname', 'billing:email'];
                 } else {
@@ -700,14 +700,12 @@
                 }
             }else {
                 fiuze_billing_valid = false;
-                var fiuze_id_address = [];
-                fiuze_id_address.push($('billing-address-select').value);
+                var fiuze_billing_id_address = [];
+                fiuze_billing_id_address.push($('billing-address-select').value);
                 var request = new Ajax.Request(fiuze_address_validation_path, {
-                    parameters: fiuze_id_address,
+                    parameters: fiuze_billing_id_address,
                     onComplete: function (transport) {
-                        $('fiuze_adress_progress').hide();
                         if (transport.responseText == 'true') {
-
                             console.log('ajax result true');
                             fiuze_billing_valid = true;
                             placeOrder(element);
@@ -722,7 +720,6 @@
                     }
                 });
             }
-
         //end billing
 
         placeOrder(element);
