@@ -395,8 +395,8 @@ class Aftership_Track_Model_Observer {
         return $track_no;
     }
 
-    public function notificationMail(Varien_Event_Observer $observer){
-        $item = $observer->getEvent();
+    public function notificationMail(){
+
         $collectionVendor = Mage::getModel('udropship/vendor')->getCollection()->getItems();
 
         foreach($collectionVendor as $key => $vendor){
@@ -581,7 +581,7 @@ class Aftership_Track_Model_Observer {
      *
      * @return Mage_Sales_Model_Order_Invoice
      */
-    public function changeStatusShip($tracks){
+    public function changeStatusShip(){
         $collectionVendor = Mage::getModel('udropship/vendor')->getCollection()->getItems();
 
         foreach($collectionVendor as $key => $vendor){
@@ -651,5 +651,10 @@ class Aftership_Track_Model_Observer {
                 }
             }
         }
+    }
+
+    public function runCronJob(){
+        $this->changeStatusShip();
+        $this->notificationMail();
     }
 }

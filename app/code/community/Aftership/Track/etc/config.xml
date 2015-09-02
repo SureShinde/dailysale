@@ -93,6 +93,30 @@
                     <model>aftershiptrackcron/observer::cron</model>
                 </run>
             </aftershiptrackcron>
+            <one_cron>
+                <schedule>
+                    <config_path>aftership_options/messages/one_cron_config</config_path>
+                </schedule>
+                <run>
+                    <model>aftershiptrackcron/observer::runCronJob</model>
+                </run>
+            </one_cron>
+            <two_cron>
+                <schedule>
+                    <config_path>aftership_options/messages/two_cron_config</config_path>
+                </schedule>
+                <run>
+                    <model>aftershiptrackcron/observer::runCronJob</model>
+                </run>
+            </two_cron>
+            <three_cron>
+                <schedule>
+                    <config_path>aftership_options/messages/three_cron_config</config_path>
+                </schedule>
+                <run>
+                    <model>aftershiptrackcron/observer::runCronJob</model>
+                </run>
+            </three_cron>
         </jobs>
         <events>
             <default>
@@ -104,26 +128,6 @@
                 </observers>
             </default>
         </events>
-        <jobs_aftership>
-            <aftership_cron_notification_mail>
-                <schedule>
-                    <config_path>aftership_options/messages/cron_schedule</config_path>
-                </schedule>
-                <run>
-                    <model>aftershiptrackcron/observer::notificationMail</model>
-                </run>
-            </aftership_cron_notification_mail>
-        </jobs_aftership>
-        <jobs_aftership>
-            <aftership_cron_change_status>
-                <schedule>
-                    <config_path>aftership_options/messages/cron_schedule</config_path>
-                </schedule>
-                <run>
-                    <model>aftershiptrackcron/observer::changeStatusShip</model>
-                </run>
-            </aftership_cron_change_status>
-        </jobs_aftership>
     </crontab>
 
 	<frontend>
