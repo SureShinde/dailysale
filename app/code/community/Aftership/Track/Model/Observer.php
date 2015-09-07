@@ -445,7 +445,7 @@ class Aftership_Track_Model_Observer {
                         $fileName.'.csv'
                     );
                     try {
-                        //$mail->send();
+                        $mail->send();
                     } catch (Exception $ex) {}
                     unlink($file);
                 }
@@ -454,7 +454,8 @@ class Aftership_Track_Model_Observer {
     }
 
     private function _getHeadersForCsv(){
-        $row = array('order_id','order_created_at','tracking_number','status','error_tracking');
+        //$row = array('order_id','order_created_at','tracking_number','status','error_tracking');
+        $row = array('Order id','PO ID','Tracking number','Carrier','Error tracking');
         return $row;
     }
     private function _getBodyTotalsForCsv($vendor, $io){
@@ -467,8 +468,9 @@ class Aftership_Track_Model_Observer {
             foreach($trackNumbers as $trackNumber){
                 $row = array();
                 $row[] = $trackNumber->getOrderId();
-                $row[] = $shipment->getOrderCreatedAt();
-                $row[] = $trackNumber->getTrackingNumber();
+                $row[] = $shipment->getUdpoIncrementId();
+                $row[] = $trackNumber->getTrackingNumber().'_';
+                $row[] = $trackNumber->getShipCompCode();
 
                 if($trackNumber->getTrackingId()){
                     $api_key = Mage::app()->getWebsite(0)->getConfig('aftership_options/messages/api_key');
@@ -477,9 +479,6 @@ class Aftership_Track_Model_Observer {
                     $status = $this->_getStatus($responseJson);
                     $trackNumber->setStatus($status);
                     $trackNumber->save();
-                    $row[] = $status;
-                }else{
-                    $row[] = '';
                 }
 
                 if($trackNumber->getErrorTracking() == 'Tracking already exists.'){
