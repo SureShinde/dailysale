@@ -60,7 +60,7 @@ class WIC_Criteotags_Model_Export_Xml {
                             $subProds = Mage::getModel('catalog/product')->load($id);
 
                             if ($subProds->getTierPrice()) {
-                                $subprices[] = array((float) end($subProds->getTierPrice()), (float) $subProds->getPrice());
+                                $subprices[] = array((float) end(end($subProds->getTierPrice())), (float) $subProds->getPrice());
                             }
 
                             if ($subProds->getFinalPrice() > 0) {
