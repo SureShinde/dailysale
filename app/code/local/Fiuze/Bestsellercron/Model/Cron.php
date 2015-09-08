@@ -23,18 +23,19 @@ class Fiuze_Bestsellercron_Model_Cron extends Mage_Core_Model_Abstract{
         parent::__construct();
     }
 
-    public function bestSellers($arguments){
-        if(!$this->_bestSellerCategoryConfig->getValue()){
-            Mage::log('Fiuze_Bestsellercron: Please choose _bestSellerCategoryConfig in the System->Configuration->Catalog->Fiuze Bestsellers Cron tab.');
-            return false;
-        }
-        if($arguments instanceof Mage_Cron_Model_Schedule) {
-            $jobCode = $arguments->getJobCode();
-        }elseif(!is_null($arguments)){
-            $jobCode = $arguments;
-        }else{
-            return true;
-        }
+    public function bestSellers($param){
+//        if(!$this->_bestSellerCategoryConfig->getValue()){
+//            Mage::log('Fiuze_Bestsellercron: Please choose _bestSellerCategoryConfig in the System->Configuration->Catalog->Fiuze Bestsellers Cron tab.');
+//            return false;
+//        }
+//        if($arguments instanceof Mage_Cron_Model_Schedule) {
+//            $jobCode = $arguments->getJobCode();
+//        }elseif(!is_null($arguments)){
+//            $jobCode = $arguments;
+//        }else{
+//            return true;
+//        }
+        $jobCode = $param;
         $bestSellerConfig = $this->_bestSellerCategoryConfig;
         if(!is_null($bestSellerConfig)) {
             //set admin area if method run in the controller

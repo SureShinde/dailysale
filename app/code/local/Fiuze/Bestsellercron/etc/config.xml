@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Fiuze_Bestsellercron>
-            <version>0.2.5</version>
+            <version>0.3.0</version>
         </Fiuze_Bestsellercron>
     </modules>
     <global>
@@ -19,7 +19,16 @@
         <models>
             <bestsellercron>
                 <class>Fiuze_Bestsellercron_Model</class>
+                <resourceModel>bestsellercron_resource</resourceModel>
             </bestsellercron>
+            <bestsellercron_resource>
+                <class>Fiuze_Bestsellercron_Model_Resource</class>
+                <entities>
+                    <fiuze_tasks>
+                        <table>fiuze_tasks</table>
+                    </fiuze_tasks>
+                </entities>
+            </bestsellercron_resource>
         </models>
         <resources>
             <bestsellercron_setup>
@@ -48,6 +57,18 @@
             </catalog_block_product_list_collection>
         </events>
     </global>
+    <crontab>
+        <jobs>
+            <runcustomcron>
+                <schedule>
+                    <cron_expr>*/5 * * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>bestsellercron/customcron::runCustomCron</model>
+                </run>
+            </runcustomcron>
+        </jobs>
+    </crontab>
     <frontend>
         <product>
             <collection>
@@ -66,18 +87,6 @@
             </bestsellercron>
         </routers>
     </frontend>
-    <default>
-        <bestsellers_settings_sec>
-            <bestsellers_settings_grp>
-                <products>10</products>
-                <time>00,00,00</time>
-                <days>1</days>
-                <category>1</category>
-                <criteria>revenue</criteria>
-                <scheduler>1 1 * * *</scheduler>
-            </bestsellers_settings_grp>
-        </bestsellers_settings_sec>
-    </default>
     <adminhtml>
         <events>
             <core_block_abstract_prepare_layout_after>
