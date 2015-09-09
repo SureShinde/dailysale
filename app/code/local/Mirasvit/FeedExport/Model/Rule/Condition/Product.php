@@ -1,20 +1,4 @@
 <?php
-/**
- * Mirasvit
- *
- * This source file is subject to the Mirasvit Software License, which is available at http://mirasvit.com/license/.
- * Do not edit or add to this file if you wish to upgrade the to newer versions in the future.
- * If you wish to customize this module for your needs.
- * Please refer to http://www.magentocommerce.com for more information.
- *
- * @category  Mirasvit
- * @package   Advanced Product Feeds
- * @version   1.1.2
- * @build     486
- * @copyright Copyright (C) 2015 Mirasvit (http://mirasvit.com/)
- */
-
-
 class Mirasvit_FeedExport_Model_Rule_Condition_Product extends Mage_Rule_Model_Condition_Abstract
 {
     protected $_entityAttributeValues = null;
@@ -49,6 +33,8 @@ class Mirasvit_FeedExport_Model_Rule_Condition_Product extends Mage_Rule_Model_C
             'php'              => __('PHP Condition'),
             'is_in_stock'      => __('Stock Availability'),
             'manage_stock'     => __('Manage Stock'),
+            'status_parent'    => Mage::helper('feedexport')->__('Status(Parent Product)'),
+            'is_salable'       => __('Is Salable'),
         ));
     }
 
@@ -96,10 +82,14 @@ class Mirasvit_FeedExport_Model_Rule_Condition_Product extends Mage_Rule_Model_C
             $selectOptions = array();
             $options = Mage::getSingleton('cataloginventory/source_stock')->toOptionArray();
             foreach ($options as $option) {
-                $selectOptions[$option['value']] = $option['label'];
+                $selectOptions[$option['value']] = $option;
             }
+        } elseif ($this->getAttribute() === 'is_salable') {
+            $selectOptions = Mage::getModel('adminhtml/system_config_source_yesno')->toOptionArray();
         } elseif ($this->getAttribute() === 'type_id') {
-            $selectOptions = Mage::getSingleton('catalog/product_type')->getOptionArray();
+            $selectOptions = Mage::getSingleton('catalog/product_type')->getAllOptions();
+        } elseif ($this->getAttribute() === 'status_parent') {
+            $selectOptions = Mage_Catalog_Model_Product_Status::getAllOptions();
         } elseif (is_object($this->getAttributeObject())) {
             $attributeObject = $this->getAttributeObject();
             if ($attributeObject->usesSource()) {
@@ -192,7 +182,7 @@ class Mirasvit_FeedExport_Model_Rule_Condition_Product extends Mage_Rule_Model_C
     {
         $attribute = $this->getAttribute();
 
-        if (!in_array($attribute, array('category_ids', 'qty', 'php', 'is_in_stock', 'manage_stock'))) {
+        if (!in_array($attribute, array('category_ids', 'qty', 'php', 'is_in_stock', 'manage_stock', 'status_parent', 'is_salable'))) {
 
             if ($attribute == 'image_size'
                 || $attribute == 'small_image_size'
@@ -211,9 +201,12 @@ class Mirasvit_FeedExport_Model_Rule_Condition_Product extends Mage_Rule_Model_C
 
     public function getInputType()
     {
-        if ($this->getAttribute() === 'attribute_set_id'
-            || $this->getAttribute() === 'type_id'
-            || $this->getAttribute() === 'is_in_stock') {
+        if ($this->getAttribute() === 'attribute_set_id' ||
+            $this->getAttribute() === 'type_id' ||
+            $this->getAttribute() === 'is_in_stock' ||
+            $this->getAttribute() === 'status_parent' ||
+            $this->getAttribute() === 'is_salable'
+        ) {
             return 'select';
         }
         if ($this->getAttribute() === 'manage_stock') {
@@ -242,9 +235,12 @@ class Mirasvit_FeedExport_Model_Rule_Condition_Product extends Mage_Rule_Model_C
 
     public function getValueElementType()
     {
-        if ($this->getAttribute() === 'attribute_set_id'
-            || $this->getAttribute() === 'type_id'
-            || $this->getAttribute() === 'is_in_stock') {
+        if ($this->getAttribute() === 'attribute_set_id' ||
+            $this->getAttribute() === 'type_id' ||
+            $this->getAttribute() === 'is_in_stock' ||
+            $this->getAttribute() === 'status_parent' ||
+            $this->getAttribute() === 'is_salable'
+        ) {
             return 'select';
         }
         if (!is_object($this->getAttributeObject())) {
@@ -351,6 +347,31 @@ class Mirasvit_FeedExport_Model_Rule_Condition_Product extends Mage_Rule_Model_C
         $attrCode = $this->getAttribute();
 
         switch ($attrCode) {
+            case 'is_salable':
+                $value = $object->isSalable();
+                $object->setIsSalable($value);
+
+                return $this->validateAttribute($value);
+                break;
+
+            case 'status_parent':
+                $parentProduct = Mage::getSingleton('feedexport/feed_generator_pattern_product')->getParentProduct($object);
+                $value = $parentProduct->getStatus();
+                
+                return $this->validateAttribute($value);
+                break;
+                
+            case 'image':
+            case 'small_image':
+            case 'thumbnail':
+                $value = $object->getData($attrCode);
+                if ('' === $value || 'no_selection' === $value) {
+                    $value = null;
+                }
+
+                return $this->validateAttribute($value);
+                break;
+                
             case 'category_ids':
                 return $this->validateAttribute($object->getAvailableInCategories());
                 break;
@@ -358,14 +379,22 @@ class Mirasvit_FeedExport_Model_Rule_Condition_Product extends Mage_Rule_Model_C
             case 'qty':
                 if ($object->getTypeId() == 'configurable') {
                     $totalQty = 0;
-                    $childs = $object->getTypeInstance()->getUsedProductIds();
-                    foreach ($childs as $childId) {
-                        $child = Mage::getModel('catalog/product')->load($childId);
+                    $childs = $object->getTypeInstance()->getChildrenIds($object->getId());
+                    $childs = Mage::getModel('catalog/product')->getCollection()
+                        ->addFieldToFilter('entity_id', array('in' => $childs[0]))
+                        ->joinField(
+                            'qty',
+                            'cataloginventory/stock_item',
+                            'qty',
+                            'product_id = entity_id',
+                            '{{table}}.stock_id = 1',
+                            'left'
+                        );
 
+                    foreach ($childs as $child) {
                         # if product enabled
                         if ($child->getStatus() == 1) {
-                            $stockItem = Mage::getModel('cataloginventory/stock_item')->loadByProduct($childId);
-                            $totalQty += $stockItem->getQty();
+                            $totalQty += $child->getQty();
                         }
                     }
 
