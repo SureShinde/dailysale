@@ -664,6 +664,12 @@ body a:visited {
   line-height: 100% !important;
 }
 
+.cvv-what-is-this {
+  font-size: 10px;
+  line-height: 32px;
+  margin-left: 7px;
+}
+
 /**
 *
 * 4) Checkout Success Styles
@@ -1723,6 +1729,7 @@ ul.tabs li a:focus {
   background-image: -moz-linear-gradient(#3d89c5, #1b75bb);
   background-image: -webkit-linear-gradient(#3d89c5, #1b75bb);
   background-image: linear-gradient(#3d89c5, #1b75bb);
+  background-color: #0084eb !important;
   color: white;
   text-decoration: none;
   text-shadow: 1px 1px 0px #155d95;
@@ -1956,20 +1963,21 @@ ul.tabs li a:focus {
   font-weight: bold;
 }
 .cms-index-index .price-box .msrp, .category-products .price-box .msrp {
-  font-size: 14px;
-  color: #1b75bb;
+  font-size: 12px;
+  color: #898989;
   position: absolute;
   width: 100%;
   top: 40px;
   text-align: center;
   font-style: italic;
   margin: 3px 0 0 0px;
+  text-decoration: line-through;
 }
 .cms-index-index .price-box .msrp .price, .category-products .price-box .msrp .price {
   font-weight: normal;
 }
 .cms-index-index .price-box .percent-off, .category-products .price-box .percent-off {
-  background: url(../images/percentoffbg.png) no-repeat;
+  background: url(../images/bd24a1e3d65a48969f0970daf92094f0.png) no-repeat;
   width: 100px;
   height: 60px;
   margin: 0px 0 0 -9px;
@@ -2014,6 +2022,7 @@ ul.tabs li a:focus {
   background-image: -moz-linear-gradient(#ffffff, #eeeeee);
   background-image: -webkit-linear-gradient(#ffffff, #eeeeee);
   background-image: linear-gradient(#ffffff, #eeeeee);
+  background-color: #1b75bb;
   margin: 10px 10px 0 0;
   position: relative;
   z-index: 97;
