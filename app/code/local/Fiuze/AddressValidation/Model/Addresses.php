@@ -74,11 +74,18 @@ class Fiuze_AddressValidation_Model_Addresses extends Mage_Core_Model_Abstract
 
                 $final_response = $response;
             }
-
-            if($this->getId()){
-                Mage::getSingleton('checkout/session')->getQuote()->setDvpid($this->getId())->save();
-            }else{
-                Mage::getSingleton('checkout/session')->getQuote()->setDvpid($matches[0]['fiuze_addresses_id'])->save();
+            if($param['tipe']=='billing'){
+                if($this->getId()){
+                    Mage::getSingleton('checkout/session')->getQuote()->setDvpbillingid($this->getId())->save();
+                }else{
+                    Mage::getSingleton('checkout/session')->getQuote()->setDvpbillingid($matches[0]['fiuze_addresses_id'])->save();
+                }
+            }elseif($param['tipe']=='shipping'){
+                if($this->getId()){
+                    Mage::getSingleton('checkout/session')->getQuote()->setDvpshippingid($this->getId())->save();
+                }else{
+                    Mage::getSingleton('checkout/session')->getQuote()->setDvpshippingid($matches[0]['fiuze_addresses_id'])->save();
+                }
             }
             return  $final_response;
         }
@@ -96,6 +103,7 @@ class Fiuze_AddressValidation_Model_Addresses extends Mage_Core_Model_Abstract
         $data['street']['0']=$real_data['0']['real_address'];
         $data['city']=$real_data['0']['real_city'];
         $data['postcode']=$real_data['0']['real_postalcode'];
+        $data['region_id']=Mage::getModel('directory/region')->loadByCode($real_data[0]['real_state'], 'US')->getId();
 
         return $data;
     }

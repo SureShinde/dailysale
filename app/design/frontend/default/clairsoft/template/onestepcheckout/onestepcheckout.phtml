@@ -591,6 +591,7 @@
                 var addressShippingFiuzeCheck = ['shipping:street1', 'shipping:country_id', 'shipping:city', 'shipping:postcode', 'shipping:region_id', 'shipping:telephone' ,'shipping:firstname' ,'shipping:lastname'];
                 var shipping_err = false;
                 var shipping_address_data = [];
+                shipping_address_data.push('shipping');
                 for (var i = 0; i < addressShippingFiuzeCheck.length; i++) {
                     if ($(addressShippingFiuzeCheck[i]).value === '') {
                         shipping_err = true;
@@ -632,6 +633,7 @@
             }else{
                 fiuze_shipping_valid = false;
                 var fiuze_shipping_id_address = [];
+                fiuze_shipping_id_address.push('shipping');
                 fiuze_shipping_id_address.push($('shipping-address-select').value);
                 var request = new Ajax.Request(fiuze_address_validation_path, {
                     parameters: fiuze_shipping_id_address,
@@ -663,6 +665,7 @@
                 console.log('billing_check');
                 var err = false;
                 var address_data = [];
+                address_data.push('billing');
                 for (var i = 0; i < addressBillingFiuzeCheck.length; i++) {
                     if ($(addressBillingFiuzeCheck[i]).value === '') {
                         err = true;
@@ -701,6 +704,7 @@
             }else {
                 fiuze_billing_valid = false;
                 var fiuze_billing_id_address = [];
+                fiuze_billing_id_address.push('billing');
                 fiuze_billing_id_address.push($('billing-address-select').value);
                 var request = new Ajax.Request(fiuze_address_validation_path, {
                     parameters: fiuze_billing_id_address,
@@ -1120,6 +1124,45 @@
             }
         }
     }
-
+    document.observe("dom:loaded", fiuze_get_billing);
+    $('billing-address-select').observe('click', fiuze_get_billing);
+    function fiuze_get_billing(){
+        var param=[];
+        param.push($('billing-address-select').value);
+        var request = new Ajax.Request('<?php echo Mage::getBaseUrl()?>fiuze_addressvalidation/ajax/getAddressCustomer', {
+            parameters: param,
+            onComplete: function (transport) {
+                var address = JSON.parse(transport.responseText).result;
+                $('billing:firstname').value = address['5'];
+                $('billing:lastname').value = address['6'];
+                $('billing:telephone').value = address['7'];
+                $('billing:street1').value = address['0'];
+                $('billing:country_id').value = address['1'];
+                $('billing:city').value = address['2'];
+                $('billing:postcode').value = address['3'];
+                $('billing:region_id').value = address['4'];
+            }
+        })
+    }
+    document.observe("dom:loaded", fiuze_get_shipping);
+    $('shipping-address-select').observe('click', fiuze_get_shipping);
+    function fiuze_get_shipping(){
+        var param=[];
+        param.push($('shipping-address-select').value);
+        var request = new Ajax.Request('<?php echo Mage::getBaseUrl()?>fiuze_addressvalidation/ajax/getAddressCustomer', {
+            parameters: param,
+            onComplete: function (transport) {
+                var address = JSON.parse(transport.responseText).result;
+                $('shipping:firstname').value = address['5'];
+                $('shipping:lastname').value = address['6'];
+                $('shipping:telephone').value = address['7'];
+                $('shipping:street1').value = address['0'];
+                $('shipping:country_id').value = address['1'];
+                $('shipping:city').value = address['2'];
+                $('shipping:postcode').value = address['3'];
+                $('shipping:region_id').value = address['4'];
+            }
+        })
+    }
 </script>
 

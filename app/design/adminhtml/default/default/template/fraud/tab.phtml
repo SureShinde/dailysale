@@ -2,14 +2,16 @@
 	
 	$res = $this->getFraudResult();
 	$customer = $this->getCustomer();
-    $result = array(
-        'code 1',
-        'code 2'
-        );
-$dvp = Mage::getModel('fiuze_addressvalidation/addresses')->getCollection()->addFieldToFilter('fiuze_addresses_id',Mage::getModel('sales/order')->load(Mage::app()->getRequest()->getParam('order_id'))->getDvpid())->getData();
-$dvp = $dvp['0'];
-$dvpcode = $dvp['dvpcode'];
-$dvpnote = $dvp['dvpnote'];
+
+$dvp_billing = Mage::getModel('fiuze_addressvalidation/addresses')->getCollection()->addFieldToFilter('fiuze_addresses_id',Mage::getModel('sales/order')->load(Mage::app()->getRequest()->getParam('order_id'))->getDvpbillingid())->getData();
+$dvp_billing = $dvp_billing['0'];
+
+
+$dvp_shipping = Mage::getModel('fiuze_addressvalidation/addresses')->getCollection()->addFieldToFilter('fiuze_addresses_id',Mage::getModel('sales/order')->load(Mage::app()->getRequest()->getParam('order_id'))->getDvpshippingid())->getData();
+$dvp_shipping = $dvp_shipping['0'];
+if($dvp_shipping===null){
+    $dvp_shipping=$dvp_billing;
+}
 
 ?>
 <h1>Detailed Maxmind Results</h1>
@@ -139,12 +141,20 @@ $dvpnote = $dvp['dvpnote'];
             <table cellspacing="0" class="form-list">
                 <tbody>
                 <tr>
-                    <td class="label"><label>DVP Code</label></td>
-                    <td><?php echo $dvpcode; ?></td>
+                    <td class="label"><label>DVP Code (billing): </label></td>
+                    <td><?php echo $dvp_billing['dvpcode']; ?></td>
                 </tr>
                 <tr>
-                    <td class="label"><label>DVP Note</label></td>
-                    <td><?php echo $dvpnote; ?></td>
+                    <td class="label"><label>DVP Note (billing): </label></td>
+                    <td><?php echo $dvp_billing['dvpnote']; ?></td>
+                </tr>
+                <tr>
+                    <td class="label"><label>DVP Code (shipping): </label></td>
+                    <td><?php echo $dvp_shipping['dvpcode']; ?></td>
+                </tr>
+                <tr>
+                    <td class="label"><label>DVP Note (shipping): </label></td>
+                    <td><?php echo $dvp_shipping['dvpnote']; ?></td>
                 </tr>
                 </tbody>
             </table>
