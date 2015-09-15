@@ -469,7 +469,7 @@ class Aftership_Track_Model_Observer {
                 $row = array();
                 $row[] = $trackNumber->getOrderId();
                 $row[] = $shipment->getUdpoIncrementId();
-                $row[] = $trackNumber->getTrackingNumber().'_';
+                $row[] = "'".$trackNumber->getTrackingNumber()."'";
                 $row[] = $trackNumber->getShipCompCode();
 
                 if($trackNumber->getTrackingId()){
