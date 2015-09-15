@@ -39,6 +39,7 @@ var UnirgyProductConfig = Class.create(Product.Config, {
         }.bind(this))
 
         // Init settings dropdown
+        /// ///
         var childSettings = [];
         for(var i=this.settings.length-1;i>=0;i--){
             var prevSetting = this.settings[i-1] ? this.settings[i-1] : false;
@@ -46,9 +47,9 @@ var UnirgyProductConfig = Class.create(Product.Config, {
             if(i==0){
                 this.fillSelect(this.settings[i])
             }
-            else {
-                this.settings[i].disabled=true;
-            }
+            //else {
+            //    this.settings[i].disabled=true;
+            //}
             $(this.settings[i]).childSettings = childSettings.clone();
             $(this.settings[i]).prevSetting   = prevSetting;
             $(this.settings[i]).nextSetting   = nextSetting;
@@ -70,7 +71,7 @@ var UnirgyProductConfig = Class.create(Product.Config, {
             if (this.values && this.values[element.config.id]) this.state[element.config.id] = this.values[element.config.id]
             else if (!this.frontOptions.noPreselect) this.state[element.config.id] = element.config.defaultValueId
         }.bind(this))
-        this.configureElement(this.settings[0])
+        //this.configureElement(this.settings[0])
     },
     configureElement: function($super, element) {
         var initFlag = false;
