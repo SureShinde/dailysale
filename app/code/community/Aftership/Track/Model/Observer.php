@@ -600,7 +600,7 @@ class Aftership_Track_Model_Observer {
                         }
                     }
                 }
-
+                $countShipped   = 0;
                 $countDelivered = 0;
                 $countPending = 0;
                 foreach($fullTrack as $trackNumber){
@@ -611,41 +611,61 @@ class Aftership_Track_Model_Observer {
                         $status = $this->_getStatus($responseJson);
                         if($status === 'Delivered'){
                             $countDelivered++;
-                        }
-                        if($status=='Pending'){
-                            $status = 'Pending Aftership';
+                        }elseif($status==='Pending'){
                             $countPending++;
+                        }else{
+                            $countShipped++;
                         }
                         $trackNumberModel = Mage::getModel('track/track')->load($trackNumber['entity_id']);
                         $trackNumberModel->setStatus($status);
                         $trackNumberModel->save();
                     }
                 }
-
+                //логика изменения шипмента
+                $count_track = count($fullTrack);
                 if (count($trackNumbers) > 0) {
-                    if ($countPending == 0) {
-                        if ($countDelivered == count($fullTrack)) {
-                            //delivered
-                            $shipment->setUdropshipStatus(Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_DELIVERED);
-                            $shipment->save();
+                    if($countPending==$count_track){
+                        //all pending
+                        //do nothing
+                    }elseif($countDelivered==$count_track){
+                        //all delivered
+                        $shipment->setUdropshipStatus(Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_DELIVERED);
+                        $shipment->save();
 
-                            //close order
-                            $order = Mage::getModel('sales/order')->load($shipment->getOrderId());
-                            $order->setData('state', "complete");
-                            $order->setStatus("complete");
-                            //complete shipment
-                            $udpo = Mage::helper('udpo')->getShipmentPo($shipment);
-                            $udpo->setUdropshipStatus(Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_DELIVERED);
-                            $udpo->save();
-                            Mage::helper('udpo')->processPoStatusSave(Mage::helper('udpo')->getShipmentPo($shipment), Unirgy_DropshipPo_Model_Source::UDPO_STATUS_DELIVERED, true, $vendor);
-                            $history = $order->addStatusHistoryComment('Order marked as complete because shipment is delivered.', false);
-                            $history->setIsCustomerNotified(false);
-                            $order->save();
-                        } else {
-                            //shipped
-                            $shipment->setUdropshipStatus(Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_SHIPPED);
-                            $shipment->save();
-                        }
+                        //close order
+                        $order = Mage::getModel('sales/order')->load($shipment->getOrderId());
+                        $order->setData('state', "complete");
+                        $order->setStatus("complete");
+                        $order->save();
+
+                        /// ///
+                        //$this->processPoStatusSave($po, Unirgy_DropshipPo_Model_Source::UDPO_STATUS_DELIVERED, $save);
+                        /// ///
+
+                        //complete shipment
+                        $udpo = Mage::helper('udpo')->getShipmentPo($shipment);
+                        $udpo->setUdropshipStatus(Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_DELIVERED);
+                        $udpo->save();
+                       //   $history = $order->addStatusHistoryComment('Order marked as complete because shipment is delivered.', false);
+//                        $history->setIsCustomerNotified(false);
+                    }elseif($countPending==0){
+                        //all shipped
+                        $shipment->setUdropshipStatus(Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_SHIPPED);
+                        $shipment->save();
+                        //po status shipped
+                        $udpo = Mage::helper('udpo')->getShipmentPo($shipment);
+                        $udpo->setUdropshipStatus(Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_SHIPPED);
+                        $udpo->save();
+
+                    }else{
+                        //partially shipped
+                        $shipment->setUdropshipStatus(Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_PARTIAL);
+                        $shipment->save();
+                        //po status partial
+                        $udpo = Mage::helper('udpo')->getShipmentPo($shipment);
+                        $udpo->setUdropshipStatus(Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_PARTIAL);
+                        $udpo->save();
+
                     }
                 }
             }

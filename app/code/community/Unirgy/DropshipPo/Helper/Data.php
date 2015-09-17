@@ -62,10 +62,13 @@ class Unirgy_DropshipPo_Helper_Data extends Mage_Core_Helper_Abstract
 
     public function completeUdpoIfShipped($shipment, $save=false, $force=true)
     {
+        /// ///
         if (($po = $this->getShipmentPo($shipment))) {
-            return $this->processPoStatusSave($po, Unirgy_DropshipPo_Model_Source::UDPO_STATUS_DELIVERED, $save)
-                || $this->processPoStatusSave($po, Unirgy_DropshipPo_Model_Source::UDPO_STATUS_SHIPPED, $save)
-                || $this->processPoStatusSave($po, Unirgy_DropshipPo_Model_Source::UDPO_STATUS_PARTIAL, $save);
+            //dont save PO
+//            return $this->processPoStatusSave($po, Unirgy_DropshipPo_Model_Source::UDPO_STATUS_DELIVERED, $save)
+//                || $this->processPoStatusSave($po, Unirgy_DropshipPo_Model_Source::UDPO_STATUS_SHIPPED, $save)
+//                || $this->processPoStatusSave($po, Unirgy_DropshipPo_Model_Source::UDPO_STATUS_PARTIAL, $save);
+            return true;
         }
         return false;
     }

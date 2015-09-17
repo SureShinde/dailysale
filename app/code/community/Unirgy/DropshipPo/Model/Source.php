@@ -126,7 +126,7 @@ class Unirgy_DropshipPo_Model_Source extends Unirgy_Dropship_Model_Source_Abstra
                 self::UDPO_STATUS_BACKORDER  => $hlp->__('Backorder'),
                 self::UDPO_STATUS_ONHOLD     => $hlp->__('On Hold'),
                 self::UDPO_STATUS_READY      => $hlp->__('Ready to Ship'),
-                self::UDPO_STATUS_PARTIAL    => $hlp->__('Shipped'),
+                self::UDPO_STATUS_PARTIAL    => $hlp->__('Partially shipped'),
                 self::UDPO_STATUS_SHIPPED    => $hlp->__('Shipped'),
                 self::UDPO_STATUS_DELIVERED  => $hlp->__('Delivered'),
                 self::UDPO_STATUS_CANCELED   => $hlp->__('Canceled'),
