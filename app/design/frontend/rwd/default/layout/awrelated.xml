@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+        <reference name="head">
+            <action method="addItem">
+                <type>skin_css</type>
+                <name>relatedproducts/css/styles.css</name>
+            </action>
+            <action method="addItem">
+                <type>skin_js</type>
+                <name>relatedproducts/js/custom.js</name>
+            </action>
+        </reference>
+    </default>
+    <catalog_product_view>
+        <reference name="product.info">
+            <block type="relatedproducts/relatedproducts" name="catalog.product.awrelated.community.content" as="awRelatedProducts" before="-" template="catalog/product/list/awrelated.phtml">
+                <action method="disableRelated"/>
+            </block>
+        </reference>
+    </catalog_product_view>
+</layout>
