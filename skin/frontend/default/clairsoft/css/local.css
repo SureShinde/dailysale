@@ -799,7 +799,7 @@ body a:visited {
 .cmspage-leftcol input {
   border: 1px solid #898989;
 }
-.cmspage-leftcol button {
+.cmspage-leftcol button, #contactForm button {
   border: 1px solid #196fb1 !important;
   color: white;
   text-decoration: none;
