@@ -2,7 +2,7 @@
 <config>
     <modules>
         <WIC_Criteotags>
-            <version>1.4.1</version>
+            <version>1.4.3</version>
         </WIC_Criteotags>
     </modules>
     <global>    

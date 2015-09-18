@@ -9,7 +9,7 @@
  * that is bundled with this package in the file WIC-LICENSE.txt.
  * It is also available through the world-wide-web at this URL:
  * http://store.webincolor.fr/WIC-LICENSE.txt
- * 
+ *
  * @package		WIC_Criteotags
  * @copyright   Copyright (c) 2010-2014 Web In Color (http://www.webincolor.fr)
  * @author		Web In Color <contact@webincolor.fr>
@@ -77,18 +77,18 @@ class WIC_Criteotags_Block_Tags_Success extends Mage_Core_Block_Abstract {
 
             $info['id'] = $item->getProductId();
             $info['qty'] = (int) $item->getQtyOrdered();
-            $info['price'] = floatval($item->getPrice()- $item->getDiscountAmount());
+            $info['price'] = floatval(($item->getPrice() * $info['qty'] - $item->getDiscountAmount()) / $info['qty']);
 
             // Load Product to product Type
             $product = Mage::getModel('catalog/product')->load($item->getProductId());
 
-            // Keep the parent price for child           
+            // Keep the parent price for child
             if ($product->getTypeId() == "grouped" || $product->getTypeId() == "configurable" || $product->getTypeId() == "bundle") {
-                $parent['price'] = floatval($item->getPrice()- $item->getDiscountAmount());
-                $parent['qty'] = (int) $item->getQtyOrdered();
+                $parent['qty'] = (int) $item->getQty();
+                $parent['price'] = floatval(($item->getPrice() * $parent['qty'] - $item->getDiscountAmount()) / $parent['qty']);
             } elseif ($item->getParentItemId() && isset($parent)) {
-                $info['price'] = $parent['price'];
                 $info['qty'] = $parent['qty'];
+                $info['price'] = $parent['price'];
                 unset($parent);
             }
 
