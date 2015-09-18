@@ -182,3 +182,19 @@ EEngine.trackRevenue('dailysale_purchase', <?php echo($subtotal * 100); ?>);
 </script>
 
 <!-- End EEngine tracking -->
+
+<!-- Upsellit tracking -->
+
+<script type="text/javascript">
+  var USI_orderID = <?php echo($this->getOrderId()); ?>;
+  var USI_orderAmt = <?php echo($subtotal); ?>;
+  var USI_headID = document.getElementsByTagName("head")[0];
+  var USI_dynScript = document.createElement("script");
+  USI_dynScript.setAttribute('type','text/javascript');
+  USI_dynScript.src = 'http'+ (document.location.protocol=='https:'?'s://www':'://www')+ '.upsellit.com/upsellitReporting.jsp?command=REPORT&siteID=12302&productID=77&position=1&orderID='+escape(USI_orderID)+'&orderAmt='+escape(USI_orderAmt);
+  USI_headID.appendChild(USI_dynScript);
+  var USI_dynScript2 = document.createElement("script");
+  USI_dynScript2.setAttribute('type','text/javascript');
+  USI_dynScript2.src = 'http'+ (document.location.protocol=='https:'?'s://www':'://www')+ '.upsellit.com/hound/sale.jsp?orderID='+escape(USI_orderID)+'&orderAmt='+escape(USI_orderAmt);
+  USI_headID.appendChild(USI_dynScript2);
+</script>
