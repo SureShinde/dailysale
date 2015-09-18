@@ -1,15 +1,19 @@
 <div class="billing_address">
+    <script>
+        /// ///
+        fiuze_address_validation_path = '<?php echo Mage::getBaseUrl()?>fiuze_addressvalidation/ajax/billing_ajax';
+    </script>
     <h3 id="billing_step_header" class="step_1"><?php echo($this->__("Billing Address")); ?></h3>
     <?php if ($this->customerHasAddresses()): ?>
         <p class="label"><?php echo $this->__('Select a billing address from your address book or enter a new address.') ?></p>
-        <ul>	
+        <ul>
             <li>
                 <p><?php echo $this->getAddressesHtmlSelect('billing') ?></p>			
             </li>
 <li><input type='hidden' name='islogin2' id='islogin2' value='1'/></li>
         </ul>
     <?php endif; ?>
-    <fieldset class="group-select" id="billing-new-address-form" <?php if ($this->customerHasAddresses()): ?> style="display:none;"<?php endif; ?>>	
+    <fieldset class="group-select" id="billing-new-address-form" <?php if ($this->customerHasAddresses()): ?> style="display:none;"<?php endif; ?>>
         <input type="hidden" name="billing[address_id]" value="<?php echo $this->getBillingAddress()->getId() ?>" id="billing:address_id" />
         <ul>
             <?php $helper = Mage::helper('onestepcheckout') ?>
@@ -158,6 +162,15 @@
                     </li>
                 <?php endif ?>
             <?php endfor ?>
+            <li id='fiuze_adress_server_error' style="background-color: #ff0000; padding: 10px; width: 80%; display: none">
+
+            </li>
+            <li id='fiuze_adress_error' style="background-color: #ff0000; padding: 10px; width: 80%; display: none">
+                <span style="color: white"> Please enter a valid address </span>
+            </li>
+            <li id='fiuze_adress_progress' >
+
+            </li>
             <?php if ($checkCountry == 0): ?>
                 <div style="display:none;">
                     <?php echo $this->getCountryHtmlSelect('billing') ?>
@@ -425,4 +438,7 @@
             }
         </script>
     <?php endif; ?>
+</div>
+<div id="fiuze_billing_address_write_error"  style="display: none;">
+    <span style="display: inline-block; padding:13px; margin:20px; background-color: rgb(255, 0, 0); color: white"> Please enter a valid address </span>
 </div>
