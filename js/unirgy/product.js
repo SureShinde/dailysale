@@ -71,7 +71,7 @@ var UnirgyProductConfig = Class.create(Product.Config, {
             if (this.values && this.values[element.config.id]) this.state[element.config.id] = this.values[element.config.id]
             else if (!this.frontOptions.noPreselect) this.state[element.config.id] = element.config.defaultValueId
         }.bind(this))
-        //this.configureElement(this.settings[0])
+        this.configureElement(this.settings[0])
     },
     configureElement: function($super, element) {
         var initFlag = false;
@@ -85,10 +85,10 @@ var UnirgyProductConfig = Class.create(Product.Config, {
                 }
             }
         }
-        if (!initFlag && !!element.options[1] && !this.frontOptions.noPreselect) {
-            //element.selectedIndex = 1
-            this.state[element.config.id] = element.value = element.options[1].value
-        }
+        //if (!initFlag && !!element.options[1] && !this.frontOptions.noPreselect) {
+        //    //element.selectedIndex = 1
+        //    this.state[element.config.id] = element.value = element.options[1].value
+        //}
         try {
         $super(element)
         } catch (e) {}
