@@ -674,231 +674,116 @@
         }
         return true;
     }
-
     function oscPlaceOrder(element) {
-
-        fiuze_billing_valid = true;
-        fiuze_shipping_valid = true;
-
-        //start shipping
-        if ($('shipping:different_shipping').checked && $('shipping-address-select').value==="") {
-
-            //start shipping
-            console.log('shipping_check');
-            var addressShippingFiuzeCheck = ['shipping:street1', 'shipping:country_id', 'shipping:city', 'shipping:postcode', 'shipping:region_id', 'shipping:telephone' ,'shipping:firstname' ,'shipping:lastname'];
-           var shipping_err = false;
-            var shipping_address_data = [];
-            for (var i = 0; i < addressShippingFiuzeCheck.length; i++) {
-                if ($(addressShippingFiuzeCheck[i]).value === '') {
-                    shipping_err = true;
-                } else {
-                    shipping_address_data.push($(addressShippingFiuzeCheck[i]).value);
-                }
-            }
-            if (shipping_err === false) {
-                fiuze_shipping_valid = false;
-                $('shipping_fiuze_adress_progress').show();
-                $('shipping_fiuze_adress_server_error').hide();
-                $('shipping_fiuze_adress_error').hide();
-                /// ///
-                var shipping_request = new Ajax.Request(fiuze_address_validation_path, {
-                    parameters: shipping_address_data,
-                    onComplete: function (transport) {
-                        console.log('ajax run');
-                        $('shipping_fiuze_adress_progress').hide();
-                        if (transport.responseText == 'true') {
-                            console.log('ajax result true');
-                            fiuze_shipping_valid = true;
-                            placeOrder(element);
-                        } else if (transport.responseText == 'false') {
-                            console.log('ajax result false');
-                            $('shipping_fiuze_adress_error').show();
-
-                        } else {
-                            console.log('ajax result error');
-                            var message = '<span style="color: white"> Something went wrong, try again later.<br>Error code: ' + transport.responseText + '</span>';
-                            $('shipping_fiuze_adress_server_error').show().update(message);
-
+        var validator = new Validation('one-step-checkout-form');
+        var form = $('one-step-checkout-form');
+        if (validator.validate()) {
+            if (($('p_method_hosted_pro') && $('p_method_hosted_pro').checked) || ($('p_method_payflow_advanced') && $('p_method_payflow_advanced').checked)) {
+                $('onestepcheckout-place-order-loading').show();
+                $('onestepcheckout-button-place-order').removeClassName('onestepcheckout-btn-checkout');
+                $('onestepcheckout-button-place-order').addClassName('place-order-loader');
+                $('ajaxcart-load-ajax').show();
+                checkAjax('<?php echo $this->getUrl('onestepcheckout/index/saveOrderPro', array('_secure' => true)); ?>');
+            } else {
+                if (checkpayment()) {
+                    element.disabled = true;
+                    var already_placing_order = true;
+                    disable_payment();
+                    $('onestepcheckout-place-order-loading').show();
+                    $('onestepcheckout-button-place-order').removeClassName('onestepcheckout-btn-checkout');
+                    $('onestepcheckout-button-place-order').addClassName('place-order-loader');
+                    //$('one-step-checkout-form').submit();
+                    var options = document.getElementsByName('payment[method]');
+                    for (var i = 0; i < options.length; i++) {
+                        if ($(options[i].id).checked) {
+                            if (options[i].id.indexOf("tco") != -1) {
+                                var params = Form.serialize('one-step-checkout-form');
+                                var request = new Ajax.Request(
+                                '<?php echo $this->getCheckoutUrl() . 'isAjax/tco'; ?>',
+                                {
+                                    method: 'post',
+                                    onComplete: this.onComplete,
+                                    onSuccess: function(transport) {
+                                        if (transport.status == 200) {
+                                            if (transport.responseText.isJSON) {
+                                                var response = JSON.parse(transport.responseText);
+                                                $('onestepcheckout-place-order-loading').style.display = 'none';
+                                                $('checkout-' + response.update_section.name + '-load').update(response.update_section.html);
+                                                $('onestepcheckout-button-place-order').removeAttribute('onclick');
+                                                $('onestepcheckout-button-place-order').observe('click', formsubmit());
+                                                $('onestepcheckout-button-place-order').disabled = false;
+                                            }
+                                        }
+                                    },
+                                    onFailure: '', //checkout.ajaxFailure.bind(checkout),
+                                    parameters: params
+                                });
+                            } else if (options[i].id.indexOf("wirecard") != -1) {
+                                var params = Form.serialize('one-step-checkout-form');
+                                var request = new Ajax.Request(
+                                '<?php echo $this->getCheckoutUrl() . 'isAjax/wirecard'; ?>',
+                                {
+                                    method: 'post',
+                                    onComplete: this.onComplete,
+                                    onSuccess: function(transport) {
+                                        var response = JSON.parse(transport.responseText);
+                                        if (response.url) {
+                                            window.location.href = response.url;
+                                        } else {
+                                            var payment_method = $RF(form, 'payment[method]');
+                                            var wireparams = {'paymentMethod': payment_method};
+                                            url = '<?php echo Mage::getBaseUrl() . 'wirecard_checkout_page/processing/wirecard_checkout_pagecheckout/'; ?>';
+                                            var wirerequest = new Ajax.Request(
+                                            qmoreIsIframe,
+                                            {
+                                                method: 'get',
+                                                parameters: wireparams,
+                                                onSuccess: function(innerTransport) {
+                                                    if (innerTransport && innerTransport.responseText) {
+                                                        try {
+                                                            var innerResponse = eval('(' + innerTransport.responseText + ')');
+                                                        }
+                                                        catch (e) {
+                                                            innerResponse = {};
+                                                        }
+                                                        if (innerResponse.isIframe)
+                                                        {
+                                                            toggleQMoreIFrame();
+                                                            $('qmore-iframe').src = url;
+                                                        } else {
+                                                            window.location.href = url;
+                                                        }
+                                                    }
+                                                },
+                                                onFailure: ''
+                                            });
+                                        }
+                                    },
+                                    onFailure: '', //checkout.ajaxFailure.bind(checkout),
+                                    parameters: params
+                                });
+                            } else {
+                                if(isUseAmazon() == false){
+                                    $('one-step-checkout-form').submit();
+				}
+				else{ 
+				<?php 
+					if(Mage::helper('core')->isModuleEnabled('Amazon_Payments')){
+						$helperAmz = new Amazon_Payments_Helper_Data();
+						if(isset($helperAmz))
+							$checkoutUrl = $helperAmz->getCheckoutUrl(false);
+					}
+				?>
+                                    window.location.href = "<?php if(isset($checkoutUrl)) echo $checkoutUrl;?>";
+				}
+                            }
+                            break;
                         }
                     }
-                });
-
-
-            } else{
-                placeOrder(element)
-            }
-            //end
-            //shipping
-        }
-        //end shipping
-
-        //start billing
-        if($('billing-address-select').value==="") {
-            var addressBillingFiuzeCheck = ['billing:street1', 'billing:country_id', 'billing:city', 'billing:postcode', 'billing:region_id', 'billing:telephone' ,'billing:firstname' ,'billing:lastname'];
-            console.log('billing_check');
-            var err = false;
-            var address_data = [];
-            for (var i = 0; i < addressBillingFiuzeCheck.length; i++) {
-                if ($(addressBillingFiuzeCheck[i]).value === '') {
-                    err = true;
-                } else {
-                    address_data.push($(addressBillingFiuzeCheck[i]).value);
                 }
             }
-            if (err === false) {
-                fiuze_billing_valid = false;
-                $('fiuze_adress_progress').show();
-                $('fiuze_adress_server_error').hide();
-                $('fiuze_adress_error').hide();
-                /// ///
-                var request = new Ajax.Request(fiuze_address_validation_path, {
-                    parameters: address_data,
-                    onComplete: function (transport) {
-                        console.log('ajax run');
-                        $('fiuze_adress_progress').hide();
-                        if (transport.responseText == 'true') {
-
-                            console.log('ajax result true');
-                            fiuze_billing_valid = true;
-                            placeOrder(element);
-                        } else if (transport.responseText == 'false') {
-                            console.log('ajax result false');
-                            $('fiuze_adress_error').show();
-
-
-                        } else {
-                            console.log('ajax result error');
-                            var message = '<span style="color: white"> Something went wrong, try again later.<br>Error code: ' + transport.responseText + '</span>';
-                            $('fiuze_adress_server_error').show().update(message);
-
-                        }
-                    }
-                });
-
-            } else{
-                placeOrder(element);
-            }
         }
-        //end billing
-
-        placeOrder(element);
     }
-
-    function placeOrder(element){
-     if(fiuze_billing_valid==true && fiuze_shipping_valid==true) {
-
-
-         var validator = new Validation('one-step-checkout-form');
-         var form = $('one-step-checkout-form');
-         if (validator.validate()) {
-             if (($('p_method_hosted_pro') && $('p_method_hosted_pro').checked) || ($('p_method_payflow_advanced') && $('p_method_payflow_advanced').checked)) {
-                 $('onestepcheckout-place-order-loading').show();
-                 $('onestepcheckout-button-place-order').removeClassName('onestepcheckout-btn-checkout');
-                 $('onestepcheckout-button-place-order').addClassName('place-order-loader');
-                 $('ajaxcart-load-ajax').show();
-                 checkAjax('<?php echo $this->getUrl('onestepcheckout/index/saveOrderPro', array('_secure' => true)); ?>');
-             } else {
-                 if (checkpayment()) {
-                     element.disabled = true;
-                     var already_placing_order = true;
-                     disable_payment();
-                     $('onestepcheckout-place-order-loading').show();
-                     $('onestepcheckout-button-place-order').removeClassName('onestepcheckout-btn-checkout');
-                     $('onestepcheckout-button-place-order').addClassName('place-order-loader');
-                     //$('one-step-checkout-form').submit();
-                     var options = document.getElementsByName('payment[method]');
-                     for (var i = 0; i < options.length; i++) {
-                         if ($(options[i].id).checked) {
-                             if (options[i].id.indexOf("tco") != -1) {
-                                 var params = Form.serialize('one-step-checkout-form');
-                                 var request = new Ajax.Request(
-                                     '<?php echo $this->getCheckoutUrl() . 'isAjax/tco'; ?>',
-                                     {
-                                         method: 'post',
-                                         onComplete: this.onComplete,
-                                         onSuccess: function (transport) {
-                                             if (transport.status == 200) {
-                                                 if (transport.responseText.isJSON) {
-                                                     var response = JSON.parse(transport.responseText);
-                                                     $('onestepcheckout-place-order-loading').style.display = 'none';
-                                                     $('checkout-' + response.update_section.name + '-load').update(response.update_section.html);
-                                                     $('onestepcheckout-button-place-order').removeAttribute('onclick');
-                                                     $('onestepcheckout-button-place-order').observe('click', formsubmit());
-                                                     $('onestepcheckout-button-place-order').disabled = false;
-                                                 }
-                                             }
-                                         },
-                                         onFailure: '', //checkout.ajaxFailure.bind(checkout),
-                                         parameters: params
-                                     });
-                             } else if (options[i].id.indexOf("wirecard") != -1) {
-                                 var params = Form.serialize('one-step-checkout-form');
-                                 var request = new Ajax.Request(
-                                     '<?php echo $this->getCheckoutUrl() . 'isAjax/wirecard'; ?>',
-                                     {
-                                         method: 'post',
-                                         onComplete: this.onComplete,
-                                         onSuccess: function (transport) {
-                                             var response = JSON.parse(transport.responseText);
-                                             if (response.url) {
-                                                 window.location.href = response.url;
-                                             } else {
-                                                 var payment_method = $RF(form, 'payment[method]');
-                                                 var wireparams = {'paymentMethod': payment_method};
-                                                 url = '<?php echo Mage::getBaseUrl() . 'wirecard_checkout_page/processing/wirecard_checkout_pagecheckout/'; ?>';
-                                                 var wirerequest = new Ajax.Request(
-                                                     qmoreIsIframe,
-                                                     {
-                                                         method: 'get',
-                                                         parameters: wireparams,
-                                                         onSuccess: function (innerTransport) {
-                                                             if (innerTransport && innerTransport.responseText) {
-                                                                 try {
-                                                                     var innerResponse = eval('(' + innerTransport.responseText + ')');
-                                                                 }
-                                                                 catch (e) {
-                                                                     innerResponse = {};
-                                                                 }
-                                                                 if (innerResponse.isIframe) {
-                                                                     toggleQMoreIFrame();
-                                                                     $('qmore-iframe').src = url;
-                                                                 } else {
-                                                                     window.location.href = url;
-                                                                 }
-                                                             }
-                                                         },
-                                                         onFailure: ''
-                                                     });
-                                             }
-                                         },
-                                         onFailure: '', //checkout.ajaxFailure.bind(checkout),
-                                         parameters: params
-                                     });
-                             } else {
-                                 if (isUseAmazon() == false) {
-                                     $('one-step-checkout-form').submit();
-                                 }
-                                 else {
-                                     <?php
-                                         if(Mage::helper('core')->isModuleEnabled('Amazon_Payments')){
-                                             $helperAmz = new Amazon_Payments_Helper_Data();
-                                             if(isset($helperAmz))
-                                                 $checkoutUrl = $helperAmz->getCheckoutUrl(false);
-                                         }
-                                     ?>
-                                     window.location.href = "<?php if(isset($checkoutUrl)) echo $checkoutUrl;?>";
-                                 }
-                             }
-                             break;
-                         }
-                     }
-                 }
-             }
-         }
-     }
- }
-
-
     function checkAjax(url) {
         var form = $('one-step-checkout-form');
         var payment_method = $RF(form, 'payment[method]');
