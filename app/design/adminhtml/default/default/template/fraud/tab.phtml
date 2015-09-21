@@ -2,7 +2,17 @@
 	
 	$res = $this->getFraudResult();
 	$customer = $this->getCustomer();
-	
+
+$dvp_billing = Mage::getModel('fiuze_addressvalidation/addresses')->getCollection()->addFieldToFilter('fiuze_addresses_id',Mage::getModel('sales/order')->load(Mage::app()->getRequest()->getParam('order_id'))->getDvpbillingid())->getData();
+$dvp_billing = $dvp_billing['0'];
+
+
+$dvp_shipping = Mage::getModel('fiuze_addressvalidation/addresses')->getCollection()->addFieldToFilter('fiuze_addresses_id',Mage::getModel('sales/order')->load(Mage::app()->getRequest()->getParam('order_id'))->getDvpshippingid())->getData();
+$dvp_shipping = $dvp_shipping['0'];
+if($dvp_shipping===null){
+    $dvp_shipping=$dvp_billing;
+}
+
 ?>
 <h1>Detailed Maxmind Results</h1>
 <p>For detailed instructions about each field, please visit <a href="http://www.maxmind.com/app/ccv" target="_blank">Maxmind's integration page</a>.</p>
@@ -119,6 +129,40 @@
 	</div>
 </div>
 </div>
+
+<div class="clear"></div>
+
+<div class="box-left">
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-account">DVP Code and Note</h4>
+        </div>
+        <div class="fieldset">
+            <table cellspacing="0" class="form-list">
+                <tbody>
+                <tr>
+                    <td class="label"><label>DVP Code (billing): </label></td>
+                    <td><?php echo $dvp_billing['dvpcode']; ?></td>
+                </tr>
+                <tr>
+                    <td class="label"><label>DVP Note (billing): </label></td>
+                    <td><?php echo $dvp_billing['dvpnote']; ?></td>
+                </tr>
+                <tr>
+                    <td class="label"><label>DVP Code (shipping): </label></td>
+                    <td><?php echo $dvp_shipping['dvpcode']; ?></td>
+                </tr>
+                <tr>
+                    <td class="label"><label>DVP Note (shipping): </label></td>
+                    <td><?php echo $dvp_shipping['dvpnote']; ?></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
 
 <div class="clear"></div>
 
