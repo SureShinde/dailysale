@@ -186,28 +186,4 @@
             </backend>
         </captcha>
     </default>
-    <adminhtml>
-        <acl>
-            <resources>
-                <all>
-                    <title>Allow Everything</title>
-                </all>
-                <admin>
-                    <children>
-                        <system>
-                            <children>
-                                <config>
-                                    <children>
-                                        <fiuze_address_validation>
-                                            <title>FIuze address validation</title>
-                                        </fiuze_address_validation>
-                                    </children>
-                                </config>
-                            </children>
-                        </system>
-                    </children>
-                </admin>
-            </resources>
-        </acl>
-    </adminhtml>
 </config> 
