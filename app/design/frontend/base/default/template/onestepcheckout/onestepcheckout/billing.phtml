@@ -1,7 +1,7 @@
 <div class="billing_address">
     <script>
         /// ///
-        fiuze_address_validation_path = '<?php echo Mage::getBaseUrl()?>fiuze_addressvalidation/ajax/billing_ajax';
+        fiuze_address_validation_path = '<?php echo Mage::getUrl('fiuze_addressvalidation/ajax/billing_ajax', array('_secure' => Mage::app()->getStore()->isCurrentlySecure())); ?>';
     </script>
     <h3 id="billing_step_header" class="step_1"><?php echo($this->__("Billing Address")); ?></h3>
     <?php if ($this->customerHasAddresses()): ?>

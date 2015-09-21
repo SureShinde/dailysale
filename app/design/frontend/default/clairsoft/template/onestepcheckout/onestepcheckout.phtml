@@ -1129,7 +1129,7 @@
     function fiuze_get_billing(){
         var param=[];
         param.push($('billing-address-select').value);
-        var request = new Ajax.Request('<?php echo Mage::getBaseUrl()?>fiuze_addressvalidation/ajax/getAddressCustomer', {
+        var request = new Ajax.Request('<?php echo Mage::getUrl('fiuze_addressvalidation/ajax/getAddressCustomer', array('_secure' => Mage::app()->getStore()->isCurrentlySecure())); ?>', {
             parameters: param,
             onComplete: function (transport) {
                 var address = JSON.parse(transport.responseText).result;
@@ -1149,7 +1149,7 @@
     function fiuze_get_shipping(){
         var param=[];
         param.push($('shipping-address-select').value);
-        var request = new Ajax.Request('<?php echo Mage::getBaseUrl()?>fiuze_addressvalidation/ajax/getAddressCustomer', {
+        var request = new Ajax.Request('<?php echo Mage::getUrl('fiuze_addressvalidation/ajax/getAddressCustomer', array('_secure' => Mage::app()->getStore()->isCurrentlySecure())); ?>', {
             parameters: param,
             onComplete: function (transport) {
                 var address = JSON.parse(transport.responseText).result;
