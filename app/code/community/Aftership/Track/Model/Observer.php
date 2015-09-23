@@ -611,7 +611,7 @@ class Aftership_Track_Model_Observer {
                         $status = $this->_getStatus($responseJson);
                         if($status === 'Delivered'){
                             $countDelivered++;
-                        }elseif($status==='Pending'){
+                        }elseif($status==='Pending' OR $status==='Expired' OR $status==='Info Received'){
                             $countPending++;
                         }else{
                             $countShipped++;

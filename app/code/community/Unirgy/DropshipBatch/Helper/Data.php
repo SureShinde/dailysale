@@ -625,8 +625,22 @@ class Unirgy_DropshipBatch_Helper_Data extends Mage_Core_Helper_Abstract
         foreach ($trackingNumbersContent as $trackingOrder) {
             $currentRow = preg_split("/;/", $trackingOrder);
             if(count($currentRow) != 2){
-                Mage::throwException($_poHlp->__("Incorrectly input format"));
+                Mage::throwException($_poHlp->__("Incorrect input format"));
             }
+            $currentTrackingNumber = $currentRow[1];
+            //validation of tracknumbers
+            $api_key = Mage::app()->getWebsite(0)->getConfig('aftership_options/messages/api_key');
+            $courier = new AfterShip\Couriers($api_key);
+            $response = $courier->detect($currentTrackingNumber);
+            $trackings = new AfterShip\Trackings($api_key);
+            $response = $trackings->get($response['data']['couriers'][0]['slug'], $currentTrackingNumber, array('title', 'order_id'));
+            if ($response['meta']['code'] != 4004) {
+                Mage::throwException($_poHlp->__("Track number " . $currentTrackingNumber . " are already tracked."));
+            }
+        }
+        foreach ($trackingNumbersContent as $trackingOrder) {
+            $currentRow = preg_split("/;/", $trackingOrder);
+
             $currentOrderId = $currentRow[0];
             $currentTrackingNumber = $currentRow[1];
             foreach ($_udpos as $keyPo => $item) {

@@ -113,6 +113,7 @@ class Unirgy_DropshipPo_VendorController extends Unirgy_Dropship_VendorControlle
                 $this->_forward('udpoInfo');
             }else{
                 $carrierCheck = $this->asTrackNumber($number);
+                $uniqueCheck = $this->asIssetNumber($number);
                 $carrierInstances = Mage::getSingleton('shipping/config')->getAllCarriers();
                 $carriers = array();
                 foreach ($carrierInstances as $code => $carrier) {
@@ -125,7 +126,12 @@ class Unirgy_DropshipPo_VendorController extends Unirgy_Dropship_VendorControlle
                 $carrier = $key;
             }
             if(!$carrierCheck){
-                $this->_getSession()->addError($this->__('Cannot save shipment. Invalid it is track number'));
+                $this->_getSession()->addError($this->__('Cannot save track number. Track number is invalid.'));
+                $this->_getSession()->setData('tracking_id',$number);
+                $this->_forward('udpoInfo');
+                return;
+            }elseif(!$uniqueCheck){
+                $this->_getSession()->addError($this->__('Cannot save track number. Track number already exists'));
                 $this->_getSession()->setData('tracking_id',$number);
                 $this->_forward('udpoInfo');
                 return;
@@ -922,6 +928,7 @@ class Unirgy_DropshipPo_VendorController extends Unirgy_Dropship_VendorControlle
         $api_key = Mage::app()->getWebsite(0)->getConfig('aftership_options/messages/api_key');
         $courier = new AfterShip\Couriers($api_key);
         $response = $courier->detect($trackingNumber);
+        Mage::register('_curr_carier',$response['data']['couriers'][0]['slug']);
         $data = $response['data'];
         $courier = reset($data['couriers']);
         switch($courier['name']){
@@ -934,6 +941,18 @@ class Unirgy_DropshipPo_VendorController extends Unirgy_Dropship_VendorControlle
                 return $result;
                 break;
 
+        }
+    }
+    private function asIssetNumber($num){
+        $_curr_carrier = Mage::registry('_curr_carier');
+        Mage::unregister('_curr_carier');
+        $api_key = Mage::app()->getWebsite(0)->getConfig('aftership_options/messages/api_key');
+        $trackings = new AfterShip\Trackings($api_key);
+        $response = $trackings->get($_curr_carrier, $num, array('title','order_id'));
+        if($response['meta']['code']==4004){
+            return true;
+        }else{
+            return false;
         }
     }
 
