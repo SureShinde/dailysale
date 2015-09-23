@@ -1,0 +1,110 @@
+<?php
+$ticketDetails = $this->getData('ticketDetails');
+$ticketPostDetails = $this->getData('ticketPostDetails');
+$ticketStatusList = $this->getData('ticketStatusList');
+
+echo $this->getMessagesBlock()->getGroupedHtml()
+?>
+<div class="col-main" xmlns="http://www.w3.org/1999/html">
+	<div class="my-account">
+		<div class="page-title">
+			<h1>View Ticket Details</h1>
+		</div>
+
+		<div align="right">
+			<p class="back-link" style="float: left;"><a href="<?php echo Mage::helper('client')->getViewTicketUrl(); ?>" style="text-decoration: none;">&laquo;Back</a></p>
+			<button class="button" title="Update" type="button" onclick="javascript:document.getElementById('TicketDetailForm').submit();"><span><span>Update</span></span></button>
+			<button class="button" title="Post Reply" type="button" onclick="javascript:document.getElementById('postContentContainer').style.display='';">
+				<span><span>Post Reply</span></span></button>
+		</div>
+
+		<div class="fieldset">
+			<h2 class="legend"><?php echo Mage::helper('client')->__('Ticket ID') ?>: <?php echo $ticketDetails['displayticketid']; ?></h2>
+
+			<div class="box-head" style="height: 20px;">
+				<?php echo $ticketDetails['department']; ?>&nbsp; &raquo; &nbsp;<strong><?php echo ucfirst($ticketDetails['subject']); ?></strong>
+			</div>
+
+			<div class="block-subscribe">
+				<span>Created : <?php echo $ticketDetails['dateline']; ?> </span>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<span>Updated : <?php echo $ticketDetails['lastactivity']; ?> </span>
+			</div>
+			<br/>
+
+			<form id="TicketDetailForm" method="post" autocomplete="off">
+				<div style="background-color: <?php echo $ticketDetails['statusbgcolor']; ?>; height: 60px; text-align:center;">
+					<div style="width: 150px;float: left; height: inherit;color: #FFFFFF;">
+						<div class="box-title" style="padding-top:7px;">DEPARTMENT</div>
+						<h5 style="color: #FFFFFF;"><?php echo wordwrap($ticketDetails['department']); ?> </h5>
+					</div>
+					<div style="width: 150px;float: left;height: inherit;color: #FFFFFF;">
+						<div class="box-title" style="padding-top:7px;">OWNER</div>
+						<h5 style="color: #FFFFFF;"><?php echo $ticketDetails['fullname']; ?> </h5>
+					</div>
+					<div style="width: 150px;float: left; height: inherit;color: #FFFFFF; background-color: <?php echo $ticketDetails['statusbgcolor']; ?>;">
+						<div class="box-title" style="padding-top:7px;">STATUS</div>
+						<select title="Type" id="ticketstatusid" name="ticketstatusid">
+							<?php
+							foreach ($ticketStatusList as $ticketStatus) {
+								?>
+								<option
+									value="<?php echo $ticketStatus->getId() ?>" <?php echo(($ticketDetails['ticketstatusid'] == $ticketStatus->getId()) ? 'selected="selected"' : ''); ?>><?php echo $ticketStatus->getTitle() ?></option>
+							<?php
+							}
+							?>
+						</select>
+					</div>
+					<div style="width: 150px;float: left; height: inherit;color: #FFFFFF; background-color: <?php echo $ticketDetails['prioritybgcolor']; ?>;">
+						<div class="box-title" style="padding-top:7px;">PRIORITY</div>
+						<select title="Priority" id="ticketpriorityid" name="ticketpriorityid">
+							<?php
+							foreach ($this->ticket_priorities as $ticket_priority) {
+								?>
+								<option
+									value="<?php echo $ticket_priority->getId() ?>" <?php echo(($ticketDetails['priorityid'] == $ticket_priority->getId()) ? 'selected="selected"' : ''); ?>><?php echo $ticket_priority->getTitle() ?></option>
+							<?php
+							}
+							?>
+						</select>
+					</div>
+				</div>
+			</form>
+
+			<div class="fieldset" style="display: none;" id="postContentContainer">
+				<form id="messageDetailForm" name="messageDetailForm" method="post"
+				      action="<?php echo Mage::getUrl('*/*/postReply', array('tid' => $ticketDetails['ticketid'])); ?>">
+					<h2 class="legend"><?php echo Mage::helper('client')->__('Message Details') ?></h2>
+					<ul class="form-list">
+						<li class="wide">
+							<label class="required" for="ticketmessage"><em>*</em><?php echo Mage::helper('client')->__('Message') ?></label>
+
+							<div class="input-box">
+								<textarea rows="3" cols="5" class="required-entry input-text" title="Message" id="ticketmessage" name="ticketmessage"></textarea>
+							</div>
+						</li>
+					</ul>
+
+					<div class="buttons-set">
+						<button class="button" title="Submit" type="submit"><span><span>Submit</span></span></button>
+					</div>
+				</form>
+			</div>
+			<?php
+			foreach ($ticketPostDetails as $ticketPost) {
+				?>
+				<div class="fieldset">
+					<h2 class="legend"><?php echo $ticketPost['badgetext']; ?>: <?php echo $ticketPost['fullname']; ?></h2>
+					<?php echo $ticketPost['contents']; ?>
+				</div>
+			<?php
+			}
+			?>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	//<![CDATA[
+	var messageDetailForm = new VarienForm('messageDetailForm', true);
+	//]]>
+</script>

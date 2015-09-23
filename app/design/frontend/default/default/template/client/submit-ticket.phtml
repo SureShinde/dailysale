@@ -1,0 +1,37 @@
+<div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+<div class="col-main">
+	<div class="my-account">
+		<div class="page-title">
+			<h1><?php echo Mage::helper('client')->__('Submit Ticket') ?></h1>
+		</div>
+		<form id="submitTicketForm" method="post" action="<?php echo $this->getFormAction(); ?>">
+			<div class="fieldset">
+				<h2 class="legend">Select a department</h2>
+				<ul class="form-list">
+					<?php
+					$i = 0;
+					foreach ($this->_departments as $department) {
+						$i++;
+						?>
+						<li class="control">
+							<input type="radio" class="radio <?php echo(($i == count($this->departments)) ? 'validate-one-required-by-name' : ''); ?>"
+							       id="department_<?php echo $department->getID(); ?>" name="department" value="<?php echo $department->getID(); ?>">
+							<label for="department_<?php echo $department->getID(); ?>"><?php echo $department->getTitle(); ?></label>
+						</li>
+					<?php
+					}
+					?>
+				</ul>
+			</div>
+
+			<div class="buttons-set">
+				<button class="button" title="Next" type="submit"><span><span>Next &raquo;</span></span></button>
+			</div>
+		</form>
+	</div>
+</div>
+<script type="text/javascript">
+	//<![CDATA[
+	var contactForm = new VarienForm('submitTicketForm', true);
+	//]]>
+</script>

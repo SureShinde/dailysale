@@ -1,0 +1,90 @@
+<?xml version="1.0" ?>
+<layout version="0.1.0">
+    <default>
+
+        <reference name="root">
+            <action method="setTemplate"><template>page/2columns-left.phtml</template></action>
+        </reference>
+
+        <reference name="left">
+            <block type="core/template" name ="client_sidebar_left" template="client/sidebar/left.phtml" before="-"></block>
+            <remove name="left.permanent.callout"></remove>
+            <remove name="left.newsletter"></remove>
+        </reference>
+
+    </default>
+
+    <client_index_index>
+
+        <reference name="head">
+            <action method="setTitle" translate="title" module="client"><title>Kayako Helpdesk</title></action>
+        </reference>
+
+        <reference name="content">
+            <block type="core/template" name ="dashboard" template="client/dashboard.phtml"/>
+        </reference>
+
+    </client_index_index>
+
+    <client_index_submitticket>
+
+        <reference name="content">
+
+            <reference name="head">
+                <action method="setTitle" translate="title" module="client"><title>Submit Ticket - Kayako</title></action>
+            </reference>
+
+            <block type="core/template" name ="submitTicket" template="client/submit-ticket.phtml"/>
+        </reference>
+
+    </client_index_submitticket>
+
+    <client_index_submitticketdetail>
+
+        <reference name="head">
+            <action method="setTitle" translate="title" module="client"><title>Submit Ticket - Kayako</title></action>
+        </reference>
+
+        <reference name="content">
+            <block type="core/template" name ="submitTicketDetail" template="client/submit-ticket-detail.phtml"/>
+        </reference>
+
+    </client_index_submitticketdetail>
+
+    <client_index_ticketsubmitted>
+
+        <reference name="head">
+            <action method="setTitle" translate="title" module="client"><title>Ticket Submitted - Kayako</title></action>
+        </reference>
+
+        <reference name="content">
+            <block type="core/template" name ="ticketSubmitted" template="client/ticket-submitted.phtml"/>
+        </reference>
+
+    </client_index_ticketsubmitted>
+
+    <client_index_viewticket>
+
+        <reference name="head">
+            <action method="setTitle" translate="title" module="client"><title>View Ticket - Kayako</title></action>
+        </reference>
+
+        <reference name="content">
+            <block type="client/viewTicket" name ="viewTicket" template="client/view-ticket.phtml"/>
+        </reference>
+
+    </client_index_viewticket>
+
+	<client_index_viewticketdetails>
+
+		<reference name="head">
+			<action method="setTitle" translate="title" module="client"><title>View Ticket Details - Kayako</title></action>
+		</reference>
+
+		<reference name="content">
+			<block type="core/template" name ="viewTicketDetails" template="client/view-ticket-details.phtml"/>
+		</reference>
+
+	</client_index_viewticketdetails>
+
+</layout>

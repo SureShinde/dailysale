@@ -1,0 +1,39 @@
+<?php
+$loggedIn = false;
+$actionName = $this->getRequest()->getActionName();
+if (Mage::getSingleton('customer/session')->isLoggedIn()) {
+	$loggedIn = true;
+}
+?>
+
+<div class="block block-account">
+
+	<div class="block-title">
+		<strong><span><?php echo $this->__('Support') ?></span></strong>
+	</div>
+
+	<div class="block-content">
+		<ul>
+			<?php if ((!empty($actionName) && ($actionName == 'submitTicket' || $actionName == 'submitTicketDetail' || $actionName == 'ticketSubmitted'))) { ?>
+				<li class="current <?php echo((!$loggedIn) ? 'last' : '') ?>"><strong>Submit a Ticket</strong></li>
+			<?php } else { ?>
+				<li <?php echo((!$loggedIn) ? 'class="last"' : '') ?>>
+					<a href="<?php echo Mage::helper('client')->getSubmitTicketUrl(); ?>">Submit a Ticket</a>
+				</li>
+			<?php } ?>
+
+			<?php
+			if ($loggedIn) {
+				if ((!empty($actionName) && ($actionName == 'viewTicket' || $actionName == 'viewTicketDetails'))) {
+					?>
+					<li class="current last"><strong>View Tickets</strong></li>
+				<?php } else { ?>
+					<li class="last">
+						<a href="<?php echo Mage::helper('client')->getViewTicketUrl(); ?>">View Tickets</a>
+					</li>
+				<?php
+				}
+			} ?>
+		</ul>
+	</div>
+</div>

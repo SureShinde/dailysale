@@ -1,0 +1,113 @@
+<?php
+$_loggedInuserName = '';
+$_loggedInUserEmail = '';
+if (Mage::getSingleton('customer/session')->isLoggedIn()) {
+	$_loggedInuserName  = Mage::getSingleton('customer/session')->getCustomer()->getName();
+	$_loggedInUserEmail = Mage::getSingleton('customer/session')->getCustomer()->getEmail();
+}
+?>
+<div class="col-main">
+	<div class="my-account">
+		<div class="page-title">
+			<h1>Your Ticket Details</h1>
+		</div>
+		<form id="submitTicketDetailForm" method="post" action="<?php echo $this->getFormAction(); ?>" autocomplete="off">
+
+			<div class="fieldset">
+				<h2 class="legend"><?php echo Mage::helper('client')->__('General Information') ?></h2>
+				<ul class="form-list">
+					<li class="fields">
+						<div class="field">
+							<label class="required" for="ticketfullname"><em>*</em><?php echo Mage::helper('client')->__('Full Name') ?></label>
+
+							<div class="input-box">
+								<input type="text" class="input-text required-entry" title="Full Name" id="ticketfullname" name="ticketfullname"
+								       value="<?php echo $_loggedInuserName; ?>">
+							</div>
+						</div>
+						<div class="field">
+							<label class="required" for="ticketemail"><em>*</em><?php echo Mage::helper('client')->__('Email') ?></label>
+
+							<div class="input-box">
+								<input type="text" class="input-text required-entry validate-email" title="Email" id="ticketemail" name="ticketemail"
+								       value="<?php echo $_loggedInUserEmail; ?>">
+							</div>
+						</div>
+					</li>
+					<li class="fields">
+						<div class="field">
+							<label class="required" for="ticketpriorityid"><em>*</em><?php echo Mage::helper('client')->__('Priority') ?></label>
+
+							<div class="input-box">
+								<select title="Priority" class="validate-select" id="ticketpriorityid" name="ticketpriorityid">
+									<?php
+									foreach ($this->ticket_priorities as $ticket_priority) {
+										?>
+										<option value="<?php echo $ticket_priority->getId() ?>"><?php echo $ticket_priority->getTitle() ?></option>
+									<?php
+									}
+									?>
+								</select>
+							</div>
+						</div>
+
+						<div class="field">
+							<label class="required" for="tickettypeid"><em>*</em><?php echo Mage::helper('client')->__('Type') ?></label>
+
+							<div class="input-box">
+								<select title="Type" class="validate-select" id="tickettypeid" name="tickettypeid">
+									<?php
+									foreach ($this->ticket_types as $ticket_type) {
+										?>
+										<option value="<?php echo $ticket_type->getId() ?>"><?php echo $ticket_type->getTitle() ?></option>
+									<?php
+									}
+									?>
+
+								</select>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+
+			<div class="fieldset">
+				<h2 class="legend"><?php echo Mage::helper('client')->__('Message Details') ?></h2>
+				<ul class="form-list">
+					<li class="fields">
+						<div class="field">
+							<label class="required" for="ticketsubject"><em>*</em><?php echo Mage::helper('client')->__('Subject') ?></label>
+
+							<div class="input-box">
+								<input type="text" class="input-text required-entry" title="Subject" id="ticketsubject" name="ticketsubject">
+							</div>
+						</div>
+					</li>
+
+					<li class="wide">
+						<label class="required" for="ticketmessage"><em>*</em><?php echo Mage::helper('client')->__('Message') ?></label>
+
+						<div class="input-box">
+							<textarea rows="3" cols="5" class="required-entry input-text" title="Message" id="ticketmessage" name="ticketmessage"></textarea>
+							<input type="hidden" name="departmentID" id="departmentID" value="<?php echo $this->getData('departmentID'); ?>"/>
+						</div>
+					</li>
+				</ul>
+			</div>
+
+
+			<div class="buttons-set">
+				<p class="required">* Required Fields</p>
+
+				<p class="back-link"><a href="<?php echo Mage::helper('client')->getSubmitTicketUrl(); ?>" style="text-decoration: none;">&laquo;Back</a></p>
+				<button class="button" title="Submit" type="submit"><span><span>Submit</span></span></button>
+			</div>
+		</form>
+	</div>
+</div>
+
+<script type="text/javascript">
+	//<![CDATA[
+	var contactForm = new VarienForm('submitTicketDetailForm', true);
+	//]]>
+</script>

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<Kayako_Client>
+			<active>true</active>
+			<codePool>community</codePool>
+		</Kayako_Client>
+	</modules>
+</config>

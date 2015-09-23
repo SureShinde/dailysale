@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<modules>
+		<Kayako_Client>
+			<version>1.0.2</version>
+		</Kayako_Client>
+	</modules>
+
+	<frontend>
+		<routers>
+			<client>
+				<use>standard</use>
+				<args>
+					<module>Kayako_Client</module>
+					<frontName>client</frontName>
+				</args>
+			</client>
+		</routers>
+
+		<layout>
+			<updates>
+				<client>
+					<file>client.xml</file>
+				</client>
+			</updates>
+		</layout>
+
+	</frontend>
+
+	<global>
+
+		<blocks>
+			<client>
+				<class>Kayako_Client_Block</class>
+			</client>
+		</blocks>
+
+		<helpers>
+			<client>
+				<class>Kayako_Client_Helper</class>
+			</client>
+		</helpers>
+
+		<models>
+			<client>
+				<class>Kayako_Client_Model</class>
+			</client>
+		</models>
+
+	</global>
+
+	<adminhtml>
+		<acl>
+			<resources>
+				<all>
+					<title>Allow Everything</title>
+				</all>
+				<admin>
+					<children>
+						<system>
+							<children>
+								<config>
+									<children>
+										<client>
+											<title>Client - All</title>
+										</client>
+									</children>
+								</config>
+							</children>
+						</system>
+					</children>
+				</admin>
+			</resources>
+		</acl>
+	</adminhtml>
+</config>
