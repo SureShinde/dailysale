@@ -351,6 +351,10 @@ class Kayako_Client_IndexController extends Mage_Core_Controller_Front_Action
 	public function addBreadCrumbs()
 	{
 		$_breadcrumbs = $this->getLayout()->getBlock('breadcrumbs');
+		//fix for addCrumb on non object error
+		if (!$_breadcrumbs) {
+            return '';
+        }
 		$_breadcrumbs->addCrumb('home', array('label' => Mage::helper('client')->__('Home'), 'title' => Mage::helper('client')->__('Home Page'), 'link' => Mage::getBaseUrl()));
 
 		switch ($this->_action) {
