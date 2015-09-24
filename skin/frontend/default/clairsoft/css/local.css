@@ -671,6 +671,56 @@ body a:visited {
   margin-left: 7px;
 }
 
+.onestepcheckout-index-index .page {
+  max-width: 960px;
+  width: 100%;
+  padding: 10px;
+}
+
+.onestepcheckout-index-index .top-container {
+  max-width: 960px;
+  width: 100%;
+}
+
+.onestepcheckout-index-index .top-links-container {
+  float: right;
+  display: inline-block;
+  margin-top: 0;
+}
+
+.onestepcheckout-index-index .top-links-container ul.links {
+  display: inline-block;
+}
+
+@media screen and (max-width: 960px) {
+  .onestepcheckout-index-index .nav-container {
+    display: none; 
+  }
+
+  .onestepcheckout-index-index div.header {
+    text-align: center;
+  }
+
+  .onestepcheckout-index-index div.header a.logo {
+    float: none;
+  }
+}
+@media (max-width: 639px) {
+
+  .onestepcheckout-index-index #one-step-checkout-form label,
+  .onestepcheckout-index-index #one-step-checkout-form .address-information ul li.create_account label {
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    display: inline-block;
+    max-width: 100%;
+  }
+
+  .onestepcheckout-index-index .cvv-what-is-this {
+    font-size: 12px;
+  }
+}
+
 /**
 *
 * 4) Checkout Success Styles
