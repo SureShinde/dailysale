@@ -107,9 +107,22 @@ class Fiuze_Bestsellercron_Model_System_Config_Backend_General extends Mage_Admi
         if(count($value)==0){
             return;
         }
+            foreach($value as $key => &$item){
+            $numberOfProducts = &$item['number_of_products'];
+            if($numberOfProducts['checkbox'] == 'on'){
+                $numberOfProducts['checkbox'] = 'checked';
+            }else{
+                $numberOfProducts['checkbox'] = '';
+            }
+            if($item['checkbox'] == 'on'){
+                $item['checkbox'] = 'checked';
+            }else{
+                $item['checkbox'] = '';
+            }
+        }
         $collection = Mage::getResourceModel('bestsellercron/tasks_collection');
-        foreach ($collection as $item) {
-            $item->delete();
+        foreach ($collection as $task) {
+            $task->delete();
         }
         foreach($value as $key => $task){
             $result = $this->getTimeStampByCron($task['task_schedule']);
@@ -119,6 +132,7 @@ class Fiuze_Bestsellercron_Model_System_Config_Backend_General extends Mage_Admi
                 setStepTimestamp($result['step_time'])->
                 save();
         }
+        $this->setValue($value);
         parent::_beforeSave();
     }
 }
