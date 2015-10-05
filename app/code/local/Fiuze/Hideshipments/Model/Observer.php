@@ -7,7 +7,7 @@ class Fiuze_Hideshipments_Model_Observer
 
         $collection = $observer->getOrderShipmentGridCollection();
         if ($collection->getModelName() == "sales/order_shipment") {
-            $collection->addFieldToFilter('udropship_status',array('neq'=>'10'));
+            $collection->addFieldToFilter('udropship_status',array('neq'=>'0'));
         }
     }
 }
