@@ -1788,6 +1788,90 @@ ul.tabs li a:focus {
   border: 1px solid #1b75bb;
 }
 
+/* Auto Related & Who Also Bought Styles*/
+
+.aw-arp-block{
+  width: 960px;
+}
+
+.aw-arp-block-content{
+  position: relative;
+  overflow: visible !important;
+  /*width: 960px;*/
+}
+
+.aw-arp-block .block-title span{
+  color: #1b75bb;
+  font-weight: bold;
+  font-size: 22px;
+}
+
+.aw-arp-item{
+  margin-right: 17px;
+}
+
+.aw-arp-item .msrp, .aw-arp-item .percent-off{
+  display: none;
+}
+
+.aw-arp-item .price{
+  color: #1b75bb;
+  font-weight: bold;
+  font-size: 26px;
+}
+
+.aw-arp-item img{
+  border: 1px solid #ccc;
+}
+
+.aw-product-name{
+  color: #888;
+  font-size: 12px;
+}
+
+button.slick-prev{
+  background: url(../images/aw-related-prev.png) no-repeat;
+  border: none;
+  text-indent: -9999em;
+  height: 47px;
+  width: 22px;
+  cursor: pointer;
+  position: absolute;
+  top: 70px;
+}
+
+button.slick-next{
+  background: url(../images/aw-related-next.png) no-repeat;
+  border: none;
+  text-indent: -9999em;
+  height: 47px;
+  width: 22px;
+  cursor: pointer;
+  position: absolute;
+  top: 70px;
+  right: -15px;
+}
+
+.slick-prev
+{
+    left: -25px;
+}
+[dir='rtl'] .slick-prev
+{
+    right: -25px;
+    left: auto;
+}
+
+.slick-next
+{
+    right: -15px;
+}
+[dir='rtl'] .slick-next
+{
+    right: auto;
+    left: -15px;
+  }
+
 /**
 *
 * 9) Products Grid Styles
