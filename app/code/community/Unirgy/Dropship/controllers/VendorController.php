@@ -51,6 +51,10 @@ class Unirgy_Dropship_VendorController extends Unirgy_Dropship_Controller_Vendor
         $this->_renderPage(null, 'dashboard');
     }
 
+    public function dashAction(){
+        $this->_renderPage(null, 'dash');
+    }
+
     public function loginAction()
     {
         if (Mage::getSingleton('udropship/session')->isLoggedIn()) {
