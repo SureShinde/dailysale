@@ -1,3 +1,5 @@
+##############
+## Block access to downloader
 order deny,allow
 deny from all
 

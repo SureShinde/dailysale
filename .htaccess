@@ -220,6 +220,6 @@
     #FileETag none
 
 ##############
-## Block access to .git and /downloader
+## Block access to .git
 RedirectMatch 404 /\.git
 
