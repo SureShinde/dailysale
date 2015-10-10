@@ -46,12 +46,19 @@ class Bronto_Email_Model_Template_Import extends Bronto_Email_Model_Template
         $emt  = Mage::getModel('bronto_common/email_template_templatefilter');
 
         // Get Store
+        $store = null;
         if ($storeId) {
             $store = Mage::app()->getStore($storeId);
-        } elseif (isset($data['store_id'])) {
+        } else if (isset($data['store_id'])) {
             $store = Mage::app()->getStore($data['store_id']);
-        } else {
+        }
+
+        if (empty($store)) {
             $store = Mage::app()->getDefaultStoreView();
+        }
+
+        if (!$store) {
+            $store = Mage::app()->getStore();
         }
 
         // If module is not enabled for this store, don't proceed
@@ -60,35 +67,35 @@ class Bronto_Email_Model_Template_Import extends Bronto_Email_Model_Template
         }
 
         // Get Token
-        $token = Mage::helper('bronto_common')->getApiToken('store', $store->getId());
-        if ($token) {
-            $this->_apiObject = new Bronto_Api_Message(array(
-                'api' => Mage::helper('bronto_common')->getApi($token, 'store', $store->getId())
-            ));
-        } else {
+        $api = Mage::helper('bronto_common')->getApi(null, 'store', $store->getId());
+        if (!$api) {
             return false;
         }
 
-        // Send message template to Bronto
-        try {
-            $message = new Bronto_Api_Message_Row(array(
-                'apiObject' => $this->_apiObject
-            ));
-        } catch (Exception $e) {
-            Mage::log('Bronto Failed creating apiObject:' . $e->getMessage());
-
-            return false;
+        $messageOps = $api->transferMessage();
+        if (method_exists($emt, 'getInlineCssFile')) {
+            $emt
+                ->setTemplateProcessor(array($template, 'getTemplateByConfigPath'))
+                ->setIncludeProcessor(array($template, 'getInclude'))
+                ->setUseAbsoluteLinks(true)
+                ->setStoreId($store->getId())
+                ->setUseSessionInUrl(false);
         }
+
+        $appEmu = Mage::getSingleton('core/app_emulation');
+        $emuInfo = $appEmu->startEnvironmentEmulation($store->getId(), 'frontend');
 
         // Add Check for required fields
         if (array_key_exists('template_text', $data) && array_key_exists('template_subject', $data)) {
-            $message->name   = $data['template_code'];
-            $message->status = 'active';
-
             // Define variables for filtered Subject and Text
             $templateSubject = $emt->filter($data['template_subject']);
             $templateText    = $emt->filter($data['template_text']);
             $templateTextRip = $emt->filter($this->ripTags($data['template_text']));
+
+            if (method_exists($emt, 'getInlineCssFile')) {
+                $template->setInlineCssFile($emt->getInlineCssFile());
+                $templateText = $template->getPreparedTemplateText($templateText);
+            }
 
             // If message missing subject, use template code
             if ('' == $templateSubject) {
@@ -102,27 +109,32 @@ class Bronto_Email_Model_Template_Import extends Bronto_Email_Model_Template
                     Mage::throwException('Template is missing body');
                 }
 
-                $message->content = array(
-                    array(
-                        'type'    => 'html',
-                        'subject' => $templateSubject,
-                        'content' => $templateText,
-                    ),
-                    array(
-                        'type'    => 'text',
-                        'subject' => $templateSubject,
-                        'content' => $templateTextRip,
-                    )
-                );
-                $message->subject = $templateSubject;
-                $message->save();
+                $message = $messageOps->read()
+                    ->where->name->equalTo($data['template_code'])
+                    ->withIncludeContent(true)
+                    ->first();
+                if (!$message) {
+                    $message = $messageOps->createObject()
+                        ->withName($data['template_code'])
+                        ->withStatus('active');
+                }
+                $message
+                    ->addHtml($templateSubject, $templateText)
+                    ->addText($templateSubject, $templateTextRip);
 
-                if ($message->hasError()) {
-                    Mage::throwException($message->getErrorCode() . ' ' . $message->getErrorMessage());
-
-                    return false;
+                $writeOps = $message->hasId() ?
+                    $messageOps->update()->updateMessage($message) :
+                    $messageOps->add()->addMessage($message);
+                foreach ($writeOps as $result) {
+                    $item = $result->getItem();
+                    if ($item->getIsError()) {
+                        Mage::throwException($item->getErrorCode() . ' ' . $item->getErrorMessage());
+                    } else if ($item->getIsNew()) {
+                        $message->withId($item->getId());
+                    }
                 }
             } catch (Exception $e) {
+                $appEmu->stopEnvironmentEmulation($emuInfo);
                 Mage::throwException("Failed Importing Template `{$data['template_code']}` : [Bronto] " . $e->getMessage());
 
                 return false;
@@ -133,15 +145,17 @@ class Bronto_Email_Model_Template_Import extends Bronto_Email_Model_Template
                 ->load($template->getId())
                 ->setCoreTemplateId($template->getId())
                 ->setOrigTemplateText($templateText)
-                ->setBrontoMessageId($message->id)
-                ->setBrontoMessageName($message->name)
+                ->setBrontoMessageId($message->getId())
+                ->setBrontoMessageName($message->getName())
                 ->setBrontoMessageApproved(1)
                 ->setStoreId($store->getId())
+                ->setInlineCss($template->getInlineCssFile())
                 ->save();
 
             // Clean Up
             unset($brontoTemplate);
         }
+        $appEmu->stopEnvironmentEmulation($emuInfo);
 
         return true;
     }

@@ -7,7 +7,6 @@
  * @package   Bronto_Verify
  * @author    Adam Daniels <adam.daniels@atlanticbt.com>
  * @copyright 2013 Adam Daniels
- * @license   http://www.atlanticbt.com/ Atlantic BT
  */
 class Bronto_Verify_Block_Conflictprinter
     extends Mage_Adminhtml_Block_Template

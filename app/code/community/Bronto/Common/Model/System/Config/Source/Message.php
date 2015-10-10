@@ -22,19 +22,19 @@ class Bronto_Common_Model_System_Config_Source_Message
     {
         $helper = Mage::helper('bronto_common');
         $key = empty($token) ? $helper->getApiToken() : $token;
-        if (!isset(self::$_options[$key])) {
+        if (!array_key_exists($key, self::$_options)) {
             self::$_options[$key] = array();
             try {
                 if ($api = Mage::helper('bronto_common')->getApi($key)) {
                     /* @var $messageObject Bronto_Api_Message */
-                    $messageObject = $api->getMessageObject();
-                    foreach ($messageObject->readAll()->iterate() as $message) {
+                    $messageObject = $api->transferMessage();
+                    foreach ($messageObject->read()->withIncludeContent(false) as $message) {
                         $_option = array(
-                            'label' => $message->name,
-                            'value' => $message->id,
+                            'label' => $message->getName(),
+                            'value' => $message->getId(),
                         );
 
-                        if ($message->status != 'active') {
+                        if ($message->getStatus() != 'active') {
                             $_option['disabled'] = true;
                         }
 

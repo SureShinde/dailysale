@@ -139,7 +139,7 @@ class Bronto_Product_Helper_Data extends Bronto_Common_Helper_Data
             if (is_numeric($item)) {
                 $item = $helper->getProduct($item, $storeId);
             }
-            if ($item->getParentItem()) {
+            if (!$item || $item->getParentItem()) {
                 continue;
             }
             if (!$item instanceof Mage_Catalog_Model_Product) {
@@ -307,15 +307,12 @@ class Bronto_Product_Helper_Data extends Bronto_Common_Helper_Data
      */
     public function setRelatedFields($delivery, $productHash, $storeId = null)
     {
-        $currentData = $delivery->getData();
-        if (empty($currentData['fields'])) {
-            $currentData['fields'] = array();
-        }
+        $currentData = $delivery->hasFields() ? $delivery->getFields() : array();
         foreach ($this->relatedFields($productHash, $storeId) as $fields) {
-            $currentData['fields'] = array_merge($currentData['fields'], $fields);
+            $currentData = array_merge($currentData, $fields);
         }
         // By passing the setField call on the API is far more efficient
-        $delivery->setData($currentData);
+        $delivery->withFields($currentData);
     }
 
     /**
@@ -341,23 +338,16 @@ class Bronto_Product_Helper_Data extends Bronto_Common_Helper_Data
      */
     public function getContentTagForRecommendation($tagObject, $rec)
     {
-        $filter = array(
-            'type' => 'OR',
-            'name' => array(
-                'value' => $rec->getName(),
-                'operator' => 'EqualTo',
-            )
-        );
+        $readTags = $tagObject->read()->where->name->equalTo($rec->getName());
         if ($rec->hasTagId()) {
-            $filter['id'] = array($rec->getTagId());
+            $readTags->or->id->is($rec->getTagId());
         }
-        $tags = $tagObject->readAll($filter, false);
-        $tag = $tags->current();
+        $tags = $readTags->withIncludeContent(true)->getIterator()->toArray();
+        $tag = current($tags);
         if (count($tags) > 1) {
             Mage::throwException("Unable to find unique tag for {$rec->getName()}.");
         } else if (!$tag) {
-            $tag = $tagObject->createRow();
-            $tag->name = $rec->getName();
+            $tag = $tagObject->createObject()->withName($rec->getName());
         }
         return $tag;
     }

@@ -25,6 +25,15 @@ class Bronto_Email_Adminhtml_System_Email_LogController extends Mage_Adminhtml_C
     }
 
     /**
+     * Override for ACL permissions
+     */
+    protected function _isAllowed()
+    {
+        $session = Mage::getSingleton('admin/session');
+        return $session->isAllowed('admin/system/config/bronto_email');
+    }
+
+    /**
      * Deletes all log history
      */
     public function clearAction()

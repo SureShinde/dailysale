@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config>
+  <placeholders>
+    <bronto_redemption>
+      <block>bronto_order/redemption</block>
+      <name>bronto.redemption</name>
+      <template>bronto/order/redemption.phtml</template>
+      <placeholder>BRONTO_ORDER_REDEMPTION</placeholder>
+      <container>Bronto_Order_Model_Container_Redemption</container>
+      <cache_lifetime>false</cache_lifetime>
+    </bronto_redemption>
+  </placeholders>
+</config>

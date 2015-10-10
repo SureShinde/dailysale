@@ -22,11 +22,11 @@ class Bronto_Common_Model_System_Config_Source_List
             self::$_options[$token] = array();
             try {
                 if ($api = Mage::helper('bronto_common')->getApi($token)) {
-                    $listObject = $api->getListObject();
-                    foreach ($listObject->readAll()->iterate() as $list) {
+                    $listObject = $api->transferMailList();
+                    foreach ($listObject->read() as $list) {
                         self::$_options[$token][] = array(
-                            'value' => $list->id,
-                            'label' => $list->label,
+                            'value' => $list->getId(),
+                            'label' => $list->getLabel(),
                         );
                     }
                 }

@@ -74,7 +74,7 @@ class Bronto_Reminder_Block_Adminhtml_Reminder_Edit_Tab_Bronto extends Mage_Admi
                             'value'               => 'transactional',
                             'values'              => array(
                                 array('value' => 'transactional', 'label' => ' Send as Transactional'),
-                                array('value' => 'marketing', 'label' => ' Send as Marketing'),
+                                array('value' => 'triggered', 'label' => ' Send as Marketing'),
                             ),
                             'fieldset_html_class' => 'store',
                             'disabled'            => $disabled

@@ -18,6 +18,7 @@ class Bronto_Reminder_Model_Mysql4_Customer_Collection extends Mage_Customer_Mod
 
         $couponTable = $this->getTable('bronto_reminder/coupon');
         $logTable    = $this->getTable('bronto_reminder/log');
+        $sendThreshold = Mage::helper('bronto_reminder')->getSendFailureThreshold();
 
         try {
             $salesRuleCouponTable = $this->getTable('salesrule/coupon');
@@ -27,6 +28,7 @@ class Bronto_Reminder_Model_Mysql4_Customer_Collection extends Mage_Customer_Mod
 
         $select->from(array('c' => $couponTable), array('store_id', 'unique_id', 'customer_id', 'customer_email', 'associated_at', 'emails_failed', 'is_active'));
         $select->where('c.rule_id = ?', $rule->getId());
+        $select->where('c.emails_failed < ?', $sendThreshold);
 
         $subSelect = $this->getConnection()->select();
         $subSelect->from(array('g' => $logTable), array(

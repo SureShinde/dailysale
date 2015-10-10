@@ -354,9 +354,6 @@ class Bronto_Common_Helper_Data
             }
         }
 
-        Mage::getConfig()->reinit();
-        Mage::app()->reinitStores();
-
         return $this;
     }
 
@@ -474,6 +471,7 @@ class Bronto_Common_Helper_Data
         }
 
         return Mage::getModel('bronto_common/api')
+            ->load($token)
             ->setToken($token)
             ->getClient();
     }
@@ -524,9 +522,9 @@ class Bronto_Common_Helper_Data
 
         try {
             $api = $this->getApi($token, $scope, $scopeId);
-            $tokenRow = $api->getTokenInfo();
+            $tokenRow = $api->transferApiToken()->getById($token);
 
-            return $tokenRow->hasPermissions(7);
+            return $tokenRow->getPermissions() == 7;
         } catch (Exception $e) {
             $helper = Mage::helper('bronto_common/api');
             if (
@@ -906,7 +904,7 @@ class Bronto_Common_Helper_Data
         );
 
         // Update Scope based on what has been set
-        if ($scopeParams['store'] !== false) {
+        if (!empty($scopeParams['store'])) {
             $store = Mage::app()->getStore($scopeParams['store']);
             if ($store->getId()) {
                 $scopeParams['store_id'] = $store->getId();
@@ -914,13 +912,13 @@ class Bronto_Common_Helper_Data
                 $scopeParams['store_id'] = Mage::app()->getStore()->getId();
             }
             $scopeParams['scope'] = 'store';
-        } elseif ($scopeParams['website'] !== false) {
+        } elseif (!empty($scopeParams['website'])) {
             $website = Mage::app()->getWebsite($scopeParams['website']);
             if ($website->getId()) {
                 $scopeParams['website_id'] = $website->getId();
             }
             $scopeParams['scope'] = 'website';
-        } elseif ($scopeParams['group'] !== false) {
+        } elseif (!empty($scopeParams['group'])) {
             $group = Mage::app()->getGroup($scopeParams['group']);
             if ($group->getId()) {
                 $scopeParams['group_id'] = $group->getId();

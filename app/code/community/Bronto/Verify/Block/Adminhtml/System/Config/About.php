@@ -7,7 +7,6 @@
  * @package   Bronto_Verify
  * @author    Adam Daniels <adam.daniels@atlanticbt.com>
  * @copyright 2013 Adam Daniels
- * @license   http://www.atlanticbt.com/ Atlantic BT
  */
 class Bronto_Verify_Block_Adminhtml_System_Config_About
     extends Bronto_Common_Block_Adminhtml_System_Config_About

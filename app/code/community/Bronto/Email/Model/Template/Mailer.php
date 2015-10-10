@@ -29,8 +29,8 @@ class Bronto_Email_Model_Template_Mailer
             return parent::send();
         }
 
-        $message = new Bronto_Api_Message_Row();
-        $message->id = $emailTemplate->getBrontoMessageId();
+        $message = new Bronto_Api_Model_Message();
+        $message->withId($emailTemplate->getBrontoMessageId());
 
         // Send all emails from corresponding list
         while (!empty($this->_emailInfos)) {
