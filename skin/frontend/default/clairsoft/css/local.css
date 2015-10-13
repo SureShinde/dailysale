@@ -1800,17 +1800,36 @@ ul.tabs li a:focus {
   /*width: 960px;*/
 }
 
-.aw-arp-block .block-title span{
+.aw-arp-block .block-title span, .aw-ab-title{
   color: #1b75bb;
   font-weight: bold;
   font-size: 22px;
+}
+
+.aw-content{
+  border-bottom: 1px solid #EBEBEB;
+  margin-bottom: 20px;
+  padding: 0px 5px 0px 5px;
+}
+
+h4.aw-ab-title{
+  background: none !important;
+  height: auto;
 }
 
 .aw-arp-item{
   margin-right: 17px;
 }
 
+.aw-arp-item img{
+  margin-bottom: 10px;
+}
+
 .aw-arp-item .msrp, .aw-arp-item .percent-off{
+  display: none;
+}
+
+.aw-mini-related-items .msrp, .aw-mini-related-items .percent-off{
   display: none;
 }
 

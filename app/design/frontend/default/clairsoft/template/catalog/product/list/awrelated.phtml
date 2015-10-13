@@ -25,39 +25,23 @@
  */
 ?><?php $collection = $this->getRelatedProductsCollection(); ?>
 <?php if($this->getEnabled() && count($collection)): ?>
-<div class="aw-box aw-base-mini aw-mini-related-items block">
-    <div class="head">
-        <h4><?php echo $this->__('Customers Who Bought This Also Bought') ?></h4>
-    </div>
-    <div class="aw-content" <?php if (Mage::helper('relatedproducts')->checkVersion('1.4.1.0')) { echo "id=\"after1400\""; }?>>
-        <?php if($this->getRequiredOptionsInCollection($collection)): ?>
-            <p><strong><?php echo $this->__('Check items to add to the cart or') ?>&nbsp;<a href="#" onclick="selectAllAwRelated(this);return false;"><?php echo $this->__('select all') ?></a></strong></p>
-        <?php endif; ?>
-        <ol>
-        <?php foreach($collection as $_item): ?>
-        <li<?php if($_item->isComposite() || !$_item->isSaleable()): ?> class="super-products"<?php endif; ?>>
-            <div class="product-images">
-            <?php if(!$_item->isComposite() && $_item->isSaleable()): ?>
-                <span class="checkbox-container">
-                <?php if (!$this->getRequiredOptions($_item)): ?>
-                    <input type="checkbox" class="aw-related-checkbox left" id="aw-related-checkbox<?php echo $_item->getId() ?>" name="aw_related_products[]" value="<?php echo $_item->getId() ?>" />
-                <?php endif; ?>
-                </span>
-            <?php else: ?>
-                <span class="checkbox-container">&nbsp;</span>
-            <?php endif; ?>
-                <a href="<?php echo $_item->getProductUrl() ?>"><img src="<?php echo $this->helper('catalog/image')->init($_item, 'thumbnail')->resize(50) ?>" alt="<?php echo $this->htmlEscape($_item->getName()) ?>" width="50" height="50" /></a>
+<div class="aw-box aw-mini-related-items block aw-arp-block">
+    <div class="block-title">
+                <strong><span><?php echo $this->__('Customers Who Bought This Also Bought') ?></span></strong>
             </div>
-            <div class="product-details">
-                    <a href="<?php echo $_item->getProductUrl() ?>"><?php echo $this->htmlEscape($_item->getName()) ?></a>
+    <div class="aw-content block-related-product aw-arp-block-content" <?php if (Mage::helper('relatedproducts')->checkVersion('1.4.1.0')) { echo "id=\"after1400\""; }?>>
+        <?php foreach($collection as $_item): ?>
+        <div class="aw-arp-item">
+            
+                <a href="<?php echo $_item->getProductUrl() ?>"><img src="<?php echo $this->helper('catalog/image')->init($_item, 'thumbnail')->resize(168) ?>" alt="<?php echo $this->htmlEscape($_item->getName()) ?>" width="168" height="168" /></a>
+                    
                     <?php echo $this->getPriceHtml($_item, true); ?>
+                    <a class="aw-product-name" href="<?php echo $_item->getProductUrl() ?>"><?php echo $this->htmlEscape($_item->getName()) ?></a>
                     <?php if ($this->helper('wishlist')->isAllow()) : ?>
                     <a href="<?php echo $this->getAddToWishlistUrl($_item) ?>" class="aw-link-cart"><?php echo $this->__('Add to Wishlist') ?></a>
                     <?php endif; ?>
-            </div>
-        </li>
+        </div>
         <?php endforeach ?>
-        </ol>
     </div>
 </div>
 <script type="text/javascript">
