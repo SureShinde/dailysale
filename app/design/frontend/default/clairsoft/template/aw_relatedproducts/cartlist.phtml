@@ -24,30 +24,29 @@
  * @license    http://ecommerce.aheadworks.com/AW-LICENSE.txt
  */
 ?><?php if($this->getEnabled() && count($this->getRelatedProductsCollection())): ?>
-<div class="aw-box aw-base-mini aw-mini-related-items aw-mini-related-cart block">
+<div class="aw-who-also-bought-block">
     <div class="head">
-        <h4><?php echo $this->__('Customers Who Bought This Also Bought') ?></h4>
+        <h4><?php echo $this->__('Customers Also Purchased') ?></h4>
     </div>
-    <div class="aw-content" <?php if (Mage::helper('relatedproducts')->checkVersion('1.4.1.0')) { echo "id=\"after1400\""; }?>>
-        <ol>
-            <?php foreach($this->getRelatedProductsCollection() as $_item): ?>
-            <li<?php if($_item->isComposite() || !$_item->isSaleable()): ?> class="super-products"<?php endif; ?>>
-                <div class="product-images">
-                    <a href="<?php echo $_item->getProductUrl() ?>"><img src="<?php echo $this->helper('catalog/image')->init($_item, 'thumbnail')->resize(50) ?>" alt="<?php echo $this->htmlEscape($_item->getName()) ?>" width="50" height="50" /></a>
-                </div>
-                <div class="product-details">
-                    <a href="<?php echo $_item->getProductUrl() ?>"><?php echo $this->htmlEscape($_item->getName()) ?></a>
+    <div <?php if (Mage::helper('relatedproducts')->checkVersion('1.4.1.0')) { echo "id=\"after1400\""; }?>>
+            <?php
+                $i = 0;
+                foreach($this->getRelatedProductsCollection() as $_item){ 
+                    if(++$i > 3) break;
+            ?>
+            <div class="aw-alsobought-item">
+
+                    <a href="<?php echo $_item->getProductUrl() ?>"><img src="<?php echo $this->helper('catalog/image')->init($_item, 'thumbnail')->resize(85) ?>" alt="<?php echo $this->htmlEscape($_item->getName()) ?>" width="85" height="85" /></a>
+                <div class="aw-alsobought-details">
+                    <a class="aw-alsobought-product-link" href="<?php echo $_item->getProductUrl() ?>"><?php echo $this->htmlEscape($_item->getName()) ?></a>
                     <?php echo $this->getPriceHtml($_item, true); ?>
                     <?php if ($this->helper('wishlist')->isAllow()) : ?>
                     <a href="<?php echo $this->getAddToWishlistUrl($_item) ?>" class="aw-link-cart"><?php echo $this->__('Add to Wishlist') ?></a>
                     <?php endif; ?>
-                    <div>
                         <a class="aw-link-cart" href="#" onclick="setLocation('<?php echo $this->getAddToCartUrl($_item) ?>'); return false;"><?php echo $this->__('Add to Cart') ?></a>
-                    </div>
                 </div>
-            </li>
-            <?php endforeach ?>
-        </ol>
+            </div>
+            <?php } ?>
     </div>
 </div>
 <?php endif ?>
