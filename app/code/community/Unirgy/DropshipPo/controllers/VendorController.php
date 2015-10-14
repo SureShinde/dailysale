@@ -113,6 +113,12 @@ class Unirgy_DropshipPo_VendorController extends Unirgy_Dropship_VendorControlle
                 $this->_forward('udpoInfo');
             }else{
                 $carrierCheck = $this->asTrackNumber($number);
+                if(!$carrierCheck){
+                    $this->_getSession()->addError($this->__('Cannot save track number. Track number is invalid.'));
+                    $this->_getSession()->setData('tracking_id', $number);
+                    $this->_forward('udpoInfo');
+                    return;
+                }
                 $uniqueCheck = $this->asIssetNumber($number);
                 $carrierInstances = Mage::getSingleton('shipping/config')->getAllCarriers();
                 $carriers = array();
@@ -377,7 +383,7 @@ class Unirgy_DropshipPo_VendorController extends Unirgy_Dropship_VendorControlle
                     $item->setQtyCanceled(0);
                     $item->save();
                 }
-                $shipment->delete();
+               // $shipment->delete();
                 $po->save();
                 Mage::app()->setCurrentStore($store);
             }
