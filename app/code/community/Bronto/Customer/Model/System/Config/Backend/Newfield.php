@@ -6,6 +6,8 @@
  */
 class Bronto_Customer_Model_System_Config_Backend_Newfield extends Mage_Core_Model_Config_Data
 {
+    private static $_fieldCache = array();
+
     /**
      * Processing object before save data
      *
@@ -15,17 +17,17 @@ class Bronto_Customer_Model_System_Config_Backend_Newfield extends Mage_Core_Mod
     {
         if ($this->isValueChanged()) {
             try {
-                /* @var $fieldObject Bronto_Api_Field */
-                $fieldObject = Mage::helper('bronto_common')->getApi()->getFieldObject();
-
-                $field        = $fieldObject->createRow();
-                $field->name  = $fieldObject->normalize($this->getValue());
-                $field->label = $this->getValue();
-                $field->type  = Bronto_Api_Field::TYPE_TEXT;
-
-                $field->save();
-                $fieldObject->addToCache($field->name, $field);
-                $this->_saveConfigData(str_replace('_new', '', $this->getPath()), $field->id);
+                $fieldObject = Mage::helper('bronto_common')->getApi()->transferField();
+                $fieldName = Bronto_Utils::normalize($this->getValue());
+                if (!array_key_exists($fieldName, self::$_fieldCache)) {
+                    $field = $fieldObject->getByName($fieldName);
+                    if (!$field) {
+                        $field->withName($fieldName)->withLabel($this->getValue())->asText()->asHidden();
+                        $field->withId($fieldObject->add()->addField($field)->first()->getItem()->getId());
+                    }
+                    self::$_fieldCache[$fieldName] = $field;
+                }
+                $this->_saveConfigData(str_replace('_new', '', $this->getPath()), $field->getId());
                 $this->setValue(null);
             } catch (Exception $e) {
                 Mage::throwException(Mage::helper('adminhtml')->__('Unable to save new field: ') . $e->getMessage());

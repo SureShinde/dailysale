@@ -45,7 +45,7 @@ try {
     $installer->removeAttribute('order', 'bronto_tid');
     $installer->removeAttribute('order', 'bronto_imported');
 } catch (Exception $e) {
-    throw new RuntimeException('Failed Creating and Populating Table: ' . $e->getMessage());
+    Mage::helper('bronto_order')->writeError('Failed Creating and Populating Table: ' . $e->getMessage());
 }
 
 $installer->endSetup();

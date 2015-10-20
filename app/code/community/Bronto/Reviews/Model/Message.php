@@ -127,15 +127,16 @@ class Bronto_Reviews_Model_Message extends Bronto_Common_Model_Email_Template
     /**
      * @see parent
      */
-    protected function _afterSend($success, $error = null, Bronto_Api_Delivery_Row $delivery = null)
+    protected function _afterSend($success, $error = null, Bronto_Api_Model_Delivery $delivery = null)
     {
         $helper = Mage::helper($this->_helper);
         if (!is_null($delivery)) {
             if ($success) {
                 $queue = $this->getSendQueue();
+                $deliveryId = $queue->getId() ? $queue->getId() : $delivery->id;
                 $orderId = $queue->getAdditionalData()->getOrderId();
                 $log = Mage::getModel('bronto_reviews/log')
-                    ->loadByOrderAndDeliveryId($orderId, $queue->getId());
+                    ->loadByOrderAndDeliveryId($orderId, $deliveryId);
                 $logId = $log->getId();
                 $log->setData($queue->getAdditionalData()->getData());
                 $log->setId($logId)
@@ -146,11 +147,6 @@ class Bronto_Reviews_Model_Message extends Bronto_Common_Model_Email_Template
                     ->setDeliveryDate(date('Y-m-d H:i:s', strtotime($delivery->start)));
                 $log->save();
             }
-            $status = $success ? 'Successful' : 'Failed';
-
-            $helper->writeVerboseDebug("===== $status Reviews Delivery =====", $this->_apiLogFile);
-            $helper->writeVerboseDebug(var_export($delivery->getApi()->getLastRequest(), true), $this->_apiLogFile);
-            $helper->writeVerboseDebug(var_export($delivery->getApi()->getLastResponse(), true), $this->_apiLogFile);
         }
     }
 }

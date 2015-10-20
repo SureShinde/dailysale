@@ -86,8 +86,8 @@ function messagePicker() {
         method: 'post',
         parameters: {
           entity_id: $('entity_id').value,
-          message_id: $('hmessage_idh').value,
-          email_address: $('hemail_addressh').value,
+          message_id: $('message_id').value,
+          email_address: $('email_address').value,
           'product_ids[]': $('product_ids').value.split(/\s*,\s*/)
         },
         onSuccess: function(resp) {

@@ -1,6 +1,6 @@
 <?php
 
-class Bronto_Common_Model_Error extends Mage_Core_Model_Abstract implements Bronto_Util_Retryer_RetryerInterface
+class Bronto_Common_Model_Error extends Mage_Core_Model_Abstract implements Bronto_Api_Retryer
 {
     protected $_api;
 
@@ -14,53 +14,23 @@ class Bronto_Common_Model_Error extends Mage_Core_Model_Abstract implements Bron
     }
 
     /**
-     * @param Bronto_Api
-     * @return Bronto_Common_Model_Error
-     */
-    public function setClient(Bronto_Api $api)
-    {
-        $this->_api = $api;
-        return $this;
-    }
-
-    /**
-     * Gets the API client matching this token
-     *
-     * @param string $token
-     * @return Bronto_Api
-     */
-    protected function _client($token)
-    {
-        if (empty($this->_api) || $this->_api->getToken() != $token) {
-            $this->setClient(Mage::helper('bronto_common')->getApi($token));
-        }
-
-        return $this->_api;
-    }
-
-    /**
      * @see parent
      *
-     * @param Bronto_Api_Object $object
+     * @param Bronto_Object $object
+     * @param string $apiToken
      * @param int $attempts
      * @return int|false
      */
-    public function store(Bronto_Api_Object $object, $attempts = 0)
+    public function store(Bronto_Object $object, $apiToken, $attempts = 0)
     {
         // Only deliveries are retried
-        if ($object instanceOf Bronto_Api_Delivery) {
+        if ($object->getTransferType() == 'Delivery') {
             if ($this->hasId() && empty($attempts)) {
-                $this
-                    ->unsId()
-                    ->unsEmailClass();
-            }
-            // Retry for an email template
-            if (method_exists($object, 'getEmailClass')) {
-                $this->setEmailClass($object->getEmailClass());
+                $this->unsId();
             }
             try {
                 $this
-                    ->setObject(serialize($object))
+                    ->setObject(serialize($object->withToken($apiToken)))
                     ->setAttempts($attempts)
                     ->setLastAttempt(Mage::getSingleton('core/date')->gmtDate())
                     ->save();
@@ -74,19 +44,6 @@ class Bronto_Common_Model_Error extends Mage_Core_Model_Abstract implements Bron
     }
 
     /**
-     * Restores the serialized object to its former glory
-     *
-     * @return Bronto_Api_Delivery
-     */
-    public function restoreObject()
-    {
-        $delivery = unserialize($this->getObject());
-        // Restore the API in all of its glory
-        $delivery->setApi($this->_client($delivery->getApi()->getToken()));
-        return $delivery;
-    }
-
-    /**
      * @see parent
      *
      * @param int $identifier
@@ -94,21 +51,26 @@ class Bronto_Common_Model_Error extends Mage_Core_Model_Abstract implements Bron
      */
     public function attempt($identifier)
     {
-        $delivery = $this->restoreObject();
-        $method = $delivery->getLastRequestMethod();
-        $data = $delivery->getLastRequestData();
+        $request = unserialize($this->getObject());
+        $api = new Bronto_Api($request->getToken());
 
         try {
-            $rowset = $delivery->doRequest($method, $data, true);
             $this->delete();
-            if ($this->hasEmailClass()) {
-                // Tie in the request data with a new id
-                $deliveryRow = $delivery->createRow(array('id' => $rowset->current()->id) + $data[0]);
-                $email = Mage::getModel($this->getEmailClass());
-                $email->triggerBeforeAfterSend($deliveryRow);
+            $deliveryOps = $api->transferDelivery();
+            foreach ($deliveryOps->createWritePager($request) as $result) {
+                $delivery = $result->getOriginal();
+                $item = $result->getItem();
+                if ($item->getIsError()) {
+                    Mage::throwException("Failed to send failed delivery {$item->getErrorString()}");
+                }
+                if ($delivery->hasEmailClass()) {
+                    $delivery->withId($item->getId());
+                    $email = Mage::getModel($delivery->getEmailClass());
+                    $email->triggerBeforeAfterSend($deliveryOps, $delivery);
+                }
             }
         } catch (Exception $e) {
-            $this->store($delivery, $this->getAttempts() + 1);
+            $this->store($delivery, $request->getToken(), $this->getAttempts() + 1);
             return false;
         }
 

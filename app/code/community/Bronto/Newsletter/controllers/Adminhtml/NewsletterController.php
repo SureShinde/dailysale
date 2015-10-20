@@ -133,20 +133,20 @@ class Bronto_Newsletter_Adminhtml_NewsletterController extends Mage_Adminhtml_Co
                     // Convert Magento subscriber status to bronto subscriber status
                     switch ($subscriber['subscriber_status']) {
                         case Mage_Newsletter_Model_Subscriber::STATUS_SUBSCRIBED:
-                            $status = Bronto_Api_Contact::STATUS_ACTIVE;
+                            $status = Bronto_Api_Model_Contact::STATUS_ACTIVE;
                             break;
 
                         case Mage_Newsletter_Model_Subscriber::STATUS_UNSUBSCRIBED:
-                            $status = Bronto_Api_Contact::STATUS_UNSUBSCRIBED;
+                            $status = Bronto_Api_Model_Contact::STATUS_UNSUBSCRIBED;
                             break;
 
                         case Mage_Newsletter_Model_Subscriber::STATUS_UNCONFIRMED:
-                            $status = Bronto_Api_Contact::STATUS_UNCONFIRMED;
+                            $status = Bronto_Api_Model_Contact::STATUS_UNCONFIRMED;
                             break;
 
                         case Mage_Newsletter_Model_Subscriber::STATUS_NOT_ACTIVE:
                         default:
-                            $status = Bronto_Api_Contact::STATUS_TRANSACTIONAL;
+                            $status = Bronto_Api_Model_Contact::STATUS_TRANSACTIONAL;
                             break;
                     }
 

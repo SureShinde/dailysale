@@ -237,11 +237,6 @@ class Bronto_Common_Model_Email_Template_Templatefilter extends Mage_Core_Model_
         return $value;
     }
 
-    public function includeDirective($construction)
-    {
-        return '';
-    }
-
     public function dependDirective($construction)
     {
         return $this->filter($construction[2]);
@@ -272,6 +267,10 @@ class Bronto_Common_Model_Email_Template_Templatefilter extends Mage_Core_Model_
 
     protected function _addBrontoStyle($string)
     {
-        return '%%#' . $this->_camelize($string) . '%%';
+        $variable = $this->_camelize($string);
+        if (strlen($variable) > 25) {
+            $variable = substr($variable, 0, 25);
+        }
+        return '%%#' . $variable . '%%';
     }
 }

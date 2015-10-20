@@ -93,18 +93,16 @@ class Bronto_Product_Model_Observer
         }
 
         $api = $helper->getApi(null, 'store', $store->getId());
-        $tagObject = $api->getContentTagObject();
+        $tagObject = $api->transferContentTag();
         $appEmulation = Mage::getSingleton('core/app_emulation');
         $emulatedInfo = $appEmulation->startEnvironmentEmulation($store->getId());
         foreach ($recTags as $recTag) {
             $results['total']++;
             try {
                 $tag = $helper->getContentTagForRecommendation($tagObject, $recTag);
-                $tag->value = $helper->processTagContent($recTag, $store->getId());
-                $tag->save();
-                $recTag
-                    ->setTagId($tag->id)
-                    ->save();
+                $tag->withValue($helper->processTagContent($recTag, $store->getId()));
+                $newTag = $tagObject->save($tag);
+                $recTag->setTagId($newTag->getId())->save();
                 $results['success']++;
             } catch (Exception $e) {
                 $message = $e->getMessage();
