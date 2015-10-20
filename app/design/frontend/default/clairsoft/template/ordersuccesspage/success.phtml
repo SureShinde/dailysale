@@ -198,3 +198,17 @@ EEngine.trackRevenue('dailysale_purchase', <?php echo($subtotal * 100); ?>);
   USI_dynScript2.src = 'http'+ (document.location.protocol=='https:'?'s://www':'://www')+ '.upsellit.com/hound/sale.jsp?orderID='+escape(USI_orderID)+'&orderAmt='+escape(USI_orderAmt);
   USI_headID.appendChild(USI_dynScript2);
 </script>
+
+<!-- end upsellit tracking -->
+
+<!-- Traffic Vance Tracking -->
+
+<script type="text/javascript" src="https://tracking.trafficvance.com/?id=1G5CC7G7EADG46C661FF&fetch=0&value=<?php echo($subtotal); ?>">
+</script>
+<noscript>
+    <div style="display: inline;">
+        <img height="1" width="1" style="border-style: none;" alt="" src="https://tracking.trafficvance.com/?id=1G5CC7G7EADG46C661FF&fetch=1&value=<?php echo($subtotal); ?>" />
+    </div>
+</noscript>
+
+<!-- End traffic vance -->
