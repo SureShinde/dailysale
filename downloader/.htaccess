@@ -1,8 +1,11 @@
-<IfModule mod_deflate.c>
+##############
+## Block access to downloader
+order deny,allow
+deny from all
 
+<IfModule mod_deflate.c>
     RemoveOutputFilter DEFLATE
     RemoveOutputFilter GZIP
-
 </IfModule>
 
 <Files ~ "\.(cfg|ini|xml)$">
