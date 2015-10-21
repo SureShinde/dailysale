@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @category    Fiuze
+ * @package     layout
+ * @copyright   Copyright (c) 2015 Fiuze
+ */
+-->
+<layout>
+
+    <adminhtml_system_config_edit>
+        <reference name="head">
+            <action method="removeItem"><type>skin_js</type><name>bronto/js/jquery-1.10.2.js</name></action>
+            <action method="removeItem"><type>skin_js</type><name>bronto/js/jquery-noconflict.js</name></action>
+        </reference>
+    </adminhtml_system_config_edit>
+
+</layout>
