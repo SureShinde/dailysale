@@ -12,6 +12,7 @@
         <reference name="head">
             <action method="removeItem"><type>skin_js</type><name>bronto/js/jquery-1.10.2.js</name></action>
             <action method="removeItem"><type>skin_js</type><name>bronto/js/jquery-noconflict.js</name></action>
+            <action method="removeItem"><type>js</type><name>iwd/all/adminhtml/notification.js</name></action>
         </reference>
     </adminhtml_system_config_edit>
 
