@@ -129,7 +129,7 @@ class Bronto_Common_Model_Email_Template_Filter extends Mage_Core_Model_Email_Te
      */
     protected function _applyInlineCssStyles($text)
     {
-        if ($this->_baseTemplate->getInlineCssFile()) {
+        if (method_exists($this, 'getInlineCssFile')) {
             $stripDocType = preg_replace('/^<!DOCTYPE.+?>/', '', $this->_baseTemplate->getPreparedTemplateText($text));
             $stripHtmlBody = preg_replace('/<html(?:[^>]+)>|<body(?:[^>]+)>/', '', $stripDocType);
             return str_replace(array('</html>', '</body>'), array('', ''), $stripHtmlBody);
