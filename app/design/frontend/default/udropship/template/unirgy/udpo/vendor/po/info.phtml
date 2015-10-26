@@ -520,7 +520,7 @@ $fcBlock->setFieldValue(array(
                     <?php if ($_po->canCreateShipment()): ?>
                         <li id="shipping_amount-1-<?php echo $_id?>">
                             <nobr>
-                                <label for="shipping_amount-<?php echo $_id?>"><?php echo $_hlp->__('Shipping Amount') ?></label>
+                                <label for="shipping_amount-<?php echo $_id?>"><?php echo $_hlp->__('Shipping <br> Amount') ?></label>
                                 <input id="shipping_amount-<?php echo $_id?>" name="shipping_amount" value="<?php echo $this->getRemainingShippingAmount()?>" title="<?php echo $_hlp->__('Specify New Shipment Shipping Amount') ?>" type="text" class="input-text" />
                             </nobr>
                         </li>
