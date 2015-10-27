@@ -322,19 +322,6 @@
                               <em>* Provided class name must be available via
                                 Magento's autoloader.</em>]]></comment>
                         </soap_client>
-                        <observer>
-                            <label>Bronto Observer</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>6</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
-                            <comment><![CDATA[Overrides the Bronto_Observer
-                              class.<br/>
-                              Default: Bronto_Common_Model_Api<br/>
-                              <em>* Provided class name must be available via
-                                Magento's autoloader.</em>]]></comment>
-                        </observer>
                         <retryer>
                             <label>Bronto Retryer</label>
                             <frontend_type>text</frontend_type>
@@ -1007,7 +994,6 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                            <default_value>small_image</default_value>
                             <comment>The product image to use.</comment>
                         </image_type>
                         <image_width>
@@ -1018,7 +1004,6 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                            <default_value>88</default_value>
                             <comment>Product image width in pixels.</comment>
                         </image_width>
                         <image_height>
@@ -1029,7 +1014,6 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                            <default_value>77</default_value>
                             <comment>Product image height in pixels.</comment>
                         </image_height>
                         <default_greeting>

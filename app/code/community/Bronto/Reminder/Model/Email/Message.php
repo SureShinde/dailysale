@@ -35,12 +35,12 @@ class Bronto_Reminder_Model_Email_Message extends Bronto_Common_Model_Email_Temp
     /**
      * Log about the functionality of sending the email before it goes out
      *
-     * @param Bronto_Api_Contact_Row $contact
-     * @param Bronto_Api_Message_Row $message
+     * @param Bronto_Api_Model_Contact $contact
+     * @param Bronto_Api_Model_Message $message
      *
      * @return void
      */
-    protected function _beforeSend(Bronto_Api_Contact_Row $contact, Bronto_Api_Message_Row $message)
+    protected function _beforeSend(Bronto_Api_Model_Contact $contact, Bronto_Api_Model_Message $message)
     {
         Mage::dispatchEvent('bronto_reminder_send_before');
 
@@ -61,23 +61,13 @@ class Bronto_Reminder_Model_Email_Message extends Bronto_Common_Model_Email_Temp
      *
      * @param bool                    $success
      * @param string                  $error    (optional)
-     * @param Bronto_Api_Delivery_Row $delivery (optional)
+     * @param Bronto_Api_ $delivery (optional)
      *
      * @return void
      */
-    protected function _afterSend($success, $error = null, Bronto_Api_Delivery_Row $delivery = null)
+    protected function _afterSend($success, $error = null, Bronto_Api_Model_Delivery $delivery = null)
     {
         Mage::dispatchEvent('bronto_reminder_send_after');
-
-        if (!is_null($delivery)) {
-            $helper = Mage::helper($this->_helper);
-            $status = $success ? "Successful" : "Failed";
-
-            $helper->writeVerboseDebug("===== $status Reminder Delivery =====", $this->_apiLogFile);
-            $helper->writeVerboseDebug(var_export($delivery->getApi()->getLastRequest(), true), $this->_apiLogFile);
-            $helper->writeVerboseDebug(var_export($delivery->getApi()->getLastResponse(), true), $this->_apiLogFile);
-        }
-
         if (Mage::helper('bronto_reminder')->isLogEnabled()) {
             $this->_log->setSuccess((int)$success);
             if (!empty($error)) {

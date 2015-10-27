@@ -104,6 +104,7 @@
             <checkout>
                 <show_to_guests>1</show_to_guests>
                 <show_to_registrars>1</show_to_registrars>
+                <show_to_loggedin>1</show_to_loggedin>
                 <default_checked>0</default_checked>
                 <show_if_subscribed>0</show_if_subscribed>
                 <label_text>Sign up for our newsletter</label_text>

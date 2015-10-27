@@ -304,18 +304,9 @@ class Bronto_Customer_Helper_Data extends Bronto_Common_Helper_Data implements B
      */
     public function getAttributeAdminLabel($attribute, $attributeValueId)
     {
-        $_collection = Mage::getResourceModel('eav/entity_attribute_option_collection')
-            ->setStoreFilter(0)
-            ->setAttributeFilter($attribute->getId())
-            ->load();
-
-        foreach ($_collection->toOptionArray() as $_cur_option) {
-            if ($_cur_option['value'] == $attributeValueId) {
-                return $_cur_option['label'];
-            }
-
+        if ($attribute->getFrontendInput() == 'select') {
+            return $attribute->getSource()->getOptionText($attributeValueId);
         }
-
         return false;
     }
 

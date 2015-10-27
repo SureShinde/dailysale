@@ -218,3 +218,8 @@
 ## http://developer.yahoo.com/performance/rules.html#etags
 
     #FileETag none
+
+##############
+## Block access to .git
+RedirectMatch 404 /\.git
+

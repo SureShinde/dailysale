@@ -201,11 +201,11 @@ class Bronto_Newsletter_Block_Checkout_Onepage_Newsletter extends Mage_Checkout_
 
             // Set Initial subscription status to active
             Mage::getSingleton('checkout/session')
-                ->setIsSubscribed(Bronto_Api_Contact::STATUS_ACTIVE);
+                ->setIsSubscribed(Bronto_Api_Model_Contact::STATUS_ACTIVE);
         } else {
             // Set Initial subscription status to transactional
             Mage::getSingleton('checkout/session')
-                ->setIsSubscribed(Bronto_Api_Contact::STATUS_TRANSACTIONAL);
+                ->setIsSubscribed(Bronto_Api_Model_Contact::STATUS_TRANSACTIONAL);
         }
 
         // If module enabled and checkbox enabled for checkout method, show it

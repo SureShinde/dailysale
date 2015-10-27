@@ -73,11 +73,11 @@ class Bronto_Newsletter_IndexController extends Mage_Core_Controller_Front_Actio
 
         // If customer is logged in, and subscribed, and checkbox is unchecked, and starting is not unchecked
         if ($subscribed && 0 == $checked && 0 != $starting) {
-            $status = Bronto_Api_Contact::STATUS_UNSUBSCRIBED;
+            $status = Bronto_Api_Model_Contact::STATUS_UNSUBSCRIBED;
         } elseif (1 == $checked || 1 == $subscribed) {
-            $status = Bronto_Api_Contact::STATUS_ACTIVE;
+            $status = Bronto_Api_Model_Contact::STATUS_ACTIVE;
         } else {
-            $status = Bronto_Api_Contact::STATUS_TRANSACTIONAL;
+            $status = Bronto_Api_Model_Contact::STATUS_TRANSACTIONAL;
         }
 
         // Get Previous status from session

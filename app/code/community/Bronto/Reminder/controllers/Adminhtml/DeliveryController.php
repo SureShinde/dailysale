@@ -25,6 +25,15 @@ class Bronto_Reminder_Adminhtml_DeliveryController extends Mage_Adminhtml_Contro
     }
 
     /**
+     * Override for ACL permissions
+     */
+    protected function _isAllowed()
+    {
+        $session = Mage::getSingleton('admin/session');
+        return $session->isAllowed('admin/promo/bronto_reminder');
+    }
+
+    /**
      * Deletes all log history
      */
     public function clearAction()

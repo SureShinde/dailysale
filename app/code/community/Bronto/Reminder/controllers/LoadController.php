@@ -13,30 +13,26 @@ class Bronto_Reminder_LoadController extends Mage_Core_Controller_Front_Action
     public function indexAction()
     {
         // Acquire Parameters
-        $storeCode  = $this->getRequest()->getParam('___store', 'default');
         $quoteId    = $this->getRequest()->getParam('id', false);
         $wishlistId = $this->getRequest()->getParam('wishlist_id', false);
         $ruleId     = $this->getRequest()->getParam('rule_id', 0);
         $messageId  = $this->getRequest()->getParam('message_id', 0);
 
         // Load store from store code and get ID
-        $store   = Mage::getModel('core/store')->load($storeCode);
+        $store   = Mage::app()->getStore();
         $storeId = $store->getId();
 
         // Set Defaults
         $wishlist    = false;
         $redirectUrl = false;
 
-        // Set Current Store to the acquired store id
-        Mage::app()->setCurrentStore($storeId);
-
         // If quote ID is good, send to cart; If wishlist ID is good, send to wishlist
         if ($quote = $this->_handleQuote($quoteId, $storeId)) {
-            $redirectUrl = Mage::app()->getStore()->getUrl('checkout/cart');
+            $redirectUrl = $store->getUrl('checkout/cart');
         } else if ($wishlist = $this->_handleWishlist($wishlistId, $storeId)) {
-            $redirectUrl = Mage::app()->getStore()->getUrl('wishlist');
+            $redirectUrl = $store->getUrl('wishlist');
         } else {
-            $this->_redirectUrl(Mage::app()->getStore()->getUrl('checkout/cart'));
+            $this->_redirectUrl($store->getUrl('checkout/cart'));
             return;
         }
 
@@ -75,32 +71,11 @@ class Bronto_Reminder_LoadController extends Mage_Core_Controller_Front_Action
             }
             if ($forceLogin || (!$loggedIn && (!$pCookie || ($pCookie && !$isClear)))) {
                 $session->setBeforeAuthUrl($redirectUrl);
-                $redirectUrl = Mage::app()->getStore()->getUrl('customer/account/login');
+                $redirectUrl = $store->getUrl('customer/account/login');
             }
         }
 
         $this->_redirectUrl($redirectUrl);
-    }
-
-    /**
-     * Use Store Code to pull Store Object
-     *
-     * @param string $storeCode
-     *
-     * @return boolean
-     */
-    protected function _getStoreByCode($storeCode)
-    {
-        $stores = array_keys(Mage::app()->getStores());
-        foreach ($stores as $id) {
-
-            $store = Mage::app()->getStore($id);
-            if ($store->getCode() == $storeCode) {
-                return $store;
-            }
-        }
-
-        return false;
     }
 
     /**

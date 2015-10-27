@@ -5,7 +5,6 @@ $installer = $this;
 $installer->startSetup();
 
 try {
-    $installer->updateTables('0.0.2');
     $installer->setCustomEmail();
     $installer->createTable('log');
     $installer->createTable('post_purchase');

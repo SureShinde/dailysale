@@ -4,11 +4,10 @@
  * @category Bronto
  * @package  Common
  */
-class Bronto_Common_Model_Api extends Mage_Core_Model_Abstract implements Bronto_Observer
+class Bronto_Common_Model_Api extends Mage_Core_Model_Abstract implements Bronto_Api_Observer
 {
 
     protected static $_instances = array();
-    protected $_setOnce = false;
 
     /**
      * @see parent
@@ -34,15 +33,10 @@ class Bronto_Common_Model_Api extends Mage_Core_Model_Abstract implements Bronto
             }
             self::$_instances[$token] = new Bronto_Api($token, $options);
         }
+        if ($this->hasSessionId()) {
+            self::$_instances[$token]->setSessionId($this->getSessionId());
+        }
         return self::$_instances[$token];
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasSetSession()
-    {
-        return $this->_setOnce;
     }
 
     /**
@@ -74,14 +68,14 @@ class Bronto_Common_Model_Api extends Mage_Core_Model_Abstract implements Bronto
     /**
      * @see parent
      *
-     * @param Bronto_Api $api
+     * @param string $apiToken
      * @param string $sessionId
      */
-    public function onAfterLogin($api, $sessionId)
+    public function onLogin($apiToken, $sessionId)
     {
         try {
             $this
-              ->setToken($api->getToken())
+              ->setToken($apiToken)
               ->setSessionId($sessionId)
               ->setCreatedAt(Mage::getSingleton('core/date')->gmtDate())
               ->save();
@@ -97,14 +91,14 @@ class Bronto_Common_Model_Api extends Mage_Core_Model_Abstract implements Bronto
      * @param Bronto_Api $api
      * @param Bronto_Api_Exception $exception
      */
-    public function onError($api, $exception)
+    public function onError(Bronto_Api $api, Bronto_Api_Exception $exception)
     {
         if ($exception instanceOf Bronto_Api_Exception) {
-            if ($request = $exception->getRequest()) {
+            if ($request = $api->getLastRequest()) {
                 Mage::helper('bronto_common')->writeDebug(var_export($request, true));
             }
 
-            if ($response = $exception->getResponse()) {
+            if ($response = $api->getLastResponse()) {
                 Mage::helper('bronto_common')->writeDebug(var_export($response, true));
             }
         }

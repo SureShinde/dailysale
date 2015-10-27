@@ -80,9 +80,6 @@ class Bronto_Common_Model_Keysentry extends Mage_Core_Model_Abstract
         Mage::helper(self::COUPON)->disableModule($scope, $scopeId, $deleteChildren);
         Mage::helper(self::API)->disableModule($scope, $scopeId, $deleteChildren);
 
-        Mage::getConfig()->reinit();
-        Mage::app()->reinitStores();
-
         // Get Child Items
         if ('website' == $scope) {
             $website = Mage::app()->getWebsite($scopeId);

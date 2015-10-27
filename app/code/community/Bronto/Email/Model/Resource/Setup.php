@@ -29,6 +29,7 @@ class Bronto_Email_Model_Resource_Setup extends Bronto_Common_Model_Resource_Abs
             `sales_rule` int(10) NULL COMMENT 'Sales Rule for Coupon Codes',
             `product_recommendation` int(11) unsigned DEFAULT NULL COMMENT 'Product Recommendations',
             `send_flags` int(3) unsigned DEFAULT NULL COMMENT 'Delivery Flags',
+            `inline_css` varchar(255) DEFAULT NULL COMMENT 'Inline CSS file used in the lastest version of Magento',
             PRIMARY KEY (`core_template_id`),
             KEY `IDX_BRONTO_STORE_ID` (`store_id`),
             CONSTRAINT `FK_BRONTO_EMAIL_TEMPLATE_ID_CORE_EMAIL_TEMPLATE_ID` FOREIGN KEY (`core_template_id`)
@@ -71,6 +72,12 @@ class Bronto_Email_Model_Resource_Setup extends Bronto_Common_Model_Resource_Abs
                 'message' => array(
                     'sql' =>
                     "ALTER TABLE {table} ADD COLUMN `send_flags` int(3) unsigned DEFAULT NULL AFTER `product_recommendation`;"
+                )
+            ),
+            '1.2.2' => array(
+                'message' => array(
+                    'sql' =>
+                    'ALTER TABLE {table} ADD COLUMN `inline_css` varchar(255) DEFAULT NULL AFTER `send_flags`;'
                 )
             )
         );
