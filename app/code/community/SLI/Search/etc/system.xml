@@ -1,0 +1,401 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright (c) 2015 S.L.I. Systems, Inc. (www.sli-systems.com) - All Rights
+ * Reserved
+ * This file is part of Learning Search Connect.
+ * Learning Search Connect is distributed under a limited and restricted
+ * license – please visit www.sli-systems.com/LSC for full license details.
+ *
+ * THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY
+ * KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
+ * PARTICULAR PURPOSE. TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO
+ * EVENT WILL SLI BE LIABLE TO YOU OR ANY OTHER PARTY FOR ANY GENERAL, DIRECT,
+ * INDIRECT, SPECIAL, INCIDENTAL OR CONSEQUENTIAL LOSS OR DAMAGES OF ANY
+ * CHARACTER ARISING OUT OF THE USE OF THE CODE AND/OR THE LICENSE INCLUDING
+ * BUT NOT LIMITED TO PERSONAL INJURY, LOSS OF DATA, LOSS OF PROFITS, LOSS OF
+ * ASSIGNMENTS, DATA OR OUTPUT FROM THE SERVICE BEING RENDERED INACCURATE,
+ * FAILURE OF CODE, SERVER DOWN TIME, DAMAGES FOR LOSS OF GOODWILL, BUSINESS
+ * INTERRUPTION, COMPUTER FAILURE OR MALFUNCTION, OR ANY AND ALL OTHER DAMAGES
+ * OR LOSSES OF WHATEVER NATURE, EVEN IF SLI HAS BEEN INFORMED OF THE
+ * POSSIBILITY OF SUCH DAMAGES.
+ */
+
+/**
+ * Systems configurations for SLI Systems Search
+ * Includes General, Feed Settings, FTP Settings, Javascript, Cron Settings,
+ * Product Attributes, and other settings.
+ *
+ * @package SLI
+ * @subpackage Search
+ */
+-->
+<config>
+    <tabs>
+        <sli translate="label" module="sli_search">
+            <label>SLI Systems</label>
+            <sort_order>200</sort_order>
+        </sli>
+    </tabs>
+    <sections>
+        <sli_search translate="label" module="sli_search">
+            <label>Learning Search Connect</label>
+            <tab>sli</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>100</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <general translate="label" module="sli_search">
+                    <label>General</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <form_enabled translate="label">
+                            <label>SLI Search Form</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_enabledisable</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </form_enabled>
+                        <feed_enabled translate="label">
+                            <label>Feed Generation</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_enabledisable</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </feed_enabled>
+                        <price_feed>
+                            <label>Price Feed</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_enabledisable</source_model>
+                            <depends>
+                                <feed_enabled>1</feed_enabled>
+                            </depends>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </price_feed>
+                        <log_level>
+                            <label>Log Level</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>sli_search/system_config_backend_loglevel</source_model>
+                            <comment>Please set to "Trace" if SLI support is required.</comment>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </log_level>
+                    </fields>
+                </general>
+                <feed translate="label" module="sli_search">
+                    <label>Feed Settings</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>100</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <backup translate="label">
+                            <label>Backup Feed?</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </backup>
+                        <write_batch translate="label">
+                            <label>Batch Count</label>
+                            <frontend_type>text</frontend_type>
+                            <comment>Please only change the pre-populated value in consultation with SLI. The lower the
+                                number, the slower the feed generation.
+                            </comment>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </write_batch>
+                        <submittal translate="label">
+                            <label>Next Automatic Feed Generation</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>sli_search/system_config_frontend_feed_next</frontend_model>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </submittal>
+                        <stockstatus translate="label">
+                            <label>Include Out of Stock Items</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>150</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </stockstatus>
+                        <email_setting>
+                            <label>Email Results</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>sli_search/system_config_source_emailsetting</source_model>
+                            <sort_order>180</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </email_setting>
+                        <emailto>
+                            <label>Email Address</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>190</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </emailto>
+                        <generate translate="label">
+                            <label>Generate Feed</label>
+                            <frontend_type>button</frontend_type>
+                            <frontend_model>sli_search/system_config_frontend_feed_generate</frontend_model>
+                            <comment>Manually generates feed. If FTP is enabled, also sends the feed.</comment>
+                            <sort_order>200</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </generate>
+                    </fields>
+                </feed>
+                <ftp translate="label" module="sli_search">
+                    <label>FTP Settings</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>200</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <enabled translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enabled>
+                        <user translate="label">
+                            <label>FTP User</label>
+                            <frontend_type>text</frontend_type>
+                            <comment>Provided by SLI.</comment>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </user>
+                        <pass translate="label">
+                            <label>FTP Password</label>
+                            <frontend_type>obscure</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
+                            <comment>Provided by SLI.</comment>
+                            <sort_order>200</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </pass>
+                        <host translate="label">
+                            <label>FTP Host</label>
+                            <frontend_type>text</frontend_type>
+                            <comment>Provided by SLI.</comment>
+                            <sort_order>300</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </host>
+                        <path translate="label">
+                            <label>FTP Upload Path</label>
+                            <frontend_type>text</frontend_type>
+                            <comment>Provided by SLI.</comment>
+                            <sort_order>400</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </path>
+                    </fields>
+                </ftp>
+                <form translate="label" module="sli_search">
+                    <label>Search Form Code</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>250</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <customform translate="label">
+                            <label>Use Custom Search Form Code</label>
+                            <comment>Enable use of a custom form rather than default form.mini.phtml</comment>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </customform>
+                        <formcode translate="label">
+                            <label>Custom Form Code</label>
+                            <comment>Provided by SLI.</comment>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <customform>1</customform>
+                            </depends>
+                        </formcode>
+                    </fields>
+                </form>
+                <js translate="label" module="sli_search">
+                    <label>JavaScript</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>300</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <header translate="label">
+                            <label>Header</label>
+                            <comment>Provided by SLI.</comment>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </header>
+                        <footer translate="label">
+                            <label>Footer</label>
+                            <comment>Provided by SLI.</comment>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </footer>
+                        <autocomplete translate="label">
+                            <label>Auto Complete</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>200</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </autocomplete>
+                        <domain translate="label">
+                            <label>Search Domain</label>
+                            <comment>Provided by SLI.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>300</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </domain>
+                    </fields>
+                </js>
+                <cron translate="label" module="sli_search">
+                    <label>Cron Settings</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>400</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <email translate="label">
+                            <label>Cron Email</label>
+                            <comment>When cron runs, email to send notification to.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </email>
+                        <frequency translate="label">
+                            <label>Frequency</label>
+                            <comment>Hourly times from 12:00AM</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>sli_search/system_config_source_cron_frequency</source_model>
+                            <backend_model>sli_search/system_config_backend_cron</backend_model>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </frequency>
+                        <time translate="label">
+                            <label>Start Time</label>
+                            <comment>Only used when set to Daily or Weekly (Seconds do not apply to any cron configuration)</comment>
+                            <frontend_type>time</frontend_type>
+                            <sort_order>200</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </time>
+                        <disabled translate="label">
+                            <label>Disabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>300</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </disabled>
+                    </fields>
+                </cron>
+                <attributes translate="label" module="sli_search">
+                    <label>Product Attributes</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>500</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <attributes translate="label">
+                            <label>Attributes to include</label>
+                            <comment>The following attributes are automatically added to the feed: Name, URL, Children
+                                Ids, Categories and Product Ids.
+                            </comment>
+                            <frontend_type>minigrid</frontend_type>
+                            <source_model>sli_search/system_config_source_minigrid_attributes</source_model>
+                            <backend_model>sli_search/system_config_backend_minigrid</backend_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </attributes>
+                    </fields>
+                </attributes>
+                <version translate="label" module="sli_search">
+                    <label>Version Information</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>600</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <version translate="label">
+                            <label>Version</label>
+                            <frontend_type>version</frontend_type>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </version>
+                    </fields>
+                </version>
+            </groups>
+        </sli_search>
+    </sections>
+</config>
