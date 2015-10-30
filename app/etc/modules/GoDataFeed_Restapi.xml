@@ -1,0 +1,17 @@
+<!--
+Magento mudule configuration files.
+/**
+ * GoDataFeed_Restapi.xml
+ * @category    GoDataFeed
+ * @package     GoDataFeed_Restapi
+ * @author      GoDataFeed Team
+ */
+-->
+<config>
+  <modules>
+    <GoDataFeed_Restapi>
+      <active>true</active>
+      <codePool>community</codePool>
+    </GoDataFeed_Restapi>
+  </modules>
+</config>
