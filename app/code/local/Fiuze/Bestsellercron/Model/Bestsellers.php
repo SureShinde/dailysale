@@ -29,9 +29,9 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
 
     protected function _getItemsOrder($period, $categoryId, $fullCategory = false){
         if(!$fullCategory){
-            $idProduct = $this->_getIdProductForCategory($categoryId);
+            $idProduct = $this->_getIdProductForCategory($categoryId,true);
         }else{
-            $idProduct = $this->_getIdProductForCategory();
+            $idProduct = $this->_getIdProductForCategory(false,true);
         }
         $itemsOrder = Mage::getResourceModel('sales/order_item_collection')
             ->addFieldToFilter('created_at', array('gteq' => $period))
@@ -248,7 +248,7 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
                     }
                 }
             }else{
-                if(!is_null($product->getId())){
+                if(!is_null($product->getId() AND $orderItem->_data['created_at']>$this->_getPeriod())){
                     $items[$product->getId()] += $this->_getRowTotalWithDiscountInclTax($orderItem);
                 }
             }
@@ -322,7 +322,7 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
     /** Id Product For Category
      * @var array
      */
-    protected function _getIdProductForCategory($idCategory = false) {
+    protected function _getIdProductForCategory($idCategory = false, $panch_flag=false) {
         if(!$idCategory){
             if(!$this->idProductForCategory["false"]){
 //                $productCollection = Mage::getResourceModel('catalog/product_collection')
@@ -343,6 +343,27 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
                 }
 
             }
+            /// ///
+            if($panch_flag){
+                //                $productCollection = Mage::getResourceModel('catalog/product_collection')
+                //                    ->setStoreId(Mage_Core_Model_App::ADMIN_STORE_ID);
+                //                $this->idProductForCategory["false"] = array_keys ($productCollection->getItems());
+
+                #$this->idProductForCategory["false"] = Mage::getModel('sales/order')->getItemsCollection();
+                $this->getCurrentConfig('days_period');
+
+                $data_for_form = $this->getCurrentConfig('history')*86400;
+
+                $usl = Mage::getModel('core/date')->timestamp(time()) - $data_for_form;
+                $usl = date('Y-m-d h:i:s', $usl);
+                $this->idProductForCategory["false"] = Mage::getModel('sales/order')->getItemsCollection()->addAttributeToFilter('created_at',array('gteq'=>$usl))->getData();
+
+                foreach ($this->idProductForCategory["false"] as $item){
+                    $id_product[] = $item['product_id'];
+                }
+
+            }
+
             return $id_product;
         }
 
@@ -528,7 +549,12 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
                 $product = Mage::getModel('catalog/product')->load($id);
 
                 if (isset($product['special_price'])) {
-                    $product_price = $product['special_price'];
+                    $from = $product->getSpecialFromDate();
+                    $to = $product->getSpecialToDate();
+                    $today =  time();
+                    if($today >= strtotime($from) && $today <= strtotime($to) || $today >= strtotime($from) && is_null($to)){
+                        $product_price = $product['special_price'];
+                    }
                 } else {
                     $product_price = $product['price'];
                 }
@@ -543,7 +569,12 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
                 $product = Mage::getModel('catalog/product')->load($id);
 
                 if (isset($product['special_price'])) {
-                    $product_price = $product['special_price'];
+                    $from = $product->getSpecialFromDate();
+                    $to = $product->getSpecialToDate();
+                    $today =  time();
+                    if($today >= strtotime($from) && $today <= strtotime($to) || $today >= strtotime($from) && is_null($to)){
+                        $product_price = $product['special_price'];
+                    }
                 } else {
                     $product_price = $product['price'];
                 }
