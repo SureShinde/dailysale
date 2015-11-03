@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright (c) 2015 S.L.I. Systems, Inc. (www.sli-systems.com) - All Rights
+ * Reserved
+ * This file is part of Learning Search Connect.
+ * Learning Search Connect is distributed under a limited and restricted
+ * license – please visit www.sli-systems.com/LSC for full license details.
+ *
+ * THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY
+ * KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
+ * PARTICULAR PURPOSE. TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO
+ * EVENT WILL SLI BE LIABLE TO YOU OR ANY OTHER PARTY FOR ANY GENERAL, DIRECT,
+ * INDIRECT, SPECIAL, INCIDENTAL OR CONSEQUENTIAL LOSS OR DAMAGES OF ANY
+ * CHARACTER ARISING OUT OF THE USE OF THE CODE AND/OR THE LICENSE INCLUDING
+ * BUT NOT LIMITED TO PERSONAL INJURY, LOSS OF DATA, LOSS OF PROFITS, LOSS OF
+ * ASSIGNMENTS, DATA OR OUTPUT FROM THE SERVICE BEING RENDERED INACCURATE,
+ * FAILURE OF CODE, SERVER DOWN TIME, DAMAGES FOR LOSS OF GOODWILL, BUSINESS
+ * INTERRUPTION, COMPUTER FAILURE OR MALFUNCTION, OR ANY AND ALL OTHER DAMAGES
+ * OR LOSSES OF WHATEVER NATURE, EVEN IF SLI HAS BEEN INFORMED OF THE
+ * POSSIBILITY OF SUCH DAMAGES.
+ */
+
+/**
+ * SLI Systems Search integration.
+ *
+ * @package SLI
+ * @subpackage Search
+ */
+-->
+<layout version="0.1.0">
+    <default>
+        <reference name="before_body_end">
+            <block type="sli_search/search_js_bottom" name="sli_search_bottom_js"/>
+        </reference>
+        <reference name="head">
+            <block type="sli_search/search_js_top" name="sli_search_top_js"/>
+        </reference>
+        <reference name="header">
+            <action method="unsetChild" ifconfig="sli_search/general/form_enabled">
+                <name>topSearch</name>
+            </action>
+            <block name="sliSearch" type="sli_search/search_form_mini" template="sli/search/form.mini.phtml"/>
+            <action method="append" ifconfig="sli_search/general/form_enabled">
+                <block>sliSearch</block>
+                <alias>topSearch</alias>
+            </action>
+        </reference>
+    </default>
+    <sli_search_search_template>
+        <reference name="root">
+            <action method="setTemplate">
+                <template>page/1column.phtml</template>
+            </action>
+        </reference>
+        <reference name="content">
+            <block type="core/text" name="sli_tags">
+                <action method="setText" module="sli_search">
+                    <text><![CDATA[ <!--SLIContent--><!--EndSLIContent--> ]]></text>
+                </action>
+            </block>
+        </reference>
+    </sli_search_search_template>
+</layout>

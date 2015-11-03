@@ -1,0 +1,100 @@
+<?php
+
+/**
+ * Copyright (c) 2015 S.L.I. Systems, Inc. (www.sli-systems.com) - All Rights
+ * Reserved
+ * This file is part of Learning Search Connect.
+ * Learning Search Connect is distributed under a limited and restricted
+ * license - please visit www.sli-systems.com/LSC for full license details.
+ *
+ * THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY
+ * KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
+ * PARTICULAR PURPOSE. TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO
+ * EVENT WILL SLI BE LIABLE TO YOU OR ANY OTHER PARTY FOR ANY GENERAL, DIRECT,
+ * INDIRECT, SPECIAL, INCIDENTAL OR CONSEQUENTIAL LOSS OR DAMAGES OF ANY
+ * CHARACTER ARISING OUT OF THE USE OF THE CODE AND/OR THE LICENSE INCLUDING
+ * BUT NOT LIMITED TO PERSONAL INJURY, LOSS OF DATA, LOSS OF PROFITS, LOSS OF
+ * ASSIGNMENTS, DATA OR OUTPUT FROM THE SERVICE BEING RENDERED INACCURATE,
+ * FAILURE OF CODE, SERVER DOWN TIME, DAMAGES FOR LOSS OF GOODWILL, BUSINESS
+ * INTERRUPTION, COMPUTER FAILURE OR MALFUNCTION, OR ANY AND ALL OTHER DAMAGES
+ * OR LOSSES OF WHATEVER NATURE, EVEN IF SLI HAS BEEN INFORMED OF THE
+ * POSSIBILITY OF SUCH DAMAGES.
+ */
+
+/**
+ * Javascript that provides functionality to run the SLI feed generator using
+ * ajax.
+ *
+ * @package    SLI
+ * @subpackage Search
+ */
+?>
+<script type="text/javascript">
+    //<![CDATA[
+
+    var sliSearch = {
+        isInit: false,
+        buttonId: null,
+        init: function () {
+            this.url = '<?php echo $this->getGenerateUrl() ?>';
+            this.buttonId = '<?php echo $this->getButtonId()?>';
+            this.displayId = "sli_display_msg";
+            this.isInit = true;
+        },
+        generateFeed: function () {
+            if (!this.isInit) {
+                this.init();
+            }
+            new Ajax.Request(this.url, {
+                onSuccess: function (transport) {
+                    var response = transport.responseText.evalJSON();
+                    this.displayResults(response);
+                }.bind(this),
+                onFailure: function (transport) {
+                    if (403 == transport.status) {
+                        this.displayResults({
+                            "messages": {
+                                'Error': 'Your role does not have permission for "Manual Feed Generation". '
+                                + 'Please contact your system administrator.'
+                            },
+                            "error": true
+                        });
+                    } else {
+                        this.displayResults({
+                            "messages": {'Error': 'Generation failed! Status: ' + transport.status},
+                            "error": true
+                        });
+                    }
+                }.bind(this)
+            });
+        },
+        displayResults: function (response) {
+            var responseEl = $(this.displayId);
+            if (responseEl == null) {
+                var responseEl = new Element('p', {id: this.displayId}).addClassName('note');
+                Element.insert($(this.buttonId), {after: responseEl});
+            }
+            if (response.messages) {
+                var style = response.error ? ' style="color:red;"' : '';
+                responseEl.innerHTML = '';
+                for (var message in response.messages) {
+                    responseEl.appendChild(
+                        new Element('p').update(
+                            '<span' + style + '><b>' + message + ':</b> ' + response.messages[message] + '</span>'
+                        )
+                    );
+                }
+                return responseEl;
+            }
+            if (response.error) {
+                return responseEl.innerHTML = response.error;
+            }
+            $(this.buttonId).disabled = true;
+            $(this.buttonId).addClassName("disabled");
+            return responseEl.innerHTML = "<?php echo Mage::helper('sli_search/feed')->getAjaxNotice(); ?>";
+        }
+    };
+
+    //]]>
+</script>
