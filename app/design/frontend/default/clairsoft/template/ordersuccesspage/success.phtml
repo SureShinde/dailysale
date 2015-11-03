@@ -12,11 +12,11 @@
 
 <?php
 
-$orderId = $this->getOrderId(); 
-$order = Mage::getModel('sales/order')->loadByIncrementId($orderId); 
-$total = $order->getGrandTotal(); 
-$subtotal = $order->getSubtotal(); 
-$discount = $order->getDiscountAmount(); 
+$orderId = $this->getOrderId();
+$order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
+$total = $order->getGrandTotal();
+$subtotal = $order->getSubtotal();
+$discount = $order->getDiscountAmount();
 $affiliateTotal = ($subtotal + $discount);
 
 $ordered_items = $order->getAllVisibileItems();
@@ -34,12 +34,12 @@ $skulist = substr($skulist, 0, -1);
 $quantitylist = substr($quantitylist, 0, -1);
 $pricelist = substr($pricelist, 0, -1);
 //Magento has only one couponcode allowed, so no comma-separated list to make
-$couponcodes = $order->getCouponCode(); 
+$couponcodes = $order->getCouponCode();
 
 $newcustomer = ''; //setup newcustomer param
 $customer = $order->getCustomerId();
 if($customer){
-	$_orders = Mage::getModel('sales/order')->getCollection()->addFieldToFilter('customer_id', $customer);                        
+	$_orders = Mage::getModel('sales/order')->getCollection()->addFieldToFilter('customer_id', $customer);
 	$_orderCnt = $_orders->count(); //orders count
 	//if customer has more than an order, they're not new
 	$newcustomer = ($_orderCnt > 1 ? 0 : 1);
@@ -51,9 +51,9 @@ $currency = $order->getOrderCurrencyCode();
 
 <?php if ($this->getOrderId()):?>
     <p><?php echo $this->__('You will receive an order confirmation email with details of your order and a link to track its progress.') ?>
-       <?php //echo $this->__('Click <a href="%s" onclick="this.target=\'_blank\'">here to print</a> a copy of your order confirmation.', $this->getUrl('ordersuccesspage/ordersuccesspage/print',array('id',Mage::registry('current_order')->getId()))) ?> 
+       <?php //echo $this->__('Click <a href="%s" onclick="this.target=\'_blank\'">here to print</a> a copy of your order confirmation.', $this->getUrl('ordersuccesspage/ordersuccesspage/print',array('id',Mage::registry('current_order')->getId()))) ?>
     </p>
- 
+
 <?php endif;?>
 
 <?php if ($this->getAgreementRefId()): ?>
@@ -67,7 +67,7 @@ $currency = $order->getOrderCurrencyCode();
 <?php $profileIdHtml = ($this->getCanViewProfiles() ? sprintf('<a href="%s">%s</a>', $this->escapeHtml($this->getProfileUrl($profile)), $this->escapeHtml($this->getObjectData($profile, 'reference_id'))) : $this->escapeHtml($this->getObjectData($profile, 'reference_id')));?>
     <li><?php echo $this->__('Payment profile # %s: "%s".', $profileIdHtml, $this->escapeHtml($this->getObjectData($profile, 'schedule_description')))?></li>
 <?php endforeach;?>
-</ul> 
+</ul>
 <?php endif;?>
 <?php if ($this->getOrderId()):?>
 <?php
@@ -79,7 +79,7 @@ $orderObj = Mage::getModel('sales/order')->loadByIncrementId($this->getOrderId()
 <!-- End ROKT widget -->
 
 <?php echo $this->getLayout()->createBlock('sales/order_info')->setTemplate('ordersuccesspage/info.phtml')->toHtml();?> 
-<?php echo $this->getLayout()->createBlock('sales/order_items')->setTemplate('ordersuccesspage/items.phtml')->toHtml();?> 
+<?php echo $this->getLayout()->createBlock('sales/order_items')->setTemplate('ordersuccesspage/items.phtml')->toHtml();?>
 <?php endif;?>
 <div class="buttons-set">
     <button type="button" class="button" title="<?php echo $this->__('Continue Shopping') ?>" onclick="window.location='<?php echo $this->getUrl() ?>'"><?php echo $this->__('Continue Shopping') ?></button>
@@ -183,7 +183,7 @@ var google_remarketing_only = true;
 
 <script>
 window.EEngine = window.EEngine || [];
-EEngine.trackRevenue('dailysale_purchase', <?php echo($subtotal * 100); ?>); 
+EEngine.trackRevenue('dailysale_purchase', <?php echo($subtotal * 100); ?>);
 </script>
 
 <!-- End EEngine tracking -->
@@ -237,3 +237,17 @@ EEngine.trackRevenue('dailysale_purchase', <?php echo($subtotal * 100); ?>);
 </script>
 
 <!-- End ROKT -->
+
+<!-- BounceX conversion tracking -->
+
+<script>
+   window.bxAsyncInit = function(){
+     bouncex.report_conversion({
+           order_id: <?php echo($this->getOrderId()); ?>,
+           amount:<?php echo($subtotal); ?>,
+           email:<?php echo ($order->getCustomerEmail());?>,
+           goal:"",
+     });
+}; </script>
+
+<!-- End BounceX -->
