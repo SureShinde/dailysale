@@ -22,10 +22,13 @@
  * @package     default_default
  * @copyright   Copyright (c) 2014 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ *
+ * @var $this Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Bestseller
  */
 ?>
 
 <?php
+$logs = $this->getLogData();
 $_htmlId = $this->getHtmlId() ? $this->getHtmlId() : '_' . uniqid();
 
 $_colspan = 2;
@@ -64,7 +67,45 @@ $_colspan = $_colspan > 1 ? 'colspan="' . $_colspan . '"' : '';
         <span><span><span><?php echo $this->_addButtonLabel ?></span></span></span>
     </button>
 </div>
+<input type="button" value="Show/hide Logs" id="button_log" onclick="showlog()">
+<script type="text/javascript">
+    function showlog(){
+        if($$('.log_cron')[0].getStyle('display')=='none'){
+            $$('.log_cron')[0].show();
+        }else{
+            $$('.log_cron')[0].hide();
+        }
+    }
+</script>
+<div class="log_cron" style="width:100%; height:auto; display:none">
+    <?php if($logs){?>
+    <table style=" border-collapse: collapse;" class="log_table">
+        <?php foreach($logs as $log){ ?>
+            <tr>
+                <td  class="log_td">
+                    <?php echo $log['0'];?>
+                </td>
+                <td  class="log_td">
+                    <?php echo $log['1'];?>
+                </td>
+                <td  class="log_td">
+                    <?php echo $log['2'];?>
+                </td>
+                <td  class="log_td">
+                    <?php echo $log['3'];?>
+                </td>
+            </tr>
+        <?php } ?>
 
+    </table>
+    <?php }else{ echo 'log is empty'; }?>
+</div>
+<style type="text/css">
+    .log_td {
+        border: 1px solid black;
+        padding:5px;
+    }
+</style>
 <script type="text/javascript">
     function startCron(button){
         var rowId = button.parentElement.parentElement.id;

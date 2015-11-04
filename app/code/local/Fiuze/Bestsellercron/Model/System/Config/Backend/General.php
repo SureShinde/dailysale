@@ -10,7 +10,7 @@ class Fiuze_Bestsellercron_Model_System_Config_Backend_General extends Mage_Admi
             if(strpos($time_arr[$i],'/') OR is_numeric($time_arr[$i])){
                 $find_interval = $i;
             }
-            if($find_interval>=$i){
+            if(isset($find_interval) AND $find_interval>=$i){
                 if($time_arr[$i]=='*'){
                     $time_arr[$i]='0';
                 }

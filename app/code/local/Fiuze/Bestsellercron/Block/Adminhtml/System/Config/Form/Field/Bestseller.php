@@ -304,4 +304,30 @@ class Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Bestseller e
         $this->_arrayRowsCache = $result;
         return $this->_arrayRowsCache;
     }
+
+    public function getLogData(){
+
+        $logs = file_get_contents(Mage::getBaseDir('log').'/bestseller_cron.log');
+        $logs = explode("\n",trim($logs));
+        foreach($logs as $log){
+            $currlog=explode('T',$log);
+            $currlog[0]=$currlog[0];
+            $currlog[1]=substr($currlog[1],0,8);
+            $currlog[2]=$currlog[2];
+            $currlog[3]=$currlog[3];
+            $result[]=$currlog;
+        }
+        if(count($logs)>=10){
+            for($j=count($logs),$i=0;$i<10;$i++,$j--){
+                $str[] = $logs[$j-1];
+            }
+            krsort($str);
+            $log_for_file='';
+            foreach($str as $log){
+                $log_for_file=$log_for_file.$log."\n";
+            }
+            file_put_contents(Mage::getBaseDir('log').'/bestseller_cron.log',$log_for_file);
+        }
+        return $result;
+    }
 }
