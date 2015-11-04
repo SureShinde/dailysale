@@ -226,6 +226,7 @@ EEngine.trackRevenue('dailysale_purchase', <?php echo($subtotal * 100); ?>);
   var roktLastName = "<?php echo urlencode($order->getBillingAddress()->getLastname()); ?>";
   var roktEmail = "<?php echo urlencode($order->getCustomerEmail()); ?>";
   var roktPostCode = "<?php echo urlencode($order->getBillingAddress()->getPostcode()); ?>";
+      roktPostCode = roktPostCode.slice(0, -5);
   var roktPhone = "<?php echo urlencode($order->getBillingAddress()->getTelephone()); ?>";
   var roktOrderValue = "<?php echo urlencode($subtotal); ?>";
 
