@@ -24,7 +24,7 @@ class Unirgy_Dropship_Block_Adminhtml_Shipment_View
 
         $shipment = $this->getShipment();
         if (($id = $shipment->getId()) && $shipment->getUdropshipStatus()!=Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_SHIPPED) {
-            $url = $this->getUrl('udropshipadmin/adminhtml_shipment/ship', array(
+            $url = $this->getUrl('adminhtml/shipment/ship', array(
                 'id'=>$id,
                 'order_id'=>$this->getRequest()->getParam('order_id')
             ));

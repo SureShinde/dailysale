@@ -283,13 +283,13 @@
 
     <admin>
         <routers>
-            <umicrositeadmin>
-                <use>admin</use>
-                <args>
-                    <module>Unirgy_DropshipMicrosite</module>
-                    <frontName>umicrositeadmin</frontName>
-                </args>
-            </umicrositeadmin>
+            <adminhtml>
+				<args>
+					<modules>
+						<umicrositeadmin before="Mage_Adminhtml">Unirgy_DropshipMicrosite_Adminhtml</umicrositeadmin>
+					</modules>
+				</args>
+			</adminhtml>
         </routers>
     </admin>
 
@@ -302,7 +302,7 @@
                             <vendor_registration module="umicrosite">
                                 <title>Vendor Registrations</title>
                                 <sort_order>40</sort_order>
-                                <action>umicrositeadmin/adminhtml_registration</action>
+                                <action>adminhtml/registration</action>
                             </vendor_registration>
                         </children>
                     </udropship>

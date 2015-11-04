@@ -109,13 +109,13 @@
    </adminhtml>
    <admin>
       <routers>
-         <usimplelicadmin>
-            <use>admin</use>
-            <args>
-               <module>Unirgy_SimpleLicense</module>
-               <frontName>usimplelicadmin</frontName>
-            </args>
-         </usimplelicadmin>
+         <adminhtml>
+				<args>
+					<modules>
+						<usimplelicadmin before="Mage_Adminhtml">Unirgy_SimpleLicense_Adminhtml</usimplelicadmin>
+					</modules>
+				</args>
+			</adminhtml>
       </routers>
    </admin>
 </config>

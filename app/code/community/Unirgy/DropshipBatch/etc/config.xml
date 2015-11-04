@@ -613,13 +613,13 @@
 
     <admin>
         <routers>
-            <udbatchadmin>
-                <use>admin</use>
-                <args>
-                    <module>Unirgy_DropshipBatch</module>
-                    <frontName>udbatchadmin</frontName>
-                </args>
-            </udbatchadmin>
+            <adminhtml>
+				<args>
+					<modules>
+						<udbatchadmin before="Mage_Adminhtml">Unirgy_DropshipBatch_Adminhtml</udbatchadmin>
+					</modules>
+				</args>
+			</adminhtml>
         </routers>
     </admin>
 
@@ -651,12 +651,12 @@
                                     <batches>
                                         <title>Batches</title>
                                         <sort_order>10</sort_order>
-                                        <action>udbatchadmin/adminhtml_batch</action>
+                                        <action>adminhtml/batch</action>
                                     </batches>
                                     <dists module="udbatch">
                                         <title>Action History</title>
                                         <sort_order>20</sort_order>
-                                        <action>udbatchadmin/adminhtml_dist</action>
+                                        <action>adminhtml/dist</action>
                                     </dists>
                                 </children>
                             </batch>

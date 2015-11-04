@@ -100,7 +100,7 @@ class Unirgy_Dropship_Adminhtml_Vendor_StatementController extends Mage_Adminhtm
             echo "<span style='color:#0F0'>DONE</span>.<br/>";
         }
 
-        $redirectUrl = Mage::helper('adminhtml')->getUrl('udropshipadmin/adminhtml_vendor_statement');
+        $redirectUrl = Mage::helper('adminhtml')->getUrl('adminhtml/vendor_statement');
         echo "<hr>".$hlp->__('All done, <a href="%s">click here</a> to be redirected to statements grid.', $redirectUrl);
         exit;
     }

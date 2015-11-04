@@ -19,7 +19,7 @@ class Amasty_Audit_Block_Adminhtml_Userlog extends Mage_Adminhtml_Block_Widget_G
     {
         $script = "
             if (confirm('".Mage::helper('catalog')->__('Are you sure?')."'))
-                window.location.href='".$this->getUrl('amaudit/adminhtml_log/clear')."';
+                window.location.href='".$this->getUrl('adminhtml/log/clear')."';
         ";
 
         $this->addButton('clear', array(

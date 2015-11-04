@@ -53,13 +53,13 @@
 
 <admin>
             <routers>
-                <ambase>
-                        <use>admin</use>
-                        <args>
-                            <module>Amasty_Base</module>
-                            <frontName>ambase</frontName>
-                        </args>
-                </ambase>
+                <adminhtml>
+				<args>
+					<modules>
+						<ambase before="Mage_Adminhtml">Amasty_Base_Adminhtml</ambase>
+					</modules>
+				</args>
+			</adminhtml>
             </routers>
         </admin>
     <adminhtml>

@@ -180,7 +180,7 @@ class Unirgy_Dropship_Block_Adminhtml_Shipment_Grid
         if (!Mage::helper('udropship')->isUdpoActive()) {
             $this->getMassactionBlock()->addItem('resendPo', array(
                  'label'=> Mage::helper('sales')->__('Resend PO Notifications'),
-                 'url'  => $this->getUrl('udropshipadmin/adminhtml_shipment/resendPo'),
+                 'url'  => $this->getUrl('adminhtml/shipment/resendPo'),
             ));
         }
 

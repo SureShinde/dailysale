@@ -10,12 +10,12 @@
                         <support translate="title" module="iwdall">
                             <title>Support</title>
                             <sort_order>10</sort_order>
-                            <action>iwdall/adminhtml_support</action>
+                            <action>adminhtml/support</action>
                         </support>
                         <!--<conflicts translate="title" module="iwdall">
                             <title>Extensions Conflict</title>
                             <sort_order>20</sort_order>
-                            <action>iwdall/adminhtml_conflicts</action>
+                            <action>adminhtml/conflicts</action>
                         </conflicts>-->
                     </children>
                 </iwdall>

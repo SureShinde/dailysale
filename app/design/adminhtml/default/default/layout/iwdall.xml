@@ -17,12 +17,12 @@
         
 	</default>
 	
-	 <iwdall_adminhtml_support_index>
+	 <adminhtml_support_index>
         <update handle="editor"/>
         <reference name="content">
             <block type="iwdall/adminhtml_support_edit" after="-" name="supportform"/>
         </reference>
-    </iwdall_adminhtml_support_index>
+    </adminhtml_support_index>
 	
 	<adminhtml_system_config_edit>
         <reference name="content">

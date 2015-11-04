@@ -70,7 +70,7 @@ class Mirasvit_FeedExport_Model_Observer
         }
         $block->getMassactionBlock()->addItem('feedexport_export', array(
             'label'      => __('Export Products'),
-            'url'        => $block->getUrl('feedexport/adminhtml_feed/massProductsExport', array('_current' => true)),
+            'url'        => $block->getUrl('adminhtml/feed/massProductsExport', array('_current' => true)),
             'additional' => array(
                 'visibility' => array(
                     'name'   => 'feed_id',

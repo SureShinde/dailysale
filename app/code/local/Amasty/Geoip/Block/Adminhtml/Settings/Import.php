@@ -19,19 +19,19 @@ class Amasty_Geoip_Block_Adminhtml_Settings_Import extends Mage_Adminhtml_Block_
         );
 
         foreach ($importTypes as $type) {
-            $startUrl = $this->getUrl('amgeoip/adminhtml_import/start', array(
+            $startUrl = $this->getUrl('adminhtml/import/start', array(
                 'type' => $type,
                 'action' => 'import'
             ))
             ;
 
-            $processUrl = $this->getUrl('amgeoip/adminhtml_import/process', array(
+            $processUrl = $this->getUrl('adminhtml/import/process', array(
                 'type' => $type,
                 'action' => 'import'
             ))
             ;
 
-            $commitUrl = $this->getUrl('amgeoip/adminhtml_import/commit', array(
+            $commitUrl = $this->getUrl('adminhtml/import/commit', array(
                 'type' => $type,
                 'action' => 'import'
             ))

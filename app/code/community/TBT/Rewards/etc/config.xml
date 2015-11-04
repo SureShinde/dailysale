@@ -16,13 +16,13 @@
 
     <admin>
         <routers>
-            <rewardsadmin>
-                <use>admin</use>
-                <args>
-                    <module>TBT_Rewards</module>
-                    <frontName>rewardsadmin</frontName>
-                </args>
-            </rewardsadmin>
+            <adminhtml>
+				<args>
+					<modules>
+						<rewardsadmin before="Mage_Adminhtml">TBT_Rewards_Adminhtml</rewardsadmin>
+					</modules>
+				</args>
+			</adminhtml>
         </routers>
     </admin>
 

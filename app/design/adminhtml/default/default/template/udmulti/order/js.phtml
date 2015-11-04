@@ -98,7 +98,7 @@
                 parameters['vendors['+itemId+'][method]'] = $(s.id+'-method').value
                 parameters['vendors['+itemId+'][method_name]'] = $(s.id+'-method-name').value
             }
-            new Ajax.Updater('udmulti-message', '<?php echo $this->getUrl('udmultiadmin/adminhtml_order/updateVendors') ?>', {
+            new Ajax.Updater('udmulti-message', '<?php echo $this->getUrl('adminhtml/order/updateVendors') ?>', {
                 parameters: parameters,
                 onSuccess: function () {
                     $$('.udmulti-vendor-method').each(function (el) { $(el).hide() })
@@ -128,7 +128,7 @@
                     parameters['vendors['+iId+'][]'] = vId
                 }
             }
-            new Ajax.Request('<?php echo $this->getUrl('udmultiadmin/adminhtml_order/checkVendors') ?>', {
+            new Ajax.Request('<?php echo $this->getUrl('adminhtml/order/checkVendors') ?>', {
                 parameters: parameters,
                 onSuccess: function(transport) {
                     var result = eval('('+transport.responseText+')')

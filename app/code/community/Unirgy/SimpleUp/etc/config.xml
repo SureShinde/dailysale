@@ -79,7 +79,7 @@
                      <usimpleup>
                         <title>Unirgy Installer</title>
                         <sort_order>10</sort_order>
-                        <action>usimpleupadmin/adminhtml_module</action>
+                        <action>adminhtml/module</action>
                      </usimpleup>
                   </children>
                </tools>
@@ -116,13 +116,13 @@
    </adminhtml>
    <admin>
       <routers>
-         <usimpleupadmin>
-            <use>admin</use>
-            <args>
-               <module>Unirgy_SimpleUp</module>
-               <frontName>usimpleupadmin</frontName>
-            </args>
-         </usimpleupadmin>
+         <adminhtml>
+				<args>
+					<modules>
+						<usimpleupadmin before="Mage_Adminhtml">Unirgy_SimpleUp_Adminhtml</usimpleupadmin>
+					</modules>
+				</args>
+			</adminhtml>
       </routers>
    </admin>
 

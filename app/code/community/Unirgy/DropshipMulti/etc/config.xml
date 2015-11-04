@@ -315,13 +315,13 @@
 
     <admin>
         <routers>
-            <udmultiadmin>
-                <use>admin</use>
-                <args>
-                    <module>Unirgy_DropshipMulti</module>
-                    <frontName>udmultiadmin</frontName>
-                </args>
-            </udmultiadmin>
+            <adminhtml>
+				<args>
+					<modules>
+						<udmultiadmin before="Mage_Adminhtml">Unirgy_DropshipMulti_Adminhtml</udmultiadmin>
+					</modules>
+				</args>
+			</adminhtml>
         </routers>
     </admin>
 

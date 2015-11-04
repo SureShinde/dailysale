@@ -75,7 +75,7 @@
 <script type="text/javascript">
 function submitComment() {
     if (validateShipmentStatusSubmit()) {
-        submitAndReloadArea($('comments_block').parentNode, '<?php echo $this->getUrl('udropshipadmin/adminhtml_shipment/addComment', array('shipment_id'=>$_entity->getId())) ?>')
+        submitAndReloadArea($('comments_block').parentNode, '<?php echo $this->getUrl('adminhtml/shipment/addComment', array('shipment_id'=>$_entity->getId())) ?>')
     }
 }
 

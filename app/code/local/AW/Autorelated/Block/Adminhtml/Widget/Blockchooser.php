@@ -35,7 +35,7 @@ class AW_Autorelated_Block_Adminhtml_Widget_Blockchooser extends Mage_Adminhtml_
     public function prepareElementHtml(Varien_Data_Form_Element_Abstract $element)
     {
         $uniqId = Mage::helper('core')->uniqHash($element->getId());
-        $sourceUrl = $this->getUrl('awautorelated_admin/adminhtml_widget/blockchooser', array('uniq_id' => $uniqId));
+        $sourceUrl = $this->getUrl('adminhtml/widget/blockchooser', array('uniq_id' => $uniqId));
 
         $chooser = $this->getLayout()->createBlock('widget/adminhtml_widget_chooser')
             ->setElement($element)
@@ -156,6 +156,6 @@ class AW_Autorelated_Block_Adminhtml_Widget_Blockchooser extends Mage_Adminhtml_
 
     public function getGridUrl()
     {
-        return $this->getUrl('awautorelated_admin/adminhtml_widget/blockchooser', array('_current' => true));
+        return $this->getUrl('adminhtml/widget/blockchooser', array('_current' => true));
     }
 }

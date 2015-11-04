@@ -51,7 +51,7 @@ class Unirgy_DropshipPo_Model_Observer
             if (($stId = $po->getStatementId())) {
                 $soi->setStatementId($stId);
                 if (($st = Mage::getModel('udropship/vendor_statement')->load($stId, 'statement_id')) && $st->getId()) {
-                    $soi->setStatementUrl(Mage::getModel('adminhtml/url')->getUrl('udropshipadmin/adminhtml_vendor_statement/edit', array('id'=>$st->getId())));
+                    $soi->setStatementUrl(Mage::getModel('adminhtml/url')->getUrl('adminhtml/vendor_statement/edit', array('id'=>$st->getId())));
                 }
             }
             if (Mage::helper('udropship')->isUdpayoutActive() && ($ptId = $po->getPayoutId())) {

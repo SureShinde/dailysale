@@ -50,17 +50,17 @@
 	</adminhtml_sales_order_creditmemo_view>	
 
 	<!-- Geoip -->
-	<onestepcheckoutadmin_adminhtml_geoip_showgeoip>		
+	<adminhtml_geoip_showgeoip>		
         <reference name="content">
             <block type="onestepcheckout/adminhtml_geoip" template="onestepcheckout/geoip.phtml" name="geoip" />
         </reference>
-    </onestepcheckoutadmin_adminhtml_geoip_showgeoip>
-	<onestepcheckoutadmin_adminhtml_country_showcountryip>		
+    </adminhtml_geoip_showgeoip>
+	<adminhtml_country_showcountryip>		
         <reference name="content">
             <block type="onestepcheckout/adminhtml_country" template="onestepcheckout/country.phtml" name="country" />
         </reference>
-    </onestepcheckoutadmin_adminhtml_country_showcountryip>
-	<onestepcheckoutadmin_adminhtml_geoip_index>
+    </adminhtml_country_showcountryip>
+	<adminhtml_geoip_index>
 		<reference name="head">
 			<action method="addJs"><script>magestore/adminhtml/onestepcheckout/geoip.js</script></action>
 		</reference>
@@ -70,8 +70,8 @@
 		<reference name="content">
             <block type="onestepcheckout/adminhtml_geoipgrid" name="geoipgrid" />
         </reference>
-	</onestepcheckoutadmin_adminhtml_geoip_index>
-	<onestepcheckoutadmin_adminhtml_country_index>	
+	</adminhtml_geoip_index>
+	<adminhtml_country_index>	
 		<reference name="head">
 			<action method="addJs"><script>magestore/adminhtml/onestepcheckout/geoip.js</script></action>
 		</reference>
@@ -81,7 +81,7 @@
 		<reference name="content">
             <block type="onestepcheckout/adminhtml_countrygrid" name="countrygrid" />
         </reference> 
-	</onestepcheckoutadmin_adminhtml_country_index>
+	</adminhtml_country_index>
 	<adminhtml_system_config_edit>
         <reference name="head">
             <action method="addJs">

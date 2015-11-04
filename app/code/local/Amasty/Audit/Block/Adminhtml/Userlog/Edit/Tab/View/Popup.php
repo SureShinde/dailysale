@@ -16,7 +16,7 @@ class Amasty_Audit_Block_Adminhtml_Userlog_Edit_Tab_View_Popup extends Mage_Admi
     public function getRestoreUrl()
     {
         $id = $this->getRequest()->getParam('id');
-        $url = $this->getUrl('amaudit/adminhtml_log/restore', array('id' => $id));
+        $url = $this->getUrl('adminhtml/log/restore', array('id' => $id));
         return $url;
     }
 }

@@ -40,7 +40,7 @@ class Unirgy_SimpleLicense_Block_Adminhtml_License_Grid extends Mage_Adminhtml_B
             $this->getLayout()->createBlock('adminhtml/widget_button')
                 ->setData(array(
                     'label'     => Mage::helper('usimpleup')->__('Refresh Licenses'),
-                    'onclick'   => "location.href = '{$this->getUrl('usimplelicadmin/adminhtml_license/checkUpdates')}'",
+                    'onclick'   => "location.href = '{$this->getUrl('adminhtml/license/checkUpdates')}'",
                     'class'     => 'save',
                 ))
         );
@@ -48,7 +48,7 @@ class Unirgy_SimpleLicense_Block_Adminhtml_License_Grid extends Mage_Adminhtml_B
             $this->getLayout()->createBlock('adminhtml/widget_button')
                 ->setData(array(
                     'label'     => Mage::helper('usimpleup')->__('Send Server Info'),
-                    'onclick'   => "location.href = '{$this->getUrl('usimplelicadmin/adminhtml_license/serverInfo')}'",
+                    'onclick'   => "location.href = '{$this->getUrl('adminhtml/license/serverInfo')}'",
                     'class'     => 'save',
                 ))
         );
@@ -140,7 +140,7 @@ class Unirgy_SimpleLicense_Block_Adminhtml_License_Grid extends Mage_Adminhtml_B
         */
         $this->getMassactionBlock()->addItem('remove', array(
              'label'=> Mage::helper('usimpleup')->__('Remove'),
-             'url'  => $this->getUrl('usimplelicadmin/adminhtml_license/massRemove'),
+             'url'  => $this->getUrl('adminhtml/license/massRemove'),
              'confirm' => Mage::helper('usimpleup')->__('Removing selected licenses(s). Are you sure?')
         ));
 
@@ -149,6 +149,6 @@ class Unirgy_SimpleLicense_Block_Adminhtml_License_Grid extends Mage_Adminhtml_B
 
     public function getGridUrl()
     {
-        return $this->getUrl('usimplelicadmin/adminhtml_license/grid', array('_current'=>true));
+        return $this->getUrl('adminhtml/license/grid', array('_current'=>true));
     }
 }
