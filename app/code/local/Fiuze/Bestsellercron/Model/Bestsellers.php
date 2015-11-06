@@ -249,7 +249,11 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
                 }
             }else{
                 if(!is_null($product->getId() AND $orderItem->_data['created_at']>$this->_getPeriod())){
-                    $items[$product->getId()] += $this->_getRowTotalWithDiscountInclTax($orderItem);
+                    if(isset($items[$product->getId()])){
+                        $items[$product->getId()] += $this->_getRowTotalWithDiscountInclTax($orderItem);
+                    }else{
+                        $items[$product->getId()] = $this->_getRowTotalWithDiscountInclTax($orderItem);
+                    }
                 }
             }
         }
