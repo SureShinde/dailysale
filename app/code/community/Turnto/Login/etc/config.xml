@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+
+<config>
+    <modules>
+        <Turnto_Login>
+            <version>2.1.5</version>
+        </Turnto_Login>
+    </modules> 
+
+    <global>
+        <blocks>
+            <loginblock1>
+            	<class>Turnto_Login_Block</class>
+	    </loginblock1>  
+        </blocks>
+        <helpers>
+            <loginhelper1>
+                <class>Turnto_Login_Helper</class>
+            </loginhelper1>
+        </helpers>  
+    </global>    
+	
+    <frontend>
+        <routers>
+            <turnto_login>
+                <use>standard</use>
+                <args>
+                    <module>Turnto_Login</module>
+                    <frontName>turntologin</frontName>
+                </args>
+            </turnto_login>
+        </routers>
+        <layout>
+            <updates>
+                <turnto_login>
+                      <file>turnto_login.xml</file>
+                </turnto_login>
+            </updates>
+        </layout>
+    </frontend>
+</config>
