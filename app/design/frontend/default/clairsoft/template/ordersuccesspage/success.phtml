@@ -243,3 +243,23 @@ try{p=top.document.referer!==""?encodeURIComponent(top.document.referrer.substri
 </script>
 
 <!-- end steelhouse -->
+
+<!-- SLI Conversion Tracking -->
+<?php
+$sliOrderId = Mage::getSingleton('checkout/session')->getLastOrderId(); $sliOrder = Mage::getSingleton('sales/order'); $sliOrder->load($sliOrderId);
+$sliAmount = number_format($subtotal,2);
+if(Mage::getSingleton('customer/session')->isLoggedIn()) { $sliCustomer = Mage::getSingleton('customer/session')->getCustomerId(); } else {
+$sliCustomer = "1";
+}
+?>
+<script type="text/javascript">
+var sliSparkJsHost = (("https:" == document.location.protocol) ? "https://" : "http://" );
+document.write(unescape("%3Cscript src='" + sliSparkJsHost + "b.sli- spark.com/sli-spark.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script language="javascript" type="text/javascript">
+var spark= new SliSpark("2848", "1"); spark.setPageType("checkout-confirmation");
+spark.addTransaction("<?php echo $this->getOrderId(); ?>","<?php echo $sliCustomer; ?>","<?php echo $sliAmount; ?>","<?php echo $sliOrder->getShippingInclTax(); ?>","<?php echo $sliOrder->getTaxAmount(); ?>");
+<?php foreach($sliOrder->getAllItems() as $sliItem): ?> <?php if($sliItem->getParentItem()) continue; ?>
+spark.addItem("<?php echo $sliItem->getProductId() ?>","<?php echo (int) $sliItem->getQtyOrdered() ?>","<?php echo $sliItem->getPrice() ?>");
+<?php endforeach;?> spark.writeTrackCode(); spark.writeTransactionCode(); </script>
+<!-- SLI Conversion Tracking -->
