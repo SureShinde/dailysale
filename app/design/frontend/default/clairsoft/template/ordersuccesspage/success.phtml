@@ -220,7 +220,7 @@ EEngine.trackRevenue('dailysale_purchase', <?php echo($subtotal * 100); ?>);
      bouncex.report_conversion({
            order_id: <?php echo($this->getOrderId()); ?>,
            amount:<?php echo($subtotal); ?>,
-           email:<?php echo ($order->getCustomerEmail());?>,
+           email:"<?php echo ($order->getCustomerEmail());?>",
            goal:"",
      });
 }; </script>
