@@ -13,9 +13,9 @@ class Unirgy_DropshipMulti_Vendor_ProductController extends Unirgy_Dropship_Cont
             $hlp = Mage::helper('udmulti');
             $cnt = $hlp->saveVendorProducts($this->getRequest()->getParam('vp'));
             if ($cnt) {
-                Mage::getSingleton('udropship/session')->addSuccess($hlp->__($cnt==1 ? '%s product was updated' : '%s products were updated', $cnt));
+                Mage::getSingleton('udropship/session')->addSuccess(Mage::helper('udropship')->__($cnt==1 ? '%s product was updated' : '%s products were updated', $cnt));
             } else {
-                Mage::getSingleton('udropship/session')->addNotice($hlp->__('No updates were made'));
+                Mage::getSingleton('udropship/session')->addNotice(Mage::helper('udropship')->__('No updates were made'));
             }
         } catch (Exception $e) {
             Mage::getSingleton('udropship/session')->addError($e->getMessage());

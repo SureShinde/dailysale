@@ -47,13 +47,27 @@ class Unirgy_DropshipMulti_Model_Decision_MultiVendor
         foreach ($_stock as $_sK=>$_sV) {
             if (!empty($_sV) && is_array($_sV)) {
                 $hasInStock = false;
+                $__defVendors = $_sV;
+                uasort($__defVendors, array($this, 'sortDefaultVendorCallback'));
+                reset($__defVendors);
+                $__defVendor = key($__defVendors);
+
+                foreach ($items as $item) {
+                    if ($item->getHasChildren() || $item->getProductId()!=$_sK) {
+                        continue;
+                    }
+                    if (!in_array($item->getUdropshipVendor(), array_keys($_sV)) && $__defVendor) {
+                        $iHlp->setUdropshipVendor($item, $__defVendor);
+                    }
+                }
+
                 foreach ($_sV as $_svK=>$_svV) {
                     if (!empty($_svV['status'])) {
                         $hasInStock = true;
                         if (!empty($_svV['is_priority_vendor'])) {
                             unset($applyPids[$_sK]);
                             foreach ($items as $item) {
-                                if ($item->getHasChildren()) {
+                                if ($item->getHasChildren() || $item->getProductId()!=$_sK) {
                                     continue;
                                 }
                                 $item->setSkipUdropshipDecisionApply(true);
@@ -76,6 +90,20 @@ class Unirgy_DropshipMulti_Model_Decision_MultiVendor
         $this->setStockToApply($stock);
         return $this;
     }
+    public function sortDefaultVendorCallback($c1, $c2)
+    {
+        if (@$c1['vendor_cost']<@$c2['vendor_cost']) {
+            return -1;
+        } elseif (@$c1['vendor_cost']>@$c2['vendor_cost']) {
+            return 1;
+        }
+        if (@$c1['priority']<@$c2['priority']) {
+            return -1;
+        } elseif (@$c1['priority']>@$c2['priority']) {
+            return 1;
+        }
+        return 0;
+    }
     public function afterApply($items)
     {
         $stock = $this->getStockResult();
@@ -83,6 +111,7 @@ class Unirgy_DropshipMulti_Model_Decision_MultiVendor
         $ciHlp = Mage::helper('cataloginventory');
         $quote = null;
         $qtyUsed = array();
+        $allAddressMatch = true;
         $allZipcodeMatch = true;
         $allCountryMatch = true;
         $hasOutOfStock = false;
@@ -121,8 +150,10 @@ class Unirgy_DropshipMulti_Model_Decision_MultiVendor
                     $stockData = (array)@$stock[$pId][$vId];
                     $stockItem = null;
                     $qtyInStock = @$stockData['qty_in_stock'];
+                    $addressMatch = $v->isAddressMatch($hlp->getAddressByItem($item));
                     $zipCodeMatch = $v->isZipcodeMatch($hlp->getZipcodeByItem($item));
                     $countryMatch = $v->isCountryMatch($hlp->getCountryByItem($item));
+                    $allAddressMatch = $allAddressMatch && $addressMatch;
                     $allZipcodeMatch = $allZipcodeMatch && $zipCodeMatch;
                     $allCountryMatch = $allCountryMatch && $countryMatch;
                     $childName = $item->getName();
@@ -136,14 +167,19 @@ class Unirgy_DropshipMulti_Model_Decision_MultiVendor
                             $childName = $_child->getName();
                         }
                         $qtyToCheck = $hlp->getItemStockCheckQty($_child);
+                        if (!$addressMatch) {
+                            $_child->setHasError(true);
+                            $_child->setMessage(Mage::helper('udropship')->__('This item is not available for your location.'));
+                            continue;
+                        }
                         if (!$countryMatch) {
                             $_child->setHasError(true);
-                            $_child->setMessage($hlp->__('This item is not available for your country.'));
+                            $_child->setMessage(Mage::helper('udropship')->__('This item is not available for your country.'));
                             continue;
                         }
                         if (!$zipCodeMatch) {
                             $_child->setHasError(true);
-                            $_child->setMessage($hlp->__('This item is not available for your zipcode.'));
+                            $_child->setMessage(Mage::helper('udropship')->__('This item is not available for your zipcode.'));
                             continue;
                         }
                         $_qtyInStock = @$stockData['qty_in_stock']-@$qtyUsed[$pId][$vId]-$childQtyUsed;
@@ -152,11 +188,11 @@ class Unirgy_DropshipMulti_Model_Decision_MultiVendor
                         if ($_qtyInStock<=0 && !$stockStatus) {
                             $hasOutOfStock = true;
                             $_child->setHasError(true);
-                            $_child->setMessage($hlp->__('This product is currently out of stock.'));
+                            $_child->setMessage(Mage::helper('udropship')->__('This product is currently out of stock.'));
                         } elseif (!$itemInStock && $_qtyInStock>0 && !$stockStatus) {
                             $hasOutOfStock = true;
                             $_child->setHasError(true);
-                            $_child->setMessage($hlp->__('Only "%s" of this product in stock.', $_qtyInStock*1));
+                            $_child->setMessage(Mage::helper('udropship')->__('Only "%s" of this product in stock.', $_qtyInStock*1));
                         } elseif ($stockStatus
                             && !$itemInStock
                             && @$stockData['backorders'] == Mage_CatalogInventory_Model_Stock::BACKORDERS_YES_NOTIFY
@@ -164,7 +200,7 @@ class Unirgy_DropshipMulti_Model_Decision_MultiVendor
                             $backorderQty = $_qtyInStock>0 ? $qtyToCheck-$_qtyInStock : $qtyToCheck;
                             $_child->setBackorders($backorderQty);
                             $_child->setMessage(
-                                $hlp->__('This product is not available in the requested quantity. %s of the items will be backordered.', ($backorderQty * 1))
+                                Mage::helper('udropship')->__('This product is not available in the requested quantity. %s of the items will be backordered.', ($backorderQty * 1))
                             );
                         }
                     }
@@ -174,51 +210,58 @@ class Unirgy_DropshipMulti_Model_Decision_MultiVendor
                     $qtyOptions = $item->getQtyOptions();
                     $qtyOption = @$qtyOptions[$pId];
                     $error = $message = null;
-                    if (!$countryMatch) {
+                    if (!$addressMatch) {
                         $error = true;
                         if ($item->getProductType()=='configurable') {
-                            $message = $hlp->__('This product is not available for your country.');
+                            $message = Mage::helper('udropship')->__('This product is not available for your location.');
                         } else {
-                            $message = $hlp->__('"%s" is not available for your country.', $childName);
+                            $message = Mage::helper('udropship')->__('"%s" is not available for your location.', $childName);
+                        }
+                    } elseif (!$countryMatch) {
+                        $error = true;
+                        if ($item->getProductType()=='configurable') {
+                            $message = Mage::helper('udropship')->__('This product is not available for your country.');
+                        } else {
+                            $message = Mage::helper('udropship')->__('"%s" is not available for your country.', $childName);
                         }
                     } elseif (!$zipCodeMatch) {
                         $error = true;
                         if ($item->getProductType()=='configurable') {
-                            $message = $hlp->__('This product is not available for your zipcode.');
+                            $message = Mage::helper('udropship')->__('This product is not available for your zipcode.');
                         } else {
-                            $message = $hlp->__('"%s" is not available for your zipcode.', $childName);
+                            $message = Mage::helper('udropship')->__('"%s" is not available for your zipcode.', $childName);
                         }
                     } elseif ($stockItem && $stockItem->getMinSaleQty() && $childQtyUsed < $stockItem->getMinSaleQty()) {
                         $allowedQtyError = true;
                         $error = true;
                         if ($item->getProductType()=='configurable') {
-                            $message = Mage::helper('cataloginventory')->__('The minimum quantity allowed for purchase is %s.', $stockItem->getMinSaleQty() * 1);
+                            $message = Mage::helper('udropship')->__('The minimum quantity allowed for purchase is %s.', $stockItem->getMinSaleQty() * 1);
                         } else {
-                            $message = Mage::helper('cataloginventory')->__('The minimum quantity allowed for purchase for "%s" is %s.', $childName, $stockItem->getMinSaleQty() * 1);
+                            $message = Mage::helper('udropship')->__('The minimum quantity allowed for purchase for "%s" is %s.', $childName, $stockItem->getMinSaleQty() * 1);
                         }
                     } elseif ($stockItem && $stockItem->getMaxSaleQty() && $childQtyUsed > $stockItem->getMaxSaleQty()) {
                         $allowedQtyError = true;
                         $error = true;
                         if ($item->getProductType()=='configurable') {
-                            $message = Mage::helper('cataloginventory')->__('The maximum quantity allowed for purchase is %s.', $stockItem->getMaxSaleQty() * 1);
+                            $message = Mage::helper('udropship')->__('The maximum quantity allowed for purchase is %s.', $stockItem->getMaxSaleQty() * 1);
                         } else {
-                            $message = Mage::helper('cataloginventory')->__('The maximum quantity allowed for purchase for "%s" is %s.', $childName, $stockItem->getMaxSaleQty() * 1);
+                            $message = Mage::helper('udropship')->__('The maximum quantity allowed for purchase for "%s" is %s.', $childName, $stockItem->getMaxSaleQty() * 1);
                         }
                     } elseif ($_qtyInStock<=0 && !$childStockStatus) {
                         $hasOutOfStock = true;
                         $error = true;
                         if ($item->getProductType()=='configurable') {
-                            $message = $hlp->__('This product is currently out of stock.');
+                            $message = Mage::helper('udropship')->__('This product is currently out of stock.');
                         } else {
-                            $message = $hlp->__('"%s" is currently out of stock.', $childName);
+                            $message = Mage::helper('udropship')->__('"%s" is currently out of stock.', $childName);
                         }
                     }  elseif (!$itemInStock && $_qtyInStock>0 && !$childStockStatus) {
                         $hasOutOfStock = true;
                         $error = true;
                         if ($item->getProductType()=='configurable') {
-                            $message = $hlp->__('Only "%s" of this product in stock.', $_qtyInStock*1);
+                            $message = Mage::helper('udropship')->__('Only "%s" of this product in stock.', $_qtyInStock*1);
                         } else {
-                            $message = $hlp->__('Only "%s" of "%s" in stock.', $_qtyInStock*1, $childName);
+                            $message = Mage::helper('udropship')->__('Only "%s" of "%s" in stock.', $_qtyInStock*1, $childName);
                         }
                     } elseif ($childStockStatus
                         && !$itemInStock
@@ -226,9 +269,9 @@ class Unirgy_DropshipMulti_Model_Decision_MultiVendor
                     ) {
                         $backorderQty = $_qtyInStock>0 ? $childQtyUsed-$_qtyInStock : $childQtyUsed;
                         if ($item->getProductType()=='configurable') {
-                            $message = $hlp->__('This product is not available in the requested quantity. %s of the items will be backordered.', ($backorderQty * 1));
+                            $message = Mage::helper('udropship')->__('This product is not available in the requested quantity. %s of the items will be backordered.', ($backorderQty * 1));
                         } else {
-                            $message = $hlp->__('"%s" is not available in the requested quantity. %s of the items will be backordered.', $childName, ($backorderQty * 1));
+                            $message = Mage::helper('udropship')->__('"%s" is not available in the requested quantity. %s of the items will be backordered.', $childName, ($backorderQty * 1));
                         }
                     }
                     if ($error) {
@@ -252,25 +295,30 @@ class Unirgy_DropshipMulti_Model_Decision_MultiVendor
                 $stockItem = $item->getProduct()->getStockItem();
                 $stockStatus = @$stockData['per_item_data'][spl_object_hash($item)]['stock_status'];
                 $qtyInStock = @$stockData['qty_in_stock'];
+                $addressMatch = $v->isAddressMatch($hlp->getAddressByItem($item));
                 $zipCodeMatch = $v->isZipcodeMatch($hlp->getZipcodeByItem($item));
                 $countryMatch = $v->isCountryMatch($hlp->getCountryByItem($item));
+                $allAddressMatch = $allAddressMatch && $addressMatch;
                 $allZipcodeMatch = $allZipcodeMatch && $zipCodeMatch;
                 $allCountryMatch = $allCountryMatch && $countryMatch;
                 $qtyToCheck = $hlp->getItemStockCheckQty($item);
-                if (!$countryMatch) {
+                if (!$addressMatch) {
                     $item->setHasError(true);
-                    $item->setMessage($hlp->__('This item is not available for your country.'));
+                    $item->setMessage(Mage::helper('udropship')->__('This item is not available for your location.'));
+                } elseif (!$countryMatch) {
+                    $item->setHasError(true);
+                    $item->setMessage(Mage::helper('udropship')->__('This item is not available for your country.'));
                 } elseif (!$zipCodeMatch) {
                     $item->setHasError(true);
-                    $item->setMessage($hlp->__('This item is not available for your zipcode.'));
+                    $item->setMessage(Mage::helper('udropship')->__('This item is not available for your zipcode.'));
                 } elseif ($stockItem && $stockItem->getMinSaleQty() && $qtyToCheck < $stockItem->getMinSaleQty()) {
                     $allowedQtyError = true;
                     $item->setHasError(true);
-                    $item->setMessage(Mage::helper('cataloginventory')->__('The minimum quantity allowed for purchase is %s.', $stockItem->getMinSaleQty() * 1));
+                    $item->setMessage(Mage::helper('udropship')->__('The minimum quantity allowed for purchase is %s.', $stockItem->getMinSaleQty() * 1));
                 } elseif ($stockItem && $stockItem->getMaxSaleQty() && $qtyToCheck > $stockItem->getMaxSaleQty()) {
                     $allowedQtyError = true;
                     $item->setHasError(true);
-                    $item->setMessage(Mage::helper('cataloginventory')->__('The maximum quantity allowed for purchase is %s.', $stockItem->getMaxSaleQty() * 1));
+                    $item->setMessage(Mage::helper('udropship')->__('The maximum quantity allowed for purchase is %s.', $stockItem->getMaxSaleQty() * 1));
                 } else {
                     if (empty($qtyUsed[$pId][$vId])) {
                         $qtyUsed[$pId][$vId] = 0;
@@ -281,11 +329,11 @@ class Unirgy_DropshipMulti_Model_Decision_MultiVendor
                     if ($_qtyInStock<=0 && !$stockStatus) {
                         $hasOutOfStock = true;
                         $item->setHasError(true);
-                        $item->setMessage($hlp->__('This product is currently out of stock.'));
+                        $item->setMessage(Mage::helper('udropship')->__('This product is currently out of stock.'));
                     } elseif (!$itemInStock && $_qtyInStock>0 && !$stockStatus) {
                         $hasOutOfStock = true;
                         $item->setHasError(true);
-                        $item->setMessage($hlp->__('Only "%s" of this product in stock.', $_qtyInStock*1));
+                        $item->setMessage(Mage::helper('udropship')->__('Only "%s" of this product in stock.', $_qtyInStock*1));
                     } elseif ($stockStatus
                         && !$itemInStock
                         && @$stockData['backorders'] == Mage_CatalogInventory_Model_Stock::BACKORDERS_YES_NOTIFY
@@ -293,30 +341,35 @@ class Unirgy_DropshipMulti_Model_Decision_MultiVendor
                         $backorderQty = $_qtyInStock>0 ? $qtyToCheck-$_qtyInStock : $qtyToCheck;
                         $item->setBackorders($backorderQty);
                         $item->setMessage(
-                            $hlp->__('This product is not available in the requested quantity. %s of the items will be backordered.', ($backorderQty * 1))
+                            Mage::helper('udropship')->__('This product is not available in the requested quantity. %s of the items will be backordered.', ($backorderQty * 1))
                         );
                     }
                 }
             }
         }
         //}
+        if (!$allAddressMatch) {
+            $quote->setHasError(true)->addMessage(
+                Mage::helper('udropship')->__('Some items are not available for your location.')
+            );
+        }
         if (!$allCountryMatch) {
             $quote->setHasError(true)->addMessage(
-                $hlp->__('Some items are not available for your country.')
+                Mage::helper('udropship')->__('Some items are not available for your country.')
             );
         }
         if (!$allZipcodeMatch) {
             $quote->setHasError(true)->addMessage(
-                $hlp->__('Some items are not available for your zipcode.')
+                Mage::helper('udropship')->__('Some items are not available for your zipcode.')
             );
         }
         if ($allowedQtyError) {
             $quote->setHasError(true)->addMessage(
-                Mage::helper('cataloginventory')->__('Some of the products cannot be ordered in requested quantity.')
+                Mage::helper('udropship')->__('Some of the products cannot be ordered in requested quantity.')
             );
         }
         if ($hasOutOfStock) {
-            $quote->setHasError(true)->addMessage($ciHlp->__('Some of the products are currently out of stock'));
+            $quote->setHasError(true)->addMessage(Mage::helper('udropship')->__('Some of the products are currently out of stock'));
         }
         return $this;
     }

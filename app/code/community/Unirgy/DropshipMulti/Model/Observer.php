@@ -217,7 +217,7 @@ class Unirgy_DropshipMulti_Model_Observer
             return;
         }
         $product = $observer->getEvent()->getProduct();
-        if (!$product instanceof Mage_Catalog_Model_Product) {
+        if (!$product instanceof Mage_Catalog_Model_Product || $product->getData('__skip_udmulti_load')) {
             return;
         }
         $this->attachMultivendorData(array($product), $isActive);
@@ -409,15 +409,109 @@ class Unirgy_DropshipMulti_Model_Observer
                     if (!array_key_exists('status', $v)) {
                         $v['status'] = Mage::helper('udmulti')->getDefaultMvStatus();
                     }
-                    $v = Mage::getResourceSingleton('udropship/helper')->myPrepareDataForTable($table, $v);
-                    $write->insert($table, $v);
+                    $_v = Mage::getResourceSingleton('udropship/helper')->myPrepareDataForTable($table, $v);
+                    $write->insert($table, $_v);
+                    $lastUvpId = $write->lastInsertId();
+                    if (isset($v['group_price']) && is_array($v['group_price'])) {
+                        $gpTable = $res->getTableName('udmulti/group_price');
+                        foreach ($v['group_price'] as $gpKey => $gp) {
+                            if ($gpKey=='$ROW' || $gpKey=='$$ROW') continue;
+                            $gp['vendor_id'] = $v['vendor_id'];
+                            $gp['product_id'] = $product->getId();
+                            $gp['all_groups'] = 0;
+                            if ($gp['customer_group_id'] == Mage_Customer_Model_Group::CUST_GROUP_ALL) {
+                                $gp['all_groups'] = 1;
+                                $gp['customer_group_id'] = 0;
+                            }
+                            $gp['vendor_product_id'] = $lastUvpId;
+                            $insertGroup = Mage::getResourceSingleton('udropship/helper')->myPrepareDataForTable($gpTable, $gp);
+                            $write->insert($gpTable, $insertGroup);
+                        }
+                    }
+                    if (isset($v['tier_price']) && is_array($v['tier_price'])) {
+                        $tpTable = $res->getTableName('udmulti/tier_price');
+                        foreach ($v['tier_price'] as $tpKey => $tp) {
+                            if ($tpKey=='$ROW' || $tpKey=='$$ROW') continue;
+                            $tp['vendor_id'] = $v['vendor_id'];
+                            $tp['product_id'] = $product->getId();
+                            $tp['all_groups'] = 0;
+                            if ($tp['customer_group_id'] == Mage_Customer_Model_Group::CUST_GROUP_ALL) {
+                                $tp['all_groups'] = 1;
+                                $tp['customer_group_id'] = 0;
+                            }
+                            $tp['vendor_product_id'] = $lastUvpId;
+                            $insertGroup = Mage::getResourceSingleton('udropship/helper')->myPrepareDataForTable($tpTable, $tp);
+                            $write->insert($tpTable, $insertGroup);
+                        }
+                    }
                 }
             }
 
             if (!empty($data['update'])) {
                 foreach ($data['update'] as $id=>$v) {
-                    $v = Mage::getResourceSingleton('udropship/helper')->myPrepareDataForTable($table, $v);
-                    $write->update($table, $v, 'vendor_product_id='.(int)$id);
+                    $_v = Mage::getResourceSingleton('udropship/helper')->myPrepareDataForTable($table, $v);
+                    $write->update($table, $_v, 'vendor_product_id='.(int)$id);
+                    if (isset($v['group_price']) && is_array($v['group_price'])) {
+                        $gpTable = $res->getTableName('udmulti/group_price');
+                        $_gpValIds = array();
+                        foreach ($v['group_price'] as $gpKey => $gp) {
+                            if ($gpKey=='$ROW' || $gpKey=='$$ROW') continue;
+                            if (isset($gp['value_id'])) $_gpValIds[] = $gp['value_id'];
+                        }
+                        $gpDelCond = array('vendor_id=?'=>$v['vendor_id'],'product_id=?'=>$product->getId());
+                        if ($_gpValIds) {
+                            $gpDelCond['value_id not in (?)']=$_gpValIds;
+                        }
+                        $write->delete($gpTable, $gpDelCond);
+                        foreach ($v['group_price'] as $gpKey => $gp) {
+                            if ($gpKey=='$ROW' || $gpKey=='$$ROW') continue;
+                            $gp['vendor_id'] = $v['vendor_id'];
+                            $gp['product_id'] = $product->getId();
+                            $gp['all_groups'] = 0;
+                            if ($gp['customer_group_id'] == Mage_Customer_Model_Group::CUST_GROUP_ALL) {
+                                $gp['all_groups'] = 1;
+                                $gp['customer_group_id'] = 0;
+                            }
+                            $gp['vendor_product_id'] = $id;
+                            $insertGroup = Mage::getResourceSingleton('udropship/helper')->myPrepareDataForTable($gpTable, $gp);
+                            if (!empty($gp['value_id'])) {
+                                $write->update($gpTable, $insertGroup, 'value_id='.(int)$gp['value_id']);
+                            } else {
+                                $write->insert($gpTable, $insertGroup);
+                            }
+                        }
+                    }
+                    if (isset($v['tier_price']) && is_array($v['tier_price'])) {
+                        $tpTable = $res->getTableName('udmulti/tier_price');
+                        $_tpValIds = array();
+                        foreach ($v['tier_price'] as $tpKey => $tp) {
+                            if ($tpKey=='$ROW' || $tpKey=='$$ROW') continue;
+                            if (isset($tp['value_id'])) $_tpValIds[] = $tp['value_id'];
+                        }
+                        $tpDelCond = array('vendor_id=?'=>$v['vendor_id'],'product_id=?'=>$product->getId());
+                        if ($_tpValIds) {
+                            $tpDelCond['value_id not in (?)']=$_tpValIds;
+                        }
+                        $write->delete($tpTable, $tpDelCond);
+                        foreach ($v['tier_price'] as $tpKey => $tp) {
+                            if ($tpKey=='$ROW' || $tpKey=='$$ROW') continue;
+                            $tp['vendor_id'] = $v['vendor_id'];
+                            $tp['product_id'] = $product->getId();
+                            $tp['all_groups'] = 0;
+                            if ($tp['customer_group_id'] == Mage_Customer_Model_Group::CUST_GROUP_ALL) {
+                                $tp['all_groups'] = 1;
+                                $tp['customer_group_id'] = 0;
+                            }
+                            $tp['vendor_product_id'] = $id;
+                            $insertTier = Mage::getResourceSingleton('udropship/helper')->myPrepareDataForTable($tpTable, $tp);
+                            if (!empty($tp['value_id'])) {
+                                $write->update($tpTable, $insertTier, 'value_id='.(int)$tp['value_id']);
+                            } else {
+                                $write->insert($tpTable, $insertTier);
+                            }
+                        }
+
+                    }
                 }
             }
         }
@@ -542,14 +636,14 @@ class Unirgy_DropshipMulti_Model_Observer
         if (Mage::getStoreConfig('udropship/stock/backorder_by_availability')) {
             $fieldset->addField('backorder_by_availability', 'select', array(
                 'name'      => 'backorder_by_availability',
-                'label'     => Mage::helper('udmulti')->__('Allow Backorder by Availability State/Date'),
+                'label'     => Mage::helper('udropship')->__('Allow Backorder by Availability State/Date'),
                 'options'   => Mage::getSingleton('udropship/source')->setPath('yesno')->toOptionHash(),
             ));
         }
         if (Mage::getStoreConfig('udropship/stock/use_reserved_qty')) {
             $fieldset->addField('use_reserved_qty', 'select', array(
                 'name'      => 'use_reserved_qty',
-                'label'     => Mage::helper('udmulti')->__('Track Reserved Qty'),
+                'label'     => Mage::helper('udropship')->__('Track Reserved Qty'),
                 'options'   => Mage::getSingleton('udropship/source')->setPath('yesno')->toOptionHash(),
             ));
         }

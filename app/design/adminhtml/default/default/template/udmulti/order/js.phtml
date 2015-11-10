@@ -77,15 +77,15 @@
     })
 
     if (itemsGridEl) {
-        var html = '<button type="button" class="scalable save udmulti-vendor-save"><?php echo $this->__('Save Vendor Updates') ?></button>'
-        html += ' <button type="button" class="scalable udmulti-vendor-check"><?php echo $this->__('Check Vendors Stock') ?></button>'
+        var html = '<button type="button" class="scalable save udmulti-vendor-save"><?php echo Mage::helper('udropship')->__('Save Vendor Updates') ?></button>'
+        html += ' <button type="button" class="scalable udmulti-vendor-check"><?php echo Mage::helper('udropship')->__('Check Vendors Stock') ?></button>'
         html += ' <span id="udmulti-message"></span>'
         itemsGridEl.insert({after:html})
     }
 
     $$('.udmulti-vendor-save').each(function (el) {
         $(el).observe('click', function (e) {
-            if (!confirm('<?php echo $this->__('Are you sure you want to change the vendors and send notifications?') ?>')) {
+            if (!confirm('<?php echo Mage::helper('udropship')->__('Are you sure you want to change the vendors and send notifications?') ?>')) {
                 return;
             }
             var selects = $$('.udmulti-vendor-select'), i, itemId, s
@@ -98,7 +98,7 @@
                 parameters['vendors['+itemId+'][method]'] = $(s.id+'-method').value
                 parameters['vendors['+itemId+'][method_name]'] = $(s.id+'-method-name').value
             }
-            new Ajax.Updater('udmulti-message', '<?php echo $this->getUrl('adminhtml/order/updateVendors') ?>', {
+            new Ajax.Updater('udmulti-message', '<?php echo $this->getUrl('adminhtml/udmultiadmin_order/updateVendors') ?>', {
                 parameters: parameters,
                 onSuccess: function () {
                     $$('.udmulti-vendor-method').each(function (el) { $(el).hide() })
@@ -128,7 +128,7 @@
                     parameters['vendors['+iId+'][]'] = vId
                 }
             }
-            new Ajax.Request('<?php echo $this->getUrl('adminhtml/order/checkVendors') ?>', {
+            new Ajax.Request('<?php echo $this->getUrl('adminhtml/udmultiadmin_order/checkVendors') ?>', {
                 parameters: parameters,
                 onSuccess: function(transport) {
                     var result = eval('('+transport.responseText+')')
@@ -139,7 +139,7 @@
                         itemId = s.id.replace(/[^0-9]/g, '')
                         if (!result.stock[itemId]) {
                             s.options.length = 0
-                            html = '<option value=""><?php echo $this->htmlEscape($this->__('No stock available')) ?></option>'
+                            html = '<option value=""><?php echo $this->htmlEscape(Mage::helper('udropship')->__('No stock available')) ?></option>'
                             $(s).insert(html)
                             continue
                         }

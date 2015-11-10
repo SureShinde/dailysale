@@ -22,7 +22,7 @@
             <groups>
                 <stock translate="label">
                     <fields>
-                        <total_qty_method>
+                        <total_qty_method translate="label">
                             <label>Total Quantity Method</label>
                             <frontend_type>select</frontend_type>
                             <source_model>udmulti/source</source_model>
@@ -31,7 +31,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </total_qty_method>
-                        <hide_out_of_stock>
+                        <hide_out_of_stock translate="label">
                             <label>Hide out of stock vendors</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -40,7 +40,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </hide_out_of_stock>
-                        <default_multivendor_status>
+                        <default_multivendor_status translate="label">
                             <label>Default status for product multivendor data</label>
                             <frontend_type>select</frontend_type>
                             <source_model>udmulti/source</source_model>

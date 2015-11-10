@@ -40,9 +40,9 @@ class Unirgy_DropshipMulti_Model_Source extends Unirgy_Dropship_Model_Source_Abs
         case 'udropship/stock/default_multivendor_status':
         case 'vendor_product_status':
             $options = array(
-                -1 => $hlp->__('Pending'),
-                0 => $hlp->__('Inactive'),
-                1 => $hlp->__('Active'),
+                -1 => Mage::helper('udropship')->__('Pending'),
+                0 => Mage::helper('udropship')->__('Inactive'),
+                1 => Mage::helper('udropship')->__('Active'),
             );
             break;
 
@@ -52,7 +52,7 @@ class Unirgy_DropshipMulti_Model_Source extends Unirgy_Dropship_Model_Source_Abs
                 
         case 'backorders':
             $options = array(
-                self::BACKORDERS_USE_CONFIG => $hlp->__('* Use Config'),
+                self::BACKORDERS_USE_CONFIG => Mage::helper('udropship')->__('* Use Config'),
             );
             foreach (Mage::getSingleton('cataloginventory/source_backorders')->toOptionArray() as $opt) {
                 $options[$opt['value']] = $opt['label'];
@@ -60,11 +60,11 @@ class Unirgy_DropshipMulti_Model_Source extends Unirgy_Dropship_Model_Source_Abs
             break;
 
         default:
-            Mage::throwException($hlp->__('Invalid request for source options: '.$this->getPath()));
+            Mage::throwException(Mage::helper('udropship')->__('Invalid request for source options: '.$this->getPath()));
         }
 
         if ($selector) {
-            $options = array(''=>$hlp->__('* Please select')) + $options;
+            $options = array(''=>Mage::helper('udropship')->__('* Please select')) + $options;
         }
 
         return $options;
@@ -77,7 +77,7 @@ class Unirgy_DropshipMulti_Model_Source extends Unirgy_Dropship_Model_Source_Abs
             $hlp = Mage::helper('udmulti');
             $stateXml = Mage::getConfig()->getNode('global/udropship/avail_state');
             foreach ($stateXml->children() as $state) {
-                $this->_availabilityState[$state->getName()] = $hlp->__((string)$state->label);
+                $this->_availabilityState[$state->getName()] = Mage::helper('udropship')->__((string)$state->label);
             }
         }
         return $this;
