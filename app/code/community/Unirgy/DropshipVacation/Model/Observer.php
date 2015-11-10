@@ -11,7 +11,7 @@ class Unirgy_DropshipVacation_Model_Observer
             $vForm->addType('vacation_mode', Mage::getConfig()->getBlockClassName('udropship/adminhtml_vendor_helper_form_dependSelect'));
             $vForm->addField('vacation_mode', 'vacation_mode', array(
                 'name'      => 'vacation_mode',
-                'label'     => $hlp->__('Vacation Mode'),
+                'label'     => Mage::helper('udropship')->__('Vacation Mode'),
                 'options'   => Mage::getSingleton('udvacation/source')->setPath('vacation_mode')->toOptionHash(),
                 'field_config' => array(
                     'depend_fields' => array(
@@ -24,7 +24,7 @@ class Unirgy_DropshipVacation_Model_Observer
                 'image' => Mage::getDesign()->getSkinUrl('images/grid-cal.gif'),
                 'input_format' => Varien_Date::DATE_INTERNAL_FORMAT,
                 'format' => Varien_Date::DATE_INTERNAL_FORMAT,
-                'label'     => $hlp->__('Vacation Ends At'),
+                'label'     => Mage::helper('udropship')->__('Vacation Ends At'),
             ));
         }
     }
@@ -69,15 +69,23 @@ class Unirgy_DropshipVacation_Model_Observer
             if (Unirgy_DropshipVacation_Model_Source::MODE_VACATION_NOTIFY == $iVendor->getData('vacation_mode')) {
                 if (($message = Mage::getStoreConfig('udropship/customer/vacation_message'))) {
                     if ($iVendor->getData('vacation_end')) {
+                        $now = Mage::app()->getLocale()->date(
+                            null,
+                            null,
+                            null,
+                            false
+                        );
                         $vacationEnd = Mage::app()->getLocale()->date(
                             strtotime($iVendor->getData('vacation_end')),
                             null,
                             null,
                             false
                         );
-                        $message = str_replace('{{vacation_end}}', $vacationEnd->toString(Mage::app()->getLocale()->getDateFormat(Mage_Core_Model_Locale::FORMAT_TYPE_MEDIUM)), $message);
+                        if ($now->compare($vacationEnd)==-1) {
+                            $message = str_replace('{{vacation_end}}', $vacationEnd->toString(Mage::app()->getLocale()->getDateFormat(Mage_Core_Model_Locale::FORMAT_TYPE_MEDIUM)), $message);
+                            $item->setMessage($message);
+                        }
                     }
-                    $item->setMessage($message);
                 }
             }
         }
@@ -87,13 +95,16 @@ class Unirgy_DropshipVacation_Model_Observer
     {
         $vendors = Mage::getModel('udropship/vendor')->getCollection();
         $vacDisabled = Unirgy_DropshipVacation_Model_Source::MODE_VACATION_DISABLE;
+        $vacNotify = Unirgy_DropshipVacation_Model_Source::MODE_VACATION_NOTIFY;
         $vacNo = Unirgy_DropshipVacation_Model_Source::MODE_NOT_VACATION;
         $vacationEnd = Mage::app()->getLocale()->storeDate();
-        $vendors->getSelect()->where("vacation_mode=?", $vacDisabled);
+        $vendors->getSelect()->where("vacation_mode in (?)", array($vacDisabled,$vacNotify));
         $vendors->getSelect()->where("vacation_end<?", $vacationEnd->toString(Varien_Date::DATE_INTERNAL_FORMAT));
         foreach ($vendors as $vendor) {
+            $wasDisabled = $vendor->getData('vacation_mode')==$vacDisabled;
             $vendor->setData('vacation_mode', $vacNo);
-            Mage::helper('udvacation')->processVendorChange($vendor);
+            if ($wasDisabled) Mage::helper('udvacation')->processVendorChange($vendor);
+            $vendor->setData('vacation_end', '');
             Mage::getResourceSingleton('udropship/helper')->updateModelFields($vendor, 'vacation_mode');
         }
     }
