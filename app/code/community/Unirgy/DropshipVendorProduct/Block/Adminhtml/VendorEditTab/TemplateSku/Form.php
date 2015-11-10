@@ -32,20 +32,20 @@ class Unirgy_DropshipVendorProduct_Block_Adminhtml_VendorEditTab_TemplateSku_For
         $this->setForm($form);
 
         $fieldset = $form->addFieldset('udprod_template_sku.form', array(
-            'legend'=>$hlp->__('Template SKUs')
+            'legend'=>Mage::helper('udropship')->__('Template SKUs')
         ));
 
         $fieldset->addType('udprod_template_sku', Mage::getConfig()->getBlockClassName('udprod/adminhtml_vendorEditTab_templateSku_form_templateSku'));
 
         $fieldset->addField('udprod_allow_choose_configurable', 'select', array(
             'name'      => 'udprod_allow_choose_configurable',
-            'label'     => $hlp->__('Allow vendor choose configurable attributes'),
+            'label'     => Mage::helper('udropship')->__('Allow vendor choose configurable attributes'),
             'options'   => Mage::getSingleton('udropship/source')->setPath('yesno')->toOptionHash()
         ));
 
         $fieldset->addField('udprod_template_sku', 'udprod_template_sku', array(
             'name'      => 'udprod_template_sku',
-            'label'     => $hlp->__('Product SKUs used as templates (per attribute set)'),
+            'label'     => Mage::helper('udropship')->__('Product SKUs used as templates (per attribute set)'),
         ));
 
         if ($vendor) {

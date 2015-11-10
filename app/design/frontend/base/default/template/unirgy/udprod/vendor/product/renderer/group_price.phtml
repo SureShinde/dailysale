@@ -44,10 +44,10 @@ $_showWebsite= $this->isMultiWebsites();
         <col width="1" />
         <thead>
         <tr class="headings">
-            <th <?php if (!$_showWebsite): ?>style="display: none;"<?php endif; ?>><?php echo Mage::helper('catalog')->__('Website'); ?></th>
-            <th><?php echo Mage::helper('catalog')->__('Customer Group'); ?></th>
-            <th><?php echo $this->getPriceColumnHeader(Mage::helper('catalog')->__('Price')); ?></th>
-            <th class="last"><?php echo Mage::helper('catalog')->__('Action'); ?></th>
+            <th <?php if (!$_showWebsite): ?>style="display: none;"<?php endif; ?>><?php echo Mage::helper('udropship')->__('Website'); ?></th>
+            <th><?php echo Mage::helper('udropship')->__('Customer Group'); ?></th>
+            <th><?php echo $this->getPriceColumnHeader(Mage::helper('udropship')->__('Price')); ?></th>
+            <th class="last"><?php echo Mage::helper('udropship')->__('Action'); ?></th>
         </tr>
         </thead>
         <tbody id="<?php echo $_htmlId; ?>_container"></tbody>
@@ -75,8 +75,8 @@ $_showWebsite= $this->isMultiWebsites();
         + '</select></td>'
         + '<td><input class="<?php echo $_htmlClass; ?> required-entry <?php echo $_priceValueValidation; ?>" type="text" name="<?php echo $_htmlName; ?>[{{index}}][price]" value="{{price}}" id="group_price_row_{{index}}_price" /></td>'
         + '<td class="last"><input type="hidden" name="<?php echo $_htmlName; ?>[{{index}}][delete]" class="delete" value="" id="group_price_row_{{index}}_delete" />'
-        + '<button title="<?php echo Mage::helper('catalog')->__('Delete Group Price'); ?>" type="button" class="scalable delete icon-btn delete-product-option" id="group_price_row_{{index}}_delete_button" onclick="return groupPriceControl.deleteItem(event);">'
-        + '<span><?php echo Mage::helper('catalog')->__('Delete'); ?></span></button></td>'
+        + '<button title="<?php echo Mage::helper('udropship')->__('Delete Group Price'); ?>" type="button" class="scalable delete icon-btn delete-product-option" id="group_price_row_{{index}}_delete_button" onclick="return groupPriceControl.deleteItem(event);">'
+        + '<span><?php echo Mage::helper('udropship')->__('Delete'); ?></span></button></td>'
         + '</tr>';
 
     var groupPriceControl = {

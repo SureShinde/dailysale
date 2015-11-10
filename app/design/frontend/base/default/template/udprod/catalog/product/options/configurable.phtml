@@ -11,7 +11,7 @@ $_attributes = Mage::helper('core')->decorateArray($this->getAllowAttributes());
         <dd<?php if ($_attribute->decoratedIsLast){?> class="last"<?php }?>>
         <div class="input-box">
           <select name="super_attribute[<?php echo $_attribute->getAttributeId() ?>]" id="attribute<?php echo $_product->getId()?>-<?php echo $_attribute->getAttributeId() ?>" class="required-entry super-attribute-select-<?php echo $_product->getId()?>" optitle="<?php echo strtolower($_attribute->getLabel()); ?>">
-            <option><?php echo $this->__('Choose an Option...') ?></option>
+            <option><?php echo Mage::helper('udropship')->__('Choose an Option...') ?></option>
           </select>
           <div class="attribute-item">
           <dl id="attribute-options-<?php echo $_product->getId()?>-<?php echo $_attribute->getAttributeId()?>"></dl>

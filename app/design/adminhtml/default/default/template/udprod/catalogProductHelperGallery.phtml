@@ -38,7 +38,7 @@ $_block = $this;
     <li class="notice-msg">
         <ul>
             <li>
-            <?php echo Mage::helper('catalog')->__('Image type and information need to be specified for each store view.'); ?>
+            <?php echo Mage::helper('udropship')->__('Image type and information need to be specified for each store view.'); ?>
             </li>
         </ul>
     </li>
@@ -58,26 +58,26 @@ $_block = $this;
     <col width="70" />
     <thead>
         <tr class="headings">
-            <th><?php echo Mage::helper('catalog')->__('Image') ?></th>
+            <th><?php echo Mage::helper('udropship')->__('Image') ?></th>
             <?php foreach ($this->getIdentifyImageAttributes() as $iiAttr) : ?>
             <th><?php echo $iiAttr->getLabel() ?></th>
             <?php endforeach?>
-            <th><?php echo Mage::helper('catalog')->__('Label') ?></th>
-            <th><?php echo Mage::helper('catalog')->__('Sort Order') ?></th>
+            <th><?php echo Mage::helper('udropship')->__('Label') ?></th>
+            <th><?php echo Mage::helper('udropship')->__('Sort Order') ?></th>
             <?php foreach ($_block->getImageTypes() as $typeId=>$type): ?>
             <th><?php echo $type['label'] ?></th>
             <?php endforeach; ?>
-            <th><?php echo Mage::helper('catalog')->__('Exclude') ?></th>
-            <th class="last"><?php echo Mage::helper('catalog')->__('Remove') ?></th>
+            <th><?php echo Mage::helper('udropship')->__('Exclude') ?></th>
+            <th class="last"><?php echo Mage::helper('udropship')->__('Remove') ?></th>
         </tr>
     </thead>
     <tbody id="<?php echo $_block->getHtmlId() ?>_list">
         <tr id="<?php echo $_block->getHtmlId() ?>_template" class="template no-display">
-                <td class="cell-image"><div class="place-holder" onmouseover="<?php echo $_block->getJsObjectName(); ?>.loadImage('__file__')"><span><?php echo Mage::helper('catalog')->__('Roll Over for preview') ?></span></div><img src="<?php echo $this->getSkinUrl('images/spacer.gif')?>" width="100" style="display:none;" alt="" /></td>
+                <td class="cell-image"><div class="place-holder" onmouseover="<?php echo $_block->getJsObjectName(); ?>.loadImage('__file__')"><span><?php echo Mage::helper('udropship')->__('Roll Over for preview') ?></span></div><img src="<?php echo $this->getSkinUrl('images/spacer.gif')?>" width="100" style="display:none;" alt="" /></td>
                 <?php foreach ($this->getIdentifyImageAttributes() as $iiAttr) : ?>
                 <td class="cell-super-attribute-<?php echo $iiAttr->getAttributeId() ?>">
                         <select <?php if($_block->getElement()->getReadonly()):?> disabled="disabled"<?php endif;?> onkeyup="<?php echo $_block->getJsObjectName(); ?>.updateImage('__file__')" onchange="<?php echo $_block->getJsObjectName(); ?>.updateImage('__file__')" style="width: 100px" >
-                            <option value=''><?php echo Mage::helper('catalog')->__('Choose an Option...') ?></option>
+                            <option value=''><?php echo Mage::helper('udropship')->__('Choose an Option...') ?></option>
                             <?php foreach ($iiAttr->getProductAttribute()->getSource()->getAllOptions(false) as $iiAttrOpt) : ?>
                                 <?php if ($iiAttr->getAvailableValues($iiAttrOpt['value'])): ?>
                                 <option value='<?php echo $iiAttrOpt['value']?>'><?php echo $iiAttrOpt['label']?></option>
@@ -96,7 +96,7 @@ $_block = $this;
         </tr>
         <?php if($_block->hasUseDefault()): ?>
         <tr id="<?php echo $_block->getHtmlId() ?>_default">
-                <td><?php echo Mage::helper('catalog')->__('Use Default Value') ?></td>
+                <td><?php echo Mage::helper('udropship')->__('Use Default Value') ?></td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
                 <?php foreach ($_block->getMediaAttributes() as $_attribute): ?>
@@ -112,7 +112,7 @@ $_block = $this;
         </tr>
     <?php endif ?>
         <tr id="<?php echo $_block->getHtmlId() ?>-image-0">
-                <td class="cell-image"><?php echo Mage::helper('catalog')->__('No image') ?></td>
+                <td class="cell-image"><?php echo Mage::helper('udropship')->__('No image') ?></td>
                 <?php foreach ($this->getIdentifyImageAttributes() as $iiAttr) : ?>
                 <td class="cell-super-attribute-<?php echo $iiAttr->getAttributeId() ?>">&nbsp;</td>
                 <?php endforeach?>

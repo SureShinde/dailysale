@@ -35,14 +35,14 @@ $fcBlock = Mage::app()->getLayout()->getBlockSingleton('udropship/adminhtml_syst
                     <input type="text" class="input-text" name="<?php echo $this->getFieldName()?>[$$ROW][sort_order]" value="$$SORT_ORDER" style="width:70px" />
                 </td>
                 <td>
-                    <button type="button" class="scalable delete delete-fieldset"><span><?php echo $this->__('Remove') ?></span></button>
+                    <button type="button" class="scalable delete delete-fieldset"><span><?php echo Mage::helper('udropship')->__('Remove') ?></span></button>
                 </td>
             </tr>
         </thead>
         <tfoot>
             <tr>
                 <th colspan="5" class="a-left">
-                    <div class="left"><button type="button" class="scalable add" id="<?php echo $this->suffixId('addBtn')?>"><span>+ <?php echo $this->__('Add Column') ?></span></button></div>
+                    <div class="left"><button type="button" class="scalable add" id="<?php echo $this->suffixId('addBtn')?>"><span>+ <?php echo Mage::helper('udropship')->__('Add Column') ?></span></button></div>
                 </th>
             </tr>
         </tfoot>

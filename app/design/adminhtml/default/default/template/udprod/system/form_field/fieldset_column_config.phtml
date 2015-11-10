@@ -20,7 +20,7 @@ $_yesnoOpts = Mage::getSingleton('udropship/source')->setPath('yesno')->toOption
                     <input id="<?php echo $this->suffixId('$ROW-column_field')?>" name="<?php echo $this->getFieldName()?>[$ROW][column_field]" type="hidden" value="$COLUMN_FIELD" />
                     <?php /*
                     <select name="<?php echo $this->getFieldName()?>[$ROW][column_field]">
-                    <option value=""><?php echo $this->__('* Please select')?></option>
+                    <option value=""><?php echo Mage::helper('udropship')->__('* Please select')?></option>
                     <?php if (is_array($efConfig)): foreach ($efConfig as $efc): ?>
                         <optgroup label="<?php echo $this->htmlEscape($efc['label'])?>">
                         <?php if (is_array($efc['values'])): foreach ($efc['values'] as $fId=>$fLbl): ?>
@@ -38,11 +38,11 @@ $_yesnoOpts = Mage::getSingleton('udropship/source')->setPath('yesno')->toOption
                     <input alt="use_limit_type" value="1" name="<?php echo $this->getFieldName()?>[$ROW][use_limit_type]" style="width:20px" type="checkbox" onclick="$('<?php echo $this->suffixId('yes__use_limit_type_$ROW') ?>').toggle()" />
                     <div id="<?php echo $this->suffixId('yes__use_limit_type_$ROW') ?>" class="<?php echo $this->suffixId('yes__use_limit_type_$ROW') ?>">
                     <select multiple="multiple" name="<?php echo $this->getFieldName()?>[$ROW][limit_type][]">
-                        <option alt="limit_type" value="simple"><?php echo $this->__('Simple')?></option>
-                        <option alt="limit_type" value="configurable"><?php echo $this->__('Configurable')?></option>
-                        <option alt="limit_type" value="downloadable"><?php echo $this->__('Downloadable')?></option>
-                        <option alt="limit_type" value="virtual"><?php echo $this->__('Virtual')?></option>
-                        <option alt="limit_type" value="grouped"><?php echo $this->__('Grouped')?></option>
+                        <option alt="limit_type" value="simple"><?php echo Mage::helper('udropship')->__('Simple')?></option>
+                        <option alt="limit_type" value="configurable"><?php echo Mage::helper('udropship')->__('Configurable')?></option>
+                        <option alt="limit_type" value="downloadable"><?php echo Mage::helper('udropship')->__('Downloadable')?></option>
+                        <option alt="limit_type" value="virtual"><?php echo Mage::helper('udropship')->__('Virtual')?></option>
+                        <option alt="limit_type" value="grouped"><?php echo Mage::helper('udropship')->__('Grouped')?></option>
                     </select>
                     </div>
                 </td>
@@ -57,7 +57,7 @@ $_yesnoOpts = Mage::getSingleton('udropship/source')->setPath('yesno')->toOption
         <tfoot>
             <tr>
                 <th colspan="4" class="a-left">
-                    <div class="left"><button type="button" class="scalable add" id="<?php echo $this->suffixId('addBtn')?>"><span><?php echo $this->__('Add Field') ?></span></button></div>
+                    <div class="left"><button type="button" class="scalable add" id="<?php echo $this->suffixId('addBtn')?>"><span><?php echo Mage::helper('udropship')->__('Add Field') ?></span></button></div>
                 </th>
             </tr>
         </tfoot>
@@ -157,7 +157,7 @@ $_yesnoOpts = Mage::getSingleton('udropship/source')->setPath('yesno')->toOption
         if (jQuery('#'+suffixIdTpl.evaluate({key: data.row+'-column_field'}))) {
             jQuery('#'+suffixIdTpl.evaluate({key: data.row+'-column_field'})).select2({
                 width: '250px',
-                placeholder: '<?php echo $this->jsQuoteEscape($this->__('* Please select')) ?>',
+                placeholder: '<?php echo $this->jsQuoteEscape(Mage::helper('udropship')->__('* Please select')) ?>',
                 data: window['udprodFields']
             });
         }

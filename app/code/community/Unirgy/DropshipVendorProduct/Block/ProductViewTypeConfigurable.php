@@ -57,7 +57,7 @@ class Unirgy_DropshipVendorProduct_Block_ProductViewTypeConfigurable extends Mag
             $config['attributes'][$_aId]['identifyImage'] = $cfgAttr->getData('identify_image');
             $_sk = sprintf('super_attribute/%s/%s', $this->getProduct()->getId(), $cfgAttr->getAttributeId());
             $_pAttr = $cfgAttr->getProductAttribute();
-            $config['perAttrChooseText'][$_aId] = Mage::helper('udprod')->__('- Select %s -', $_pAttr->getFrontend()->getLabel());
+            $config['perAttrChooseText'][$_aId] = Mage::helper('udropship')->__('- Select %s -', $_pAttr->getFrontend()->getLabel());
             $_swatchMap = $_pAttr->getSwatchMap();
             if (!is_array($_swatchMap)) {
                 $_swatchMap = (array)Mage::helper('core')->jsonDecode($_swatchMap);
