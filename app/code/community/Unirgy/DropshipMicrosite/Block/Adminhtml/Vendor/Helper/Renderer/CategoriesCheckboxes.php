@@ -34,7 +34,7 @@ class Unirgy_DropshipMicrosite_Block_Adminhtml_Vendor_Helper_Renderer_Categories
             || $expanded == true) {
             $params['expand_all'] = true;
         }
-        return $this->getUrl('adminhtml/widget/categoriesJson', $params);
+        return $this->getUrl('adminhtml/umicrositeadmin_widget/categoriesJson', $params);
     }
 
 }

@@ -17,7 +17,7 @@ class Unirgy_DropshipMicrosite_Block_Frontend_VendorList extends Mage_Core_Block
     public function getVendorsCollection()
     {
         if (null === $this->_vendorCollection) {
-            $this->_vendorCollection = Mage::getModel('udropship/vendor')->getCollection();
+            $this->_vendorCollection = Mage::getModel('udropship/vendor')->getCollection()->addStatusFilter('A');
         }
         return $this->_vendorCollection;
     }

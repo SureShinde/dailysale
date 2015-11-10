@@ -7,8 +7,8 @@ class Unirgy_DropshipMicrosite_Block_Home extends Mage_Core_Block_Template
         parent::_prepareLayout();
         if ($breadcrumbsBlock = $this->getLayout()->getBlock('breadcrumbs')) {
             $breadcrumbsBlock->addCrumb('home', array(
-                'label'=>Mage::helper('catalog')->__('Home'),
-                'title'=>Mage::helper('catalog')->__('Go to Home Page'),
+                'label'=>Mage::helper('udropship')->__('Home'),
+                'title'=>Mage::helper('udropship')->__('Go to Home Page'),
                 'link'=>Mage::getBaseUrl()
             ));
             if ($vendor = Mage::helper('umicrosite')->getCurrentVendor()) {

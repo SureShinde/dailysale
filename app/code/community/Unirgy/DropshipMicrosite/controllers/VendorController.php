@@ -47,6 +47,7 @@ class Unirgy_DropshipMicrosite_VendorController extends Mage_Core_Controller_Fro
 
     public function registerAction()
     {
+        Mage::getSingleton('customer/session')->setData('umicrosite_registration_form_show_captcha',1);
         $this->_renderPage(null, 'register');
     }
 
@@ -75,13 +76,19 @@ class Unirgy_DropshipMicrosite_VendorController extends Mage_Core_Controller_Fro
                     $vendor->setStatus(Unirgy_Dropship_Model_Source::VENDOR_STATUS_ACTIVE);
                 }
                 $_FILES = array();
-                $vendor->save();
-                Mage::getSingleton('udropship/session')->loginById($vendor->getId());
-                if (!$this->_getVendorSession()->getBeforeAuthUrl()) {
-                    $this->_getVendorSession()->setBeforeAuthUrl(Mage::getUrl('udropship'));
+                if (!Mage::getStoreConfigFlag('udropship/microsite/skip_confirmation')) {
+                    $vendor->setSendConfirmationEmail(1);
+                    $vendor->save();
+                    $session->addSuccess(Mage::helper('udropship')->__('Thank you for application. Instructions were sent to your email to confirm it'));
+                } else {
+                    $vendor->save();
+                    Mage::getSingleton('udropship/session')->loginById($vendor->getId());
+                    if (!$this->_getVendorSession()->getBeforeAuthUrl()) {
+                        $this->_getVendorSession()->setBeforeAuthUrl(Mage::getUrl('udropship'));
+                    }
                 }
             } else {
-                $session->addSuccess($hlp->__('Thank you for application. As soon as your registration has been verified, you will receive an email confirmation'));
+                $session->addSuccess(Mage::helper('udropship')->__('Thank you for application. As soon as your registration has been verified, you will receive an email confirmation'));
             }
         } catch (Exception $e) {
             $session->addError($e->getMessage());
@@ -112,11 +119,12 @@ class Unirgy_DropshipMicrosite_VendorController extends Mage_Core_Controller_Fro
     public function checkCaptcha()
     {
         if (!Mage::helper('udropship')->isModuleActive('Mage_Captcha')) return $this;
+        Mage::getSingleton('customer/session')->setData('umicrosite_registration_form_show_captcha',1);
         $formId = 'umicrosite_registration_form';
         $captchaModel = Mage::helper('captcha')->getCaptcha($formId);
         if ($captchaModel->isRequired()) {
             if (!$captchaModel->isCorrect($this->_getCaptchaString($this->getRequest(), $formId))) {
-                Mage::throwException(Mage::helper('captcha')->__('Incorrect CAPTCHA.'));
+                Mage::throwException(Mage::helper('udropship')->__('Incorrect CAPTCHA.'));
             }
         }
         return $this;
