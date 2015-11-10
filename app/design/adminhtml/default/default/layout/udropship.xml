@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <layout>
-    <adminhtml_vendor_edit>
+    <udropshipadmin_adminhtml_vendor_edit>
         <update handle="editor"/>
         <reference name="js">
             <block type="core/template" name="udropship_wysiwyg" template="udropship/vendor/wysiwyg.phtml"/>
@@ -9,10 +9,10 @@
             <action method="setCanLoadExtJs"><flag>1</flag></action>
             <action method="setCanLoadRulesJs"><flag>1</flag></action>
         </reference>
-    </adminhtml_vendor_edit>
-    <adminhtml_vendor_new>
+    </udropshipadmin_adminhtml_vendor_edit>
+    <adminhtml_udropshipadmin_vendor_new>
         <update handle="udropshipadmin_adminhtml_vendor_edit"/>
-    </adminhtml_vendor_new>
+    </adminhtml_udropshipadmin_vendor_new>
     <adminhtml_sales_order_shipment_view>
         <reference name="order_info">
             <action method="setTemplate"><template>udropship/sales/order/view/info.phtml</template></action>
@@ -25,11 +25,11 @@
             <action method="setTemplate"><template>udropship/sales/order/shipment/items.phtml</template></action>
         </reference>
     </adminhtml_sales_order_shipment_view>
-    <adminhtml_shipment_addcomment>
+    <adminhtml_udropshipadmin_shipment_addcomment>
         <block type="adminhtml/sales_order_shipment_view_comments" name="shipment_comments">
             <block type="adminhtml/sales_order_comments_view"  name="order_comments" template="udropship/sales/order/shipment/comments/view.phtml"></block>
         </block>
-    </adminhtml_shipment_addcomment>
+    </adminhtml_udropshipadmin_shipment_addcomment>
     <default>
         <reference name="head">
             <action method="addJs"><script>udropship.js</script></action>

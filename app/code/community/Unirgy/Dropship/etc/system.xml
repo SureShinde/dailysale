@@ -18,7 +18,7 @@
  -->
 <config>
     <sections>
-        <udropship>
+        <udropship translate="label" module="udropship">
             <tab>sales</tab>
             <label>Drop Shipping</label>
             <frontend_type>text</frontend_type>
@@ -27,7 +27,7 @@
             <show_in_website>1</show_in_website>
             <show_in_store>1</show_in_store>
             <groups>
-                <admin>
+                <admin translate="label">
                     <label>Administrator Options</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>10</sort_order>
@@ -35,7 +35,7 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <fields>
-                        <vendor_comments_receiver>
+                        <vendor_comments_receiver translate="label">
                             <label>Vendor Comments Receiver (store owner)</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_email_identity</source_model>
@@ -44,7 +44,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </vendor_comments_receiver>
-                        <vendor_comments_subject>
+                        <vendor_comments_subject translate="label">
                             <label>Vendor Comments Email Subject</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>20</sort_order>
@@ -52,7 +52,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </vendor_comments_subject>
-                        <vendor_comments_template>
+                        <vendor_comments_template translate="label">
                             <label>Vendor Comments Template</label>
                             <frontend_type>textarea</frontend_type>
                             <sort_order>30</sort_order>
@@ -61,7 +61,7 @@
                             <show_in_store>1</show_in_store>
                         </vendor_comments_template>
 
-                        <letterhead_info>
+                        <letterhead_info translate="label">
                             <label>Letterhead Info</label>
                             <frontend_type>textarea</frontend_type>
                             <sort_order>40</sort_order>
@@ -80,7 +80,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </letterhead_logo>
-                        <letterhead_logo_ratio>
+                        <letterhead_logo_ratio translate="label">
                             <label>Letterhead Logo Aspect Ratio</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>51</sort_order>
@@ -89,7 +89,7 @@
                             <show_in_store>1</show_in_store>
                         </letterhead_logo_ratio>
 
-                        <interface_theme>
+                        <interface_theme translate="label">
                             <label>Admin Interface Theme</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>100</sort_order>
@@ -128,7 +128,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </show_order_view_vendor_rates>
-                        <for_update_split_check translate="label">
+                        <for_update_split_check translate="label comment">
                             <label>Use "select ... for update" to check if order already split to pos</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -178,7 +178,7 @@
                             <show_in_store>1</show_in_store>
                         </change_order_status_after_po>
 
-                        <strict_change_order_status_after_po translate="label">
+                        <strict_change_order_status_after_po translate="label comment">
                             <label>Strict mode of "Change order status after POs beeing generated"</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -280,7 +280,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </vendor_sku_attribute>
-                        <pdf_use_font translate="label">
+                        <pdf_use_font translate="label comment">
                             <label>Font to use in PDF</label>
                             <frontend_type>select</frontend_type>
                             <source_model>udropship/source</source_model>
@@ -309,7 +309,7 @@
                             <show_in_store>0</show_in_store>
                         </attach_shippinglabel>
 
-                        <unique_email>
+                        <unique_email translate="label comment">
                             <label>Unique Email</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -319,7 +319,7 @@
                             <show_in_store>0</show_in_store>
                             <comment><![CDATA[NOTE: Email/password combination is always unique]]></comment>
                         </unique_email>
-                        <unique_vendor_name>
+                        <unique_vendor_name translate="label">
                             <label>Unique Vendor Name</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -329,7 +329,7 @@
                             <show_in_store>0</show_in_store>
                         </unique_vendor_name>
 
-                        <interface_theme>
+                        <interface_theme translate="label">
                             <label>Vendor Interface Theme</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>100</sort_order>
@@ -338,7 +338,7 @@
                             <show_in_store>1</show_in_store>
                         </interface_theme>
 
-                        <visible_preferences>
+                        <visible_preferences translate="label comment">
                             <label>Visible Preferences</label>
                             <frontend_type>multiselect</frontend_type>
                             <source_model>udropship/source</source_model>
@@ -348,7 +348,7 @@
                             <show_in_store>0</show_in_store>
                             <comment><![CDATA[NOTE: if none are selected, all will be shown by default]]></comment>
                         </visible_preferences>
-                        <preferences_allowed_tags>
+                        <preferences_allowed_tags translate="label">
                             <label>Allowed HTML Tags for Vendor Preferences</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>120</sort_order>
@@ -378,7 +378,7 @@
                             <comment>Use this master password with vendor email to login to any vendor account</comment>
                         </master_password>
 
-                        <void_labels translate="label">
+                        <void_labels translate="label comment">
                             <label>Attempt to void labels on deletion</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -518,7 +518,7 @@
                             <show_in_store>0</show_in_store>
                         </packingslip_custom_text>
 
-                        <portal_show_totals>
+                        <portal_show_totals translate="label">
                             <label>Show totals in vendor portal order view</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -556,7 +556,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </email_template>
-                        <adjustment_trigger>
+                        <adjustment_trigger translate="label comment">
                             <label>Adjustment Comment Trigger Word</label>
                             <sort_order>45</sort_order>
                             <show_in_default>1</show_in_default>
@@ -663,7 +663,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </statement_shipment_status>
-                        <enable_refunds>
+                        <enable_refunds translate="label">
                             <label>Enable Refunds</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -675,7 +675,7 @@
 
                     </fields>
                 </statement>
-                <customer>
+                <customer translate="label">
                     <label>Customer Options</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>30</sort_order>
@@ -683,7 +683,7 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <fields>
-                        <vendor_enable_disable_action>
+                        <vendor_enable_disable_action translate="label">
                             <label>Action on enable/disable vendor</label>
                             <frontend_type>select</frontend_type>
                             <source_model>udropship/source</source_model>
@@ -692,7 +692,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </vendor_enable_disable_action>
-                        <vendor_delete_action>
+                        <vendor_delete_action translate="label">
                             <label>Action on delete vendor</label>
                             <frontend_type>select</frontend_type>
                             <source_model>udropship/source</source_model>
@@ -701,7 +701,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </vendor_delete_action>
-                        <notify_on_shipment>
+                        <notify_on_shipment translate="label">
                             <label>Customer Notification on Shipment Completion</label>
                             <frontend_type>select</frontend_type>
                             <source_model>udropship/source</source_model>
@@ -710,7 +710,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </notify_on_shipment>
-                        <notify_on_tracking>
+                        <notify_on_tracking translate="label">
                             <label>Customer Notification on Tracking ID</label>
                             <frontend_type>select</frontend_type>
                             <source_model>udropship/source</source_model>
@@ -749,7 +749,7 @@
                             <comment><![CDATA[Deprecated, will be removed in future versions]]></comment>
                         </notify_on>
                         -->
-                        <repeat_poll_tracking>
+                        <repeat_poll_tracking translate="label comment">
                             <label>Repeat tracking poll every ...</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>55</sort_order>
@@ -758,7 +758,7 @@
                             <show_in_store>0</show_in_store>
                             <comment><![CDATA[hours]]></comment>
                         </repeat_poll_tracking>
-                        <poll_tracking>
+                        <poll_tracking translate="label comment">
                             <label>Poll Tracking API</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -769,7 +769,7 @@
                             <comment><![CDATA[Will periodically poll available carrier tracking APIs, and mark items as shipped only after receiving confirmation that the packages were picked up]]></comment>
                         </poll_tracking>
 
-                        <estimate_total_method>
+                        <estimate_total_method translate="label">
                             <label>Estimate Total Method</label>
                             <frontend_type>select</frontend_type>
                             <source_model>udropship/source</source_model>
@@ -779,7 +779,7 @@
                             <show_in_store>0</show_in_store>
                         </estimate_total_method>
 
-                        <estimate_error_action>
+                        <estimate_error_action translate="label comment">
                             <label>Estimate Error Action</label>
                             <frontend_type>select</frontend_type>
                             <source_model>udropship/source</source_model>
@@ -790,7 +790,7 @@
                             <comment><![CDATA[This action will be taken if one or more of vendor carriers participating in estimate returns an error or no results]]></comment>
                         </estimate_error_action>
 
-                        <allow_shipping_extra_charge>
+                        <allow_shipping_extra_charge translate="label">
                             <label>Allow shipping extra charge</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -799,7 +799,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </allow_shipping_extra_charge>
-                        <custom_html_address_format>
+                        <custom_html_address_format translate="label">
                              <label>Use Custom HTML Customer Address Template For Vendors</label>
                              <frontend_type>select</frontend_type>
                              <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -812,7 +812,7 @@
                              <show_in_website>1</show_in_website>
                              <show_in_store>1</show_in_store>
                         </custom_html_address_format>
-                        <html_address_format>
+                        <html_address_format translate="label">
                              <label>HTML Customer Address Template For Vendors</label>
                              <frontend_type>textarea</frontend_type>
                              <sort_order>120</sort_order>
@@ -820,7 +820,7 @@
                              <show_in_website>1</show_in_website>
                              <show_in_store>1</show_in_store>
                         </html_address_format>
-                        <custom_pdf_address_format>
+                        <custom_pdf_address_format translate="label">
                              <label>Use Custom PDF Customer Address Template For Vendors</label>
                              <frontend_type>select</frontend_type>
                              <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -833,7 +833,7 @@
                              <show_in_website>1</show_in_website>
                              <show_in_store>1</show_in_store>
                         </custom_pdf_address_format>
-                        <pdf_address_format>
+                        <pdf_address_format translate="label">
                              <label>PDF Customer Address Template For Vendor</label>
                              <frontend_type>textarea</frontend_type>
                              <sort_order>140</sort_order>
@@ -843,7 +843,7 @@
                         </pdf_address_format>
                     </fields>
                 </customer>
-                <stock>
+                <stock translate="label">
                     <label>Product Stock Options</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>40</sort_order>
@@ -851,7 +851,7 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <fields>
-                        <availability>
+                        <availability translate="label">
                             <label>Vendor Decision Method</label>
                             <frontend_type>select</frontend_type>
                             <source_model>udropship/source</source_model>
@@ -860,7 +860,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </availability>
-                        <reassign_availability>
+                        <reassign_availability translate="label comment">
                             <label>Vendor Decision Method For Reassign</label>
                             <frontend_type>select</frontend_type>
                             <source_model>udropship/source</source_model>
@@ -870,7 +870,7 @@
                             <show_in_store>0</show_in_store>
                             <comment><![CDATA[When doing order items vendor reassign (Multivendor add-on) or manually creating PO (Advanced PO add-on) use this decision method to check vendors stock]]></comment>
                         </reassign_availability>
-                        <reassign_skip_stockcheck>
+                        <reassign_skip_stockcheck translate="label">
                             <label>Skip Stock Check For Reassign</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -879,7 +879,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </reassign_skip_stockcheck>
-                        <reassign_skip_addrcheck>
+                        <reassign_skip_addrcheck translate="label">
                             <label>Skip Limit Address Check For Reassign</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -888,7 +888,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </reassign_skip_addrcheck>
-                        <skip_bundle_limit translate="label">
+                        <skip_bundle_limit translate="label comment">
                             <label>Skip Bundle "Ship Separately" limitation</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -898,7 +898,7 @@
                             <show_in_store>1</show_in_store>
                             <comment>By default to allow bundle items to be shipped separatelly all bundle specific options should be dynamic (Price, Weight, Ship Separately). This option skip that limitation and only "Ship Separately" considered. Using that option make sure your shipping calculation methods does not rely on weight. Also it could lead in some cases order/invoice totals to be calculated incorrectly. So use it very carefully.</comment>
                         </skip_bundle_limit>
-                        <split_bundle_by_vendors>
+                        <split_bundle_by_vendors translate="label comment">
                             <label>Split Bundle by vendors</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -919,7 +919,7 @@
                         </show_vendor_sku_column>
                     </fields>
                 </stock>
-                <misc>
+                <misc translate="label">
                     <label>Miscellaneous</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>50</sort_order>
@@ -927,7 +927,7 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>0</show_in_store>
                     <fields>
-                        <mail_transport>
+                        <mail_transport translate="label">
                             <label>Email Transport</label>
                             <frontend_type>select</frontend_type>
                             <source_model>udropship/source</source_model>
@@ -950,7 +950,7 @@
 -->
                     </fields>
                 </misc>
-                <error_notifications>
+                <error_notifications translate="label">
                     <label>Poll Tracking Error Notifications Options</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>100</sort_order>
@@ -958,7 +958,7 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <fields>
-                        <enabled>
+                        <enabled translate="label">
                             <label>Enabled</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -967,7 +967,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </enabled>
-                        <sender>
+                        <sender translate="label">
                             <label>Sender (email from identity)</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_email_identity</source_model>
@@ -976,7 +976,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </sender>
-                        <receiver>
+                        <receiver translate="label">
                             <label>Receiver (store owner)</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_email_identity</source_model>
@@ -985,7 +985,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </receiver>
-                        <label_request_failed_subject>
+                        <label_request_failed_subject translate="label">
                             <label>Label Request Failed Email Subject</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>20</sort_order>
@@ -993,7 +993,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </label_request_failed_subject>
-                        <label_request_failed_template>
+                        <label_request_failed_template translate="label">
                             <label>Label Request Failed Email Template</label>
                             <frontend_type>textarea</frontend_type>
                             <sort_order>30</sort_order>
@@ -1001,7 +1001,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </label_request_failed_template>
-                        <poll_tracking_failed_subject>
+                        <poll_tracking_failed_subject translate="label">
                             <label>Poll Tracking Failed Email Subject</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>40</sort_order>
@@ -1009,7 +1009,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </poll_tracking_failed_subject>
-                        <poll_tracking_failed_template>
+                        <poll_tracking_failed_template translate="label">
                             <label>Poll Tracking Failed Email Template</label>
                             <frontend_type>textarea</frontend_type>
                             <sort_order>50</sort_order>
@@ -1017,7 +1017,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </poll_tracking_failed_template>
-                        <poll_tracking_limit>
+                        <poll_tracking_limit translate="label">
                             <label>Poll Tracking Limit</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>60</sort_order>
@@ -1025,7 +1025,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </poll_tracking_limit>
-                        <poll_tracking_limit_exceeded_subject>
+                        <poll_tracking_limit_exceeded_subject translate="label">
                             <label>Poll Tracking Limit Exceeded Email Subject</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>70</sort_order>
@@ -1033,7 +1033,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </poll_tracking_limit_exceeded_subject>
-                        <poll_tracking_limit_exceeded_template>
+                        <poll_tracking_limit_exceeded_template translate="label">
                             <label>Poll Tracking Limit Exceeded Email Template</label>
                             <frontend_type>textarea</frontend_type>
                             <sort_order>80</sort_order>
@@ -1047,7 +1047,7 @@
         </udropship>
         <carriers>
             <groups>
-                <udropship translate="label">
+                <udropship translate="label" module="udropship">
                     <label>Drop Shipping</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>100</sort_order>
@@ -1064,7 +1064,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </active>
-                        <force_active translate="label">
+                        <force_active translate="label comment">
                             <label>Turn on udropship functionality explicitly</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -1083,7 +1083,7 @@
                             <show_in_store>1</show_in_store>
                         </title>
 
-                        <free_shipping_allowed>
+                        <free_shipping_allowed translate="label">
                             <label>Allow Free Shipping</label>
                             <frontend_type>select</frontend_type>
                             <frontend_model>udropship/adminhtml_systemConfigFormField_dependSelect</frontend_model>
@@ -1099,7 +1099,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </free_shipping_allowed>
-                        <freeweight_allowed>
+                        <freeweight_allowed translate="label">
                             <label>Allow Rule Based Free Shipping</label>
                             <frontend_type>select</frontend_type>
                             <frontend_model>udropship/adminhtml_systemConfigFormField_dependSelect</frontend_model>
@@ -1219,7 +1219,7 @@
                 </udropship>
             </groups>
         </carriers>
-        <udropship_label>
+        <udropship_label translate="label" module="udropship">
             <tab>sales</tab>
             <label>Dropship Labels</label>
             <frontend_type>text</frontend_type>
@@ -1228,7 +1228,7 @@
             <show_in_website>1</show_in_website>
             <show_in_store>1</show_in_store>
             <groups>
-                <general>
+                <general translate="label">
                     <label>General</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>10</sort_order>
@@ -1247,7 +1247,7 @@
                         </use_global>
                     </fields>
                 </general>
-                <label>
+                <label translate="label">
                     <label>Shipping Labels</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>30</sort_order>
@@ -1255,7 +1255,7 @@
                     <show_in_website>0</show_in_website>
                     <show_in_store>0</show_in_store>
                     <fields>
-                        <poll_tracking>
+                        <poll_tracking translate="label">
                             <label>Poll Tracking API</label>
                             <frontend_type>select</frontend_type>
                             <source_model>udropship/source</source_model>
@@ -1264,7 +1264,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </poll_tracking>
-                        <label_type>
+                        <label_type translate="label">
                             <label>Label Type</label>
                             <frontend_type>select</frontend_type>
                             <source_model>udropship/source</source_model>
@@ -1273,7 +1273,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </label_type>
-                        <dimension_units>
+                        <dimension_units translate="label">
                             <label>Dimension Units</label>
                             <frontend_type>select</frontend_type>
                             <source_model>udropship/source</source_model>
@@ -1282,21 +1282,21 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </dimension_units>
-                        <default_pkg_length>
+                        <default_pkg_length translate="label">
                             <label>Default Package Length</label>
                             <sort_order>11</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </default_pkg_length>
-                        <default_pkg_width>
+                        <default_pkg_width translate="label">
                             <label>Default Package Width</label>
                             <sort_order>12</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </default_pkg_width>
-                        <default_pkg_height>
+                        <default_pkg_height translate="label">
                             <label>Default Package Height</label>
                             <fieldset>label</fieldset>
                             <sort_order>13</sort_order>
@@ -1306,7 +1306,7 @@
                         </default_pkg_height>
                     </fields>
                 </label>
-                <pdf>
+                <pdf translate="label">
                     <label>PDF Specific</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>60</sort_order>
@@ -1314,7 +1314,7 @@
                     <show_in_website>0</show_in_website>
                     <show_in_store>0</show_in_store>
                     <fields>
-                        <pdf_page_size>
+                        <pdf_page_size translate="label">
                             <label>PDF Page Size</label>
                             <frontend_type>select</frontend_type>
                             <source_model>udropship/source</source_model>
@@ -1323,21 +1323,21 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </pdf_page_size>
-                        <pdf_page_width>
+                        <pdf_page_width translate="label">
                             <label>PDF Page Width</label>
                             <sort_order>2</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </pdf_page_width>
-                        <pdf_page_height>
+                        <pdf_page_height translate="label">
                             <label>PDF Page Height</label>
                             <sort_order>3</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </pdf_page_height>
-                        <pdf_label_rotate>
+                        <pdf_label_rotate translate="label">
                             <label>PDF Label Rotation</label>
                             <frontend_type>select</frontend_type>
                             <source_model>udropship/source</source_model>
@@ -1346,14 +1346,14 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </pdf_label_rotate>
-                        <pdf_label_left>
+                        <pdf_label_left translate="label">
                             <label>PDF Label Left Offset</label>
                             <sort_order>5</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </pdf_label_left>
-                        <pdf_label_top>
+                        <pdf_label_top translate="label">
                             <label>PDF Label Top Offset</label>
                             <sort_order>6</sort_order>
                             <show_in_default>1</show_in_default>
@@ -1362,7 +1362,7 @@
                         </pdf_label_top>
                     </fields>
                 </pdf>
-                <epl>
+                <epl translate="label">
                     <label>EPL Specific</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>60</sort_order>
@@ -1370,7 +1370,7 @@
                     <show_in_website>0</show_in_website>
                     <show_in_store>0</show_in_store>
                     <fields>
-                        <epl_doctab>
+                        <epl_doctab translate="label">
                             <label>Enable Printing DocTab</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -1381,7 +1381,7 @@
                         </epl_doctab>
                     </fields>
                 </epl>
-                <fedex>
+                <fedex translate="label">
                     <label>Fedex Settings</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>100</sort_order>
@@ -1389,7 +1389,7 @@
                     <show_in_website>0</show_in_website>
                     <show_in_store>0</show_in_store>
                     <fields>
-                        <fedex_test_mode>
+                        <fedex_test_mode translate="label">
                             <label>Test Mode</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -1399,7 +1399,7 @@
                             <show_in_store>0</show_in_store>
                         </fedex_test_mode>
 
-                        <fedex_user_key>
+                        <fedex_user_key translate="label">
                             <label>User Key</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>20</sort_order>
@@ -1407,7 +1407,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </fedex_user_key>
-                        <fedex_user_password>
+                        <fedex_user_password translate="label">
                             <label>User Password</label>
                             <frontend_type>password</frontend_type>
                             <sort_order>22</sort_order>
@@ -1415,7 +1415,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </fedex_user_password>
-                        <fedex_account_number>
+                        <fedex_account_number translate="label">
                             <label>Account Number</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>24</sort_order>
@@ -1423,7 +1423,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </fedex_account_number>
-                        <fedex_meter_number>
+                        <fedex_meter_number translate="label">
                             <label>Meter Number</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>26</sort_order>
@@ -1431,7 +1431,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </fedex_meter_number>
-                        <fedex_smartpost_hubid>
+                        <fedex_smartpost_hubid translate="label">
                             <label>Smart Post Hub ID</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>27</sort_order>
@@ -1440,7 +1440,7 @@
                             <show_in_store>0</show_in_store>
                         </fedex_smartpost_hubid>
 
-                        <fedex_payment_type>
+                        <fedex_payment_type translate="label">
                             <label>Payment Type</label>
                             <frontend_type>select</frontend_type>
                             <source_model>udropship/source</source_model>
@@ -1457,7 +1457,7 @@
                             <show_in_store>0</show_in_store>
                         </fedex_payment_type>
 
-                        <fedex_thirdparty_account_number>
+                        <fedex_thirdparty_account_number translate="label">
                             <label>3rd Party Account Number</label>
                             <sort_order>31</sort_order>
                             <frontend_type>text</frontend_type>
@@ -1465,7 +1465,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </fedex_thirdparty_account_number>
-                        <fedex_thirdparty_name>
+                        <fedex_thirdparty_name translate="label">
                             <label>3rd Party Contact Name</label>
                             <sort_order>32</sort_order>
                             <frontend_type>text</frontend_type>
@@ -1473,7 +1473,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </fedex_thirdparty_name>
-                        <fedex_thirdparty_company>
+                        <fedex_thirdparty_company translate="label">
                             <label>3rd Party Company</label>
                             <sort_order>33</sort_order>
                             <frontend_type>text</frontend_type>
@@ -1481,7 +1481,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </fedex_thirdparty_company>
-                        <fedex_thirdparty_phone>
+                        <fedex_thirdparty_phone translate="label">
                             <label>3rd Party Phone</label>
                             <sort_order>34</sort_order>
                             <frontend_type>text</frontend_type>
@@ -1490,7 +1490,7 @@
                             <show_in_store>0</show_in_store>
                         </fedex_thirdparty_phone>
 
-                        <fedex_dry_ice_weight>
+                        <fedex_dry_ice_weight translate="label">
                             <label>Default Dry Ice Weight (KG)</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>40</sort_order>
@@ -1499,7 +1499,7 @@
                             <show_in_store>0</show_in_store>
                         </fedex_dry_ice_weight>
 
-                        <fedex_dropoff_type>
+                        <fedex_dropoff_type translate="label">
                             <label>Drop Off Type</label>
                             <frontend_type>select</frontend_type>
                             <source_model>udropship/source</source_model>
@@ -1509,7 +1509,7 @@
                             <show_in_store>0</show_in_store>
                         </fedex_dropoff_type>
 
-                        <fedex_label_stock_type>
+                        <fedex_label_stock_type translate="label">
                             <label>Label Stock Type</label>
                             <frontend_type>select</frontend_type>
                             <source_model>udropship/source</source_model>
@@ -1518,7 +1518,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </fedex_label_stock_type>
-                        <fedex_pdf_label_width>
+                        <fedex_pdf_label_width translate="label">
                             <label>PDF Label Width</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>70</sort_order>
@@ -1526,7 +1526,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </fedex_pdf_label_width>
-                        <fedex_pdf_label_height>
+                        <fedex_pdf_label_height translate="label">
                             <label>PDF Label Height</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>80</sort_order>
@@ -1535,7 +1535,7 @@
                             <show_in_store>0</show_in_store>
                         </fedex_pdf_label_height>
 
-                        <fedex_signature_option>
+                        <fedex_signature_option translate="label">
                             <label>Signature Option</label>
                             <frontend_type>select</frontend_type>
                             <source_model>udropship/source</source_model>
@@ -1545,7 +1545,7 @@
                             <show_in_store>0</show_in_store>
                         </fedex_signature_option>
 
-                        <fedex_insurance>
+                        <fedex_insurance translate="label">
                             <label>Insurance</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -1555,7 +1555,7 @@
                             <show_in_store>0</show_in_store>
                         </fedex_insurance>
 
-                        <fedex_notify_on>
+                        <fedex_notify_on translate="label">
                             <label>Shipment notification types</label>
                             <frontend_type>multiselect</frontend_type>
                             <source_model>udropship/source</source_model>
@@ -1565,7 +1565,7 @@
                             <show_in_store>0</show_in_store>
                         </fedex_notify_on>
 
-                        <fedex_notify_email>
+                        <fedex_notify_email translate="label comment">
                             <label>Shipment notification email(s)</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>120</sort_order>
@@ -1575,7 +1575,7 @@
                             <comment>Comma separated</comment>
                         </fedex_notify_email>
 
-                        <fedex_itn>
+                        <fedex_itn translate="label comment">
                             <label>ITN (Internal Transaction Number)</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>150</sort_order>
@@ -1586,7 +1586,7 @@
                         </fedex_itn>
                     </fields>
                 </fedex>
-                <endicia>
+                <endicia translate="label">
                     <label>Endicia Settings</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>200</sort_order>
@@ -1594,7 +1594,7 @@
                     <show_in_website>0</show_in_website>
                     <show_in_store>0</show_in_store>
                     <fields>
-                        <endicia_api_url>
+                        <endicia_api_url translate="label">
                             <label>Endicia API URL</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>1</sort_order>
@@ -1602,7 +1602,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </endicia_api_url>
-                        <endicia_test_mode>
+                        <endicia_test_mode translate="label">
                             <label>Label Test Mode</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -1612,7 +1612,7 @@
                             <show_in_store>0</show_in_store>
                         </endicia_test_mode>
 
-                        <endicia_requester_id>
+                        <endicia_requester_id translate="label">
                             <label>Requester ID</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>30</sort_order>
@@ -1620,7 +1620,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </endicia_requester_id>
-                        <endicia_account_id>
+                        <endicia_account_id translate="label">
                             <label>Account ID</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>40</sort_order>
@@ -1628,7 +1628,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </endicia_account_id>
-                        <endicia_pass_phrase>
+                        <endicia_pass_phrase translate="label">
                             <label>Pass Phrase</label>
                             <frontend_type>text</frontend_type>
                             <encrypted>1</encrypted>
@@ -1638,7 +1638,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </endicia_pass_phrase>
-                        <endicia_new_pass_phrase>
+                        <endicia_new_pass_phrase translate="label comment">
                             <label>New Pass Phrase</label>
                             <frontend_type>text</frontend_type>
                             <encrypted>1</encrypted>
@@ -1650,7 +1650,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </endicia_new_pass_phrase>
-                        <endicia_new_pass_phrase_confirm>
+                        <endicia_new_pass_phrase_confirm translate="label">
                             <label>Confirm New Pass Phrase</label>
                             <frontend_type>text</frontend_type>
                             <encrypted>1</encrypted>
@@ -1662,7 +1662,7 @@
                             <show_in_store>0</show_in_store>
                         </endicia_new_pass_phrase_confirm>
 
-                        <endicia_label_type>
+                        <endicia_label_type translate="label">
                             <label>Label Type</label>
                             <frontend_type>select</frontend_type>
                             <source_model>udropship/source</source_model>
@@ -1671,7 +1671,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </endicia_label_type>
-                        <endicia_mail_class>
+                        <endicia_mail_class translate="label">
                             <label>Default Mail Class</label>
                             <frontend_type>select</frontend_type>
                             <source_model>udropship/source</source_model>
@@ -1680,7 +1680,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </endicia_mail_class>
-                        <endicia_mailpiece_shape>
+                        <endicia_mailpiece_shape translate="label">
                             <label>Default Mail Piece Shape</label>
                             <frontend_type>select</frontend_type>
                             <source_model>udropship/source</source_model>
@@ -1690,7 +1690,7 @@
                             <show_in_store>0</show_in_store>
                         </endicia_mailpiece_shape>
 
-                        <endicia_stealth>
+                        <endicia_stealth translate="label">
                             <label>Stealth</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -1699,7 +1699,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </endicia_stealth>
-                        <endicia_delivery_confirmation>
+                        <endicia_delivery_confirmation translate="label">
                             <label>Delivery Confirmation</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -1708,7 +1708,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </endicia_delivery_confirmation>
-                        <endicia_signature_confirmation>
+                        <endicia_signature_confirmation translate="label">
                             <label>Signature Confirmation</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -1717,7 +1717,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </endicia_signature_confirmation>
-                        <endicia_return_receipt>
+                        <endicia_return_receipt translate="label">
                             <label>Return Receipt</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -1726,7 +1726,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </endicia_return_receipt>
-                        <endicia_electronic_return_receipt>
+                        <endicia_electronic_return_receipt translate="label">
                             <label>Electronic Return Receipt</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -1735,7 +1735,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </endicia_electronic_return_receipt>
-                        <endicia_insured_mail>
+                        <endicia_insured_mail translate="label">
                             <label>Insured Mail</label>
                             <frontend_type>select</frontend_type>
                             <source_model>udropship/source</source_model>
@@ -1744,7 +1744,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </endicia_insured_mail>
-                        <endicia_restricted_delivery>
+                        <endicia_restricted_delivery translate="label">
                             <label>Restricted Delivery</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -1753,7 +1753,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </endicia_restricted_delivery>
-                        <endicia_cod>
+                        <endicia_cod translate="label">
                             <label>COD</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -1763,7 +1763,7 @@
                             <show_in_store>0</show_in_store>
                         </endicia_cod>
 
-                        <endicia_balance_threshold>
+                        <endicia_balance_threshold translate="label comment">
                             <label>Balance Threshold</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>120</sort_order>
@@ -1772,7 +1772,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </endicia_balance_threshold>
-                        <endicia_recredit_amount>
+                        <endicia_recredit_amount translate="label">
                             <label>Recredit Amount</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>121</sort_order>
@@ -1781,7 +1781,7 @@
                             <show_in_store>0</show_in_store>
                         </endicia_recredit_amount>
 
-                        <endicia_pdf_label_width>
+                        <endicia_pdf_label_width translate="label">
                             <label>PDF Label Width</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>150</sort_order>
@@ -1789,7 +1789,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </endicia_pdf_label_width>
-                        <endicia_pdf_label_height>
+                        <endicia_pdf_label_height translate="label">
                             <label>PDF Label Height</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>151</sort_order>
@@ -1799,7 +1799,7 @@
                         </endicia_pdf_label_height>
                     </fields>
                 </endicia>
-                <ups>
+                <ups translate="label">
                     <label>UPS Settings</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>300</sort_order>
@@ -1807,7 +1807,7 @@
                     <show_in_website>0</show_in_website>
                     <show_in_store>0</show_in_store>
                     <fields>
-                        <ups_api_url>
+                        <ups_api_url translate="label">
                             <label>UPS API URL</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>1</sort_order>
@@ -1816,7 +1816,7 @@
                             <show_in_store>0</show_in_store>
                         </ups_api_url>
 
-                        <ups_shipper_number>
+                        <ups_shipper_number translate="label">
                             <label>UPS Shipper Number</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>2</sort_order>
@@ -1824,7 +1824,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </ups_shipper_number>
-                        <ups_thirdparty_account_number>
+                        <ups_thirdparty_account_number translate="label">
                             <label>3rd Party Account Number</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>4</sort_order>
@@ -1832,7 +1832,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </ups_thirdparty_account_number>
-                        <ups_thirdparty_country>
+                        <ups_thirdparty_country translate="label">
                             <label>3rd Party Country</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_country</source_model>
@@ -1841,7 +1841,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </ups_thirdparty_country>
-                        <ups_thirdparty_postcode>
+                        <ups_thirdparty_postcode translate="label">
                             <label>3rd Party Postal Code</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>6</sort_order>
@@ -1850,7 +1850,7 @@
                             <show_in_store>0</show_in_store>
                         </ups_thirdparty_postcode>
 
-                        <ups_insurance>
+                        <ups_insurance translate="label">
                             <label>Insurance</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -1859,7 +1859,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </ups_insurance>
-                        <ups_delivery_confirmation>
+                        <ups_delivery_confirmation translate="label">
                             <label>Delivery Confirmation</label>
                             <frontend_type>select</frontend_type>
                             <source_model>udropship/source</source_model>
@@ -1868,7 +1868,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </ups_delivery_confirmation>
-                        <ups_verbal_confirmation>
+                        <ups_verbal_confirmation translate="label">
                             <label>Verbal Confirmation</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -1878,7 +1878,7 @@
                             <show_in_store>0</show_in_store>
                         </ups_verbal_confirmation>
 
-                        <ups_pickup>
+                        <ups_pickup translate="label">
                             <label>Pickup Type</label>
                             <frontend_type>select</frontend_type>
                             <source_model>udropship/source</source_model>
@@ -1887,7 +1887,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </ups_pickup>
-                        <ups_container>
+                        <ups_container translate="label">
                             <label>Container Type</label>
                             <frontend_type>select</frontend_type>
                             <source_model>udropship/source</source_model>
@@ -1896,7 +1896,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </ups_container>
-                        <ups_dest_type>
+                        <ups_dest_type translate="label">
                             <label>Destination Type</label>
                             <frontend_type>select</frontend_type>
                             <source_model>udropship/source</source_model>
@@ -1906,7 +1906,7 @@
                             <show_in_store>0</show_in_store>
                         </ups_dest_type>
 
-                        <ups_pdf_label_width>
+                        <ups_pdf_label_width translate="label">
                             <label>PDF Label Width</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>50</sort_order>
@@ -1914,7 +1914,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </ups_pdf_label_width>
-                        <ups_pdf_label_height>
+                        <ups_pdf_label_height translate="label">
                             <label>PDF Label Height</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>51</sort_order>

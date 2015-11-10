@@ -130,6 +130,7 @@ class Unirgy_Dropship_Model_Label_Fedex
                 $value += ($item->getBasePrice() ? $item->getBasePrice() : $item->getPrice())*$_qty;
             }
         }
+        $value = round($value, 2);
         $weight = sprintf("%.2f", max($weight, 1/16));
         $totalWeight = $this->_track->getTotalWeight();
         if (!$totalWeight || $this->_shipment->getSkipTrackDataWeight()) {
@@ -244,8 +245,8 @@ class Unirgy_Dropship_Model_Label_Fedex
             $shipment[$keyRequestedPackages]['0']['InsuredValue'] = array('Amount' => $value, 'Currency' => $currencyCode);
         }
         if ($fedexData->getFedexSignatureOption()!='NO_SIGNATURE_REQUIRED') {
-            $shipment['PackageSpecialServicesRequested']['SpecialServiceTypes'][] = 'SIGNATURE_OPTION';
-            $shipment['PackageSpecialServicesRequested']['SignatureOptionDetail'] = array(
+            $shipment[$keyRequestedPackages]['0']['SpecialServicesRequested']['SpecialServiceTypes'][] = 'SIGNATURE_OPTION';
+            $shipment[$keyRequestedPackages]['0']['SpecialServicesRequested']['SignatureOptionDetail'] = array(
                 'OptionType' => $fedexData->getFedexSignatureOption(),
                 //'SignatureReleaseNumber' => '',
             );
@@ -285,7 +286,7 @@ class Unirgy_Dropship_Model_Label_Fedex
             $shipment['MasterTrackingId'] = array('TrackingNumber' => $this->getUdropshipMasterTrackingId());
         }
 
-        if ($a->getCountryId()!=$v->getCountryId()) {
+        if ($a->getCountryId()!=$v->getCountryId() || $v->getCountryId()=='IN') {
 
             $shipment['InternationalDetail'] = array(
                 'DutiesPayment' => array(
@@ -342,7 +343,7 @@ class Unirgy_Dropship_Model_Label_Fedex
                     'Payor' => $this->getShipServiceVersion('Payor')
                 )
             );
-            $shipment['CustomsClearanceDetail']['Commodities'] = array(
+            $shipment['CustomsClearanceDetail']['Commodities'] = array(array(
                 'Weight' => array(
                     'Units' => 'LB',
                     'Value' =>  $totalWeight
@@ -360,7 +361,7 @@ class Unirgy_Dropship_Model_Label_Fedex
                     'Currency' => $currencyCode,
                     'Amount' =>  $value
                 ),
-            );
+            ));
         }
 
         $nEmailsValid = $this->getValidNotifyEmails($v);

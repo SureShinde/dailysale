@@ -1,3 +1,51 @@
+===== 2.4.1 =====
+  * CE 1.9.2.2 compatibility vendor portal filter fix
+
+===== 2.4.0 =====
+  * CE 1.9.2.2 compatibility
+  * Fixed round prices before submit request
+
+===== 2.3.1 =====
+  * Added hook for whole address is match check
+  * Fixed fedex label signature option
+  * Fixed limit by zipcode, limit by country not allow address change to valid one
+  * Fixed missing translations
+  * Fixed fedex India domestics labels printing
+
+===== 2.3.0 =====
+  * Central translations file
+
+===== 2.2.43 =====
+  * Added UPS support for poll tracking
+
+===== 2.2.42 =====
+  * ACL problem fix in adminhtml shipment controller
+
+===== 2.2.41 =====
+  * Added attachOrderItemVendorSkuInfo method in helper/item
+
+===== 2.2.40 =====
+  * Added cancel shipment when order canceled
+
+===== 2.2.39 =====
+  * Fixed po shipping method assign if using non-dropship method on order place
+  * Fixed wysiwyg when admin have custom domain url
+  * Fixed report grid
+
+===== 2.2.38 =====
+  * Fixed rounding in statement/payout calculation
+
+===== 2.2.37 =====
+  * Fixed partially rounding in statement/payout calculation
+
+===== 2.2.36 =====
+  * Added helper getVendorPortalJsBaseUrl method
+  * Fixed vendor double save
+  * Fixed Edit Offer link in stock tab (only with select and sell)
+
+===== 2.2.35 =====
+  * Changes in resource helper
+
 ===== 2.2.34 =====
   * Added support to offline membership
 

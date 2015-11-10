@@ -83,7 +83,7 @@ class Unirgy_Dropship_Block_Adminhtml_Shipping_Grid_Renderer
     {
         $result = array();
         if ($websites == array(0)) {
-            return $this->__('All websites');
+            return Mage::helper('udropship')->__('All websites');
         }
         foreach ($websites as $id) {
             $result[] = Mage::app()->getWebsite($id)->getName();

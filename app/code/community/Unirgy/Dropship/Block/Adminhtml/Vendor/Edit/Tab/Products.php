@@ -195,23 +195,23 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Edit_Tab_Products extends Mage_Admi
             'index'     => 'entity_id'
         ));
         $this->addColumn('entity_id', array(
-            'header'    => Mage::helper('catalog')->__('ID'),
+            'header'    => Mage::helper('udropship')->__('ID'),
             'sortable'  => true,
             'width'     => '60',
             'index'     => 'entity_id'
         ));
         $this->addColumn('name', array(
-            'header'    => Mage::helper('catalog')->__('Name'),
+            'header'    => Mage::helper('udropship')->__('Name'),
             'index'     => 'name'
         ));
         $this->addColumn('sku', array(
-            'header'    => Mage::helper('catalog')->__('SKU'),
+            'header'    => Mage::helper('udropship')->__('SKU'),
             'width'     => '80',
             'index'     => 'sku'
         ));
         if (Mage::helper('udropship')->isUdmultiAvailable()) {
             $this->addColumn('_vendor_sku', array(
-                'header'    => $this->__('Vendor SKU'),
+                'header'    => Mage::helper('udropship')->__('Vendor SKU'),
                 'index'     => 'vendor_sku',
                 'editable'  => true, 'edit_only'=>true,
                 'sortable'  => false,
@@ -220,14 +220,14 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Edit_Tab_Products extends Mage_Admi
             ));
         }
         $this->addColumn('price', array(
-            'header'    => Mage::helper('catalog')->__('Price'),
+            'header'    => Mage::helper('udropship')->__('Price'),
             'type'  => 'currency',
             'currency_code' => (string) Mage::getStoreConfig(Mage_Directory_Model_Currency::XML_PATH_CURRENCY_BASE),
             'index'     => 'price'
         ));
         if (Mage::helper('udropship')->isUdmultiAvailable()) {
             $this->addColumn('_vendor_cost', array(
-                'header'    => $this->__('Vendor Cost'),
+                'header'    => Mage::helper('udropship')->__('Vendor Cost'),
                 'type'      => 'number',
                 'index'     => 'vendor_cost',
                 'editable'  => true, 'edit_only'=>true,
@@ -236,7 +236,7 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Edit_Tab_Products extends Mage_Admi
             ));
         if (Mage::helper('udmulti')->isVendorProductShipping()) {
             $this->addColumn('_shipping_price', array(
-                'header'    => $this->__('Shipping Price'),
+                'header'    => Mage::helper('udropship')->__('Shipping Price'),
                 'type'      => 'number',
                 'index'     => 'shipping_price',
                 'editable'  => true, 'edit_only'  => true,
@@ -245,7 +245,7 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Edit_Tab_Products extends Mage_Admi
             ));
             }
             $this->addColumn('_status', array(
-                'header'    => $this->__('Status'),
+                'header'    => Mage::helper('udropship')->__('Status'),
                 'type'      => 'select',
                 'index'     => 'status',
                 'editable'  => true, 'edit_only'  => true,
@@ -256,7 +256,7 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Edit_Tab_Products extends Mage_Admi
         }
         if (Mage::helper('udropship')->isUdmultiPriceAvailable()) {
             $this->addColumn('_vendor_price', array(
-                'header'    => $this->__('Vendor Price'),
+                'header'    => Mage::helper('udropship')->__('Vendor Price'),
                 'type'      => 'number',
                 'index'     => 'vendor_price',
                 'editable'  => true, 'edit_only'  => true,
@@ -264,7 +264,7 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Edit_Tab_Products extends Mage_Admi
                 'filter'    => false,
             ));
             $this->addColumn('_vendor_title', array(
-                'header'    => $this->__('Vendor Title'),
+                'header'    => Mage::helper('udropship')->__('Vendor Title'),
                 'index'     => 'vendor_title',
                 'editable'  => true, 'edit_only'  => true,
                 'sortable'  => false,
@@ -272,7 +272,7 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Edit_Tab_Products extends Mage_Admi
                 'width'     => '200',
             ));
             $this->addColumn('_state', array(
-                'header'    => $this->__('State/Condition'),
+                'header'    => Mage::helper('udropship')->__('State/Condition'),
                 'type'      => 'select',
                 'index'     => 'state',
                 'editable'  => true, 'edit_only'  => true,
@@ -284,7 +284,7 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Edit_Tab_Products extends Mage_Admi
         }
         if (Mage::helper('udropship')->isUdmultiAvailable()) {
             $this->addColumn('_backorders', array(
-                'header'    => $this->__('Backorders'),
+                'header'    => Mage::helper('udropship')->__('Backorders'),
                 'type'      => 'select',
                 'index'     => 'backorders',
                 'editable'  => true, 'edit_only'=>true,
@@ -294,7 +294,7 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Edit_Tab_Products extends Mage_Admi
             ));
         }
         $this->addColumn('_stock_qty', array(
-            'header'    => $this->__('Vendor Stock Qty'),
+            'header'    => Mage::helper('udropship')->__('Vendor Stock Qty'),
             'type'      => 'number',
             'index'     => 'stock_qty',
             'renderer'  => 'udropship/adminhtml_vendor_helper_gridRenderer_stockQty',
@@ -305,7 +305,7 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Edit_Tab_Products extends Mage_Admi
         ));
         if ($this->getVendor()->getBackorderByAvailability()) {
         $this->addColumn('_avail_state', array(
-            'header'    => $this->__('Availability State'),
+            'header'    => Mage::helper('udropship')->__('Availability State'),
             'type'      => 'select',
             'index'     => 'avail_state',
             'editable'  => true, 'edit_only'  => true,
@@ -314,7 +314,7 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Edit_Tab_Products extends Mage_Admi
             'options'   => Mage::getSingleton('udmulti/source')->setPath('avail_state')->toOptionHash()
         ));
         $this->addColumn('_avail_date', array(
-            'header'    => $this->__('Availability Date'),
+            'header'    => Mage::helper('udropship')->__('Availability Date'),
             'type'      => 'date',
             'index'     => 'avail_date',
             'renderer'  => 'udropship/adminhtml_vendor_helper_gridRenderer_date',
@@ -325,7 +325,7 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Edit_Tab_Products extends Mage_Admi
         }
         if (Mage::helper('udropship')->isUdmultiPriceAvailable()) {
             $this->addColumn('_special_price', array(
-                'header'    => $this->__('Special Price'),
+                'header'    => Mage::helper('udropship')->__('Special Price'),
                 'index'     => 'special_price',
                 'renderer'  => 'udropship/adminhtml_vendor_helper_gridRenderer_specialPrice',
                 'editable'  => true, 'edit_only'  => true,

@@ -20,7 +20,7 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Statement_Edit_Tab_RefundRows exten
     public function __construct()
     {
         parent::__construct();
-        $this->setId('statement_rows');
+        $this->setId('statement_refund_rows');
         $this->setDefaultSort('row_id');
         $this->setUseAjax(true);
     }
@@ -131,6 +131,6 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Statement_Edit_Tab_RefundRows exten
 
     public function getGridUrl()
     {
-        return $this->getUrl('*/*/rowGrid', array('_current'=>true));
+        return $this->getUrl('*/*/refundRowGrid', array('_current'=>true));
     }
 }

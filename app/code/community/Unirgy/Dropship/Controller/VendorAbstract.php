@@ -81,7 +81,7 @@ class Unirgy_Dropship_Controller_VendorAbstract extends Mage_Core_Controller_Fro
                 if (!empty($login['username']) && !empty($login['password'])) {
                     try {
                         if (!$session->login($login['username'], $login['password'])) {
-                            $session->addError($this->__('Invalid username or password.'));
+                            $session->addError(Mage::helper('udropship')->__('Invalid username or password.'));
                         }
                         $session->setUsername($login['username']);
                     }
@@ -89,7 +89,7 @@ class Unirgy_Dropship_Controller_VendorAbstract extends Mage_Core_Controller_Fro
                         $session->addError($e->getMessage());
                     }
                 } else {
-                    $session->addError($this->__('Login and password are required'));
+                    $session->addError(Mage::helper('udropship')->__('Login and password are required'));
                 }
                 if ($session->isLoggedIn()) {
                     $this->_loginPostRedirect();

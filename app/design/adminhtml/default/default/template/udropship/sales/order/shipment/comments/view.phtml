@@ -18,7 +18,7 @@
 <?php if ($_entity = $this->getEntity()): ?>
 <div id="comments_block">
     <span class="field-row">
-        <label class="normal" for="comment_status"><?php echo Mage::helper('sales')->__('Status') ?></label><br/>
+        <label class="normal" for="comment_status"><?php echo Mage::helper('udropship')->__('Status') ?></label><br/>
         <select name="comment[status]" class="select" id="comment_status">
         <?php foreach (Mage::getSingleton('udropship/source')->setPath('shipment_statuses')->toOptionHash() as $_code=>$_label): ?>
             <option value="<?php echo $_code ?>"<?php if($_code==$this->getEntity()->getUdropshipStatus()): ?> selected="selected"<?php endif; ?>><?php echo $_label ?></option>
@@ -29,14 +29,14 @@
         </script>
     </span>
     <span class="field-row">
-        <label class="normal" for="comment_comment"><?php echo Mage::helper('sales')->__('Comment Text') ?></label>
+        <label class="normal" for="comment_comment"><?php echo Mage::helper('udropship')->__('Comment Text') ?></label>
         <textarea name="comment[comment]" rows="3" cols="5" style="height:6em; width:99%;" id="comment_comment"></textarea>
     </span>
     <div class="f-left">
-        <input name="comment[is_vendor_notified]" type="checkbox" id="vendor_comment_notify" value="1" /><label class="normal" for="vendor_comment_notify"> <?php echo Mage::helper('sales')->__('Notify Vendor by Email') ?></label><br />
-        <input name="comment[is_visible_to_vendor]" type="checkbox" id="comment_visible" value="1" /><label class="normal" for="comment_visible"> <?php echo Mage::helper('sales')->__('Visible to Vendor') ?></label><br />
+        <input name="comment[is_vendor_notified]" type="checkbox" id="vendor_comment_notify" value="1" /><label class="normal" for="vendor_comment_notify"> <?php echo Mage::helper('udropship')->__('Notify Vendor by Email') ?></label><br />
+        <input name="comment[is_visible_to_vendor]" type="checkbox" id="comment_visible" value="1" /><label class="normal" for="comment_visible"> <?php echo Mage::helper('udropship')->__('Visible to Vendor') ?></label><br />
         <?php if ($this->canSendCommentEmail()): ?>
-        <input name="comment[is_customer_notified]" type="checkbox" id="customer_comment_notify" value="1" /> <label class="normal" for="customer_comment_notify"><?php echo Mage::helper('sales')->__('Notify Customer') ?></label>
+        <input name="comment[is_customer_notified]" type="checkbox" id="customer_comment_notify" value="1" /> <label class="normal" for="customer_comment_notify"><?php echo Mage::helper('udropship')->__('Notify Customer') ?></label>
         <?php endif; ?>
     </div>
     <div class="f-right">
@@ -75,7 +75,7 @@
 <script type="text/javascript">
 function submitComment() {
     if (validateShipmentStatusSubmit()) {
-        submitAndReloadArea($('comments_block').parentNode, '<?php echo $this->getUrl('adminhtml/shipment/addComment', array('shipment_id'=>$_entity->getId())) ?>')
+        submitAndReloadArea($('comments_block').parentNode, '<?php echo $this->getUrl('adminhtml/udropshipadmin_shipment/addComment', array('shipment_id'=>$_entity->getId())) ?>')
     }
 }
 

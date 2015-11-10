@@ -87,7 +87,7 @@
             <?php if (isset($poItems[$_item->getId()])): ?>
                 <?php echo $poItems[$_item->getId()]->getQty()*1 ?>
             <?php elseif ($_item->getIsVirtual()): ?>
-                <?php echo $this->__('N/A') ?>
+                <?php echo Mage::helper('udropship')->__('N/A') ?>
             <?php else: ?>
                 0
             <?php endif; ?>
@@ -126,7 +126,7 @@
         <?php endif; ?>
         <?php echo $this->htmlEscape($_item->getDescription()) ?>
         <?php if($this->helper('giftmessage/message')->getIsMessagesAvailable('order_item', $parentItem) && $parentItem->getGiftMessageId()): ?>
-            <a href="#" id="order-item-gift-message-link-<?php echo $parentItem->getId() ?>" class="gift-message-link" onclick="return giftMessageToogle('<?php echo $parentItem->getId() ?>')"><?php echo Mage::helper('sales')->__('Gift Message') ?></a>
+            <a href="#" id="order-item-gift-message-link-<?php echo $parentItem->getId() ?>" class="gift-message-link" onclick="return giftMessageToogle('<?php echo $parentItem->getId() ?>')"><?php echo Mage::helper('udropship')->__('Gift Message') ?></a>
         <?php endif; ?>
     </td>
     <td>&nbsp;</td>

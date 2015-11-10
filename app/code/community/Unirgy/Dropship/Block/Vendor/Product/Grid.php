@@ -17,6 +17,37 @@ class Unirgy_Dropship_Block_Vendor_Product_Grid extends Mage_Core_Block_Template
         }
         $this->getProductCollection()->load();
 
+        if (Mage::helper('udropship')->isModuleActive('Unirgy_DropshipSellYours')) {
+            $findEditOfferIds = array();
+            foreach ($this->getProductCollection() as $p) {
+                if (!$p->isVisibleInSiteVisibility()) {
+                    $findEditOfferIds[] = $p->getEntityId();
+                    $p->setHasEditOfferId(1);
+                }
+            }
+            if (!empty($findEditOfferIds)) {
+                $rHlp = Mage::getResourceSingleton('udropship/helper');
+                $conn = $rHlp->getReadConnection();
+                $findEditOffersSel = $conn->select()
+                    ->from($rHlp->getTable('catalog/product_super_link'))
+                    ->where('product_id in (?)', $findEditOfferIds);
+                $findEditOffers = $conn->fetchAll(
+                    $findEditOffersSel
+                );
+                if (is_array($findEditOffers)) {
+                    foreach ($findEditOffers as $__feo) {
+                        foreach ($this->getProductCollection() as $p) {
+                            if ($__feo['product_id']==$p->getEntityId()) {
+                                $p->setEditOfferId($__feo['parent_id']);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
         foreach ($this->getProductCollection() as $p) {
             if (!Mage::helper('udropship')->isUdmultiAvailable()) {
                 if (($vsAttrCode = Mage::getStoreConfig('udropship/vendor/vendor_sku_attribute')) && Mage::helper('udropship')->checkProductAttribute($vsAttrCode)) {
@@ -36,7 +67,7 @@ class Unirgy_Dropship_Block_Vendor_Product_Grid extends Mage_Core_Block_Template
         $r = Mage::app()->getRequest();
         $param = $r->getParam('filter_sku');
         if (!is_null($param) && $param!=='') {
-            $collection->addAttributeToFilter('sku', array('like'=>$param.'%'));
+            $collection->addAttributeToFilter('sku', array('like'=>'%'.$param.'%'));
         }
         $param = $r->getParam('filter_vendor_sku');
         if (!is_null($param) && $param!=='') {
@@ -113,7 +144,7 @@ class Unirgy_Dropship_Block_Vendor_Product_Grid extends Mage_Core_Block_Template
             $collection = Mage::getModel('catalog/product')->getCollection()
                 //->addAttributeToFilter('udropship_vendor', $v->getId())
                 ->addAttributeToFilter('type_id', array('in'=>array('simple','downloadable','virtual')))
-                ->addAttributeToSelect(array('sku', 'name'/*, 'cost'*/))
+                ->addAttributeToSelect(array('sku', 'name', 'visibility'/*, 'cost'*/))
             ;
             $conn = $collection->getConnection();
             $collection->addAttributeToFilter('entity_id', array('in'=>$v->getAssociatedProductIds()));

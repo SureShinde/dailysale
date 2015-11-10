@@ -33,14 +33,14 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Edit_Tab_Custom extends Mage_Adminh
         $this->setForm($form);
 
         $fieldset = $form->addFieldset('custom', array(
-            'legend'=>$hlp->__('Custom Vendor Information')
+            'legend'=>Mage::helper('udropship')->__('Custom Vendor Information')
         ));
 
         $fieldset->addField('custom_data_combined', 'textarea', array(
             'name'      => 'custom_data_combined',
-            'label'     => $hlp->__('Custom Data'),
+            'label'     => Mage::helper('udropship')->__('Custom Data'),
             'style'     => 'height:500px',
-            'note'      => $this->__("
+            'note'      => Mage::helper('udropship')->__("
 Enter custom data for this vendor.<br/>
 Each part should start with:<br/>
 <pre>===== part_name =====</pre><br/>
