@@ -249,7 +249,7 @@
             </depends>
         </Mage_Poll>
         <Mage_Rating>
-            <active>false</active>
+            <active>true</active>
             <codePool>core</codePool>
             <depends>
                 <Mage_Core/>
