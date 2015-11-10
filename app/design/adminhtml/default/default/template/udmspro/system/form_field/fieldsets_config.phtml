@@ -20,13 +20,13 @@ $fValue = $_element->getValue();
             </tr>
             <tr id="<?php echo $this->suffixId('rowTpl')?>" style="display:none">
                 <td>
-                    <h3><?php echo Mage::helper('udmspro')->__('Title')?></h3>
+                    <h3><?php echo Mage::helper('udropship')->__('Title')?></h3>
                     <input type="text" class="input-text" name="<?php echo $this->getFieldName()?>[$$ROW][title]" value="$$TITLE" style="width:200px" />
-                    <h3><?php echo Mage::helper('udmspro')->__('Sort Order')?></h3>
+                    <h3><?php echo Mage::helper('udropship')->__('Sort Order')?></h3>
                     <input type="text" class="input-text" name="<?php echo $this->getFieldName()?>[$$ROW][sort_order]" value="$$SORT_ORDER" style="width:70px" />
                 </td>
                 <td>
-                    <h3><?php echo Mage::helper('udmspro')->__('Top Wide Fields')?></h3>
+                    <h3><?php echo Mage::helper('udropship')->__('Top Wide Fields')?></h3>
 
                     <div class="top_columns_def-fieldset">
                     <?php 
@@ -37,7 +37,7 @@ $fValue = $_element->getValue();
 
                     <br /><br />
 
-                    <h3><?php echo Mage::helper('udmspro')->__('Bottom Wide Fields')?></h3>
+                    <h3><?php echo Mage::helper('udropship')->__('Bottom Wide Fields')?></h3>
                 
                     <div class="bottom_columns_def-fieldset">
                     <?php 
@@ -48,7 +48,7 @@ $fValue = $_element->getValue();
 
                 </td>
                 <td>
-                    <h3><?php echo Mage::helper('udmspro')->__('Left Column Fields')?></h3>
+                    <h3><?php echo Mage::helper('udropship')->__('Left Column Fields')?></h3>
 
                     <div class="left_columns_def-fieldset">
                     <?php 
@@ -59,7 +59,7 @@ $fValue = $_element->getValue();
 
                     <br /><br />
 
-                    <h3><?php echo Mage::helper('udmspro')->__('Right Column Fields')?></h3>
+                    <h3><?php echo Mage::helper('udropship')->__('Right Column Fields')?></h3>
                 
                     <div class="right_columns_def-fieldset">
                     <?php 
@@ -70,14 +70,14 @@ $fValue = $_element->getValue();
 
                 </td>
                 <td>
-                    <button type="button" class="scalable delete delete-fieldset"><span><?php echo $this->__('Remove') ?></span></button>
+                    <button type="button" class="scalable delete delete-fieldset"><span><?php echo Mage::helper('udropship')->__('Remove') ?></span></button>
                 </td>
             </tr>
         </thead>
         <tfoot>
             <tr>
                 <th colspan="5" class="a-left">
-                    <div class="left"><button type="button" class="scalable add" id="<?php echo $this->suffixId('addBtn')?>"><span>+ <?php echo $this->__('Add Fieldset') ?></span></button></div>
+                    <div class="left"><button type="button" class="scalable add" id="<?php echo $this->suffixId('addBtn')?>"><span>+ <?php echo Mage::helper('udropship')->__('Add Fieldset') ?></span></button></div>
                 </th>
             </tr>
         </tfoot>
