@@ -20,7 +20,7 @@
 <config>
     <modules>
         <Unirgy_DropshipTierCommission>
-            <version>1.1.15</version>
+            <version>2.4.0</version>
         </Unirgy_DropshipTierCommission>
     </modules>
 
@@ -194,13 +194,6 @@
 
     <admin>
         <routers>
-            <udtiercomadmin>
-                <use>admin</use>
-                <args>
-                    <module>Unirgy_DropshipTierCommission_Adminhtml</module>
-                    <frontName>udtiercomadmin</frontName>
-                </args>
-            </udtiercomadmin>
         </routers>
     </admin>
 

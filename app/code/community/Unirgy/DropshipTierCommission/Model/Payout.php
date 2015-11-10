@@ -88,8 +88,18 @@ class Unirgy_DropshipTierCommission_Model_Payout extends Unirgy_DropshipPayout_M
 
         $qtyOrdered = $orderItem->getQtyOrdered();
         $_rowDivider = $poItem->getQty()/($qtyOrdered>0 ? $qtyOrdered : 1);
+        $iHiddenTax = $orderItem->getBaseHiddenTaxAmount()*($_rowDivider>0 ? $_rowDivider : 1);
         $iTax = $orderItem->getBaseTaxAmount()*($_rowDivider>0 ? $_rowDivider : 1);
         $iDiscount = $orderItem->getBaseDiscountAmount()*($_rowDivider>0 ? $_rowDivider : 1);
+
+        if ($orderItem->getOrder()->getData('udpo_amount_fields') && $poItem->getPo()
+            || $orderItem->getOrder()->getData('ud_amount_fields') && $poItem->getShipment()
+        ) {
+            $iHiddenTax = $poItem->getBaseHiddenTaxAmount();
+            $iTax = $poItem->getBaseTaxAmount();
+            $iDiscount = $poItem->getBaseDiscountAmount();
+            $subtotal = $poItem->getBaseRowTotal();
+        }
 
         $shippingAmount = $po->getBaseShippingAmount();
         if ($this->getVendor()->getIsShippingTaxInShipping()) {
@@ -104,6 +114,7 @@ class Unirgy_DropshipTierCommission_Model_Payout extends Unirgy_DropshipPayout_M
             'subtotal' => $subtotal,
             'shipping' => $onlySubtotal ? 0 : $shippingAmount,
             'tax' => $iTax,
+            'hidden_tax' => $iHiddenTax,
             'discount' => $iDiscount,
             'handling' => $onlySubtotal ? 0 : $po->getBaseHandlingFee(),
             'trans_fee' => $onlySubtotal ? 0 : $po->getTransactionFee(),
@@ -119,6 +130,7 @@ class Unirgy_DropshipTierCommission_Model_Payout extends Unirgy_DropshipPayout_M
 
     public function calculateOrder($order)
     {
+        $taxInSubtotal = Mage::helper('tax')->displaySalesBothPrices() || Mage::helper('tax')->displaySalesPriceInclTax();
         if (is_null($order['com_percent'])) {
             $order['com_percent'] = $this->getVendor()->getCommissionPercent();
         }
@@ -127,34 +139,39 @@ class Unirgy_DropshipTierCommission_Model_Payout extends Unirgy_DropshipPayout_M
             $order['po_com_percent'] = $this->getVendor()->getCommissionPercent();
         }
         $order['po_com_percent'] *= 1;
-        /*
-        if (is_null($order['amounts']['trans_fee'])) {
-            $order['amounts']['trans_fee'] = $this->getVendor()->getTransactionFee();
-        }
-        */
-        //$order['amounts']['trans_fee'] = @$order['trans_fee'];
-        $order['amounts']['com_amount'] = round($order['amounts']['subtotal']*$order['com_percent']/100, 2);
-        $order['amounts']['total_payout'] = $order['amounts']['subtotal']-$order['amounts']['com_amount']-$order['amounts']['trans_fee']+$order['amounts']['adj_amount'];
-        $order['amounts']['total_payment'] = $order['amounts']['subtotal']+$order['amounts']['adj_amount'];
-        //+$order['tax']+$order['handling']+$order['shipping'];
-
-        /*
-        foreach ($this->getWithholdOptions() as $k=>$l) {
-            if (!$this->hasWithhold($k) && isset($order['amounts'][$k])) {
-                $order['amounts']['total_payout'] += $order['amounts'][$k];
-            }
-        }
-        */
 
         if (isset($order['amounts']['tax']) && in_array($this->getVendor()->getStatementTaxInPayout(), array('', 'include'))) {
-            if ($this->getVendor()->getApplyCommissionOnTax()) {
-                $taxCom = round($order['amounts']['tax']*$order['com_percent']/100, 2);
-                $order['amounts']['com_amount'] += $taxCom;
-                $order['amounts']['total_payout'] -= $taxCom;
+            if ($taxInSubtotal) {
+                if ($this->getVendor()->getApplyCommissionOnTax()) {
+                    $order['amounts']['subtotal'] += $order['amounts']['tax'];
+                    $order['amounts']['subtotal'] += $order['amounts']['hidden_tax'];
+                    $order['amounts']['com_amount'] = $order['amounts']['subtotal']*$order['com_percent']/100;
+                } else {
+                    $order['amounts']['com_amount'] = $order['amounts']['subtotal']*$order['com_percent']/100;
+                    $order['amounts']['subtotal'] += $order['amounts']['tax'];
+                    $order['amounts']['subtotal'] += $order['amounts']['hidden_tax'];
+                }
+            } else {
+                $order['amounts']['com_amount'] = $order['amounts']['subtotal']*$order['com_percent']/100;
+                $order['amounts']['total_payout']  += $order['amounts']['tax'];
+                $order['amounts']['total_payout']  += $order['amounts']['hidden_tax'];
+                $order['amounts']['total_payment'] += $order['amounts']['tax'];
+                $order['amounts']['total_payment'] += $order['amounts']['hidden_tax'];
+                if ($this->getVendor()->getApplyCommissionOnTax()) {
+                    $taxCom = round($order['amounts']['tax']*$order['com_percent']/100, 2);
+                    $order['amounts']['com_amount'] += $taxCom;
+                    $order['amounts']['total_payout'] -= $taxCom;
+                }
             }
-            $order['amounts']['total_payout'] += $order['amounts']['tax'];
+        } else {
+            $order['amounts']['com_amount'] = $order['amounts']['subtotal']*$order['com_percent']/100;
         }
-        $order['amounts']['total_payment'] += $order['amounts']['tax'];
+
+        $order['amounts']['com_amount'] = round($order['amounts']['com_amount'], 2);
+
+        $order['amounts']['total_payout'] = $order['amounts']['subtotal']-$order['amounts']['com_amount']-$order['amounts']['trans_fee']+$order['amounts']['adj_amount'];
+        $order['amounts']['total_payment'] = $order['amounts']['subtotal']+$order['amounts']['adj_amount'];
+
         if (isset($order['amounts']['discount']) && in_array($this->getVendor()->getStatementDiscountInPayout(), array('', 'include'))) {
             if ($this->getVendor()->getApplyCommissionOnDiscount()) {
                 $discountCom = round($order['amounts']['discount']*$order['com_percent']/100, 2);
@@ -164,6 +181,7 @@ class Unirgy_DropshipTierCommission_Model_Payout extends Unirgy_DropshipPayout_M
             $order['amounts']['total_payout'] -= $order['amounts']['discount'];
         }
         $order['amounts']['total_payment'] -= $order['amounts']['discount'];
+
         if (isset($order['amounts']['shipping']) && in_array($this->getVendor()->getStatementShippingInPayout(), array('', 'include'))) {
             if ($this->getVendor()->getApplyCommissionOnShipping()) {
                 $shipCom = round($order['amounts']['shipping']*$order['po_com_percent']/100, 2);

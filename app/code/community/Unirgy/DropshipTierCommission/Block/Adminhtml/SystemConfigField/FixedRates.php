@@ -30,13 +30,13 @@ class Unirgy_DropshipTierCommission_Block_Adminhtml_SystemConfigField_FixedRates
         $this->setChild('delete_button',
             $this->getLayout()->createBlock('adminhtml/widget_button')
                 ->setData(array(
-                    'label' => Mage::helper('catalog')->__('Delete'),
+                    'label' => Mage::helper('udropship')->__('Delete'),
                     'class' => 'delete delete-option'
                 )));
         $this->setChild('add_button',
             $this->getLayout()->createBlock('adminhtml/widget_button')
                 ->setData(array(
-                    'label' => Mage::helper('catalog')->__('Add'),
+                    'label' => Mage::helper('udropship')->__('Add'),
                     'class' => 'add',
                     'id'    => 'udtcFixed_config_add_new_option_button'
                 )));
