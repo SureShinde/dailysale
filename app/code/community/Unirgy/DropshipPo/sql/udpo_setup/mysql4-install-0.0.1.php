@@ -16,7 +16,7 @@
  */
 
 $hlp = Mage::helper('udropship');
-if (!$hlp->hasMageFeature('sales_flat')) Mage::throwException($hlp->__('Unirgy_DropshipPo module does not support this version of magento'));
+if (!$hlp->hasMageFeature('sales_flat')) Mage::throwException(Mage::helper('udropship')->__('Unirgy_DropshipPo module does not support this version of magento'));
 if (!$hlp->isUdpoActive()) return false;
 
 /* @var $installer Mage_Sales_Model_Entity_Setup */
@@ -115,6 +115,8 @@ CREATE TABLE IF NOT EXISTS `{$installer->getTable('udpo/po_item')}` (
     `description` text,
     `name` varchar(255) default NULL,
     `sku` varchar(255) default NULL,
+    `commission_percent` decimal(12,4),
+    `transaction_fee` decimal(12,4),
     PRIMARY KEY (`entity_id`),
     KEY `IDX_PARENT_ID` (`parent_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -45,11 +45,11 @@
 </div>
 <br />
 <div class="box-left entry-edit">
-    <div class="entry-edit-head"><h4><?php echo $this->__('Purchase Order Comments') ?></h4></div>
+    <div class="entry-edit-head"><h4><?php echo Mage::helper('udropship')->__('Purchase Order Comments') ?></h4></div>
     <window.udpoFieldset>
         <div id="order-history_form">
             <span class="field-row">
-                <label class="normal" for="udpo_comment_text"><?php echo Mage::helper('sales')->__('Purchase Order Comments') ?></label>
+                <label class="normal" for="udpo_comment_text"><?php echo Mage::helper('udropship')->__('Purchase Order Comments') ?></label>
                 <textarea id="udpo_comment_text" name="udpo[comment_text]" rows="3" cols="5" style="height:6em; width:99%;"><?php echo $this->getCommentText(); ?></textarea>
             </span>
             <div class="clear"></div>

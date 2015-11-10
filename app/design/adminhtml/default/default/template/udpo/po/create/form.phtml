@@ -29,11 +29,11 @@
         <!--Billing Address-->
         <div class="entry-edit">
             <div class="entry-edit-head">
-                <h4 class="icon-head head-payment-method"><?php echo Mage::helper('sales')->__('Payment Information') ?></h4>
+                <h4 class="icon-head head-payment-method"><?php echo Mage::helper('udropship')->__('Payment Information') ?></h4>
             </div>
             <fieldset>
                 <div><?php echo $this->getPaymentHtml() ?></div>
-                <div><?php echo Mage::helper('sales')->__('The order was placed using %s', $_order->getOrderCurrencyCode()) ?></div>
+                <div><?php echo Mage::helper('udropship')->__('The order was placed using %s', $_order->getOrderCurrencyCode()) ?></div>
             </fieldset>
         </div>
     </div>
@@ -42,7 +42,7 @@
         <!--Shipping Address-->
         <div class="entry-edit">
             <div class="entry-edit-head">
-                <h4 class="icon-head head-shipping-method"><?php echo Mage::helper('sales')->__('Shipping Information') ?></h4>
+                <h4 class="icon-head head-shipping-method"><?php echo Mage::helper('udropship')->__('Shipping Information') ?></h4>
             </div>
             <fieldset>
                 <div>
@@ -59,7 +59,7 @@
 
                     <?php echo $_excl; ?>
                     <?php if ($this->helper('tax')->displayShippingBothPrices() && $_incl != $_excl): ?>
-                        (<?php echo $this->__('Incl. Tax'); ?> <?php echo $_incl; ?>)
+                        (<?php echo Mage::helper('udropship')->__('Incl. Tax'); ?> <?php echo $_incl; ?>)
                     <?php endif; ?>
                 </div>
             </fieldset>
@@ -70,7 +70,7 @@
 
     <div class="entry-edit">
         <div class="entry-edit-head">
-            <h4 class="icon-head head-products"><?php echo Mage::helper('sales')->__('Items to Po') ?></h4>
+            <h4 class="icon-head head-products"><?php echo Mage::helper('udropship')->__('Items to Po') ?></h4>
         </div>
     </div>
     <div id="po_items_container">

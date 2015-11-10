@@ -33,7 +33,7 @@ class Unirgy_DropshipPo_Block_Adminhtml_Po_View_Tabs extends Mage_Adminhtml_Bloc
         if (Mage::registry('order')) {
             return Mage::registry('order');
         }
-        Mage::throwException(Mage::helper('sales')->__('Cannot get the order instance.'));
+        Mage::throwException(Mage::helper('udropship')->__('Cannot get the order instance.'));
     }
 
     public function __construct()
@@ -41,7 +41,7 @@ class Unirgy_DropshipPo_Block_Adminhtml_Po_View_Tabs extends Mage_Adminhtml_Bloc
         parent::__construct();
         $this->setId('udpo_po_view_tabs');
         $this->setDestElementId('udpo_po_view');
-        $this->setTitle(Mage::helper('udpo')->__('Purchase Order View'));
+        $this->setTitle(Mage::helper('udropship')->__('Purchase Order View'));
     }
 
 }

@@ -101,7 +101,7 @@ class Unirgy_DropshipPo_Model_Pdf_PoItems_Bundle extends Mage_Bundle_Model_Sales
                 if (isset($poItems[$_item->getId()])) {
                     $qty = $poItems[$_item->getId()]->getQty()*1;
                 } else if ($_item->getIsVirtual()) {
-                    $qty = Mage::helper('bundle')->__('N/A');
+                    $qty = Mage::helper('udropship')->__('N/A');
                 } else {
                     $qty = 0;
                 }

@@ -29,14 +29,14 @@ class Unirgy_DropshipPo_Block_Adminhtml_Po_Create_Items extends Mage_Adminhtml_B
             'update_button',
             $this->getLayout()->createBlock('adminhtml/widget_button')->setData(array(
                 'class'     => 'update-button',
-                'label'     => Mage::helper('sales')->__('Update Qty\'s'),
+                'label'     => Mage::helper('udropship')->__('Update Qty\'s'),
                 'onclick'   => $onclick,
             ))
         );
         $this->setChild(
             'submit_button',
             $this->getLayout()->createBlock('adminhtml/widget_button')->setData(array(
-                'label'     => Mage::helper('udpo')->__('Create Purchase Orders'),
+                'label'     => Mage::helper('udropship')->__('Create Purchase Orders'),
                 'class'     => 'save submit-button',
                 'onclick'   => 'disableElements(\'submit-button\');$(\'edit_form\').submit()',
             ))

@@ -120,86 +120,86 @@ class Unirgy_DropshipPo_Model_Source extends Unirgy_Dropship_Model_Source_Abstra
         case 'initial_virtual_po_status':
         case 'vendor_po_grid_status_filter':
             $options = array(
-                self::UDPO_STATUS_PENDING    => $hlp->__('Pending'),
-                self::UDPO_STATUS_EXPORTED   => $hlp->__('Exported'),
-                self::UDPO_STATUS_ACK        => $hlp->__('Acknowledged'),
-                self::UDPO_STATUS_BACKORDER  => $hlp->__('Backorder'),
-                self::UDPO_STATUS_ONHOLD     => $hlp->__('On Hold'),
-                self::UDPO_STATUS_READY      => $hlp->__('Ready to Ship'),
-                self::UDPO_STATUS_PARTIAL    => $hlp->__('Partially Shipped'),
-                self::UDPO_STATUS_SHIPPED    => $hlp->__('Shipped'),
-                self::UDPO_STATUS_DELIVERED  => $hlp->__('Delivered'),
-                self::UDPO_STATUS_CANCELED   => $hlp->__('Canceled'),
-                self::UDPO_STATUS_RETURNED   => $hlp->__('Returned'),
+                self::UDPO_STATUS_PENDING    => Mage::helper('udropship')->__('Pending'),
+                self::UDPO_STATUS_EXPORTED   => Mage::helper('udropship')->__('Exported'),
+                self::UDPO_STATUS_ACK        => Mage::helper('udropship')->__('Acknowledged'),
+                self::UDPO_STATUS_BACKORDER  => Mage::helper('udropship')->__('Backorder'),
+                self::UDPO_STATUS_ONHOLD     => Mage::helper('udropship')->__('On Hold'),
+                self::UDPO_STATUS_READY      => Mage::helper('udropship')->__('Ready to Ship'),
+                self::UDPO_STATUS_PARTIAL    => Mage::helper('udropship')->__('Partially Shipped'),
+                self::UDPO_STATUS_SHIPPED    => Mage::helper('udropship')->__('Shipped'),
+                self::UDPO_STATUS_DELIVERED  => Mage::helper('udropship')->__('Delivered'),
+                self::UDPO_STATUS_CANCELED   => Mage::helper('udropship')->__('Canceled'),
+                self::UDPO_STATUS_RETURNED   => Mage::helper('udropship')->__('Returned'),
             );
             if (Mage::helper('udropship')->isModuleActive('ustockpo')) {
-                $options[self::UDPO_STATUS_STOCKPO_READY]   = $hlp->__('Ready for stock PO');
-                $options[self::UDPO_STATUS_STOCKPO_EXPORTED]   = $hlp->__('Exported stock PO');
-                $options[self::UDPO_STATUS_STOCKPO_RECEIVED]   = $hlp->__('Received stock PO');
+                $options[self::UDPO_STATUS_STOCKPO_READY]   = Mage::helper('udropship')->__('Ready for stock PO');
+                $options[self::UDPO_STATUS_STOCKPO_EXPORTED]   = Mage::helper('udropship')->__('Exported stock PO');
+                $options[self::UDPO_STATUS_STOCKPO_RECEIVED]   = Mage::helper('udropship')->__('Received stock PO');
             }
             if (in_array($this->getPath(), array('initial_po_status','statement_po_status','initial_virtual_po_status','batch_export_orders_export_on_po_status'))) {
-                $options = array('999' => $hlp->__('* Default (global setting)')) + $options;
+                $options = array('999' => Mage::helper('udropship')->__('* Default (global setting)')) + $options;
             }
             break;
             
         case 'udropship/purchase_order/po_increment_type':
         case 'po_increment_types':
             $options = array(
-                self::UDPO_INCREMENT_NATIVE      => $hlp->__('Magento Native'),
-                self::UDPO_INCREMENT_ORDER_BASED => $hlp->__('Order Based'),
+                self::UDPO_INCREMENT_NATIVE      => Mage::helper('udropship')->__('Magento Native'),
+                self::UDPO_INCREMENT_ORDER_BASED => Mage::helper('udropship')->__('Order Based'),
             );
             break;
 
         case 'udropship/purchase_order/autoinvoice_shipment':
             $options = array(
-                Unirgy_DropshipPo_Model_Source::AUTOINVOICE_SHIPMENT_NO => $hlp->__('No'),
-                Unirgy_DropshipPo_Model_Source::AUTOINVOICE_SHIPMENT_YES => $hlp->__('Yes'),
-                Unirgy_DropshipPo_Model_Source::AUTOINVOICE_SHIPMENT_ORDER => $hlp->__('Trigger whole order invoice'),
+                Unirgy_DropshipPo_Model_Source::AUTOINVOICE_SHIPMENT_NO => Mage::helper('udropship')->__('No'),
+                Unirgy_DropshipPo_Model_Source::AUTOINVOICE_SHIPMENT_YES => Mage::helper('udropship')->__('Yes'),
+                Unirgy_DropshipPo_Model_Source::AUTOINVOICE_SHIPMENT_ORDER => Mage::helper('udropship')->__('Trigger whole order invoice'),
             );
             break;
         
         case 'udropship/purchase_order/shipment_increment_type':
         case 'shipment_increment_types':
             $options = array(
-                self::SHIPMENT_INCREMENT_NATIVE      => $hlp->__('Magento Native'),
-                self::SHIPMENT_INCREMENT_ORDER_BASED => $hlp->__('Order Based'),
-                self::SHIPMENT_INCREMENT_PO_BASED    => $hlp->__('PO Based'),
+                self::SHIPMENT_INCREMENT_NATIVE      => Mage::helper('udropship')->__('Magento Native'),
+                self::SHIPMENT_INCREMENT_ORDER_BASED => Mage::helper('udropship')->__('Order Based'),
+                self::SHIPMENT_INCREMENT_PO_BASED    => Mage::helper('udropship')->__('PO Based'),
             );
             break;
 
         case 'vendor_po_grid_sortby':
             $options = array(
-                'order_increment_id' => $hlp->__('Order ID'),
-                'increment_id' => $hlp->__('PO ID'),
-                'order_date' => $hlp->__('Order Date'),
-                'po_date' => $hlp->__('PO Date'),
-                'shipping_method' => $hlp->__('Delivery Method'),
-                'udropship_status' => $hlp->__('PO Status'),
+                'order_increment_id' => Mage::helper('udropship')->__('Order ID'),
+                'increment_id' => Mage::helper('udropship')->__('PO ID'),
+                'order_date' => Mage::helper('udropship')->__('Order Date'),
+                'po_date' => Mage::helper('udropship')->__('PO Date'),
+                'shipping_method' => Mage::helper('udropship')->__('Delivery Method'),
+                'udropship_status' => Mage::helper('udropship')->__('PO Status'),
             );
             break;
 
         case 'new_order_notifications':
             $options = array(
-                '' => $hlp->__('* No notification'),
-                '1' => $hlp->__('* Email notification'),
-                '-1' => $hlp->__('* Email notification By Status'),
+                '' => Mage::helper('udropship')->__('* No notification'),
+                '1' => Mage::helper('udropship')->__('* Email notification'),
+                '-1' => Mage::helper('udropship')->__('* Email notification By Status'),
             );
             $config = Mage::getConfig()->getNode('global/udropship/notification_methods');
             foreach ($config->children() as $code=>$node) {
                 if (!$node->label) {
                     continue;
                 }
-                $options[$code] = $hlp->__((string)$node->label);
+                $options[$code] = Mage::helper('udropship')->__((string)$node->label);
             }
             asort($options);
             break;
 
         default:
-            Mage::throwException($hlp->__('Invalid request for source options: '.$this->getPath()));
+            Mage::throwException(Mage::helper('udropship')->__('Invalid request for source options: '.$this->getPath()));
         }
 
         if ($selector) {
-            $options = array(''=>$hlp->__('* Please select')) + $options;
+            $options = array(''=>Mage::helper('udropship')->__('* Please select')) + $options;
         }
 
         return $options;

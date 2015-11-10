@@ -105,7 +105,7 @@
                 <?php if (isset($poItems[$_item->getId()])): ?>
                     <?php echo $poItems[$_item->getId()]->getQty()*1 ?>
                 <?php elseif ($_item->getIsVirtual()): ?>
-                    <?php echo $this->__('N/A') ?>
+                    <?php echo Mage::helper('udropship')->__('N/A') ?>
                 <?php else: ?>
                     0
                 <?php endif; ?>
