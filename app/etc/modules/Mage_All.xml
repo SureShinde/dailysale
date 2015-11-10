@@ -241,7 +241,7 @@
             </depends>
         </Mage_Backup>
         <Mage_Poll>
-            <active>true</active>
+            <active>false</active>
             <codePool>core</codePool>
             <depends>
                 <Mage_Core/>
@@ -249,7 +249,7 @@
             </depends>
         </Mage_Poll>
         <Mage_Rating>
-            <active>true</active>
+            <active>false</active>
             <codePool>core</codePool>
             <depends>
                 <Mage_Core/>
@@ -265,7 +265,7 @@
             </depends>
         </Mage_Review>
         <Mage_Tag>
-            <active>true</active>
+            <active>false</active>
             <codePool>core</codePool>
             <depends>
                 <Mage_Catalog/>
@@ -329,7 +329,7 @@
             </depends>
         </Mage_CatalogInventory>
         <Mage_GiftMessage>
-            <active>true</active>
+            <active>false</active>
             <codePool>core</codePool>
             <depends>
                 <Mage_Catalog/>
@@ -372,7 +372,7 @@
             </depends>
         </Mage_Dataflow>
         <Mage_Rss>
-            <active>true</active>
+            <active>false</active>
             <codePool>core</codePool>
              <depends>
                 <Mage_Catalog/>
@@ -383,7 +383,7 @@
              </depends>
         </Mage_Rss>
         <Mage_ProductAlert>
-            <active>true</active>
+            <active>false</active>
             <codePool>core</codePool>
             <depends>
                 <Mage_Catalog/>
