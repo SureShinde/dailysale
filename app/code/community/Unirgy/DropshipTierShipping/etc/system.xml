@@ -3,7 +3,7 @@
     <sections>
         <carriers>
             <groups>
-                <udtiership translate="label">
+                <udtiership translate="label" module="udropship">
                     <label>Tier Shipping</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>210</sort_order>
@@ -56,7 +56,7 @@
                             <show_in_store>0</show_in_store>
                         </handling_fee>
 
-                        <use_simple_rates>
+                        <use_simple_rates translate="label">
                             <label>Use Rates Setup</label>
                             <frontend_type>select</frontend_type>
                             <source_model>udtiership/source</source_model>
@@ -85,6 +85,16 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </use_simple_rates>
+
+                        <use_customer_group translate="label">
+                            <label>Use Customer Group Condition</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>11</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </use_customer_group>
 
                         <tiered_category_parent translate="label">
                             <label>Parent category for tiered categories</label>
@@ -163,7 +173,7 @@
                             <show_in_store>0</show_in_store>
                         </calculation_method>
 
-                        <rate_cost_attribute translate="label">
+                        <rate_cost_attribute translate="label comment">
                             <label>Product attribute code for "Cost for the first item"</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>30</sort_order>
@@ -172,7 +182,7 @@
                             <show_in_store>0</show_in_store>
                             <comment>Used to set per product rates</comment>
                         </rate_cost_attribute>
-                        <rate_additional_attribute translate="label">
+                        <rate_additional_attribute translate="label comment">
                             <label>Product attribute code for "Additional item cost"</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>32</sort_order>
@@ -181,7 +191,7 @@
                             <show_in_store>0</show_in_store>
                             <comment>Used to set per product rates</comment>
                         </rate_additional_attribute>
-                        <rate_handling_attribute translate="label">
+                        <rate_handling_attribute translate="label comment">
                             <label>Product attribute code for "Tier handling fee"</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>34</sort_order>
@@ -200,7 +210,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </fallback_lookup>
-                        <fallback_rate_cost translate="label">
+                        <fallback_rate_cost translate="label comment">
                             <label>Fallback Cost for the first item</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>45</sort_order>
@@ -209,7 +219,7 @@
                             <show_in_store>0</show_in_store>
                             <comment>Used when there is no matched category found</comment>
                         </fallback_rate_cost>
-                        <fallback_rate_additional translate="label">
+                        <fallback_rate_additional translate="label comment">
                             <label>Fallback Additional item cost</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>47</sort_order>
@@ -218,7 +228,7 @@
                             <show_in_store>0</show_in_store>
                             <comment>Used when there is no matched category found</comment>
                         </fallback_rate_additional>
-                        <fallback_rate_handling translate="label">
+                        <fallback_rate_handling translate="label comment">
                             <label>Fallback Tier handling fee</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>49</sort_order>
@@ -261,7 +271,7 @@
                             <show_in_store>0</show_in_store>
                         </delivery_type>
 
-                        <delivery_type_selector translate="label">
+                        <delivery_type_selector translate="label comment">
                             <label>Configure Delivery Type Rates</label>
                             <frontend_type>select</frontend_type>
                             <frontend_model>udtiership/adminhtml_systemConfigField_v2_deliveryTypeSelector</frontend_model>

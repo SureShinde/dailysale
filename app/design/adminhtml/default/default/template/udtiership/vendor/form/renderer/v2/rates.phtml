@@ -6,6 +6,8 @@ $fValue = $_element->getValue();
 $vShipClass = Mage::getSingleton('udshipclass/source')->setPath('vendor_ship_class')->toOptionHash();
 $cShipClass = Mage::getSingleton('udshipclass/source')->setPath('customer_ship_class')->toOptionHash();
 $conditions = Mage::getSingleton('udtiership/source')->setPath('simple_condition')->toOptionHash();
+$customerGroupIds = $_tsHlp->getCustomerGroups();
+$useCustomerGroup = Mage::getStoreConfigFlag('carriers/udtiership/use_customer_group');
 $_dt = $this->getDeliveryType();
 $topCats = $this->getTopCategories();
 $store = Mage::app()->getDefaultStoreView();
@@ -25,16 +27,16 @@ $handlingSubrowKey = $this->getFieldName()."[$_dt][\$\$ROW][handling_extra]";
         <col width="50" />
         <thead>
         <tr class="headings">
-            <th><?php echo $_tsHlp->__('Category') ?></th>
-            <th><?php echo $_tsHlp->__('Customer') ?></th>
-            <th><?php echo $_tsHlp->__('Rates') ?></th>
+            <th><?php echo Mage::helper('udropship')->__('Category') ?></th>
+            <th><?php echo Mage::helper('udropship')->__('Customer') ?></th>
+            <th><?php echo Mage::helper('udropship')->__('Rates') ?></th>
             <th><?php echo Mage::helper('udropship')->__('Sort Order') ?></th>
             <th><?php echo Mage::helper('udropship')->__('Action') ?></th>
         </tr>
         <tr id="<?php echo $this->suffixId('rowTpl')?>" style="display:none">
             <td>
                 <select multiple="multiple" name="<?php echo $this->getFieldName()?>[<?php echo $_dt?>][$$ROW][category_ids][]" style="width:200px; height: 150px">
-                    <option alt="category_ids" value="*"><?php echo $this->__('*** All ***')?></option>
+                    <option alt="category_ids" value="*"><?php echo Mage::helper('udropship')->__('*** All ***')?></option>
                     <?php foreach ($topCats as $_topCat): ?>
                         <option alt="category_ids" value="<?php echo $_topCat->getId()?>"><?php echo $this->htmlEscape($_topCat->getName())?></option>
                     <?php endforeach; ?>
@@ -43,17 +45,28 @@ $handlingSubrowKey = $this->getFieldName()."[$_dt][\$\$ROW][handling_extra]";
             </td>
             <td>
                 <select multiple="multiple" name="<?php echo $this->getFieldName()?>[<?php echo $_dt?>][$$ROW][customer_shipclass_id][]" style="width:200px; height: 150px">
-                    <option alt="customer_shipclass_id" value="*"><?php echo $this->__('*** All ***')?></option>
+                    <option alt="customer_shipclass_id" value="*"><?php echo Mage::helper('udropship')->__('*** All ***')?></option>
                     <?php foreach ($cShipClass as $cscId=>$cscLabel): ?>
                         <option alt="customer_shipclass_id" value="<?php echo $cscId?>"><?php echo $this->htmlEscape($cscLabel)?></option>
                     <?php endforeach; ?>
                 </select>
+                <?php if ($useCustomerGroup): ?>
+                    <h4><?php echo Mage::helper('udropship')->__('Custmer Group')?></h4>
+                    <select multiple="multiple" name="<?php echo $this->getFieldName()?>[<?php echo $_dt?>][$$ROW][customer_group_id][]" style="width:150px; height: 150px">
+                        <option alt="customer_group_id" value="*"><?php echo Mage::helper('udropship')->__('*** All ***')?></option>
+                        <?php foreach ($customerGroupIds as $cscId=>$cscLabel): ?>
+                            <option alt="customer_group_id" value="<?php echo $cscId?>"><?php echo $this->htmlEscape($cscLabel)?></option>
+                        <?php endforeach; ?>
+                    </select>
+                <?php else: ?>
+                    <input type="hidden" name="<?php echo $this->getFieldName()?>[<?php echo $_dt?>][$$ROW][customer_group_id][]" value="*" />
+                <?php endif ?>
             </td>
             <td>
 
-                <h3><?php echo $_tsHlp->__('Cost for the first item') ?></h3>
+                <h3><?php echo Mage::helper('udropship')->__('Cost for the first item') ?></h3>
                 <?php if ($this->isCtCostBasePlusZone()): ?>
-                    <label><?php echo $_tsHlp->__('Base Rate') ?></label>&nbsp;&nbsp;
+                    <label><?php echo Mage::helper('udropship')->__('Base Rate') ?></label>&nbsp;&nbsp;
                 <?php endif ?>
 
                 <input name="<?php echo $this->getFieldName()?>[<?php echo $_dt?>][$$ROW][cost]" class="input-text" type="text"  value="$$COST" style="width: 100px" />
@@ -74,10 +87,10 @@ $handlingSubrowKey = $this->getFieldName()."[$_dt][\$\$ROW][handling_extra]";
                 <?php if ($this->isShowAdditionalColumn()): ?>
 
                     <br /><br />
-                    <h3><?php echo $_tsHlp->__('Additional item cost') ?></h3>
+                    <h3><?php echo Mage::helper('udropship')->__('Additional item cost') ?></h3>
 
                     <?php if ($this->isCtAdditionalBasePlusZone()): ?>
-                        <label><?php echo $_tsHlp->__('Base Rate') ?></label>&nbsp;&nbsp;
+                        <label><?php echo Mage::helper('udropship')->__('Base Rate') ?></label>&nbsp;&nbsp;
                     <?php endif ?>
 
                     <input name="<?php echo $this->getFieldName()?>[<?php echo $_dt?>][$$ROW][additional]" class="input-text" type="text"  value="$$ADDITIONAL" style="width: 100px" />
@@ -100,10 +113,10 @@ $handlingSubrowKey = $this->getFieldName()."[$_dt][\$\$ROW][handling_extra]";
                 <?php if ($this->isShowHandlingColumn()): ?>
 
                     <br /><br />
-                    <h3><?php echo $_tsHlp->__('Tier handling fee') ?></h3>
+                    <h3><?php echo Mage::helper('udropship')->__('Tier handling fee') ?></h3>
 
                     <?php if ($this->isCtHandlingBasePlusZone()): ?>
-                        <label><?php echo $_tsHlp->__('Base Rate') ?></label>&nbsp;&nbsp;
+                        <label><?php echo Mage::helper('udropship')->__('Base Rate') ?></label>&nbsp;&nbsp;
                     <?php endif ?>
 
                     <input name="<?php echo $this->getFieldName()?>[<?php echo $_dt?>][$$ROW][handling]" class="input-text" type="text"  value="$$HANDLING" style="width: 100px" />
@@ -134,7 +147,7 @@ $handlingSubrowKey = $this->getFieldName()."[$_dt][\$\$ROW][handling_extra]";
         <tfoot>
         <tr>
             <th colspan="5" class="a-left">
-                <div class="left"><button type="button" class="scalable add" id="<?php echo $this->suffixId('addBtn')?>"><span>+ <?php echo $this->__('Add Rate') ?></span></button></div>
+                <div class="left"><button type="button" class="scalable add" id="<?php echo $this->suffixId('addBtn')?>"><span>+ <?php echo Mage::helper('udropship')->__('Add Rate') ?></span></button></div>
             </th>
         </tr>
         </tfoot>
@@ -162,6 +175,7 @@ $handlingSubrowKey = $this->getFieldName()."[$_dt][\$\$ROW][handling_extra]";
             category_ids: '',
             vendor_shipclass_id: '',
             customer_shipclass_id: '',
+            customer_group_id: '',
             cost: '0',
             additional: '0',
             handling: '0',
@@ -192,7 +206,7 @@ $handlingSubrowKey = $this->getFieldName()."[$_dt][\$\$ROW][handling_extra]";
             new Template('<input (([^>]*(alt="?#{key}"?|value="?#{value}"?(?=[\\s>])|type="?checkbox"?)){3})'),
             new Template('<input $1 checked="checked"')
         ];
-        var selectFields = $H({customer_shipclass_id:1,vendor_shipclass_id:1,category_ids:1});
+        var selectFields = $H({customer_shipclass_id:1,vendor_shipclass_id:1,category_ids:1,customer_group_id:1});
         selectFields.each(function(pair){
             var varsForEval, value=data[pair.key], key=pair.key;
             for (var rxIdx=0; rxIdx<regExTpl.length; rxIdx+=2) {

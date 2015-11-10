@@ -2,6 +2,18 @@
 
 class Unirgy_DropshipTierShipping_Helper_Data extends Mage_Core_Helper_Abstract
 {
+    protected $_customerGroups;
+    public function getCustomerGroups()
+    {
+        if ($this->_customerGroups===null) {
+            $this->_customerGroups = array();
+            $collection = Mage::getModel('customer/group')->getCollection();
+            foreach ($collection as $item) {
+                $this->_customerGroups[$item->getId()] = $item->getCustomerGroupCode();
+            }
+        }
+        return $this->_customerGroups;
+    }
     public function getV2RateObj($isVendor=false, $isProduct=false)
     {
         return $this->_getV2RateObj(Unirgy_DropshipTierShipping_Model_Source::USE_RATES_V2, $isVendor, $isProduct);
@@ -158,7 +170,7 @@ class Unirgy_DropshipTierShipping_Helper_Data extends Mage_Core_Helper_Abstract
             $saveHelper = new Varien_Object(array(
                 'rate_obj' => $this->getV2RateObj(false, true),
                 'existing_data' => $this->getProductV2Rates($pId, null),
-                'fields_to_implode' => array('customer_shipclass_id'),
+                'fields_to_implode' => array('customer_shipclass_id','customer_group_id'),
                 'fields_to_encode' => array()
             ));
             $this->_saveProductV2Rates($pId, $value, $saveHelper);
@@ -230,7 +242,7 @@ class Unirgy_DropshipTierShipping_Helper_Data extends Mage_Core_Helper_Abstract
             $saveHelper = new Varien_Object(array(
                 'rate_obj' => $this->getV2RateObj(),
                 'existing_data' => $this->getVendorV2Rates($vId, $dtId),
-                'fields_to_implode' => array('customer_shipclass_id','category_ids'),
+                'fields_to_implode' => array('customer_shipclass_id','category_ids','customer_group_id'),
                 'fields_to_encode' => array('cost_extra','additional_extra','handling_extra')
             ));
             $this->_saveVendorV2Rates($vId, $value, $saveHelper);
@@ -243,7 +255,7 @@ class Unirgy_DropshipTierShipping_Helper_Data extends Mage_Core_Helper_Abstract
             $saveHelper = new Varien_Object(array(
                 'rate_obj' => $this->getV2SimpleRateObj(),
                 'existing_data' => $this->getVendorV2SimpleRates($vId, $dtId),
-                'fields_to_implode' => array('customer_shipclass_id')
+                'fields_to_implode' => array('customer_shipclass_id','customer_group_id')
             ));
             $this->_saveVendorV2Rates($vId, $value, $saveHelper);
         }
@@ -255,7 +267,7 @@ class Unirgy_DropshipTierShipping_Helper_Data extends Mage_Core_Helper_Abstract
             $saveHelper = new Varien_Object(array(
                 'rate_obj' => $this->getV2SimpleCondRateObj(),
                 'existing_data' => $this->getVendorV2SimpleCondRates($vId, $dtId),
-                'fields_to_implode' => array('customer_shipclass_id'),
+                'fields_to_implode' => array('customer_shipclass_id','customer_group_id'),
                 'fields_to_encode' => array('condition')
             ));
             $this->_saveVendorV2Rates($vId, $value, $saveHelper);
@@ -328,7 +340,7 @@ class Unirgy_DropshipTierShipping_Helper_Data extends Mage_Core_Helper_Abstract
             $saveHelper = new Varien_Object(array(
                 'rate_obj' => $this->getV2RateObj(),
                 'existing_data' => $this->getV2Rates($dtId),
-                'fields_to_implode' => array('customer_shipclass_id','category_ids','vendor_shipclass_id'),
+                'fields_to_implode' => array('customer_shipclass_id','category_ids','vendor_shipclass_id','customer_group_id'),
                 'fields_to_encode' => array('cost_extra','additional_extra','handling_extra')
             ));
             $this->_saveV2Rates($value, $saveHelper);
@@ -341,7 +353,7 @@ class Unirgy_DropshipTierShipping_Helper_Data extends Mage_Core_Helper_Abstract
             $saveHelper = new Varien_Object(array(
                 'rate_obj' => $this->getV2SimpleRateObj(),
                 'existing_data' => $this->getV2SimpleRates($dtId),
-                'fields_to_implode' => array('customer_shipclass_id')
+                'fields_to_implode' => array('customer_shipclass_id','customer_group_id')
             ));
             $this->_saveV2Rates($value, $saveHelper);
         }
@@ -353,7 +365,7 @@ class Unirgy_DropshipTierShipping_Helper_Data extends Mage_Core_Helper_Abstract
             $saveHelper = new Varien_Object(array(
                 'rate_obj' => $this->getV2SimpleCondRateObj(),
                 'existing_data' => $this->getV2SimpleCondRates($dtId),
-                'fields_to_implode' => array('customer_shipclass_id'),
+                'fields_to_implode' => array('customer_shipclass_id','customer_group_id'),
                 'fields_to_encode' => array('condition')
             ));
             $this->_saveV2Rates($value, $saveHelper);

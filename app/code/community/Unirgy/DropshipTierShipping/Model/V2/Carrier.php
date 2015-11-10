@@ -30,11 +30,16 @@ class Unirgy_DropshipTierShipping_Model_V2_Carrier
         return $qty ? $item->getBaseRowTotal()/$qty : $qty;
     }
 
+    protected $_quote;
+    protected $_address;
     public function collectRates(Mage_Shipping_Model_Rate_Request $request)
     {
         if (!$this->getConfigFlag('active')) {
             return false;
         }
+        $items = $request->getAllItems();
+        $this->_quote = Mage::helper('udropship/item')->getQuote($items);
+        $this->_address = Mage::helper('udropship/item')->getAddress($items);
         $result = Mage::getModel('shipping/rate_result');
         $deliveryTypes = Mage::getResourceModel('udtiership/deliveryType_collection')->setDeliverySort()->toOptionHash();
         foreach ($deliveryTypes as $deliveryType=>$deliveryTypeLabel) {
@@ -49,6 +54,8 @@ class Unirgy_DropshipTierShipping_Model_V2_Carrier
                 $result->append($method);
             }
         }
+        $this->_quote = null;
+        $this->_address = null;
         return $result;
     }
 
@@ -71,10 +78,26 @@ class Unirgy_DropshipTierShipping_Model_V2_Carrier
             foreach ($cscId as $_cscId) {
                 $cscCond[] = $conn->quoteInto('FIND_IN_SET(?,customer_shipclass_id)',$_cscId);
             }
-            $extraCond = array(
-                '( '.implode(' OR ', $cscCond).' ) '
+            $cgIds = array($quote->getCustomerGroupId(),'*');
+            $cgCond = array();
+            foreach ($cgIds as $_cgId) {
+                $cgCond[] = $conn->quoteInto('FIND_IN_SET(?,customer_group_id)',$_cgId);
+            }
+            if (Mage::getStoreConfigFlag('carriers/udtiership/use_customer_group')) {
+                $extraCond = array(
+                    '( '.implode(' OR ', $cscCond).' ) AND ('.implode(' OR ', $cgCond).' ) '
+                );
+            } else {
+                $extraCond = array(
+                    '( '.implode(' OR ', $cscCond).' ) '
+                );
+            }
+            $extraCond['__order'] = array(
+                Mage::helper('udropship/catalog')->getCaseSql('customer_shipclass_id', array_flip($cscCond), 9999),
             );
-            $extraCond['__order'] = Mage::helper('udropship/catalog')->getCaseSql('customer_shipclass_id', array_flip($cscCond), 9999);
+            if (Mage::getStoreConfigFlag('carriers/udtiership/use_customer_group')) {
+                $extraCond['__order'][] = Mage::helper('udropship/catalog')->getCaseSql('customer_group_id', array_flip($cgCond), 9999);
+            }
         }
 
         $vId = $request->getVendorId();
@@ -171,10 +194,26 @@ class Unirgy_DropshipTierShipping_Model_V2_Carrier
             foreach ($cscId as $_cscId) {
                 $cscCond[] = $conn->quoteInto('FIND_IN_SET(?,customer_shipclass_id)',$_cscId);
             }
-            $extraCond = array(
-                '( '.implode(' OR ', $cscCond).' ) '
+            $cgIds = array($quote->getCustomerGroupId(),'*');
+            $cgCond = array();
+            foreach ($cgIds as $_cgId) {
+                $cgCond[] = $conn->quoteInto('FIND_IN_SET(?,customer_group_id)',$_cgId);
+            }
+            if (Mage::getStoreConfigFlag('carriers/udtiership/use_customer_group')) {
+                $extraCond = array(
+                    '( '.implode(' OR ', $cscCond).' ) AND ('.implode(' OR ', $cgCond).' ) '
+                );
+            } else {
+                $extraCond = array(
+                    '( '.implode(' OR ', $cscCond).' ) '
+                );
+            }
+            $extraCond['__order'] = array(
+                Mage::helper('udropship/catalog')->getCaseSql('customer_shipclass_id', array_flip($cscCond), 9999),
             );
-            $extraCond['__order'] = Mage::helper('udropship/catalog')->getCaseSql('customer_shipclass_id', array_flip($cscCond), 9999);
+            if (Mage::getStoreConfigFlag('carriers/udtiership/use_customer_group')) {
+                $extraCond['__order'][] = Mage::helper('udropship/catalog')->getCaseSql('customer_group_id', array_flip($cgCond), 9999);
+            }
         }
 
         $vId = $request->getVendorId();
@@ -287,10 +326,26 @@ class Unirgy_DropshipTierShipping_Model_V2_Carrier
                 foreach ($cscId as $_cscId) {
                     $cscCond[] = $conn->quoteInto('FIND_IN_SET(?,customer_shipclass_id)',$_cscId);
                 }
-                $extraCond = array(
-                    '( '.implode(' OR ', $cscCond).' ) '
+                $cgIds = array($this->_quote->getCustomerGroupId(),'*');
+                $cgCond = array();
+                foreach ($cgIds as $_cgId) {
+                    $cgCond[] = $conn->quoteInto('FIND_IN_SET(?,customer_group_id)',$_cgId);
+                }
+                if (Mage::getStoreConfigFlag('carriers/udtiership/use_customer_group')) {
+                    $extraCond = array(
+                        '( '.implode(' OR ', $cscCond).' ) AND ('.implode(' OR ', $cgCond).' ) '
+                    );
+                } else {
+                    $extraCond = array(
+                        '( '.implode(' OR ', $cscCond).' ) '
+                    );
+                }
+                $extraCond['__order'] = array(
+                    Mage::helper('udropship/catalog')->getCaseSql('customer_shipclass_id', array_flip($cscCond), 9999),
                 );
-                $extraCond['__order'] = Mage::helper('udropship/catalog')->getCaseSql('customer_shipclass_id', array_flip($cscCond), 9999);
+                if (Mage::getStoreConfigFlag('carriers/udtiership/use_customer_group')) {
+                    $extraCond['__order'][] = Mage::helper('udropship/catalog')->getCaseSql('customer_group_id', array_flip($cgCond), 9999);
+                }
             }
 
             $pRates = $tsHlp->getProductV2Rates($product, $dt, $extraCond);
@@ -352,6 +407,7 @@ class Unirgy_DropshipTierShipping_Model_V2_Carrier
             $vscId = Mage::helper('udshipclass')->getAllVendorShipClass($request->getVendorId());
             $cscId = (array)Mage::helper('udshipclass')->getAllCustomerShipClass($address);
         }
+        $cgIds = array($quote->getCustomerGroupId(),'*');
 
         $vId = $request->getVendorId();
         $store = $quote->getStore();
@@ -412,7 +468,7 @@ class Unirgy_DropshipTierShipping_Model_V2_Carrier
                     if ($catId && $topCats && $topCats->getItemById($catId)
                         && ($_exactMatched || !$exactMatched && !$_rateToUse)
                     ) {
-                        $rateReq->init($catId, $vscId, $cscId);
+                        $rateReq->init($catId, $vscId, $cscId, $cgIds);
                         $rateReq->setSubkeys(array('cost', 'additional', 'handling'));
                         $_rateToUse = $rateReq->getResult();
                     }
@@ -421,7 +477,7 @@ class Unirgy_DropshipTierShipping_Model_V2_Carrier
                 }
             }
             if ($_rateToUse===false) {
-                $rateReq->init('*', $vscId, $cscId);
+                $rateReq->init('*', $vscId, $cscId, $cgIds);
                 $rateReq->setSubkeys(array('cost', 'additional', 'handling'));
                 $_rateToUse = $rateReq->getResult();
             }

@@ -40,18 +40,18 @@ $cscRowspan = count($cShipClass)+1;
     <?php endfor ?>
     <thead>
         <tr class="headings">
-            <th class="a-center" <?php if ($hasShipClass): ?>colspan=3<?php endif?>><?php echo $_tsHlp->__('Category vs Ship Classes') ?></th>
+            <th class="a-center" <?php if ($hasShipClass): ?>colspan=3<?php endif?>><?php echo Mage::helper('udropship')->__('Category vs Ship Classes') ?></th>
             <?php for ($i=0; $i<count($subkeyColumns); $i+=2): ?>
             <th class="a-center" colspan=2><?php echo $this->getColumnTitle($subkeyColumns, $i) ?></th>
             <?php endfor ?>
         </tr>
         <tr class="headings">
-            <th class="a-center"><?php echo $_tsHlp->__('Category') ?></th>
-            <th class="a-center"><?php echo $_tsHlp->__('Vendor') ?></th>
-            <th class="a-center"><?php echo $_tsHlp->__('Customer') ?></th>
+            <th class="a-center"><?php echo Mage::helper('udropship')->__('Category') ?></th>
+            <th class="a-center"><?php echo Mage::helper('udropship')->__('Vendor') ?></th>
+            <th class="a-center"><?php echo Mage::helper('udropship')->__('Customer') ?></th>
             <?php for ($i=0; $i<count($subkeyColumns); $i+=2): ?>
-            <th class="a-right"><?php echo $_tsHlp->__('Default') ?></th>
-            <th class="a-right"><?php echo $_tsHlp->__('Maximum') ?></th>
+            <th class="a-right"><?php echo Mage::helper('udropship')->__('Default') ?></th>
+            <th class="a-right"><?php echo Mage::helper('udropship')->__('Maximum') ?></th>
             <?php endfor ?>
         </tr>
     </thead>
@@ -63,7 +63,7 @@ $cscRowspan = count($cShipClass)+1;
         <?php if ($hasShipClass): ?>
         <tr class="option-row">
             <td class="a-left" rowspan="<?php echo $catRowspan ?>"><?php echo $_topCat->getName()?></td>
-            <td class="a-left" colspan="2"><?php echo $_tsHlp->__('Default Rate')?></td>
+            <td class="a-left" colspan="2"><?php echo Mage::helper('udropship')->__('Default Rate')?></td>
 
             <?php foreach ($subkeyColumns as $subKey=>$subKeyType): ?>
             <td class="a-center"><?php echo $rateBlock->setSubkey($subKey)->setSubkeyType($subKeyType)->toHtml() ?></td>
@@ -76,7 +76,7 @@ $cscRowspan = count($cShipClass)+1;
         <tr class="option-row">
             <td class="a-left" rowspan="<?php echo $cscRowspan ?>"><?php echo $vscLabel?></td>
 
-            <td class="a-left"><?php echo $_tsHlp->__('Base Rate')?></td>
+            <td class="a-left"><?php echo Mage::helper('udropship')->__('Base Rate')?></td>
             <?php $_curClassId = $_tsHlp->getRateId(array($_catId, $vscId, '0')); $rateBlock->setKey($_curClassId)->setIsBaseRate(true); ?>
 
             <?php foreach ($subkeyColumns as $subKey=>$subKeyType): ?>

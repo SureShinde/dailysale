@@ -30,6 +30,7 @@ class Unirgy_DropshipTierShipping_Model_V2_RateReq extends Varien_Object
         if (!is_array($vscId)) {
             $vscId = array($vscId);
         }
+        $cgIds = $this->getCustomerGroupId();
 
         $catId = $this->getCategoryId();
         if (!is_array($catId)) {
@@ -40,8 +41,21 @@ class Unirgy_DropshipTierShipping_Model_V2_RateReq extends Varien_Object
         foreach ($cscId as $_cscId) {
             $cscCond[] = $conn->quoteInto('FIND_IN_SET(?,customer_shipclass_id)',$_cscId);
         }
-        $extraCond[] = '( '.implode(' OR ', $cscCond).' ) ';
-        $extraCond['__order'] = Mage::helper('udropship/catalog')->getCaseSql('customer_shipclass_id', array_flip($cscCond), 9999);
+        $cgCond = array();
+        foreach ($cgIds as $_cgId) {
+            $cgCond[] = $conn->quoteInto('FIND_IN_SET(?,customer_group_id)',$_cgId);
+        }
+        if (Mage::getStoreConfigFlag('carriers/udtiership/use_customer_group')) {
+            $extraCond[] = '( '.implode(' OR ', $cscCond).' ) AND ('.implode(' OR ', $cgCond).' ) ';
+        } else {
+            $extraCond[] = '( '.implode(' OR ', $cscCond).' ) ';
+        }
+        $extraCond['__order'] = array(
+            Mage::helper('udropship/catalog')->getCaseSql('customer_shipclass_id', array_flip($cscCond), 9999),
+        );
+        if (Mage::getStoreConfigFlag('carriers/udtiership/use_customer_group')) {
+            $extraCond['__order'][] = Mage::helper('udropship/catalog')->getCaseSql('customer_group_id', array_flip($cgCond), 9999);
+        }
 
         if (!$vendor || !$vendor->getData('tiership_use_v2_rates')) {
             $vscCond = array(
@@ -211,12 +225,13 @@ class Unirgy_DropshipTierShipping_Model_V2_RateReq extends Varien_Object
         return $value;
     }
 
-    public function init($catId, $vscId, $cscId)
+    public function init($catId, $vscId, $cscId, $cgId)
     {
         $tsHlp = Mage::helper('udtiership');
         $this->setCategoryId($catId);
         $this->setVendorShipClass($vscId);
         $this->setCustomerShipClass($cscId);
+        $this->setCustomerGroupId($cgId);
         return $this;
     }
 
