@@ -23,7 +23,7 @@ class Unirgy_DropshipPayout_Block_Adminhtml_Payout_Edit_Tabs extends Mage_Adminh
         parent::__construct();
         $this->setId('payout_tabs');
         $this->setDestElementId('edit_form');
-        $this->setTitle(Mage::helper('udpayout')->__('Manage Payouts'));
+        $this->setTitle(Mage::helper('udropship')->__('Manage Payouts'));
     }
 
     protected function _beforeToHtml()
@@ -40,13 +40,13 @@ class Unirgy_DropshipPayout_Block_Adminhtml_Payout_Edit_Tabs extends Mage_Adminh
                     ->toHtml(),
             ));
             $this->addTab('rows_section', array(
-                'label'     => Mage::helper('udpayout')->__('Data Rows'),
-                'title'     => Mage::helper('udpayout')->__('Data Rows'),
+                'label'     => Mage::helper('udropship')->__('Data Rows'),
+                'title'     => Mage::helper('udropship')->__('Data Rows'),
                 'content'   => $this->getLayout()->createBlock('udpayout/adminhtml_payout_edit_tab_rows', 'udpayout.rows.grid')->setVendorId($id)->toHtml(),
             ));
             $this->addTab('adjustments_section', array(
-                'label'     => Mage::helper('udpayout')->__('Adjustments'),
-                'title'     => Mage::helper('udpayout')->__('Adjustments'),
+                'label'     => Mage::helper('udropship')->__('Adjustments'),
+                'title'     => Mage::helper('udropship')->__('Adjustments'),
                 'content'   => $this->getLayout()->createBlock('udpayout/adminhtml_payout_edit_tab_adjustments', 'udpayout.adjustments.grid')->setVendorId($id)->toHtml(),
             ));
         } else {

@@ -32,31 +32,31 @@ class Unirgy_DropshipPayout_Block_Adminhtml_Payout_Edit_Tab_FormNew extends Unir
         $this->setForm($form);
 
         $fieldset = $form->addFieldset('payout_form', array(
-            'legend'=>$hlp->__('Payout Info')
+            'legend'=>Mage::helper('udropship')->__('Payout Info')
         ));
         $this->_addElementTypes($fieldset);
 
         $fieldset->addField('all_vendors', 'select', array(
             'name'      => 'all_vendors',
-            'label'     => $hlp->__('Vendor Selection'),
+            'label'     => Mage::helper('udropship')->__('Vendor Selection'),
             'class'     => 'required-entry',
             'required'  => true,
             'type'      => 'options',
             'options'   => array(
-                1 => $hlp->__('All Active Vendors'),
-                0 => $hlp->__('Selected Vendors'),
+                1 => Mage::helper('udropship')->__('All Active Vendors'),
+                0 => Mage::helper('udropship')->__('Selected Vendors'),
             ),
         ));
 
         if (Mage::getStoreConfigFlag('udropship/vendor/autocomplete_htmlselect')) {
             $fieldset->addField('vendor_ids', 'udropship_vendor', array(
                 'name'      => 'vendor_ids[]',
-                'label'     => $hlp->__('Vendors'),
+                'label'     => Mage::helper('udropship')->__('Vendors'),
             ));
         } else {
             $fieldset->addField('vendor_ids', 'multiselect', array(
                 'name'      => 'vendor_ids[]',
-                'label'     => $hlp->__('Vendors'),
+                'label'     => Mage::helper('udropship')->__('Vendors'),
                 'values'   => Mage::getSingleton('udropship/source')->setPath('vendors')->toOptionArray(),
             ));
         }
@@ -64,7 +64,7 @@ class Unirgy_DropshipPayout_Block_Adminhtml_Payout_Edit_Tab_FormNew extends Unir
         /*
         $fieldset->addField('payout_status', 'select', array(
             'name'      => 'payout_status',
-            'label'     => $hlp->__('Status'),
+            'label'     => Mage::helper('udropship')->__('Status'),
             'options'   => Mage::getSingleton('udpayout/source')->setPath('payout_status')->toOptionHash(),
         ));
         */
@@ -72,8 +72,8 @@ class Unirgy_DropshipPayout_Block_Adminhtml_Payout_Edit_Tab_FormNew extends Unir
         $dateFormatIso = Mage::app()->getLocale()->getDateFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT);
         $fieldset->addField('date_from', 'date', array(
             'name'   => 'date_from',
-            'label'  => $hlp->__('Orders From Date'),
-            'title'  => $hlp->__('Orders From Date'),
+            'label'  => Mage::helper('udropship')->__('Orders From Date'),
+            'title'  => Mage::helper('udropship')->__('Orders From Date'),
             'image'  => $this->getSkinUrl('images/grid-cal.gif'),
             'input_format' => Varien_Date::DATE_INTERNAL_FORMAT,
             'format'       => $dateFormatIso,
@@ -82,8 +82,8 @@ class Unirgy_DropshipPayout_Block_Adminhtml_Payout_Edit_Tab_FormNew extends Unir
         ));
         $fieldset->addField('date_to', 'date', array(
             'name'   => 'date_to',
-            'label'  => $hlp->__('Orders To Date'),
-            'title'  => $hlp->__('Orders To Date'),
+            'label'  => Mage::helper('udropship')->__('Orders To Date'),
+            'title'  => Mage::helper('udropship')->__('Orders To Date'),
             'image'  => $this->getSkinUrl('images/grid-cal.gif'),
             'input_format' => Varien_Date::DATE_INTERNAL_FORMAT,
             'format'       => $dateFormatIso,
@@ -92,17 +92,17 @@ class Unirgy_DropshipPayout_Block_Adminhtml_Payout_Edit_Tab_FormNew extends Unir
         ));
         $fieldset->addField('use_locale_timezone', 'select', array(
             'name'      => 'use_locale_timezone',
-            'label'     => $hlp->__('Use Locale Timezone'),
+            'label'     => Mage::helper('udropship')->__('Use Locale Timezone'),
             'type'      => 'options',
             'options'   => array(
-                1 => $hlp->__('Yes'),
-                0 => $hlp->__('No'),
+                1 => Mage::helper('udropship')->__('Yes'),
+                0 => Mage::helper('udropship')->__('No'),
             ),
         ));
 
         $fieldset->addField('notes', 'textarea', array(
             'name'      => 'notes',
-            'label'     => $hlp->__('Notes'),
+            'label'     => Mage::helper('udropship')->__('Notes'),
         ));
 
         if ($payout) {

@@ -160,7 +160,7 @@ class Unirgy_DropshipPayout_Model_Method_Paypal implements Unirgy_DropshipPayout
                             $pt->afterPay();
                         } else {
                             $pt->addMessage(
-                                Mage::helper('udpayout')->__('Successfully send payment. Waiting for IPN to complete.'),
+                                Mage::helper('udropship')->__('Successfully send payment. Waiting for IPN to complete.'),
                                 Unirgy_DropshipPayout_Model_Payout::STATUS_PAYPAL_IPN
                             )
                             ->setIsJustPaid(true);
@@ -225,7 +225,10 @@ class Unirgy_DropshipPayout_Model_Method_Paypal implements Unirgy_DropshipPayout
             } else {
                 $i=1;
                 while(isset($data['unique_id_'.$i])) {
-                    if ($data['status_'.$i]!='Completed') continue;
+                    if ($data['status_'.$i]!='Completed') {
+                        $i++;
+                        continue;
+                    }
                     $ptCollection = Mage::getResourceModel('udpayout/payout_collection');
                     $ptCollection->addFieldToFilter('paypal_unique_id', $data['unique_id_'.$i]);
                     foreach ($ptCollection as $pt) {
