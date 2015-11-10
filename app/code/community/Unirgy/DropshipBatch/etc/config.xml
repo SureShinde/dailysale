@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Unirgy_DropshipBatch>
-            <version>2.2.5</version>
+            <version>2.4.0</version>
             <usimpleup remote="http://download.unirgy.com/simple/client_api/version/"
                 changelog="http://unirgy.com/support/portal/announcements"
                 uninstall="udbatch/observer::usimpleup_uninstall"/>
@@ -361,7 +361,7 @@
                     </batch_export_inventory_template> -->
 
                     <batch_import_inventory_adapter>
-                        <label>Import Orders Adapter</label>
+                        <label>Import Inventory Adapter</label>
                         <type>select</type>
                         <fieldset>inventory_import</fieldset>
                         <source_model>udbatch/source</source_model>
@@ -614,12 +614,12 @@
     <admin>
         <routers>
             <adminhtml>
-				<args>
-					<modules>
-						<udbatchadmin before="Mage_Adminhtml">Unirgy_DropshipBatch_Adminhtml</udbatchadmin>
-					</modules>
-				</args>
-			</adminhtml>
+                <args>
+                    <modules>
+                        <udbatchadmin after="Mage_Adminhtml">Unirgy_DropshipBatch</udbatchadmin>
+                    </modules>
+                </args>
+            </adminhtml>
         </routers>
     </admin>
 
@@ -644,19 +644,19 @@
                 <children>
                     <udropship>
                         <children>
-                            <batch module="udbatch">
+                            <batch translate="title" module="udropship">
                                 <title>Batch Import/Export</title>
                                 <sort_order>60</sort_order>
                                 <children>
-                                    <batches>
+                                    <batches translate="title" module="udropship">
                                         <title>Batches</title>
                                         <sort_order>10</sort_order>
-                                        <action>adminhtml/batch</action>
+                                        <action>adminhtml/udbatchadmin_batch</action>
                                     </batches>
-                                    <dists module="udbatch">
+                                    <dists translate="title" module="udropship">
                                         <title>Action History</title>
                                         <sort_order>20</sort_order>
-                                        <action>adminhtml/dist</action>
+                                        <action>adminhtml/udbatchadmin_dist</action>
                                     </dists>
                                 </children>
                             </batch>
@@ -673,15 +673,15 @@
                             <children>
                                 <udropship>
                                     <children>
-                                        <batch>
+                                        <batch translate="title" module="udropship">
                                             <title>Batch Import/Export</title>
                                             <sort_order>60</sort_order>
                                             <children>
-                                                <batches>
+                                                <batches translate="title" module="udropship">
                                                     <title>Batches</title>
                                                     <sort_order>10</sort_order>
                                                 </batches>
-                                                <dists>
+                                                <dists translate="title" module="udropship">
                                                     <title>Action History</title>
                                                     <sort_order>20</sort_order>
                                                 </dists>
@@ -718,6 +718,7 @@
                 <invimport_vsku_multipid>0</invimport_vsku_multipid>
                 <statement_export_template>Statement Export</statement_export_template>
                 <manual_export_templates><![CDATA[[{"title":"Statement Export","sort_order":"0","template":"\"[order_id]\",\"{{var order.getCreatedAtFormated('long')}}\",\"[po_id]\",\"[po_status]\",\"[shipping.firstname]\",\"[shipping.lastname]\",\"[order.customer_email]\",\"[shipping.telephone]\",\"{{var shipping.getStreet1()}}\",\"{{var shipping.getStreet2()}}\",\"[shipping.city]\",\"{{var shipping.region_code}}\",\"{{var shipping.getPostcode()}}\",\"[shipping.country_id]\",[item.qty],\"[item.vendor_sku]\",\"[item.name]\",\"{{var product.getProductUrl()}}\",[item_totals.price],[item_totals.row_total],[item_totals.com_percent],[po_totals.subtotal],[po_totals.com_amount],[po_totals.trans_fee],[po_totals.shipping],[po_totals.tax],[po_totals.discount],[po_totals.adj_amount],[po_totals.total_payout]","header":"Order#,Order Date,PO#,PO Status,Firstname,Lastname,Email,Phone,Address 1,Address 2,City,State,Zip Code,Country,Qty,Sku,Product Name,Product URL,Price,Row Total,Item Commission Percent,Subtotal,Commission Amount,Transaction Fee,Shipping Amount,Tax,Discount,Adjustment,Total Payout","use_item_template":"0","item_template":"","footer_template":",,,,,,,,,,,,,,,,,,,,,,,,,,","totals_template":",,,,,,,,,,,,,,,,,,,,Totals,[grand_totals.subtotal],[grand_totals.com_amount],[grand_totals.trans_fee],[grand_totals.shipping],[grand_totals.tax],[grand_totals.discount],[grand_totals.adj_amount],[grand_totals.total_payout]"}]]]></manual_export_templates>
+                <allow_all_vendors_import>0</allow_all_vendors_import>
             </batch>
         </udropship>
     </default>

@@ -87,11 +87,11 @@ class Unirgy_DropshipBatch_Block_Adminhtml_Vendor_Batch_Grid extends Mage_Adminh
 
     public function getRowUrl($row)
     {
-        return $this->getUrl('adminhtml/batch/edit', array('id' => $row->getId()));
+        return $this->getUrl('adminhtml/udbatchadmin_batch/edit', array('id' => $row->getId()));
     }
 
     public function getGridUrl()
     {
-        return $this->getUrl('adminhtml/batch/vendorBatchesGrid', array('_current'=>true));
+        return $this->getUrl('adminhtml/udbatchadmin_batch/vendorBatchesGrid', array('_current'=>true));
     }
 }

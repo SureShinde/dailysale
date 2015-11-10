@@ -19,7 +19,7 @@ class Unirgy_DropshipBatch_Model_Adapter_ImportStockpo_Default extends Unirgy_Dr
             $r = @fgetcsv($fp, 0, $this->getVendor()->getBatchImportStockpoFieldDelimiter(), '"');
             if (!$idx++ && $this->getVendor()->getBatchImportStockpoSkipHeader()) continue;
             if (!$r) {
-                $rows[] = array('error'=>$hlp->__('Invalid row format'));
+                $rows[] = array('error'=>Mage::helper('udropship')->__('Invalid row format'));
                 continue;
             }
             $row = array();
@@ -79,7 +79,7 @@ class Unirgy_DropshipBatch_Model_Adapter_ImportStockpo_Default extends Unirgy_Dr
                 continue;
             }
             if (empty($r['stockpo_id'])) {
-                $r['error'] = $hlp->__('Missing required field');
+                $r['error'] = Mage::helper('udropship')->__('Missing required field');
                 continue;
             }
             $stockPoIds[$r['stockpo_id']] = $i;
