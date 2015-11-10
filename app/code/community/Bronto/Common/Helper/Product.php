@@ -6,6 +6,7 @@
  */
 class Bronto_Common_Helper_Product extends Mage_Core_Helper_Abstract
 {
+
     /**
      * @var array
      */
@@ -91,7 +92,7 @@ class Bronto_Common_Helper_Product extends Mage_Core_Helper_Abstract
         }
 
         if (!is_object($product) || !($product instanceOf Mage_Catalog_Model_Product)) {
-            return Mage::getModel('catalog/product');
+            return false;
         } else {
             $productId = $product->getId();
         }
@@ -198,4 +199,5 @@ class Bronto_Common_Helper_Product extends Mage_Core_Helper_Abstract
 
         return false;
     }
+
 }

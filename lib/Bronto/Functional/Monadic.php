@@ -22,7 +22,7 @@ interface Bronto_Functional_Monadic
      * @param callable $function
      * @return Monadic
      */
-    public function each($function);
+    public function each(callable $function);
 
     /**
      * Run a filter function on the contained type, to produce another
@@ -31,7 +31,7 @@ interface Bronto_Functional_Monadic
      * @param callable $function
      * @return Monadic
      */
-    public function filter($function);
+    public function filter(callable $function);
 
     /**
      * Run a transform on the contained type, to produce another
@@ -40,5 +40,5 @@ interface Bronto_Functional_Monadic
      * @param callable $function
      * @return Monadic
      */
-    public function map($function);
+    public function map(callable $function);
 }

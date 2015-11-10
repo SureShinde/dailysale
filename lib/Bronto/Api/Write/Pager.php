@@ -51,10 +51,7 @@ class Bronto_Api_Write_Pager implements Iterator
             $this->_result = $this->_operation->getApi()->execute($this->_request);
             $resultSize = count($this->_result->return->results);
             if ($this->_errorsOnly) {
-                $errors = property_exists($this->_result->return, 'errors') ?
-                    $this->_result->return->errors :
-                    array();
-                $this->_iter = new ArrayIterator($errors);
+                $this->_iter = new ArrayIterator($this->_result->return->errors);
             } else {
                 $this->_iter = new ArrayIterator($this->_result->return->results);
             }

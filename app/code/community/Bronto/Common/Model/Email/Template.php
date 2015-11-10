@@ -177,7 +177,7 @@ class Bronto_Common_Model_Email_Template extends Mage_Core_Model_Email_Template
         $appEmu = Mage::getSingleton('core/app_emulation');
         $emuInfo = $appEmu->startEnvironmentEmulation($processor->getStoreId(), 'frontend');
         try {
-            $this->setInlineCssFile($this->getInlineCss() ? $this->getInlineCss() : 'email-inline.css');
+            $this->setInlineCssFile($this->getInlineCss());
             $processor->setBaseTemplate($this);
             $delivery = $processor->filter($delivery);
         } catch (Exception $e) {
