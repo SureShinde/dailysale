@@ -102,6 +102,14 @@ class Unirgy_Rma_Helper_Data extends Mage_Core_Helper_Abstract
         return $this;
     }
 
+    public function hasRMA($order)
+    {
+        $rHlp = Mage::getResourceSingleton('udropship/helper');
+        $conn = $rHlp->getReadConnection();
+        $checkSql = $conn->select()->from($rHlp->getTable('urma/rma'))->columns(array('count(*)'))->where('order_id=?', $order->getId());
+        $res = $conn->fetchOne($checkSql);
+        return $res;
+    }
     public function canRMA($order)
     {
         $hasShipments = $order->hasShipments();
@@ -113,6 +121,11 @@ class Unirgy_Rma_Helper_Data extends Mage_Core_Helper_Abstract
             }
         }
         return $hasShipments && $hasItemToRma;
+    }
+
+    public function getRMAViewUrl($order)
+    {
+        return Mage::getUrl('sales/order/rma', array('order_id' => $order->getId()));;
     }
 
     public function getRMAUrl($order)
@@ -141,35 +154,37 @@ class Unirgy_Rma_Helper_Data extends Mage_Core_Helper_Abstract
             $vendor = Mage::helper('udropship')->getVendor($vendorId);
             $collection = Mage::getModel('urma/rma')->getCollection();
             $orderTableQted = $collection->getResource()->getReadConnection()->quoteIdentifier('sales/order');
+            $collection->addFilterToMap('ordertbl_increment_id', "$orderTableQted.increment_id");
+            $collection->addFilterToMap('ordertbl_created_at', "$orderTableQted.created_at");
             $collection->join('sales/order', "$orderTableQted.entity_id=main_table.order_id", array(
                 'order_increment_id' => 'increment_id',
                 'order_created_at' => 'created_at',
                 'shipping_method',
             ));
 
-            $collection->addAttributeToFilter('udropship_vendor', $vendorId);
+            $collection->addAttributeToFilter('main_table.udropship_vendor', $vendorId);
 
             $r = Mage::app()->getRequest();
 
             if (($v = $r->getParam('filter_order_id_from'))) {
-                $collection->addAttributeToFilter("$orderTableQted.increment_id", array('gteq'=>$v));
+                $collection->addAttributeToFilter("ordertbl_increment_id", array('gteq'=>$v));
             }
             if (($v = $r->getParam('filter_order_id_to'))) {
-                $collection->addAttributeToFilter("$orderTableQted.increment_id", array('lteq'=>$v));
+                $collection->addAttributeToFilter("ordertbl_increment_id", array('lteq'=>$v));
             }
 
             if (($v = $r->getParam('filter_order_date_from'))) {
                 $_filterDate = Mage::app()->getLocale()->date();
                 $_filterDate->set($v, Mage::app()->getLocale()->getDateFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT));
                 $_filterDate->setTimezone(Mage_Core_Model_Locale::DEFAULT_TIMEZONE);
-                $collection->addAttributeToFilter("$orderTableQted.created_at", array('gteq'=>$_filterDate->toString(Varien_Date::DATETIME_INTERNAL_FORMAT)));
+                $collection->addAttributeToFilter("ordertbl_created_at", array('gteq'=>$_filterDate->toString(Varien_Date::DATETIME_INTERNAL_FORMAT)));
             }
             if (($v = $r->getParam('filter_order_date_to'))) {
                 $_filterDate = Mage::app()->getLocale()->date();
                 $_filterDate->set($v, Mage::app()->getLocale()->getDateFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT));
                 $_filterDate->addDay(1);
                 $_filterDate->setTimezone(Mage_Core_Model_Locale::DEFAULT_TIMEZONE);
-                $collection->addAttributeToFilter("$orderTableQted.created_at", array('lteq'=>$_filterDate->toString(Varien_Date::DATETIME_INTERNAL_FORMAT)));
+                $collection->addAttributeToFilter("ordertbl_created_at", array('lteq'=>$_filterDate->toString(Varien_Date::DATETIME_INTERNAL_FORMAT)));
             }
 
             if (($v = $r->getParam('filter_rma_id_from'))) {
@@ -238,14 +253,17 @@ class Unirgy_Rma_Helper_Data extends Mage_Core_Helper_Abstract
                 'vendor_name'   => $vendor->getVendorName(),
                 'order_id'         => $urma->getOrder()->getIncrementId(),
                 'rma_id'         => $urma->getIncrementId(),
-                'vendor_url'    => $ahlp->getUrl('udropship/adminhtml_vendor/edit', array(
-                    'id'        => $vendor->getId()
+                'vendor_url'    => $ahlp->getUrl('adminhtml/udropshipadmin_vendor/edit', array(
+                    'id'        => $vendor->getId(),
+                    '_store'    => 0
                 )),
                 'order_url'     => $ahlp->getUrl('adminhtml/sales_order/view', array(
-                    'order_id'  => $urma->getOrder()->getId()
+                    'order_id'  => $urma->getOrder()->getId(),
+                    '_store'    => 0
                 )),
-                'rma_url'  => $ahlp->getUrl('urmaadmin/order_rma/view', array(
+                'rma_url'  => $ahlp->getUrl('adminhtml/urmaadmin_order_rma/view', array(
                     'rma_id'  => $urma->getId(),
+                    '_store'    => 0
                 )),
                 'comment'      => $comment,
             );
@@ -265,10 +283,10 @@ class Unirgy_Rma_Helper_Data extends Mage_Core_Helper_Abstract
             //mail('"'.$toName.'" <'.$toEmail.'>', $subject, $template, 'From: "'.$vendor->getVendorName().'" <'.$vendor->getEmail().'>');
         }
 
-        $urma->addComment($this->__($vendor->getVendorName().': '.$comment), $notify, $visibleOnFront, true, true)->saveComments();
+        $urma->addComment(Mage::helper('udropship')->__($vendor->getVendorName().': '.$comment), $notify, $visibleOnFront, true, true)->saveComments();
 
         if ($notify) {
-            $urma->sendUpdateEmail($notify, $this->__($vendor->getVendorName().': '.$comment));
+            $urma->sendUpdateEmail($notify, Mage::helper('udropship')->__($vendor->getVendorName().': '.$comment));
         }
 
         return $this;
@@ -374,7 +392,7 @@ class Unirgy_Rma_Helper_Data extends Mage_Core_Helper_Abstract
         if (is_array($optDef)) {
             foreach ($optDef as $optd) {
                 if (!$filterFlag || @$optd[$filterFlag]==$filterValue) {
-                    $_optDef[@$optd['code']] = $this->__(@$optd['title']);
+                    $_optDef[@$optd['code']] = Mage::helper('udropship')->__(@$optd['title']);
                 }
             }
         }
@@ -388,7 +406,7 @@ class Unirgy_Rma_Helper_Data extends Mage_Core_Helper_Abstract
         if (is_array($optDef)) {
             foreach ($optDef as $optd) {
                 if ($code == @$optd['code']) {
-                    $title = $this->__($optd['title']);
+                    $title = Mage::helper('udropship')->__($optd['title']);
                     break;
                 }
             }
@@ -403,7 +421,7 @@ class Unirgy_Rma_Helper_Data extends Mage_Core_Helper_Abstract
         if (is_array($optDef)) {
             foreach ($optDef as $optd) {
                 if ($code == @$optd['code']) {
-                    $title = $this->__(@$optd[$subField]);
+                    $title = Mage::helper('udropship')->__(@$optd[$subField]);
                     break;
                 }
             }

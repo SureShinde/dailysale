@@ -15,7 +15,7 @@ class Unirgy_Rma_Block_Order_Comments extends Mage_Sales_Block_Order_Comments
             } else if ($entity instanceof Unirgy_Rma_Model_Rma) {
                 $collectionClass = 'urma/rma_comment_collection';
             } else {
-                Mage::throwException(Mage::helper('sales')->__('Invalid entity model'));
+                Mage::throwException(Mage::helper('udropship')->__('Invalid entity model'));
             }
 
             $this->_commentCollection = Mage::getResourceModel($collectionClass);

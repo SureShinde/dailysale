@@ -79,11 +79,11 @@ class Unirgy_Rma_VendorController extends Unirgy_Dropship_VendorController
                 $urma->addTrack($track);
 
                 $urma->addComment(
-                    $this->__('%s added tracking ID %s', $vendor->getVendorName(), $number),
+                    Mage::helper('udropship')->__('%s added tracking ID %s', $vendor->getVendorName(), $number),
                     false, true
                 );
                 $urma->setData('___dummy',1)->save();
-                $session->addSuccess($this->__('Tracking ID has been added'));
+                $session->addSuccess(Mage::helper('udropship')->__('Tracking ID has been added'));
 
                 $highlight['tracking'] = true;
             }
@@ -91,9 +91,9 @@ class Unirgy_Rma_VendorController extends Unirgy_Dropship_VendorController
             if (!is_null($rmaStatus) && $rmaStatus!=='' && $rmaStatus!=$urma->getUdropshipStatus()) {
                 $rmaStatusChanged = $urmaHlp->processRmaStatusSave($urma, $rmaStatus, true, $vendor);
                 if ($rmaStatusChanged) {
-                    $session->addSuccess($this->__('RMA status has been changed'));
+                    $session->addSuccess(Mage::helper('udropship')->__('RMA status has been changed'));
                 } else {
-                    $session->addError($this->__('Cannot change RMA status'));
+                    $session->addError(Mage::helper('udropship')->__('Cannot change RMA status'));
                 }
             }
 
@@ -112,7 +112,7 @@ class Unirgy_Rma_VendorController extends Unirgy_Dropship_VendorController
                         if (empty($partialQty[$item->getId()])) {
                             continue;
                         }
-                        $comment .= $this->__('%s x [%s] %s', $partialQty[$item->getId()], $item->getName(), $item->getSku())."\n";
+                        $comment .= Mage::helper('udropship')->__('%s x [%s] %s', $partialQty[$item->getId()], $item->getName(), $item->getSku())."\n";
                     }
                 }
 
@@ -122,7 +122,7 @@ class Unirgy_Rma_VendorController extends Unirgy_Dropship_VendorController
                 }
 
                 Mage::helper('urma')->sendVendorComment($urma, $comment, $is_customer_notified, $is_visible_on_front);
-                $session->addSuccess($this->__('Your comment has been sent'));
+                $session->addSuccess(Mage::helper('udropship')->__('Your comment has been sent'));
 
                 $highlight['comment'] = true;
             }
@@ -141,15 +141,15 @@ class Unirgy_Rma_VendorController extends Unirgy_Dropship_VendorController
                         }
                     }
                     $urma->addComment(
-                        $this->__('%s added tracking ID %s', $vendor->getVendorName(), $number),
+                        Mage::helper('udropship')->__('%s added tracking ID %s', $vendor->getVendorName(), $number),
                         false, true
                     );
                     $urma->saveComments();
                     #$save = true;
                     $highlight['tracking'] = true;
-                    $session->addSuccess($this->__('Track %s was deleted', $track->getNumber()));
+                    $session->addSuccess(Mage::helper('udropship')->__('Track %s was deleted', $track->getNumber()));
                 } else {
-                    $session->addError($this->__('Track %s was not found', $track->getNumber()));
+                    $session->addError(Mage::helper('udropship')->__('Track %s was not found', $track->getNumber()));
                 }
             }
 
@@ -169,10 +169,10 @@ class Unirgy_Rma_VendorController extends Unirgy_Dropship_VendorController
             $rmaStatus = $this->getRequest()->getParam('update_status');
 
             if (!$urmas->getSize()) {
-                Mage::throwException($this->__('No RMAs found for these criteria'));
+                Mage::throwException(Mage::helper('udropship')->__('No RMAs found for these criteria'));
             }
             if (is_null($rmaStatus) || $rmaStatus==='') {
-                Mage::throwException($this->__('No status selected'));
+                Mage::throwException(Mage::helper('udropship')->__('No status selected'));
             }
 
             $vendorId = $this->_getSession()->getId();
@@ -186,9 +186,9 @@ class Unirgy_Rma_VendorController extends Unirgy_Dropship_VendorController
                     $urmaHlp->processRmaStatusSave($urma, $rmaStatus, true, $vendor);
                 }
             }
-            $this->_getSession()->addSuccess($this->__('RMA status has been updated'));
+            $this->_getSession()->addSuccess(Mage::helper('udropship')->__('RMA status has been updated'));
         } catch (Exception $e) {
-            $this->_getSession()->addError($this->__($e->getMessage()));
+            $this->_getSession()->addError(Mage::helper('udropship')->__($e->getMessage()));
         }
         $this->_redirect('urma/vendor/', array('_current'=>true, '_query'=>array('submit_action'=>'')));
     }

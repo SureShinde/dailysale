@@ -15,6 +15,7 @@ class Unirgy_Rma_Model_Rma_Comment extends Mage_Sales_Model_Abstract
     public function setRma(Unirgy_Rma_Model_Rma $rma)
     {
         $this->_rma = $rma;
+        $this->setRmaStatus($rma->getRmaStatus());
         return $this;
     }
 

@@ -7,14 +7,14 @@
 <?php foreach ($_order->getRmasCollection() as $_rma):
     $_vendor = $_rma->getVendor();
 ?>
-<h4 style="margin-bottom:10px;"><?php echo $this->__('RMA #') ?><?php echo $_rma->getIncrementId(); ?> - <span style="text-transform:capitalize"><?php echo Mage::helper('urma')->__($_rma->getRmaStatus()); ?></span></h4>
+<h4 style="margin-bottom:10px;"><?php echo Mage::helper('udropship')->__('RMA #') ?><?php echo $_rma->getIncrementId(); ?> - <span style="text-transform:capitalize"><?php echo Mage::helper('udropship')->__($_rma->getRmaStatus()); ?></span></h4>
 
 <?php if ($_rma->getStatusCustomerNotes()): ?>
     <div class="col1-set order-info-box">
         <div class="col-1">
             <div class="box">
                 <div class="box-title">
-                    <h2><?php echo Mage::helper('urma')->__('General Notes') ?></h2>
+                    <h2><?php echo Mage::helper('udropship')->__('General Notes') ?></h2>
                 </div>
                 <div class="box-content">
                     <?php echo $_rma->getStatusCustomerNotes(); ?>
@@ -28,7 +28,7 @@
     <div class="col-1">
         <div class="box">
             <div class="box-title">
-                <h2><?php echo $this->__('RMA Sender') ?></h2>
+                <h2><?php echo Mage::helper('udropship')->__('RMA Sender') ?></h2>
             </div>
             <div class="box-content">
                 <address><?php echo $_order->getShippingAddress()->format('html') ?></address>
@@ -38,7 +38,7 @@
     <div class="col-2">
         <div class="box">
             <div class="box-title">
-                <h2><?php echo $this->__('RMA Receiver') ?></h2>
+                <h2><?php echo Mage::helper('udropship')->__('RMA Receiver') ?></h2>
             </div>
             <div class="box-content">
                 <address><?php echo $_vendor->getFormatedAddress('html') ?></address>
@@ -53,15 +53,15 @@
         <tbody>
             <tr>
                 <td colspan="2">
-                    <a href="#" onclick="popWin('<?php echo $this->helper('urma/shipping')->getTrackingPopupUrlBySalesModel($_rma) ?>','trackrma','width=800,height=600,top=0,left=0,resizable=yes,scrollbars=yes'); return false;" title="<?php echo $this->__('Track this RMA') ?>"><?php echo $this->__('Track this RMA') ?></a>
+                    <a href="#" onclick="popWin('<?php echo $this->helper('urma/shipping')->getTrackingPopupUrlBySalesModel($_rma) ?>','trackrma','width=800,height=600,top=0,left=0,resizable=yes,scrollbars=yes'); return false;" title="<?php echo Mage::helper('udropship')->__('Track this RMA') ?>"><?php echo Mage::helper('udropship')->__('Track this RMA') ?></a>
                     <?php if ($_rma->hasPrintableTracks()): ?>
                     <span class="separator">|</span>
-                    <a href="<?php echo $this->getUrl('urma/order/printLabel', array('order_id'=>$_order->getId(), 'rma_id'=>$_rma->getId())) ?>" class="link-print"><?php echo $this->__('Print Label') ?></a>
+                    <a href="<?php echo $this->getUrl('urma/order/printLabel', array('order_id'=>$_order->getId(), 'rma_id'=>$_rma->getId())) ?>" class="link-print"><?php echo Mage::helper('udropship')->__('Print Label') ?></a>
                     <?php endif ?>
                 </td>
             </tr>
             <tr>
-                <th class="label"><?php echo $this->__('Tracking Number(s):') ?></th>
+                <th class="label"><?php echo Mage::helper('udropship')->__('Tracking Number(s):') ?></th>
                 <td>&nbsp;
                 <?php
                 $i = 1;
@@ -88,10 +88,10 @@
     <col width="1" />
     <thead>
         <tr>
-            <th><?php echo $this->__('Product Name') ?></th>
-            <th><?php echo $this->__('SKU') ?></th>
-            <th><?php echo $this->__('Condition') ?></th>
-            <th class="a-center"><span class="nobr"><?php echo $this->__('Qty') ?></span></th>
+            <th><?php echo Mage::helper('udropship')->__('Product Name') ?></th>
+            <th><?php echo Mage::helper('udropship')->__('SKU') ?></th>
+            <th><?php echo Mage::helper('udropship')->__('Condition') ?></th>
+            <th class="a-center"><span class="nobr"><?php echo Mage::helper('udropship')->__('Qty') ?></span></th>
         </tr>
     </thead>
     <?php $_items = $_rma->getAllItems(); ?>

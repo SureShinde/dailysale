@@ -57,7 +57,7 @@ class Unirgy_Rma_Block_Order_Rma_Items extends Mage_Sales_Block_Items_Abstract
         $comments = $this->getChild('rma_comments');
         if ($comments) {
             $comments->setEntity($rma)
-                ->setTitle(Mage::helper('sales')->__('About Your Return'));
+                ->setTitle(Mage::helper('udropship')->__('About Your Return'));
             $html = $comments->toHtml();
         }
         return $html;
