@@ -156,13 +156,13 @@
 
     <admin>
         <routers>
-            <tbtmilestoneadmin>
-                <use>admin</use>
-                <args>
-                    <module>TBT_Milestone</module>
-                    <frontName>tbtmilestoneadmin</frontName>
-                </args>
-            </tbtmilestoneadmin>
+            <adminhtml>
+				<args>
+					<modules>
+						<tbtmilestoneadmin before="Mage_Adminhtml">TBT_Milestone_Adminhtml</tbtmilestoneadmin>
+					</modules>
+				</args>
+			</adminhtml>
         </routers>
     </admin>
 
