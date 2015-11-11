@@ -1,0 +1,64 @@
+<?php
+
+/**
+ * Copyright (c) 2015 S.L.I. Systems, Inc. (www.sli-systems.com) - All Rights
+ * Reserved
+ * This file is part of Learning Search Connect.
+ * Learning Search Connect is distributed under a limited and restricted
+ * license - please visit www.sli-systems.com/LSC for full license details.
+ *
+ * THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY
+ * KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
+ * PARTICULAR PURPOSE. TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO
+ * EVENT WILL SLI BE LIABLE TO YOU OR ANY OTHER PARTY FOR ANY GENERAL, DIRECT,
+ * INDIRECT, SPECIAL, INCIDENTAL OR CONSEQUENTIAL LOSS OR DAMAGES OF ANY
+ * CHARACTER ARISING OUT OF THE USE OF THE CODE AND/OR THE LICENSE INCLUDING
+ * BUT NOT LIMITED TO PERSONAL INJURY, LOSS OF DATA, LOSS OF PROFITS, LOSS OF
+ * ASSIGNMENTS, DATA OR OUTPUT FROM THE SERVICE BEING RENDERED INACCURATE,
+ * FAILURE OF CODE, SERVER DOWN TIME, DAMAGES FOR LOSS OF GOODWILL, BUSINESS
+ * INTERRUPTION, COMPUTER FAILURE OR MALFUNCTION, OR ANY AND ALL OTHER DAMAGES
+ * OR LOSSES OF WHATEVER NATURE, EVEN IF SLI HAS BEEN INFORMED OF THE
+ * POSSIBILITY OF SUCH DAMAGES.
+ */
+
+/**
+ * Search Mini Form for SLI.
+ * Provides search url to SLI hosted search solution and SLI provided autocomplete
+ * feature.
+ *
+ * @package    SLI
+ * @subpackage Search
+ */
+?>
+<form name="searchform" action="<?php echo $this->getSearchUrl() ?>" method="get" id="SliSearchProductForm"
+      onsubmit="ajaxsearchsubmit(this);return false;">
+    <div class="form-search">
+        <label for="sli_search_1">Search:</label>
+        <input type="text" name="w" id="sli_search_1" class="input-text" autocomplete="off" data-provide="rac"/>
+        <button type="submit" title="<?php echo $this->__('Search') ?>" class="button"><span><span><?php echo $this->__(
+                        'Search'
+                    ) ?></span></span></button>
+    </div>
+    <script type="text/javascript">
+        //<![CDATA[
+        var searchForm = new Varien.searchForm(
+            'SliSearchProductForm', 'sli_search_1', '<?php echo $this->__('Search entire store here...') ?>'
+        );
+        //]]>
+    </script>
+</form>
+<?php echo $this->getInlineAutocompleteJs(); ?>
+<script type="text/javascript">
+    function ajaxsearchsubmit(form) {
+        var search = encodeURIComponent(form.w.value);
+        if (typeof ajaxsearch !== 'undefined' && ajaxsearch) {
+            window.location = slibaseurlsearch + "#w=" + search
+        } else {
+            window.location = slibaseurlsearch + "?w=" + search;
+        }
+        return false;
+    }
+</script>
+
+
