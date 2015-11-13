@@ -575,11 +575,6 @@ class Aftership_Track_Model_Observer {
         }
     }
 
-    /**
-     * Sending email with Invoice data
-     *
-     * @return Mage_Sales_Model_Order_Invoice
-     */
     public function changeStatusShip(){
         $collectionVendor = Mage::getModel('udropship/vendor')->getCollection()->getItems();
 
@@ -587,11 +582,9 @@ class Aftership_Track_Model_Observer {
             //checking the quantity track number
             $collectionShipments = $this->getVendorShipmentCollection($vendor);
             foreach($collectionShipments as $shipment){
+                $trackNumbers2 = $shipment->getAllTracks();
                 $trackNumbers = Mage::getModel('track/track')->getCollection()
                     ->addFieldToFilter('order_id', array('eq' => $shipment->getOrderIncrementId()))
-                    ->getItems();
-                $trackNumbers2 = Mage::getModel('sales/order_shipment_track')->getCollection()
-                    ->addFieldToFilter('order_id', array('eq' => $shipment->getOrderId()))
                     ->getItems();
                 foreach($trackNumbers2 as $track){
                     foreach ($trackNumbers as $a_track){
@@ -623,7 +616,7 @@ class Aftership_Track_Model_Observer {
                 }
                 //логика изменения шипмента
                 $count_track = count($fullTrack);
-                if (count($trackNumbers) > 0) {
+                if (count($fullTrack) > 0) {
                     if($countPending==$count_track){
                         //all pending
                         //do nothing
@@ -669,6 +662,7 @@ class Aftership_Track_Model_Observer {
                     }
                 }
             }
+            unset($fullTrack);
         }
     }
 
