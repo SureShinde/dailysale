@@ -329,7 +329,7 @@
             </depends>
         </Mage_CatalogInventory>
         <Mage_GiftMessage>
-            <active>false</active>
+            <active>true</active>
             <codePool>core</codePool>
             <depends>
                 <Mage_Catalog/>
