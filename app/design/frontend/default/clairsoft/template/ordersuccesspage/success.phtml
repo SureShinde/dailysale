@@ -73,13 +73,29 @@ $currency = $order->getOrderCurrencyCode();
 <?php
 $orderObj = Mage::getModel('sales/order')->loadByIncrementId($this->getOrderId());
 ?>
+<!-- ROKT widget -->
+<div id="317cda8b64814ff8862c8c5ebd538d0f-b"></div>
+<!-- End ROKT widget -->
 <?php echo $this->getLayout()->createBlock('sales/order_info')->setTemplate('ordersuccesspage/info.phtml')->toHtml();?>
 <?php echo $this->getLayout()->createBlock('sales/order_items')->setTemplate('ordersuccesspage/items.phtml')->toHtml();?>
 <?php endif;?>
 <div class="buttons-set">
     <button type="button" class="button" title="<?php echo $this->__('Continue Shopping') ?>" onclick="window.location='<?php echo $this->getUrl() ?>'"><?php echo $this->__('Continue Shopping') ?></button>
 </div>
-
+<!-- ROKT -->
+<script type="text/javascript">
+    var roktFirstName = "<?php echo urlencode($order->getBillingAddress()->getFirstname()); ?>";
+    var roktLastName = "<?php echo urlencode($order->getBillingAddress()->getLastname()); ?>";
+    var roktEmail = "<?php echo urlencode($order->getCustomerEmail()); ?>";
+    var roktPostCode = "<?php echo urlencode($order->getBillingAddress()->getPostcode()); ?>";
+    roktPostCode = roktPostCode.slice(0, -5);
+    var roktPhone = "<?php echo urlencode($order->getBillingAddress()->getTelephone()); ?>";
+    var roktOrderValue = "<?php echo urlencode($subtotal); ?>";
+    var js = document.createElement("SCRIPT"); js.type = "text/JavaScript"; js.async = true;
+    js.src = "https://apps.rokt.com/?id=317cda8b64814ff8862c8c5ebd538d0f&bhid=317cda8b64814ff8862c8c5ebd538d0f-b&email="+roktEmail+"&value="+roktOrderValue+"&postcode="+roktPostCode+"&mobile="+roktPhone+"&firstName="+roktFirstName+"&lastName="+roktLastName+"&v=" + Math.floor(Math.random() * 999).toString();
+    var p = document.getElementsByTagName("script")[0]; p.parentNode.insertBefore(js, p);
+</script>
+<!-- End ROKT -->
 <!-- conversion value for Adroll smart pixel -->
 
 <script type="text/javascript">
