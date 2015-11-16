@@ -306,28 +306,15 @@ class Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Bestseller e
     }
 
     public function getLogData(){
-
-        $logs = file_get_contents(Mage::getBaseDir('log').'/bestseller_cron.log');
-        $logs = explode("\n",trim($logs));
-        foreach($logs as $log){
-            $currlog=explode('T',$log);
-            $currlog[0]=$currlog[0];
-            $currlog[1]=substr($currlog[1],0,8);
-            $currlog[2]=$currlog[2];
-            $currlog[3]=$currlog[3];
-            $result[]=$currlog;
-        }
-        if(count($logs)>=10){
-            for($j=count($logs),$i=0;$i<10;$i++,$j--){
-                $str[] = $logs[$j-1];
+        $collection = Mage::getResourceModel('bestsellercron/taskLogs_collection')->getData();
+        if(count($collection)>11){
+            foreach ($collection as $item){
+                if($item['fiuze_task_logs_id']<$collection[count($collection)-1]['fiuze_task_logs_id']-9){
+                    Mage::getModel('bestsellercron/taskLogs')->load($item['fiuze_task_logs_id'])->delete();
+                }
             }
-            krsort($str);
-            $log_for_file='';
-            foreach($str as $log){
-                $log_for_file=$log_for_file.$log."\n";
-            }
-            file_put_contents(Mage::getBaseDir('log').'/bestseller_cron.log',$log_for_file);
+            return $this->getLogData();
         }
-        return $result;
+        return $collection;
     }
 }

@@ -83,16 +83,16 @@ $_colspan = $_colspan > 1 ? 'colspan="' . $_colspan . '"' : '';
         <?php foreach($logs as $log){ ?>
             <tr>
                 <td  class="log_td">
-                    <?php echo $log['0'];?>
+                    <?php echo $log['date'];?>
                 </td>
                 <td  class="log_td">
-                    <?php echo $log['1'];?>
+                    <?php echo $log['time'];?>
                 </td>
                 <td  class="log_td">
-                    <?php echo $log['2'];?>
+                    <?php echo $log['type'];?>
                 </td>
                 <td  class="log_td">
-                    <?php echo $log['3'];?>
+                    <?php echo $log['internal_id'];?>
                 </td>
             </tr>
         <?php } ?>
