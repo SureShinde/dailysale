@@ -452,18 +452,7 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
             foreach ($bestSellersArray as $id) {
                 $product = Mage::getModel('catalog/product')->load($id);
 
-                if (isset($product['special_price'])) {
-                    $from = $product->getSpecialFromDate();
-                    $to = $product->getSpecialToDate();
-                    $today =  time();
-                    if($today >= strtotime($from) && $today <= strtotime($to) || $today >= strtotime($from) && is_null($to)){
-                        $product_price = $product['special_price'];
-                    }
-                } else {
-                    $product_price = $product['price'];
-                }
-
-                if($product_price==$priceFilter['0']) {
+                if($product->getFinalPrice()==$priceFilter['0']) {
                     $bestsell[] = $product['entity_id'];
                 }
             }
@@ -472,18 +461,7 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
             foreach ($bestSellersArray as $id) {
                 $product = Mage::getModel('catalog/product')->load($id);
 
-                if (isset($product['special_price'])) {
-                    $from = $product->getSpecialFromDate();
-                    $to = $product->getSpecialToDate();
-                    $today =  time();
-                    if($today >= strtotime($from) && $today <= strtotime($to) || $today >= strtotime($from) && is_null($to)){
-                        $product_price = $product['special_price'];
-                    }
-                } else {
-                    $product_price = $product['price'];
-                }
-
-                if ($product_price >= $priceFilter['0'] AND $product_price <= $priceFilter['1']) {
+                if ($product->getFinalPrice() >= $priceFilter['0'] AND $product->getFinalPrice() <= $priceFilter['1']) {
                     $bestsell[] = $product['entity_id'];
                 }
             }
