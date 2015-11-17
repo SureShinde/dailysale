@@ -30,7 +30,8 @@ class Unirgy_DropshipBatch_Helper_Data extends Mage_Core_Helper_Abstract
             'batch_type' => $type,
             'batch_status' => $status,
             'vendor_id' => $vendor->getId(),
-            'use_custom_template' => $this->_useCustomTemplate
+            'use_custom_template' => $this->_useCustomTemplate,
+            'is_all_vendors_import' => $this->_isAllVendorsImport,
         ));
         return $batch;
     }
@@ -174,6 +175,12 @@ class Unirgy_DropshipBatch_Helper_Data extends Mage_Core_Helper_Abstract
         return $batch;
     }
 
+    protected $_isAllVendorsImport = false;
+    public function isAllVendorsImport($isAllVendorsImport)
+    {
+        $this->_isAllVendorsImport = $isAllVendorsImport;
+        return $this;
+    }
     protected $_useCustomTemplate = '';
     public function useCustomTemplate($useCustomTemplate)
     {
@@ -183,9 +190,14 @@ class Unirgy_DropshipBatch_Helper_Data extends Mage_Core_Helper_Abstract
     public function processPost()
     {
         $r = Mage::app()->getRequest();
+        $allowAllVendors = Mage::getStoreConfigFlag('udropship/batch/allow_all_vendors_import');
         $vendor = Mage::helper('udropship')->getVendor($r->getParam('vendor_id'));
-        if (!$vendor) {
-            Mage::throwException($this->__('Invalid vendor'));
+        $isAllVendors = !$vendor->getId();
+        if ($isAllVendors && !$allowAllVendors) {
+            Mage::throwException(Mage::helper('udropship')->__('Invalid vendor'));
+        }
+        if ($isAllVendors && !$this->_useCustomTemplate) {
+            Mage::throwException(Mage::helper('udropship')->__('Please select "Use Template"'));
         }
         $notes = $r->getParam('batch_notes');
         $errors = false;
@@ -239,7 +251,7 @@ class Unirgy_DropshipBatch_Helper_Data extends Mage_Core_Helper_Abstract
                     $this->_batch->setNotes($notes)->save();
                 }
             }
-            if ($r->getParam('import_orders_default')) {
+            if ($r->getParam('import_orders_default') && !$isAllVendors) {
                 try {
                     $this->importVendorOrders($vendor);
                     $this->_batch->setStatus('success');
@@ -255,7 +267,7 @@ class Unirgy_DropshipBatch_Helper_Data extends Mage_Core_Helper_Abstract
             }
 
             if ($errors) {
-                Mage::throwException($this->__('Errors during importing, please see individual batches for details'));
+                Mage::throwException(Mage::helper('udropship')->__('Errors during importing, please see individual batches for details'));
             }
             break;
 
@@ -364,7 +376,7 @@ class Unirgy_DropshipBatch_Helper_Data extends Mage_Core_Helper_Abstract
             }
 
             if ($errors) {
-                Mage::throwException($this->__('Errors during importing, please see individual batches for details'));
+                Mage::throwException(Mage::helper('udropship')->__('Errors during importing, please see individual batches for details'));
             }
             break;
 
@@ -485,13 +497,13 @@ class Unirgy_DropshipBatch_Helper_Data extends Mage_Core_Helper_Abstract
             }
 
             if ($errors) {
-                Mage::throwException($this->__('Errors during importing, please see individual batches for details'));
+                Mage::throwException(Mage::helper('udropship')->__('Errors during importing, please see individual batches for details'));
             }
             break;
             
 
         default:
-            Mage::throwException($this->__('Invalid batch type'));
+            Mage::throwException(Mage::helper('udropship')->__('Invalid batch type'));
         }
     }
 

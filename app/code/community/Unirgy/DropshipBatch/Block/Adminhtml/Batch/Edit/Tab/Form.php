@@ -32,38 +32,38 @@ class Unirgy_DropshipBatch_Block_Adminhtml_Batch_Edit_Tab_Form extends Mage_Admi
         $this->setForm($form);
 
         $fieldset = $form->addFieldset('batch_form', array(
-            'legend'=>$hlp->__('Batch Info')
+            'legend'=>Mage::helper('udropship')->__('Batch Info')
         ));
 
         $fieldset->addField('vendor_id', 'note', array(
             'name'      => 'vendor_id',
-            'label'     => $hlp->__('Vendor'),
+            'label'     => Mage::helper('udropship')->__('Vendor'),
             'text'      => Mage::getSingleton('udropship/source')->setPath('vendors')->getOptionLabel($batch->getVendorId()),
         ));
 
         $fieldset->addField('batch_status', 'select', array(
             'name'      => 'batch_status',
-            'label'     => $hlp->__('Status'),
+            'label'     => Mage::helper('udropship')->__('Status'),
             'disabled'  => true,
             'options'   => Mage::getSingleton('udbatch/source')->setPath('batch_status')->toOptionHash(),
         ));
 
         $fieldset->addField('num_rows', 'text', array(
             'name'      => 'num_rows',
-            'label'     => $hlp->__('Number of Rows'),
+            'label'     => Mage::helper('udropship')->__('Number of Rows'),
             'disabled'  => true,
         ));
 
         $fieldset->addField('notes', 'textarea', array(
             'name'      => 'notes',
-            'label'     => $hlp->__('Notes'),
+            'label'     => Mage::helper('udropship')->__('Notes'),
         ));
 
         $fieldset->addField('rows_text', 'textarea', array(
             'name'      => 'rows_text',
             'readonly'  => true,
             'class'     => 'nowrap',
-            'label'     => $hlp->__('Content'),
+            'label'     => Mage::helper('udropship')->__('Content'),
         ));
 
         if ($batch) {

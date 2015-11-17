@@ -56,23 +56,23 @@ class Unirgy_DropshipPo_Block_Adminhtml_SalesOrderViewTab_Udpos
     protected function _prepareColumns()
     {
         $this->addColumn('increment_id', array(
-            'header' => Mage::helper('sales')->__('Purchase Order #'),
+            'header' => Mage::helper('udropship')->__('Purchase Order #'),
             'index' => 'increment_id',
         ));
 
         $this->addColumn('shipping_name', array(
-            'header' => Mage::helper('sales')->__('Ship to Name'),
+            'header' => Mage::helper('udropship')->__('Ship to Name'),
             'index' => 'shipping_name',
         ));
 
         $this->addColumn('created_at', array(
-            'header' => Mage::helper('sales')->__('Date Created'),
+            'header' => Mage::helper('udropship')->__('Date Created'),
             'index' => 'created_at',
             'type' => 'datetime',
         ));
 
         $this->addColumn('udropship_vendor', array(
-            'header' => Mage::helper('udpo')->__('Vendor'),
+            'header' => Mage::helper('udropship')->__('Vendor'),
             'index' => 'udropship_vendor',
             'type' => 'options',
             'options' => Mage::getSingleton('udropship/source')->setPath('vendors')->toOptionHash(),
@@ -81,7 +81,7 @@ class Unirgy_DropshipPo_Block_Adminhtml_SalesOrderViewTab_Udpos
         
         if (Mage::helper('udropship')->isModuleActive('ustockpo')) {
             $this->addColumn('ustock_vendor', array(
-                'header' => Mage::helper('udpo')->__('Stock Vendor'),
+                'header' => Mage::helper('udropship')->__('Stock Vendor'),
                 'index' => 'ustock_vendor',
                 'type' => 'options',
                 'options' => Mage::getSingleton('udropship/source')->setPath('vendors')->toOptionHash(),
@@ -95,7 +95,7 @@ class Unirgy_DropshipPo_Block_Adminhtml_SalesOrderViewTab_Udpos
         ));
         
         $this->addColumn('base_shipping_amount', array(
-            'header' => Mage::helper('sales')->__('Shipping Price'),
+            'header' => Mage::helper('udropship')->__('Shipping Price'),
             'index' => 'base_shipping_amount',
             'type'  => 'price',
             'currency' => 'base_currency_code',
@@ -106,7 +106,7 @@ class Unirgy_DropshipPo_Block_Adminhtml_SalesOrderViewTab_Udpos
             && Mage::getSingleton('admin/session')->isAllowed('sales/order/actions/udpo_view_order_cost')
         ) {
         $this->addColumn('total_cost', array(
-            'header' => Mage::helper('sales')->__('Total Cost'),
+            'header' => Mage::helper('udropship')->__('Total Cost'),
             'index' => 'total_cost',
             'type'  => 'price',
             'currency' => 'base_currency_code',
@@ -115,13 +115,13 @@ class Unirgy_DropshipPo_Block_Adminhtml_SalesOrderViewTab_Udpos
         }
 
         $this->addColumn('total_qty', array(
-            'header' => Mage::helper('sales')->__('Total Qty'),
+            'header' => Mage::helper('udropship')->__('Total Qty'),
             'index' => 'total_qty',
             'type'  => 'number',
         ));
 
         $this->addColumn('udropship_status', array(
-            'header' => Mage::helper('sales')->__('Status'),
+            'header' => Mage::helper('udropship')->__('Status'),
             'index' => 'udropship_status',
             'type' => 'options',
             //'renderer' => 'udpo/adminhtml_po_gridRenderer_status',
@@ -139,7 +139,7 @@ class Unirgy_DropshipPo_Block_Adminhtml_SalesOrderViewTab_Udpos
     public function getRowUrl($row)
     {
         return $this->getUrl(
-            'udpoadmin/order_po/view',
+            'adminhtml/udpoadmin_order_po/view',
             array(
                 'udpo_id'=> $row->getId(),
                 'order_id'  => $row->getOrderId()
@@ -148,17 +148,17 @@ class Unirgy_DropshipPo_Block_Adminhtml_SalesOrderViewTab_Udpos
 
     public function getGridUrl()
     {
-        return $this->getUrl('udpoadmin/order_po/udposTab', array('_current' => true));
+        return $this->getUrl('adminhtml/udpoadmin_order_po/udposTab', array('_current' => true));
     }
 
     public function getTabLabel()
     {
-        return Mage::helper('udpo')->__('Purchase Orders');
+        return Mage::helper('udropship')->__('Purchase Orders');
     }
 
     public function getTabTitle()
     {
-        return Mage::helper('sales')->__('Purchase Orders');
+        return Mage::helper('udropship')->__('Purchase Orders');
     }
 
     public function canShowTab()

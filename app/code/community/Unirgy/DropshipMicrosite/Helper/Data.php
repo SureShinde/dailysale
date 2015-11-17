@@ -111,6 +111,60 @@ class Unirgy_DropshipMicrosite_Helper_Data extends Mage_Core_Helper_Abstract
         return Mage::helper('umicrosite/protected')->getVendorBaseUrl();
     }
 
+    protected $_updateStoreBaseUrl;
+    public function setCurUpdateStoreBaseUrl($ubu)
+    {
+        $oldUbu = $this->_updateStoreBaseUrl;
+        $this->_updateStoreBaseUrl = $ubu;
+        return $oldUbu;
+    }
+    public function getCurUpdateStoreBaseUrl($vendor=null)
+    {
+        $ubu = Mage::getStoreConfig('udropship/microsite/update_store_base_url');
+        if ($this->_updateStoreBaseUrl!==null) {
+            $ubu = $this->_updateStoreBaseUrl;
+        }
+        if ($vendor!==null && ($v=Mage::helper('udropship')->getVendor($vendor)) && $v->getId() && $v->getUpdateStoreBaseUrl()!=-1) {
+            $ubu = $v->getUpdateStoreBaseUrl();
+        }
+        return $ubu;
+    }
+    public function getUpdateStoreBaseUrl($vendor=null)
+    {
+        $ubu = Mage::getStoreConfig('udropship/microsite/update_store_base_url');
+        if ($vendor!==null && ($v=Mage::helper('udropship')->getVendor($vendor)) && $v->getId() && $v->getUpdateStoreBaseUrl()!=-1) {
+            $ubu = $v->getUpdateStoreBaseUrl();
+        }
+        return $ubu;
+    }
+
+    protected $_subdomainLevel;
+    public function setCurSubdomainLevel($sl)
+    {
+        $oldSl = $this->_subdomainLevel;
+        $this->_subdomainLevel = $sl;
+        return $oldSl;
+    }
+    public function getCurSubdomainLevel($vendor=null)
+    {
+        $sl = Mage::getStoreConfig('udropship/microsite/subdomain_level');
+        if ($this->_subdomainLevel!==null) {
+            $sl = $this->_subdomainLevel;
+        }
+        if ($vendor!==null && ($v=Mage::helper('udropship')->getVendor($vendor)) && $v->getId() && $v->getSubdomainLevel()) {
+            $sl = $v->getSubdomainLevel();
+        }
+        return $sl;
+    }
+    public function getSubdomainLevel($vendor=null)
+    {
+        $sl = Mage::getStoreConfig('udropship/microsite/subdomain_level');
+        if ($vendor!==null && ($v=Mage::helper('udropship')->getVendor($vendor)) && $v->getId() && $v->getSubdomainLevel()) {
+            $sl = $v->getSubdomainLevel();
+        }
+        return $sl;
+    }
+
     public function getVendorBaseUrl($vendor=null)
     {
         return Mage::helper('umicrosite/protected')->getVendorBaseUrl($vendor);
@@ -187,7 +241,7 @@ class Unirgy_DropshipMicrosite_Helper_Data extends Mage_Core_Helper_Abstract
 
     public function getDomainName()
     {
-        $level = Mage::getStoreConfig('udropship/microsite/subdomain_level');
+        $level = Mage::helper('umicrosite')->getSubdomainLevel();
         if (!$level) {
             return '';
         }
@@ -214,12 +268,14 @@ class Unirgy_DropshipMicrosite_Helper_Data extends Mage_Core_Helper_Abstract
         if ($to && $subject && $template) {
             $data = $registration->getData();
             $data['store_name'] = $store->getName();
-            $data['registration_url'] = $ahlp->getUrl('umicrositeadmin/adminhtml_registration/edit', array(
+            $data['registration_url'] = $ahlp->getUrl('adminhtml/umicrositeadmin_registration/edit', array(
                 'reg_id' => $registration->getId(),
                 'key' => null,
+                '_store'    => 0
             ));
-            $data['all_registrations_url'] = $ahlp->getUrl('umicrositeadmin/adminhtml_registration', array(
+            $data['all_registrations_url'] = $ahlp->getUrl('adminhtml/umicrositeadmin_registration', array(
                 'key' => null,
+                '_store'    => 0
             ));
 
             foreach ($data as $k=>$v) {
@@ -285,9 +341,9 @@ class Unirgy_DropshipMicrosite_Helper_Data extends Mage_Core_Helper_Abstract
             }
         } catch (Exception $e) {
             $skip = array(
-                Mage::helper('eav')->__('Joined field with this alias is already declared'),
-                Mage::helper('eav')->__('Invalid alias, already exists in joined attributes'),
-                Mage::helper('eav')->__('Invalid alias, already exists in joint attributes.'),
+                Mage::helper('udropship')->__('Joined field with this alias is already declared'),
+                Mage::helper('udropship')->__('Invalid alias, already exists in joined attributes'),
+                Mage::helper('udropship')->__('Invalid alias, already exists in joint attributes.'),
             );
             if (!in_array($e->getMessage(), $skip)) {
                 throw $e;
@@ -326,7 +382,7 @@ class Unirgy_DropshipMicrosite_Helper_Data extends Mage_Core_Helper_Abstract
     }
     public function useVendorCategoriesFilter()
     {
-        return ($v = $this->getCurrentVendor()) && $v->getIsLimitCategories() && !Mage::app()->getStore()->isAdmin();
+        return ($v = $this->getCurrentVendor()) && $v->getIsLimitCategories() && !Mage::app()->getStore()->isAdmin() && !$this->isCurrentVendorFromProduct();
     }
 
 }

@@ -8,11 +8,11 @@ class Unirgy_DropshipMulti_Model_SourceBackorders extends Mage_CatalogInventory_
         $options = parent::toOptionArray();
         $options[] = array(
             'value' => 10,
-            'label' => $hlpm->__('Use Avail State/Date to Allow Qty Below 0')
+            'label' => Mage::helper('udropship')->__('Use Avail State/Date to Allow Qty Below 0')
         );
         $options[] = array(
             'value' => 11,
-            'label' => $hlpm->__('Use Avail State/Date to Allow Qty Below 0 and Notify Customer')
+            'label' => Mage::helper('udropship')->__('Use Avail State/Date to Allow Qty Below 0 and Notify Customer')
         );
         return $options;
     }

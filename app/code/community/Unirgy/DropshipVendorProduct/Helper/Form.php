@@ -35,7 +35,7 @@ class Unirgy_DropshipVendorProduct_Helper_Form extends Mage_Core_Helper_Abstract
                     'id'       => 'stock_data_is_in_stock',
                     'type'     => 'select',
                     'name'     => 'stock_data[is_in_stock]',
-                    'label'    => Mage::helper('cataloginventory')->__('Stock Status'),
+                    'label'    => Mage::helper('udropship')->__('Stock Status'),
                     'options'  => Mage::getSingleton('udprod/source')->setPath('stock_status')->toOptionHash(),
                     'value'    => @$values['stock_data']['is_in_stock']
                 );
@@ -45,7 +45,7 @@ class Unirgy_DropshipVendorProduct_Helper_Form extends Mage_Core_Helper_Abstract
                     'id'       => 'stock_data_qty',
                     'type'     => 'stock_data_qty',
                     'name'     => 'stock_data[qty]',
-                    'label'    => Mage::helper('cataloginventory')->__('Stock Qty'),
+                    'label'    => Mage::helper('udropship')->__('Stock Qty'),
                     'value'    => @$values['stock_data']['qty']*1
                 );
                 break;
@@ -57,7 +57,7 @@ class Unirgy_DropshipVendorProduct_Helper_Form extends Mage_Core_Helper_Abstract
                     'type'     => 'select',
                     'name'     => 'stock_data[manage_stock]',
                     'use_config_name'     => 'stock_data[use_config_manage_stock]',
-                    'label'    => Mage::helper('cataloginventory')->__('Manage Stock'),
+                    'label'    => Mage::helper('udropship')->__('Manage Stock'),
                     'value'    => @$values['stock_data']['manage_stock']*1,
                     'use_config_value' => @$values['stock_data']['use_config_manage_stock']*1,
                     'values'   => Mage::getSingleton('udropship/source')->setPath('yesno')->toOptionArray(),
@@ -75,7 +75,7 @@ class Unirgy_DropshipVendorProduct_Helper_Form extends Mage_Core_Helper_Abstract
                     'type'     => 'select',
                     'name'     => 'stock_data[backorders]',
                     'use_config_name'     => 'stock_data[use_config_backorders]',
-                    'label'    => Mage::helper('cataloginventory')->__('Backorders'),
+                    'label'    => Mage::helper('udropship')->__('Backorders'),
                     'value'    => @$values['stock_data']['backorders']*1,
                     'use_config_value' => @$values['stock_data']['use_config_backorders']*1,
                     'values'   => Mage::getSingleton('udprod/source')->setPath('udprod_backorders')->toOptionArray(),
@@ -93,7 +93,7 @@ class Unirgy_DropshipVendorProduct_Helper_Form extends Mage_Core_Helper_Abstract
                     'type'     => 'text',
                     'name'     => 'stock_data[min_qty]',
                     'use_config_name'     => 'stock_data[use_config_min_qty]',
-                    'label'    => Mage::helper('cataloginventory')->__('Qty for Item\'s Status to Become Out of Stock'),
+                    'label'    => Mage::helper('udropship')->__('Qty for Item\'s Status to Become Out of Stock'),
                     'value'    => @$values['stock_data']['min_qty']*1,
                     'use_config_value' => @$values['stock_data']['use_config_min_qty']*1,
                     'renderer' => Mage::app()->getLayout()->createBlock('udprod/vendor_product_renderer_useConfigElement'),
@@ -110,7 +110,7 @@ class Unirgy_DropshipVendorProduct_Helper_Form extends Mage_Core_Helper_Abstract
                     'type'     => 'text',
                     'name'     => 'stock_data[min_sale_qty]',
                     'use_config_name'     => 'stock_data[use_config_min_sale_qty]',
-                    'label'    => Mage::helper('cataloginventory')->__('Minimum Qty Allowed in Shopping Cart'),
+                    'label'    => Mage::helper('udropship')->__('Minimum Qty Allowed in Shopping Cart'),
                     'value'    => @$values['stock_data']['min_sale_qty']*1,
                     'use_config_value' => @$values['stock_data']['use_config_min_sale_qty']*1,
                     'renderer' => Mage::app()->getLayout()->createBlock('udprod/vendor_product_renderer_useConfigElement'),
@@ -127,7 +127,7 @@ class Unirgy_DropshipVendorProduct_Helper_Form extends Mage_Core_Helper_Abstract
                     'type'     => 'text',
                     'name'     => 'stock_data[max_sale_qty]',
                     'use_config_name'     => 'stock_data[use_config_max_sale_qty]',
-                    'label'    => Mage::helper('cataloginventory')->__('Maximum Qty Allowed in Shopping Cart'),
+                    'label'    => Mage::helper('udropship')->__('Maximum Qty Allowed in Shopping Cart'),
                     'value'    => @$values['stock_data']['max_sale_qty']*1,
                     'use_config_value' => @$values['stock_data']['use_config_max_sale_qty']*1,
                     'renderer' => Mage::app()->getLayout()->createBlock('udprod/vendor_product_renderer_useConfigElement'),
@@ -148,7 +148,7 @@ class Unirgy_DropshipVendorProduct_Helper_Form extends Mage_Core_Helper_Abstract
                     'id'       => 'product_categories',
                     'type'     => 'product_categories',
                     'name'     => 'category_ids',
-                    'label'    => Mage::helper('catalog')->__('Categories'),
+                    'label'    => Mage::helper('udropship')->__('Categories'),
                     'value'    => @$values['product_categories'],
                 );
                 break;
@@ -157,7 +157,7 @@ class Unirgy_DropshipVendorProduct_Helper_Form extends Mage_Core_Helper_Abstract
                     'id'       => 'product_websites',
                     'type'     => 'multiselect',
                     'name'     => 'website_ids',
-                    'label'    => Mage::helper('catalog')->__('Websites'),
+                    'label'    => Mage::helper('udropship')->__('Websites'),
                     'value'    => @$values['product_websites'],
                     'values'   => Mage::getSingleton('udprod/source')->setPath('product_websites')->toOptionArray()
                 );
@@ -192,6 +192,7 @@ class Unirgy_DropshipVendorProduct_Helper_Form extends Mage_Core_Helper_Abstract
                 $fieldDef['values'] = $attribute->getSource()->getAllOptions(true, true);
             } else if ($inputType == 'multiselect') {
                 $fieldDef['values'] = $attribute->getSource()->getAllOptions(false, true);
+                $fieldDef['can_be_empty'] = true;
             } else if ($inputType == 'date') {
                 $fieldDef['image'] = $this->getSkinUrl('images/grid-cal.gif');
                 $fieldDef['format'] = Mage::app()->getLocale()->getDateFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT);
@@ -210,7 +211,7 @@ class Unirgy_DropshipVendorProduct_Helper_Form extends Mage_Core_Helper_Abstract
                     'id' => 'udmulti_status',
                     'type'     => 'select',
                     'name'     => 'udmulti[status]',
-                    'label'    => Mage::helper('udmulti')->__('Status'),
+                    'label'    => Mage::helper('udropship')->__('Status'),
                     'options'   => Mage::getSingleton('udmulti/source')->setPath('vendor_product_status')->toOptionHash(),
                     'value'     => @$mvData['status']
                 );
@@ -221,7 +222,7 @@ class Unirgy_DropshipVendorProduct_Helper_Form extends Mage_Core_Helper_Abstract
                     'id' => 'udmulti_state',
                     'type'     => 'select',
                     'name'     => 'udmulti[state]',
-                    'label'    => Mage::helper('udmulti')->__('State (Condition)'),
+                    'label'    => Mage::helper('udropship')->__('State (Condition)'),
                     'options'  => Mage::getSingleton('udmultiprice/source')->setPath('vendor_product_state')->toOptionHash(),
                     'value'    => @$mvData['state']
                 );
@@ -233,7 +234,7 @@ class Unirgy_DropshipVendorProduct_Helper_Form extends Mage_Core_Helper_Abstract
                     'id' => 'udmulti_stock_qty',
                     'type'     => 'text',
                     'name'     => 'udmulti[stock_qty]',
-                    'label'    => Mage::helper('cataloginventory')->__('Stock Qty'),
+                    'label'    => Mage::helper('udropship')->__('Stock Qty'),
                     'value'    => null !== $v ? $v*1 : ''
                 );
                 break;
@@ -243,7 +244,7 @@ class Unirgy_DropshipVendorProduct_Helper_Form extends Mage_Core_Helper_Abstract
                     'id' => 'udmulti_state_descr',
                     'type'     => 'text',
                     'name'     => 'udmulti[state_descr]',
-                    'label'    => Mage::helper('udmulti')->__('State description'),
+                    'label'    => Mage::helper('udropship')->__('State description'),
                     'value'    => @$mvData['state_descr']
                 );
                 }
@@ -254,7 +255,7 @@ class Unirgy_DropshipVendorProduct_Helper_Form extends Mage_Core_Helper_Abstract
                     'id' => 'udmulti_vendor_title',
                     'type'     => 'text',
                     'name'     => 'udmulti[vendor_title]',
-                    'label'    => Mage::helper('udmulti')->__('Vendor Title'),
+                    'label'    => Mage::helper('udropship')->__('Vendor Title'),
                     'value'    => @$mvData['vendor_title']
                 );
                 }
@@ -265,7 +266,7 @@ class Unirgy_DropshipVendorProduct_Helper_Form extends Mage_Core_Helper_Abstract
                     'id' => 'udmulti_vendor_cost',
                     'type'     => 'text',
                     'name'     => 'udmulti[vendor_cost]',
-                    'label'    => Mage::helper('udmulti')->__('Vendor Cost'),
+                    'label'    => Mage::helper('udropship')->__('Vendor Cost'),
                     'value'    => null !== $v ? $v*1 : ''
                 );
                 break;
@@ -276,9 +277,35 @@ class Unirgy_DropshipVendorProduct_Helper_Form extends Mage_Core_Helper_Abstract
                     'id' => 'udmulti_vendor_price',
                     'type'     => 'text',
                     'name'     => 'udmulti[vendor_price]',
-                    'label'    => Mage::helper('udmulti')->__('Vendor Price'),
+                    'label'    => Mage::helper('udropship')->__('Vendor Price'),
                     'value'    => null !== $v ? $v*1 : ''
                 );
+                }
+                break;
+            case 'group_price':
+                if (Mage::helper('udropship')->isUdmultiPriceAvailable()) {
+                    $v = @$mvData['group_price'];
+                    $fieldDef = array(
+                        'id' => 'udmulti_group_price',
+                        'type'     => 'udmulti_group_price',
+                        'name'     => 'udmulti[group_price]',
+                        'input_renderer' => Mage::getConfig()->getBlockClassName('udmulti/vendor_productAttribute_form_groupPrice'),
+                        'label'    => Mage::helper('udropship')->__('Group Price'),
+                        'value'    => !empty($v) && is_array($v) ? $v : array()
+                    );
+                }
+                break;
+            case 'tier_price':
+                if (Mage::helper('udropship')->isUdmultiPriceAvailable()) {
+                    $v = @$mvData['tier_price'];
+                    $fieldDef = array(
+                        'id' => 'udmulti_tier_price',
+                        'type'     => 'udmulti_tier_price',
+                        'name'     => 'udmulti[tier_price]',
+                        'input_renderer' => Mage::getConfig()->getBlockClassName('udmulti/vendor_productAttribute_form_tierPrice'),
+                        'label'    => Mage::helper('udropship')->__('Tier Price'),
+                        'value'    => !empty($v) && is_array($v) ? $v : array()
+                    );
                 }
                 break;
             case 'special_price':
@@ -288,7 +315,7 @@ class Unirgy_DropshipVendorProduct_Helper_Form extends Mage_Core_Helper_Abstract
                     'id' => 'udmulti_special_price',
                     'type'     => 'text',
                     'name'     => 'udmulti[special_price]',
-                    'label'    => Mage::helper('udmulti')->__('Vendor Special Price'),
+                    'label'    => Mage::helper('udropship')->__('Vendor Special Price'),
                     'value'    => null !== $v ? $v*1 : ''
                 );
                 }
@@ -301,7 +328,7 @@ class Unirgy_DropshipVendorProduct_Helper_Form extends Mage_Core_Helper_Abstract
                     'image'    => $this->getSkinUrl('images/grid-cal.gif'),
                     'format'   => Mage::app()->getLocale()->getDateFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT),
                     'name'     => 'udmulti[special_from_date]',
-                    'label'    => Mage::helper('udmulti')->__('Vendor Special From Date'),
+                    'label'    => Mage::helper('udropship')->__('Vendor Special From Date'),
                     'value'    => @$mvData['special_from_date']
                 );
                 }
@@ -314,7 +341,7 @@ class Unirgy_DropshipVendorProduct_Helper_Form extends Mage_Core_Helper_Abstract
                     'image'    => $this->getSkinUrl('images/grid-cal.gif'),
                     'format'   => Mage::app()->getLocale()->getDateFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT),
                     'name'     => 'udmulti[special_to_date]',
-                    'label'    => Mage::helper('udmulti')->__('Vendor Special To Date'),
+                    'label'    => Mage::helper('udropship')->__('Vendor Special To Date'),
                     'value'    => @$mvData['special_to_date']
                 );
                 }
@@ -324,7 +351,7 @@ class Unirgy_DropshipVendorProduct_Helper_Form extends Mage_Core_Helper_Abstract
                     'id' => 'udmulti_vendor_sku',
                     'type'     => 'text',
                     'name'     => 'udmulti[vendor_sku]',
-                    'label'    => Mage::helper('udmulti')->__('Vendor Sku'),
+                    'label'    => Mage::helper('udropship')->__('Vendor Sku'),
                     'value'    => @$mvData['vendor_sku']
                 );
                 break;
@@ -333,7 +360,7 @@ class Unirgy_DropshipVendorProduct_Helper_Form extends Mage_Core_Helper_Abstract
                     'id' => 'udmulti_freeshipping',
                     'type'     => 'select',
                     'name'     => 'udmulti[freeshipping]',
-                    'label'    => Mage::helper('udmulti')->__('Is Free Shipping'),
+                    'label'    => Mage::helper('udropship')->__('Is Free Shipping'),
                     'options'  => Mage::getSingleton('udropship/source')->setPath('yesno')->toOptionHash(),
                     'value'    => @$mvData['freeshipping']*1
                 );
@@ -343,7 +370,7 @@ class Unirgy_DropshipVendorProduct_Helper_Form extends Mage_Core_Helper_Abstract
                     'id' => 'udmulti_shipping_price',
                     'type'     => 'text',
                     'name'     => 'udmulti[shipping_price]',
-                    'label'    => Mage::helper('udmulti')->__('Shipping Price'),
+                    'label'    => Mage::helper('udropship')->__('Shipping Price'),
                     'value'    => @$mvData['shipping_price']
                 );
                 break;
@@ -352,7 +379,7 @@ class Unirgy_DropshipVendorProduct_Helper_Form extends Mage_Core_Helper_Abstract
                     'id' => 'udmulti_backorders',
                     'type'     => 'select',
                     'name'     => 'udmulti[backorders]',
-                    'label'    => Mage::helper('udmulti')->__('Vendor Backorders'),
+                    'label'    => Mage::helper('udropship')->__('Vendor Backorders'),
                     'options'  => Mage::getSingleton('udmulti/source')->setPath('backorders')->toOptionHash(),
                     'value'    => @$mvData['backorders']*1
                 );

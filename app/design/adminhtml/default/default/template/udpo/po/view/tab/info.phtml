@@ -31,7 +31,7 @@
             </div>
             <fieldset>
                 <div><?php echo $this->getChildHtml('order_payment') ?></div>
-                <div><?php echo Mage::helper('sales')->__('Order was placed using %s', $_order->getOrderCurrencyCode()) ?></div>
+                <div><?php echo Mage::helper('udropship')->__('Order was placed using %s', $_order->getOrderCurrencyCode()) ?></div>
             </fieldset>
         </div>
     </div>
@@ -57,7 +57,7 @@
 
                     <?php echo $_excl; ?>
                     <?php if ($this->helper('tax')->displayShippingBothPrices() && $_incl != $_excl): ?>
-                        (<?php echo $this->__('Incl. Tax'); ?> <?php echo $_incl; ?>)
+                        (<?php echo Mage::helper('udropship')->__('Incl. Tax'); ?> <?php echo $_incl; ?>)
                     <?php endif; ?>
                 </div>
             </fieldset>
@@ -75,7 +75,7 @@
     <?php echo $this->getChildHtml('udpo_items') ?>
 
     <div class="box-left entry-edit">
-        <div class="entry-edit-head"><h4><?php echo $this->__('Purchase Order History') ?></h4></div>
+        <div class="entry-edit-head"><h4><?php echo Mage::helper('udropship')->__('Purchase Order History') ?></h4></div>
         <fieldset><?php echo $this->getChildHtml('order_comments') ?></fieldset>
     </div>
     <div class="clear"></div>

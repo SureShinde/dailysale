@@ -4,6 +4,8 @@ $_element = $this->getElement();
 $this->setFieldName($_element->getName());
 $fValue = $_element->getValue();
 $cShipClass = Mage::getSingleton('udshipclass/source')->setPath('customer_ship_class')->toOptionHash();
+$customerGroupIds = $_tsHlp->getCustomerGroups();
+$useCustomerGroup = Mage::getStoreConfigFlag('carriers/udtiership/use_customer_group');
 $_dt = $this->getDeliveryType();
 $store = Mage::app()->getDefaultStoreView();
 ?>
@@ -19,21 +21,32 @@ $store = Mage::app()->getDefaultStoreView();
         <col width="50" />
         <thead>
         <tr class="headings">
-            <th><?php echo $_tsHlp->__('Customer') ?></th>
-            <th><?php echo $_tsHlp->__('Cost for the first item') ?> [<?php echo $store->getBaseCurrencyCode() ?>]</th>
-            <th><?php echo $_tsHlp->__('Additional item cost') ?> [<?php echo $store->getBaseCurrencyCode() ?>]</th>
+            <th><?php echo Mage::helper('udropship')->__('Customer') ?></th>
+            <th><?php echo Mage::helper('udropship')->__('Cost for the first item') ?> [<?php echo $store->getBaseCurrencyCode() ?>]</th>
+            <th><?php echo Mage::helper('udropship')->__('Additional item cost') ?> [<?php echo $store->getBaseCurrencyCode() ?>]</th>
             <th><?php echo Mage::helper('udropship')->__('Sort Order') ?></th>
             <th><?php echo Mage::helper('udropship')->__('Action') ?></th>
         </tr>
         <tr id="<?php echo $this->suffixId('rowTpl')?>" style="display:none">
             <td>
                 <select multiple="multiple" name="<?php echo $this->getFieldName()?>[<?php echo $_dt?>][$ROW][customer_shipclass_id][]" style="width:250px; height: 150px">
-                    <option alt="customer_shipclass_id" value="*"><?php echo $this->__('*** All ***')?></option>
+                    <option alt="customer_shipclass_id" value="*"><?php echo Mage::helper('udropship')->__('*** All ***')?></option>
                     <?php foreach ($cShipClass as $cscId=>$cscLabel): ?>
                         <option alt="customer_shipclass_id" value="<?php echo $cscId?>"><?php echo $this->htmlEscape($cscLabel)?></option>
                     <?php endforeach; ?>
                 </select>
                 <input type="hidden" name="<?php echo $this->getFieldName()?>[<?php echo $_dt?>][$ROW][rate_id]" value="$RATE_ID" />
+                <?php if ($useCustomerGroup): ?>
+                    <h4><?php echo Mage::helper('udropship')->__('Custmer Group')?></h4>
+                    <select multiple="multiple" name="<?php echo $this->getFieldName()?>[$ROW][customer_group_id][]" style="width:150px; height: 150px">
+                        <option alt="customer_group_id" value="*"><?php echo Mage::helper('udropship')->__('*** All ***')?></option>
+                        <?php foreach ($customerGroupIds as $cscId=>$cscLabel): ?>
+                            <option alt="customer_group_id" value="<?php echo $cscId?>"><?php echo $this->htmlEscape($cscLabel)?></option>
+                        <?php endforeach; ?>
+                    </select>
+                <?php else: ?>
+                    <input type="hidden" name="<?php echo $this->getFieldName()?>[$ROW][customer_group_id][]" value="*" />
+                <?php endif ?>
             </td>
             <td>
                 <input name="<?php echo $this->getFieldName()?>[<?php echo $_dt?>][$ROW][cost]" class="input-text" type="text"  value="$COST" style="width: 100px" />
@@ -52,7 +65,7 @@ $store = Mage::app()->getDefaultStoreView();
         <tfoot>
         <tr>
             <th colspan="6" class="a-left">
-                <div class="left"><button type="button" class="scalable add" id="<?php echo $this->suffixId('addBtn')?>"><span>+ <?php echo $this->__('Add Rate') ?></span></button></div>
+                <div class="left"><button type="button" class="scalable add" id="<?php echo $this->suffixId('addBtn')?>"><span>+ <?php echo Mage::helper('udropship')->__('Add Rate') ?></span></button></div>
             </th>
         </tr>
         </tfoot>
@@ -78,6 +91,7 @@ $store = Mage::app()->getDefaultStoreView();
             var data = {
                 rate_id: '0',
                 customer_shipclass_id: '',
+                customer_group_id: '',
                 cost: '0',
                 additional: '0',
                 sort_order: '0'
@@ -107,7 +121,7 @@ $store = Mage::app()->getDefaultStoreView();
                 new Template('<input (([^>]*(alt="?#{key}"?|value="?#{value}"?(?=[\\s>])|type="?checkbox"?)){3})'),
                 new Template('<input $1 checked="checked"')
             ];
-            var selectFields = $H({customer_shipclass_id:1});
+            var selectFields = $H({customer_shipclass_id:1,customer_group_id:1});
             selectFields.each(function(pair){
                 var varsForEval, value=data[pair.key], key=pair.key;
                 for (var rxIdx=0; rxIdx<regExTpl.length; rxIdx+=2) {

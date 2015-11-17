@@ -7,7 +7,6 @@
 class Bronto_Common_Helper_Field extends Bronto_Common_Helper_Data
 {
     private static $_fieldCache = array();
-
     /**
      * @param string $name
      * @param array  $options
@@ -29,17 +28,15 @@ class Bronto_Common_Helper_Field extends Bronto_Common_Helper_Data
                     $field->withOptions($options['options']);
                 }
             }
-            if (isset($options['label']) && !empty($options['label'])) {
-                $field->withLabel($options['label']);
-            }
+            $field->withLabel($label);
             try {
                 $fieldObject->save($field);
-                self::$_fieldCache[$name] = $field;
+                $self::$_fieldCache[$name] = $field;
             } catch (Exception $e) {
                 $this->writeError($e);
             }
         }
 
-        return self::$_fieldCache[$name];
+        return $field;
     }
 }

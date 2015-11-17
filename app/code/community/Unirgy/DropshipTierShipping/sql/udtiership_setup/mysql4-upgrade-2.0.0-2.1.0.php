@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `{$this->getTable('udtiership_product_rates')}` (
   KEY `FK_TS_PROD_RATE_PROD_ID` (`product_id`),
   CONSTRAINT `FK_TS_PROD_RATE_DELIVERY_TYPE_ID` FOREIGN KEY (`delivery_type_id`) REFERENCES `{$this->getTable('udtiership_delivery_type')}` (`delivery_type_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_TS_PROD_RATE_PROD_ID` FOREIGN KEY (`product_id`) REFERENCES `{$this->getTable('catalog/product')}` (`entity_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 ");
 

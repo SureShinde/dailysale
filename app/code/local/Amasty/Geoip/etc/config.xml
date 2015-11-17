@@ -72,13 +72,13 @@
 
     <admin>
         <routers>
-            <amgeoip>
-                <use>admin</use>
-                <args>
-                    <module>Amasty_Geoip</module>
-                    <frontName>amgeoip</frontName>
-                </args>
-            </amgeoip>
+            <adminhtml>
+				<args>
+					<modules>
+						<amgeoip before="Mage_Adminhtml">Amasty_Geoip_Adminhtml</amgeoip>
+					</modules>
+				</args>
+			</adminhtml>
         </routers>
     </admin>
 

@@ -19,7 +19,7 @@
 <config>
     <modules>
         <Unirgy_Dropship>
-            <version>2.2.34</version>
+            <version>2.4.2</version>
             <usimpleup remote="http://download.unirgy.com/simple/client_api/version/"
                        changelog="http://unirgy.com/support/portal/announcements"
                        uninstall="udropship/observer::usimpleup_uninstall"/>
@@ -221,6 +221,31 @@
         </template>
 
         <events>
+            <sales_order_shipment_load_after>
+                <observers>
+                    <udropship>
+                        <type>singleton</type>
+                        <class>udropship/observer</class>
+                        <method>sales_order_shipment_load_after</method>
+                    </udropship>
+                </observers>
+            </sales_order_shipment_load_after>
+            <order_cancel_after>
+                <observers>
+                    <udropship>
+                        <class>udropship/observer</class>
+                        <method>order_cancel_after</method>
+                    </udropship>
+                </observers>
+            </order_cancel_after>
+            <sales_order_item_cancel>
+                <observers>
+                    <udropship>
+                        <class>udropship/observer</class>
+                        <method>sales_order_item_cancel</method>
+                    </udropship>
+                </observers>
+            </sales_order_item_cancel>
             <udropship_order_save_before>
                 <observers>
                     <udropship>
@@ -601,6 +626,10 @@
                     <model>Unirgy_Dropship_Model_Label_Fedex</model>
                     <label>Webshopapps Fedex</label>
                 </fedexsoap>
+                <ups>
+                    <model>Unirgy_Dropship_Model_Label_Ups</model>
+                    <label>UPS</label>
+                </ups>
             </track_api>
             <vendor>
                 <fieldsets>
@@ -1183,7 +1212,7 @@
                         <label>Endicia API URL</label>
                         <fieldset>endicia</fieldset>
                         <position>1</position>
-                        <default>https://www.envmgr.com/LabelService/EwsLabelService.asmx</default>
+                        <default>https://elstestserver.endicia.com/LabelService/EwsLabelService.asmx</default>
                     </endicia_api_url>
                     <endicia_test_mode>
                         <label>Label Test Mode</label>
@@ -1572,18 +1601,36 @@
                     </udropship>
                 </observers>
             </catalog_product_collection_load_after>
+            <controller_action_predispatch_checkout>
+                <observers>
+                    <udropship>
+                        <type>singleton</type>
+                        <class>udropship/observer</class>
+                        <method>controller_action_predispatch_checkout</method>
+                    </udropship>
+                </observers>
+            </controller_action_predispatch_checkout>
+            <controller_action_postdispatch_checkout>
+                <observers>
+                    <udropship>
+                        <type>singleton</type>
+                        <class>udropship/observer</class>
+                        <method>controller_action_postdispatch_checkout</method>
+                    </udropship>
+                </observers>
+            </controller_action_postdispatch_checkout>
         </events>
     </frontend>
 
     <admin>
         <routers>
-            <udropshipadmin>
-                <use>admin</use>
+            <adminhtml>
                 <args>
-                    <module>Unirgy_Dropship</module>
-                    <frontName>udropshipadmin</frontName>
+                    <modules>
+                        <udropshipadmin after="Mage_Adminhtml">Unirgy_Dropship</udropshipadmin>
+                    </modules>
                 </args>
-            </udropshipadmin>
+            </adminhtml>
         </routers>
     </admin>
 
@@ -1598,29 +1645,29 @@
         <menu>
             <sales>
                 <children>
-                    <udropship module="udropship">
+                    <udropship translate="title" module="udropship">
                         <title>Dropship</title>
                         <sort_order>100</sort_order>
                         <children>
-                            <vendor module="udropship">
+                            <vendor translate="title">
                                 <title>Vendors</title>
                                 <sort_order>10</sort_order>
-                                <action>udropshipadmin/adminhtml_vendor</action>
+                                <action>adminhtml/udropshipadmin_vendor</action>
                             </vendor>
-                            <shipping module="udropship">
+                            <shipping translate="title">
                                 <title>Shipping Methods</title>
                                 <sort_order>20</sort_order>
-                                <action>udropshipadmin/adminhtml_shipping</action>
+                                <action>adminhtml/udropshipadmin_shipping</action>
                             </shipping>
-                            <label_batch module="udropship">
+                            <label_batch translate="title">
                                 <title>Label Batches</title>
                                 <sort_order>30</sort_order>
-                                <action>udropshipadmin/adminhtml_batch</action>
+                                <action>adminhtml/udropshipadmin_batch</action>
                             </label_batch>
-                            <statement module="udropship">
+                            <statement translate="title">
                                 <title>Vendor Statements</title>
                                 <sort_order>35</sort_order>
-                                <action>udropshipadmin/adminhtml_vendor_statement</action>
+                                <action>adminhtml/udropshipadmin_vendor_statement</action>
                             </statement>
                         </children>
                     </udropship>
@@ -1628,19 +1675,19 @@
             </sales>
             <report>
                 <children>
-                    <udropship module="udropship">
+                    <udropship translate="title" module="udropship">
                         <title>Dropship</title>
                         <sort_order>100</sort_order>
                         <children>
-                            <general module="udropship">
+                            <general translate="title">
                                 <title>General Details</title>
                                 <sort_order>10</sort_order>
-                                <action>udropshipadmin/adminhtml_report</action>
+                                <action>adminhtml/udropshipadmin_report</action>
                             </general>
-                            <item module="udropship">
+                            <item translate="title">
                                 <title>Item Details</title>
                                 <sort_order>20</sort_order>
-                                <action>udropshipadmin/adminhtml_report/item</action>
+                                <action>adminhtml/udropshipadmin_report/item</action>
                             </item>
                         </children>
                     </udropship>
@@ -1653,23 +1700,23 @@
                     <children>
                         <sales>
                             <children>
-                                <udropship translate="title">
+                                <udropship translate="title" module="udropship">
                                     <title>Dropship</title>
                                     <sort_order>40</sort_order>
                                     <children>
-                                        <vendor>
+                                        <vendor translate="title">
                                             <title>Vendors</title>
                                             <sort_order>10</sort_order>
                                         </vendor>
-                                        <shipping>
+                                        <shipping translate="title">
                                             <title>Shipping</title>
                                             <sort_order>20</sort_order>
                                         </shipping>
-                                        <label_batch>
+                                        <label_batch translate="title">
                                             <title>Label Batches</title>
                                             <sort_order>30</sort_order>
                                         </label_batch>
-                                        <statement>
+                                        <statement translate="title">
                                             <title>Vendor Statements</title>
                                             <sort_order>35</sort_order>
                                         </statement>
@@ -1679,7 +1726,7 @@
                         </sales>
                         <report>
                             <children>
-                                <udropship translate="title">
+                                <udropship translate="title" module="udropship">
                                     <title>Dropship</title>
                                     <sort_order>100</sort_order>
                                     <children>
@@ -1699,11 +1746,11 @@
                             <children>
                                 <config>
                                     <children>
-                                        <udropship>
+                                        <udropship translate="title" module="udropship">
                                             <title>Dropship</title>
                                             <sort_order>50</sort_order>
                                         </udropship>
-                                        <udropship_label>
+                                        <udropship_label translate="title" module="udropship">
                                             <title>Dropship Labels</title>
                                             <sort_order>60</sort_order>
                                         </udropship_label>
@@ -1808,7 +1855,7 @@
     <crontab>
         <jobs>
             <udropship_collect_tracking>
-                <schedule><cron_expr>*/5 * * * *</cron_expr></schedule>
+                <schedule><cron_expr>* * * * *</cron_expr></schedule>
                 <run><model>udropship/observer::cronCollectTracking</model></run>
             </udropship_collect_tracking>
             <udropship_vendor_notify_lowstock>
@@ -1996,7 +2043,7 @@ Limit: {{limit}} days
                 <fedex_payment_type>SENDER</fedex_payment_type>
             </fedex>
             <endicia>
-                <endicia_api_url>https://www.envmgr.com/LabelService/EwsLabelService.asmx</endicia_api_url>
+                <endicia_api_url>https://elstestserver.endicia.com/LabelService/EwsLabelService.asmx</endicia_api_url>
                 <endicia_pdf_label_width>4</endicia_pdf_label_width>
                 <endicia_pdf_label_height>6</endicia_pdf_label_height>
                 <endicia_stealth>1</endicia_stealth>
@@ -2008,17 +2055,4 @@ Limit: {{limit}} days
             </ups>
         </udropship_label>
     </default>
-
-    <frontend>
-        <routers>
-            <udropship>
-                <args>
-                    <frontName>portal</frontName>
-                </args>
-            </udropship>
-        </routers>
-        <secure_url>
-            <udropship_vendor>/vendor/vendor/</udropship_vendor>
-        </secure_url>
-    </frontend>
 </config>

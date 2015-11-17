@@ -2,17 +2,17 @@
 <tr>
     <td class="label"><?php echo trim($_element->getLabelHtml()) ?></td>
     <td class="grid" colspan=10>
-        <input id="<?php echo $_element->getName()?>" type="hidden" />
+        <input id="<?php echo $_element->getId()?>" type="hidden" />
         <table cellspacing="0" class="data" cellpadding="0" id="tiercom_category_rates-grid">
             <col width="200">
             <col width="200">
             <thead>
                 <tr class="headings">
-                    <th class="a-center"><?php echo Mage::helper('udtiercom')->__('Category') ?></th>
-                    <th class="a-center"><?php echo Mage::helper('udtiercom')->__('Commission Percent (per item)') ?></th>
-                    <th class="a-center"><?php echo Mage::helper('udtiercom')->__('Default Commission Percent') ?></th>
-                    <th class="a-center"><?php echo Mage::helper('udtiercom')->__('Fixed Rate (per item)') ?></th>
-                    <th class="a-center"><?php echo Mage::helper('udtiercom')->__('Default Fixed Rate') ?></th>
+                    <th class="a-center"><?php echo Mage::helper('udropship')->__('Category') ?></th>
+                    <th class="a-center"><?php echo Mage::helper('udropship')->__('Commission Percent (per item)') ?></th>
+                    <th class="a-center"><?php echo Mage::helper('udropship')->__('Default Commission Percent') ?></th>
+                    <th class="a-center"><?php echo Mage::helper('udropship')->__('Fixed Rate (per item)') ?></th>
+                    <th class="a-center"><?php echo Mage::helper('udropship')->__('Default Fixed Rate') ?></th>
                 </tr>
             </thead>
             <tbody id="tiercom_category_rates-table">

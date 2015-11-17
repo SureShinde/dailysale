@@ -92,7 +92,7 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Statement_Edit_Tab_Payouts extends 
         ));
         
         $this->addColumn('total_payout', array(
-            'header' => Mage::helper('udpayout')->__('Total Payout'),
+            'header' => Mage::helper('udropship')->__('Total Payout'),
             'index' => 'total_payout',
             'type'  => 'price',
             'currency' => 'base_currency_code',
@@ -100,7 +100,7 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Statement_Edit_Tab_Payouts extends 
         ));
         
         $this->addColumn('total_paid', array(
-            'header' => Mage::helper('udpayout')->__('Total Paid'),
+            'header' => Mage::helper('udropship')->__('Total Paid'),
             'index' => 'total_paid',
             'type'  => 'price',
             'currency' => 'base_currency_code',
@@ -108,7 +108,7 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Statement_Edit_Tab_Payouts extends 
         ));
         
         $this->addColumn('total_due', array(
-            'header' => Mage::helper('udpayout')->__('Total Due'),
+            'header' => Mage::helper('udropship')->__('Total Due'),
             'index' => 'total_due',
             'type'  => 'price',
             'currency' => 'base_currency_code',
@@ -127,7 +127,7 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Statement_Edit_Tab_Payouts extends 
     
     public function getRowUrl($row)
     {
-        return $this->getUrl('udpayoutadmin/payout/edit', array('id' => $row->getId()));
+        return $this->getUrl('adminhtml/udpayoutadmin_payout/edit', array('id' => $row->getId()));
     }
 
     public function getGridUrl()

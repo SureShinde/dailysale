@@ -118,13 +118,13 @@
 
     <admin>
         <routers>
-            <amaudit>
-                <use>admin</use>
-                <args>
-                    <module>Amasty_Audit</module>
-                    <frontName>amaudit</frontName>
-                </args>
-            </amaudit>
+            <adminhtml>
+				<args>
+					<modules>
+						<amaudit before="Mage_Adminhtml">Amasty_Audit_Adminhtml</amaudit>
+					</modules>
+				</args>
+			</adminhtml>
         </routers>
     </admin>
 

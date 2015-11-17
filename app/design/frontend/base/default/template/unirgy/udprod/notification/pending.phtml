@@ -21,9 +21,9 @@ $hlp = Mage::helper('udropship');
 <table cellspacing="0" cellpadding="0" border="0" width="100%" style="border:1px solid #bebcb7; background:#f8f7f5;">
     <thead>
         <tr>
-            <th align="left" bgcolor="#d9e5ee" style="padding:3px 9px"><?php echo $this->__('Name') ?></th>
-            <th align="left" bgcolor="#d9e5ee" style="padding:3px 9px"><?php echo $this->__('Sku') ?></th>
-            <th align="left" bgcolor="#d9e5ee" style="padding:3px 9px"><?php echo $this->__('Data Changed') ?></th>
+            <th align="left" bgcolor="#d9e5ee" style="padding:3px 9px"><?php echo Mage::helper('udropship')->__('Name') ?></th>
+            <th align="left" bgcolor="#d9e5ee" style="padding:3px 9px"><?php echo Mage::helper('udropship')->__('Sku') ?></th>
+            <th align="left" bgcolor="#d9e5ee" style="padding:3px 9px"><?php echo Mage::helper('udropship')->__('Data Changed') ?></th>
         </tr>
     </thead>
     <?php $i=0; foreach ($this->getProducts() as $prod): ?>
@@ -33,9 +33,9 @@ $hlp = Mage::helper('udropship');
             <td align="left" valign="top" style="padding:3px 9px"><?php echo $this->htmlEscape($prod->getSku()) ?></td>
             <td align="center" valign="top" style="padding:3px 9px">
             <?php if ($prod->getData('udprod_pending_notify')==2):?>
-                <b><?php echo Mage::helper('udprod')->__('NEW PRODUCT')?></b>
+                <b><?php echo Mage::helper('udropship')->__('NEW PRODUCT')?></b>
             <?php elseif ($prod->getData('udprod_attributes_changed')):?>
-                <b><?php echo Mage::helper('udprod')->__('Attributes Changes')?></b>
+                <b><?php echo Mage::helper('udropship')->__('Attributes Changes')?></b>
                 <br />
                 <?php foreach ($prod->getData('udprod_attributes_changed') as $line): ?>
                     <?php echo $this->htmlEscape($line) ?><br />
@@ -43,14 +43,14 @@ $hlp = Mage::helper('udropship');
                 <br />
             <?php endif;?>
             <?php if ($prod->getData('udprod_cfg_simples_added')):?>
-                <b><?php echo Mage::helper('udprod')->__('Added configurable simple products')?></b><br />
+                <b><?php echo Mage::helper('udropship')->__('Added configurable simple products')?></b><br />
                 <?php foreach ($prod->getData('udprod_cfg_simples_added') as $line): ?>
                     <?php echo $this->htmlEscape($line) ?><br />
                 <?php endforeach; ?>
                 <br />
             <?php endif;?>
             <?php if ($prod->getData('udprod_cfg_simples_removed')):?>
-                <b><?php echo Mage::helper('udprod')->__('Removed configurable simple products')?></b><br />
+                <b><?php echo Mage::helper('udropship')->__('Removed configurable simple products')?></b><br />
                 <?php foreach ($prod->getData('udprod_cfg_simples_added') as $line): ?>
                     <?php echo $this->htmlEscape($line) ?><br />
                 <?php endforeach; ?>

@@ -37,13 +37,13 @@ class Unirgy_DropshipTierShipping_Block_Adminhtml_SystemConfigField_Rates extend
         $title = '';
         switch (current($subkeyColumns)) {
             case 'cost':
-                $title = Mage::helper('udtiership')->__('Cost for the first item');
+                $title = Mage::helper('udropship')->__('Cost for the first item');
                 break;
             case 'additional':
-                $title = Mage::helper('udtiership')->__('Additional item cost');
+                $title = Mage::helper('udropship')->__('Additional item cost');
                 break;
             case 'handling':
-                $title = Mage::helper('udtiership')->__('Tier handling fee');
+                $title = Mage::helper('udropship')->__('Tier handling fee');
                 break;
         }
         return $title;

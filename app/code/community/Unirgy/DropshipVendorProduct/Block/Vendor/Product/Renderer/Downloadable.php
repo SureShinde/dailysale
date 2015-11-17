@@ -29,14 +29,14 @@ class Unirgy_DropshipVendorProduct_Block_Vendor_Product_Renderer_Downloadable ex
             ->setId('downloadableInfo');
 
         $accordion->addItem('samples', array(
-            'title'   => Mage::helper('adminhtml')->__('Samples'),
+            'title'   => Mage::helper('udropship')->__('Samples'),
             'content' => $this->getLayout()
                 ->createBlock('udprod/vendor_product_renderer_downloadable_samples')->toHtml(),
             'open'    => false,
         ));
 
         $accordion->addItem('links', array(
-            'title'   => Mage::helper('adminhtml')->__('Links'),
+            'title'   => Mage::helper('udropship')->__('Links'),
             'content' => $this->getLayout()->createBlock(
                 'udprod/vendor_product_renderer_downloadable_links',
                 'catalog.product.edit.tab.downloadable.links')->toHtml(),

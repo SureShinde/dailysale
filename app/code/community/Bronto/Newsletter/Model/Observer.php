@@ -318,12 +318,12 @@ class Bronto_Newsletter_Model_Observer
 
                 // Get List Details
                 if ($subscriber->getStatus() == Bronto_Api_Model_Contact::STATUS_ACTIVE || ($helper->isRemoveUnsubs('store', $storeId) && $subscriber->getStatus() == Bronto_Api_Model_Contact::STATUS_UNSUBSCRIBED)) {
-                    foreach ($actualLists as $listId => $list) {
+                    foreach ($actualLists as $listId => $listName) {
                         if ($subscriber->getStatus() == Bronto_Api_Model_Contact::STATUS_ACTIVE) {
-                            $helper->writeInfo("  Adding Contact to list: {$list->getName()}");
+                            $helper->writeInfo("  Adding Contact to list: {$listName}");
                             $contact->addList($listId);
                         } else {
-                            $helper->writeInfo("  Removing Contact from list: {$list->getName()}");
+                            $helper->writeInfo("  Removing Contact from list: {$listName}");
                             $contact->removeList($listId);
                         }
                     }

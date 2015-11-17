@@ -9,11 +9,11 @@ class Unirgy_DropshipVendorProduct_Block_Vendor_Product_Wysiwyg extends Varien_D
             $html .= '<br />'
             . Mage::getSingleton('core/layout')
                 ->createBlock('adminhtml/widget_button', '', array(
-                    'label'   => Mage::helper('catalog')->__('WYSIWYG Editor'),
+                    'label'   => Mage::helper('udropship')->__('WYSIWYG Editor'),
                     'type'    => 'button',
                     'disabled' => false,
                     'class' => 'form-button',
-                    'onclick' => 'uVendorWysiwygEditor.open(\''.Mage::helper('adminhtml')->getUrl('*/*/wysiwyg').'\', \''.$this->getHtmlId().'\')'
+                        'onclick' => 'uVendorWysiwygEditor.open(\''.Mage::helper('udropship')->getVendorPortalJsUrl('*/*/wysiwyg').'\', \''.$this->getHtmlId().'\')'
                 ))->toHtml();
         }
         return $html;

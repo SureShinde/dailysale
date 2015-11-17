@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS `{$this->getTable('udtiership_delivery_type')}` (
   `sort_order` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`delivery_type_id`),
   UNIQUE KEY `UNQ_DELIVERY_CODE` (`delivery_code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `{$this->getTable('udtiership_simple_rates')}` (
   `rate_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS `{$this->getTable('udtiership_simple_rates')}` (
   PRIMARY KEY (`rate_id`),
   KEY `FK_TS_SIMPLE_DELIVERY_TYPE_ID` (`delivery_type_id`),
   CONSTRAINT `FK_TS_SIMPLE_DELIVERY_TYPE_ID` FOREIGN KEY (`delivery_type_id`) REFERENCES `{$this->getTable('udtiership_delivery_type')}` (`delivery_type_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `{$this->getTable('udtiership_vendor_simple_rates')}` (
   `rate_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `{$this->getTable('udtiership_vendor_simple_rates')}`
   KEY `FK_TS_SIMPLE_VENDOR` (`vendor_id`),
   CONSTRAINT `FK_TS_SIMPLE_VENDOR` FOREIGN KEY (`vendor_id`) REFERENCES `{$this->getTable('udropship_vendor')}` (`vendor_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_TS_VSIMPLE_DELIVERY_TYPE_ID` FOREIGN KEY (`delivery_type_id`) REFERENCES `{$this->getTable('udtiership_delivery_type')}` (`delivery_type_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `{$this->getTable('udtiership_simple_cond_rates')}` (
   `rate_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `{$this->getTable('udtiership_simple_cond_rates')}` (
   PRIMARY KEY (`rate_id`),
   KEY `FK_TS_SIMPLE_COND_DELIVERY_TYPE_ID` (`delivery_type_id`),
   CONSTRAINT `FK_TS_SIMPLE_COND_DELIVERY_TYPE_ID` FOREIGN KEY (`delivery_type_id`) REFERENCES `{$this->getTable('udtiership_delivery_type')}` (`delivery_type_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `{$this->getTable('udtiership_vendor_simple_cond_rates')}` (
   `rate_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS `{$this->getTable('udtiership_vendor_simple_cond_rate
   KEY `FK_TS_SIMPLE_COND_VENDOR` (`vendor_id`),
   CONSTRAINT `FK_TS_SIMPLE_COND_VENDOR` FOREIGN KEY (`vendor_id`) REFERENCES `{$this->getTable('udropship_vendor')}` (`vendor_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_TS_VSIMPLE_COND_DELIVERY_TYPE_ID` FOREIGN KEY (`delivery_type_id`) REFERENCES `{$this->getTable('udtiership_delivery_type')}` (`delivery_type_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `{$this->getTable('udtiership_rates')}` (
   `rate_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS `{$this->getTable('udtiership_rates')}` (
   PRIMARY KEY (`rate_id`),
   KEY `FK_TS_DELIVERY_TYPE_ID` (`delivery_type_id`),
   CONSTRAINT `FK_TS_DELIVERY_TYPE_ID` FOREIGN KEY (`delivery_type_id`) REFERENCES `{$this->getTable('udtiership_delivery_type')}` (`delivery_type_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `{$this->getTable('udtiership_vendor_rates')}` (
   `rate_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -109,7 +109,7 @@ CREATE TABLE IF NOT EXISTS `{$this->getTable('udtiership_vendor_rates')}` (
   KEY `FK_TS_VENDOR` (`vendor_id`),
   CONSTRAINT `FK_TS_VENDOR` FOREIGN KEY (`vendor_id`) REFERENCES `{$this->getTable('udropship_vendor')}` (`vendor_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_TS_VDELIVERY_TYPE_ID` FOREIGN KEY (`delivery_type_id`) REFERENCES `{$this->getTable('udtiership_delivery_type')}` (`delivery_type_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 ");
 

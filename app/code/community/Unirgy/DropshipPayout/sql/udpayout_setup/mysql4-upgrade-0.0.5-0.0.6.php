@@ -32,7 +32,18 @@ $this->_conn->changeColumn($this->getTable('udropship_payout_row'), 'shipment_id
 }
 $this->_conn->addColumn($this->getTable('udropship_payout_row'), 'po_type', 'varchar(32)');
 $this->_conn->dropKey($this->getTable('udropship_payout_row'), 'UNQ_SHIPMENT_PAYOUT');
-$this->_conn->addKey($this->getTable('udropship_payout_row'), 'UNQ_PO_PAYOUT', array('po_id', 'po_type', 'payout_id'), 'unique');
+if (Mage::helper('udropship')->isModuleActive('Unirgy_DropshipTierCommission')) {
+    $this->_conn->dropKey($this->getTable('udpayout/payout_row'), 'UNQ_PO_PAYOUT');
+    $this->_conn->addColumn($this->getTable('udpayout/payout_row'), 'po_item_id', 'int(10)');
+    $this->_conn->addColumn($this->getTable('udpayout/payout_row'), 'sku', 'varchar(128)');
+    $this->_conn->addColumn($this->getTable('udpayout/payout_row'), 'simple_sku', 'varchar(128)');
+    $this->_conn->addColumn($this->getTable('udpayout/payout_row'), 'vendor_sku', 'varchar(128)');
+    $this->_conn->addColumn($this->getTable('udpayout/payout_row'), 'vendor_simple_sku', 'varchar(128)');
+    $this->_conn->addColumn($this->getTable('udpayout/payout_row'), 'product', 'varchar(255)');
+    $this->_conn->addKey($this->getTable('udpayout/payout_row'), 'UNQ_POITEM_PAYOUT', array('po_id','po_type','payout_id','po_item_id'), 'unique');
+} else {
+    $this->_conn->addKey($this->getTable('udropship_payout_row'), 'UNQ_PO_PAYOUT', array('po_id', 'po_type', 'payout_id'), 'unique');
+}
 
 if ($this->_conn->tableColumnExists($this->getTable('udropship_payout_adjustment'), 'shipment_id')
     && !$this->_conn->tableColumnExists($this->getTable('udropship_payout_adjustment'), 'po_id')

@@ -40,41 +40,41 @@ class Unirgy_Rma_Model_Source extends Unirgy_Dropship_Model_Source_Abstract
         case 'rma_use_endicia_account':
         case 'rma_use_fedex_account':
             $options = array(
-                'global' => $hlp->__('Global'),
-                'vendor' => $hlp->__('Vendor'),
+                'global' => Mage::helper('udropship')->__('Global'),
+                'vendor' => Mage::helper('udropship')->__('Vendor'),
             );
             break;
 
         case 'vendor_rma_grid_sortdir':
             $options = array(
-                'asc' => $hlp->__('Ascending'),
-                'desc' => $hlp->__('Descending'),
+                'asc' => Mage::helper('udropship')->__('Ascending'),
+                'desc' => Mage::helper('udropship')->__('Descending'),
             );
             break;
 
         case 'vendor_rma_grid_sortby':
             $options = array(
-                'increment_id' => $hlp->__('RMA ID'),
-                'rma_date' => $hlp->__('RMA Date'),
-                'udropship_status' => $hlp->__('RMA Status'),
-                'rma_reason' => $hlp->__('Reason to return'),
+                'increment_id' => Mage::helper('udropship')->__('RMA ID'),
+                'rma_date' => Mage::helper('udropship')->__('RMA Date'),
+                'udropship_status' => Mage::helper('udropship')->__('RMA Status'),
+                'rma_reason' => Mage::helper('udropship')->__('Reason to return'),
             );
             break;
 
         case 'rma_use_address':
             $options = array(
-                'origin' => $hlp->__('Origin'),
-                'custom' => $hlp->__('Custom'),
+                'origin' => Mage::helper('udropship')->__('Origin'),
+                'custom' => Mage::helper('udropship')->__('Custom'),
             );
             break;
 
         case 'urma/fedex/fedex_dropoff_type':
             $options = array(
-                'REGULAR_PICKUP' => $hlp->__('Regular Pickup'),
-                'REQUEST_COURIER' => $hlp->__('Request Courier'),
-                'DROP_BOX' => $hlp->__('Drop Box'),
-                'BUSINESS_SERVICE_CENTER' => $hlp->__('Business Service Center'),
-                'STATION' => $hlp->__('Station'),
+                'REGULAR_PICKUP' => Mage::helper('udropship')->__('Regular Pickup'),
+                'REQUEST_COURIER' => Mage::helper('udropship')->__('Request Courier'),
+                'DROP_BOX' => Mage::helper('udropship')->__('Drop Box'),
+                'BUSINESS_SERVICE_CENTER' => Mage::helper('udropship')->__('Business Service Center'),
+                'STATION' => Mage::helper('udropship')->__('Station'),
             );
             break;
 
@@ -86,19 +86,19 @@ class Unirgy_Rma_Model_Source extends Unirgy_Dropship_Model_Source_Abstract
 
         case 'urma/fedex/fedex_label_stock_type':
             $options = array(
-                'PAPER_4X6' => $hlp->__('PDF: Paper 4x6'),
-                'PAPER_4X8' => $hlp->__('PDF: Paper 4x8'),
-                'PAPER_4X9' => $hlp->__('PDF: Paper 4x9'),
-                'PAPER_7X4.75' => $hlp->__('PDF: Paper 7x4.75'),
-                'PAPER_8.5X11_BOTTOM_HALF_LABEL' => $hlp->__('PDF: Paper 8.5x11 Bottom Half Label'),
-                'PAPER_8.5X11_TOP_HALF_LABEL' => $hlp->__('PDF: Paper 8.5x11 Top Half Label'),
+                'PAPER_4X6' => Mage::helper('udropship')->__('PDF: Paper 4x6'),
+                'PAPER_4X8' => Mage::helper('udropship')->__('PDF: Paper 4x8'),
+                'PAPER_4X9' => Mage::helper('udropship')->__('PDF: Paper 4x9'),
+                'PAPER_7X4.75' => Mage::helper('udropship')->__('PDF: Paper 7x4.75'),
+                'PAPER_8.5X11_BOTTOM_HALF_LABEL' => Mage::helper('udropship')->__('PDF: Paper 8.5x11 Bottom Half Label'),
+                'PAPER_8.5X11_TOP_HALF_LABEL' => Mage::helper('udropship')->__('PDF: Paper 8.5x11 Top Half Label'),
 
-                'STOCK_4X6' => $hlp->__('EPL: Stock 4x6'),
-                'STOCK_4X6.75_LEADING_DOC_TAB' => $hlp->__('EPL: Stock 4x6.75 Leading Doc Tab'),
-                'STOCK_4X6.75_TRAILING_DOC_TAB' => $hlp->__('EPL: Stock 4x6.75 Trailing Doc Tab'),
-                'STOCK_4X8' => $hlp->__('EPL: Stock 4x8'),
-                'STOCK_4X9_LEADING_DOC_TAB' => $hlp->__('EPL: Stock 4x9 Leading Doc Tab'),
-                'STOCK_4X9_TRAILING_DOC_TAB' => $hlp->__('EPL: Stock 4x9 Trailing Doc Tab'),
+                'STOCK_4X6' => Mage::helper('udropship')->__('EPL: Stock 4x6'),
+                'STOCK_4X6.75_LEADING_DOC_TAB' => Mage::helper('udropship')->__('EPL: Stock 4x6.75 Leading Doc Tab'),
+                'STOCK_4X6.75_TRAILING_DOC_TAB' => Mage::helper('udropship')->__('EPL: Stock 4x6.75 Trailing Doc Tab'),
+                'STOCK_4X8' => Mage::helper('udropship')->__('EPL: Stock 4x8'),
+                'STOCK_4X9_LEADING_DOC_TAB' => Mage::helper('udropship')->__('EPL: Stock 4x9 Leading Doc Tab'),
+                'STOCK_4X9_TRAILING_DOC_TAB' => Mage::helper('udropship')->__('EPL: Stock 4x9 Trailing Doc Tab'),
             );
             break;
 
@@ -231,58 +231,58 @@ class Unirgy_Rma_Model_Source extends Unirgy_Dropship_Model_Source_Abstract
             $usa = Mage::helper('usa');
             $options = array(
                 'UPS CGI' => array(
-                    '1DM'    => $usa->__('Next Day Air Early AM'),
-                    '1DML'   => $usa->__('Next Day Air Early AM Letter'),
-                    '1DA'    => $usa->__('Next Day Air'),
-                    '1DAL'   => $usa->__('Next Day Air Letter'),
-                    '1DAPI'  => $usa->__('Next Day Air Intra (Puerto Rico)'),
-                    '1DP'    => $usa->__('Next Day Air Saver'),
-                    '1DPL'   => $usa->__('Next Day Air Saver Letter'),
-                    '2DM'    => $usa->__('2nd Day Air AM'),
-                    '2DML'   => $usa->__('2nd Day Air AM Letter'),
-                    '2DA'    => $usa->__('2nd Day Air'),
-                    '2DAL'   => $usa->__('2nd Day Air Letter'),
-                    '3DS'    => $usa->__('3 Day Select'),
-                    'GND'    => $usa->__('Ground'),
-                    'GNDCOM' => $usa->__('Ground Commercial'),
-                    'GNDRES' => $usa->__('Ground Residential'),
-                    'STD'    => $usa->__('Canada Standard'),
-                    'XPR'    => $usa->__('Worldwide Express'),
-                    'WXS'    => $usa->__('Worldwide Express Saver'),
-                    'XPRL'   => $usa->__('Worldwide Express Letter'),
-                    'XDM'    => $usa->__('Worldwide Express Plus'),
-                    'XDML'   => $usa->__('Worldwide Express Plus Letter'),
-                    'XPD'    => $usa->__('Worldwide Expedited'),
+                    '1DM'    => Mage::helper('udropship')->__('Next Day Air Early AM'),
+                    '1DML'   => Mage::helper('udropship')->__('Next Day Air Early AM Letter'),
+                    '1DA'    => Mage::helper('udropship')->__('Next Day Air'),
+                    '1DAL'   => Mage::helper('udropship')->__('Next Day Air Letter'),
+                    '1DAPI'  => Mage::helper('udropship')->__('Next Day Air Intra (Puerto Rico)'),
+                    '1DP'    => Mage::helper('udropship')->__('Next Day Air Saver'),
+                    '1DPL'   => Mage::helper('udropship')->__('Next Day Air Saver Letter'),
+                    '2DM'    => Mage::helper('udropship')->__('2nd Day Air AM'),
+                    '2DML'   => Mage::helper('udropship')->__('2nd Day Air AM Letter'),
+                    '2DA'    => Mage::helper('udropship')->__('2nd Day Air'),
+                    '2DAL'   => Mage::helper('udropship')->__('2nd Day Air Letter'),
+                    '3DS'    => Mage::helper('udropship')->__('3 Day Select'),
+                    'GND'    => Mage::helper('udropship')->__('Ground'),
+                    'GNDCOM' => Mage::helper('udropship')->__('Ground Commercial'),
+                    'GNDRES' => Mage::helper('udropship')->__('Ground Residential'),
+                    'STD'    => Mage::helper('udropship')->__('Canada Standard'),
+                    'XPR'    => Mage::helper('udropship')->__('Worldwide Express'),
+                    'WXS'    => Mage::helper('udropship')->__('Worldwide Express Saver'),
+                    'XPRL'   => Mage::helper('udropship')->__('Worldwide Express Letter'),
+                    'XDM'    => Mage::helper('udropship')->__('Worldwide Express Plus'),
+                    'XDML'   => Mage::helper('udropship')->__('Worldwide Express Plus Letter'),
+                    'XPD'    => Mage::helper('udropship')->__('Worldwide Expedited'),
                 ),
                 'UPS XML' => array(
-                    '01' => $usa->__('UPS Next Day Air'),
-                    '02' => $usa->__('UPS Second Day Air'),
-                    '03' => $usa->__('UPS Ground'),
-                    '07' => $usa->__('UPS Worldwide Express'),
-                    '08' => $usa->__('UPS Worldwide Expedited'),
-                    '11' => $usa->__('UPS Standard'),
-                    '12' => $usa->__('UPS Three-Day Select'),
-                    '13' => $usa->__('UPS Next Day Air Saver'),
-                    '14' => $usa->__('UPS Next Day Air Early A.M.'),
-                    '54' => $usa->__('UPS Worldwide Express Plus'),
-                    '59' => $usa->__('UPS Second Day Air A.M.'),
-                    '65' => $usa->__('UPS Saver'),
+                    '01' => Mage::helper('udropship')->__('UPS Next Day Air'),
+                    '02' => Mage::helper('udropship')->__('UPS Second Day Air'),
+                    '03' => Mage::helper('udropship')->__('UPS Ground'),
+                    '07' => Mage::helper('udropship')->__('UPS Worldwide Express'),
+                    '08' => Mage::helper('udropship')->__('UPS Worldwide Expedited'),
+                    '11' => Mage::helper('udropship')->__('UPS Standard'),
+                    '12' => Mage::helper('udropship')->__('UPS Three-Day Select'),
+                    '13' => Mage::helper('udropship')->__('UPS Next Day Air Saver'),
+                    '14' => Mage::helper('udropship')->__('UPS Next Day Air Early A.M.'),
+                    '54' => Mage::helper('udropship')->__('UPS Worldwide Express Plus'),
+                    '59' => Mage::helper('udropship')->__('UPS Second Day Air A.M.'),
+                    '65' => Mage::helper('udropship')->__('UPS Saver'),
 
-                    '82' => $usa->__('UPS Today Standard'),
-                    '83' => $usa->__('UPS Today Dedicated Courrier'),
-                    '84' => $usa->__('UPS Today Intercity'),
-                    '85' => $usa->__('UPS Today Express'),
-                    '86' => $usa->__('UPS Today Express Saver'),
+                    '82' => Mage::helper('udropship')->__('UPS Today Standard'),
+                    '83' => Mage::helper('udropship')->__('UPS Today Dedicated Courrier'),
+                    '84' => Mage::helper('udropship')->__('UPS Today Intercity'),
+                    '85' => Mage::helper('udropship')->__('UPS Today Express'),
+                    '86' => Mage::helper('udropship')->__('UPS Today Express Saver'),
                 ),
             );
             break;
 
         default:
-            Mage::throwException($hlp->__('Invalid request for source options: '.$this->getPath()));
+            Mage::throwException(Mage::helper('udropship')->__('Invalid request for source options: '.$this->getPath()));
         }
 
         if ($selector) {
-            $options = array(''=>$hlp->__('* Please select')) + $options;
+            $options = array(''=>Mage::helper('udropship')->__('* Please select')) + $options;
         }
 
         return $options;

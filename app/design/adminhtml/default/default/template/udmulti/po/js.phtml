@@ -7,16 +7,18 @@
 </style>
 <script type="text/javascript">
 
-var vendors = <?php echo $this->getVendorsJson() ?>;
+var addVendorSku = <?php echo intval(Mage::getStoreConfigFlag('udropship/purchase_order/admin_show_vendorsku')) ?>;
+var vendors = <?php echo $this->getVendorsJson(); ?>;
 var vendorCosts = <?php echo $this->getVendorCostsJson() ?>;
 
 $$('.po-item-vendor').each(function (el) {
     var itemId = el.id.replace(/[^0-9]/g, ''), i, v
     var html = '<select name="udpo[vendors]['+itemId+'][id]" class="udmulti-vendor-select" id="udmulti-vendor-'+itemId+'">'
     $H(vendors[itemId].all).each(function (allV) {
+        console.log(allV)
         html += '<option value="'+allV.key+'" '
         html += allV.key==vendors[itemId].current ? 'selected="selected"' : ''
-        html += '>'+allV.value.name+'</option>'
+        html += '>'+allV.value.name+(addVendorSku && allV.value.vendor_sku ? '; Vendor SKU: '+allV.value.vendor_sku : '')+'</option>'
     })
     html += '</select>'
     el.update(html)

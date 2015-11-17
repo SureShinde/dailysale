@@ -99,7 +99,7 @@ class Amasty_Audit_Block_Adminhtml_Auditlog_Grid extends Mage_Adminhtml_Block_Wi
         if ($value == $this->__('Locked out') && !is_null($timeLock)) {
             $additionals .= '<script type="text/javascript">
                 function cleanLock(elem){
-                    new Ajax.Request("' . Mage::helper('adminhtml')->getUrl('amaudit/adminhtml_ajax/unlock') . '", {
+                    new Ajax.Request("' . Mage::helper('adminhtml')->getUrl('adminhtml/ajax/unlock') . '", {
                     method:"post",
                     parameters: {admin_username: elem.parentNode.parentNode.children[1].innerHTML.trim()},
                     onSuccess: function(transport) {

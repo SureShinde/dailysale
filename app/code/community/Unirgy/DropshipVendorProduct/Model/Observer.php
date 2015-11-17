@@ -7,7 +7,7 @@ class Unirgy_DropshipVendorProduct_Model_Observer
         $block = $observer->getBlock();
         /*
         $block->addTab('udprod', array(
-            'label'     => Mage::helper('udprod')->__('Template SKUs'),
+            'label'     => Mage::helper('udropship')->__('Template SKUs'),
             'after'     => 'shipping_section',
             'content'   => Mage::app()->getLayout()->createBlock('udprod/adminhtml_vendorEditTab_templateSku_form', 'vendor.udprod.form')
                 ->toHtml()
@@ -41,7 +41,7 @@ class Unirgy_DropshipVendorProduct_Model_Observer
     public function controller_action_layout_load_before($observer)
     {
         if ($observer->getAction()
-            && $observer->getAction()->getFullActionName()=='catalog_product_view'
+            && in_array($observer->getAction()->getFullActionName(), array('catalog_product_view','checkout_cart_configure'))
         ) {
             if (Mage::getStoreConfigFlag('udprod/general/use_product_zoom')) {
                 $observer->getAction()->getLayout()->getUpdate()->addHandle('_udprod_product_zoom');
@@ -178,8 +178,10 @@ class Unirgy_DropshipVendorProduct_Model_Observer
     }
     public function sales_quote_load_after($observer)
     {
+        $hl = Mage::helper('udropship');
         $quote = $observer->getQuote();
-        if ($observer->getQuote()->getUdSkipQuoteLoadAfterEvent() || Mage::getSingleton('udropship/observer')->getIsCartUpdateActionFlag()) return;
+        $qId = $quote->getId();
+        if ($hl->isSkipQuoteLoadAfterEvent($qId) || Mage::getSingleton('udropship/observer')->getIsCartUpdateActionFlag()) return;
         $usedProducts = array();
         $cfgProducts = array();
         foreach ($quote->getAllItems() as $item) {
@@ -421,6 +423,9 @@ class Unirgy_DropshipVendorProduct_Model_Observer
         Mage::app()->getLayout()->getBlock('head')->removeItem('skin_js','sm/market/js/jquery-1.7.2.min.js');
         Mage::app()->getLayout()->getBlock('head')->removeItem('skin_js','sm/market/js/jquery.noconflict.js');
         Mage::app()->getLayout()->getBlock('head')->removeItem('skin_js','sm/market/js/sm-setting.js');
+        Mage::app()->getLayout()->getBlock('head')->removeItem('skin_js','sm/maxshop/js/jquery-1.7.2.min.js');
+        Mage::app()->getLayout()->getBlock('head')->removeItem('skin_js','sm/maxshop/js/jquery.noconflict.js');
+        Mage::app()->getLayout()->getBlock('head')->removeItem('skin_js','sm/maxshop/js/sm-maxshop.js');
         if (Mage::app()->getRequest()->getParam('section')=='udprod') {
             Mage::app()->getLayout()->getBlock('content')->unsetChild('rokmage_tinymce_setup');
         }

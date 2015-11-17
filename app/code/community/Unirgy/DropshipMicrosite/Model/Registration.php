@@ -40,32 +40,32 @@ class Unirgy_DropshipMicrosite_Model_Registration extends Mage_Core_Model_Abstra
         if (!isset($vendor_name) || !isset($telephone) || !isset($email) ||
             !isset($password) || !isset($password_confirm)
         ) {
-            Mage::throwException($hlp->__('Incomplete form data'));
+            Mage::throwException(Mage::helper('udropship')->__('Incomplete form data'));
         }
         if (!$_isQuickRegister) {
             if (!isset($carrier_code) || !isset($url_key)
                 || !isset($street1) || !isset($city) || !isset($country_id)
             ) {
-                Mage::throwException($hlp->__('Incomplete form data'));
+                Mage::throwException(Mage::helper('udropship')->__('Incomplete form data'));
             }
         }
         if ($password!=$password_confirm) {
-            Mage::throwException($hlp->__('Passwords do not match'));
+            Mage::throwException(Mage::helper('udropship')->__('Passwords do not match'));
         }
         $collection = Mage::getModel('udropship/vendor')->getCollection()
             ->addFieldToFilter('email', $email);
         foreach ($collection as $dup) {
             if (Mage::getStoreConfig('udropship/vendor/unique_email')) {
-                Mage::throwException($dhlp->__('A vendor with supplied email already exists.'));
+                Mage::throwException(Mage::helper('udropship')->__('A vendor with supplied email already exists.'));
             }
             if (Mage::helper('core')->validateHash($password, $dup->getPasswordHash())) {
-                Mage::throwException($dhlp->__('A vendor with supplied email and password already exists.'));
+                Mage::throwException(Mage::helper('udropship')->__('A vendor with supplied email and password already exists.'));
             }
         }
         if (isset($url_key)) {
             $vendor = Mage::getModel('udropship/vendor')->load($url_key, 'url_key');
             if ($vendor->getId()) {
-                Mage::throwException($hlp->__('This subdomain is already taken, please choose another.'));
+                Mage::throwException(Mage::helper('udropship')->__('This subdomain is already taken, please choose another.'));
             }
             if (Mage::helper('udropship')->isUrlKeyReserved($url_key)) {
                 Mage::throwException(Mage::helper('udropship')->__('This URL Key is reserved. Please choose another.'));

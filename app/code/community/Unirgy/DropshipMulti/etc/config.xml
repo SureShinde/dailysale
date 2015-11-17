@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Unirgy_DropshipMulti>
-            <version>2.2.7</version>
+            <version>2.4.0</version>
             <usimpleup remote="http://download.unirgy.com/simple/client_api/version/"
                 changelog="http://unirgy.com/support/portal/announcements"
                 uninstall="udmulti/observer::usimpleup_uninstall"/>
@@ -23,7 +23,19 @@
         <models>
             <udmulti>
                 <class>Unirgy_DropshipMulti_Model</class>
+                <resourceModel>udmulti_mysql4</resourceModel>
             </udmulti>
+            <udmulti_mysql4>
+                <class>Unirgy_DropshipMulti_Model_Mysql4</class>
+                <entities>
+                    <group_price>
+                        <table>udmulti_group_price</table>
+                    </group_price>
+                    <tier_price>
+                        <table>udmulti_tier_price</table>
+                    </tier_price>
+                </entities>
+            </udmulti_mysql4>
         </models>
         <helpers>
             <udmulti>
@@ -315,13 +327,13 @@
 
     <admin>
         <routers>
-            <udmultiadmin>
-                <use>admin</use>
+            <adminhtml>
                 <args>
-                    <module>Unirgy_DropshipMulti</module>
-                    <frontName>udmultiadmin</frontName>
+                    <modules>
+                        <udmultiadmin after="Mage_Adminhtml">Unirgy_DropshipMulti</udmultiadmin>
+                    </modules>
                 </args>
-            </udmultiadmin>
+            </adminhtml>
         </routers>
     </admin>
 

@@ -24,14 +24,14 @@ class Unirgy_DropshipShippingClass_Block_Adminhtml_Vendor_Grid extends Mage_Admi
     {
         $this->addColumn('class_name',
             array(
-                'header'    => Mage::helper('udshipclass')->__('Class Name'),
+                'header'    => Mage::helper('udropship')->__('Class Name'),
                 'align'     => 'left',
                 'index'     => 'class_name'
             )
         );
 
         $this->addColumn('country_id', array(
-            'header'        => Mage::helper('udshipclass')->__('Country'),
+            'header'        => Mage::helper('udropship')->__('Country'),
             'type'          => 'text',
             'align'         => 'left',
             'index'         => 'country_id',
@@ -41,8 +41,8 @@ class Unirgy_DropshipShippingClass_Block_Adminhtml_Vendor_Grid extends Mage_Admi
         ));
 
         $this->addColumn('region_name', array(
-            'header'        => Mage::helper('udshipclass')->__('State/Region'),
-            'header_export' => Mage::helper('udshipclass')->__('State'),
+            'header'        => Mage::helper('udropship')->__('State/Region'),
+            'header_export' => Mage::helper('udropship')->__('State'),
             'align'         => 'left',
             'index'         => 'region_name',
             'type'          => 'text',
@@ -54,7 +54,7 @@ class Unirgy_DropshipShippingClass_Block_Adminhtml_Vendor_Grid extends Mage_Admi
         ));
 
         $this->addColumn('postcode', array(
-            'header'        => Mage::helper('udshipclass')->__('Zip/Post Code'),
+            'header'        => Mage::helper('udropship')->__('Zip/Post Code'),
             'align'         => 'left',
             'index'         => 'postcode',
             'type'          => 'text',
@@ -66,7 +66,7 @@ class Unirgy_DropshipShippingClass_Block_Adminhtml_Vendor_Grid extends Mage_Admi
         ));
 
         $this->addColumn('sort_order', array(
-            'header'        => Mage::helper('udshipclass')->__('Sort Order'),
+            'header'        => Mage::helper('udropship')->__('Sort Order'),
             'align'         =>'left',
             'index'         => 'sort_order',
         ));

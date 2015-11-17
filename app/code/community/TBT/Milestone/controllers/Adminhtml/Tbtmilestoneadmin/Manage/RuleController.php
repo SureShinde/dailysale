@@ -1,6 +1,6 @@
 <?php
 
-class TBT_Milestone_Manage_RuleController extends Mage_Adminhtml_Controller_Action
+class TBT_Milestone_Adminhtml_Tbtmilestoneadmin_Manage_RuleController extends Mage_Adminhtml_Controller_Action
 {
     public function indexAction()
     {

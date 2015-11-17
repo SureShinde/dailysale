@@ -27,10 +27,10 @@ foreach ($availCarriers as $acCode=>$acLabel) {
 
 ?>
 <?php if($rma->getTracksCollection()->count()): ?>
-<a href="#" id="linkId" onclick="popWin('<?php echo $this->helper('urma/shipping')->getTrackingPopupUrlBySalesModel($this->getRma()) ?>','trackshipment','width=800,height=600,resizable=yes,scrollbars=yes')" title="<?php echo $this->__('Track this Return') ?>"><?php echo $this->__('Track this Return') ?></a>
+<a href="#" id="linkId" onclick="popWin('<?php echo $this->helper('urma/shipping')->getTrackingPopupUrlBySalesModel($this->getRma()) ?>','trackshipment','width=800,height=600,resizable=yes,scrollbars=yes')" title="<?php echo Mage::helper('udropship')->__('Track this Return') ?>"><?php echo Mage::helper('udropship')->__('Track this Return') ?></a>
 <br/>
-<a href="<?php echo $this->getUrl('urmaadmin/order_rma/printLabel', array('rma_id'=>$rma->getId()))?>">
-    <?php echo $this->__('Print Labels') ?>
+<a href="<?php echo $this->getUrl('adminhtml/urmaadmin_order_rma/printLabel', array('rma_id'=>$rma->getId()))?>">
+    <?php echo Mage::helper('udropship')->__('Print Labels') ?>
 </a>
 <?php endif ?>
 
@@ -42,11 +42,11 @@ foreach ($availCarriers as $acCode=>$acLabel) {
     <col width="80" />
     <thead>
         <tr class="headings">
-            <th><?php echo Mage::helper('sales')->__('Carrier') ?></th>
-            <th><?php echo Mage::helper('sales')->__('Title') ?></th>
-            <th><?php echo Mage::helper('sales')->__('Number') ?></th>
-            <th><?php echo Mage::helper('sales')->__('Amount') ?></th>
-            <th class="last"><?php echo Mage::helper('sales')->__('Action') ?></th>
+            <th><?php echo Mage::helper('udropship')->__('Carrier') ?></th>
+            <th><?php echo Mage::helper('udropship')->__('Title') ?></th>
+            <th><?php echo Mage::helper('udropship')->__('Number') ?></th>
+            <th><?php echo Mage::helper('udropship')->__('Amount') ?></th>
+            <th class="last"><?php echo Mage::helper('udropship')->__('Action') ?></th>
         </tr>
     </thead>
     <tfoot>
@@ -79,7 +79,7 @@ foreach ($availCarriers as $acCode=>$acLabel) {
                 <?php endif; ?>
             </td>
             <td><?php echo $_track->getFinalPrice() ? $order->formatBasePrice($_track->getFinalPrice()) : '' ?></td>
-            <td class="last"><a href="#" onclick="deleteTrackingNumber('<?php echo $this->getRemoveUrl($_track) ?>'); return false;"><?php echo Mage::helper('sales')->__('Delete') ?></a></td>
+            <td class="last"><a href="#" onclick="deleteTrackingNumber('<?php echo $this->getRemoveUrl($_track) ?>'); return false;"><?php echo Mage::helper('udropship')->__('Delete') ?></a></td>
         </tr>
     <?php endforeach; ?>
     </tbody>
@@ -89,12 +89,12 @@ foreach ($availCarriers as $acCode=>$acLabel) {
 
 <div class="field-row grid" id="rma_label_form">
 <p>
-    <label class="normal" for="rma_generate_label"><?php echo $_hlp->__('Generate Label') ?></label>
+    <label class="normal" for="rma_generate_label"><?php echo Mage::helper('udropship')->__('Generate Label') ?></label>
     <input id="rma_generate_label" name="rma[generate_label]" value="1" type="checkbox" onclick="toggleRmaLabelForm()" />
 </p>
 <p id="rma_use_carrier_select" style="display:none">
-    <label for="rma_use_carrier"><?php echo $_hlp->__('Carrier') ?></label>
-    <select id="rma_use_carrier" name="rma[label_info][use_carrier]" title="<?php echo $_hlp->__('Carrier') ?>"  onchange="toggleRmaLabelForm()">
+    <label for="rma_use_carrier"><?php echo Mage::helper('udropship')->__('Carrier') ?></label>
+    <select id="rma_use_carrier" name="rma[label_info][use_carrier]" title="<?php echo Mage::helper('udropship')->__('Carrier') ?>"  onchange="toggleRmaLabelForm()">
         <?php foreach($availCarriers as $_acCode => $_acLabel): ?>
             <option value="<?php echo $_acCode?>" <?php if ($defaultCarrier==$_acCode): ?> selected<?php endif?>><?php echo $_acLabel?></option>
         <?php endforeach ?>
@@ -103,33 +103,33 @@ foreach ($availCarriers as $acCode=>$acLabel) {
 <div id="rma_generate_label_form" style="display:none">
 
 <p>
-    <label for="rma_label_weight"><?php echo $_hlp->__('Return Info')?></label>
-    <?php echo $_hlp->__('Weight:') ?>
-    <input id="rma_label_weight" name="rma[label_info][weight]" value="<?php echo $rma->getRemainingWeight() ?>" title="<?php echo $_hlp->__('Weight') ?>" type="text" class="input-text" style="width:50px;" /> LB
+    <label for="rma_label_weight"><?php echo Mage::helper('udropship')->__('Return Info')?></label>
+    <?php echo Mage::helper('udropship')->__('Weight:') ?>
+    <input id="rma_label_weight" name="rma[label_info][weight]" value="<?php echo $rma->getRemainingWeight() ?>" title="<?php echo Mage::helper('udropship')->__('Weight') ?>" type="text" class="input-text" style="width:50px;" /> LB
 &nbsp;&nbsp;
-    <?php echo $_hlp->__('Value:') ?>
-    <input id="rma_label_value" name="rma[label_info][value]" value="<?php echo $rma->getRemainingValue()*1 ?>" title="<?php echo $_hlp->__('Declared Value') ?>" type="text" class="input-text" style="width:50px;"/> <?php echo $rma->getOrder()->getStoreCurrencyCode() ?>
+    <?php echo Mage::helper('udropship')->__('Value:') ?>
+    <input id="rma_label_value" name="rma[label_info][value]" value="<?php echo $rma->getRemainingValue()*1 ?>" title="<?php echo Mage::helper('udropship')->__('Declared Value') ?>" type="text" class="input-text" style="width:50px;"/> <?php echo $rma->getOrder()->getStoreCurrencyCode() ?>
 </p>
 <p>
-    <label for="rma_label_length"><?php echo $_hlp->__('Pkg. Dimensions')?></label>
-    <?php echo $_hlp->__('Length:') ?>
-    <input id="rma_label_length" name="rma[label_info][length]" value="<?php echo (float)$_vendor->getDefaultPkgLength()?>" title="<?php echo $_hlp->__('Length') ?>" type="text" class="input-text" style="width:30px;" />
+    <label for="rma_label_length"><?php echo Mage::helper('udropship')->__('Pkg. Dimensions')?></label>
+    <?php echo Mage::helper('udropship')->__('Length:') ?>
+    <input id="rma_label_length" name="rma[label_info][length]" value="<?php echo (float)$_vendor->getDefaultPkgLength()?>" title="<?php echo Mage::helper('udropship')->__('Length') ?>" type="text" class="input-text" style="width:30px;" />
     &nbsp;&nbsp;
-    <?php echo $_hlp->__('Width:') ?>
-    <input id="rma_label_width" name="rma[label_info][width]" value="<?php echo (float)$_vendor->getDefaultPkgWidth()?>" title="<?php echo $_hlp->__('Width') ?>" type="text" class="input-text" style="width:30px;" />
+    <?php echo Mage::helper('udropship')->__('Width:') ?>
+    <input id="rma_label_width" name="rma[label_info][width]" value="<?php echo (float)$_vendor->getDefaultPkgWidth()?>" title="<?php echo Mage::helper('udropship')->__('Width') ?>" type="text" class="input-text" style="width:30px;" />
     &nbsp;&nbsp;
-    <?php echo $_hlp->__('Height:') ?>
-    <input id="rma_label_height" name="rma[label_info][height]" value="<?php echo (float)$_vendor->getDefaultPkgHeight()?>" title="<?php echo $_hlp->__('Height') ?>" type="text" class="input-text" style="width:30px;" />
+    <?php echo Mage::helper('udropship')->__('Height:') ?>
+    <input id="rma_label_height" name="rma[label_info][height]" value="<?php echo (float)$_vendor->getDefaultPkgHeight()?>" title="<?php echo Mage::helper('udropship')->__('Height') ?>" type="text" class="input-text" style="width:30px;" />
 </p>
 <p>
-    <label for="rma_label_reference"><?php echo $_hlp->__('Reference') ?></label>
-    <input id="rma_label_reference" name="rma[label_info][reference]" value="<?php echo $rma->getIncrementId() ?>" title="<?php echo $_hlp->__('Reference') ?>" type="text" class="input-text" style="width:250px;" />
+    <label for="rma_label_reference"><?php echo Mage::helper('udropship')->__('Reference') ?></label>
+    <input id="rma_label_reference" name="rma[label_info][reference]" value="<?php echo $rma->getIncrementId() ?>" title="<?php echo Mage::helper('udropship')->__('Reference') ?>" type="text" class="input-text" style="width:250px;" />
 </p>
 
 <div id="rma_generate_label_form_fedex" class="rma_generate_label_subform" style="display:none">
 <p>
-    <label for="rma_label_package_count"><?php echo $_hlp->__('Package Count') ?></label>
-    <select id="rma_label_package_count" name="rma[label_info][package_count]" value="1" title="<?php echo $_hlp->__('Package Count') ?>">
+    <label for="rma_label_package_count"><?php echo Mage::helper('udropship')->__('Package Count') ?></label>
+    <select id="rma_label_package_count" name="rma[label_info][package_count]" value="1" title="<?php echo Mage::helper('udropship')->__('Package Count') ?>">
         <?php foreach(range(1,10) as $pcIdx): ?>
             <option value="<?php echo $pcIdx?>"><?php echo $pcIdx?></option>
         <?php endforeach ?>
@@ -137,8 +137,8 @@ foreach ($availCarriers as $acCode=>$acLabel) {
     <br />
 </p>
 <p>
-    <label for="rma_use_method_code_fedex"><?php echo $_hlp->__('Shipping Method') ?></label>
-    <select id="rma_use_method_code_fedex" name="rma[label_info][use_method_code]" title="<?php echo $_hlp->__('Shipping Method') ?>">
+    <label for="rma_use_method_code_fedex"><?php echo Mage::helper('udropship')->__('Shipping Method') ?></label>
+    <select id="rma_use_method_code_fedex" name="rma[label_info][use_method_code]" title="<?php echo Mage::helper('udropship')->__('Shipping Method') ?>">
         <?php foreach($availableMethods['fedex'] as $_amCode => $_amDesc): ?>
             <option value="<?php echo $_amCode?>" <?php if ($defaultMethod['fedex']==$_amCode): ?> selected<?php endif?>><?php echo $_amDesc?></option>
         <?php endforeach ?>
@@ -160,8 +160,8 @@ foreach ($availCarriers as $acCode=>$acLabel) {
         $extLabelLbl = (string)$extLabelNode->label;
     ?>
 <p>
-    <label for="rma_extra_label_info_<?php echo $extLabelOpt?>]"><?php echo $_hlp->__($extLabelLbl) ?></label>
-    <select id="rma_extra_label_info_<?php echo $extLabelOpt?>" name="rma[extra_label_info][<?php echo $extLabelOpt?>]" title="<?php echo $_hlp->__($extLabelLbl) ?>">
+    <label for="rma_extra_label_info_<?php echo $extLabelOpt?>]"><?php echo Mage::helper('udropship')->__($extLabelLbl) ?></label>
+    <select id="rma_extra_label_info_<?php echo $extLabelOpt?>" name="rma[extra_label_info][<?php echo $extLabelOpt?>]" title="<?php echo Mage::helper('udropship')->__($extLabelLbl) ?>">
         <?php foreach($lblSource->toOptionHash() as $_optId => $_optVal): ?>
             <option value="<?php echo $_optId?>" <?php if ($_optId==$_vendor->getData($extLabelOpt)): ?> selected<?php endif?>><?php echo $_optVal?></option>
         <?php endforeach ?>
@@ -173,8 +173,8 @@ foreach ($availCarriers as $acCode=>$acLabel) {
 <div id="rma_generate_label_form_ups" class="rma_generate_label_subform" style="display:none">
 
 <p>
-    <label for="rma_use_method_code_ups"><?php echo $_hlp->__('Shipping Method') ?></label>
-    <select id="rma_use_method_code_ups" name="rma[label_info][use_method_code]" title="<?php echo $_hlp->__('Shipping Method') ?>">
+    <label for="rma_use_method_code_ups"><?php echo Mage::helper('udropship')->__('Shipping Method') ?></label>
+    <select id="rma_use_method_code_ups" name="rma[label_info][use_method_code]" title="<?php echo Mage::helper('udropship')->__('Shipping Method') ?>">
         <?php foreach($availableMethods['ups'] as $_amCode => $_amDesc): ?>
             <option value="<?php echo $_amCode?>" <?php if ($defaultMethod['ups']==$_amCode): ?> selected<?php endif?>><?php echo $_amDesc?></option>
         <?php endforeach ?>
@@ -201,8 +201,8 @@ foreach ($availCarriers as $acCode=>$acLabel) {
         $extLabelLbl = (string)$extLabelNode->label;
     ?>
 <p>
-    <label for="rma_extra_label_info_<?php echo $extLabelOpt?>]"><?php echo $_hlp->__($extLabelLbl) ?></label>
-    <select id="rma_extra_label_info_<?php echo $extLabelOpt?>]" name="rma[extra_label_info][<?php echo $extLabelOpt?>]" title="<?php echo $_hlp->__($extLabelLbl) ?>">
+    <label for="rma_extra_label_info_<?php echo $extLabelOpt?>]"><?php echo Mage::helper('udropship')->__($extLabelLbl) ?></label>
+    <select id="rma_extra_label_info_<?php echo $extLabelOpt?>]" name="rma[extra_label_info][<?php echo $extLabelOpt?>]" title="<?php echo Mage::helper('udropship')->__($extLabelLbl) ?>">
         <?php foreach($lblSource->toOptionHash() as $_optId => $_optVal): ?>
             <option value="<?php echo $_optId?>" <?php if ($_optId==$_vendor->getData($extLabelOpt)): ?> selected<?php endif?>><?php echo $_optVal?></option>
         <?php endforeach ?>
@@ -215,8 +215,8 @@ foreach ($availCarriers as $acCode=>$acLabel) {
 <div id="rma_generate_label_form_usps" class="rma_generate_label_subform" style="display:none">
 
 <p>
-    <label for="rma_use_method_code_usps"><?php echo $_hlp->__('Shipping Method') ?></label>
-    <select id="rma_use_method_code_usps" name="rma[label_info][use_method_code]" title="<?php echo $_hlp->__('Shipping Method') ?>">
+    <label for="rma_use_method_code_usps"><?php echo Mage::helper('udropship')->__('Shipping Method') ?></label>
+    <select id="rma_use_method_code_usps" name="rma[label_info][use_method_code]" title="<?php echo Mage::helper('udropship')->__('Shipping Method') ?>">
         <?php foreach($availableMethods['usps'] as $_amCode => $_amDesc): ?>
             <option value="<?php echo $_amCode?>" <?php if ($defaultMethod['usps']==$_amCode): ?> selected<?php endif?>><?php echo $_amDesc?></option>
         <?php endforeach ?>
@@ -248,8 +248,8 @@ foreach ($availCarriers as $acCode=>$acLabel) {
         $extLabelLbl = (string)$extLabelNode->label;
     ?>
 <p>
-    <label for="rma_extra_label_info_<?php echo $extLabelOpt?>"><?php echo $_hlp->__($extLabelLbl) ?></label>
-    <select id="rma_extra_label_info_<?php echo $extLabelOpt?>]" name="rma[extra_label_info][<?php echo $extLabelOpt?>]" title="<?php echo $_hlp->__($extLabelLbl) ?>">
+    <label for="rma_extra_label_info_<?php echo $extLabelOpt?>"><?php echo Mage::helper('udropship')->__($extLabelLbl) ?></label>
+    <select id="rma_extra_label_info_<?php echo $extLabelOpt?>]" name="rma[extra_label_info][<?php echo $extLabelOpt?>]" title="<?php echo Mage::helper('udropship')->__($extLabelLbl) ?>">
         <?php foreach($lblSource->toOptionHash() as $_optId => $_optVal): ?>
             <option value="<?php echo $_optId?>" <?php if ($_optId==$_vendor->getData($extLabelOpt)): ?> selected<?php endif?>><?php echo $_optVal?></option>
         <?php endforeach ?>
@@ -260,10 +260,10 @@ foreach ($availCarriers as $acCode=>$acLabel) {
 </div>
 
 <p>
-<input name="rma[is_customer_notified]" type="checkbox" id="rma_customer_comment_notify" value="1" /> <label class="normal" for="rma_customer_comment_notify"><?php echo Mage::helper('sales')->__('Notify Customer') ?></label>
+<input name="rma[is_customer_notified]" type="checkbox" id="rma_customer_comment_notify" value="1" /> <label class="normal" for="rma_customer_comment_notify"><?php echo Mage::helper('udropship')->__('Notify Customer') ?></label>
 </p>
 <p>
-<label class="normal" for="rma_comment"><?php echo Mage::helper('sales')->__('Comment Text') ?></label>
+<label class="normal" for="rma_comment"><?php echo Mage::helper('udropship')->__('Comment Text') ?></label>
 <textarea name="rma[comment]" rows="3" cols="5" style="height:6em; width:99%;" id="rma_comment"></textarea>
 </p>
 
@@ -341,7 +341,7 @@ function selectCarrier(elem) {
 }
 
 function deleteTrackingNumber(url) {
-    if (confirm('<?php echo Mage::helper('sales')->__('Are you sure?') ?>')) {
+    if (confirm('<?php echo Mage::helper('udropship')->__('Are you sure?') ?>')) {
         rmaSubmitAndReloadArea($('rma_tracking_info').parentNode, $('rma_tracking_info'), url)
     }
 }

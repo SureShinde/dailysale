@@ -53,48 +53,48 @@ class Unirgy_DropshipBatch_Block_Adminhtml_Batch_Edit_Tab_Import_Rows extends Ma
     protected function _prepareColumns()
     {
         $this->addColumn('row_id', array(
-            'header'    => Mage::helper('udbatch')->__('ID'),
+            'header'    => Mage::helper('udropship')->__('ID'),
             'sortable'  => true,
             'width'     => '60',
             'index'     => 'row_id'
         ));
         if (in_array($this->getBatch()->getBatchType(), array('import_inventory', 'export_inventory'))) {
             $this->addColumn('sku', array(
-	            'header'    => Mage::helper('udbatch')->__('Sku'),
+	            'header'    => Mage::helper('udropship')->__('Sku'),
 	            'index'     => 'sku'
 	        ));
 	        $this->addColumn('vendor_cost', array(
-	            'header'    => Mage::helper('udbatch')->__('Cost'),
+	            'header'    => Mage::helper('udropship')->__('Cost'),
 	            'index'     => 'vendor_cost'
 	        ));
 	        $this->addColumn('stock_qty', array(
-	            'header'    => Mage::helper('udbatch')->__('Stock Qty'),
+	            'header'    => Mage::helper('udropship')->__('Stock Qty'),
 	            'index'     => 'stock_qty'
 	        ));
             $this->addColumn('stock_qty_add', array(
-	            'header'    => Mage::helper('udbatch')->__('Stock Qty Add'),
+	            'header'    => Mage::helper('udropship')->__('Stock Qty Add'),
 	            'index'     => 'stock_qty_add'
 	        ));
 	        $this->addColumn('vendor_sku', array(
-	            'header'    => Mage::helper('udbatch')->__('Vendor Sku'),
+	            'header'    => Mage::helper('udropship')->__('Vendor Sku'),
 	            'index'     => 'vendor_sku'
 	        ));
             if (Mage::helper('udropship')->isUdmultiAvailable()) {
                 $this->addColumn('status', array(
-                    'header'    => Mage::helper('udmulti')->__('Status'),
+                    'header'    => Mage::helper('udropship')->__('Status'),
                     'index'     => 'status',
                     'type'      => 'options',
                     'options'   => Mage::getSingleton('udmulti/source')->setPath('vendor_product_status')->toOptionHash(),
                 ));
                 /*
                 $this->addColumn('avail_state', array(
-                    'header'    => Mage::helper('udmulti')->__('Availability State'),
+                    'header'    => Mage::helper('udropship')->__('Availability State'),
                     'index'     => 'avail_state',
                     'type'      => 'options',
                     'options'   => Mage::getSingleton('udmulti/source')->setPath('avail_state')->toOptionHash(),
                 ));
                 $this->addColumn('avail_date', array(
-                    'header'    => Mage::helper('udmulti')->__('Availability Date'),
+                    'header'    => Mage::helper('udropship')->__('Availability Date'),
                     'index'     => 'avail_date',
                     'type'      => 'date',
                 ));
@@ -109,52 +109,52 @@ class Unirgy_DropshipBatch_Block_Adminhtml_Batch_Edit_Tab_Import_Rows extends Ma
             }
             if (Mage::helper('udropship')->isUdmultiPriceAvailable()) {
                 $this->addColumn('state', array(
-                    'header'    => Mage::helper('udmultiprice')->__('State'),
+                    'header'    => Mage::helper('udropship')->__('State'),
                     'index'     => 'state',
                     'type'      => 'options',
                     'options'   => Mage::getSingleton('udmultiprice/source')->setPath('vendor_product_state')->toOptionHash(),
                 ));
                 $this->addColumn('vendor_price', array(
-                    'header'    => Mage::helper('udmultiprice')->__('Vendor Price'),
+                    'header'    => Mage::helper('udropship')->__('Vendor Price'),
                     'index'     => 'vendor_price'
                 ));
                 $this->addColumn('special_price', array(
-                    'header'    => Mage::helper('udmultiprice')->__('Special Price'),
+                    'header'    => Mage::helper('udropship')->__('Special Price'),
                     'index'     => 'special_price'
                 ));
                 $this->addColumn('special_from_date', array(
-                    'header'    => Mage::helper('udmultiprice')->__('Special From'),
+                    'header'    => Mage::helper('udropship')->__('Special From'),
                     'type'      => 'date',
                     'index'     => 'special_from_date'
                 ));
                 $this->addColumn('special_to_date', array(
-                    'header'    => Mage::helper('udmultiprice')->__('Special To'),
+                    'header'    => Mage::helper('udropship')->__('Special To'),
                     'type'      => 'date',
                     'index'     => 'special_to_date'
                 ));
             }
         } else {
 	        $this->addColumn('order_increment_id', array(
-	            'header'    => Mage::helper('udbatch')->__('Order ID'),
+	            'header'    => Mage::helper('udropship')->__('Order ID'),
 	            'index'     => 'order_increment_id'
 	        ));
 	        $this->addColumn('po_increment_id', array(
-	            'header'    => Mage::helper('udbatch')->__('PO ID'),
+	            'header'    => Mage::helper('udropship')->__('PO ID'),
 	            'index'     => 'po_increment_id'
 	        ));
 	        $this->addColumn('tracking_id', array(
-	            'header'    => Mage::helper('udbatch')->__('Tracking ID'),
+	            'header'    => Mage::helper('udropship')->__('Tracking ID'),
 	            'index'     => 'tracking_id'
 	        ));
         }
         $this->addColumn('has_error', array(
-            'header'    => Mage::helper('udbatch')->__('Has error'),
+            'header'    => Mage::helper('udropship')->__('Has error'),
             'index'     => 'has_error',
             'type'      => 'options',
             'options'   => Mage::getSingleton('udropship/source')->setPath('yesno')->toOptionHash(),
         ));
         $this->addColumn('error_info', array(
-            'header'    => Mage::helper('udbatch')->__('Error Info'),
+            'header'    => Mage::helper('udropship')->__('Error Info'),
             'index'     => 'error_info',
         ));
         return parent::_prepareColumns();

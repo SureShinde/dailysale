@@ -24,7 +24,7 @@
  * @license    http://ecommerce.aheadworks.com/AW-LICENSE.txt
  */
 
-class AW_All_AdditionalController extends Mage_Adminhtml_Controller_Action
+class AW_All_Adminhtml_Awall_AdditionalController extends Mage_Adminhtml_Controller_Action
 {
     public function indexAction()
     {

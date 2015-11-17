@@ -19,7 +19,6 @@ class Bronto_Api
     const BASE_URI = 'http://api.bronto.com/v4';
     private $_options;
     private $_token;
-    private $_sessionId;
     private $_soapClient;
     private $_authenticated = false;
 
@@ -48,12 +47,13 @@ class Bronto_Api
      */
     public function login()
     {
-        if (!empty($this->_soapClient)) {
-            $this->_soapClient = null;
-        }
-        $this->setSessionId($this->getSoapClient()->login(array('apiToken' => $this->_token))->return);
-        $this->_options->safeObserver()->each(array($this, 'handleLogin'));
-        return $this->_sessionId;
+        $apiToken = $this->_token;
+        $sessionId = $this->getSoapClient()->login(array('apiToken' => $apiToken))->return;
+        $this->_options->safeObserver()->each(function($observer) use ($apiToken, $sessionId) {
+            $observer->onLogin($apiToken, $sessionId);
+        });
+        $this->setSessionId($sessionId);
+        return $sessionId;
     }
 
     /**
@@ -65,7 +65,6 @@ class Bronto_Api
     public function setSessionId($sessionId)
     {
         $this->getSoapClient()->__setSoapHeaders(array(new SoapHeader(self::BASE_URI, 'sessionHeader', array('sessionId' => $sessionId))));
-        $this->_sessionId = $sessionId;
         $this->_authenticated = true;
         return $this;
     }
@@ -96,87 +95,31 @@ class Bronto_Api
                 return $this->getSoapClient()->$method($data);
             } catch (Exception $e) {
                 $tries++;
-                $this->_lastRequest = $request;
-                $this->_lastException = new Bronto_Api_Exception($e->getMessage(), $e->getCode(), $e, $tries, $request);
+                $api = $this;
+                $exception = new Bronto_Api_Exception($e->getMessage(), $e->getCode(), $e, $tries, $request);
                 $this->_options
                     ->safeError()
-                    ->filter(array($this, 'handleRetry'))
-                    ->orElse(array($this, 'handleFallThrough'));
+                    ->filter(function($error) use ($exception, $api, $request) {
+                        // Filter on a recoverable strategy
+                        return $error->recover($exception, $api, $request);
+                    })
+                    ->orElse(function() use ($exception, $api, $request) {
+                        // A write failed due to network reasons... store it
+                        if ($request->hasUpdates() && $exception->isNetworkRelated()) {
+                            $this->_options->safeRetryer(function($retryer) use ($request, $api) {
+                                $retryer->store($request, $api->getToken());
+                            });
+                        }
+                        $api->getOptions()
+                            ->safeObserver()->each(function($observer) use ($api, $exception) {
+                                $observer->onError($api, $exception);
+                            });
+                        throw $exception;
+                    });
             }
         } while ($tries < $maxTries);
         // It should never reach here, but we'll safely terminate
         throw new Bronto_Api_Exception("Max attempts have been reached.");
-    }
-
-    /**
-     * Self anonymous function to notify observer of login
-     *
-     * @param Bronto_Api_Observer $observer
-     * @return void
-     */
-    public function handleLogin($observer)
-    {
-        $observer->onLogin($this->_token, $this->_sessionId);
-    }
-
-    /**
-     * Self anonymous function for performin the retry
-     *
-     * @param Bronto_Api_Strategy_Error $error
-     * @return boolean
-     */
-    public function handleRetry($error)
-    {
-        // Filter on a recoverable strategy
-        return $error->recover($this->_lastException, $this, $this->_lastRequest);
-    }
-
-    /**
-     * Handles the fallthrough cases, and notifies available classes
-     *
-     * @throws Bronto_Api_Exception
-     */
-    public function handleFallThrough()
-    {
-        // A write failed due to network reasons... store it
-        if ($this->_lastRequest->hasUpdates() && $this->_lastException->isNetworkRelated()) {
-            $this->_options->safeRetryer()->each(array($this, 'handleRetryer'));
-        }
-        $this->_options->safeObserver()->each(array($this, 'handleOnError'));
-        throw $this->_lastException;
-    }
-
-    /**
-     * Notifies the retryer to store the last request
-     *
-     * @param Bronto_Api_Strategy_Error $retryer
-     * @return void
-     */
-    public function handleRetryer($retryer)
-    {
-        $retryer->store($this->_lastRequest, $this->getToken());
-    }
-
-    /**
-     * Notifies the observer about the last exception
-     *
-     * @param Bronto_Api_Observer $observer
-     * @return void
-     */
-    public function handleOnError($observer)
-    {
-        $observer->onError($this, $this->_lastException);
-    }
-
-    /**
-     * Uses internal options to instantiate the SoapClient
-     *
-     * @return SoapClient
-     */
-    public function handleSoapClient()
-    {
-        $soapClass = $this->_options->getSoapClass();
-        return new $soapClass($this->_options->getWsdl(), $this->_options->getSoapOptions());
     }
 
     /**
@@ -205,8 +148,8 @@ class Bronto_Api
     {
         $tempClass = "Bronto_Api_Operation_{$object}";
         // Note: This snippet was generated with legacy conversion
-        if (is_string($tempClass) && !class_exists($tempClass, false) && !array_key_exists($tempClass, Bronto_ImportManager::$_fileCache)) {
-            $dir = preg_replace('|' . str_replace("_", "/", "Bronto") . '$|', '', dirname(__FILE__));
+        if (is_string($tempClass) && !array_key_exists($tempClass, Bronto_ImportManager::$_fileCache)) {
+            $dir = str_replace(str_replace("_", "/", "Bronto"), '', dirname(__FILE__));
             $file = $dir . str_replace("_", "/", $tempClass) . '.php';
             if (file_exists($file)) {
                 require_once $file;
@@ -216,7 +159,7 @@ class Bronto_Api
             }
         }
         // End Conversion Snippet
-        if ((class_exists($tempClass, false) || Bronto_ImportManager::$_fileCache[$tempClass])) {
+        if (Bronto_ImportManager::$_fileCache[$tempClass]) {
             return new $tempClass($this);
         }
         return new Bronto_Api_Operation($this, $object, $methods);
@@ -279,16 +222,6 @@ class Bronto_Api
     }
 
     /**
-     * Retrieves the last exception generated from the last request
-     *
-     * @return Bronto_Api_Exception
-     */
-    public function getLastException()
-    {
-        return $this->_lastException;
-    }
-
-    /**
      * APIv4 token used
      *
      * @return string
@@ -306,7 +239,11 @@ class Bronto_Api
     public function getSoapClient()
     {
         if (is_null($this->_soapClient)) {
-            $soapClient = $this->_options->safeSoapClient()->orElse(array($this, 'handleSoapClient'));
+            $options = $this->_options;
+            $soapClient = $this->_options->safeSoapClient()->orElse(function() use ($options) {
+                $soapClass = $options->getSoapClass();
+                return new $soapClass($options->getWsdl(), $options->getSoapOptions());
+            });
             $this->_soapClient = $soapClient->get();
         }
         return $this->_soapClient;

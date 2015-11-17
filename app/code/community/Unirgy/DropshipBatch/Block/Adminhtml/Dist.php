@@ -22,7 +22,7 @@ class Unirgy_DropshipBatch_Block_Adminhtml_Dist extends Mage_Adminhtml_Block_Wid
     {
         $this->_blockGroup = 'udbatch';
         $this->_controller = 'adminhtml_dist';
-        $this->_headerText = Mage::helper('udbatch')->__('Vendor PO Import/Export History');
+        $this->_headerText = Mage::helper('udropship')->__('Vendor PO Import/Export History');
         parent::__construct();
         $this->_removeButton('add');
     }

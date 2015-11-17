@@ -22,36 +22,36 @@ class Unirgy_DropshipBatch_Block_Adminhtml_Batch extends Mage_Adminhtml_Block_Wi
     {
         $this->_blockGroup = 'udbatch';
         $this->_controller = 'adminhtml_batch';
-        $this->_headerText = Mage::helper('udbatch')->__('Vendor PO Import/Export Batches');
+        $this->_headerText = Mage::helper('udropship')->__('Vendor PO Import/Export Batches');
 
         if (Mage::helper('udropship')->isModuleActive('ustockpo')) {
             $this->_addButton('add_export_stockpo', array(
-                'label'     => $this->__('Create Stock PO Export Batch'),
+                'label'     => Mage::helper('udropship')->__('Create Stock PO Export Batch'),
                 'class'     => 'add',
                 'onclick'   => "location.href = '{$this->getUrl('*/*/new', array('type'=>'export_stockpo'))}'",
             ), 0);
 
             $this->_addButton('add_import_stockpo', array(
-                'label'     => $this->__('Create Stock PO Import Batch'),
+                'label'     => Mage::helper('udropship')->__('Create Stock PO Import Batch'),
                 'class'     => 'add',
                 'onclick'   => "location.href = '{$this->getUrl('*/*/new', array('type'=>'import_stockpo'))}'",
             ), 0);
         }
 
         $this->_addButton('add_export', array(
-            'label'     => $this->__('Create Order Export Batch'),
+            'label'     => Mage::helper('udropship')->__('Create Order Export Batch'),
             'class'     => 'add',
             'onclick'   => "location.href = '{$this->getUrl('*/*/new', array('type'=>'export_orders'))}'",
         ), 0);
 
         $this->_addButton('add_import', array(
-            'label'     => $this->__('Create Tracking Import Batch'),
+            'label'     => Mage::helper('udropship')->__('Create Tracking Import Batch'),
             'class'     => 'add',
             'onclick'   => "location.href = '{$this->getUrl('*/*/new', array('type'=>'import_orders'))}'",
         ), 0);
 
         $this->_addButton('add_invimport', array(
-            'label'     => $this->__('Create Inventory Import Batch'),
+            'label'     => Mage::helper('udropship')->__('Create Inventory Import Batch'),
             'class'     => 'add',
             'onclick'   => "location.href = '{$this->getUrl('*/*/new', array('type'=>'import_inventory'))}'",
         ), 0);

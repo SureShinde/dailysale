@@ -58,7 +58,7 @@ abstract class Amasty_Audit_Block_Adminhtml_Tabs_DefaultLog extends Mage_Adminht
 
         if (($row->getType() == "Edit" || $row->getType() == "New" || $row->getType() == 'Restore') && ($row->is_logged != NULL)) $preview = '<a class="amaudit-preview" id="' . $row->getId() . '" onclick="buble.showToolTip(this); return false">' . Mage::helper('amaudit')->__('Preview Changes') . '</a><br>';
 
-        return $preview . '<a href="' . $this->getUrl('amaudit/adminhtml_log/edit', array('id' => $row->getId())) . '"><span>' . Mage::helper('amaudit')->__('View Details') . '</span></a>';
+        return $preview . '<a href="' . $this->getUrl('adminhtml/log/edit', array('id' => $row->getId())) . '"><span>' . Mage::helper('amaudit')->__('View Details') . '</span></a>';
     }
 
     public function showFullName($value, $row, $column)

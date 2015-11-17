@@ -1,8 +1,10 @@
 <?php
 $_vendorCollection=$this->getVendorsCollection();
+$_vLogoWidth = 135;
+$_vLogoHeight = 135;
 ?>
 <?php if(!$_vendorCollection->count()): ?>
-    <p class="note-msg"><?php echo $this->__('There are no vendors matching the selection.') ?></p>
+    <p class="note-msg"><?php echo Mage::helper('udropship')->__('There are no vendors matching the selection.') ?></p>
 <?php else: ?>
     <div class="umicrosite-vendors">
         <?php echo $this->getChildHtml('toolbar') ?>
@@ -16,7 +18,7 @@ $_vendorCollection=$this->getVendorsCollection();
                     $vUrl = Mage::helper('umicrosite')->getVendorUrl($_vendor);
                 ?>
                     <li class="item<?php if( ++$_iterator == sizeof($_vendorCollection) ): ?> last<?php endif; ?>">
-                        <a href="<?php echo $vUrl ?>" title="<?php echo $vName ?>" class="product-image"><img src="<?php echo Mage::getBaseUrl('media').'/'.$_vendor->getLogo() ?>" width="135" height="135" alt="<?php echo $vName ?>" /></a>
+                        <a href="<?php echo $vUrl ?>" title="<?php echo $vName ?>" class="product-image"><img src="<?php echo Mage::helper('udropship')->getResizedVendorLogoUrl($_vendor, $_vLogoWidth, $_vLogoHeight) ?>" width="<?php echo $_vLogoWidth?>" height="<?php echo $_vLogoHeight?>" alt="<?php echo $vName ?>" /></a>
                         <?php // Product description ?>
                         <div class="product-shop">
                             <div class="f-fix">
@@ -50,7 +52,7 @@ $_vendorCollection=$this->getVendorsCollection();
             <ul class="products-grid">
         <?php endif ?>
             <li class="item<?php if(($i-1)%$_columnCount==0): ?> first<?php elseif($i%$_columnCount==0): ?> last<?php endif; ?>">
-                <a href="<?php echo $vUrl ?>" title="<?php echo $vName ?>" class="product-image"><img src="<?php echo Mage::getBaseUrl('media').'/'.$_vendor->getLogo() ?>" width="135" height="135" alt="<?php echo $vName ?>" /></a>
+                <a href="<?php echo $vUrl ?>" title="<?php echo $vName ?>" class="product-image"><img src="<?php echo Mage::helper('udropship')->getResizedVendorLogoUrl($_vendor, $_vLogoWidth, $_vLogoHeight) ?>" width="<?php echo $_vLogoWidth?>" height="<?php echo $_vLogoHeight?>" alt="<?php echo $vName ?>" /></a>
                 <h2 class="product-name"><a href="<?php echo $vUrl ?>" title="<?php echo $vName; ?>"><?php echo $vName; ?></a></h2>
                 <?php if(Mage::helper('udropship')->isModuleActive('Unirgy_DropshipVendorRatings')): ?>
                     <?php echo Mage::helper('udratings')->getReviewsSummaryHtml($_vendor) ?>

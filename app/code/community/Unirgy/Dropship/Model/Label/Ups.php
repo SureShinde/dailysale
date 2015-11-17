@@ -157,6 +157,7 @@ class Unirgy_Dropship_Model_Label_Ups
                 $value += ($item->getBasePrice() ? $item->getBasePrice() : $item->getPrice())*$_qty;
             }
         }
+        $value = round($value, 2);
 
         $length = $this->_track->getLength() ? $this->_track->getLength() : $v->getDefaultPkgLength();
         $width = $this->_track->getWidth() ? $this->_track->getWidth() : $v->getDefaultPkgWidth();
@@ -321,7 +322,8 @@ class Unirgy_Dropship_Model_Label_Ups
 
             $number = 0;
             foreach ($this->getMpsRequest('items') as $item) {
-                $oItem = Mage::getModel('sales/order_item')->load($item->getOrderItemId());
+                $item = is_array($item) ? $item['item'] : $item;
+                $oItem = $item->getOrderItem();
                 $requestProd = $root->addChild('Product');
                 $description = $oItem->getName() . ($oItem->getDescription() != '' ? ' - '.$oItem->getDescription() : '').', Qty: '.(1*$item->getQty());
                 $requestProd->setNode('Description', substr($description, 0, 35));
@@ -600,7 +602,56 @@ ITEMS: %items$s';
 
     public function collectTracking($v, $trackIds)
     {
-        return array();
+        $this->setVendor($v);
+
+        $request = new Varien_Simplexml_Element('<TrackRequest/>');
+        $request->setNode('Request/TransactionReference/CustomerContext', '1');
+        $request->setNode('Request/TransactionReference/XpciVersion', '1.0');
+        $request->setNode('Request/RequestAction', 'Track');
+        $request->setNode('Request/RequestOption', 'activity');
+
+        $this->setXMLAccessRequest();
+
+        $result = array();
+        foreach ($trackIds as $trackId) {
+            $request->setNode('TrackingNumber', $trackId);
+
+            $xmlRequest = '<?xml version="1.0"?>'.$request->asNiceXml();
+
+            $xmlResponse = $this->_callShippingXml('Track', $xmlRequest);
+
+            $response = new Varien_Simplexml_Element($xmlResponse);
+            try {
+                $this->_validateResponse($response, false);
+
+                $arr = $response->xpath("//Package/Activity/Status/StatusType");
+
+                foreach ($arr as $a) {
+
+                    $status = (string)$a->Code;
+
+                    if (in_array($status, array('M'/*Manifest Pickup*/, 'P'/*Pickup*/, 'X'/*Exception*/))) {
+                        //record exists, but not picked up yet
+                        continue;
+                    }
+                    if (in_array($status, array('D'/*delivered*/))) {
+                        //delivered
+                        $result[$trackId] = Unirgy_Dropship_Model_Source::TRACK_STATUS_DELIVERED;
+                        continue;
+                    }
+                    if (in_array($status, array('I'/*In Transit*/))) {
+                        //In Transit
+                        $result[$trackId] = Unirgy_Dropship_Model_Source::TRACK_STATUS_READY;
+                        continue;
+                    }
+                    $result[$trackId] = Unirgy_Dropship_Model_Source::TRACK_STATUS_PENDING;
+                }
+
+            } catch (Exception $e) {
+            }
+        }
+
+        return $result;
     }
 
     protected $_deliveryDatesCache=array();

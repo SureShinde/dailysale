@@ -53,46 +53,46 @@ class Unirgy_DropshipBatch_Block_Adminhtml_Batch_Edit_Tab_Export_Rows extends Ma
     protected function _prepareColumns()
     {
         $this->addColumn('row_id', array(
-            'header'    => Mage::helper('udbatch')->__('ID'),
+            'header'    => Mage::helper('udropship')->__('ID'),
             'sortable'  => true,
             'width'     => '60',
             'index'     => 'row_id'
         ));
         if (in_array($this->getBatch()->getBatchType(), array('import_inventory', 'export_inventory'))) {
             $this->addColumn('sku', array(
-	            'header'    => Mage::helper('udbatch')->__('Sku'),
+	            'header'    => Mage::helper('udropship')->__('Sku'),
 	            'index'     => 'sku'
 	        ));
 	        $this->addColumn('vendor_cost', array(
-	            'header'    => Mage::helper('udbatch')->__('Cost'),
+	            'header'    => Mage::helper('udropship')->__('Cost'),
 	            'index'     => 'vendor_cost',
 	        	'type'      => 'price',
 	        ));
 	        $this->addColumn('stock_qty', array(
-	            'header'    => Mage::helper('udbatch')->__('Stock Qty'),
+	            'header'    => Mage::helper('udropship')->__('Stock Qty'),
 	            'index'     => 'stock_qty',
 	        	'type'      => 'number',
 	        ));
             $this->addColumn('stock_qty_add', array(
-	            'header'    => Mage::helper('udbatch')->__('Stock Qty Add'),
+	            'header'    => Mage::helper('udropship')->__('Stock Qty Add'),
 	            'index'     => 'stock_qty_add',
 	        	'type'      => 'number',
 	        ));
 	        $this->addColumn('vendor_sku', array(
-	            'header'    => Mage::helper('udbatch')->__('Vendor Sku'),
+	            'header'    => Mage::helper('udropship')->__('Vendor Sku'),
 	            'index'     => 'vendor_sku'
 	        ));
         } else {
 	        $this->addColumn('order_increment_id', array(
-	            'header'    => Mage::helper('udbatch')->__('Order ID'),
+	            'header'    => Mage::helper('udropship')->__('Order ID'),
 	            'index'     => 'order_increment_id'
 	        ));
 	        $this->addColumn('po_increment_id', array(
-	            'header'    => Mage::helper('udbatch')->__('PO ID'),
+	            'header'    => Mage::helper('udropship')->__('PO ID'),
 	            'index'     => 'po_increment_id'
 	        ));
 	        $this->addColumn('item_sku', array(
-	            'header'    => Mage::helper('udbatch')->__('Item SKU'),
+	            'header'    => Mage::helper('udropship')->__('Item SKU'),
 	            'index'     => 'item_sku'
 	        ));
         }

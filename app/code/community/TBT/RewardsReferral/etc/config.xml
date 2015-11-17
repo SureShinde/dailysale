@@ -7,13 +7,13 @@
     </modules>
     <admin>
         <routers>
-            <rewardsrefadmin>
-                <use>admin</use>
-                <args>
-                    <module>TBT_RewardsReferral</module>
-                    <frontName>rewardsrefadmin</frontName>
-                </args>
-            </rewardsrefadmin>
+            <adminhtml>
+				<args>
+					<modules>
+						<rewardsrefadmin before="Mage_Adminhtml">TBT_RewardsReferral_Adminhtml</rewardsrefadmin>
+					</modules>
+				</args>
+			</adminhtml>
         </routers>
     </admin>
     <frontend>

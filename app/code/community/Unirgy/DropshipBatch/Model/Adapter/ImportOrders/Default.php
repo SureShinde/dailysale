@@ -24,7 +24,7 @@ class Unirgy_DropshipBatch_Model_Adapter_ImportOrders_Default extends Unirgy_Dro
             $r = @fgetcsv($fp, 0, $this->getVendor()->getBatchImportOrdersFieldDelimiter(), '"');
             if (!$idx++ && $this->getVendor()->getBatchImportOrdersSkipHeader()) continue;
             if (!$r) {
-                $rows[] = array('error'=>$hlp->__('Invalid row format'));
+                $rows[] = array('error'=>Mage::helper('udropship')->__('Invalid row format'));
                 continue;
             }
             $row = array();
@@ -49,6 +49,11 @@ class Unirgy_DropshipBatch_Model_Adapter_ImportOrders_Default extends Unirgy_Dro
     {
         if (is_null($this->_initImportFields) || $refresh) {
             $tpl = $this->getVendor()->getBatchImportOrdersTemplate();
+            if (($_useCustTpl = $this->getBatch()->getUseCustomTemplate())
+                && ($_custTpl = Mage::helper('udbatch')->getManualImportTemplate($_useCustTpl))
+            ) {
+                $tpl = $_custTpl;
+            }
             $this->setData('import_template', $tpl);
             $this->getBatch()->setData('import_template', $tpl);
             if (!preg_match_all('#\[([^]]+)\]([^[]+)?#', $tpl, $m, PREG_PATTERN_ORDER)) {
@@ -87,11 +92,11 @@ class Unirgy_DropshipBatch_Model_Adapter_ImportOrders_Default extends Unirgy_Dro
                 continue;
             }
             if (empty($r['po_id']) && empty($r['order_id']) || empty($r['tracking_id'])) {
-                $r['error'] = $hlp->__('Missing required field');
+                $r['error'] = Mage::helper('udropship')->__('Missing required field');
                 continue;
             }
             if (!empty($trackIds[$r['tracking_id']])) {
-                $r['error'] = $hlp->__('Duplicate tracking_id within file');
+                $r['error'] = Mage::helper('udropship')->__('Duplicate tracking_id within file');
                 continue;
             }
             if (!empty($r['po_id'])) {
@@ -124,7 +129,7 @@ class Unirgy_DropshipBatch_Model_Adapter_ImportOrders_Default extends Unirgy_Dro
 
         foreach ($rows as $i=>&$r) {
             if (!in_array($i, $poIds)) {
-                $r['error'] = $hlp->__('Invalid Order or PO ID');
+                $r['error'] = Mage::helper('udropship')->__('Invalid Order or PO ID');
             }
             if (empty($r['po_id'])) {
                 $r['po_id'] = array_search($i, $poIds);
@@ -140,7 +145,7 @@ class Unirgy_DropshipBatch_Model_Adapter_ImportOrders_Default extends Unirgy_Dro
             $poId = $this->getBatch()->getPoIncIdFromTrack($t);
             $r =& $rows[$i];
             if (!$allowDupTrackIds || isset($r['po_id']) && $r['po_id']==$poId) {
-                $r['error'] = $hlp->__('Duplicate tracking_id');
+                $r['error'] = Mage::helper('udropship')->__('Duplicate tracking_id');
                 $r['track_id'] = $t->getId();
                 #unset($poIds[$poId]);
             }
@@ -169,9 +174,11 @@ class Unirgy_DropshipBatch_Model_Adapter_ImportOrders_Default extends Unirgy_Dro
 
         // find POs and orders
         $pos = Mage::getModel('udropship/po')->getCollection()
-            ->addAttributeToFilter('udropship_vendor', $this->getVendorId())
-            ->addAttributeToFilter('increment_id', array('in'=>array_keys($poIds)))
-            ->addOrders();
+            ->addAttributeToFilter('increment_id', array('in'=>array_keys($poIds)));
+        if (!$this->getBatch()->getIsAllVendorsImport()) {
+            $pos->addAttributeToFilter('udropship_vendor', $this->getVendorId());
+        }
+        $pos->addOrders();
 
         $carriers = $this->getCarriers();
         foreach ($pos as $po) {
@@ -195,7 +202,7 @@ class Unirgy_DropshipBatch_Model_Adapter_ImportOrders_Default extends Unirgy_Dro
                     $this->getBatch()->processTrack($po, $track, $markAsShipped);
                 }
             } catch (Exception $e) {
-                $r['error'] = $hlp->__($e->getMessage());
+                $r['error'] = Mage::helper('udropship')->__($e->getMessage());
             }
             $this->getBatch()->addImportRowLog($order, $po, $r, @$track);
         }
@@ -209,7 +216,7 @@ class Unirgy_DropshipBatch_Model_Adapter_ImportOrders_Default extends Unirgy_Dro
         if ($this->_carriers===null) {
             $carriers = array();
             $carrierInstances = Mage::getSingleton('shipping/config')->getAllCarriers();
-            $carriers['custom'] = Mage::helper('sales')->__('Custom Value');
+            $carriers['custom'] = Mage::helper('udropship')->__('Custom Value');
             foreach ($carrierInstances as $code => $carrier) {
                 if ($carrier->isTrackingAvailable()) {
                     $carriers[$code] = $carrier->getConfigData('title');

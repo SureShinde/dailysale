@@ -58,7 +58,7 @@ class Unirgy_DropshipMicrosite_Model_Store extends Mage_Core_Model_Store
                     break;
 
                 default:
-                    throw Mage::exception('Mage_Core', Mage::helper('core')->__('Invalid base url type'));
+                    throw Mage::exception('Mage_Core', Mage::helper('udropship')->__('Invalid base url type'));
             }
             
             if (false !== strpos($url, '{{base_url}}')) {
@@ -72,10 +72,11 @@ class Unirgy_DropshipMicrosite_Model_Store extends Mage_Core_Model_Store
     }
     protected function _updatePathUseStoreView($url)
     {
+        $msHlp = Mage::helper('umicrosite');
         $baseCheck = Mage::isInstalled() && !$this->isAdmin() && !$this->_curMySecure;
         if ($baseCheck && $this->_useVendorUrl !== false) {
             if ($this->_useVendorUrl === true
-                || $this->_useVendorUrl === null && Mage::helper('umicrosite')->updateStoreBaseUrl()
+                || $this->_useVendorUrl === null && $msHlp->getCurUpdateStoreBaseUrl()
             ) {
                 $vendor = Mage::helper('umicrosite')->getCurrentVendor();
             } else {
@@ -85,9 +86,9 @@ class Unirgy_DropshipMicrosite_Model_Store extends Mage_Core_Model_Store
                 && ($vendor = Mage::helper('udropship')->getVendor($vendor))
                 && $vendor->getId()
             ) {
-                if (1 == $this->getConfig('udropship/microsite/subdomain_level')) {
+                if (1 == Mage::helper('umicrosite')->getCurSubdomainLevel($vendor)) {
                     $url .= $vendor->getUrlKey().'/';
-                } elseif (!Mage::helper('umicrosite')->updateStoreBaseUrl()
+                } elseif (!$msHlp->getUpdateStoreBaseUrl($vendor)
                     || !Mage::helper('umicrosite')->getFrontendVendor()
                     || !Mage::helper('umicrosite')->getFrontendVendor()->getId()==$vendor->getId()
                 ) {

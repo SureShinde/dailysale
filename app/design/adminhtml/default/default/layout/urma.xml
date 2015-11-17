@@ -5,7 +5,7 @@
         <action method="addTab"><name>urma_rma</name><block>urma/adminhtml_salesOrderViewTab_rmas</block></action>
     </reference>
 </adminhtml_sales_order_view>
-    <urmaadmin_order_rma_new>
+    <adminhtml_urmaadmin_order_rma_new>
         <reference name="content">
             <block type="urma/adminhtml_rma_create" name="rma_create">
                 <block type="urma/adminhtml_rma_create_form" name="form" template="urma/rma/create/form.phtml">
@@ -20,8 +20,8 @@
                 </block>
             </block>
         </reference>
-    </urmaadmin_order_rma_new>
-    <urmaadmin_order_rma_view>
+    </adminhtml_urmaadmin_order_rma_new>
+    <adminhtml_urmaadmin_order_rma_view>
         <reference name="content">
             <block type="urma/adminhtml_rma_view" name="sales_rma_edit"></block>
         </reference>
@@ -43,16 +43,16 @@
                 <action method="addTab"><name>urma_rma_tab_info</name><block>rma_tab_info</block></action>
             </block>
         </reference>
-    </urmaadmin_order_rma_view>
-    <urmaadmin_order_rma_addtrack>
+    </adminhtml_urmaadmin_order_rma_view>
+    <adminhtml_urmaadmin_order_rma_addtrack>
         <block type="urma/adminhtml_rma_view_tracking" name="rma_tracking" template="urma/rma/view/tracking.phtml"></block>
-    </urmaadmin_order_rma_addtrack>
-    <urmaadmin_order_rma_removetrack>
+    </adminhtml_urmaadmin_order_rma_addtrack>
+    <adminhtml_urmaadmin_order_rma_removetrack>
         <block type="urma/adminhtml_rma_view_tracking" name="rma_tracking" template="urma/rma/view/tracking.phtml"></block>
-    </urmaadmin_order_rma_removetrack>
-    <urmaadmin_order_rma_addcomment>
+    </adminhtml_urmaadmin_order_rma_removetrack>
+    <adminhtml_urmaadmin_order_rma_addcomment>
         <block type="urma/adminhtml_rma_view_comments" name="rma_comments">
             <block type="urma/adminhtml_rma_comments_view"  name="order_comments" template="urma/rma/comments/view.phtml"></block>
         </block>
-    </urmaadmin_order_rma_addcomment>
+    </adminhtml_urmaadmin_order_rma_addcomment>
 </layout>

@@ -13,7 +13,7 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Helper_GridRenderer_ShippingExtraCh
             'extra_charge_type' => array('label'=>'Type', 'select'=>1, 'options_path'=>'shipping_extra_charge_type'),
             'extra_charge' => array('label'=>'Value'),
         );
-        $useDefaultLbl = $hlp->__('Use Default');
+        $useDefaultLbl = Mage::helper('udropship')->__('Use Default');
         $htmlId = '_'.md5(uniqid(microtime(), true));
         $fieldsHtml = array();
         foreach ($fields as $field=>$fieldData) {
@@ -59,7 +59,7 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Helper_GridRenderer_ShippingExtraCh
         $aexId = $this->getColumn()->getId();
         $aexVal = $row->getData('allow_extra_charge');
         $aexCheckedHtml = $aexVal ? 'checked="checked"' : '';
-        $aexLbl = $hlp->__('Allow Extra Charge');
+        $aexLbl = Mage::helper('udropship')->__('Allow Extra Charge');
         $_fieldsHtml = '';
         foreach ($fieldsHtml as $fieldHtml) {
             $_fieldsHtml .= $fieldHtml['html'];

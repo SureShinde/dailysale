@@ -29,7 +29,7 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Statement_New_Form extends Unirgy_D
         $hlp = Mage::helper('udropship');
         $form = new Varien_Data_Form(array(
             'id' => 'edit_form',
-            'action' => $this->getUrl('udropshipadmin/adminhtml_vendor_statement/newPost'),
+            'action' => $this->getUrl('adminhtml/udropshipadmin_vendor_statement/newPost'),
             'method' => 'post',
             'enctype' => 'multipart/form-data',
             'use_container' => true,
@@ -37,31 +37,31 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Statement_New_Form extends Unirgy_D
         $this->setForm($form);
 
         $fieldset = $form->addFieldset('vendor_form', array(
-            'legend'=>$hlp->__('Statements Generation Criteria')
+            'legend'=>Mage::helper('udropship')->__('Statements Generation Criteria')
         ));
         $this->_addElementTypes($fieldset);
 
         $fieldset->addField('all_vendors', 'select', array(
             'name'      => 'all_vendors',
-            'label'     => $hlp->__('Vendor Selection'),
+            'label'     => Mage::helper('udropship')->__('Vendor Selection'),
             'class'     => 'required-entry',
             'required'  => true,
             'type'      => 'options',
             'options'   => array(
-                1 => $hlp->__('All Active Vendors'),
-                0 => $hlp->__('Selected Vendors'),
+                1 => Mage::helper('udropship')->__('All Active Vendors'),
+                0 => Mage::helper('udropship')->__('Selected Vendors'),
             ),
         ));
         
         if (Mage::getStoreConfigFlag('udropship/vendor/autocomplete_htmlselect')) {
             $fieldset->addField('vendor_ids', 'udropship_vendor', array(
                 'name'      => 'vendor_ids[]',
-                'label'     => $hlp->__('Vendors'),
+                'label'     => Mage::helper('udropship')->__('Vendors'),
             ));
         } else {
             $fieldset->addField('vendor_ids', 'multiselect', array(
                 'name'      => 'vendor_ids[]',
-                'label'     => $hlp->__('Vendors'),
+                'label'     => Mage::helper('udropship')->__('Vendors'),
                 'values'   => Mage::getSingleton('udropship/source')->setPath('vendors')->toOptionArray(),
             ));
         }
@@ -69,8 +69,8 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Statement_New_Form extends Unirgy_D
         $dateFormatIso = Mage::app()->getLocale()->getDateFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT);
         $fieldset->addField('date_from', 'date', array(
             'name'   => 'date_from',
-            'label'  => $hlp->__('Orders From Date'),
-            'title'  => $hlp->__('Orders From Date'),
+            'label'  => Mage::helper('udropship')->__('Orders From Date'),
+            'title'  => Mage::helper('udropship')->__('Orders From Date'),
             'image'  => $this->getSkinUrl('images/grid-cal.gif'),
             'input_format' => Varien_Date::DATE_INTERNAL_FORMAT,
             'format'       => $dateFormatIso,
@@ -79,8 +79,8 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Statement_New_Form extends Unirgy_D
         ));
         $fieldset->addField('date_to', 'date', array(
             'name'   => 'date_to',
-            'label'  => $hlp->__('Orders To Date'),
-            'title'  => $hlp->__('Orders To Date'),
+            'label'  => Mage::helper('udropship')->__('Orders To Date'),
+            'title'  => Mage::helper('udropship')->__('Orders To Date'),
             'image'  => $this->getSkinUrl('images/grid-cal.gif'),
             'input_format' => Varien_Date::DATE_INTERNAL_FORMAT,
             'format'       => $dateFormatIso,
@@ -90,18 +90,18 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Statement_New_Form extends Unirgy_D
 
         $fieldset->addField('use_locale_timezone', 'select', array(
             'name'      => 'use_locale_timezone',
-            'label'     => $hlp->__('Use Locale Timezone'),
+            'label'     => Mage::helper('udropship')->__('Use Locale Timezone'),
             'type'      => 'options',
             'options'   => array(
-                1 => $hlp->__('Yes'),
-                0 => $hlp->__('No'),
+                1 => Mage::helper('udropship')->__('Yes'),
+                0 => Mage::helper('udropship')->__('No'),
             ),
         ));
 
         $fieldset->addField('statement_period', 'text', array(
             'name'      => 'statement_period',
-            'label'     => $hlp->__('Statement Period'),
-            'note'      => $hlp->__('If empty, will take YYMM of "Orders From Date"'),
+            'label'     => Mage::helper('udropship')->__('Statement Period'),
+            'note'      => Mage::helper('udropship')->__('If empty, will take YYMM of "Orders From Date"'),
         ));
 
         $this->getForm()->setValues(array(

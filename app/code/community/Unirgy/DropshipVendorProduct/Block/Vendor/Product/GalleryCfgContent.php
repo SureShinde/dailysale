@@ -19,9 +19,24 @@ class Unirgy_DropshipVendorProduct_Block_Vendor_Product_GalleryCfgContent extend
         $this->setTemplate('unirgy/udprod/vendor/product/config_gallery.phtml');
         return parent::_beforeToHtml();
     }
+    protected function _idKey($separator='_')
+    {
+        $cfgAttrs = $this->getCfgAttributes();
+        $cfgAttrIds = array();
+        foreach ($cfgAttrs as $__ca) {
+            $cfgAttrIds[] = $__ca->getAttributeId();
+        }
+        $cfgAttrVals = $this->getCfgAttributeValueTuple();
+        $cfgIdKey = '';
+        foreach ($cfgAttrs as $__i=>$__ca) {
+            $cfgIdKey .= $cfgAttrIds[$__i].$separator.$cfgAttrVals[$__i].$separator;
+        }
+        $cfgIdKey = substr($cfgIdKey, 0, -1*strlen($separator));
+        return $cfgIdKey;
+    }
     public function doSuffix($prefix='')
     {
-        return $prefix.$this->getCfgAttribute()->getId().'_'.$this->getCfgAttributeValue();
+        return $prefix.$this->_idKey('_');
     }
     protected $_uploader;
     public function getUploader()
@@ -35,7 +50,7 @@ class Unirgy_DropshipVendorProduct_Block_Vendor_Product_GalleryCfgContent extend
                 ->setFileField($this->doSuffix('image'))
                 ->setFilters(array(
                     'images' => array(
-                        'label' => Mage::helper('adminhtml')->__('Images (.gif, .jpg, .png)'),
+                        'label' => Mage::helper('udropship')->__('Images (.gif, .jpg, .png)'),
                         'files' => array('*.gif', '*.jpg','*.jpeg', '*.png')
                     )
                 ));
@@ -69,9 +84,8 @@ class Unirgy_DropshipVendorProduct_Block_Vendor_Product_GalleryCfgContent extend
     public function getAttributeFieldName($attribute)
     {
         $name = $attribute->getAttributeCode();
-        $name = sprintf("media_gallery[cfg_attributes][%s-%s][%s]",
-            $this->getCfgAttribute()->getId(),
-            $this->getCfgAttributeValue(),
+        $name = sprintf("media_gallery[cfg_attributes][%s][%s]",
+            $this->_idKey('-'),
             $name
         );
         if ($suffix = $this->getForm()->getFieldNameSuffix()) {
@@ -120,14 +134,23 @@ class Unirgy_DropshipVendorProduct_Block_Vendor_Product_GalleryCfgContent extend
                 $images = array();
                 $_images = $value['images'];
                 try {
-                $cfgAttrId = $this->getCfgAttribute()->getId();
-                $cfgAttrVal = $this->getCfgAttributeValue();
+                $cfgAttrs = $this->getCfgAttributes();
+                $cfgAttrIds = array();
+                foreach ($cfgAttrs as $__ca) {
+                    $cfgAttrIds[] = $__ca->getAttributeId();
+                }
+                $cfgAttrVals = $this->getCfgAttributeValueTuple();
                 foreach ($_images as $image) {
-                    if ($this->isCfgUploadImagesSimple()
-                        || (isset($image['super_attribute'])
-                        && isset($image['super_attribute'][$cfgAttrId])
-                        && $image['super_attribute'][$cfgAttrId] == $cfgAttrVal
-                    )) {
+                    $allow = true;
+                    foreach ($cfgAttrs as $__i=>$__ca) {
+                        $cfgAttrId = $cfgAttrIds[$__i];
+                        $cfgAttrVal = $cfgAttrVals[$__i];
+                        $allow = $allow && (isset($image['super_attribute'])
+                            && isset($image['super_attribute'][$cfgAttrId])
+                            && $image['super_attribute'][$cfgAttrId] == $cfgAttrVal
+                        );
+                    }
+                    if ($this->isCfgUploadImagesSimple() || $allow) {
                         $image['url'] = Mage::getSingleton('catalog/product_media_config')->getMediaUrl($image['file']);
                         $image['main'] = @$image['super_attribute']['main'];
                         $images[] = $image;
@@ -162,7 +185,13 @@ class Unirgy_DropshipVendorProduct_Block_Vendor_Product_GalleryCfgContent extend
     public function setProduct($product)
     {
         if ($this->isCfgUploadImagesSimple()) {
-            $simples = Mage::helper('udprod')->getFilteredSimpleProductData($product, array($this->getCfgAttribute()->getAttributeCode()=>$this->getCfgAttributeValue()));
+            $cfgAttrs = $this->getCfgAttributes();
+            $filter = array();
+            $tuple = $this->getCfgAttributeValueTuple();
+            foreach ($cfgAttrs as $__i => $__ca) {
+                $filter[$__ca->getAttributeCode()] = $tuple[$__i];
+            }
+            $simples = Mage::helper('udprod')->getFilteredSimpleProductData($product, $filter);
             if (empty($simples)) {
                 $this->_product = Mage::helper('udprod')->initProductEdit(array(
                     'id' => false,

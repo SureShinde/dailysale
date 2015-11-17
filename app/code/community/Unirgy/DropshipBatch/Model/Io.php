@@ -80,7 +80,7 @@ class Unirgy_DropshipBatch_Model_Io
                 if (!(strpos($dir, realpath(Mage::getBaseDir('var')))===0
                     || strpos($dir, realpath(Mage::getBaseDir('media')))===0
                 )) {
-                    Mage::throwException(Mage::helper('udbatch')->__("Invalid local destination '%s'", $ioConfig));
+                    Mage::throwException(Mage::helper('udropship')->__("Invalid local destination '%s'", $ioConfig));
                 }
                 $ioConfig = array(
                     'path' => $dir.DS.basename($ioConfig)

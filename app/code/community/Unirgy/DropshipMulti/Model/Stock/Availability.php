@@ -38,6 +38,7 @@ class Unirgy_DropshipMulti_Model_Stock_Availability
                 $costs[$pId] = $item->getCost();
                 $zipCodes[$pId] = $hlp->getZipcodeByItem($item);
                 $countries[$pId] = $hlp->getCountryByItem($item);
+                $addresses[$pId] = $hlp->getAddressByItem($item);
             }
             $qtys[$pId] += $hlp->getItemStockCheckQty($item);
             $extraQtys[$pId] = $item->getUdropshipExtraStockQty();
@@ -106,6 +107,7 @@ class Unirgy_DropshipMulti_Model_Stock_Availability
                 $data['stock_qty'] = is_null($vp->getStockQty()) || $vp->getStockQty()==='' ? null : 1*$vp->getStockQty()+@$extraQtys[$pId][$vId];
                 $data['vendor_sku'] = $vp->getVendorSku() ? $vp->getVendorSku() : $skus[$pId];
                 $data['vendor_cost'] = $vp->getVendorCost() ? $vp->getVendorCost() : $costs[$pId];
+                $data['address_match'] = $v->isAddressMatch($addresses[$pId]);
                 $data['zipcode_match'] = $v->isZipcodeMatch($zipCodes[$pId]);
                 $data['country_match'] = $v->isCountryMatch($countries[$pId]);
                 $requests[$method]['products'][$pId]['vendors'][$vId] = $data;
@@ -148,6 +150,7 @@ class Unirgy_DropshipMulti_Model_Stock_Availability
                     $_mvd['is_priority_vendor'] = false;
                     $_mvd['is_forced_vendor'] = true;
                     $_mvd['vendor_id'] = $_forcedVid;
+                    $addressMatch = (!isset($_mvd['address_match']) || $_mvd['address_match']!==false);
                     $zipCodeMatch = (!isset($_mvd['zipcode_match']) || $_mvd['zipcode_match']!==false);
                     $countryMatch = (!isset($_mvd['country_match']) || $_mvd['country_match']!==false);
                     if (!empty($itemData['skip_stock_check'])) {
@@ -169,11 +172,12 @@ class Unirgy_DropshipMulti_Model_Stock_Availability
                     if ($ignoreStockStatusCheck) {
                         $_mvd['stock_status'] = true;
                     }
-                    $_mvd['addr_status'] = $zipCodeMatch && $countryMatch;
+                    $_mvd['addr_status'] = $zipCodeMatch && $countryMatch && $addressMatch;
                     if ($ignoreAddrCheck) {
                         $_mvd['addr_status'] = true;
                     }
                     $_mvd['status'] = $_mvd['stock_status'] && $_mvd['addr_status'];
+                    $_mvd['address_match'] = $addressMatch;
                     $_mvd['zipcode_match'] = $zipCodeMatch;
                     $_mvd['country_match'] = $countryMatch;
                     $itemData['vendors'][$_forcedVid] = $_mvd;
@@ -183,6 +187,7 @@ class Unirgy_DropshipMulti_Model_Stock_Availability
                         $_mvd['is_priority_vendor'] = $itemData['priority_vendor_id']==$vId;
                         $_mvd['is_forced_vendor'] = false;
                         $_mvd['vendor_id'] = $vId;
+                        $addressMatch = (!isset($_mvd['address_match']) || $_mvd['address_match']!==false);
                         $zipCodeMatch = (!isset($_mvd['zipcode_match']) || $_mvd['zipcode_match']!==false);
                         $countryMatch = (!isset($_mvd['country_match']) || $_mvd['country_match']!==false);
                         if (!empty($itemData['skip_stock_check'])) {
@@ -204,11 +209,12 @@ class Unirgy_DropshipMulti_Model_Stock_Availability
                         if ($ignoreStockStatusCheck) {
                             $_mvd['stock_status'] = true;
                         }
-                        $_mvd['addr_status'] = $zipCodeMatch && $countryMatch;
+                        $_mvd['addr_status'] = $zipCodeMatch && $countryMatch && $addressMatch;
                         if ($ignoreAddrCheck) {
                             $_mvd['addr_status'] = true;
                         }
                         $_mvd['status'] = $_mvd['stock_status'] && $_mvd['addr_status'];
+                        $_mvd['address_match'] = $addressMatch;
                         $_mvd['zipcode_match'] = $zipCodeMatch;
                         $_mvd['country_match'] = $countryMatch;
                         $itemData['vendors'][$vId] = $_mvd;
@@ -239,13 +245,15 @@ class Unirgy_DropshipMulti_Model_Stock_Availability
 
                 if ($ignoreStockStatusCheck) $v['stock_status'] = true;
 
+                $addressMatch = (!isset($v['address_match']) || $v['address_match']!==false);
                 $zipCodeMatch = (!isset($v['zipcode_match']) || $v['zipcode_match']!==false);
                 $countryMatch = (!isset($v['country_match']) || $v['country_match']!==false);
-                $v['addr_status'] = $zipCodeMatch && $countryMatch;
+                $v['addr_status'] = $zipCodeMatch && $countryMatch && $addressMatch;
                 if ($ignoreAddrCheck) {
                     $v['addr_status'] = true;
                 }
                 $v['status'] = $v['stock_status'] && $v['addr_status'];
+                $v['address_match'] = $addressMatch;
                 $v['zipcode_match'] = $zipCodeMatch;
                 $v['country_match'] = $countryMatch;
                 $result[$pId][$vId] = $v;

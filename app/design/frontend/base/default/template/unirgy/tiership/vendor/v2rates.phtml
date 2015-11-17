@@ -14,10 +14,10 @@ $deliveryTypes = Mage::getResourceModel('udtiership/deliveryType_collection')->t
 
             <tr>
                 <td class="a-left">
-                    <?php echo $this->__('Select Delivery Type to edit Rates')?>
+                    <?php echo Mage::helper('udropship')->__('Select Delivery Type to edit Rates')?>
                     <br />
                     <select class=" select" name="tiership_delivery_type_selector" id="tiership_delivery_type_selector">
-                        <option selected="selected" value=""><?php echo $_tsHlp->__('* Please select')?></option>
+                        <option selected="selected" value=""><?php echo Mage::helper('udropship')->__('* Please select')?></option>
                         <?php foreach ($deliveryTypes as $dtId=>$dtLbl): ?>
                         <option value="<?php echo $dtId?>"><?php echo $this->escapeHtml($dtLbl)?></option>
                         <?php endforeach; ?>
@@ -49,7 +49,7 @@ $deliveryTypes = Mage::getResourceModel('udtiership/deliveryType_collection')->t
             </tr>
             <tr>
                 <td>
-                    <span class="tiership_v2rates-loader" style="display:none" id="tiership_v2rates-loader"><?php echo $this->__('Please wait, loading...')?></span>
+                    <span class="tiership_v2rates-loader" style="display:none" id="tiership_v2rates-loader"><?php echo Mage::helper('udropship')->__('Please wait, loading...')?></span>
                     <div id="tiership_v2rates_container"></div>
                 </td>
 
@@ -62,10 +62,10 @@ $deliveryTypes = Mage::getResourceModel('udtiership/deliveryType_collection')->t
 
     <div class="button-set" style="text-align:left">
         <div style="float:left">
-            <button class="form-button" type="submit"><span><?php echo $this->__('Save') ?></span></button>
+            <button class="form-button" type="submit"><span><?php echo Mage::helper('udropship')->__('Save') ?></span></button>
         </div>
         <div style="float:right">
-            <button class="form-button" type="submit"><span><?php echo $this->__('Save') ?></span></button>
+            <button class="form-button" type="submit"><span><?php echo Mage::helper('udropship')->__('Save') ?></span></button>
         </div>
     </div>
 </form>

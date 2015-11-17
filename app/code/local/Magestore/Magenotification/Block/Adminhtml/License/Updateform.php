@@ -10,14 +10,14 @@ class Magestore_Magenotification_Block_Adminhtml_License_Updateform
 	
 	public function getUpdateUrl()
 	{
-		//return $this->getUrl('magenotification/adminhtml_license/upgrade',array('licensekey'=>$this->getLicensekey(),'_secure'=>true));
-		return $this->getUrl('magenotification/adminhtml_license/upgrade',array('_secure'=>true));
+		//return $this->getUrl('adminhtml/license/upgrade',array('licensekey'=>$this->getLicensekey(),'_secure'=>true));
+		return $this->getUrl('adminhtml/license/upgrade',array('_secure'=>true));
 	}
 	
 	public function getViewPriceUrl()
 	{
-		//return $this->getUrl('magenotification/adminhtml_license/viewprice',array('licensekey'=>$this->getLicensekey(),'_secure'=>true));
-		return $this->getUrl('magenotification/adminhtml_license/viewprice',array('_secure'=>true));
+		//return $this->getUrl('adminhtml/license/viewprice',array('licensekey'=>$this->getLicensekey(),'_secure'=>true));
+		return $this->getUrl('adminhtml/license/viewprice',array('_secure'=>true));
 	}
 	
 	public function getLicenseTypeOption()

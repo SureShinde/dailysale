@@ -42,7 +42,7 @@
  * @package    TBT_Rewardsinstore
  * @author     Sweet Tooth Inc. <support@sweettoothrewards.com>
  */
-class TBT_Billboard_BillboardController extends Mage_Adminhtml_Controller_Action
+class TBT_Billboard_Adminhtml_Tbtbillboard_BillboardController extends Mage_Adminhtml_Controller_Action
 {
     public function showAction()
     {

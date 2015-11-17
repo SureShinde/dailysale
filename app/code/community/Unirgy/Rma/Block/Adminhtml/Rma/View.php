@@ -25,7 +25,7 @@ class Unirgy_Rma_Block_Adminhtml_Rma_View extends Mage_Adminhtml_Block_Widget_Fo
 
     public function getHeaderText()
     {
-        return Mage::helper('urma')->__('uReturn #%1$s | %2$s', $this->getRma()->getIncrementId(), $this->formatDate($this->getRma()->getCreatedAtDate(), 'medium', true));
+        return Mage::helper('udropship')->__('uReturn #%1$s | %2$s', $this->getRma()->getIncrementId(), $this->formatDate($this->getRma()->getCreatedAtDate(), 'medium', true));
     }
 
     public function getBackUrl()
@@ -40,7 +40,7 @@ class Unirgy_Rma_Block_Adminhtml_Rma_View extends Mage_Adminhtml_Block_Widget_Fo
 
     public function getPrintUrl()
     {
-        return $this->getUrl('*/rma/print', array(
+        return $this->getUrl('*/urmaadmin_rma/print', array(
             'rma_id' => $this->getRma()->getId()
         ));
     }
@@ -48,7 +48,7 @@ class Unirgy_Rma_Block_Adminhtml_Rma_View extends Mage_Adminhtml_Block_Widget_Fo
     public function updateBackButtonUrl($flag)
     {
         if ($flag) {
-            return $this->_updateButton('back', 'onclick', 'setLocation(\'' . $this->getUrl('*/rma/') . '\')');
+            return $this->_updateButton('back', 'onclick', 'setLocation(\'' . $this->getUrl('*/urmaadmin_rma/') . '\')');
         }
         return $this;
     }

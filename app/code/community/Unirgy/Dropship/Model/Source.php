@@ -83,25 +83,25 @@ class Unirgy_Dropship_Model_Source extends Unirgy_Dropship_Model_Source_Abstract
         case 'billing_use_shipping':
         case 'yesno':
             $options = array(
-                1 => $hlp->__('Yes'),
-                0 => $hlp->__('No'),
+                1 => Mage::helper('udropship')->__('Yes'),
+                0 => Mage::helper('udropship')->__('No'),
             );
             break;
             
         case 'yesno_useconfig':
             $options = array(
-                -1 => $hlp->__('Use config'),
-                1 => $hlp->__('Yes'),
-                0 => $hlp->__('No'),
+                -1 => Mage::helper('udropship')->__('Use config'),
+                1 => Mage::helper('udropship')->__('Yes'),
+                0 => Mage::helper('udropship')->__('No'),
             );
             break;
 
         case 'udropship/customer/notify_on':
             $options = array(
-                0 => $hlp->__('Disable'),
-                1 => $hlp->__('When Tracking ID is added'),
-                2 => $hlp->__('When Vendor Shipment is complete'),
-                #3 => $hlp->__('When Order is completely shipped'),
+                0 => Mage::helper('udropship')->__('Disable'),
+                1 => Mage::helper('udropship')->__('When Tracking ID is added'),
+                2 => Mage::helper('udropship')->__('When Vendor Shipment is complete'),
+                #3 => Mage::helper('udropship')->__('When Order is completely shipped'),
             );
             break;
 
@@ -111,8 +111,8 @@ class Unirgy_Dropship_Model_Source extends Unirgy_Dropship_Model_Source_Abstract
 
         case 'udropship/customer/estimate_error_action':
             $options = array(
-                'fail' => $hlp->__('Fail estimate and show the error'),
-                'skip' => $hlp->__('Skip failed carrier call and show prices without'),
+                'fail' => Mage::helper('udropship')->__('Fail estimate and show the error'),
+                'skip' => Mage::helper('udropship')->__('Skip failed carrier call and show prices without'),
             );
             break;
 
@@ -179,7 +179,7 @@ class Unirgy_Dropship_Model_Source extends Unirgy_Dropship_Model_Source_Abstract
             foreach ($unsetStatuses as $_st) {
                 unset($options[$_st]);
             }
-            $options = array('' => $hlp->__('* Do not change')) + $options;
+            $options = array('' => Mage::helper('udropship')->__('* Do not change')) + $options;
         break;
 
         case 'udropship/vendor/visible_preferences':
@@ -201,104 +201,104 @@ class Unirgy_Dropship_Model_Source extends Unirgy_Dropship_Model_Source_Abstract
         case 'initial_shipment_status':
         case 'vendor_po_grid_status_filter':
             $options = array(
-                self::SHIPMENT_STATUS_PENDING   => $hlp->__('Pending'),
-                self::SHIPMENT_STATUS_EXPORTED  => $hlp->__('Exported'),
-                self::SHIPMENT_STATUS_ACK       => $hlp->__('Acknowledged'),
-                self::SHIPMENT_STATUS_BACKORDER => $hlp->__('Backorder'),
-                self::SHIPMENT_STATUS_ONHOLD    => $hlp->__('On Hold'),
-                self::SHIPMENT_STATUS_READY     => $hlp->__('Ready to Ship'),
-                self::SHIPMENT_STATUS_PENDPICKUP => $hlp->__('Pending Pickup'),
-                self::SHIPMENT_STATUS_PARTIAL   => $hlp->__('Label(s) printed'),
-                self::SHIPMENT_STATUS_SHIPPED   => $hlp->__('Shipped'),
-                self::SHIPMENT_STATUS_DELIVERED => $hlp->__('Delivered'),
-                self::SHIPMENT_STATUS_CANCELED  => $hlp->__('Canceled'),
-                self::SHIPMENT_STATUS_RETURNED  => $hlp->__('Returned'),
+                self::SHIPMENT_STATUS_PENDING   => Mage::helper('udropship')->__('Pending'),
+                self::SHIPMENT_STATUS_EXPORTED  => Mage::helper('udropship')->__('Exported'),
+                self::SHIPMENT_STATUS_ACK       => Mage::helper('udropship')->__('Acknowledged'),
+                self::SHIPMENT_STATUS_BACKORDER => Mage::helper('udropship')->__('Backorder'),
+                self::SHIPMENT_STATUS_ONHOLD    => Mage::helper('udropship')->__('On Hold'),
+                self::SHIPMENT_STATUS_READY     => Mage::helper('udropship')->__('Ready to Ship'),
+                self::SHIPMENT_STATUS_PENDPICKUP => Mage::helper('udropship')->__('Pending Pickup'),
+                self::SHIPMENT_STATUS_PARTIAL   => Mage::helper('udropship')->__('Label(s) printed'),
+                self::SHIPMENT_STATUS_SHIPPED   => Mage::helper('udropship')->__('Shipped'),
+                self::SHIPMENT_STATUS_DELIVERED => Mage::helper('udropship')->__('Delivered'),
+                self::SHIPMENT_STATUS_CANCELED  => Mage::helper('udropship')->__('Canceled'),
+                self::SHIPMENT_STATUS_RETURNED  => Mage::helper('udropship')->__('Returned'),
             );
             if (in_array($this->getPath(), array('initial_shipment_status','statement_shipment_status','batch_export_orders_export_on_po_status'))) {
-                $options = array('999' => $hlp->__('* Default (global setting)')) + $options;
+                $options = array('999' => Mage::helper('udropship')->__('* Default (global setting)')) + $options;
             }
             break;
 
         case 'udropship/vendor/vendor_notification_field':
             $options = $this->getVendorVisiblePreferences();
-            array_unshift($options, array('value'=>'', 'label'=>$hlp->__('* Use Vendor Email')));
+            array_unshift($options, array('value'=>'', 'label'=>Mage::helper('udropship')->__('* Use Vendor Email')));
             break;
 
         case 'udropship/vendor/auto_shipment_complete':
             $options = array(
-                self::AUTO_SHIPMENT_COMPLETE_NO => $hlp->__('No'),
-                self::AUTO_SHIPMENT_COMPLETE_ALL => $hlp->__('When all items are shipped'),
-                self::AUTO_SHIPMENT_COMPLETE_ANY => $hlp->__('At least one item shipped'),
+                self::AUTO_SHIPMENT_COMPLETE_NO => Mage::helper('udropship')->__('No'),
+                self::AUTO_SHIPMENT_COMPLETE_ALL => Mage::helper('udropship')->__('When all items are shipped'),
+                self::AUTO_SHIPMENT_COMPLETE_ANY => Mage::helper('udropship')->__('At least one item shipped'),
             );
             break;
             
         case 'udropship/vendor/pdf_use_font':
             $options = array(
-                '' => $hlp->__('* Magento Bundled Fonts'),
-                'TIMES' => $hlp->__('Times New Roman'),
-                'HELVETICA' => $hlp->__('Helvetica'),
-                'COURIER' => $hlp->__('Courier'),
+                '' => Mage::helper('udropship')->__('* Magento Bundled Fonts'),
+                'TIMES' => Mage::helper('udropship')->__('Times New Roman'),
+                'HELVETICA' => Mage::helper('udropship')->__('Helvetica'),
+                'COURIER' => Mage::helper('udropship')->__('Courier'),
             );
             break;
 
         case 'udropship/customer/estimate_total_method':
             $options = array(
-                '' => $hlp->__('Sum of order vendors estimates'),
-                'max' => $hlp->__('Maximum of order vendors estimates'),
+                '' => Mage::helper('udropship')->__('Sum of order vendors estimates'),
+                'max' => Mage::helper('udropship')->__('Maximum of order vendors estimates'),
             );
             break;
 
         case 'udropship/misc/mail_transport':
             $options = array(
-                '' => $hlp->__('* Automatic'),
-                'sendmail' => $hlp->__('Sendmail'),
+                '' => Mage::helper('udropship')->__('* Automatic'),
+                'sendmail' => Mage::helper('udropship')->__('Sendmail'),
             );
             break;
 
         case 'vendor_statuses':
             $options = array(
-                self::VENDOR_STATUS_ACTIVE   => $hlp->__('Active'),
-                self::VENDOR_STATUS_INACTIVE => $hlp->__('Inactive'),
-                self::VENDOR_STATUS_DISABLED  => $hlp->__('Disabled'),
+                self::VENDOR_STATUS_ACTIVE   => Mage::helper('udropship')->__('Active'),
+                self::VENDOR_STATUS_INACTIVE => Mage::helper('udropship')->__('Inactive'),
+                self::VENDOR_STATUS_DISABLED  => Mage::helper('udropship')->__('Disabled'),
             );
             if (Mage::helper('udropship')->isModuleActive('udmspro')) {
-                $options[self::VENDOR_STATUS_REJECTED] = $hlp->__('Rejected');
+                $options[self::VENDOR_STATUS_REJECTED] = Mage::helper('udropship')->__('Rejected');
             }
             if (Mage::helper('udropship')->isModuleActive('Unirgy_DropshipVendorMembership')) {
-                $options[self::VENDOR_STATUS_PENDINGMEMBER] = $hlp->__('Pending Membership');
-                $options[self::VENDOR_STATUS_SUSPENDEDMEMBER] = $hlp->__('Suspended Membership');
-                $options[self::VENDOR_STATUS_CANCELEDMEMBER] = $hlp->__('Canceled Membership');
-                $options[self::VENDOR_STATUS_EXPIREDMEMBER] = $hlp->__('Expired Membership');
+                $options[self::VENDOR_STATUS_PENDINGMEMBER] = Mage::helper('udropship')->__('Pending Membership');
+                $options[self::VENDOR_STATUS_SUSPENDEDMEMBER] = Mage::helper('udropship')->__('Suspended Membership');
+                $options[self::VENDOR_STATUS_CANCELEDMEMBER] = Mage::helper('udropship')->__('Canceled Membership');
+                $options[self::VENDOR_STATUS_EXPIREDMEMBER] = Mage::helper('udropship')->__('Expired Membership');
             }
             break;
 
         case 'new_order_notifications':
             $options = array(
-                '' => $hlp->__('* No notification'),
-                '1' => $hlp->__('* Email notification'),
+                '' => Mage::helper('udropship')->__('* No notification'),
+                '1' => Mage::helper('udropship')->__('* Email notification'),
             );
             $config = Mage::getConfig()->getNode('global/udropship/notification_methods');
             foreach ($config->children() as $code=>$node) {
                 if (!$node->label) {
                     continue;
                 }
-                $options[$code] = $hlp->__((string)$node->label);
+                $options[$code] = Mage::helper('udropship')->__((string)$node->label);
             }
             asort($options);
             break;
 
         case 'udropship/statement/statement_usage':
             $options = array(
-                'payout' => $hlp->__('Payout'),
-                'invoice' => $hlp->__('Invoice'),
+                'payout' => Mage::helper('udropship')->__('Payout'),
+                'invoice' => Mage::helper('udropship')->__('Invoice'),
             );
             break;
         case 'statement_withhold_totals':
             $options = array(
-                '999' => $hlp->__('* Default (global setting)'),
-                'tax' => $hlp->__('Tax'),
-                'shipping' => $hlp->__('Shipping'),
-                'handling' => $hlp->__('Handling'),
+                '999' => Mage::helper('udropship')->__('* Default (global setting)'),
+                'tax' => Mage::helper('udropship')->__('Tax'),
+                'shipping' => Mage::helper('udropship')->__('Shipping'),
+                'handling' => Mage::helper('udropship')->__('Handling'),
             );
             break;
 
@@ -309,12 +309,12 @@ class Unirgy_Dropship_Model_Source extends Unirgy_Dropship_Model_Source_Abstract
         case 'statement_tax_in_payout':
         case 'statement_discount_in_payout':
         	$options = array(
-                'include' => $hlp->__('Include'),
-                'exclude_show' => $hlp->__('Exclude but Show'),
-                'exclude_hide' => $hlp->__('Exclude and Hide'),
+                'include' => Mage::helper('udropship')->__('Include'),
+                'exclude_show' => Mage::helper('udropship')->__('Exclude but Show'),
+                'exclude_hide' => Mage::helper('udropship')->__('Exclude and Hide'),
             );
             if (in_array($this->getPath(), array('statement_shipping_in_payout','statement_tax_in_payout','statement_discount_in_payout'))) {
-                $options = array('999' => $hlp->__('* Default (global setting)')) + $options;
+                $options = array('999' => Mage::helper('udropship')->__('* Default (global setting)')) + $options;
             }
             break;
 
@@ -327,25 +327,25 @@ class Unirgy_Dropship_Model_Source extends Unirgy_Dropship_Model_Source_Abstract
         case 'udropship/statement/shipping_tax_in_shipping':
         case 'shipping_tax_in_shipping':
             $options = array(
-                1 => $hlp->__('Yes'),
-                0 => $hlp->__('No'),
+                1 => Mage::helper('udropship')->__('Yes'),
+                0 => Mage::helper('udropship')->__('No'),
             );
             if (in_array($this->getPath(), array('apply_commission_on_tax','apply_commission_on_shipping','apply_commission_on_discount','shipping_tax_in_shipping'))) {
-                $options = array('999' => $hlp->__('* Default (global setting)')) + $options;
+                $options = array('999' => Mage::helper('udropship')->__('* Default (global setting)')) + $options;
             }
             break;
 
         case 'stockcheck_method':
             $options = array(
-                '' => $hlp->__('* Local database'),
-                //'1' => $hlp->__('Always in stock'),
+                '' => Mage::helper('udropship')->__('* Local database'),
+                //'1' => Mage::helper('udropship')->__('Always in stock'),
             );
             $config = Mage::getConfig()->getNode('global/udropship/stockcheck_methods');
             foreach ($config->children() as $code=>$node) {
                 if (!$node->label) {
                     continue;
                 }
-                $options[$code] = $hlp->__((string)$node->label);
+                $options[$code] = Mage::helper('udropship')->__((string)$node->label);
             }
             asort($options);
             break;
@@ -357,17 +357,17 @@ class Unirgy_Dropship_Model_Source extends Unirgy_Dropship_Model_Source_Abstract
 
         case 'handling_integration':
             $options = array(
-                'bypass' => $hlp->__('Use system configured handling fee only'),
-                'replace' => $hlp->__('Use vendor configured handling fee only'),
-                'add' => $hlp->__('Add vendor handling fee to the system handling fee'),
+                'bypass' => Mage::helper('udropship')->__('Use system configured handling fee only'),
+                'replace' => Mage::helper('udropship')->__('Use vendor configured handling fee only'),
+                'add' => Mage::helper('udropship')->__('Add vendor handling fee to the system handling fee'),
             );
             break;
 
         case 'udropship_label/label/poll_tracking':
         case 'poll_tracking':
             $options = array(
-                '-' => $hlp->__('* Disable tracking API polling'),
-                '' => $hlp->__('* Use label carrier API if available'),
+                '-' => Mage::helper('udropship')->__('* Disable tracking API polling'),
+                '' => Mage::helper('udropship')->__('* Use label carrier API if available'),
             );
             $trackConfig = Mage::getConfig()->getNode("global/udropship/track_api");
             foreach ($trackConfig->children() as $code=>$node) {
@@ -381,15 +381,15 @@ class Unirgy_Dropship_Model_Source extends Unirgy_Dropship_Model_Source_Abstract
         case 'udropship_label/label/label_type':
         case 'label_type':
             $options = array(
-                ''=>$hlp->__('No label printing'),
-                'PDF'=>$hlp->__('PDF'),
-                'EPL'=>$hlp->__('EPL'),
-//                'ZPL'=>$hlp->__('ZPL'),
+                ''=>Mage::helper('udropship')->__('No label printing'),
+                'PDF'=>Mage::helper('udropship')->__('PDF'),
+                'EPL'=>Mage::helper('udropship')->__('EPL'),
+//                'ZPL'=>Mage::helper('udropship')->__('ZPL'),
             );
             break;
         case 'udropship/label/label_size':
             $options = array(
-                '4X6'=>$hlp->__('4X6'),
+                '4X6'=>Mage::helper('udropship')->__('4X6'),
             );
             break;
 
@@ -548,48 +548,48 @@ class Unirgy_Dropship_Model_Source extends Unirgy_Dropship_Model_Source_Abstract
             $usa = Mage::helper('usa');
             $options = array(
                 'UPS CGI' => array(
-                    '1DM'    => $usa->__('Next Day Air Early AM'),
-                    '1DML'   => $usa->__('Next Day Air Early AM Letter'),
-                    '1DA'    => $usa->__('Next Day Air'),
-                    '1DAL'   => $usa->__('Next Day Air Letter'),
-                    '1DAPI'  => $usa->__('Next Day Air Intra (Puerto Rico)'),
-                    '1DP'    => $usa->__('Next Day Air Saver'),
-                    '1DPL'   => $usa->__('Next Day Air Saver Letter'),
-                    '2DM'    => $usa->__('2nd Day Air AM'),
-                    '2DML'   => $usa->__('2nd Day Air AM Letter'),
-                    '2DA'    => $usa->__('2nd Day Air'),
-                    '2DAL'   => $usa->__('2nd Day Air Letter'),
-                    '3DS'    => $usa->__('3 Day Select'),
-                    'GND'    => $usa->__('Ground'),
-                    'GNDCOM' => $usa->__('Ground Commercial'),
-                    'GNDRES' => $usa->__('Ground Residential'),
-                    'STD'    => $usa->__('Canada Standard'),
-                    'XPR'    => $usa->__('Worldwide Express'),
-                    'WXS'    => $usa->__('Worldwide Express Saver'),
-                    'XPRL'   => $usa->__('Worldwide Express Letter'),
-                    'XDM'    => $usa->__('Worldwide Express Plus'),
-                    'XDML'   => $usa->__('Worldwide Express Plus Letter'),
-                    'XPD'    => $usa->__('Worldwide Expedited'),
+                    '1DM'    => Mage::helper('udropship')->__('Next Day Air Early AM'),
+                    '1DML'   => Mage::helper('udropship')->__('Next Day Air Early AM Letter'),
+                    '1DA'    => Mage::helper('udropship')->__('Next Day Air'),
+                    '1DAL'   => Mage::helper('udropship')->__('Next Day Air Letter'),
+                    '1DAPI'  => Mage::helper('udropship')->__('Next Day Air Intra (Puerto Rico)'),
+                    '1DP'    => Mage::helper('udropship')->__('Next Day Air Saver'),
+                    '1DPL'   => Mage::helper('udropship')->__('Next Day Air Saver Letter'),
+                    '2DM'    => Mage::helper('udropship')->__('2nd Day Air AM'),
+                    '2DML'   => Mage::helper('udropship')->__('2nd Day Air AM Letter'),
+                    '2DA'    => Mage::helper('udropship')->__('2nd Day Air'),
+                    '2DAL'   => Mage::helper('udropship')->__('2nd Day Air Letter'),
+                    '3DS'    => Mage::helper('udropship')->__('3 Day Select'),
+                    'GND'    => Mage::helper('udropship')->__('Ground'),
+                    'GNDCOM' => Mage::helper('udropship')->__('Ground Commercial'),
+                    'GNDRES' => Mage::helper('udropship')->__('Ground Residential'),
+                    'STD'    => Mage::helper('udropship')->__('Canada Standard'),
+                    'XPR'    => Mage::helper('udropship')->__('Worldwide Express'),
+                    'WXS'    => Mage::helper('udropship')->__('Worldwide Express Saver'),
+                    'XPRL'   => Mage::helper('udropship')->__('Worldwide Express Letter'),
+                    'XDM'    => Mage::helper('udropship')->__('Worldwide Express Plus'),
+                    'XDML'   => Mage::helper('udropship')->__('Worldwide Express Plus Letter'),
+                    'XPD'    => Mage::helper('udropship')->__('Worldwide Expedited'),
                 ),
                 'UPS XML' => array(
-                    '01' => $usa->__('UPS Next Day Air'),
-                    '02' => $usa->__('UPS Second Day Air'),
-                    '03' => $usa->__('UPS Ground'),
-                    '07' => $usa->__('UPS Worldwide Express'),
-                    '08' => $usa->__('UPS Worldwide Expedited'),
-                    '11' => $usa->__('UPS Standard'),
-                    '12' => $usa->__('UPS Three-Day Select'),
-                    '13' => $usa->__('UPS Next Day Air Saver'),
-                    '14' => $usa->__('UPS Next Day Air Early A.M.'),
-                    '54' => $usa->__('UPS Worldwide Express Plus'),
-                    '59' => $usa->__('UPS Second Day Air A.M.'),
-                    '65' => $usa->__('UPS Saver'),
+                    '01' => Mage::helper('udropship')->__('UPS Next Day Air'),
+                    '02' => Mage::helper('udropship')->__('UPS Second Day Air'),
+                    '03' => Mage::helper('udropship')->__('UPS Ground'),
+                    '07' => Mage::helper('udropship')->__('UPS Worldwide Express'),
+                    '08' => Mage::helper('udropship')->__('UPS Worldwide Expedited'),
+                    '11' => Mage::helper('udropship')->__('UPS Standard'),
+                    '12' => Mage::helper('udropship')->__('UPS Three-Day Select'),
+                    '13' => Mage::helper('udropship')->__('UPS Next Day Air Saver'),
+                    '14' => Mage::helper('udropship')->__('UPS Next Day Air Early A.M.'),
+                    '54' => Mage::helper('udropship')->__('UPS Worldwide Express Plus'),
+                    '59' => Mage::helper('udropship')->__('UPS Second Day Air A.M.'),
+                    '65' => Mage::helper('udropship')->__('UPS Saver'),
 
-                    '82' => $usa->__('UPS Today Standard'),
-                    '83' => $usa->__('UPS Today Dedicated Courrier'),
-                    '84' => $usa->__('UPS Today Intercity'),
-                    '85' => $usa->__('UPS Today Express'),
-                    '86' => $usa->__('UPS Today Express Saver'),
+                    '82' => Mage::helper('udropship')->__('UPS Today Standard'),
+                    '83' => Mage::helper('udropship')->__('UPS Today Dedicated Courrier'),
+                    '84' => Mage::helper('udropship')->__('UPS Today Intercity'),
+                    '85' => Mage::helper('udropship')->__('UPS Today Express'),
+                    '86' => Mage::helper('udropship')->__('UPS Today Express Saver'),
                 ),
             );
             break;
@@ -597,19 +597,19 @@ class Unirgy_Dropship_Model_Source extends Unirgy_Dropship_Model_Source_Abstract
         case 'udropship_label/fedex/fedex_payment_type':
         case 'fedex_payment_type':
             $options = array(
-                'SENDER' => $hlp->__('Sender'),
-                'THIRD_PARTY' => $hlp->__('Third Party'),
+                'SENDER' => Mage::helper('udropship')->__('Sender'),
+                'THIRD_PARTY' => Mage::helper('udropship')->__('Third Party'),
             );
             break;
 
         case 'udropship_label/fedex/fedex_dropoff_type':
         case 'fedex_dropoff_type':
             $options = array(
-                'REGULAR_PICKUP' => $hlp->__('Regular Pickup'),
-                'REQUEST_COURIER' => $hlp->__('Request Courier'),
-                'DROP_BOX' => $hlp->__('Drop Box'),
-                'BUSINESS_SERVICE_CENTER' => $hlp->__('Business Service Center'),
-                'STATION' => $hlp->__('Station'),
+                'REGULAR_PICKUP' => Mage::helper('udropship')->__('Regular Pickup'),
+                'REQUEST_COURIER' => Mage::helper('udropship')->__('Request Courier'),
+                'DROP_BOX' => Mage::helper('udropship')->__('Drop Box'),
+                'BUSINESS_SERVICE_CENTER' => Mage::helper('udropship')->__('Business Service Center'),
+                'STATION' => Mage::helper('udropship')->__('Station'),
             );
             break;
 
@@ -624,19 +624,19 @@ class Unirgy_Dropship_Model_Source extends Unirgy_Dropship_Model_Source_Abstract
         case 'udropship_label/fedex/fedex_label_stock_type':
         case 'fedex_label_stock_type':
             $options = array(
-                'PAPER_4X6' => $hlp->__('PDF: Paper 4x6'),
-                'PAPER_4X8' => $hlp->__('PDF: Paper 4x8'),
-                'PAPER_4X9' => $hlp->__('PDF: Paper 4x9'),
-                'PAPER_7X4.75' => $hlp->__('PDF: Paper 7x4.75'),
-                'PAPER_8.5X11_BOTTOM_HALF_LABEL' => $hlp->__('PDF: Paper 8.5x11 Bottom Half Label'),
-                'PAPER_8.5X11_TOP_HALF_LABEL' => $hlp->__('PDF: Paper 8.5x11 Top Half Label'),
+                'PAPER_4X6' => Mage::helper('udropship')->__('PDF: Paper 4x6'),
+                'PAPER_4X8' => Mage::helper('udropship')->__('PDF: Paper 4x8'),
+                'PAPER_4X9' => Mage::helper('udropship')->__('PDF: Paper 4x9'),
+                'PAPER_7X4.75' => Mage::helper('udropship')->__('PDF: Paper 7x4.75'),
+                'PAPER_8.5X11_BOTTOM_HALF_LABEL' => Mage::helper('udropship')->__('PDF: Paper 8.5x11 Bottom Half Label'),
+                'PAPER_8.5X11_TOP_HALF_LABEL' => Mage::helper('udropship')->__('PDF: Paper 8.5x11 Top Half Label'),
 
-                'STOCK_4X6' => $hlp->__('EPL: Stock 4x6'),
-                'STOCK_4X6.75_LEADING_DOC_TAB' => $hlp->__('EPL: Stock 4x6.75 Leading Doc Tab'),
-                'STOCK_4X6.75_TRAILING_DOC_TAB' => $hlp->__('EPL: Stock 4x6.75 Trailing Doc Tab'),
-                'STOCK_4X8' => $hlp->__('EPL: Stock 4x8'),
-                'STOCK_4X9_LEADING_DOC_TAB' => $hlp->__('EPL: Stock 4x9 Leading Doc Tab'),
-                'STOCK_4X9_TRAILING_DOC_TAB' => $hlp->__('EPL: Stock 4x9 Trailing Doc Tab'),
+                'STOCK_4X6' => Mage::helper('udropship')->__('EPL: Stock 4x6'),
+                'STOCK_4X6.75_LEADING_DOC_TAB' => Mage::helper('udropship')->__('EPL: Stock 4x6.75 Leading Doc Tab'),
+                'STOCK_4X6.75_TRAILING_DOC_TAB' => Mage::helper('udropship')->__('EPL: Stock 4x6.75 Trailing Doc Tab'),
+                'STOCK_4X8' => Mage::helper('udropship')->__('EPL: Stock 4x8'),
+                'STOCK_4X9_LEADING_DOC_TAB' => Mage::helper('udropship')->__('EPL: Stock 4x9 Leading Doc Tab'),
+                'STOCK_4X9_TRAILING_DOC_TAB' => Mage::helper('udropship')->__('EPL: Stock 4x9 Trailing Doc Tab'),
             );
             break;
 
@@ -663,113 +663,113 @@ class Unirgy_Dropship_Model_Source extends Unirgy_Dropship_Model_Source_Abstract
             
         case 'udropship/vendor/reassign_available_shipping':
             $options = array(
-                'all' => $hlp->__('All'),
-                'order' => $hlp->__('Limit by order shipping method'),
+                'all' => Mage::helper('udropship')->__('All'),
+                'order' => Mage::helper('udropship')->__('Limit by order shipping method'),
             );
             break;
 
         case 'udropship/statement/statement_po_type':
         case 'statement_po_type':
             $options = array(
-                'shipment' => $hlp->__('Shipment'),
+                'shipment' => Mage::helper('udropship')->__('Shipment'),
             );
             if ($hlp->isUdpoActive()) {
-                $options['po'] = $hlp->__('Purchase Order');
+                $options['po'] = Mage::helper('udropship')->__('Purchase Order');
             }
             if (in_array($this->getPath(), array('statement_po_type'))) {
-                $options = array('999' => $hlp->__('* Default (global setting)')) + $options;
+                $options = array('999' => Mage::helper('udropship')->__('* Default (global setting)')) + $options;
             }
             break;
 
         case 'udropship/statement/statement_subtotal_base':
         case 'statement_subtotal_base':
             $options = array(
-                'price' => $hlp->__('Price'),
-            	'cost'  => $hlp->__('Cost'),
+                'price' => Mage::helper('udropship')->__('Price'),
+            	'cost'  => Mage::helper('udropship')->__('Cost'),
             );
             if (in_array($this->getPath(), array('statement_subtotal_base'))) {
-                $options = array('999' => $hlp->__('* Default (global setting)')) + $options;
+                $options = array('999' => Mage::helper('udropship')->__('* Default (global setting)')) + $options;
             }
             break;
 
         case 'vendor_po_grid_sortby':
             $options = array(
-                'order_increment_id' => $hlp->__('Order ID'),
-                'order_date' => $hlp->__('Order Date'),
-                'shipment_date' => $hlp->__('Available for Shipping Date'),
-                'shipping_method' => $hlp->__('Delivery Method'),
-                'udropship_status' => $hlp->__('Shipping Status'),
+                'order_increment_id' => Mage::helper('udropship')->__('Order ID'),
+                'order_date' => Mage::helper('udropship')->__('Order Date'),
+                'shipment_date' => Mage::helper('udropship')->__('Available for Shipping Date'),
+                'shipping_method' => Mage::helper('udropship')->__('Delivery Method'),
+                'udropship_status' => Mage::helper('udropship')->__('Shipping Status'),
             );
             break;
 
         case 'vendor_po_grid_sortdir':
             $options = array(
-                'asc' => $hlp->__('Ascending'),
-                'desc' => $hlp->__('Descending'),
+                'asc' => Mage::helper('udropship')->__('Ascending'),
+                'desc' => Mage::helper('udropship')->__('Descending'),
             );
             break;
 
         case 'shipping_extra_charge_type':
             $options = array(
-                'fixed' => $hlp->__('Fixed'),
-                'shipping_percent' => $hlp->__('Percent of shipping amount'),
-                'subtotal_percent' => $hlp->__('Percent of vendor subtotal'),
+                'fixed' => Mage::helper('udropship')->__('Fixed'),
+                'shipping_percent' => Mage::helper('udropship')->__('Percent of shipping amount'),
+                'subtotal_percent' => Mage::helper('udropship')->__('Percent of vendor subtotal'),
             );
             break;
 
         case 'udropship/customer/vendor_enable_disable_action':
             $options = array(
-                'noaction' => $hlp->__('No action'),
-                'enable_disable' => $hlp->__('Enable / Disable vendor products'),
+                'noaction' => Mage::helper('udropship')->__('No action'),
+                'enable_disable' => Mage::helper('udropship')->__('Enable / Disable vendor products'),
             );
             break;
 
         case 'use_handling_fee':
             $options = array(
-                self::HANDLING_SYSTEM => $hlp->__('* Default System Rules'),
-                self::HANDLING_SIMPLE => $hlp->__('Simple Custom Rules'),
-                self::HANDLING_ADVANCED => $hlp->__('Advanced Custom Rules'),
+                self::HANDLING_SYSTEM => Mage::helper('udropship')->__('* Default System Rules'),
+                self::HANDLING_SIMPLE => Mage::helper('udropship')->__('Simple Custom Rules'),
+                self::HANDLING_ADVANCED => Mage::helper('udropship')->__('Advanced Custom Rules'),
             );
             break;
 
         case 'handling_rule':
             $options = array(
-                'price'  => $hlp->__('Total Price'),
-                'cost'   => $hlp->__('Total Cost'),
-                'qty'    => $hlp->__('Qty'),
-                'line'   => $hlp->__('Line Number'),
-                'weight' => $hlp->__('Weight'),
+                'price'  => Mage::helper('udropship')->__('Total Price'),
+                'cost'   => Mage::helper('udropship')->__('Total Cost'),
+                'qty'    => Mage::helper('udropship')->__('Qty'),
+                'line'   => Mage::helper('udropship')->__('Line Number'),
+                'weight' => Mage::helper('udropship')->__('Weight'),
             );
             break;
 
         case 'product_calculate_rates':
             $options = array(
-                self::CALCULATE_RATES_DEFAULT => $hlp->__('Vendor Package'),
-                self::CALCULATE_RATES_ROW      => $hlp->__('Row Separate Rate'),
-                self::CALCULATE_RATES_ITEM     => $hlp->__('Item Separate Rate'),
+                self::CALCULATE_RATES_DEFAULT => Mage::helper('udropship')->__('Vendor Package'),
+                self::CALCULATE_RATES_ROW      => Mage::helper('udropship')->__('Row Separate Rate'),
+                self::CALCULATE_RATES_ITEM     => Mage::helper('udropship')->__('Item Separate Rate'),
             );
             break;
 
         case 'udropship/customer/vendor_delete_action':
             $options = array(
-                'noaction' => $hlp->__('No action'),
-                'assign_local_enabled' => $hlp->__('Assign to local vendor and leave vendor products enabled'),
-                'assign_local_disable' => $hlp->__('Assign to local vendor and disable vendor products'),
-                'delete' => $hlp->__('Delete vendor products'),
+                'noaction' => Mage::helper('udropship')->__('No action'),
+                'assign_local_enabled' => Mage::helper('udropship')->__('Assign to local vendor and leave vendor products enabled'),
+                'assign_local_disable' => Mage::helper('udropship')->__('Assign to local vendor and disable vendor products'),
+                'delete' => Mage::helper('udropship')->__('Delete vendor products'),
             );
             break;
 
         case 'allowed_countries':
             $options = Mage::getResourceModel('directory/country_collection')->loadData()->toOptionArray(false);
-            array_unshift($options, array('value'=>'*', 'label'=> $hlp->__('* All Countries')));
+            array_unshift($options, array('value'=>'*', 'label'=> Mage::helper('udropship')->__('* All Countries')));
             break;
 
         default:
-            Mage::throwException($hlp->__('Invalid request for source options: '.$this->getPath()));
+            Mage::throwException(Mage::helper('udropship')->__('Invalid request for source options: '.$this->getPath()));
         }
 
         if ($selector) {
-            $options = array(''=>$hlp->__('* Please select')) + $options;
+            $options = array(''=>Mage::helper('udropship')->__('* Please select')) + $options;
         }
 
         return $options;

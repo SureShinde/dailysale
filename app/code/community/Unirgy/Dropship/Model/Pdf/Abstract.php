@@ -56,7 +56,7 @@ abstract class Unirgy_Dropship_Model_Pdf_Abstract extends Varien_Object
         foreach ($pdf->pages as $page) {
             $i++;
             $this->setPage($page)
-                ->move($x, $y)->text($hlp->__('Page %s of %s', $i, $n));
+                ->move($x, $y)->text(Mage::helper('udropship')->__('Page %s of %s', $i, $n));
         }
         return $this;
     }

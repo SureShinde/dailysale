@@ -57,7 +57,7 @@ class Magestore_Onestepcheckout_Block_Adminhtml_Geoip_Grid extends Mage_Adminhtm
 			return false;
 		}
 		else{
-			$link = Mage::getSingleton('adminhtml/url')->getUrl('onestepcheckoutadmin/adminhtml_geoip/showGeoip',array(
+			$link = Mage::getSingleton('adminhtml/url')->getUrl('adminhtml/geoip/showGeoip',array(
 				'website' => $this->getRequest()->getParam('website'),		
 				'_query'  => array('isAjax'  => 'false'),			
 			));

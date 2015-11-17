@@ -49,19 +49,19 @@ class Unirgy_DropshipPayout_Block_Adminhtml_Payout_Edit_Tab_Adjustments extends 
     protected function _prepareColumns()
     {
         $this->addColumn('id', array(
-            'header'    => Mage::helper('udpayout')->__('ID'),
+            'header'    => Mage::helper('udropship')->__('ID'),
             'sortable'  => true,
             'width'     => '60',
             'index'     => 'id'
         ));
         $this->addColumn('adjustment_id', array(
-            'header'    => Mage::helper('udpayout')->__('Adjustment ID'),
+            'header'    => Mage::helper('udropship')->__('Adjustment ID'),
             'sortable'  => true,
         	'width'     => '300',
             'index'     => 'adjustment_id'
         ));
         $this->addColumn('po_id', array(
-            'header'    => Mage::helper('udpayout')->__('Po ID'),
+            'header'    => Mage::helper('udropship')->__('Po ID'),
             'sortable'  => true,
         	'width'     => '150',
             'index'     => 'po_id'
@@ -73,7 +73,7 @@ class Unirgy_DropshipPayout_Block_Adminhtml_Payout_Edit_Tab_Adjustments extends 
             'index'     => 'po_type'
         ));
         $this->addColumn('amount', array(
-            'header' => Mage::helper('udpayout')->__('Amount'),
+            'header' => Mage::helper('udropship')->__('Amount'),
             'index' => 'amount',
             'type'  => 'price',
             'currency' => 'base_currency_code',
@@ -86,7 +86,7 @@ class Unirgy_DropshipPayout_Block_Adminhtml_Payout_Edit_Tab_Adjustments extends 
             'index'     => 'username'
         ));
         $this->addColumn('comment', array(
-            'header'    => Mage::helper('udpayout')->__('Comment'),
+            'header'    => Mage::helper('udropship')->__('Comment'),
             'index'     => 'comment'
         ));
         $this->addColumn('created_at', array(

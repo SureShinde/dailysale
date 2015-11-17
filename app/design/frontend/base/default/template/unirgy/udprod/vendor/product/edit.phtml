@@ -13,10 +13,10 @@ $_product = $this->getProduct();
 <?php if ($_product->getId()): ?>
 <?php echo $_product->getName() ?>
 <?php else: ?>
-<?php echo $_prHlp->__('New Product') ?>
-	<?php endif ?> <?php echo $_prHlp->__('(Type of product: %s)', $_prHlp->getProdSetIdLabel($_product)) ?></span>
+<?php echo Mage::helper('udropship')->__('New Product') ?>
+	<?php endif ?> <?php echo Mage::helper('udropship')->__('(Type of product: %s)', $_prHlp->getProdSetIdLabel($_product)) ?></span>
 </h1>
-<span class="required"><?php echo $this->__('* Indicated Required Fields') ?></span>
+<span class="required"><?php echo Mage::helper('udropship')->__('* Indicated Required Fields') ?></span>
 </div>
 <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
 <form action="<?php echo $this->getUrl('udprod/vendor/productPost', array('_current'=>true))?>" method="post" id="product-edit-form">
@@ -29,7 +29,7 @@ $_product = $this->getProduct();
 <?php /*
 <div class="login-box generic-box">
 <div class="col-1 registered-users">
-<div class="box-head"><h3><?php echo $this->__('Categories') ?></h3></div>
+<div class="box-head"><h3><?php echo Mage::helper('udropship')->__('Categories') ?></h3></div>
 <table style="width:100%"><tbody><tr><td>
 <?php echo $this->getChildHtml('categories') ?>
 </td></tr></tbody></table>
@@ -38,11 +38,11 @@ $_product = $this->getProduct();
 */?>
 
 <div class="buttons-set">
-    <span class="product-edit-form-loader" style="display:none" id="product-edit-form-loader"><?php echo $this->__('Please wait, submitting...')?></span>
-    <button class="form-button" type="button" onclick="udprodEditFormSubmit(this, false)" name="send"><span><?php echo $this->__('Save') ?></span></button>
-    <button class="form-button" type="button" onclick="udprodEditFormSubmit(this, true)" name="send"><span><?php echo $this->__('Save And Continue Edit') ?></span></button>
+    <span class="product-edit-form-loader" style="display:none" id="product-edit-form-loader"><?php echo Mage::helper('udropship')->__('Please wait, submitting...')?></span>
+    <button class="form-button" type="button" onclick="udprodEditFormSubmit(this, false)" name="send"><span><?php echo Mage::helper('udropship')->__('Save') ?></span></button>
+    <button class="form-button" type="button" onclick="udprodEditFormSubmit(this, true)" name="send"><span><?php echo Mage::helper('udropship')->__('Save And Continue Edit') ?></span></button>
     <div class="clearer"></div><br/>
-    <p><a href="<?php echo $this->getUrl('udprod/vendor/products')?>">&laquo; <?php echo $this->__('Return to product list')?></a></p></p>
+    <p><a href="<?php echo $this->getUrl('udprod/vendor/products')?>">&laquo; <?php echo Mage::helper('udropship')->__('Return to product list')?></a></p></p>
 </div>
 </form>
 

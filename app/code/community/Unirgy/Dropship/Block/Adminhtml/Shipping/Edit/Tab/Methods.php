@@ -26,7 +26,7 @@ class Unirgy_Dropship_Block_Adminhtml_Shipping_Edit_Tab_Methods extends Mage_Adm
         }
 
         $form = new Varien_Data_Form();
-        $fieldset = $form->addFieldset('methods_fieldset', array('legend'=>Mage::helper('catalog')->__('Associated System Methods')));
+        $fieldset = $form->addFieldset('methods_fieldset', array('legend'=>Mage::helper('udropship')->__('Associated System Methods')));
 
         $carriers = Mage::getSingleton('shipping/config')->getAllCarriers();
         foreach ($carriers as $carrierCode=>$carrierModel) {
@@ -48,21 +48,21 @@ class Unirgy_Dropship_Block_Adminhtml_Shipping_Edit_Tab_Methods extends Mage_Adm
 
             if ($carrierCode=='ups') {
                 $params['values'] = array_merge_recursive(
-                    array(array('value'=>'', 'label'=>$this->__('* Not used'))),
-                    array(array('value'=>'*', 'label'=>$this->__('* Any available'))),
+                    array(array('value'=>'', 'label'=>Mage::helper('udropship')->__('* Not used'))),
+                    array(array('value'=>'*', 'label'=>Mage::helper('udropship')->__('* Any available'))),
                     Mage::getSingleton('udropship/source')->setPath('ups_shipping_method_combined')->toOptionArray()
                 );
             } else {
                 $carrierMethods = $carrierModel->getAllowedMethods();
                 if (!$carrierMethods) {
                     $params['options'] = Mage::helper('udropship')->array_merge_n(
-                        array(''=>$this->__('* Not used')),
-                        array('*'=>$this->__('* Any available'))
+                        array(''=>Mage::helper('udropship')->__('* Not used')),
+                        array('*'=>Mage::helper('udropship')->__('* Any available'))
                     );
                 } else {
                     $params['options'] = Mage::helper('udropship')->array_merge_n(
-                        array(''=>$this->__('* Not used')),
-                        array('*'=>$this->__('* Any available')),
+                        array(''=>Mage::helper('udropship')->__('* Not used')),
+                        array('*'=>Mage::helper('udropship')->__('* Any available')),
                         $carrierMethods
                     );
                 }

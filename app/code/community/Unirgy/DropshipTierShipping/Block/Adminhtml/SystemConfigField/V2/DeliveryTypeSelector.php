@@ -15,7 +15,7 @@ class Unirgy_DropshipTierShipping_Block_Adminhtml_SystemConfigField_V2_DeliveryT
         $simpleTargetHtmlId = str_replace('delivery_type_selector', 'v2_simple_rates', $htmlId).'_container';
         $simpleCondTargetHtmlId = str_replace('delivery_type_selector', 'v2_simple_cond_rates', $htmlId).'_container';
         $targetHtmlId = str_replace('delivery_type_selector', 'v2_rates', $htmlId).'_container';
-        $targetUrl = $this->getUrl('udtiershipadmin/index/loadRates', array('delivery_type'=>'DELIVERYTYPE','use_simple'=>'USESIMPLE','ct_cost'=>'CTCOST','ct_additional'=>'CTADDITIONAL','ct_handling'=>'CTHANDLING','handling_apply'=>'HANDLINGAPPLY','calculation_method'=>'CALCULATIONMETHOD'));
+        $targetUrl = $this->getUrl('adminhtml/udtiershipadmin_index/loadRates', array('delivery_type'=>'DELIVERYTYPE','use_simple'=>'USESIMPLE','ct_cost'=>'CTCOST','ct_additional'=>'CTADDITIONAL','ct_handling'=>'CTHANDLING','handling_apply'=>'HANDLINGAPPLY','calculation_method'=>'CALCULATIONMETHOD'));
         $elHtml .= "
             <script type=\"text/javascript\">
                 Event.observe('$htmlId', 'change', function(){

@@ -32,13 +32,13 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Helper_Renderer_Adjustment extends 
         $this->setChild('delete_button',
             $this->getLayout()->createBlock('adminhtml/widget_button')
                 ->setData(array(
-                    'label' => Mage::helper('catalog')->__('Delete'),
+                    'label' => Mage::helper('udropship')->__('Delete'),
                     'class' => 'delete delete-option'
                 )));
         $this->setChild('add_button',
             $this->getLayout()->createBlock('adminhtml/widget_button')
                 ->setData(array(
-                    'label' => Mage::helper('catalog')->__('Add Adjustment'),
+                    'label' => Mage::helper('udropship')->__('Add Adjustment'),
                     'class' => 'add',
                     'id'    => 'add_new_option_button'
                 )));

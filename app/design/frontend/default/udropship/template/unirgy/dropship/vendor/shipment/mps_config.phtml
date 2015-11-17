@@ -22,43 +22,43 @@ $useDisabled = $this->getUseDisabled();
                 <td>$ROW</td>
                 <td>
                     <span class="$DYNAMIC_CONTAINER_CLASS">
-                    <?php echo $_hlp->__('Weight:') ?>
-                        <input id="weight-<?php echo $_masterId?>-$ROW" name="weight[$ROW]" value="$REMAINING_WEIGHT" title="<?php echo $_hlp->__('Weight') ?>" type="text" class="input-text $DYNAMIC_WEIGHT_CLASS" style="width:50px;" /> LB
+                    <?php echo Mage::helper('udropship')->__('Weight:') ?>
+                        <input id="weight-<?php echo $_masterId?>-$ROW" name="weight[$ROW]" value="$REMAINING_WEIGHT" title="<?php echo Mage::helper('udropship')->__('Weight') ?>" type="text" class="input-text $DYNAMIC_WEIGHT_CLASS" style="width:50px;" /> LB
                     &nbsp;&nbsp;
-                    <?php echo $_hlp->__('Value:') ?>
-                    <input id="value-<?php echo $_masterId?>-$ROW" name="value[$ROW]" value="$REMAINING_VALUE" title="<?php echo $_hlp->__('Declared Value') ?>" type="text" class="input-text $DYNAMIC_VALUE_CLASS" style="width:50px;" /> <?php echo $_po->getOrder()->getStoreCurrencyCode() ?>
+                    <?php echo Mage::helper('udropship')->__('Value:') ?>
+                    <input id="value-<?php echo $_masterId?>-$ROW" name="value[$ROW]" value="$REMAINING_VALUE" title="<?php echo Mage::helper('udropship')->__('Declared Value') ?>" type="text" class="input-text $DYNAMIC_VALUE_CLASS" style="width:50px;" /> <?php echo $_po->getOrder()->getStoreCurrencyCode() ?>
                         <br />
                     </span>
                     <span class="$STATIC_CONTAINER_CLASS">
-                        <?php echo $_hlp->__('Weight:') ?>
+                        <?php echo Mage::helper('udropship')->__('Weight:') ?>
                         <span class="udlabel-static-weight-<?php echo $_masterId?>">$REMAINING_WEIGHT</span> LB
                     &nbsp;&nbsp;
-                        <?php echo $_hlp->__('Value:') ?>
+                        <?php echo Mage::helper('udropship')->__('Value:') ?>
                         <span class="udlabel-static-value-<?php echo $_masterId?>">$REMAINING_VALUE</span> <?php echo $_po->getOrder()->getStoreCurrencyCode() ?>
                         <br />
                     </span>
                     <span class="$USECUSTOM_WEIGHT_CONTAINER_CLASS">
-                        <input class="$USECUSTOM_WEIGHT_CHECKBOX_CLASS" type="checkbox" onclick="syncUseCustomWeight(this, <?php echo $_masterId?>)" /> <b><?php echo $this->__('Use Custom label weight/value') ?></b>
+                        <input class="$USECUSTOM_WEIGHT_CHECKBOX_CLASS" type="checkbox" onclick="syncUseCustomWeight(this, <?php echo $_masterId?>)" /> <b><?php echo Mage::helper('udropship')->__('Use Custom label weight/value') ?></b>
                         <br />
                     </span>
-                    <?php echo $_hlp->__('Length:') ?>
-                        <input id="length-<?php echo $_masterId?>" name="length[$ROW]" value="$DEFAULT_PKG_LENGTH" title="<?php echo $_hlp->__('Length') ?>" type="text" class="input-text" style="width:30px;" />
+                    <?php echo Mage::helper('udropship')->__('Length:') ?>
+                        <input id="length-<?php echo $_masterId?>" name="length[$ROW]" value="$DEFAULT_PKG_LENGTH" title="<?php echo Mage::helper('udropship')->__('Length') ?>" type="text" class="input-text" style="width:30px;" />
                         &nbsp;&nbsp;
-                        <?php echo $_hlp->__('Width:') ?>
-                        <input id="width-<?php echo $_masterId?>" name="width[$ROW]" value="$DEFAULT_PKG_WIDTH" title="<?php echo $_hlp->__('Width') ?>" type="text" class="input-text" style="width:30px;" />
+                        <?php echo Mage::helper('udropship')->__('Width:') ?>
+                        <input id="width-<?php echo $_masterId?>" name="width[$ROW]" value="$DEFAULT_PKG_WIDTH" title="<?php echo Mage::helper('udropship')->__('Width') ?>" type="text" class="input-text" style="width:30px;" />
                         &nbsp;&nbsp;
-                        <?php echo $_hlp->__('Height:') ?>
-                        <input id="height-<?php echo $_masterId?>" name="height[$ROW]" value="$DEFAULT_PKG_HEIGHT" title="<?php echo $_hlp->__('Height') ?>" type="text" class="input-text" style="width:30px;" />
+                        <?php echo Mage::helper('udropship')->__('Height:') ?>
+                        <input id="height-<?php echo $_masterId?>" name="height[$ROW]" value="$DEFAULT_PKG_HEIGHT" title="<?php echo Mage::helper('udropship')->__('Height') ?>" type="text" class="input-text" style="width:30px;" />
                 </td>
                 <td>
-                    <button type="button" class="scalable delete"><span>&nbsp;<?php echo $this->__('X') ?>&nbsp;</span></button>
+                    <button type="button" class="scalable delete"><span>&nbsp;<?php echo Mage::helper('udropship')->__('X') ?>&nbsp;</span></button>
                 </td>
             </tr>
         </thead>
         <tfoot>
             <tr>
                 <th colspan="4" class="a-left">
-                    <div class="left"><button type="button" class="scalable add" id="<?php echo $this->suffixId('addBtn')?>"><span>+ <?php echo $this->__('Add') ?></span></button></div>
+                    <div class="left"><button type="button" class="scalable add" id="<?php echo $this->suffixId('addBtn')?>"><span>+ <?php echo Mage::helper('udropship')->__('Add') ?></span></button></div>
                 </th>
             </tr>
         </tfoot>

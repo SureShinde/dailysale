@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Unirgy_SimpleUp>
-            <version>1.1.2</version>
+            <version>1.1.5</version>
             <usimpleup remote="http://download.unirgy.com/simple/client_api/version/"
                 changelog="http://unirgy.com/support/portal/announcements"/>
         </Unirgy_SimpleUp>
@@ -79,7 +79,7 @@
                      <usimpleup>
                         <title>Unirgy Installer</title>
                         <sort_order>10</sort_order>
-                        <action>usimpleupadmin/adminhtml_module</action>
+                        <action>adminhtml/usimpleupadmin_module</action>
                      </usimpleup>
                   </children>
                </tools>
@@ -116,13 +116,13 @@
    </adminhtml>
    <admin>
       <routers>
-         <usimpleupadmin>
-            <use>admin</use>
+         <adminhtml>
             <args>
-               <module>Unirgy_SimpleUp</module>
-               <frontName>usimpleupadmin</frontName>
+               <modules>
+                  <usimpleupadmin after="Mage_Adminhtml">Unirgy_SimpleUp</usimpleupadmin>
+               </modules>
             </args>
-         </usimpleupadmin>
+         </adminhtml>
       </routers>
    </admin>
 

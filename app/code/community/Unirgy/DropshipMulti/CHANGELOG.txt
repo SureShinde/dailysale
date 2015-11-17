@@ -1,3 +1,25 @@
+===== 2.4.0 =====
+  * CE 1.9.2.2 compatibility
+
+===== 2.3.1 =====
+  * Added hook for whole address is match check
+
+===== 2.3.0 =====
+  * Central translations file
+
+===== 2.2.11 =====
+  * Add vendor_sku to create po js
+
+===== 2.2.10 =====
+  * Fixed latest upgrade script to support table prefixes
+  * Fixed recently broken delete row button in admin product edit > dropship vendors tab
+
+===== 2.2.9 =====
+  * Preselect default vendor from multivendor data in case dropship vendor attribute not in that list to give better error messages
+
+===== 2.2.8 =====
+  * Added support for price comparison add-on vendor group and tier prices
+
 ===== 2.2.7 =====
   * Fixed vendor sku with custom options sku
 

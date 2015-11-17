@@ -51,13 +51,13 @@
     </global>
     <admin>
         <routers>
-            <awall_admin>
-                <use>admin</use>
-                <args>
-                    <module>AW_All</module>
-                    <frontName>awall_admin</frontName>
-                </args>
-            </awall_admin>
+            <adminhtml>
+				<args>
+					<modules>
+						<awall before="Mage_Adminhtml">AW_All_Adminhtml</awall>
+					</modules>
+				</args>
+			</adminhtml>
         </routers>
     </admin>
     <adminhtml>

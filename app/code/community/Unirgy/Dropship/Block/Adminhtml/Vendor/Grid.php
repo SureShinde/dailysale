@@ -40,7 +40,7 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Grid extends Mage_Adminhtml_Block_W
     {
         $hlp = Mage::helper('udropship');
         $this->addColumn('vendor_id', array(
-            'header'    => $hlp->__('Vendor ID'),
+            'header'    => Mage::helper('udropship')->__('Vendor ID'),
             'align'     => 'right',
             'width'     => '50px',
             'index'     => 'vendor_id',
@@ -48,18 +48,18 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Grid extends Mage_Adminhtml_Block_W
         ));
 
         $this->addColumn('vendor_name', array(
-            'header'    => $hlp->__('Vendor Name'),
+            'header'    => Mage::helper('udropship')->__('Vendor Name'),
             'index'     => 'vendor_name',
         ));
 
         $this->addColumn('email', array(
-            'header'    => $hlp->__('Email'),
+            'header'    => Mage::helper('udropship')->__('Email'),
             'index'     => 'email',
         ));
 
         if ($hlp->isModuleActive('ustockpo')) {
             $this->addColumn('distributor_id', array(
-                'header' => Mage::helper('ustockpo')->__('Distributor'),
+                'header' => Mage::helper('udropship')->__('Distributor'),
                 'index' => 'distributor_id',
                 'type' => 'options',
                 'options' => Mage::getSingleton('udropship/source')->setPath('vendors')->toOptionHash(),
@@ -67,7 +67,7 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Grid extends Mage_Adminhtml_Block_W
         }
 
         $this->addColumn('carrier_code', array(
-            'header'    => $hlp->__('Used Carrier'),
+            'header'    => Mage::helper('udropship')->__('Used Carrier'),
             'index'     => 'carrier_code',
             'type'      => 'options',
             'options'   => Mage::getSingleton('udropship/source')->setPath('carriers')->toOptionHash(),
@@ -75,7 +75,7 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Grid extends Mage_Adminhtml_Block_W
 
         if (Mage::helper('udropship')->isUdsprofileActive()) {
             $this->addColumn('shipping_profile', array(
-                'header'    => $hlp->__('Shipping Profile'),
+                'header'    => Mage::helper('udropship')->__('Shipping Profile'),
                 'index'     => 'shipping_profile',
                 'type'      => 'options',
                 'options'   => Mage::getSingleton('udsprofile/source')->setPath('profiles')->toOptionHash(),
@@ -83,7 +83,7 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Grid extends Mage_Adminhtml_Block_W
         }
 
         $this->addColumn('status', array(
-            'header'    => $hlp->__('Status'),
+            'header'    => Mage::helper('udropship')->__('Status'),
             'index'     => 'status',
             'type'      => 'options',
             'options'   => Mage::getSingleton('udropship/source')->setPath('vendor_statuses')->toOptionHash(),
@@ -91,14 +91,14 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Grid extends Mage_Adminhtml_Block_W
 
         $this->addColumn('action',
             array(
-                'header'    => Mage::helper('sales')->__('Action'),
+                'header'    => Mage::helper('udropship')->__('Action'),
                 'width'     => '50px',
                 'type'      => 'action',
                 'getter'     => 'getId',
                 'actions'   => array(
                     array(
-                        'caption' => Mage::helper('sales')->__('View'),
-                        'url'     => array('base'=>'udropshipadmin/adminhtml_vendor/edit'),
+                        'caption' => Mage::helper('udropship')->__('View'),
+                        'url'     => array('base'=>'adminhtml/udropshipadmin_vendor/edit'),
                         'field'   => 'id'
                     )
                 ),
@@ -109,8 +109,8 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Grid extends Mage_Adminhtml_Block_W
 
         Mage::dispatchEvent('udropship_adminhtml_vendor_grid_prepare_columns', array('grid'=>$this));
 
-        $this->addExportType('*/*/exportCsv', Mage::helper('adminhtml')->__('CSV'));
-        $this->addExportType('*/*/exportXml', Mage::helper('adminhtml')->__('XML'));
+        $this->addExportType('*/*/exportCsv', Mage::helper('udropship')->__('CSV'));
+        $this->addExportType('*/*/exportXml', Mage::helper('udropship')->__('XML'));
         return parent::_prepareColumns();
     }
 

@@ -32,12 +32,12 @@ class Unirgy_DropshipTierCommission_Block_Adminhtml_VendorEditTab_ComRates_Form 
         $this->setForm($form);
 
         $fieldset = $form->addFieldset('tiercom', array(
-            'legend'=>$hlp->__('Rates Definition')
+            'legend'=>Mage::helper('udropship')->__('Rates Definition')
         ));
 
         $fieldset->addField('tiercom_fallback_lookup', 'select', array(
             'name'      => 'tiercom_fallback_lookup',
-            'label'     => $hlp->__('Commission fallback lookup method'),
+            'label'     => Mage::helper('udropship')->__('Commission fallback lookup method'),
             'options'   => Mage::getSingleton('udtiercom/source')->setPath('tiercom_fallback_lookup')->toOptionHash(),
         ));
 
@@ -45,32 +45,32 @@ class Unirgy_DropshipTierCommission_Block_Adminhtml_VendorEditTab_ComRates_Form 
         
         $fieldset->addField('tiercom_rates', 'tiercom_rates', array(
             'name'      => 'tiercom_rates',
-            'label'     => $hlp->__('Rates'),
+            'label'     => Mage::helper('udropship')->__('Rates'),
         ));
 
         $fieldset->addField('tiercom_fixed_calc_type', 'select', array(
             'name'      => 'tiercom_fixed_calc_type',
-            'label'     => $hlp->__('Fixed Rates Calculation Type'),
+            'label'     => Mage::helper('udropship')->__('Fixed Rates Calculation Type'),
             'options'   => Mage::getSingleton('udtiercom/source')->setPath('tiercom_fixed_calc_type')->toOptionHash(),
         ));
 
         $fieldset->addField('commission_percent', 'text', array(
             'name'      => 'commission_percent',
-            'label'     => $hlp->__('Default Commission Percent'),
-            'after_element_html' => $hlp->__('<br />Default value: %.2F. Leave empty to use default.', Mage::getStoreConfig('udropship/tiercom/commission_percent'))
+            'label'     => Mage::helper('udropship')->__('Default Commission Percent'),
+            'after_element_html' => Mage::helper('udropship')->__('<br />Default value: %.2F. Leave empty to use default.', Mage::getStoreConfig('udropship/tiercom/commission_percent'))
         ));
 
         $fieldset->addField('transaction_fee', 'text', array(
             'name'      => 'transaction_fee',
-            'label'     => $hlp->__('Fixed Flat Rate (per po) [old transaction fee]'),
-            'after_element_html' => $hlp->__('<br />Default value: %.2F. Leave empty to use default.', Mage::getStoreConfig('udropship/tiercom/transaction_fee'))
+            'label'     => Mage::helper('udropship')->__('Fixed Flat Rate (per po) [old transaction fee]'),
+            'after_element_html' => Mage::helper('udropship')->__('<br />Default value: %.2F. Leave empty to use default.', Mage::getStoreConfig('udropship/tiercom/transaction_fee'))
         ));
 
         $fieldset->addType('tiercom_fixed_rule', Mage::getConfig()->getBlockClassName('udropship/adminhtml_vendor_helper_form_dependSelect'));
 
         $fieldset->addField('tiercom_fixed_rule', 'tiercom_fixed_rule', array(
             'name'      => 'tiercom_fixed_rule',
-            'label'     => $hlp->__('Rule for Fixed Rates'),
+            'label'     => Mage::helper('udropship')->__('Rule for Fixed Rates'),
             'options'   => Mage::getSingleton('udtiercom/source')->setPath('tiercom_fixed_rates')->toOptionHash(),
             'field_config' => array(
                 'hide_depend_fields' => array(
@@ -83,7 +83,7 @@ class Unirgy_DropshipTierCommission_Block_Adminhtml_VendorEditTab_ComRates_Form 
 
         $fieldset->addField('tiercom_fixed_rates', 'tiercom_fixed_rates', array(
             'name'      => 'tiercom_fixed_rates',
-            'label'     => $hlp->__('Rule Based Fixed Rates'),
+            'label'     => Mage::helper('udropship')->__('Rule Based Fixed Rates'),
         ));
 
         if ($vendor) {

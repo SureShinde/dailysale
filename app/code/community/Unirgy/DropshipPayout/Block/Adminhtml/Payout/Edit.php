@@ -35,7 +35,7 @@ class Unirgy_DropshipPayout_Block_Adminhtml_Payout_Edit extends Mage_Adminhtml_B
                 && $model->getPayoutStatus() != Unirgy_DropshipPayout_Model_Payout::STATUS_HOLD
             ) {
                 $this->_addButton('save_pay', array(
-                    'label'     => Mage::helper('adminhtml')->__('Save and Pay'),
+                    'label'     => Mage::helper('udropship')->__('Save and Pay'),
                     'onclick'   => "\$('pay_flag').value=1; editForm.submit();",
                     'class'     => 'save',
                 ), 1);
@@ -47,6 +47,6 @@ class Unirgy_DropshipPayout_Block_Adminhtml_Payout_Edit extends Mage_Adminhtml_B
 
     public function getHeaderText()
     {
-        return Mage::helper('udpayout')->__('Payout');
+        return Mage::helper('udropship')->__('Payout');
     }
 }
