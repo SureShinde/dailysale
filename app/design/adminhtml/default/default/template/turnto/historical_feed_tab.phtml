@@ -1,0 +1,49 @@
+<h4>Historical Feed</h4>
+<p style="width:600px">A one-time historical batch feed of past customers for populating TurnTo products in a text (tab delimited) format.  Feeds contain the information about your site's users and their activities on your site. Upload your magento generated historical feed in your TurnTo feed upload tab in the TurnTo settings area.</p>
+<br />
+<b>Press Generate to build a historical feed</b>
+
+<form id="hist_feed_form" name="hist_feed_form" method="post" action="<?php echo $this->getUrl('*/*/post') ?>">
+	<input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>" />
+	<input name="feed_type" type="hidden" value="historical" />
+	<table>
+		<?php if(count(Mage::registry('sites')) > 1) { ?>
+                <tr>
+                        <td>Scope:</td>
+                        <td><select id="scope" name="scope">
+                                <?php
+                                        $sites = Mage::registry('sites');
+                                        foreach($sites as $site) {
+                                                echo '<option value="'.$site->getId().'">'.$site->getId().': '.$site->getName().'</option>';
+                                        }
+                                ?>
+                        </td>
+                </tr>
+                <?php } ?>
+		<tr>
+			<td>From Date:</td>
+			<td>
+				<input name="start_date" id="start_date" readonly="readonly" class="input-text" type="text" />
+				<img title="Select Date" id="start_date_trig" class="v-middle" alt="" src="<?php echo $this->getSkinUrl() . '../default/images/fam_calendar.gif' ?>">
+			</td>
+		</tr>
+		<tr><td colspan="2">&nbsp;</td></tr>
+		<tr>
+			<td></td>
+			<td align="right"><input type="submit" name="submit" value="Generate" /></td>
+		</tr>
+	</table>
+</form>
+
+<script type="text/javascript">
+		//<![CDATA[
+		Calendar.setup({
+			inputField: "start_date",
+			ifFormat: "%m/%e/%Y",
+			showsTime: false,
+			button: "start_date_trig",
+			align: "Bl",
+			singleClick: true
+		});
+		//]]>
+	</script>
