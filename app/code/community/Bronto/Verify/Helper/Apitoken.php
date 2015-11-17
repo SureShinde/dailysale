@@ -7,7 +7,6 @@
  * @package   Bronto_Verify
  * @author    Adam Daniels <adam.daniels@atlanticbt.com>
  * @copyright 2013 Adam Daniels
- * @license   http://www.atlanticbt.com/ Atlantic BT
  */
 class Bronto_Verify_Helper_Apitoken
     extends Bronto_Verify_Helper_Data
@@ -124,10 +123,9 @@ class Bronto_Verify_Helper_Apitoken
     {
         try {
             $api      = $this->getApi($this->_token);
-            $tokenRow = $api->getTokenInfo();
+            $tokenRow = $api->transferApiToken()->getById($this->_token);
 
-            $access = $tokenRow->hasPermissions(7);
-
+            $access = $tokenRow->getPermissions() == 7;
             if (!$access) {
                 $this->_status = 0;
                 $this->_reason = 'Token Does Not Have Full Access';

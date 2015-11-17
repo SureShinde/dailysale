@@ -32,7 +32,7 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Statement_Edit_Tab_Form extends Mag
         $this->setForm($form);
 
         $fieldset = $form->addFieldset('statement_form', array(
-            'legend'=>$hlp->__('Statement Info')
+            'legend'=>Mage::helper('udropship')->__('Statement Info')
         ));
 
         $fieldset->addField('pay_flag', 'hidden', array(
@@ -45,65 +45,65 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Statement_Edit_Tab_Form extends Mag
         
         $fieldset->addField('vendor_id', 'note', array(
             'name'      => 'vendor_id',
-            'label'     => $hlp->__('Vendor'),
+            'label'     => Mage::helper('udropship')->__('Vendor'),
             'text'      => Mage::getSingleton('udropship/source')->setPath('vendors')->getOptionLabel($statement->getVendorId()),
         ));
         
         $fieldset->addField('statement_id', 'note', array(
             'name'      => 'statement_id',
-            'label'     => $hlp->__('Statement ID'),
+            'label'     => Mage::helper('udropship')->__('Statement ID'),
             'text'      => $statement->getStatementId(),
         ));
         
         $fieldset->addField('po_type', 'select', array(
             'name'      => 'po_type',
-            'label'     => $hlp->__('Po Type'),
+            'label'     => Mage::helper('udropship')->__('Po Type'),
             'disabled'  => true,
             'options'   => Mage::getSingleton('udropship/source')->setPath('statement_po_type')->toOptionHash(),
         ));
 
         $fieldset->addField('total_orders', 'note', array(
             'name'      => 'total_orders',
-            'label'     => $hlp->__('Number of Orders'),
+            'label'     => Mage::helper('udropship')->__('Number of Orders'),
             'text'      => $statement->getData('total_orders')
         ));
 
         if (!$hlp->isStatementAsInvoice()) {
             $fieldset->addField('total_payout', 'note', array(
                 'name'      => 'total_payout',
-                'label'     => $hlp->__('Total Payout'),
+                'label'     => Mage::helper('udropship')->__('Total Payout'),
                 'text'      => Mage::helper('core')->formatPrice($statement->getData('total_payout'))
             ));
 
             if (Mage::helper('udropship')->isUdpayoutActive()) {
                 $fieldset->addField('total_paid', 'note', array(
                     'name'      => 'total_paid',
-                    'label'     => $hlp->__('Total Paid'),
+                    'label'     => Mage::helper('udropship')->__('Total Paid'),
                     'text'      => Mage::helper('core')->formatPrice($statement->getData('total_paid'))
                 ));
 
                 $fieldset->addField('total_due', 'note', array(
                     'name'      => 'total_due',
-                    'label'     => $hlp->__('Total Due'),
+                    'label'     => Mage::helper('udropship')->__('Total Due'),
                     'text'      => Mage::helper('core')->formatPrice($statement->getData('total_due'))
                 ));
             }
         } else {
             $fieldset->addField('total_invoice', 'note', array(
                 'name'      => 'total_invoice',
-                'label'     => $hlp->__('Total Invoice'),
+                'label'     => Mage::helper('udropship')->__('Total Invoice'),
                 'text'      => Mage::helper('core')->formatPrice($statement->getData('total_invoice'))
             ));
         }
         
         $fieldset->addField('notes', 'textarea', array(
             'name'      => 'notes',
-            'label'     => $hlp->__('Notes'),
+            'label'     => Mage::helper('udropship')->__('Notes'),
         ));
         
         $fieldset->addField('adjustment', 'text', array(
             'name'      => 'adjustment',
-            'label'     => $hlp->__('Adjustment'),
+            'label'     => Mage::helper('udropship')->__('Adjustment'),
             'value_filter' => new Varien_Filter_Sprintf('%s', 2),
         ))
         ->setRenderer(

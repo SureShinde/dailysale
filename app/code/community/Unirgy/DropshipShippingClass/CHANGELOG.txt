@@ -1,3 +1,13 @@
+===== 2.4.0 =====
+  * CE 1.9.2.2 compatibility
+
+===== 2.1.0 =====
+  * Central translations file
+
+===== 2.0.0 =====
+  * Major release
+  * Added ACL missing for menu items
+
 ===== 1.1.4 =====
   * Added supported logic for tiership v2 rates
 

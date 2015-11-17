@@ -56,7 +56,7 @@ class Magestore_Onestepcheckout_Block_Adminhtml_Country extends Mage_Core_Block_
 	
 	public function actionImport()
 	{
-		$link = Mage::getSingleton('adminhtml/url')->getUrl('onestepcheckoutadmin/adminhtml_country/importCountryip',array(
+		$link = Mage::getSingleton('adminhtml/url')->getUrl('adminhtml/country/importCountryip',array(
 			'website'	=> $this->getWebsiteId(),
 			'countryid'	=> $this->getCountryid()
 		));

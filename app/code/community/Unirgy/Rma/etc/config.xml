@@ -3,7 +3,7 @@
 <config>
     <modules>
         <Unirgy_Rma>
-            <version>1.2.5</version>
+            <version>2.4.2</version>
         </Unirgy_Rma>
     </modules>
 
@@ -292,13 +292,13 @@
 
     <admin>
         <routers>
-            <urmaadmin>
-                <use>admin</use>
+            <adminhtml>
                 <args>
-                    <module>Unirgy_Rma_Adminhtml</module>
-                    <frontName>urmaadmin</frontName>
+                    <modules>
+                        <urmaadmin after="Mage_Adminhtml">Unirgy_Rma</urmaadmin>
+                    </modules>
                 </args>
-            </urmaadmin>
+            </adminhtml>
         </routers>
     </admin>
 
@@ -315,9 +315,9 @@
                 <children>
                     <udropship>
                         <children>
-                            <urma translate="title" module="urma">
+                            <urma translate="title" module="udropship">
                                 <title>Returns</title>
-                                <action>urmaadmin/rma</action>
+                                <action>adminhtml/urmaadmin_rma</action>
                                 <sort_order>500</sort_order>
                             </urma>
                         </children>
@@ -335,14 +335,16 @@
                                     <children>
                                         <actions>
                                             <children>
-                                                <urma module="urma" translate="title"><title>Returns</title></urma>
+                                                <urma translate="title" module="udropship">
+                                                    <title>Returns</title>
+                                                </urma>
                                             </children>
                                         </actions>
                                     </children>
                                 </order>
                                 <udropship>
                                     <children>
-                                        <urma>
+                                        <urma translate="title" module="udropship">
                                             <title>Returns</title>
                                             <sort_order>55</sort_order>
                                         </urma>
@@ -354,7 +356,7 @@
                             <children>
                                 <config>
                                     <children>
-                                        <urma>
+                                        <urma translate="title" module="udropship">
                                             <title>uReturns</title>
                                             <sort_order>60</sort_order>
                                         </urma>
@@ -392,7 +394,7 @@
             <message>
                 <customer_success><![CDATA[Return(s) successfully created]]></customer_success>
                 <customer_no_items><![CDATA[No items selected to return]]></customer_no_items>
-                <new_instructions_html><![CDATA[Please select items you want to return by changing qty box to non-zero value in respective rows and items conditions. Also select reason to return. And leave comments if necessary. Once submit we will send you furtehr instructions.]]></new_instructions_html>
+                <new_instructions_html><![CDATA[Please select items you want to return by changing qty box to non-zero value in respective rows and items conditions. Also select reason to return. And leave comments if necessary. Once submit we will send you further instructions.]]></new_instructions_html>
             </message>
             <general>
                 <new_rma_vendor_email_template>urma_general_new_rma_vendor_email_template</new_rma_vendor_email_template>
@@ -425,7 +427,7 @@ Comment: {{comment}}
                 <fedex_pdf_label_height>6</fedex_pdf_label_height>
             </fedex>
             <endicia>
-                <endicia_api_url>https://www.envmgr.com/LabelService/EwsLabelService.asmx</endicia_api_url>
+                <endicia_api_url>https://elstestserver.endicia.com/LabelService/EwsLabelService.asmx</endicia_api_url>
                 <endicia_pdf_label_width>4</endicia_pdf_label_width>
                 <endicia_pdf_label_height>6</endicia_pdf_label_height>
                 <endicia_stealth>1</endicia_stealth>

@@ -95,10 +95,8 @@ class Bronto_Newsletter_Model_Observer
         try {
             // Get e-mail address we are working with
             $email = $observer->getEvent()->getOrder()->getData('customer_email');
-
             if (empty($email)) {
                 $this->_helper->writeError('No customer email was provided.');
-
                 return false;
             }
 
@@ -106,16 +104,16 @@ class Bronto_Newsletter_Model_Observer
             $subscriber = Mage::getModel('newsletter/subscriber')->loadByEmail($email);
             // Determine action
             switch ($isSubscribed) {
-                case Bronto_Api_Contact::STATUS_ACTIVE:
-                case Bronto_Api_Contact::STATUS_ONBOARDING:
+                case Bronto_Api_Model_Contact::STATUS_ACTIVE:
+                case Bronto_Api_Model_Contact::STATUS_ONBOARDING:
                     if ($subscriber->getStatus() != Mage_Newsletter_Model_Subscriber::STATUS_SUBSCRIBED) {
                         $subscriber->subscribe($email);
                     }
                     break;
-                case Bronto_Api_Contact::STATUS_UNSUBSCRIBED:
+                case Bronto_Api_Model_Contact::STATUS_UNSUBSCRIBED:
                     return $subscriber->unsubscribe();
                     break;
-                case Bronto_Api_Contact::STATUS_TRANSACTIONAL:
+                case Bronto_Api_Model_Contact::STATUS_TRANSACTIONAL:
                 default:
                     // No-op
                     break;
@@ -162,14 +160,13 @@ class Bronto_Newsletter_Model_Observer
             ->setStatus(Mage_Newsletter_Model_Subscriber::STATUS_NOT_ACTIVE)
             ->save();
 
-        if ($contact->status == Bronto_Api_Contact::STATUS_UNSUBSCRIBED) {
+        if ($contact->status == Bronto_Api_Model_Contact::STATUS_UNSUBSCRIBED) {
             $subscriber->setStatus(Mage_Newsletter_Model_Subscriber::STATUS_UNSUBSCRIBED);
         } else {
             $subscriber->setStatus(Mage_Newsletter_Model_Subscriber::STATUS_NOT_ACTIVE);
         }
 
         $subscriber->save();
-
         return $subscriber;
     }
 
@@ -287,8 +284,6 @@ class Bronto_Newsletter_Model_Observer
 
         $helper = Mage::helper('bronto_newsletter/contact');
 
-        $lists = $helper->getListIds('store', $storeId);
-
         // Get Subscriber Queue for store
         /* var $subscribers Bronto_Newsletter_Model_Mysql4_Queue_Collection */
         $subscribers = Mage::getModel('bronto_newsletter/queue')
@@ -300,18 +295,11 @@ class Bronto_Newsletter_Model_Observer
             ->setPageSize($limit)
             ->getItems();
 
-        $actualLists = array();
-        foreach ($lists as $listId) {
-            if ($list = $helper->getListData($listId, 'store', $storeId)) {
-                $actualLists[$listId] = $list->label;
-            } else {
-                $this->_helper->writeError("The list ({$listId}) was not found. This may indicate that is does not exist. Try re-saving the config.");
-            }
-        }
-
+        $contactOps = $helper->getApi(null, 'store', $storeId)->transferContact();
+        $actualLists = $helper->getActualLists('store', $storeId);
         foreach ($subscribers as $subscriber) {
             try {
-                /* @var $contact Bronto_Api_Contact_Row */
+                /* @var $contact Bronto_Api_Model_Contact */
                 $contact = $helper->getContactByEmail($subscriber->getSubscriberEmail(), null, $storeId);
 
                 // If Contact returns false, handle it.
@@ -322,30 +310,30 @@ class Bronto_Newsletter_Model_Observer
                 }
 
                 // If Bronto Status is 'Bounced', mark suppressed, show error and continue foreach
-                if ($contact->status == Bronto_Api_Contact::STATUS_BOUNCE) {
+                if ($contact->status == Bronto_Api_Model_Contact::STATUS_BOUNCE) {
                     $bounceMessage = "Subscriber {$contact->email} Has Been Bounced in Bronto";
                     $subscriber->setBrontoSuppressed($bounceMessage)->save();
                     Mage::throwException($bounceMessage);
                 }
 
                 // Get List Details
-                if ($subscriber->getStatus() == Bronto_Api_Contact::STATUS_ACTIVE || ($helper->isRemoveUnsubs('store', $storeId) && $subscriber->getStatus() == Bronto_Api_Contact::STATUS_UNSUBSCRIBED)) {
+                if ($subscriber->getStatus() == Bronto_Api_Model_Contact::STATUS_ACTIVE || ($helper->isRemoveUnsubs('store', $storeId) && $subscriber->getStatus() == Bronto_Api_Model_Contact::STATUS_UNSUBSCRIBED)) {
                     foreach ($actualLists as $listId => $listName) {
-                        if ($subscriber->getStatus() == Bronto_Api_Contact::STATUS_ACTIVE) {
+                        if ($subscriber->getStatus() == Bronto_Api_Model_Contact::STATUS_ACTIVE) {
                             $helper->writeInfo("  Adding Contact to list: {$listName}");
-                            $contact->addToList($listId);
+                            $contact->addList($listId);
                         } else {
                             $helper->writeInfo("  Removing Contact from list: {$listName}");
-                            $contact->removeFromList($listId);
+                            $contact->removeList($listId);
                         }
                     }
                 }
 
                 if ($helper->getUpdateStatus('store', $storeId)) {
                     switch ($subscriber->getStatus()) {
-                        case Bronto_Api_Contact::STATUS_UNCONFIRMED:
-                        case Bronto_Api_Contact::STATUS_TRANSACTIONAL:
-                            if ($contact->id && $contact->status != Bronto_Api_Contact::STATUS_UNSUBSCRIBED) {
+                        case Bronto_Api_Model_Contact::STATUS_UNCONFIRMED:
+                        case Bronto_Api_Model_Contact::STATUS_TRANSACTIONAL:
+                            if ($contact->id && $contact->status != Bronto_Api_Model_Contact::STATUS_UNSUBSCRIBED) {
                                 $helper->writeInfo(
                                     "  Keeping Contact ({$contact->email}) status as: {$contact->status}"
                                 );
@@ -355,8 +343,8 @@ class Bronto_Newsletter_Model_Observer
                             $helper->writeInfo("  Setting Contact ({$contact->email}) status to: {$contact->status}");
                             break;
 
-                        case Bronto_Api_Contact::STATUS_ACTIVE:
-                            if ($contact->status == Bronto_Api_Contact::STATUS_UNSUBSCRIBED &&
+                        case Bronto_Api_Model_Contact::STATUS_ACTIVE:
+                            if ($contact->status == Bronto_Api_Model_Contact::STATUS_UNSUBSCRIBED &&
                                 $subscriber->getImported() == 2
                             ) {
                                 $helper->writeInfo(
@@ -376,12 +364,13 @@ class Bronto_Newsletter_Model_Observer
                 }
 
                 // Don't add contacts to be unsubscribed
-                if (!$contact->id && $contact->status == Bronto_Api_Contact::STATUS_UNSUBSCRIBED) {
+                if (!$contact->hasId() && $contact->getStatus() == Bronto_Api_Model_Contact::STATUS_UNSUBSCRIBED) {
                     $subscriber->setImported(1)->save();
                     $result['success']++;
                     continue;
                 }
-                $contact->save();
+                // Force an add or update on the individual contact
+                $contactOps->save($contact, true);
                 $subscriber->setImported(1)->save();
 
                 $result['success']++;
@@ -389,7 +378,7 @@ class Bronto_Newsletter_Model_Observer
                 // 303 = invalid email address
                 // 315 = on suppression list
                 // 317 = email over 100 characters in length
-                if (in_array($e->getCode(), array(303, 315, 317))) {
+                if (in_array($e->getCode(), array(303, 305, 314, 315, 317))) {
                     $subscriber->setBrontoSuppressed($e->getMessage());
                 }
 

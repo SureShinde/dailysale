@@ -43,6 +43,7 @@ class Aftership_Track_Model_Observer {
         ob_end_clean();
     }
 
+
     /** For vendor
      * @param Varien_Event_Observer $observer
      */
@@ -105,7 +106,7 @@ class Aftership_Track_Model_Observer {
             $order = Mage::getModel('sales/order')->load($magento_track->getOrderId(), 'increment_id');
             $website_config = $this->_getWebsiteConfig($order);
 
-            if ($website_config->status) {
+            if ($website_config->cron_job_enable && $website_config->status) {
                 $tracks = Mage::getModel('track/track')
                     ->getCollection()
                     ->addFieldToFilter('tracking_number', array('eq' => $this->_getTrackNo($magento_track)))
@@ -154,27 +155,6 @@ class Aftership_Track_Model_Observer {
     /**
      * @param Varien_Event_Observer $observer
      */
-    public function adminSystemConfigChangedSectionAftership(Varien_Event_Observer $observer)
-    {
-        $post_data = Mage::app()->getRequest()->getPost();
-
-        if (
-            !isset($post_data['groups']['messages']['fields']['api_key']['inherit']) ||
-            $post_data['groups']['messages']['fields']['api_key']['inherit'] != 1
-        ) {
-            $api_key = $post_data['groups']['messages']['fields']['api_key']['value'];
-
-            $http_status = $this->_callApiAuthenticate($api_key);
-
-            if ($http_status == '401') {
-                Mage::throwException(Mage::helper('adminhtml')->__('Incorrect API Key'));
-            }
-            else if ($http_status != '200') {
-                Mage::throwException(Mage::helper('adminhtml')->__('Connection error, please try again later.'));
-            }
-        }
-    }
-
 
     /**
      * @param Mage_Sales_Model_Order_Shipment_Track $magento_track
@@ -218,6 +198,10 @@ class Aftership_Track_Model_Observer {
      * @param Aftership_Track_Model_Track $track
      * @return bool|mixed
      */
+
+	/**
+	 * Cron to sync trackings
+	 */
     private function _sendTrack(Aftership_Track_Model_Track $track) {
         if ($track->getPosted() != self::POSTED_NOT_YET) {
             return false;
@@ -276,6 +260,96 @@ class Aftership_Track_Model_Observer {
         return $http_status;
     }
 
+
+    /**
+	 * @param Varien_Event_Observer $observer
+	 */
+	public function adminSystemConfigChangedSectionAftership(Varien_Event_Observer $observer)
+	{
+		$post_data = Mage::app()->getRequest()->getPost();
+
+		if (
+			!isset($post_data['groups']['messages']['fields']['api_key']['inherit']) ||
+			$post_data['groups']['messages']['fields']['api_key']['inherit'] != 1
+		) {
+			$api_key = $post_data['groups']['messages']['fields']['api_key']['value'];
+
+			$http_status = $this->_callApiAuthenticate($api_key);
+
+			if ($http_status == '401') {
+				Mage::throwException(Mage::helper('adminhtml')->__('Incorrect API Key'));
+			}
+			else if ($http_status != '200') {
+				Mage::throwException(Mage::helper('adminhtml')->__('Connection error, please try again later.'));
+			}
+		}
+	}
+
+
+	/**
+	 * @param Mage_Sales_Model_Order_Shipment_Track $magento_track
+	 * @return mixed
+	 */
+
+	/**
+	 * @param Aftership_Track_Model_Track $track
+	 * @return bool|mixed
+	 */
+
+	/**
+	 * Call API to create tracking
+	 * @param $api_key
+	 * @param $tracking_number
+	 * @param $carrier_code (NOT USING CURRENTLY)
+	 * @param $country_id
+	 * @param $telephone
+	 * @param $email
+	 * @param $title
+	 * @param $order_id
+	 * @param $customer_name
+	 * @return mixed
+	 */
+
+    /**
+	 * Call API to authenticate
+	 * @param $api_key
+	 * @return HTTP status code
+	 */
+
+
+	/**
+	 * @param Mage_Sales_Model_Order $order
+	 * @return mixed
+	 */
+    private function _getWebsiteConfig(Mage_Sales_Model_Order $order) {
+        if (!isset($this->_configs[$order->getStore()->getWebsiteId()])) {
+            $config = Mage::app()->getWebsite($order->getStore()->getWebsiteId())->getConfig('aftership_options');
+            // object conversion to avoid config element object for easy comparing
+            $this->_configs[$order->getStore()->getWebsiteId()] = (object)((array)$config['messages']);
+        }
+
+        return $this->_configs[$order->getStore()->getWebsiteId()];
+    }
+
+	/**
+	 * @param $magento_track
+	 * @return string
+	 */
+    private function _getTrackNo($magento_track) {
+        $track_data = $magento_track->getData();
+
+        if (strlen(trim($track_data['track_number'])) > 0) {
+            //1.6.2.0 or later
+            $track_no = trim($track_data['track_number']);
+        } else {
+            //1.5.1.0
+            $track_no = trim($track_data['number']);
+        }
+
+        return $track_no;
+    }
+
+
     /**
      * Call API to create tracking
      * @param $api_key
@@ -290,15 +364,15 @@ class Aftership_Track_Model_Observer {
      * @return mixed
      */
     private function _callApiCreateTracking($api_key, $tracking_number, $carrier_code, $country_id, $telephone, $email, $title, $order_id, $customer_name) {
-        $url_params = array('tracking'	=> array(
-            'tracking_number'	        => $tracking_number,
+        $url_params = array('tracking'  => array(
+            'tracking_number'           => $tracking_number,
             'destination_country_iso3'  => $country_id,
-            'smses'				        => $telephone,
-            'emails'			        => $email,
-            'title'				        => $title,
-            'order_id'			        => $order_id,
-            'customer_name'		        => $customer_name,
-            'source'			        => 'magento'
+            'smses'                     => $telephone,
+            'emails'                    => $email,
+            'title'                     => $title,
+            'order_id'                  => $order_id,
+            'customer_name'             => $customer_name,
+            'source'                    => 'magento'
         ));
 
         $json_params = json_encode($url_params);
@@ -328,7 +402,7 @@ class Aftership_Track_Model_Observer {
         $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
-        return $response;
+        return $http_status;
     }
 
     /**
@@ -367,33 +441,12 @@ class Aftership_Track_Model_Observer {
      * @param Mage_Sales_Model_Order $order
      * @return mixed
      */
-    private function _getWebsiteConfig(Mage_Sales_Model_Order $order) {
-        if (!isset($this->_configs[$order->getStore()->getWebsiteId()])) {
-            $config = Mage::app()->getWebsite($order->getStore()->getWebsiteId())->getConfig('aftership_options');
-            // object conversion to avoid config element object for easy comparing
-            $this->_configs[$order->getStore()->getWebsiteId()] = (object)((array)$config['messages']);
-        }
 
-        return $this->_configs[$order->getStore()->getWebsiteId()];
-    }
 
     /**
      * @param $magento_track
      * @return string
      */
-    private function _getTrackNo($magento_track) {
-        $track_data = $magento_track->getData();
-
-        if (strlen(trim($track_data['track_number'])) > 0) {
-            //1.6.2.0 or later
-            $track_no = trim($track_data['track_number']);
-        } else {
-            //1.5.1.0
-            $track_no = trim($track_data['number']);
-        }
-
-        return $track_no;
-    }
 
     public function notificationMail(){
 

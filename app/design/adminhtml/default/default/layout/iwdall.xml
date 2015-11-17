@@ -4,7 +4,7 @@
 	<default>
 	
 		<reference name="head">
-			<!--<action method="addJs"><script>iwd/all/jquery-1.10.2.min.js</script></action>-->
+			<action method="addJs"><script>iwd/all/jquery-1.10.2.min.js</script></action>
 			<action method="addJs"><script>iwd/all/bootstrap.min.js</script></action>
 			<action method="addJs"><script>iwd/all/adminhtml/notification.js</script></action>
 			<action method="addCss"><name>iwd/all/iwdall.css</name></action>
@@ -17,12 +17,12 @@
         
 	</default>
 	
-	 <iwdall_adminhtml_support_index>
+	 <adminhtml_support_index>
         <update handle="editor"/>
         <reference name="content">
             <block type="iwdall/adminhtml_support_edit" after="-" name="supportform"/>
         </reference>
-    </iwdall_adminhtml_support_index>
+    </adminhtml_support_index>
 	
 	<adminhtml_system_config_edit>
         <reference name="content">

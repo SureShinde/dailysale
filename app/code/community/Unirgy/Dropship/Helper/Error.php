@@ -148,7 +148,7 @@ class Unirgy_Dropship_Helper_Error extends Mage_Core_Helper_Abstract
                 'vendor_name'   => $vendor->getVendorName(),
                 'order_id'      => $order->getIncrementId(),
                 'shipment_id'   => $shipment->getIncrementId(),
-                'vendor_url'    => $ahlp->getUrl('udropship/adminhtml_vendor/edit', array(
+                'vendor_url'    => $ahlp->getUrl('adminhtml/udropshipadmin_vendor/edit', array(
                     'id'        => $vendor->getId()
                 )),
                 'order_url'     => $ahlp->getUrl('adminhtml/sales_order/view', array(
@@ -162,7 +162,7 @@ class Unirgy_Dropship_Helper_Error extends Mage_Core_Helper_Abstract
             );
             if (Mage::helper('udropship')->isUdpoActive() && ($po = Mage::helper('udpo')->getShipmentPo($shipment))) {
                 $data['po_id'] = $po->getIncrementId();
-                $data['po_url'] = $ahlp->getUrl('udpoadmin/order_po/view', array(
+                $data['po_url'] = $ahlp->getUrl('adminhtml/udpoadmin_order_po/view', array(
                     'udpo_id'  => $po->getId(),
                     'order_id' => $order->getId(),
                 ));

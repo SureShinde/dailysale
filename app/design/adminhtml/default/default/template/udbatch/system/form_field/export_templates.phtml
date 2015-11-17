@@ -24,9 +24,9 @@ $fValue = $_element->getValue();
         </tr>
         <tr id="<?php echo $this->suffixId('rowTpl')?>" style="display:none">
             <td>
-                <label><?php echo $this->__('Title')?></label><br />
+                <label><?php echo Mage::helper('udropship')->__('Title')?></label><br />
                 <input type="text" class="input-text" name="<?php echo $this->getFieldName()?>[$ROW][title]" value="$TITLE" style="width:100px" />
-                <label><?php echo $this->__('Sort Order')?></label><br />
+                <label><?php echo Mage::helper('udropship')->__('Sort Order')?></label><br />
                 <input type="text" class="input-text" name="<?php echo $this->getFieldName()?>[$ROW][sort_order]" value="$SORT_ORDER" style="width:80px" />
             </td>
             <td>
@@ -36,30 +36,30 @@ $fValue = $_element->getValue();
                 <textarea name="<?php echo $this->getFieldName()?>[$ROW][header]" style="width:200px">$HEADER</textarea>
             </td>
             <td>
-                <label><?php echo $this->__('Use Item Separate Template')?></label><br />
+                <label><?php echo Mage::helper('udropship')->__('Use Item Separate Template')?></label><br />
                 <select name="<?php echo $this->getFieldName()?>[$ROW][use_item_template]" style="width:100px">
-                    <option alt="use_item_template" value="0"><?php echo $this->__('No')?></option>
-                    <option alt="use_item_template" value="1"><?php echo $this->__('Yes')?></option>
+                    <option alt="use_item_template" value="0"><?php echo Mage::helper('udropship')->__('No')?></option>
+                    <option alt="use_item_template" value="1"><?php echo Mage::helper('udropship')->__('Yes')?></option>
                 </select>
                 <br />
-                <label><?php echo $this->__('Item Separate Template')?></label><br />
+                <label><?php echo Mage::helper('udropship')->__('Item Separate Template')?></label><br />
                 <textarea name="<?php echo $this->getFieldName()?>[$ROW][item_template]" style="width:200px">$ITEM_TEMPLATE</textarea>
                 <br />
-                <label><?php echo $this->__('Footer Separate Template')?></label><br />
+                <label><?php echo Mage::helper('udropship')->__('Footer Separate Template')?></label><br />
                 <textarea name="<?php echo $this->getFieldName()?>[$ROW][footer_template]" style="width:200px">$FOOTER_TEMPLATE</textarea>
             </td>
             <td>
                 <textarea name="<?php echo $this->getFieldName()?>[$ROW][totals_template]" style="width:200px">$TOTALS_TEMPLATE</textarea>
             </td>
             <td>
-                <button type="button" class="scalable delete delete-fieldset"><span><?php echo $this->__('Remove') ?></span></button>
+                <button type="button" class="scalable delete delete-fieldset"><span><?php echo Mage::helper('udropship')->__('Remove') ?></span></button>
             </td>
         </tr>
         </thead>
         <tfoot>
         <tr>
             <th colspan="6" class="a-left">
-                <div class="left"><button type="button" class="scalable add" id="<?php echo $this->suffixId('addBtn')?>"><span>+ <?php echo $this->__('Add Template') ?></span></button></div>
+                <div class="left"><button type="button" class="scalable add" id="<?php echo $this->suffixId('addBtn')?>"><span>+ <?php echo Mage::helper('udropship')->__('Add Template') ?></span></button></div>
             </th>
         </tr>
         </tfoot>

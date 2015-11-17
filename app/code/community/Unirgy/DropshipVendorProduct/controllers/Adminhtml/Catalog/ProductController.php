@@ -6,8 +6,8 @@ class Unirgy_DropshipVendorProduct_Adminhtml_Catalog_ProductController extends M
 {
     protected function _initProduct()
     {
-        $this->_title($this->__('Catalog'))
-             ->_title($this->__('Manage Products'));
+        $this->_title(Mage::helper('udropship')->__('Catalog'))
+             ->_title(Mage::helper('udropship')->__('Manage Products'));
 
         $productId  = (int) $this->getRequest()->getParam('id');
         $product    = Mage::getModel('udprod/product')

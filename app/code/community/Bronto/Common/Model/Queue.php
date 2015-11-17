@@ -10,12 +10,7 @@ class Bronto_Common_Model_Queue extends Mage_Core_Model_Abstract
     protected $_api;
 
     /**
-     * @var Bronto_Api_Delivery_Object
-     */
-    protected $_deliveryObject;
-
-    /**
-     * @var array Bronto_Api_Contact_Row
+     * @var array Bronto_Api_Model_Contact
      */
     protected $_contacts;
 
@@ -23,6 +18,11 @@ class Bronto_Common_Model_Queue extends Mage_Core_Model_Abstract
      * @var Bronto_Api_Message_Row
      */
     protected $_message;
+
+    /**
+     * @var Bronto_Api_Operation_Delivery
+     */
+    protected $_deliveryObject;
 
     /**
      * @var array
@@ -83,17 +83,12 @@ class Bronto_Common_Model_Queue extends Mage_Core_Model_Abstract
     }
 
     /**
-     * Gets the delivery object for this delivery
-     *
-     * @return Bronto_Api_Delivery_Object
+     * @return Bronto_Api_Operation_Delivery
      */
-    protected function _deliveryObject()
+    public function getDeliveryObject()
     {
         if (is_null($this->_deliveryObject)) {
-            $this->_deliveryObject = Mage::getModel('bronto_common/delivery', array(
-                'api' => $this->_api(),
-                'email_class' => $this->getEmailClass()
-            ));
+            $this->_deliveryObject = $this->_api()->transferDelivery();
         }
         return $this->_deliveryObject;
     }
@@ -173,14 +168,15 @@ class Bronto_Common_Model_Queue extends Mage_Core_Model_Abstract
     }
 
     /**
-     * Creates a Bronto_Api_Delivery_Row from internals
+     * Creates a Bronto_Api_Model_Delivery from internals
      *
      * @param array $additionalFields
-     * @return Bronto_Api_Delivery_Row
+     * @return Bronto_Api_Model_Delivery
      */
     public function prepareDelivery($additionalFields = array())
     {
-        $delivery = $this->_deliveryObject()->createRow();
+        $delivery = $this->getDeliveryObject()->createObject()
+            ->withEmailClass($this->getEmailClass());
         $deliveryData = $this->getUnserializedEmailData()->getDelivery();
         foreach ($deliveryData as $field => $value) {
             if ($field == 'fields' && !empty($additionalFields)) {

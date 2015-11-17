@@ -70,15 +70,4 @@
             </usps_address_verification>            
         </addressverification>
     </default>
-    <admin>
-        <routers>
-            <addressverification>
-                <use>admin</use>            
-                <args>
-                    <module>IWD_AddressVerification</module>
-                    <frontName>addressverification</frontName>
-                </args>
-            </addressverification>
-        </routers>
-    </admin>    
 </config>

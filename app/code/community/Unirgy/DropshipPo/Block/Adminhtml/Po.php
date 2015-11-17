@@ -22,7 +22,7 @@ class Unirgy_DropshipPo_Block_Adminhtml_Po extends Mage_Adminhtml_Block_Widget_G
     public function __construct()
     {
         $this->_controller = 'adminhtml_po';
-        $this->_headerText = Mage::helper('udpo')->__('Purchase Orders');
+        $this->_headerText = Mage::helper('udropship')->__('Purchase Orders');
         parent::__construct();
         $this->_removeButton('add');
     }

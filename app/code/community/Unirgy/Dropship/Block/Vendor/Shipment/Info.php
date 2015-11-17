@@ -40,6 +40,7 @@ class Unirgy_Dropship_Block_Vendor_Shipment_Info extends Mage_Sales_Block_Items_
         if (!$this->hasData('shipment')) {
             $id = (int)$this->getRequest()->getParam('id');
             $shipment = Mage::getModel('sales/order_shipment')->load($id);
+            Mage::register('current_order', $shipment->getOrder());
             $this->setData('shipment', $shipment);
             Mage::helper('udropship')->assignVendorSkus($shipment);
             Mage::helper('udropship/item')->hideVendorIdOption($shipment);
@@ -118,8 +119,8 @@ class Unirgy_Dropship_Block_Vendor_Shipment_Info extends Mage_Sales_Block_Items_
         $carrierInstances = Mage::getSingleton('shipping/config')->getAllCarriers(
             $this->getShipment()->getStoreId()
         );
-        $carriers[''] = Mage::helper('sales')->__('* Use PO carrier *');
-        $carriers['custom'] = Mage::helper('sales')->__('Custom Value');
+        $carriers[''] = Mage::helper('udropship')->__('* Use PO carrier *');
+        $carriers['custom'] = Mage::helper('udropship')->__('Custom Value');
         foreach ($carrierInstances as $code => $carrier) {
             if ($carrier->isTrackingAvailable()) {
                 $carriers[$code] = $carrier->getConfigData('title');
@@ -134,7 +135,7 @@ class Unirgy_Dropship_Block_Vendor_Shipment_Info extends Mage_Sales_Block_Items_
             return $carrier->getConfigData('title');
         }
         else {
-            return Mage::helper('sales')->__('Custom Value');
+            return Mage::helper('udropship')->__('Custom Value');
         }
         return false;
     }

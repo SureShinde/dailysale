@@ -23,7 +23,7 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Helper_Form_Wysiwyg extends Varien_
         if ($this->isWysiwygAllowed()) {
             $html .= Mage::getSingleton('core/layout')
                 ->createBlock('adminhtml/widget_button', '', array(
-                    'label'   => Mage::helper('catalog')->__('WYSIWYG Editor'),
+                    'label'   => Mage::helper('udropship')->__('WYSIWYG Editor'),
                     'type'    => 'button',
                     'disabled' => false,
                     'class' => '',

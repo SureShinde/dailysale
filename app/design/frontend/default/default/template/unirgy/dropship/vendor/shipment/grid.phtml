@@ -36,32 +36,32 @@ $_dateFormat = Varien_Date::convertZendToStrFtime(Mage::app()->getLocale()->getD
         <div class="col-1">
             <ul class="form-list">
                 <li>
-                    <label for="filter-order_id-from"><?php echo $_hlp->__('Order ID') ?></label><br/>
-                    <input id="filter-order_id-from" name="filter_order_id_from" title="<?php echo $_hlp->__('From Order ID') ?>" type="text" class="input-text" style="width:80px;" value="<?php echo $this->getRequest()->getParam('filter_order_id_from') ?>" /> -
-                    <input id="filter-order_id-to" name="filter_order_id_to" title="<?php echo $_hlp->__('To Order ID') ?>" type="text" class="input-text" style="width:80px;" value="<?php echo $this->getRequest()->getParam('filter_order_id_to') ?>" />
+                    <label for="filter-order_id-from"><?php echo Mage::helper('udropship')->__('Order ID') ?></label><br/>
+                    <input id="filter-order_id-from" name="filter_order_id_from" title="<?php echo Mage::helper('udropship')->__('From Order ID') ?>" type="text" class="input-text" style="width:80px;" value="<?php echo $this->getRequest()->getParam('filter_order_id_from') ?>" /> -
+                    <input id="filter-order_id-to" name="filter_order_id_to" title="<?php echo Mage::helper('udropship')->__('To Order ID') ?>" type="text" class="input-text" style="width:80px;" value="<?php echo $this->getRequest()->getParam('filter_order_id_to') ?>" />
                 </li>
                 <li>
-                    <label for="filter-order_date-from"><?php echo $_hlp->__('Order Date') ?></label><br/>
-                    <input id="filter-order_date-from" name="filter_order_date_from" title="<?php echo $_hlp->__('From Order Date') ?>" type="text" class="input-text" style="width:80px;" value="<?php echo $this->getRequest()->getParam('filter_order_date_from') ?>" /> -
-                    <input id="filter-order_date-to" name="filter_order_date_to" title="<?php echo $_hlp->__('To Order Date') ?>" type="text" class="input-text" style="width:80px;" value="<?php echo $this->getRequest()->getParam('filter_order_date_to') ?>" />
+                    <label for="filter-order_date-from"><?php echo Mage::helper('udropship')->__('Order Date') ?></label><br/>
+                    <input id="filter-order_date-from" name="filter_order_date_from" title="<?php echo Mage::helper('udropship')->__('From Order Date') ?>" type="text" class="input-text" style="width:80px;" value="<?php echo $this->getRequest()->getParam('filter_order_date_from') ?>" /> -
+                    <input id="filter-order_date-to" name="filter_order_date_to" title="<?php echo Mage::helper('udropship')->__('To Order Date') ?>" type="text" class="input-text" style="width:80px;" value="<?php echo $this->getRequest()->getParam('filter_order_date_to') ?>" />
                 </li>
                 <li>
-                    <label for="filter-shipment_date-from"><?php echo $_hlp->__('Available for Shipping Date') ?></label><br/>
-                    <input id="filter-shipment_date-from" name="filter_shipment_date_from" title="<?php echo $_hlp->__('Available for Shipping From Date') ?>" type="text" class="input-text" style="width:80px;" value="<?php echo $this->getRequest()->getParam('filter_shipment_date_from') ?>" /> -
-                    <input id="filter-shipment_date-to" name="filter_shipment_date_to" title="<?php echo $_hlp->__('Available for Shipping To Date') ?>" type="text" class="input-text" style="width:80px;" value="<?php echo $this->getRequest()->getParam('filter_shipment_date_to') ?>" />
+                    <label for="filter-shipment_date-from"><?php echo Mage::helper('udropship')->__('Available for Shipping Date') ?></label><br/>
+                    <input id="filter-shipment_date-from" name="filter_shipment_date_from" title="<?php echo Mage::helper('udropship')->__('Available for Shipping From Date') ?>" type="text" class="input-text" style="width:80px;" value="<?php echo $this->getRequest()->getParam('filter_shipment_date_from') ?>" /> -
+                    <input id="filter-shipment_date-to" name="filter_shipment_date_to" title="<?php echo Mage::helper('udropship')->__('Available for Shipping To Date') ?>" type="text" class="input-text" style="width:80px;" value="<?php echo $this->getRequest()->getParam('filter_shipment_date_to') ?>" />
                 </li>
                 <li>
-                    <label for="filter-sort-by"><?php echo $_hlp->__('Sort By') ?></label><br/>
-                    <select id="filter-sort-by" name="sort_by" title="<?php echo $_hlp->__('Sort By') ?>" class="select" style="width:120px;">
-                        <option value="order_increment_id" <?php if ($_sortBy=='order_increment_id'):?>selected="selected"<?php endif ?>><?php echo $_hlp->__('Order ID') ?></option>
-                        <option value="order_date" <?php if ($_sortBy=='order_date'):?>selected="selected"<?php endif ?>><?php echo $_hlp->__('Order Date') ?></option>
-                        <option value="shipment_date" <?php if ($_sortBy=='shipment_date'):?>selected="selected"<?php endif ?>><?php echo $_hlp->__('Available for Shipping Date') ?></option>
-                        <option value="shipping_method" <?php if ($_sortBy=='shipping_method'):?>selected="selected"<?php endif ?>><?php echo $_hlp->__('Delivery Method') ?></option>
-                        <option value="udropship_status" <?php if ($_sortBy=='udropship_status'):?>selected="selected"<?php endif ?>><?php echo $_hlp->__('Shipping Status') ?></option>
+                    <label for="filter-sort-by"><?php echo Mage::helper('udropship')->__('Sort By') ?></label><br/>
+                    <select id="filter-sort-by" name="sort_by" title="<?php echo Mage::helper('udropship')->__('Sort By') ?>" class="select" style="width:120px;">
+                        <option value="order_increment_id" <?php if ($_sortBy=='order_increment_id'):?>selected="selected"<?php endif ?>><?php echo Mage::helper('udropship')->__('Order ID') ?></option>
+                        <option value="order_date" <?php if ($_sortBy=='order_date'):?>selected="selected"<?php endif ?>><?php echo Mage::helper('udropship')->__('Order Date') ?></option>
+                        <option value="shipment_date" <?php if ($_sortBy=='shipment_date'):?>selected="selected"<?php endif ?>><?php echo Mage::helper('udropship')->__('Available for Shipping Date') ?></option>
+                        <option value="shipping_method" <?php if ($_sortBy=='shipping_method'):?>selected="selected"<?php endif ?>><?php echo Mage::helper('udropship')->__('Delivery Method') ?></option>
+                        <option value="udropship_status" <?php if ($_sortBy=='udropship_status'):?>selected="selected"<?php endif ?>><?php echo Mage::helper('udropship')->__('Shipping Status') ?></option>
                     </select>
-                    <select id="filter-sort-dir" name="sort_dir" title="<?php echo $_hlp->__('Direction') ?>" class="select" style="width:100px;">
-                        <option value="asc" <?php if ($_sortDir=='asc'):?>selected="selected"<?php endif ?>><?php echo $_hlp->__('Ascending') ?></option>
-                        <option value="desc" <?php if ($_sortDir=='desc'):?>selected="selected"<?php endif ?>><?php echo $_hlp->__('Descending') ?></option>
+                    <select id="filter-sort-dir" name="sort_dir" title="<?php echo Mage::helper('udropship')->__('Direction') ?>" class="select" style="width:100px;">
+                        <option value="asc" <?php if ($_sortDir=='asc'):?>selected="selected"<?php endif ?>><?php echo Mage::helper('udropship')->__('Ascending') ?></option>
+                        <option value="desc" <?php if ($_sortDir=='desc'):?>selected="selected"<?php endif ?>><?php echo Mage::helper('udropship')->__('Descending') ?></option>
                     </select>
                 </li>
             </ul>
@@ -69,7 +69,7 @@ $_dateFormat = Varien_Date::convertZendToStrFtime(Mage::app()->getLocale()->getD
         <div class="col-2">
             <ul class="form-list">
                 <li>
-                    <label><?php echo $_hlp->__('Delivery Method') ?></label><br/>
+                    <label><?php echo Mage::helper('udropship')->__('Delivery Method') ?></label><br/>
                     <div style="height:200px; overflow-y:auto">
                     <?php foreach ($_poUsedMethods as $_m): $_code=$_m; $_label = $_vendor->getShippingMethodName($_m, true); ?>
                         <label for="filter-method-<?php echo $_code?>"><input id="filter-method-<?php echo $_code?>" name="filter_method[<?php echo $_code ?>]" value="1" title="<?php echo $_label ?>" type="checkbox" class="checkbox" <?php if (!empty($_filterMethods[$_code])):?>checked="checked"<?php endif ?> /> <?php echo $_label ?></label><br/>
@@ -81,9 +81,9 @@ $_dateFormat = Varien_Date::convertZendToStrFtime(Mage::app()->getLocale()->getD
         <div class="col-3">
             <ul class="form-list">
                 <li>
-                    <label><?php echo $_hlp->__('Shipping Status') ?></label><br/>
+                    <label><?php echo Mage::helper('udropship')->__('Shipping Status') ?></label><br/>
                     <?php foreach ($_statuses as $_v=>$_l): ?>
-                        <label for="filter-status-<?php echo $_v ?>"><input id="filter-status-<?php echo $_v ?>" name="filter_status[<?php echo $_v ?>]" value="1" title="<?php echo $_hlp->__($_l) ?>" type="checkbox" class="checkbox" <?php if (!empty($_filterStatuses[$_v])):?>checked="checked"<?php endif ?> /> <?php echo $_hlp->__($_l)?></label><br/>
+                        <label for="filter-status-<?php echo $_v ?>"><input id="filter-status-<?php echo $_v ?>" name="filter_status[<?php echo $_v ?>]" value="1" title="<?php echo Mage::helper('udropship')->__($_l) ?>" type="checkbox" class="checkbox" <?php if (!empty($_filterStatuses[$_v])):?>checked="checked"<?php endif ?> /> <?php echo Mage::helper('udropship')->__($_l)?></label><br/>
                     <?php endforeach ?>
                 </li>
             </ul>
@@ -93,36 +93,36 @@ $_dateFormat = Varien_Date::convertZendToStrFtime(Mage::app()->getLocale()->getD
             <input type="submit" value="search" style="display:none" />
             <div style="float:right">
                 <span style="margin-left:20px; margin-right:5px;">
-                    <?php echo $_hlp->__('Perform on all retrieved records:') ?>
+                    <?php echo Mage::helper('udropship')->__('Perform on all retrieved records:') ?>
                 </span>
                 <select id="submit_action" name="submit_action">
-                    <option value=""><?php echo $_hlp->__('No action')?></option>
-                    <option value="packingSlips"><?php echo $_hlp->__('Download Packing Slips')?></option>
+                    <option value=""><?php echo Mage::helper('udropship')->__('No action')?></option>
+                    <option value="packingSlips"><?php echo Mage::helper('udropship')->__('Download Packing Slips')?></option>
 <?php if ($_vendor->getLabelType()): ?>
-                    <option value="labelBatch"><?php echo $_hlp->__('Create and Download Labels Batch')?></option>
-                    <option value="existingLabelBatch"><?php echo $_hlp->__('Download Existing Labels Batch')?></option>
+                    <option value="labelBatch"><?php echo Mage::helper('udropship')->__('Create and Download Labels Batch')?></option>
+                    <option value="existingLabelBatch"><?php echo Mage::helper('udropship')->__('Download Existing Labels Batch')?></option>
 <?php endif ?>
-                    <option value="updateShipmentsStatus"><?php echo $_hlp->__('Update Shipments Status')?></option>
+                    <option value="updateShipmentsStatus"><?php echo Mage::helper('udropship')->__('Update Shipments Status')?></option>
                 </select>
                 <select id="batch_update_status" name="update_status">
-                    <option value=""><?php echo $_hlp->__('* Automatic') ?></option>
+                    <option value=""><?php echo Mage::helper('udropship')->__('* Automatic') ?></option>
                     <?php foreach ($_statuses as $_v=>$_l): ?>
-                        <option value="<?php echo $_v ?>"><?php echo $_hlp->__($_l) ?></option>
+                        <option value="<?php echo $_v ?>"><?php echo Mage::helper('udropship')->__($_l) ?></option>
                     <?php endforeach ?>
                 </select>
-                <button class="form-button" type="submit" onclick="return validateSearch(this.form)"><span><?php echo $_hlp->__('Submit') ?></span></button>
+                <button class="form-button" type="submit" onclick="return validateSearch(this.form)"><span><?php echo Mage::helper('udropship')->__('Submit') ?></span></button>
             </div>
             <input type="hidden" name="limit" value="<?php echo $this->getRequest()->getParam('limit')?>"/>
             <input type="hidden" name="p" value="<?php echo $this->getRequest()->getParam('p')?>"/>
             <input type="hidden" name="apply_filter" value="search"/>
 
-            <button class="form-button" name="apply_filter" type="submit" id="filter-search" value="search"><span><?php echo $_hlp->__('Search') ?></span></button>
+            <button class="form-button" name="apply_filter" type="submit" id="filter-search" value="search"><span><?php echo Mage::helper('udropship')->__('Search') ?></span></button>
 
         </div>
 </form>
 
 <p>
-    <a href="#" onclick="collapseAllRows(); return false"><?php echo $_hlp->__('Collapse all rows') ?></a> / <a href="#" onclick="expandAllRows(); return false"><?php echo $_hlp->__('Expand all rows') ?></a>
+    <a href="#" onclick="collapseAllRows(); return false"><?php echo Mage::helper('udropship')->__('Collapse all rows') ?></a> / <a href="#" onclick="expandAllRows(); return false"><?php echo Mage::helper('udropship')->__('Expand all rows') ?></a>
 </p>
 
 <div id="debug"></div>
@@ -139,14 +139,14 @@ $_dateFormat = Varien_Date::convertZendToStrFtime(Mage::app()->getLocale()->getD
     <col />
     <thead>
         <tr>
-            <th><?php echo $_hlp->__('')?></th>
-            <th><?php echo $_hlp->__('Order ID')?></th>
-            <th><?php echo $_hlp->__('Order Date')?></th>
-            <th><?php echo $_hlp->__('Available On')?></th>
-            <th><?php echo $_hlp->__('Delivery Method')?></th>
-            <th><?php echo $_hlp->__('Status')?></th>
-            <th><?php echo $_hlp->__('Items')?></th>
-            <th><?php echo $_hlp->__('Download')?></th>
+            <th><?php echo Mage::helper('udropship')->__('')?></th>
+            <th><?php echo Mage::helper('udropship')->__('Order ID')?></th>
+            <th><?php echo Mage::helper('udropship')->__('Order Date')?></th>
+            <th><?php echo Mage::helper('udropship')->__('Available On')?></th>
+            <th><?php echo Mage::helper('udropship')->__('Delivery Method')?></th>
+            <th><?php echo Mage::helper('udropship')->__('Status')?></th>
+            <th><?php echo Mage::helper('udropship')->__('Items')?></th>
+            <th><?php echo Mage::helper('udropship')->__('Download')?></th>
         </tr>
     </thead>
     <tbody>
@@ -158,7 +158,7 @@ $_dateFormat = Varien_Date::convertZendToStrFtime(Mage::app()->getLocale()->getD
             <td><?php echo Mage::helper('core')->formatDate($_s->getOrderCreatedAt(), 'short', true) ?></td>
             <td><?php echo Mage::helper('core')->formatDate($_s->getCreatedAt(), 'short', true) ?></td>
             <td>
-                <?php echo $_s->getUdropshipMethodDescription() ? $_s->getUdropshipMethodDescription() : $_hlp->__($_vendor->getShippingMethodName($_s->getShippingMethod())) ?>
+                <?php echo $_s->getUdropshipMethodDescription() ? $_s->getUdropshipMethodDescription() : Mage::helper('udropship')->__($_vendor->getShippingMethodName($_s->getShippingMethod())) ?>
                 <?php if ($_hlp->isModuleActive('Unirgy_DropshipDeliveryEstimate')): ?>
                     <br />
                     <span class="udeliveryest-ship-at-title"><?php echo Mage::helper('udeliveryest')->getVendorShipAtTitle($_s);?></span>
@@ -167,12 +167,12 @@ $_dateFormat = Varien_Date::convertZendToStrFtime(Mage::app()->getLocale()->getD
             <td id="status-<?php echo $_id ?>"><?php echo $_hlp->getShipmentStatusName($_s) ?></td>
             <td><?php echo $_s->getTotalQty()*1 ?></td>
             <td>
-                <a style="white-space:nowrap" href="<?php echo $this->getUrl('udropship/vendor/pdf', array('shipment_id'=>$_s->getId()))?>"><?php echo $_hlp->__('Packing Slip')?></a>
+                <a style="white-space:nowrap" href="<?php echo $this->getUrl('udropship/vendor/pdf', array('shipment_id'=>$_s->getId()))?>"><?php echo Mage::helper('udropship')->__('Packing Slip')?></a>
             </td>
         </tr>
         <tr id="info-<?php echo $_id?>" style="display:none">
             <td id="container-<?php echo $_id?>" colspan="10">
-                <span class="shipment-info-loader"><?php echo $_hlp->__('Please wait, loading shipment information...')?></span>
+                <span class="shipment-info-loader"><?php echo Mage::helper('udropship')->__('Please wait, loading shipment information...')?></span>
             </td>
         </tr>
     <?php endforeach ?>
@@ -243,29 +243,29 @@ function validateSearch(form) {
     var downloadAction
     switch ($('submit_action').value) {
     case 'labelBatch':
-        if (confirm('<?php echo $_hlp->__('This action will create shipping labels for all filtered shipments and mark them as shipped.') ?>')) {
+        if (confirm('<?php echo Mage::helper('udropship')->__('This action will create shipping labels for all filtered shipments and mark them as shipped.') ?>')) {
             downloadAction = true
         }
         break;
 
     case 'packingSlips':
-        if (confirm('<?php echo $_hlp->__('This action will print packing slips for all filtered shipments and mark them as ready to ship.') ?>')) {
+        if (confirm('<?php echo Mage::helper('udropship')->__('This action will print packing slips for all filtered shipments and mark them as ready to ship.') ?>')) {
             downloadAction = true
         }
         break;
 
     case 'existingLabelBatch':
-        if (confirm('<?php echo $_hlp->__('This action will print existing shipping labels for all filtered shipments.') ?>')) {
+        if (confirm('<?php echo Mage::helper('udropship')->__('This action will print existing shipping labels for all filtered shipments.') ?>')) {
             downloadAction = true
         }
         break;
 
     case 'updateShipmentsStatus':
         if (!$('batch_update_status').value) {
-            alert('<?php echo $_hlp->__('Please select a status.') ?>');
+            alert('<?php echo Mage::helper('udropship')->__('Please select a status.') ?>');
             return false;
         }
-        return confirm('<?php echo $_hlp->__('This action will update status for all filtered shipments.') ?>');
+        return confirm('<?php echo Mage::helper('udropship')->__('This action will update status for all filtered shipments.') ?>');
     }
     if (downloadAction) {
         var qs = serializeFormElements('shipments-filter-form', true)
@@ -474,7 +474,7 @@ function switchPartialAvailability(el, id) {
     switch (el.value) {
     case 'inform':
         $$('#order-items-'+id+' thead tr').each(function(el) {
-            $(el).insert({bottom:'<th class="partial-qty"><?php echo $_hlp->__('Qty Available')?></th>'});
+            $(el).insert({bottom:'<th class="partial-qty"><?php echo Mage::helper('udropship')->__('Qty Available')?></th>'});
         });
         $$('#order-items-'+id+' tbody tr').each(function(el) {
             var idx = el.id.match(/[0-9]+/);
@@ -494,7 +494,7 @@ function switchPartialAvailability(el, id) {
 
     case 'ship':
         $$('#order-items-'+id+' thead tr').each(function(el) {
-            $(el).insert({bottom:'<th class="partial-qty"><?php echo $_hlp->__('Left / Ship')?></th>'});
+            $(el).insert({bottom:'<th class="partial-qty"><?php echo Mage::helper('udropship')->__('Left / Ship')?></th>'});
         });
         $$('#order-items-'+id+' tbody tr').each(function(el) {
             var idx = el.id.match(/[0-9]+/);
@@ -523,7 +523,7 @@ function reprintLabelBatch(shipmentId, batchId) {
 }
 
 function deleteTrack(shipmentId, trackId) {
-    if (!confirm('<?php echo $_hlp->__('Proceed with tracking ID deletion?')?>')) {
+    if (!confirm('<?php echo Mage::helper('udropship')->__('Proceed with tracking ID deletion?')?>')) {
         return;
     }
     new Effect.Highlight($('old_tracking_id-'+trackId));

@@ -101,13 +101,13 @@
 
     <admin>
         <routers>
-            <easylightbox>
-                <use>admin</use>
-                <args>
-                    <module>TM_EasyLightbox</module>
-                    <frontName>easylightbox</frontName>
-                </args>
-            </easylightbox>
+            <adminhtml>
+				<args>
+					<modules>
+						<easylightbox before="Mage_Adminhtml">TM_EasyLightbox_Adminhtml</easylightbox>
+					</modules>
+				</args>
+			</adminhtml>
         </routers>
     </admin>
 

@@ -77,7 +77,7 @@ class Unirgy_DropshipPayout_Block_Adminhtml_Vendor_Payout_Grid extends Mage_Admi
 
         if (!Mage::helper('udropship')->isStatementAsInvoice()) {
             $this->addColumn('pt_grid_total_payout', array(
-                'header' => Mage::helper('udpayout')->__('Total Payout'),
+                'header' => Mage::helper('udropship')->__('Total Payout'),
                 'index' => 'total_payout',
                 'type'  => 'price',
                 'currency' => 'base_currency_code',
@@ -85,7 +85,7 @@ class Unirgy_DropshipPayout_Block_Adminhtml_Vendor_Payout_Grid extends Mage_Admi
             ));
         } else {
             $this->addColumn('pt_grid_total_payment', array(
-                'header' => Mage::helper('udpayout')->__('Total Payment'),
+                'header' => Mage::helper('udropship')->__('Total Payment'),
                 'index' => 'total_payment',
                 'type'  => 'price',
                 'currency' => 'base_currency_code',
@@ -112,11 +112,11 @@ class Unirgy_DropshipPayout_Block_Adminhtml_Vendor_Payout_Grid extends Mage_Admi
 
     public function getRowUrl($row)
     {
-        return $this->getUrl('udpayoutadmin/payout/edit', array('id' => $row->getId()));
+        return $this->getUrl('adminhtml/udpayoutadmin_payout/edit', array('id' => $row->getId()));
     }
 
     public function getGridUrl()
     {
-        return $this->getUrl('udpayoutadmin/payout/vendorPayoutsGrid', array('_current'=>true));
+        return $this->getUrl('adminhtml/udpayoutadmin_payout/vendorPayoutsGrid', array('_current'=>true));
     }
 }

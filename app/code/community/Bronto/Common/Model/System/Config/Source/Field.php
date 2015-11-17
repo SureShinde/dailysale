@@ -23,11 +23,11 @@ class Bronto_Common_Model_System_Config_Source_Field
         try {
             if ($api = Mage::helper('bronto_common')->getApi()) {
                 /* @var $fieldObject Bronto_Api_Field */
-                $fieldObject = $api->getFieldObject();
-                foreach ($fieldObject->readAll()->iterate() as $field/* @var $field Bronto_Api_Field_Row */) {
+                $fieldObject = $api->transferField();
+                foreach ($fieldObject->read() as $field) {
                     $this->_options[] = array(
-                        'value' => $field->id,
-                        'label' => $field->label,
+                        'value' => $field->getId(),
+                        'label' => $field->getLabel(),
                     );
                 }
             }
@@ -59,13 +59,7 @@ class Bronto_Common_Model_System_Config_Source_Field
     {
         try {
             if ($api = Mage::helper('bronto_common')->getApi()) {
-                /* @var $fieldObject Bronto_Api_Field */
-                $fieldObject = $api->getFieldObject();
-                foreach ($fieldObject->readAll()->iterate() as $field/* @var $field Bronto_Api_Field_Row */) {
-                    if ($field->id == $id) {
-                        return $field;
-                    }
-                }
+                return $api->transferField()->getById($id);
             }
         } catch (Exception $e) {
             Mage::helper('bronto_common')->writeError($e);

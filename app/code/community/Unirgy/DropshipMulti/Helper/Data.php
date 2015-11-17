@@ -17,11 +17,30 @@
 
 class Unirgy_DropshipMulti_Helper_Data extends Mage_Core_Helper_Abstract
 {
+    protected $_customerGroups;
+    public function getCustomerGroups()
+    {
+        if ($this->_customerGroups===null) {
+            $this->_customerGroups = array();
+            $collection = Mage::getModel('customer/group')->getCollection();
+            foreach ($collection as $item) {
+                $this->_customerGroups[$item->getId()] = $item->getCustomerGroupCode();
+            }
+        }
+        return $this->_customerGroups;
+    }
+
     protected $_multiVendorData = array();
 
     public function isActive($store=null)
     {
         $method = Mage::getStoreConfig('udropship/stock/availability', $store);
+        $config = Mage::getConfig()->getNode("global/udropship/availability_methods/$method");
+        return $config && $config->is('multi');
+    }
+    public function isActiveReassign($store=null)
+    {
+        $method = Mage::getStoreConfig('udropship/stock/reassign_availability', $store);
         $config = Mage::getConfig()->getNode("global/udropship/availability_methods/$method");
         return $config && $config->is('multi');
     }
@@ -88,6 +107,70 @@ class Unirgy_DropshipMulti_Helper_Data extends Mage_Core_Helper_Abstract
             $this->_multiVendorData[$key] = $collection;
         }
         return $this->_multiVendorData[$key];
+    }
+
+    public function getActiveMvGroupPrice($items, $joinVendors=false, $force=false)
+    {
+        return $this->_getMvGroupPrice($items, $joinVendors, $force, true);
+    }
+    public function getMvGroupPrice($items, $joinVendors=false, $force=false)
+    {
+        return $this->_getMvGroupPrice($items, $joinVendors, $force, false);
+    }
+    protected function _getMvGroupPrice($items, $joinVendors=false, $force=false, $isActive=false)
+    {
+        $key = $joinVendors ? 'vendors,' : 'novendors,';
+        $key .= $isActive ? 'active,' : 'inactive,';
+        $productIds = array();
+        foreach ($items as $item) {
+            if ($item instanceof Varien_Object) {
+                $pId = $item->hasProductId() ? $item->getProductId() : $item->getEntityId();
+                $key .= $pId.':'.$item->getQty().',';
+                $productIds[] = $pId;
+            } elseif (is_scalar($item)) {
+                $key .= $item;
+                $productIds[] = $item;
+            }
+        }
+        if (empty($this->_mvGroupPrice[$key]) || $force) {
+            $collection = Mage::getModel('udmulti/groupPrice')->getCollection()
+                ->joinMultiVendorData($isActive, $joinVendors)
+                ->addProductFilter($productIds);
+            $this->_mvGroupPrice[$key] = $collection;
+        }
+        return $this->_mvGroupPrice[$key];
+    }
+
+    public function getActiveMvTierPrice($items, $joinVendors=false, $force=false)
+    {
+        return $this->_getMvTierPrice($items, $joinVendors, $force, true);
+    }
+    public function getMvTierPrice($items, $joinVendors=false, $force=false)
+    {
+        return $this->_getMvTierPrice($items, $joinVendors, $force, false);
+    }
+    protected function _getMvTierPrice($items, $joinVendors=false, $force=false, $isActive=false)
+    {
+        $key = $joinVendors ? 'vendors,' : 'novendors,';
+        $key .= $isActive ? 'active,' : 'inactive,';
+        $productIds = array();
+        foreach ($items as $item) {
+            if ($item instanceof Varien_Object) {
+                $pId = $item->hasProductId() ? $item->getProductId() : $item->getEntityId();
+                $key .= $pId.':'.$item->getQty().',';
+                $productIds[] = $pId;
+            } elseif (is_scalar($item)) {
+                $key .= $item;
+                $productIds[] = $item;
+            }
+        }
+        if (empty($this->_mvTierPrice[$key]) || $force) {
+            $collection = Mage::getModel('udmulti/tierPrice')->getCollection()
+                ->joinMultiVendorData($isActive, $joinVendors)
+                ->addProductFilter($productIds);
+            $this->_mvTierPrice[$key] = $collection;
+        }
+        return $this->_mvTierPrice[$key];
     }
 
     public function getActiveUdmultiStock($productId, $force=false)
@@ -178,7 +261,7 @@ class Unirgy_DropshipMulti_Helper_Data extends Mage_Core_Helper_Abstract
         if (!$pId || !$vId) {
             // should never happen
             return;
-            Mage::throwException($this->__('Invalid data: vendor_id=%s, product_id=%s', $vId, $pId));
+            Mage::throwException(Mage::helper('udropship')->__('Invalid data: vendor_id=%s, product_id=%s', $vId, $pId));
         }
 
         $v = Mage::helper('udropship')->getVendor($vId);
@@ -193,7 +276,7 @@ class Unirgy_DropshipMulti_Helper_Data extends Mage_Core_Helper_Abstract
         if ($collection->count()!==1) {
             // for now silent fail, if the vendor-product association was deleted after order
             return;
-            Mage::throwException($this->__('Failed to update vendor stock: vendor is not associated with this item (%s)', $item->getSku()));
+            Mage::throwException(Mage::helper('udropship')->__('Failed to update vendor stock: vendor is not associated with this item (%s)', $item->getSku()));
         }
 
         $totMethod = Mage::getStoreConfig('udropship/stock/total_qty_method');
@@ -581,11 +664,16 @@ class Unirgy_DropshipMulti_Helper_Data extends Mage_Core_Helper_Abstract
         }
         $loadMethod = $isActive ? 'getActiveMultiVendorData' : 'getMultiVendorData';
         $vendorData = Mage::helper('udmulti')->$loadMethod($pIds);
+        $gpLoadMethod = $isActive ? 'getActiveMvGroupPrice' : 'getMvGroupPrice';
+        $gpData = Mage::helper('udmulti')->$gpLoadMethod($pIds);
+        $tpLoadMethod = $isActive ? 'getActiveMvTierPrice' : 'getMvTierPrice';
+        $tpData = Mage::helper('udmulti')->$tpLoadMethod($pIds);
         foreach ($products as $product) {
             if ($product->hasUdmultiStock() && !$reload || !$product->getId()) continue;
             $udmData = $udmAvail = $udmStock = array();
             foreach ($vendorData as $vp) {
                 if ($vp->getProductId() != $product->getId()) continue;
+                $udmGroupPrice = $udmTierPrice = array();
                 $udmStock[$vp->getVendorId()] = $vp->getStockQty();
                 $udmData[$vp->getVendorId()] = $vp->getData();
                 $udmAvail[$vp->getVendorId()] = array(
@@ -596,6 +684,16 @@ class Unirgy_DropshipMulti_Helper_Data extends Mage_Core_Helper_Abstract
                     'avail_date'  => $vp->getData('avail_date'),
                     'status'      => $vp->getData('status'),
                 );
+                foreach ($gpData as $__gpd) {
+                    if ($vp->getProductId() != $__gpd->getProductId() || $vp->getVendorId() != $__gpd->getVendorId()) continue;
+                    $udmGroupPrice[] = $__gpd->getData();
+                }
+                foreach ($tpData as $__tpd) {
+                    if ($vp->getProductId() != $__tpd->getProductId() || $vp->getVendorId() != $__tpd->getVendorId()) continue;
+                    $udmTierPrice[] = $__tpd->getData();
+                }
+                $udmData[$vp->getVendorId()]['group_price'] = $udmGroupPrice;
+                $udmData[$vp->getVendorId()]['tier_price'] = $udmTierPrice;
             }
             $product->setMultiVendorData($udmData);
             $product->setAllMultiVendorData($udmData);

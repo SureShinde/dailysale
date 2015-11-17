@@ -117,6 +117,8 @@ class Unirgy_DropshipPo_Helper_Data extends Mage_Core_Helper_Abstract
         $convertor = Mage::getModel('sales/convert_order');
         $enableVirtual = Mage::getStoreConfig('udropship/misc/enable_virtual', $order->getStoreId());
 
+        $store = Mage::app()->getStore($order->getStoreId());
+
         $shippingMethod = Mage::helper('udropship')->explodeOrderShippingMethod($order);
 
         $items = $udpo->getAllItems();
@@ -247,7 +249,14 @@ class Unirgy_DropshipPo_Helper_Data extends Mage_Core_Helper_Abstract
 
             $orderToShipItemMap[$orderItem->getId().'-'.$vId] = $item;
 
-            $this->setShipmentItemQty($item, $poItem, $qty);
+            $_totQty = $qty;
+            if (($_parentItem = $orderItem->getParentItem())
+                && isset($orderToShipItemMap[$_parentItem->getId().'-'.$vId])
+            ) {
+                $_totQty *= $orderToShipItemMap[$_parentItem->getId().'-'.$vId]->getQty();
+            }
+
+            $this->setShipmentItemQty($item, $poItem, $_totQty);
 
             if (!$orderItem->getHasChildren()
                 || $orderItem->getProductType() == Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE
@@ -269,24 +278,52 @@ class Unirgy_DropshipPo_Helper_Data extends Mage_Core_Helper_Abstract
                 );
             }
 
-            $_totQty = $item->getQty();
-            if (($_parentItem = $orderItem->getParentItem())
-                && isset($orderToShipItemMap[$_parentItem->getId().'-'.$vId])
-            ) {
-                $_totQty *= $orderToShipItemMap[$_parentItem->getId().'-'.$vId]->getQty();
-            }
-
             $shipments[$udpoKey]->addItem($item);
             if (!$orderItem->isDummy(true)) {
                 $qtyOrdered = $orderItem->getQtyOrdered();
                 $_rowDivider = $_totQty/($qtyOrdered>0 ? $qtyOrdered : 1);
-                $iTax = $orderItem->getBaseTaxAmount()*($_rowDivider>0 ? $_rowDivider : 1);
-                $iDiscount = $orderItem->getBaseDiscountAmount()*($_rowDivider>0 ? $_rowDivider : 1);
+                $_rowDivider = $_rowDivider>0 ? $_rowDivider : 1;
+                $iHiddenTax = $store->roundPrice($orderItem->getBaseHiddenTaxAmount()*$_rowDivider);
+                $iTax = $store->roundPrice($orderItem->getBaseTaxAmount()*$_rowDivider);
+                $iDiscount = $store->roundPrice($orderItem->getBaseDiscountAmount()*$_rowDivider);
+                $iBaseTotal = $store->roundPrice($orderItem->getBaseRowTotal()*$_rowDivider);
+                $iTotal = $store->roundPrice($orderItem->getRowTotal()*$_rowDivider);
+                if ($order->getData('ud_amount_fields') && $qtyOrdered==$orderItem->getQtyShipped()) {
+                    if ($orderItem->getBaseHiddenTaxAmount()>$orderItem->getUdBaseHiddenTaxAmount()) {
+                        $iHiddenTax = $orderItem->getBaseHiddenTaxAmount()-$orderItem->getUdBaseHiddenTaxAmount();
+                    }
+                    if ($orderItem->getBaseTaxAmount()>$orderItem->getUdBaseTaxAmount()) {
+                        $iTax = $orderItem->getBaseTaxAmount()-$orderItem->getUdBaseTaxAmount();
+                    }
+                    if ($orderItem->getBaseDiscountAmount()>$orderItem->getUdBaseDiscountAmount()) {
+                        $iDiscount = $orderItem->getBaseDiscountAmount()-$orderItem->getUdBaseDiscountAmount();
+                    }
+                    if ($orderItem->getBaseRowTotal()>$orderItem->getUdBaseRowTotal()) {
+                        $iBaseTotal = $orderItem->getBaseRowTotal()-$orderItem->getUdBaseRowTotal();
+                    }
+                    if ($orderItem->getRowTotal()>$orderItem->getUdRowTotal()) {
+                        $iTotal = $orderItem->getRowTotal()-$orderItem->getUdRowTotal();
+                    }
+                }
+
+                $item->setBaseHiddenTaxAmount($iHiddenTax);
+                $item->setBaseTaxAmount($iTax);
+                $item->setBaseDiscountAmount($iDiscount);
+                $item->setBaseRowTotal($iBaseTotal);
+                $item->setRowTotal($iTotal);
+
+                $orderItem->setUdBaseHiddenTaxAmount($orderItem->getUdBaseHiddenTaxAmount()+$iHiddenTax);
+                $orderItem->setUdBaseTaxAmount($orderItem->getUdBaseTaxAmount()+$iTax);
+                $orderItem->setUdBaseDiscountAmount($orderItem->getUdBaseDiscountAmount()+$iDiscount);
+                $orderItem->setUdBaseRowTotal($orderItem->getUdBaseRowTotal()+$iBaseTotal);
+                $orderItem->setUdRowTotal($orderItem->getUdRowTotal()+$iTotal);
+
                 $shipments[$udpoKey]
+                    ->setBaseHiddenTaxAmount($shipments[$udpoKey]->getBaseHiddenTaxAmount()+$iHiddenTax)
                     ->setBaseTaxAmount($shipments[$udpoKey]->getBaseTaxAmount()+$iTax)
                     ->setBaseDiscountAmount($shipments[$udpoKey]->getBaseDiscountAmount()+$iDiscount)
-                    ->setBaseTotalValue($shipments[$udpoKey]->getBaseTotalValue()+$orderItem->getBasePrice()*$_totQty)
-                    ->setTotalValue($shipments[$udpoKey]->getTotalValue()+$orderItem->getPrice()*$_totQty)
+                    ->setBaseTotalValue($shipments[$udpoKey]->getBaseTotalValue()+$iBaseTotal)
+                    ->setTotalValue($shipments[$udpoKey]->getTotalValue()+$iTotal)
                     ->setTotalQty($shipments[$udpoKey]->getTotalQty()+$qty)
                 ;
             }
@@ -361,14 +398,14 @@ class Unirgy_DropshipPo_Helper_Data extends Mage_Core_Helper_Abstract
                 break;
             }
         }
-        //        if ($shipped) {
-        //            foreach ($shipments as $shipment) {
-        //                $this->completeUdpoIfShipped($shipment, true);
-        //                break;
-        //            }
-        //        } else {
-        //            $this->processPoStatusSave($udpo, Unirgy_DropshipPo_Model_Source::UDPO_STATUS_READY, true);
-        //        }
+        if ($shipped) {
+            foreach ($shipments as $shipment) {
+                $this->completeUdpoIfShipped($shipment, true);
+                break;
+            }
+        } else {
+            $this->processPoStatusSave($udpo, Unirgy_DropshipPo_Model_Source::UDPO_STATUS_READY, true);
+        }
 
         Mage::dispatchEvent('udpo_po_shipment_save_after', array('order'=>$order, 'udpo'=>$udpo, 'shipments'=>$shipments));
 
@@ -403,7 +440,7 @@ class Unirgy_DropshipPo_Helper_Data extends Mage_Core_Helper_Abstract
         }
         if (!$udpo->canInvoiceShipment($shipment)) {
             if (!$udpo->getOrder()->getInvoiceCollection()->getItemByColumnValue('shipment_id', $shipment->getId())) {
-                $udpo->addComment($this->__('Cannot autoinvoice shipment # %s', $shipment->getIncrementId()), false, false);
+                $udpo->addComment(Mage::helper('udropship')->__('Cannot autoinvoice shipment # %s', $shipment->getIncrementId()), false, false);
                 $udpo->saveComments();
             }
             return false;
@@ -411,13 +448,13 @@ class Unirgy_DropshipPo_Helper_Data extends Mage_Core_Helper_Abstract
         if (Unirgy_DropshipPo_Model_Source::AUTOINVOICE_SHIPMENT_YES == $autoInvoiceFlag
             && !$shipment->getOrder()->getPayment()->canCapturePartial()
         ) {
-            $udpo->addComment($this->__('Cannot autoinvoice shipment # %s: order payment method does not allow partial capture', $shipment->getIncrementId()), false, false);
+            $udpo->addComment(Mage::helper('udropship')->__('Cannot autoinvoice shipment # %s: order payment method does not allow partial capture', $shipment->getIncrementId()), false, false);
             $udpo->saveComments();
             return false;
         } elseif (Unirgy_DropshipPo_Model_Source::AUTOINVOICE_SHIPMENT_ORDER == $autoInvoiceFlag
             && !$shipment->getOrder()->getPayment()->canCapture()
         ) {
-            $udpo->addComment($this->__('Cannot autoinvoice shipment # %s: order payment method does not allow online capture', $shipment->getIncrementId()), false, false);
+            $udpo->addComment(Mage::helper('udropship')->__('Cannot autoinvoice shipment # %s: order payment method does not allow online capture', $shipment->getIncrementId()), false, false);
             $udpo->saveComments();
             return false;
         }
@@ -527,7 +564,7 @@ class Unirgy_DropshipPo_Helper_Data extends Mage_Core_Helper_Abstract
                     ->addObject($udpo->setData('___dummy',1))
                     ->save();
 
-                $udpo->addComment($this->__('created invoice # %s for shipment # %s', $invoice->getIncrementId(), $shipment->getIncrementId()), false, false)->saveComments();
+                $udpo->addComment(Mage::helper('udropship')->__('created invoice # %s for shipment # %s', $invoice->getIncrementId(), $shipment->getIncrementId()), false, false)->saveComments();
             }
 
             $udpo->getResource()->commit();
@@ -543,7 +580,7 @@ class Unirgy_DropshipPo_Helper_Data extends Mage_Core_Helper_Abstract
                 }
             }
             $udpo->getResource()->rollBack();
-            $udpo->addComment($this->__('Autoinvoice Error for shipment # %s: %s', $shipment->getIncrementId(), $e->getMessage()), false, false);
+            $udpo->addComment(Mage::helper('udropship')->__('Autoinvoice Error for shipment # %s: %s', $shipment->getIncrementId(), $e->getMessage()), false, false);
             $udpo->saveComments();
             Mage::logException($e);
         }
@@ -704,7 +741,7 @@ class Unirgy_DropshipPo_Helper_Data extends Mage_Core_Helper_Abstract
         }
         else {
             Mage::throwException(
-                Mage::helper('sales')->__('Invalid qty to ship for item "%s"', $shipmentItem->getName())
+                Mage::helper('udropship')->__('Invalid qty to ship for item "%s"', $shipmentItem->getName())
             );
         }
     }
@@ -716,7 +753,7 @@ class Unirgy_DropshipPo_Helper_Data extends Mage_Core_Helper_Abstract
         }
         else {
             Mage::throwException(
-                Mage::helper('sales')->__('Invalid qty to invoice for item "%s"', $iItem->getName())
+                Mage::helper('udropship')->__('Invalid qty to invoice for item "%s"', $iItem->getName())
             );
         }
     }
@@ -809,13 +846,15 @@ class Unirgy_DropshipPo_Helper_Data extends Mage_Core_Helper_Abstract
             $collection = Mage::getModel('udpo/po')->getCollection();
 
             $orderTableQted = $collection->getResource()->getReadConnection()->quoteIdentifier('sales/order');
+            $collection->addFilterToMap('ordertbl_increment_id', "$orderTableQted.increment_id");
+            $collection->addFilterToMap('ordertbl_created_at', "$orderTableQted.created_at");
             $collection->join('sales/order', "$orderTableQted.entity_id=main_table.order_id", array(
                 'order_increment_id' => 'increment_id',
                 'order_created_at' => 'created_at',
                 'shipping_method',
             ));
 
-            $collection->addAttributeToFilter('udropship_vendor', $vendorId);
+            $collection->addAttributeToFilter('main_table.udropship_vendor', $vendorId);
 
             $r = Mage::app()->getRequest();
 
@@ -898,6 +937,11 @@ class Unirgy_DropshipPo_Helper_Data extends Mage_Core_Helper_Abstract
             $this->_vendorPoCollection = $collection;
         }
         return $this->_vendorPoCollection;
+    }
+
+    public function isVpStatusFilterAsValue()
+    {
+        return Mage::getStoreConfig('udropship/vendor/interface_theme')=='default/udropship_new';
     }
 
     public function getOrderItemVendorName($orderItem)
@@ -1121,6 +1165,71 @@ class Unirgy_DropshipPo_Helper_Data extends Mage_Core_Helper_Abstract
         $hlp->setDesignStore();
     }
 
+    public function sendPoDeleteVendorNotification($po, $comment='')
+    {
+        $order = $po->getOrder();
+        $store = $order->getStore();
+
+        $vendor = $po->getVendor();
+
+        $hlp = Mage::helper('udropship');
+        $udpoHlp = Mage::helper('udpo');
+        $data = array();
+
+        $adminTheme = explode('/', Mage::getStoreConfig('udropship/admin/interface_theme', 0));
+
+        if ($store->getConfig('udropship/purchase_order/attach_po_pdf') && $vendor->getAttachPoPdf()) {
+            $hlp->setDesignStore(0, 'adminhtml', $adminTheme);
+
+            $orderShippingAmount = $order->getShippingAmount();
+            $order->setShippingAmount($po->getShippingAmount());
+
+            $pdf = Mage::helper('udpo')->getVendorPoMultiPdf(array($po));
+
+            $order->setShippingAmount($orderShippingAmount);
+
+            $data['_ATTACHMENTS'][] = array(
+                'content'=>$pdf->render(),
+                'filename'=>'purchase_order-'.$po->getIncrementId().'-'.$vendor->getId().'.pdf',
+                'type'=>'application/x-pdf',
+            );
+            $hlp->setDesignStore();
+        }
+
+        $hlp->setDesignStore($store);
+        $shippingAddress = $order->getShippingAddress();
+        if (!$shippingAddress) {
+            $shippingAddress = $order->getBillingAddress();
+        }
+        $hlp->assignVendorSkus($po);
+        $data += array(
+            'po'              => $po,
+            'order'           => $order,
+            'vendor'          => $vendor,
+            'comment'         => $comment,
+            'store_name'      => $store->getName(),
+            'vendor_name'     => $vendor->getVendorName(),
+            'po_id'           => $po->getIncrementId(),
+            'order_id'        => $order->getIncrementId(),
+            'customer_info'   => Mage::helper('udropship')->formatCustomerAddress($shippingAddress, 'html', $vendor),
+            'shipping_method' => $po->getUdropshipMethodDescription() ? $po->getUdropshipMethodDescription() : $vendor->getShippingMethodName($order->getShippingMethod(), true),
+        );
+
+        $template = $store->getConfig('udropship/purchase_order/delete_po_vendor_email_template');
+        $identity = $store->getConfig('udropship/vendor/vendor_email_identity');
+
+        $data['_BCC'] = $vendor->getNewOrderCcEmails();
+        if (($emailField = $store->getConfig('udropship/vendor/vendor_notification_field'))) {
+            $email = $vendor->getData($emailField) ? $vendor->getData($emailField) : $vendor->getEmail();
+        } else {
+            $email = $vendor->getEmail();
+        }
+        Mage::getModel('udropship/email')->sendTransactional($template, $identity, $email, $vendor->getVendorName(), $data);
+        $hlp->unassignVendorSkus($po);
+
+        $hlp->setDesignStore();
+    }
+
     public function sendPoCommentNotificationEmail($po, $comment)
     {
         $order = $po->getOrder();
@@ -1179,15 +1288,18 @@ class Unirgy_DropshipPo_Helper_Data extends Mage_Core_Helper_Abstract
                 'vendor_name'   => $vendor->getVendorName(),
                 'order_id'      => $order->getIncrementId(),
                 'po_id'         => $udpo->getIncrementId(),
-                'vendor_url'    => $ahlp->getUrl('udropship/adminhtml_vendor/edit', array(
-                    'id'        => $vendor->getId()
+                'vendor_url'    => $ahlp->getUrl('adminhtml/udropshipadmin_vendor/edit', array(
+                    'id'        => $vendor->getId(),
+                    '_store'    => 0
                 )),
                 'order_url'     => $ahlp->getUrl('adminhtml/sales_order/view', array(
-                    'order_id'  => $order->getId()
+                    'order_id'  => $order->getId(),
+                    '_store'    => 0
                 )),
-                'po_url'  => $ahlp->getUrl('udpoadmin/order_po/view', array(
+                'po_url'  => $ahlp->getUrl('adminhtml/udpoadmin_order_po/view', array(
                     'udpo_id'  => $udpo->getId(),
                     'order_id' => $order->getId(),
+                    '_store'    => 0
                 )),
                 'comment'      => $comment,
             );
@@ -1207,7 +1319,7 @@ class Unirgy_DropshipPo_Helper_Data extends Mage_Core_Helper_Abstract
             //mail('"'.$toName.'" <'.$toEmail.'>', $subject, $template, 'From: "'.$vendor->getVendorName().'" <'.$vendor->getEmail().'>');
         }
 
-        $udpo->addComment($this->__($vendor->getVendorName().': '.$comment), false, true)->saveComments();
+        $udpo->addComment(Mage::helper('udropship')->__($vendor->getVendorName().': '.$comment), false, true)->saveComments();
 
         return $this;
     }
@@ -1362,12 +1474,12 @@ class Unirgy_DropshipPo_Helper_Data extends Mage_Core_Helper_Abstract
 		) {
 			if ($shipment->getDeleteOnFailedLabelRequestFlag()) {
 				if ($shipment->getNewShipmentFlag()) {
-					$comment = $this->__('Shipment was not created due to label request error: %s', $error);
+					$comment = Mage::helper('udropship')->__('Shipment was not created due to label request error: %s', $error);
 				} else {
-					$comment = $this->__('Shipment was deleted due to label request error: %s', $error);
+					$comment = Mage::helper('udropship')->__('Shipment was deleted due to label request error: %s', $error);
 				}
 			} else {
-				$comment = $this->__('Shipment was canceled due to label request error: %s', $error);
+				$comment = Mage::helper('udropship')->__('Shipment was canceled due to label request error: %s', $error);
 			}
 			$udpo->addComment($comment, false, $shipment->getCreatedByVendorFlag())->getCommentsCollection()->save();
 		}
@@ -1427,13 +1539,13 @@ class Unirgy_DropshipPo_Helper_Data extends Mage_Core_Helper_Abstract
             $po->setUdropshipStatus($status);
             $_comment = '';
             if ($vendor) {
-                $_comment = $this->__("[%s changed PO status from '%s' to '%s']",
+                $_comment = Mage::helper('udropship')->__("[%s changed PO status from '%s' to '%s']",
                     $vendor->getVendorName(),
                     $this->getPoStatusName($oldStatus),
                     $this->getPoStatusName($status)
                 );
             } else {
-                $_comment = $this->__("[PO status changed from '%s' to '%s']",
+                $_comment = Mage::helper('udropship')->__("[PO status changed from '%s' to '%s']",
                     $this->getPoStatusName($oldStatus),
                     $this->getPoStatusName($status)
                 );
@@ -1455,7 +1567,7 @@ class Unirgy_DropshipPo_Helper_Data extends Mage_Core_Helper_Abstract
             return true;
         } elseif (0 && $vendor) {
             $oldStatus = $po->getUdropshipStatus();
-            $po->addComment($this->__("%s tried to change PO status from '%s' to '%s'",
+            $po->addComment(Mage::helper('udropship')->__("%s tried to change PO status from '%s' to '%s'",
                 $vendor->getVendorName(),
                 $this->getPoStatusName($oldStatus),
                 $this->getPoStatusName($status)
@@ -1495,6 +1607,121 @@ class Unirgy_DropshipPo_Helper_Data extends Mage_Core_Helper_Abstract
     {
         Mage::helper('udropship')->unassignVendorSkus($po);
         return $this;
+    }
+
+    public function getPoAvailableMethods($_po)
+    {
+        $_hlp = Mage::helper('udropship');
+        $_poHlp = Mage::helper('udpo');
+        $_id = $_po->getId();
+        $_vendor = $_hlp->getVendor($_po->getUdropshipVendor());
+
+        $_order = $_po->getOrder();
+        $_address = $_order->getShippingAddress() ? $_order->getShippingAddress() : $_order->getBillingAddress();
+
+        $shipping = $_hlp->getShippingMethods();
+        $vShipping = $_vendor->getShippingMethods();
+
+        $poShippingMethod = $_po->getUdropshipMethod();
+        if (null == $poShippingMethod) {
+            $poShippingMethod = $_order->getShippingMethod();
+        }
+
+        $uMethod = explode('_', $_order->getShippingMethod(), 2);
+        if ($uMethod[0]=='udsplit') {
+            $udMethod = Mage::helper('udropship')->mapSystemToUdropshipMethod(
+                $poShippingMethod,
+                $_vendor
+            );
+            $uMethodCode = $udMethod->getShippingCode();
+        } else {
+            $uMethodCode = !empty($uMethod[1]) ? $uMethod[1] : '';
+        }
+
+        $method = explode('_', $poShippingMethod, 2);
+        $carrierCode = !empty($method[0]) ? $method[0] : $_vendor->getCarrierCode();
+
+        $curShipping = $shipping->getItemByColumnValue('shipping_code', $uMethodCode);
+        $methodCode  = !empty($method[1]) ? $method[1] : '';
+
+        $labelCarrierAllowAll = Mage::getStoreConfig('udropship/vendor/label_carrier_allow_all', $_order->getStoreId());
+        $labelMethodAllowAll = Mage::getStoreConfig('udropship/vendor/label_method_allow_all', $_order->getStoreId());
+
+        if ($curShipping && $labelMethodAllowAll) {
+            $curShipping->useProfile($_vendor);
+            $_carriers = array($carrierCode=>0);
+            if ($labelCarrierAllowAll) {
+                $_carriers = array_merge($_carriers, $curShipping->getAllSystemMethods());
+            }
+            $availableMethods = array();
+            foreach ($_carriers as $_carrierCode=>$_dummy) {
+                $_availableMethods = $_hlp->getCarrierMethods($_carrierCode, true);
+                $carrierTitle = Mage::getStoreConfig("carriers/$_carrierCode/title", $_order->getStoreId());
+                foreach ($_availableMethods as $mCode => $mLabel) {
+                    $_amDesc = $carrierTitle.' - '.$mLabel;
+                    $_amCode = $_carrierCode.'_'.$mCode;
+                    $availableMethods[$_amCode] = $_amDesc;
+                }
+            }
+            $curShipping->resetProfile();
+        } elseif ($curShipping && isset($vShipping[$curShipping->getId()])) {
+            $curShipping->useProfile($_vendor);
+            $methodCode  = !empty($method[1]) ? $method[1] : $curShipping->getSystemMethods($vShipping[$curShipping->getId()]['carrier_code']);
+            $availableMethods = array();
+            if (!$labelCarrierAllowAll || Mage::helper('udropship')->isUdsprofileActive()) {
+                foreach ($vShipping as $_sId => $__vs) {
+                    foreach ($__vs as $_vs) {
+                        if ($carrierCode != $_vs['carrier_code'] && !$labelCarrierAllowAll || !($_s = $shipping->getItemById($_sId)) || !($_vs['method_code'])) continue;
+                        $_amCode = $_vs['carrier_code'].'_'.$_vs['method_code'];
+                        $carrierMethods = Mage::helper('udropship')->getCarrierMethods($_vs['carrier_code']);
+                        if (!isset($carrierMethods[$_vs['method_code']])) continue;
+                        $_amDesc = Mage::getStoreConfig('carriers/'.$_vs['carrier_code'].'/title', $_order->getStoreId())
+                            .' - '.$carrierMethods[$_vs['method_code']];
+                        $availableMethods[$_amCode] = $_amDesc;
+                    }
+                }
+            } else {
+                foreach ($vShipping as $_sId => $__vs) {
+                    if (($_s = $shipping->getItemById($_sId))) {
+                        $allSystemMethods = $_s->getAllSystemMethods();
+                        foreach ($allSystemMethods as $_smCarrier => $__sm) {
+                            foreach ($__sm as $_smMethod) {
+                                $_amCode = $_smCarrier.'_'.$_smMethod;
+                                $carrierMethods = Mage::helper('udropship')->getCarrierMethods($_smCarrier);
+                                if (!isset($carrierMethods[$_smMethod])) continue;
+                                $_amDesc = Mage::getStoreConfig('carriers/'.$_smCarrier.'/title', $_order->getStoreId())
+                                    .' - '.$carrierMethods[$_smMethod];
+                                $availableMethods[$_amCode] = $_amDesc;
+                            }
+                        }
+                    }
+                }
+            }
+            $curShipping->resetProfile();
+        }
+
+        $labelCarrierAllowAlways = Mage::getStoreConfig('udropship/vendor/label_carrier_allow_always', $_order->getStoreId());
+        if (!is_array($labelCarrierAllowAlways)) {
+            $labelCarrierAllowAlways = array_filter(explode(',', $labelCarrierAllowAlways));
+        }
+        foreach ($labelCarrierAllowAlways as $lcaaCode) {
+            $lcaaCarrierMethods = Mage::helper('udropship')->getCarrierMethods($lcaaCode, true);
+            foreach ($lcaaCarrierMethods as $lcaaMethodCode=>$lcaaMethodTitle) {
+                $lcaaFullMethodCode = $lcaaCode.'_'.$lcaaMethodCode;
+                $lcaaDesc = Mage::getStoreConfig('carriers/'.$lcaaCode.'/title', $_order->getStoreId())
+                    .' - '.$lcaaMethodTitle;
+                $availableMethods[$lcaaFullMethodCode] = $lcaaDesc;
+            }
+        }
+
+        if (count($method)>1) {
+            $_poCarrierMethods = Mage::helper('udropship')->getCarrierMethods($method[0]);
+            if (isset($_poCarrierMethods[$method[1]])) {
+                $availableMethods[$poShippingMethod] = Mage::getStoreConfig('carriers/'.$method[0].'/title', $_order->getStoreId())
+                    .' - '.$_poCarrierMethods[$method[1]];
+            }
+        }
+        return $availableMethods;
     }
     
 }

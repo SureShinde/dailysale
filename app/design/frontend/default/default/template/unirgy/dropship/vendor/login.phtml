@@ -20,24 +20,24 @@
 
 <form action="#" method="post" id="login-form">
 <div class="login-box generic-box">
-    <div class="box-head"><h3><?php echo $this->__('Vendor Log in') ?></h3></div>
+    <div class="box-head"><h3><?php echo Mage::helper('udropship')->__('Vendor Log in') ?></h3></div>
     <div class="registered-users">
         <div class="content">
             <ul class="form-list">
                 <li>
-                    <label for="email"><?php echo $this->__('Username / Email Address') ?> <span class="required">*</span></label><br />
-                    <input name="login[username]" value="<?php echo $this->htmlEscape($_session->getUsername()) ?>" title="<?php echo $this->__('Email Address') ?>" id="email" type="text" class="input-text required-entry" style="width:100%;" />
+                    <label for="email"><?php echo Mage::helper('udropship')->__('Username / Email Address') ?> <span class="required">*</span></label><br />
+                    <input name="login[username]" value="<?php echo $this->htmlEscape($_session->getUsername()) ?>" title="<?php echo Mage::helper('udropship')->__('Email Address') ?>" id="email" type="text" class="input-text required-entry" style="width:100%;" />
                 </li>
                 <li>
-                    <label for="pass"><?php echo $this->__('Password') ?> <span class="required">*</span></label><br />
+                    <label for="pass"><?php echo Mage::helper('udropship')->__('Password') ?> <span class="required">*</span></label><br />
                     <input name="login[password]" type="password" class="input-text required-entry vaidate-password" id="pass" style="width:100%;" />
                 </li>
             </ul>
-            <p class="required"><?php echo $this->__('* Required Fields') ?></p>
+            <p class="required"><?php echo Mage::helper('udropship')->__('* Required Fields') ?></p>
         </div>
         <div class="buttons-set">
             <?php echo $this->getChildHtml('login_links') ?>
-            <button class="form-button" type="submit" name="send"><span><?php echo $this->__('Login') ?></span></button>
+            <button class="form-button" type="submit" name="send"><span><?php echo Mage::helper('udropship')->__('Login') ?></span></button>
         </div>
     </div>
 </div>

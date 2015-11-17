@@ -324,12 +324,17 @@ class Unirgy_Dropship_Model_Mysql4_Helper extends Mage_Core_Model_Mysql4_Abstrac
         $loadSel = $this->_getWriteAdapter()->select()->from($table, $preparedFields);
         $loadSel->where($condition);
         if ($model->getData('__udload_order')) {
-            $__ulo = $model->getData('__udload_order');
-            $__order = str_replace('{{table}}', $table, (string)$__ulo);
-            if ($__ulo instanceof Zend_Db_Expr) {
-                $__order = new Zend_Db_Expr($__order);
+            $__uloArr = $model->getData('__udload_order');
+            if (!is_array($__uloArr)) {
+                $__uloArr = array($__uloArr);
             }
-            if ($__order) $loadSel->order($__order);
+            foreach ($__uloArr as $__ulo) {
+                $__order = str_replace('{{table}}', $table, (string)$__ulo);
+                if ($__ulo instanceof Zend_Db_Expr) {
+                    $__order = new Zend_Db_Expr($__order);
+                }
+                if ($__order) $loadSel->order($__order);
+            }
         }
         if (!empty($extraCondition)) {
             $extraCondition = str_replace('{{table}}', $table, $extraCondition);

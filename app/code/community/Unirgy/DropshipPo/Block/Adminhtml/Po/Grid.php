@@ -41,36 +41,36 @@ class Unirgy_DropshipPo_Block_Adminhtml_Po_Grid extends Mage_Adminhtml_Block_Wid
     protected function _prepareColumns()
     {
         $this->addColumn('increment_id', array(
-            'header'    => Mage::helper('udpo')->__('Purchase Order #'),
+            'header'    => Mage::helper('udropship')->__('Purchase Order #'),
             'index'     => 'increment_id',
             'type'      => 'text',
         ));
 
         $this->addColumn('created_at', array(
-            'header'    => Mage::helper('udpo')->__('Purchase Order Created'),
+            'header'    => Mage::helper('udropship')->__('Purchase Order Created'),
             'index'     => 'created_at',
             'type'      => 'datetime',
         ));
 
         $this->addColumn('order_increment_id', array(
-            'header'    => Mage::helper('sales')->__('Order #'),
+            'header'    => Mage::helper('udropship')->__('Order #'),
             'index'     => 'order_increment_id',
             'type'      => 'number',
         ));
 
         $this->addColumn('order_created_at', array(
-            'header'    => Mage::helper('sales')->__('Order Date'),
+            'header'    => Mage::helper('udropship')->__('Order Date'),
             'index'     => 'order_created_at',
             'type'      => 'datetime',
         ));
 
         $this->addColumn('shipping_name', array(
-            'header' => Mage::helper('sales')->__('Ship to Name'),
+            'header' => Mage::helper('udropship')->__('Ship to Name'),
             'index' => 'shipping_name',
         ));
         
         $this->addColumn('udropship_vendor', array(
-            'header' => Mage::helper('udpo')->__('Vendor'),
+            'header' => Mage::helper('udropship')->__('Vendor'),
             'index' => 'udropship_vendor',
             'type' => 'options',
             'options' => Mage::getSingleton('udropship/source')->setPath('vendors')->toOptionHash(),
@@ -79,7 +79,7 @@ class Unirgy_DropshipPo_Block_Adminhtml_Po_Grid extends Mage_Adminhtml_Block_Wid
 
         if (Mage::helper('udropship')->isModuleActive('ustockpo')) {
             $this->addColumn('ustock_vendor', array(
-                'header' => Mage::helper('udpo')->__('Stock Vendor'),
+                'header' => Mage::helper('udropship')->__('Stock Vendor'),
                 'index' => 'ustock_vendor',
                 'type' => 'options',
                 'options' => Mage::getSingleton('udropship/source')->setPath('vendors')->toOptionHash(),
@@ -93,7 +93,7 @@ class Unirgy_DropshipPo_Block_Adminhtml_Po_Grid extends Mage_Adminhtml_Block_Wid
         ));
         
         $this->addColumn('base_shipping_amount', array(
-            'header' => Mage::helper('sales')->__('Shipping Price'),
+            'header' => Mage::helper('udropship')->__('Shipping Price'),
             'index' => 'base_shipping_amount',
             'type'  => 'price',
             'currency' => 'base_currency_code',
@@ -102,7 +102,7 @@ class Unirgy_DropshipPo_Block_Adminhtml_Po_Grid extends Mage_Adminhtml_Block_Wid
 
         if (Mage::getSingleton('admin/session')->isAllowed('sales/order/actions/udpo_view_cost')) {
         $this->addColumn('total_cost', array(
-            'header' => Mage::helper('sales')->__('Total Cost'),
+            'header' => Mage::helper('udropship')->__('Total Cost'),
             'index' => 'total_cost',
             'type'  => 'price',
             'currency' => 'base_currency_code',
@@ -111,7 +111,7 @@ class Unirgy_DropshipPo_Block_Adminhtml_Po_Grid extends Mage_Adminhtml_Block_Wid
         }
 
         $this->addColumn('total_qty', array(
-            'header' => Mage::helper('sales')->__('Total Qty'),
+            'header' => Mage::helper('udropship')->__('Total Qty'),
             'index' => 'total_qty',
             'type'  => 'number',
         ));
@@ -123,7 +123,7 @@ class Unirgy_DropshipPo_Block_Adminhtml_Po_Grid extends Mage_Adminhtml_Block_Wid
         ));
         
         $this->addColumn('udropship_status', array(
-            'header' => Mage::helper('sales')->__('Status'),
+            'header' => Mage::helper('udropship')->__('Status'),
             'index' => 'udropship_status',
             'type' => 'options',
             //'renderer' => 'udpo/adminhtml_po_gridRenderer_status',
@@ -132,14 +132,14 @@ class Unirgy_DropshipPo_Block_Adminhtml_Po_Grid extends Mage_Adminhtml_Block_Wid
 
         $this->addColumn('action',
             array(
-                'header'    => Mage::helper('sales')->__('Action'),
+                'header'    => Mage::helper('udropship')->__('Action'),
                 'width'     => '50px',
                 'type'      => 'action',
                 'getter'     => 'getId',
                 'actions'   => array(
                     array(
-                        'caption' => Mage::helper('sales')->__('View'),
-                        'url'     => array('base'=>'*/po/view'),
+                        'caption' => Mage::helper('udropship')->__('View'),
+                        'url'     => array('base'=>'*/udpoadmin_po/view'),
                         'field'   => 'udpo_id'
                     )
                 ),
@@ -148,8 +148,8 @@ class Unirgy_DropshipPo_Block_Adminhtml_Po_Grid extends Mage_Adminhtml_Block_Wid
                 'is_system' => true
         ));
 
-        $this->addExportType('*/*/exportCsv', Mage::helper('sales')->__('CSV'));
-        $this->addExportType('*/*/exportExcel', Mage::helper('sales')->__('Excel'));
+        $this->addExportType('*/*/exportCsv', Mage::helper('udropship')->__('CSV'));
+        $this->addExportType('*/*/exportExcel', Mage::helper('udropship')->__('Excel'));
 
         return parent::_prepareColumns();
     }
@@ -160,7 +160,7 @@ class Unirgy_DropshipPo_Block_Adminhtml_Po_Grid extends Mage_Adminhtml_Block_Wid
             return false;
         }
 
-        return $this->getUrl('*/po/view',
+        return $this->getUrl('*/udpoadmin_po/view',
             array(
                 'udpo_id'=> $row->getId(),
             )
@@ -174,14 +174,21 @@ class Unirgy_DropshipPo_Block_Adminhtml_Po_Grid extends Mage_Adminhtml_Block_Wid
         $this->getMassactionBlock()->setUseSelectAll(false);
 
         $this->getMassactionBlock()->addItem('pdf_udpos', array(
-             'label'=> Mage::helper('sales')->__('PDF Purchase Orders'),
-             'url'  => $this->getUrl('*/po/pdfUdpos'),
+             'label'=> Mage::helper('udropship')->__('PDF Purchase Orders'),
+             'url'  => $this->getUrl('*/udpoadmin_po/pdfUdpos'),
         ));
 
         $this->getMassactionBlock()->addItem('pesend_udpos', array(
-             'label'=> Mage::helper('sales')->__('Resend Vendor PO Notification'),
-             'url'  => $this->getUrl('*/po/resendUdpos'),
+             'label'=> Mage::helper('udropship')->__('Resend Vendor PO Notification'),
+             'url'  => $this->getUrl('*/udpoadmin_po/resendUdpos'),
         ));
+
+        if (Mage::getStoreConfigFlag('udropship/purchase_order/allow_delete_po')) {
+            $this->getMassactionBlock()->addItem('delete_udpos', array(
+                'label'=> Mage::helper('udropship')->__('Delete POs and Notify Vendors'),
+                'url'  => $this->getUrl('*/udpoadmin_po/massDelete'),
+            ));
+        }
 
         Mage::dispatchEvent('udpo_adminhtml_po_grid_prepare_massaction', array('grid'=>$this));
 

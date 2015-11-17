@@ -38,7 +38,7 @@ class Unirgy_DropshipVendorProduct_VendorController extends Unirgy_Dropship_Vend
     {
         $session = Mage::getSingleton('udropship/session');
         if (!Mage::getStoreConfigFlag('udprod/general/allow_remove')) {
-            $session->addError(Mage::helper('udprod')->__('Forbidden'));
+            $session->addError(Mage::helper('udropship')->__('Forbidden'));
         } else {
             $session = Mage::getSingleton('udropship/session');
             $oldStoreId = Mage::app()->getStore()->getId();
@@ -53,7 +53,7 @@ class Unirgy_DropshipVendorProduct_VendorController extends Unirgy_Dropship_Vend
                         Mage::getModel('udprod/product')->setId($simplePid)->delete();
                     }
                 }
-                $session->addSuccess('Product was deleted');
+                $session->addSuccess(Mage::helper('udropship')->__('Product was deleted'));
                 Mage::app()->setCurrentStore($oldStoreId);
             } catch (Exception $e) {
                 Mage::app()->setCurrentStore($oldStoreId);
@@ -109,9 +109,11 @@ class Unirgy_DropshipVendorProduct_VendorController extends Unirgy_Dropship_Vend
             try {
                 $prod = $this->_initProduct();
                 $isNew = !$prod->getId();
-                $ufName = $prod->formatUrlKey($prod->getName());
-                if (!trim($ufName)) {
-                    Mage::throwException($hlp->__('Product name is invalid'));
+                if (!Mage::getStoreConfigFlag('udprod/general/disable_name_check')) {
+                    $ufName = $prod->formatUrlKey($prod->getName());
+                    if (!trim($ufName)) {
+                        Mage::throwException(Mage::helper('udropship')->__('Product name is invalid'));
+                    }
                 }
                 $prHlp->checkUniqueVendorSku($prod, $v);
                 if ($isNew) {
@@ -172,7 +174,7 @@ class Unirgy_DropshipVendorProduct_VendorController extends Unirgy_Dropship_Vend
                     }
                 }
                 $prHlp->reindexProduct($prod);
-                $session->addSuccess('Product has been saved');
+                $session->addSuccess(Mage::helper('udropship')->__('Product has been saved'));
             } catch (Exception $e) {
                 $session->setUdprodFormData($r->getPost('product'));
                 $session->addError($e->getMessage());
@@ -246,7 +248,8 @@ class Unirgy_DropshipVendorProduct_VendorController extends Unirgy_Dropship_Vend
             $this->_setTheme();
             $prodBlock = Mage::app()->getLayout()->createBlock('udprod/vendor_product', 'udprod.edit', array('skip_add_head_js'=>1));
             $cfgEl = $prodBlock->getForm()->getElement('_cfg_quick_create');
-            $cfgEl->setCfgAttributeValue($this->getRequest()->getParam('cfg_attr_value'));
+            $__value = $this->getRequest()->getParam('cfg_attr_values');
+            $cfgEl->setCfgAttributeValueTuple(explode(',',$__value));
             $this->getResponse()->setBody(
                 $cfgEl->toHtml()
             );
@@ -278,6 +281,7 @@ class Unirgy_DropshipVendorProduct_VendorController extends Unirgy_Dropship_Vend
     protected $_oldStoreId;
     public function preDispatch()
     {
+        Mage::register('uvp_url_store', Mage::app()->getStore(), true);
         $useSidXpath = Mage_Core_Model_Session_Abstract::XML_PATH_USE_FRONTEND_SID;
         $oldUseSid = Mage::getStoreConfig($useSidXpath);
         if ($this->getRequest()->getActionName() == 'upload') {

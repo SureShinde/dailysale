@@ -20,7 +20,7 @@
 <config>
     <modules>
         <Unirgy_DropshipMicrosite>
-            <version>2.1.19</version>
+            <version>2.4.1</version>
             <usimpleup remote="http://download.unirgy.com/simple/client_api/version/"
                 changelog="http://unirgy.com/support/portal/announcements"
                 uninstall="umicrosite/observer::usimpleup_uninstall"/>
@@ -206,6 +206,22 @@
                 </fieldsets>
 
                 <fields>
+                    <subdomain_level>
+                        <label>Subdomain Level</label>
+                        <type>select</type>
+                        <fieldset>microsite</fieldset>
+                        <source_model>umicrosite/source</source_model>
+                        <source>subdomain_level</source>
+                        <position>190</position>
+                    </subdomain_level>
+                    <update_store_base_url>
+                        <label>Update Store Base URL</label>
+                        <type>select</type>
+                        <fieldset>microsite</fieldset>
+                        <source>yesno_useconfig</source>
+                        <position>195</position>
+                        <default>-1</default>
+                    </update_store_base_url>
                 	<landing_page_title>
                         <label>Landing page title</label>
                         <type>text</type>
@@ -283,13 +299,13 @@
 
     <admin>
         <routers>
-            <umicrositeadmin>
-                <use>admin</use>
+            <adminhtml>
                 <args>
-                    <module>Unirgy_DropshipMicrosite</module>
-                    <frontName>umicrositeadmin</frontName>
+                    <modules>
+                        <umicrositeadmin after="Mage_Adminhtml">Unirgy_DropshipMicrosite</umicrositeadmin>
+                    </modules>
                 </args>
-            </umicrositeadmin>
+            </adminhtml>
         </routers>
     </admin>
 
@@ -299,10 +315,10 @@
                 <children>
                     <udropship>
                         <children>
-                            <vendor_registration module="umicrosite">
+                            <vendor_registration translate="title" module="udropship">
                                 <title>Vendor Registrations</title>
                                 <sort_order>40</sort_order>
-                                <action>umicrositeadmin/adminhtml_registration</action>
+                                <action>adminhtml/umicrositeadmin_registration</action>
                             </vendor_registration>
                         </children>
                     </udropship>
@@ -317,7 +333,7 @@
                             <children>
                                 <udropship>
                                     <children>
-                                        <vendor_registration>
+                                        <vendor_registration translate="title" module="udropship">
                                             <title>Vendor Registrations</title>
                                             <sort_order>40</sort_order>
                                         </vendor_registration>
@@ -550,6 +566,7 @@
     <default>
         <udropship>
             <microsite>
+                <allow_mixed_subdomain_level>0</allow_mixed_subdomain_level>
                 <show_products_menu_item>0</show_products_menu_item>
                 <signup_template>udropship_microsite_signup_template</signup_template>
                 <welcome_template>udropship_microsite_welcome_template</welcome_template>

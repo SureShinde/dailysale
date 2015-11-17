@@ -16,11 +16,11 @@ class IWD_All_Block_Adminhtml_Notification_Modal extends Mage_Core_Block_Templat
 
     public function getMarkReadUrl()
     {
-        return Mage::helper('adminhtml')->getUrl('iwdall/adminhtml_message/markread', array('isAjax' => true));
+        return Mage::helper('adminhtml')->getUrl('adminhtml/message/markread', array('isAjax' => true));
     }
 
     public function getRemoveUrl()
     {
-        return Mage::helper('adminhtml')->getUrl('iwdall/adminhtml_message/remove', array('isAjax' => true));
+        return Mage::helper('adminhtml')->getUrl('adminhtml/message/remove', array('isAjax' => true));
     }
 }

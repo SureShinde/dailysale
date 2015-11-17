@@ -15,7 +15,7 @@ $cfgValue = $hlp->getVendorUseCustomFallbackField($v, $el->getVendorUseCustomFie
 <?php $_checked = ($el->getUseConfigValue() || !$p->getId()) ? 'checked="checked"' : '' ?>
 <input type="checkbox" id="<?php echo $useConfigId;?>" value="1" <?php echo $_checked ?> />
 <input type="hidden" id="<?php echo $useConfigId;?>_hidden" name="<?php echo $useConfigName;?>" value="<?php echo $_checked ? '1' : '0' ?>" />
-<label for="<?php echo $useConfigId;?>" class="normal"><?php echo Mage::helper('catalog')->__('Use Config Settings') ?></label>
+<label for="<?php echo $useConfigId;?>" class="normal"><?php echo Mage::helper('udropship')->__('Use Config Settings') ?></label>
 
 <script type="text/javascript">
 //<![CDATA[

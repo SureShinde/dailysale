@@ -33,19 +33,19 @@ class Unirgy_Dropship_Block_Adminhtml_Shipping_Edit_Tab_Form extends Mage_Adminh
         $this->setForm($form);
 
         $fieldset = $form->addFieldset('shipping_form', array(
-            'legend'=>$hlp->__('Shipping Info')
+            'legend'=>Mage::helper('udropship')->__('Shipping Info')
         ));
 
         $fieldset->addField('shipping_code', 'text', array(
             'name'      => 'shipping_code',
-            'label'     => $hlp->__('Shipping Method Code'),
+            'label'     => Mage::helper('udropship')->__('Shipping Method Code'),
             'class'     => 'required-entry',
             'required'  => true,
         ));
 
         $fieldset->addField('shipping_title', 'text', array(
             'name'      => 'shipping_title',
-            'label'     => $hlp->__('Shipping Method Title'),
+            'label'     => Mage::helper('udropship')->__('Shipping Method Title'),
             'class'     => 'required-entry',
             'required'  => true,
         ));
@@ -53,7 +53,7 @@ class Unirgy_Dropship_Block_Adminhtml_Shipping_Edit_Tab_Form extends Mage_Adminh
 
         $fieldset->addField('days_in_transit', 'text', array(
             'name'      => 'days_in_transit',
-            'label'     => $hlp->__('Days In Transit'),
+            'label'     => Mage::helper('udropship')->__('Days In Transit'),
             'class'     => 'required-entry',
             'required'  => true,
         ));
@@ -62,8 +62,8 @@ class Unirgy_Dropship_Block_Adminhtml_Shipping_Edit_Tab_Form extends Mage_Adminh
         array_unshift($options, array('label'=>'All websites', 'value'=>0));
         $fieldset->addField('website_ids', 'multiselect', array(
             'name'      => 'website_ids[]',
-            'label'     => $this->__('Websites'),
-            'title'     => $this->__('Websites'),
+            'label'     => Mage::helper('udropship')->__('Websites'),
+            'title'     => Mage::helper('udropship')->__('Websites'),
             'required'  => true,
             'values'    => $options,
         ));

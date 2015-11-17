@@ -64,7 +64,7 @@ class Unirgy_Dropship_Model_Pdf_ShipmentItems_Bundle extends Mage_Bundle_Model_S
                 if (isset($shipItems[$_item->getId()])) {
                     $qty = $shipItems[$_item->getId()]->getQty()*1;
                 } else if ($_item->getIsVirtual()) {
-                    $qty = Mage::helper('bundle')->__('N/A');
+                    $qty = Mage::helper('udropship')->__('N/A');
                 } else {
                     $qty = 0;
                 }

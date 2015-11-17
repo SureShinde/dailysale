@@ -59,7 +59,7 @@ class Unirgy_Dropship_Model_Pdf_Statement extends Unirgy_Dropship_Model_Pdf_Abst
                 $this->insertOrder($order);
             }
         } else {
-            $this->text($hlp->__('No orders found for this period.'), 'down')
+            $this->text(Mage::helper('udropship')->__('No orders found for this period.'), 'down')
                 ->moveRel(0, .5);
         }
 
@@ -81,7 +81,7 @@ class Unirgy_Dropship_Model_Pdf_Statement extends Unirgy_Dropship_Model_Pdf_Abst
                 continue;
             }
             $p['done'] = true;
-            $str = $hlp->__('%s for %s - Page %s of %s',
+            $str = Mage::helper('udropship')->__('%s for %s - Page %s of %s',
                 $statement->getVendor()->getVendorName(),
                 $statement->getStatementPeriod(),
                 $p['page_num'],
@@ -159,10 +159,10 @@ class Unirgy_Dropship_Model_Pdf_Statement extends Unirgy_Dropship_Model_Pdf_Abst
             }
             $this->setAlign('right')
                 ->move(6, 2)
-                    ->text($hlp->__("Statement #"), 'down')
-                    ->text($hlp->__("Statement Date"), 'down');
+                    ->text(Mage::helper('udropship')->__("Statement #"), 'down')
+                    ->text(Mage::helper('udropship')->__("Statement Date"), 'down');
             if ($hlp->isUdpoActive()) {
-                $this->text($hlp->__("PO Type"), 'down');
+                $this->text(Mage::helper('udropship')->__("PO Type"), 'down');
             }
             $this->move(7.9, 2)
                     ->text($statement->getStatementId(), 'down')
@@ -181,13 +181,13 @@ class Unirgy_Dropship_Model_Pdf_Statement extends Unirgy_Dropship_Model_Pdf_Abst
                 ->font('bold')
                 ->move(6, $stTotalTxtY);
             if (!Mage::helper('udropship')->isStatementAsInvoice()) {
-                $this->text($hlp->__("Total Payment"), 'down');
+                $this->text(Mage::helper('udropship')->__("Total Payment"), 'down');
                 if ($hlp->isUdpayoutActive()) {
-                    $this->text($hlp->__("Total Paid"), 'down')
-                        ->text($hlp->__("Total Due"), 'down');
+                    $this->text(Mage::helper('udropship')->__("Total Paid"), 'down')
+                        ->text(Mage::helper('udropship')->__("Total Due"), 'down');
                 }
             } else {
-                $this->text($hlp->__("Total Invoice"), 'down');
+                $this->text(Mage::helper('udropship')->__("Total Invoice"), 'down');
             }
             if (!Mage::helper('udropship')->isStatementAsInvoice()) {
                 $this->move(7.9, $stTotalTxtY)
@@ -234,21 +234,21 @@ class Unirgy_Dropship_Model_Pdf_Statement extends Unirgy_Dropship_Model_Pdf_Abst
             ->movePush()
                 ->font('bold', 12)
                 ->setAlign('left')
-                ->text($hlp->__("Date"));
+                ->text(Mage::helper('udropship')->__("Date"));
         if ($this->isInPayoutAmount('all', 'exclude_hide')) {
-            $this->moveRel(1.2, 0)->text($hlp->__("Order#"))
-            	->moveRel(1.6, 0)->text($hlp->__("Product"))
-                ->moveRel(1.5, 0)->text($hlp->__("Comm (%)/Trans"))
-                ->moveRel(1.6, 0)->text($hlp->__("Net Amount"))
+            $this->moveRel(1.2, 0)->text(Mage::helper('udropship')->__("Order#"))
+            	->moveRel(1.6, 0)->text(Mage::helper('udropship')->__("Product"))
+                ->moveRel(1.5, 0)->text(Mage::helper('udropship')->__("Comm (%)/Trans"))
+                ->moveRel(1.6, 0)->text(Mage::helper('udropship')->__("Net Amount"))
             ->movePop(0, .4);
         } else {
-        	$this->moveRel(0.8, 0)->text($hlp->__("Order#"))
-            	->moveRel(1, 0)->text($hlp->__("Product"));
+        	$this->moveRel(0.8, 0)->text(Mage::helper('udropship')->__("Order#"))
+            	->moveRel(1, 0)->text(Mage::helper('udropship')->__("Product"));
             $isInPayoutLabel = '';
             foreach (array(
-                'shipping' => $hlp->__("Shipping"),
-                'tax' => $hlp->__("Tax"),
-                'discount' => $hlp->__("Discount")
+                'shipping' => Mage::helper('udropship')->__("Shipping"),
+                'tax' => Mage::helper('udropship')->__("Tax"),
+                'discount' => Mage::helper('udropship')->__("Discount")
                 ) as $iipKey=>$iipLabel
             ) {
                 if (!$this->isInPayoutAmount($iipKey, 'exclude_hide')) {
@@ -257,8 +257,8 @@ class Unirgy_Dropship_Model_Pdf_Statement extends Unirgy_Dropship_Model_Pdf_Abst
             }
             $isInPayoutLabel = substr($isInPayoutLabel, 0, -1);
             $this->moveRel(1, 0)->text($isInPayoutLabel);
-            $this->moveRel(2, 0)->text($hlp->__("Comm (%)/Trans"))
-                ->moveRel(1.6, 0)->text($hlp->__("Net Amount"))
+            $this->moveRel(2, 0)->text(Mage::helper('udropship')->__("Comm (%)/Trans"))
+                ->moveRel(1.6, 0)->text(Mage::helper('udropship')->__("Net Amount"))
             ->movePop(0, .4)
         	;
         }
@@ -286,20 +286,20 @@ class Unirgy_Dropship_Model_Pdf_Statement extends Unirgy_Dropship_Model_Pdf_Abst
     {
         $hlp = Mage::helper('udropship');
         $this->movePush()->moveRel(3.5)
-            ->font('bold', 16)->setAlign('center')->text('Extra Adjustments')
+            ->font('bold', 16)->setAlign('center')->text(Mage::helper('udropship')->__('Extra Adjustments'))
             ->movePop(0, .5);
         $this->rectangle(7.5, .4, .8, .8)
             ->moveRel(.1, .1)
             ->movePush()
                 ->font('bold', 12)
                 ->setAlign('left')
-                ->text($hlp->__("Adjustment#"))
-                ->moveRel(1.2, 0)->text($hlp->__("PO ID"))
-                ->moveRel(.8, 0)->text($hlp->__("PO Type"))
-                ->moveRel(.8, 0)->text($hlp->__("Amount"))
-                ->moveRel(.8, 0)->text($hlp->__("Username"))
-                ->moveRel(.8, 0)->text($hlp->__("Comment"))
-                ->moveRel(2.5, 0)->text($hlp->__("Date"))
+                ->text(Mage::helper('udropship')->__("Adjustment#"))
+                ->moveRel(1.2, 0)->text(Mage::helper('udropship')->__("PO ID"))
+                ->moveRel(.8, 0)->text(Mage::helper('udropship')->__("PO Type"))
+                ->moveRel(.8, 0)->text(Mage::helper('udropship')->__("Amount"))
+                ->moveRel(.8, 0)->text(Mage::helper('udropship')->__("Username"))
+                ->moveRel(.8, 0)->text(Mage::helper('udropship')->__("Comment"))
+                ->moveRel(2.5, 0)->text(Mage::helper('udropship')->__("Date"))
             ->movePop(0, .4)
         ;
 
@@ -333,15 +333,15 @@ class Unirgy_Dropship_Model_Pdf_Statement extends Unirgy_Dropship_Model_Pdf_Abst
             ->movePush()
                 ->font('bold', 12)
                 ->setAlign('left')
-                ->text($hlp->__("ID"))
-                ->moveRel(.8, 0)->text($hlp->__("Type"))
-                ->moveRel(.8, 0)->text($hlp->__("Method"))
-                ->moveRel(.8, 0)->text($hlp->__("Status"))
-                ->moveRel(.6, 0)->text($hlp->__("# of Orders"))
-                ->moveRel(1, 0)->text($hlp->__("Payout"))
-                ->moveRel(.8, 0)->text($hlp->__("Paid"))
-                ->moveRel(.8, 0)->text($hlp->__("Due"))
-                ->moveRel(.8, 0)->text($hlp->__("Date"))
+                ->text(Mage::helper('udropship')->__("ID"))
+                ->moveRel(.8, 0)->text(Mage::helper('udropship')->__("Type"))
+                ->moveRel(.8, 0)->text(Mage::helper('udropship')->__("Method"))
+                ->moveRel(.8, 0)->text(Mage::helper('udropship')->__("Status"))
+                ->moveRel(.6, 0)->text(Mage::helper('udropship')->__("# of Orders"))
+                ->moveRel(1, 0)->text(Mage::helper('udropship')->__("Payout"))
+                ->moveRel(.8, 0)->text(Mage::helper('udropship')->__("Paid"))
+                ->moveRel(.8, 0)->text(Mage::helper('udropship')->__("Due"))
+                ->moveRel(.8, 0)->text(Mage::helper('udropship')->__("Date"))
             ->movePop(0, .4)
         ;
 
@@ -373,7 +373,7 @@ class Unirgy_Dropship_Model_Pdf_Statement extends Unirgy_Dropship_Model_Pdf_Abst
         $hlp = Mage::helper('udropship');
 
         $this->movePush()->moveRel(3.5)
-            ->font('bold', 16)->setAlign('center')->text('Refunds')
+            ->font('bold', 16)->setAlign('center')->text(Mage::helper('udropship')->__('Refunds'))
             ->movePop(0, .5);
 
         $this->rectangle(7.5, .4, .8, .8)
@@ -381,21 +381,21 @@ class Unirgy_Dropship_Model_Pdf_Statement extends Unirgy_Dropship_Model_Pdf_Abst
             ->movePush()
             ->font('bold', 12)
             ->setAlign('left')
-            ->text($hlp->__("Date"));
+            ->text(Mage::helper('udropship')->__("Date"));
         if ($this->isInPayoutAmount('all', 'exclude_hide')) {
-            $this->moveRel(1.2, 0)->text($hlp->__("Order#"))
-                ->moveRel(1.6, 0)->text($hlp->__("Product"))
-                ->moveRel(1.5, 0)->text($hlp->__("Comm (%)"))
-                ->moveRel(1.6, 0)->text($hlp->__("Total Refund"))
+            $this->moveRel(1.2, 0)->text(Mage::helper('udropship')->__("Order#"))
+                ->moveRel(1.6, 0)->text(Mage::helper('udropship')->__("Product"))
+                ->moveRel(1.5, 0)->text(Mage::helper('udropship')->__("Comm (%)"))
+                ->moveRel(1.6, 0)->text(Mage::helper('udropship')->__("Total Refund"))
                 ->movePop(0, .4);
         } else {
-            $this->moveRel(0.8, 0)->text($hlp->__("Order#"))
-                ->moveRel(1, 0)->text($hlp->__("Product"));
+            $this->moveRel(0.8, 0)->text(Mage::helper('udropship')->__("Order#"))
+                ->moveRel(1, 0)->text(Mage::helper('udropship')->__("Product"));
             $isInPayoutLabel = '';
             foreach (array(
-                         'shipping' => $hlp->__("Shipping"),
-                         'tax' => $hlp->__("Tax"),
-                         'discount' => $hlp->__("Discount")
+                         'shipping' => Mage::helper('udropship')->__("Shipping"),
+                         'tax' => Mage::helper('udropship')->__("Tax"),
+                         'discount' => Mage::helper('udropship')->__("Discount")
                      ) as $iipKey=>$iipLabel
             ) {
                 if (!$this->isInPayoutAmount($iipKey, 'exclude_hide')) {
@@ -404,8 +404,8 @@ class Unirgy_Dropship_Model_Pdf_Statement extends Unirgy_Dropship_Model_Pdf_Abst
             }
             $isInPayoutLabel = substr($isInPayoutLabel, 0, -1);
             $this->moveRel(1, 0)->text($isInPayoutLabel);
-            $this->moveRel(2, 0)->text($hlp->__("Comm (%)"))
-                ->moveRel(1.6, 0)->text($hlp->__("Total Refund"))
+            $this->moveRel(2, 0)->text(Mage::helper('udropship')->__("Comm (%)"))
+                ->moveRel(1.6, 0)->text(Mage::helper('udropship')->__("Total Refund"))
                 ->movePop(0, .4)
             ;
         }
@@ -433,7 +433,7 @@ class Unirgy_Dropship_Model_Pdf_Statement extends Unirgy_Dropship_Model_Pdf_Abst
                 ->setAlign('left')
                 ->text($core->formatDate($refund['date'], 'short'));
             if ($this->isInPayoutAmount('all', 'exclude_hide')) {
-                $this->moveRel(1.2, 0)->text($refund['id'])
+                $this->moveRel(1.2, 0)->text($refund['order_increment_id'])
                     ->moveRel(1.6, 0)->text('-'.$refund['subtotal'])
                     ->moveRel(1.5, 0)->text("{$refund['com_amount']} ({$refund['com_percent']}%)")
                     ->setAlign('right')
@@ -573,32 +573,32 @@ class Unirgy_Dropship_Model_Pdf_Statement extends Unirgy_Dropship_Model_Pdf_Abst
             ->movePush()
                 ->setAlign('right')
                 ->font('bold', 12)
-                    ->text($hlp->__("Total Product Revenue"), 'down')
+                    ->text(Mage::helper('udropship')->__("Total Product Revenue"), 'down')
                 ->font('normal');
                 if ($this->isInPayoutAmount('tax', 'include')) {
-                    $this->text($hlp->__("Total Tax"), 'down');
+                    $this->text(Mage::helper('udropship')->__("Total Tax"), 'down');
                 } elseif ($this->isInPayoutAmount('tax', 'exclude_show')) {
-                    $this->text($hlp->__("Total Tax (non-payable)"), 'down');
+                    $this->text(Mage::helper('udropship')->__("Total Tax (non-payable)"), 'down');
                 }
                 
                 if ($this->isInPayoutAmount('shipping', 'include')) {
-                    $this->text($hlp->__("Total Shipping"), 'down');
+                    $this->text(Mage::helper('udropship')->__("Total Shipping"), 'down');
                 } elseif ($this->isInPayoutAmount('shipping', 'exclude_show')) {
-                	$this->text($hlp->__("Total Shipping (non-payable)"), 'down');
+                	$this->text(Mage::helper('udropship')->__("Total Shipping (non-payable)"), 'down');
                 }
 
                 if ($this->isInPayoutAmount('discount', 'include')) {
-                    $this->text($hlp->__("Total Discount"), 'down');
+                    $this->text(Mage::helper('udropship')->__("Total Discount"), 'down');
                 } elseif ($this->isInPayoutAmount('discount', 'exclude_show')) {
-                    $this->text($hlp->__("Total Discount (non-payable)"), 'down');
+                    $this->text(Mage::helper('udropship')->__("Total Discount (non-payable)"), 'down');
                 }
 
-                    //->text($hlp->__("Total Handling"), 'down')
-                $this->text($hlp->__("Total Commission"), 'down')
-                    ->text($hlp->__("Total Transaction Fees"), 'down')
-                    ->text($hlp->__("Total Adjustments"), 'down');
+                    //->text(Mage::helper('udropship')->__("Total Handling"), 'down')
+                $this->text(Mage::helper('udropship')->__("Total Commission"), 'down')
+                    ->text(Mage::helper('udropship')->__("Total Transaction Fees"), 'down')
+                    ->text(Mage::helper('udropship')->__("Total Adjustments"), 'down');
             if (Mage::helper('udropship')->isStatementRefundsEnabled()) {
-                $this->text($hlp->__("Total Refunds"), 'down');
+                $this->text(Mage::helper('udropship')->__("Total Refunds"), 'down');
             }
 
             $this->movePop(1.7, 0)
@@ -634,15 +634,15 @@ class Unirgy_Dropship_Model_Pdf_Statement extends Unirgy_Dropship_Model_Pdf_Abst
             ->movePop(-1.7, .15);
 
         if (!Mage::helper('udropship')->isStatementAsInvoice()) {
-            $this->text($hlp->__("Total Payment"))
+            $this->text(Mage::helper('udropship')->__("Total Payment"))
                 ->moveRel(1.7, 0)->text($totals['total_payout'], 'down')
             ;
             if ($hlp->isUdpayoutActive()) {
-                $this->moveRel(-1.7)->text($hlp->__("Total Paid"))->moveRel(1.7, 0)->text($totals['total_paid'], 'down');
-                $this->moveRel(-1.7)->text($hlp->__("Total Due"))->moveRel(1.7, 0)->text($totals['total_due'], 'down');
+                $this->moveRel(-1.7)->text(Mage::helper('udropship')->__("Total Paid"))->moveRel(1.7, 0)->text($totals['total_paid'], 'down');
+                $this->moveRel(-1.7)->text(Mage::helper('udropship')->__("Total Due"))->moveRel(1.7, 0)->text($totals['total_due'], 'down');
             }
         } else {
-            $this->text($hlp->__("Total Invoice"))
+            $this->text(Mage::helper('udropship')->__("Total Invoice"))
                 ->moveRel(1.7, 0)->text($totals['total_invoice'], 'down')
             ;
         }
@@ -668,7 +668,7 @@ class Unirgy_Dropship_Model_Pdf_Statement extends Unirgy_Dropship_Model_Pdf_Abst
             $this->move(6, .5)->image($image, 2, $this->logoHeight($store));
         }
 
-        $this->move(.5, 10.6)->text($hlp->__("Page %s", ++$this->_totalsPageNum));
+        $this->move(.5, 10.6)->text(Mage::helper('udropship')->__("Page %s", ++$this->_totalsPageNum));
 
         $hideAll = $hideShipping = $hideTax = $hideDiscount = true;
         foreach ($this->_globalTotals as $vId=>$line) {
@@ -684,20 +684,20 @@ class Unirgy_Dropship_Model_Pdf_Statement extends Unirgy_Dropship_Model_Pdf_Abst
         }
 
         $isRefundsEnabled = Mage::helper('udropship')->isStatementRefundsEnabled();
-        $adjLabel = $hlp->__("Adjustments");
+        $adjLabel = Mage::helper('udropship')->__("Adjustments");
         if ($isRefundsEnabled) {
-            $adjLabel = $hlp->__("Adjust");
+            $adjLabel = Mage::helper('udropship')->__("Adjust");
         }
 
         $this->move(4.25, 1.5)
-            ->font('bold', 16)->setAlign('center')->text($hlp->__('Statement Totals'))
+            ->font('bold', 16)->setAlign('center')->text(Mage::helper('udropship')->__('Statement Totals'))
             ->move(.5, 2)
             ->rectangle(7.5, .3, .8, .8)
             ->moveRel(.1, .1)
             ->movePush()
                 ->font('bold', 8)
                 ->setAlign('left')
-                    ->text($hlp->__("Vendor"))
+                    ->text(Mage::helper('udropship')->__("Vendor"))
                 ->setAlign('right');
             if ($hlp->isUdpayoutActive()) {
 
@@ -715,34 +715,34 @@ class Unirgy_Dropship_Model_Pdf_Statement extends Unirgy_Dropship_Model_Pdf_Abst
                     $moveRel = .5;
                 }
 
-                $this->text($hlp->__("Product"));
+                $this->text(Mage::helper('udropship')->__("Product"));
 
                 if (!$hideTax) {
                     $this->moveRel($moveRel, 0);
-                    $this->text($hlp->__("Tax"));
+                    $this->text(Mage::helper('udropship')->__("Tax"));
                 }
                 if (!$hideShipping) {
                     $this->moveRel($moveRel, 0);
-                    $this->text($hlp->__("Shipping"));
+                    $this->text(Mage::helper('udropship')->__("Shipping"));
                 }
                 if (!$hideDiscount) {
                     $this->moveRel($moveRel, 0);
-                    $this->text($hlp->__("Discount"));
+                    $this->text(Mage::helper('udropship')->__("Discount"));
                 }
                 $moveLbls = array(.7, .95, .8, .8);
                 if ($isRefundsEnabled) {
                     $moveLbls = array(.5, .8, .7, .7);
                 }
-                    //->moveRel(.6, 0)->text($hlp->__("Handling"))
-                $this->moveRel(.6, 0)->text($hlp->__("Comm"))
-                    ->moveRel(.5, 0)->text($hlp->__("Trans"))
+                    //->moveRel(.6, 0)->text(Mage::helper('udropship')->__("Handling"))
+                $this->moveRel(.6, 0)->text(Mage::helper('udropship')->__("Comm"))
+                    ->moveRel(.5, 0)->text(Mage::helper('udropship')->__("Trans"))
                     ->moveRel($moveLbls[0], 0)->text($adjLabel);
                 if ($isRefundsEnabled) {
-                    $this->moveRel(.5, 0)->text($hlp->__("Refund"));
+                    $this->moveRel(.5, 0)->text(Mage::helper('udropship')->__("Refund"));
                 }
-                    $this->moveRel($moveLbls[1], 0)->text($hlp->__("Payment"))
-                    ->moveRel($moveLbls[2], 0)->text($hlp->__("Paid"))
-                    ->moveRel($moveLbls[3], 0)->text($hlp->__("Due"));
+                    $this->moveRel($moveLbls[1], 0)->text(Mage::helper('udropship')->__("Payment"))
+                    ->moveRel($moveLbls[2], 0)->text(Mage::helper('udropship')->__("Paid"))
+                    ->moveRel($moveLbls[3], 0)->text(Mage::helper('udropship')->__("Due"));
             } else {
 
                 if ($hideCnt==3) {
@@ -759,32 +759,32 @@ class Unirgy_Dropship_Model_Pdf_Statement extends Unirgy_Dropship_Model_Pdf_Abst
                     $moveRel = .5;
                 }
 
-                $this->text($hlp->__("Product"));
+                $this->text(Mage::helper('udropship')->__("Product"));
 
                 if (!$hideTax) {
                     $this->moveRel($moveRel, 0);
-                    $this->text($hlp->__("Tax"));
+                    $this->text(Mage::helper('udropship')->__("Tax"));
                 }
                 if (!$hideShipping) {
                     $this->moveRel($moveRel, 0);
-                    $this->text($hlp->__("Shipping"));
+                    $this->text(Mage::helper('udropship')->__("Shipping"));
                 }
                 if (!$hideDiscount) {
                     $this->moveRel($moveRel, 0);
-                    $this->text($hlp->__("Discount"));
+                    $this->text(Mage::helper('udropship')->__("Discount"));
                 }
 
-                    //->moveRel(.7, 0)->text($hlp->__("Handling"))
-                $this->moveRel(.7, 0)->text($hlp->__("Commission"))
-                    ->moveRel(.6, 0)->text($hlp->__("Trans.Fee"))
+                    //->moveRel(.7, 0)->text(Mage::helper('udropship')->__("Handling"))
+                $this->moveRel(.7, 0)->text(Mage::helper('udropship')->__("Commission"))
+                    ->moveRel(.6, 0)->text(Mage::helper('udropship')->__("Trans.Fee"))
                     ->moveRel(.6, 0)->text($adjLabel);
                 if ($isRefundsEnabled) {
-                    $this->moveRel(.6, 0)->text($hlp->__('Refund'));
+                    $this->moveRel(.6, 0)->text(Mage::helper('udropship')->__('Refund'));
                     $this->moveRel(.8, 0);
                 } else {
                     $this->moveRel(1.2, 0);
                 }
-                $this->text($hlp->__("Payment"));
+                $this->text(Mage::helper('udropship')->__("Payment"));
             }
         $this->movePop(0, .3);
     }
@@ -998,7 +998,7 @@ class Unirgy_Dropship_Model_Pdf_Statement extends Unirgy_Dropship_Model_Pdf_Abst
             ->moveRel(.1, .1)
             ->font('bold', 9)
                 ->setAlign('left')
-                    ->text('Grand Totals')
+                    ->text(Mage::helper('udropship')->__('Grand Totals'))
                 ->setAlign('right');
             if ($hlp->isUdpayoutActive() && !Mage::helper('udropship')->isStatementAsInvoice()) {
                 if ($hideCnt==3) {

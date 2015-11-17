@@ -18,6 +18,20 @@ class WIC_Criteotags_Block_Tags_Category extends Mage_Catalog_Block_Product_List
 
     const PAGE_SIZE = 3;
 
+    /*
+     * Fix when using Enterprise Search
+     */
+/*
+    protected function _construct() {
+
+        if (!Mage::registry('current_category')) {
+            $id = Mage::app()->getStore()->getRootCategoryId();
+            $category = Mage::getModel('catalog/category')->load($id);
+            Mage::register('current_category', $category, true);
+        }
+    }
+*/
+    
     protected function _toHtml() {
         $html = '';
 

@@ -21,7 +21,7 @@ class Unirgy_DropshipMicrosite_Block_Frontend_Registration extends Mage_Director
         $html = $this->getLayout()->createBlock('core/html_select')
             ->setName($name)
             ->setId($id)
-            ->setTitle(Mage::helper('directory')->__($title))
+            ->setTitle(Mage::helper('udropship')->__($title))
             ->setClass($_isQuickRegister ? '' : 'validate-select')
             ->setValue($defValue)
             ->setOptions($options)

@@ -14,16 +14,33 @@
  * @copyright  Copyright (c) 2008-2009 Unirgy LLC (http://www.unirgy.com)
  * @license    http:///www.unirgy.com/LICENSE-M1.txt
  */
- 
+
 class Unirgy_DropshipVendorProduct_Model_Mysql4_ProductAttributeBackendMedia extends Mage_Catalog_Model_Resource_Eav_Mysql4_Product_Attribute_Backend_Media
 {
+    protected $_eventPrefix = 'catalog_product_attribute_backend_media';
     public function loadGallery($product, $object)
     {
+        $eventObjectWrapper = new Varien_Object(
+            array(
+                'product' => $product,
+                'backend_attribute' => $object
+            )
+        );
+        Mage::dispatchEvent(
+            $this->_eventPrefix . '_load_gallery_before',
+            array('event_object_wrapper' => $eventObjectWrapper)
+        );
+
+        if ($eventObjectWrapper->hasProductIdsOverride()) {
+            $productIds = $eventObjectWrapper->getProductIdsOverride();
+        } else {
+            $productIds = array($product->getId());
+        }
         // Select gallery images for product
         $select = $this->_getReadAdapter()->select()
             ->from(
                 array('main'=>$this->getMainTable()),
-                array('value_id', 'super_attribute', 'value AS file')
+                array('value_id', 'super_attribute', 'value AS file', 'product_id' => 'entity_id')
             )
             ->joinLeft(
                 array('value'=>$this->getTable(self::GALLERY_VALUE_TABLE)),
@@ -40,7 +57,7 @@ class Unirgy_DropshipVendorProduct_Model_Mysql4_ProductAttributeBackendMedia ext
                 )
             )
             ->where('main.attribute_id = ?', $object->getAttribute()->getId())
-            ->where('main.entity_id = ?', $product->getId())
+            ->where('main.entity_id in (?)', $productIds)
             ->order('IF(value.position IS NULL, default_value.position, value.position) ASC');
 
         if ($product->getTypeId() == 'configurable'
@@ -139,7 +156,7 @@ class Unirgy_DropshipVendorProduct_Model_Mysql4_ProductAttributeBackendMedia ext
         $this->_removeDuplicates($result);
         return $result;
     }
-    
+
     public function updateGallery($data, $valueId)
     {
         $w = $this->_getWriteAdapter();

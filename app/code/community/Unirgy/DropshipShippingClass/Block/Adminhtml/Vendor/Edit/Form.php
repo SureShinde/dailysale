@@ -18,16 +18,16 @@ class Unirgy_DropshipShippingClass_Block_Adminhtml_Vendor_Edit_Form extends Mage
             'method'    => 'post'
         ));
 
-        $this->setTitle(Mage::helper('udshipclass')->__('Vendor Ship Class Information'));
+        $this->setTitle(Mage::helper('udropship')->__('Vendor Ship Class Information'));
 
         $fieldset   = $form->addFieldset('base_fieldset', array(
-            'legend'    => Mage::helper('udshipclass')->__('Vendor Ship Class Information')
+            'legend'    => Mage::helper('udropship')->__('Vendor Ship Class Information')
         ));
 
         $fieldset->addField('class_name', 'text',
             array(
                 'name'  => 'class_name',
-                'label' => Mage::helper('udshipclass')->__('Class Name'),
+                'label' => Mage::helper('udropship')->__('Class Name'),
                 'class' => 'required-entry',
                 'value' => $model->getClassName(),
                 'required' => true,
@@ -36,7 +36,7 @@ class Unirgy_DropshipShippingClass_Block_Adminhtml_Vendor_Edit_Form extends Mage
 
         $fieldset->addField('sort_order', 'text', array(
             'name'   => 'sort_order',
-            'label'  => Mage::helper('udshipclass')->__('Sort Order'),
+            'label'  => Mage::helper('udropship')->__('Sort Order'),
         ));
 
         $fieldset->addType('shipclass_rows', Mage::getConfig()->getBlockClassName('udshipclass/adminhtml_formField_shipclassRows'));
@@ -44,7 +44,7 @@ class Unirgy_DropshipShippingClass_Block_Adminhtml_Vendor_Edit_Form extends Mage
         $fieldset->addField('rows', 'shipclass_rows',
             array(
                 'name'  => 'rows',
-                'label' => Mage::helper('udshipclass')->__('Countries'),
+                'label' => Mage::helper('udropship')->__('Countries'),
                 'class' => 'required-entry',
                 'value' => $model->getRows(),
                 'required' => true,
@@ -62,7 +62,7 @@ class Unirgy_DropshipShippingClass_Block_Adminhtml_Vendor_Edit_Form extends Mage
         }
 
         $form->setValues($model->getData());
-        $form->setAction($this->getUrl('*/vendor/save'));
+        $form->setAction($this->getUrl('*/udshipclassadmin_vendor/save'));
         $form->setUseContainer(true);
         $this->setForm($form);
 

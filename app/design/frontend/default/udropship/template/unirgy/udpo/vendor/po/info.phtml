@@ -184,7 +184,7 @@ $fcBlock->setFieldValue(array(
             <div class="content">
                 <div class="col2-set">
                     <div class="col-1">
-                        <strong><?php echo $_hlp->__('Shipping Address')?></strong><br/>
+                        <strong><?php echo Mage::helper('udropship')->__('Shipping Address')?></strong><br/>
                         <?php echo Mage::helper('udropship')->formatCustomerAddress($_address, 'html', $_vendor) ?>
                     </div>
                     <div class="col-2" <?php if (!empty($_highlight['tracking'])): ?>class="highlight"<?php endif ?>>
@@ -194,11 +194,11 @@ $fcBlock->setFieldValue(array(
                 <div class="clear"></div>
                 <br />
                 <div style="float:right">
-                    <label for="partial_availability-<?php echo $_id?>"><?php echo $_hlp->__('Partial Availability: ')?></label>
+                    <label for="partial_availability-<?php echo $_id?>"><?php echo Mage::helper('udropship')->__('Partial Availability: ')?></label>
                     <select type="checkbox" name="partial_availability" id="partial_availability-<?php echo $_id?>" onchange="switchPoPartialAvailability(this, <?php echo $_id?>)">
-                        <option value=""><?php echo $_hlp->__('* Select action') ?></option>
-                        <option value="inform"><?php echo $_hlp->__('Inform retailer') ?></option>
-                        <?php if ($_po->canCreateShipment()): ?><option value="ship"><?php echo $_hlp->__('Ship partial') ?></option><?php endif?>
+                        <option value=""><?php echo Mage::helper('udropship')->__('* Select action') ?></option>
+                        <option value="inform"><?php echo Mage::helper('udropship')->__('Inform retailer') ?></option>
+                        <?php if ($_po->canCreateShipment()): ?><option value="ship"><?php echo Mage::helper('udropship')->__('Ship partial') ?></option><?php endif?>
                     </select>
                 </div>
 
@@ -206,25 +206,28 @@ $fcBlock->setFieldValue(array(
                     poItemsJson['<?php echo $_id?>'] = <?php echo $this->getPoItemsJson($_po) ?>;
                 </script>
 
-                <h4><?php echo $_hlp->__('Order Items') ?></h4>
+                <h4><?php echo Mage::helper('udropship')->__('Order Items') ?></h4>
                 <table cellspacing="0" class="data-table" id="order-items-<?php echo $_id ?>">
                     <col />
                     <col width="25%" />
                     <col width="1" />
                     <col width="1" />
                     <thead>
+
                     <tr>
                         <th><?php echo $_hlp->__('Product Name') ?></th>
                         <th><?php echo $_hlp->__('SKU') ?></th>
                         <th class="a-center"><span class="nobr"><?php echo $_hlp->__('Qty') ?></span></th>
                         <th class="a-center"><span class="nobr"><?php echo $_hlp->__('Shipped') ?></span></th>
                     </tr>
+
                     </thead>
                     <tbody>
                     <?php foreach ($_items as $_item): ?>
                         <?php if ($_item->getOrderItem()->getParentItem()) continue; ?>
                         <?php echo $this->getItemHtml($_item) ?>
                         <?php echo $_item->getGiftMessageId() ?>
+
                         <?php if (($_gId = $_item->getOrderItem()->getGiftMessageId()) && !empty($_giftMsg[$_gId])): ?>
                             <tr><td colspan="3">
                                     <h4><a href="#" class="item-gift-message-trigger"><?php echo $_hlp->__('Show/Hide Gift Message for the item above') ?></a></h4>
@@ -249,6 +252,7 @@ $fcBlock->setFieldValue(array(
                                     </ul>
                                 </td></tr>
                         <?php endif ?>
+
                     <?php endforeach; ?>
                     </tbody>
                     <?php if ($this->isShowTotals()): ?>
@@ -263,6 +267,7 @@ $fcBlock->setFieldValue(array(
                     <?php endif?>
                 </table>
 
+
                 <?php if (($_gId = $_order->getGiftMessageId()) && !empty($_giftMsg[$_gId])): ?>
                     <br/>
                     <h4><?php echo $_hlp->__('Order Gift Message:') ?></h4>
@@ -270,6 +275,7 @@ $fcBlock->setFieldValue(array(
                     <strong><?php echo $_hlp->__('To: %s', $this->htmlEscape($_giftMsg[$_gId]['recipient'])) ?></strong><br/>
                     <p><?php echo nl2br($this->htmlEscape($_giftMsg[$_gId]['message'])) ?></p>
                 <?php endif ?>
+
 
                 <br><br>
 
@@ -281,6 +287,7 @@ $fcBlock->setFieldValue(array(
                         <col width="15%" />
                         <thead>
                         <tr>
+
                             <th><?php echo $_hlp->__('Shipment ID') ?></th>
                             <th class="a-center"><span class="nobr"><?php echo $_hlp->__('Qty') ?></span></th>
                             <th><?php echo $_hlp->__('Tracking IDs') ?></th>
@@ -343,6 +350,7 @@ $fcBlock->setFieldValue(array(
                         </tbody>
                     </table>
                     <br>
+
                 <?php endif ?>
 
             </div>
@@ -352,6 +360,7 @@ $fcBlock->setFieldValue(array(
                 <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
 
                 <ul id="form-list-<?php echo $_id?>" class="form-list">
+
                     <?php if ($_vendor->getLabelType() && $_po->canCreateShipment()): ?>
                         <li>
                             <label for="print_label-<?php echo $_id?>"><?php echo $_hlp->__('Generate Label') ?></label>
@@ -379,32 +388,33 @@ $fcBlock->setFieldValue(array(
                         &nbsp;&nbsp;
                             <?php echo $_hlp->__('Value:') ?>
                             <input id="value-<?php echo $_id?>" name="value" value="<?php echo $this->getRemainingValue() ?>" title="<?php echo $_hlp->__('Declared Value') ?>" type="text" disabled="disabled" class="input-text udlabel-dymanic-value-<?php echo $_id?>" style="width:50px;"/> <?php echo $_order->getStoreCurrencyCode() ?>
+
                             <br />
                         </span>
                         <span class="udlabel-static-container-<?php echo $_id?>">
-                            <?php echo $_hlp->__('Weight:') ?>
+                            <?php echo Mage::helper('udropship')->__('Weight:') ?>
                             <span class="udlabel-static-weight-<?php echo $_id?>"><?php echo $this->getRemainingWeight() ?></span> LB
                 &nbsp;&nbsp;
-                            <?php echo $_hlp->__('Value:') ?>
+                            <?php echo Mage::helper('udropship')->__('Value:') ?>
                             <span class="udlabel-static-value-<?php echo $_id?>"><?php echo $this->getRemainingValue() ?></span> <?php echo $_po->getOrder()->getStoreCurrencyCode() ?>
                             <br />
                         </span>
                         <span class="udlabel-usecustom-weight-container-<?php echo $_id?>">
-                            <input class="udlabel-usecustom-weight-checkbox-<?php echo $_id?>" type="checkbox" onclick="syncUseCustomWeight(this, <?php echo $_id?>)" /> <b><?php echo $this->__('Use Custom label weight/value') ?></b>
+                            <input class="udlabel-usecustom-weight-checkbox-<?php echo $_id?>" type="checkbox" onclick="syncUseCustomWeight(this, <?php echo $_id?>)" /> <b><?php echo Mage::helper('udropship')->__('Use Custom label weight/value') ?></b>
                         </span>
                             </div>
                         </li>
                     <?php endif ?>
                     <li id="label_info-2-<?php echo $_id?>" class="no-mps-specific" style="display:none">
-                        <label for="length-<?php echo $_id?>"><?php echo $_hlp->__('Pkg. Dimensions')?></label>
-                        <?php echo $_hlp->__('Length:') ?>
-                        <input id="length-<?php echo $_id?>" name="length" value="<?php echo (float)$_vendor->getDefaultPkgLength()?>" title="<?php echo $_hlp->__('Length') ?>" type="text" class="input-text" style="width:30px;" />
+                        <label for="length-<?php echo $_id?>"><?php echo Mage::helper('udropship')->__('Pkg. Dimensions')?></label>
+                        <?php echo Mage::helper('udropship')->__('Length:') ?>
+                        <input id="length-<?php echo $_id?>" name="length" value="<?php echo (float)$_vendor->getDefaultPkgLength()?>" title="<?php echo Mage::helper('udropship')->__('Length') ?>" type="text" class="input-text" style="width:30px;" />
                         &nbsp;&nbsp;
-                        <?php echo $_hlp->__('Width:') ?>
-                        <input id="width-<?php echo $_id?>" name="width" value="<?php echo (float)$_vendor->getDefaultPkgWidth()?>" title="<?php echo $_hlp->__('Width') ?>" type="text" class="input-text" style="width:30px;" />
+                        <?php echo Mage::helper('udropship')->__('Width:') ?>
+                        <input id="width-<?php echo $_id?>" name="width" value="<?php echo (float)$_vendor->getDefaultPkgWidth()?>" title="<?php echo Mage::helper('udropship')->__('Width') ?>" type="text" class="input-text" style="width:30px;" />
                         &nbsp;&nbsp;
-                        <?php echo $_hlp->__('Height:') ?>
-                        <input id="height-<?php echo $_id?>" name="height" value="<?php echo (float)$_vendor->getDefaultPkgHeight()?>" title="<?php echo $_hlp->__('Height') ?>" type="text" class="input-text" style="width:30px;" />
+                        <?php echo Mage::helper('udropship')->__('Height:') ?>
+                        <input id="height-<?php echo $_id?>" name="height" value="<?php echo (float)$_vendor->getDefaultPkgHeight()?>" title="<?php echo Mage::helper('udropship')->__('Height') ?>" type="text" class="input-text" style="width:30px;" />
                     </li>
                     <?php if (!Mage::helper('udropship')->isUdpoMpsAvailable($carrierCode)): ?>
                         <li id="label_info-6-<?php echo $_id?>" class="mps-specific" style="display:none">
@@ -415,12 +425,12 @@ $fcBlock->setFieldValue(array(
                         </li>
                     <?php endif ?>
                     <li id="label_info-3-<?php echo $_id?>" style="display:none">
-                        <label for="reference-<?php echo $_id?>"><?php echo $_hlp->__('Reference') ?></label>
-                        <input id="reference-<?php echo $_id?>" name="reference" value="<?php echo $_po->getIncrementId() ?>" title="<?php echo $_hlp->__('Reference') ?>" type="text" class="input-text" style="width:250px;" />
+                        <label for="reference-<?php echo $_id?>"><?php echo Mage::helper('udropship')->__('Reference') ?></label>
+                        <input id="reference-<?php echo $_id?>" name="reference" value="<?php echo $_po->getIncrementId() ?>" title="<?php echo Mage::helper('udropship')->__('Reference') ?>" type="text" class="input-text" style="width:250px;" />
                     </li>
                     <li id="label_info-8-<?php echo $_id?>" style="display:none">
-                        <label for="show_extra_params-<?php echo $_id?>"><?php echo $_hlp->__('Show Extra Params') ?></label>
-                        <input id="show_extra_params-<?php echo $_id?>" name="show_extra_params" value="1" title="<?php echo $_hlp->__('Use Label Shipping Amount') ?>" type="checkbox" class="input-checkbox" onchange="toggleExtraLabelForm(this, '<?php echo $_id?>')" />
+                        <label for="show_extra_params-<?php echo $_id?>"><?php echo Mage::helper('udropship')->__('Show Extra Params') ?></label>
+                        <input id="show_extra_params-<?php echo $_id?>" name="show_extra_params" value="1" title="<?php echo Mage::helper('udropship')->__('Use Label Shipping Amount') ?>" type="checkbox" class="input-checkbox" onchange="toggleExtraLabelForm(this, '<?php echo $_id?>')" />
                         <br />
                     </li>
                     <?php $elIdx = 1; foreach (array(
@@ -447,6 +457,7 @@ $fcBlock->setFieldValue(array(
                         }
                         $extLabelLbl = (string)$extLabelNode->label;
                         ?>
+
                         <li id="label_info-ext-<?php echo $elIdx++?>-<?php echo $_id?>" class="carrier-specific carrier-specific-usps" style="display:none">
                             <label for="extra_label_info[<?php echo $extLabelOpt.'-'.$_id?>]"><?php echo $_hlp->__($extLabelLbl) ?></label>
                             <select disabled="disabled" id="extra_label_info[<?php echo $extLabelOpt.'-'.$_id?>]" name="extra_label_info[<?php echo $extLabelOpt?>]" title="<?php echo $_hlp->__($extLabelLbl) ?>">
@@ -456,6 +467,7 @@ $fcBlock->setFieldValue(array(
                             </select>
                             <div class="clear" style="height: 5px"></div>
                         </li>
+
                     <?php endforeach ?>
                     <?php foreach (array(
                                        'ups_insurance' => $vFieldsXml->descend('ups_insurance'),
@@ -476,6 +488,7 @@ $fcBlock->setFieldValue(array(
                         }
                         $extLabelLbl = (string)$extLabelNode->label;
                         ?>
+
                         <li id="label_info-ext-<?php echo $elIdx++?>-<?php echo $_id?>" class="carrier-specific carrier-specific-ups" style="display:none">
                             <label for="extra_label_info[<?php echo $extLabelOpt.'-'.$_id?>]"><?php echo $_hlp->__($extLabelLbl) ?></label>
                             <select disabled="disabled" id="extra_label_info[<?php echo $extLabelOpt.'-'.$_id?>]" name="extra_label_info[<?php echo $extLabelOpt?>]" title="<?php echo $_hlp->__($extLabelLbl) ?>">
@@ -485,6 +498,7 @@ $fcBlock->setFieldValue(array(
                             </select>
                             <div class="clear" style="height: 5px"></div>
                         </li>
+
                     <?php endforeach ?>
                     <?php foreach (array(
                                        'fedex_dropoff_type' => $vFieldsXml->descend('fedex_dropoff_type'),
@@ -502,6 +516,7 @@ $fcBlock->setFieldValue(array(
                         }
                         $extLabelLbl = (string)$extLabelNode->label;
                         ?>
+
                         <li id="label_info-ext-<?php echo $elIdx++?>-<?php echo $_id?>" class="carrier-specific carrier-specific-fedex carrier-specific-fedexsoap" style="display:none">
                             <label for="extra_label_info[<?php echo $extLabelOpt.'-'.$_id?>]"><?php echo $_hlp->__($extLabelLbl) ?></label>
                             <select disabled="disabled" id="extra_label_info[<?php echo $extLabelOpt.'-'.$_id?>]" name="extra_label_info[<?php echo $extLabelOpt?>]" title="<?php echo $_hlp->__($extLabelLbl) ?>">
@@ -511,12 +526,14 @@ $fcBlock->setFieldValue(array(
                             </select>
                             <div class="clear" style="height: 5px"></div>
                         </li>
+
                     <?php endforeach ?>
                     <li id="label_info-4-<?php echo $_id?>" style="display:none">
-                        <label for="use_label_shipping_amount-<?php echo $_id?>"><?php echo $_hlp->__('Use Label Amount') ?></label>
-                        <input id="use_label_shipping_amount-<?php echo $_id?>" name="use_label_shipping_amount" value="1" title="<?php echo $_hlp->__('Use Label Shipping Amount') ?>" type="checkbox" class="input-checkbox" onchange="useLabelShippingAmountChanged(this)" />
+                        <label for="use_label_shipping_amount-<?php echo $_id?>"><?php echo Mage::helper('udropship')->__('Use Label Amount') ?></label>
+                        <input id="use_label_shipping_amount-<?php echo $_id?>" name="use_label_shipping_amount" value="1" title="<?php echo Mage::helper('udropship')->__('Use Label Shipping Amount') ?>" type="checkbox" class="input-checkbox" onchange="useLabelShippingAmountChanged(this)" />
                         <br />
                     </li>
+
                     <?php if ($_po->canCreateShipment()): ?>
                         <li id="shipping_amount-1-<?php echo $_id?>">
                             <nobr>
@@ -541,10 +558,12 @@ $fcBlock->setFieldValue(array(
                             <input id="tracking_id-<?php echo $_id?>" name="tracking_id" value="<?php echo $_session->getData('tracking_id'); $_session->unsetData('tracking_id');?>" title="<?php echo $_hlp->__('Add Tracking ID') ?>" type="text" class="input-text" style="width:250px;" />
                         </li>
                     <?php endif ?>
+
                     <li>
-                        <label for="comment-<?php echo $_id?>"><?php echo $_hlp->__('Add Comment<br/>(for retailer)') ?></label>
-                        <textarea id="comment-<?php echo $_id?>" name="comment" class="textarea" style="width:250px; height:70px;" title="<?php echo $_hlp->__('Add Comment') ?>" ></textarea>
+                        <label for="comment-<?php echo $_id?>"><?php echo Mage::helper('udropship')->__('Add Comment<br/>(for retailer)') ?></label>
+                        <textarea id="comment-<?php echo $_id?>" name="comment" class="textarea" style="width:250px; height:70px;" title="<?php echo Mage::helper('udropship')->__('Add Comment') ?>" ></textarea>
                     </li>
+
                     <?php if (Mage::getStoreConfigFlag('udropship/vendor/manual_shipment_status')): ?>
                         <li id="label_info-5-<?php echo $_id?>" style="display:none">
                             <label for="is_shipped-<?php echo $_id?>"><?php echo $_hlp->__('Mark as Shipped') ?></label>
@@ -557,6 +576,7 @@ $fcBlock->setFieldValue(array(
                             <option value=""><?php echo $_hlp->__('* Automatic') ?></option>
                             <?php if (!Mage::getStoreConfigFlag('udropship/vendor/allow_forced_po_status_change')): ?>
                                 <?php
+
                                 $_allowedPoStatuses = $_poHlp->getAllowedPoStatuses($_po, false);
                                 $__statuses = array();
                                 foreach ($_statuses as $_status => $_statusLbl) {
@@ -564,6 +584,7 @@ $fcBlock->setFieldValue(array(
                                         $__statuses[$_status] = $_statusLbl;
                                     }
                                 }
+
                                 ?>
                             <?php else: ?>
                                 <?php $__statuses = $_statuses ?>
@@ -592,13 +613,15 @@ $fcBlock->setFieldValue(array(
                         <label>&nbsp;</label>
                         <?php if ($_po->canCreateShipment()): ?>
                             <button class="form-button" type="button" id="submit-<?php echo $_id ?>"><span><?php echo $_hlp->__('Create Shipment') ?></span></button>
+
                         <?php endif?>
-                        <button class="form-button" type="button" id="addcomment-<?php echo $_id ?>"><span><?php echo $_hlp->__('Add PO Comment') ?></span></button>
-                        <span class="shipment-info-loader" style="display:none" id="submit-loader-<?php echo $_id ?>"><?php echo $_hlp->__('Please wait, submitting...')?></span>
+                        <button class="form-button" type="button" id="addcomment-<?php echo $_id ?>"><span><?php echo Mage::helper('udropship')->__('Add PO Comment') ?></span></button>
+                        <span class="shipment-info-loader" style="display:none" id="submit-loader-<?php echo $_id ?>"><?php echo Mage::helper('udropship')->__('Please wait, submitting...')?></span>
                     </li>
                 </ul>
 
                 <?php if (count($_comments)): ?>
+
                     <br />
                     <h4><?php echo $_hlp->__('Comments history') ?></h4>
                     <table cellspacing="0" class="data-table" <?php if (!empty($_highlight['comment'])): ?>class="highlight"<?php endif ?>><tbody>
@@ -614,6 +637,7 @@ $fcBlock->setFieldValue(array(
                             </tr>
                         <?php endforeach ?>
                         </tbody></table>
+
                 <?php endif ?>
             </div>
         </div>

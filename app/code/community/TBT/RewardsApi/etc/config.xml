@@ -5,17 +5,6 @@
             <version>1.0.0.0</version>
         </TBT_RewardsApi>
     </modules>
-    <admin>
-        <routers>
-            <rewardsapiadmin>
-                <use>admin</use>
-                <args>
-                    <module>TBT_RewardsApi</module>
-                    <frontName>rewardsapiadmin</frontName>
-                </args>
-            </rewardsapiadmin>
-        </routers>
-    </admin>
     <frontend>
         <routers>
             <rewardsapi>

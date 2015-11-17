@@ -96,7 +96,7 @@ class Unirgy_DropshipPayout_Block_Adminhtml_Payout_Grid extends Mage_Adminhtml_B
 
         if (!Mage::helper('udropship')->isStatementAsInvoice()) {
             $this->addColumn('total_payout', array(
-                'header' => Mage::helper('udpayout')->__('Total Payout'),
+                'header' => Mage::helper('udropship')->__('Total Payout'),
                 'index' => 'total_payout',
                 'type'  => 'price',
                 'currency' => 'base_currency_code',
@@ -104,7 +104,7 @@ class Unirgy_DropshipPayout_Block_Adminhtml_Payout_Grid extends Mage_Adminhtml_B
             ));
 
             $this->addColumn('total_paid', array(
-                'header' => Mage::helper('udpayout')->__('Total Paid'),
+                'header' => Mage::helper('udropship')->__('Total Paid'),
                 'index' => 'total_paid',
                 'type'  => 'price',
                 'currency' => 'base_currency_code',
@@ -112,7 +112,7 @@ class Unirgy_DropshipPayout_Block_Adminhtml_Payout_Grid extends Mage_Adminhtml_B
             ));
 
             $this->addColumn('total_due', array(
-                'header' => Mage::helper('udpayout')->__('Total Due'),
+                'header' => Mage::helper('udropship')->__('Total Due'),
                 'index' => 'total_due',
                 'type'  => 'price',
                 'currency' => 'base_currency_code',
@@ -120,7 +120,7 @@ class Unirgy_DropshipPayout_Block_Adminhtml_Payout_Grid extends Mage_Adminhtml_B
             ));
         } else {
             $this->addColumn('total_payout', array(
-                'header' => Mage::helper('udpayout')->__('Total Payment'),
+                'header' => Mage::helper('udropship')->__('Total Payment'),
                 'index' => 'total_payment',
                 'type'  => 'price',
                 'currency' => 'base_currency_code',
@@ -128,7 +128,7 @@ class Unirgy_DropshipPayout_Block_Adminhtml_Payout_Grid extends Mage_Adminhtml_B
             ));
 
             $this->addColumn('total_paid', array(
-                'header' => Mage::helper('udpayout')->__('Payment Paid'),
+                'header' => Mage::helper('udropship')->__('Payment Paid'),
                 'index' => 'payment_paid',
                 'type'  => 'price',
                 'currency' => 'base_currency_code',
@@ -136,7 +136,7 @@ class Unirgy_DropshipPayout_Block_Adminhtml_Payout_Grid extends Mage_Adminhtml_B
             ));
 
             $this->addColumn('total_due', array(
-                'header' => Mage::helper('udpayout')->__('Payment Due'),
+                'header' => Mage::helper('udropship')->__('Payment Due'),
                 'index' => 'payment_due',
                 'type'  => 'price',
                 'currency' => 'base_currency_code',
@@ -165,8 +165,8 @@ class Unirgy_DropshipPayout_Block_Adminhtml_Payout_Grid extends Mage_Adminhtml_B
             'width'     => 150,
         ));
 
-        $this->addExportType('*/*/exportCsv', Mage::helper('adminhtml')->__('CSV'));
-        $this->addExportType('*/*/exportXml', Mage::helper('adminhtml')->__('XML'));
+        $this->addExportType('*/*/exportCsv', Mage::helper('udropship')->__('CSV'));
+        $this->addExportType('*/*/exportXml', Mage::helper('udropship')->__('XML'));
 
         return parent::_prepareColumns();
     }

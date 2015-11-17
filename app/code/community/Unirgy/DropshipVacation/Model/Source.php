@@ -32,18 +32,18 @@ class Unirgy_DropshipVacation_Model_Source extends Unirgy_Dropship_Model_Source_
 
         case 'vacation_mode':
             $options = array(
-                0 => $hlpv->__('Not Vacation'),
-                1 => $hlpv->__('Notify Customer On Availability'),
-                2 => $hlpv->__('Disable Products'),
+                0 => Mage::helper('udropship')->__('Not Vacation'),
+                1 => Mage::helper('udropship')->__('Notify Customer On Availability'),
+                2 => Mage::helper('udropship')->__('Disable Products'),
             );
             break;
 
         default:
-            Mage::throwException($hlp->__('Invalid request for source options: '.$this->getPath()));
+            Mage::throwException(Mage::helper('udropship')->__('Invalid request for source options: '.$this->getPath()));
         }
 
         if ($selector) {
-            $options = array(''=>$hlp->__('* Please select')) + $options;
+            $options = array(''=>Mage::helper('udropship')->__('* Please select')) + $options;
         }
 
         return $options;

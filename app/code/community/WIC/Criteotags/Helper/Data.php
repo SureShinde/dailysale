@@ -24,6 +24,9 @@ class WIC_Criteotags_Helper_Data extends Mage_Core_Helper_Abstract {
     const XML_CONFIG_EXPORT_ENABLE = 'criteotags/export_criteo/enable';
     const XML_CONFIG_EXPORT_DESCRIPTION = 'criteotags/export_criteo/description';
     const XML_CONFIG_EXPORT_NAME_TEMPLATE = 'criteotags/export_criteo/name_template';
+    const XML_CONFIG_EXPORT_VISIBILITY = 'criteotags/export_criteo/visibility';
+    
+    const XML_CONFIG_DEBUG_FOPEN = 'criteotags/debug/fopen';
     
     private $_logfilename = 'wic_criteo.log';        
 
@@ -44,16 +47,24 @@ class WIC_Criteotags_Helper_Data extends Mage_Core_Helper_Abstract {
     }
 
     public function isExportEnable() {
-        return Mage::getStoreConfigFlag(self::XML_CONFIG_EXPORT_DESCRIPTION, Mage::app()->getStore()->getStoreId());
+        return Mage::getStoreConfigFlag(self::XML_CONFIG_EXPORT_ENABLE, Mage::app()->getStore()->getStoreId());
     }
 
     public function getDescription() {
-        return Mage::getStoreConfig(self::XML_CONFIG_TAGS_SITETYPE, Mage::app()->getStore()->getStoreId());
+        return Mage::getStoreConfig(self::XML_CONFIG_EXPORT_DESCRIPTION, Mage::app()->getStore()->getStoreId());
     }
 
     public function getNameTemplate() {
         return Mage::getStoreConfig(self::XML_CONFIG_EXPORT_NAME_TEMPLATE, Mage::app()->getStore()->getStoreId());
-    }        
+    }
+    
+    public function getProductVisibility() {
+        return Mage::getStoreConfig(self::XML_CONFIG_EXPORT_VISIBILITY, Mage::app()->getStore()->getStoreId());
+    }
+    
+    public function getDebugFopen() {
+        return Mage::getStoreConfig(self::XML_CONFIG_DEBUG_FOPEN, Mage::app()->getStore()->getStoreId());
+    }
 
     public function getCustomerId() {
         if (Mage::getSingleton('customer/session')->isLoggedIn()) {

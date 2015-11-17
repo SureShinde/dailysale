@@ -55,26 +55,26 @@ class Unirgy_DropshipTierShipping_Model_Source extends Unirgy_Dropship_Model_Sou
         case 'carriers/udtiership/cost_calculation_type':
         case 'carriers/udtiership/handling_calculation_type':
             $options = array(
-                self::CT_SEPARATE => $hlpv->__('Separate per customer shipclass'),
-                self::CT_BASE_PLUS_ZONE_PERCENT => $hlpv->__('Base plus percent per customer shipclass'),
-                self::CT_BASE_PLUS_ZONE_FIXED   => $hlpv->__('Base plus fixed per customer shipclass'),
+                self::CT_SEPARATE => Mage::helper('udropship')->__('Separate per customer shipclass'),
+                self::CT_BASE_PLUS_ZONE_PERCENT => Mage::helper('udropship')->__('Base plus percent per customer shipclass'),
+                self::CT_BASE_PLUS_ZONE_FIXED   => Mage::helper('udropship')->__('Base plus fixed per customer shipclass'),
             );
             break;
         case 'carriers/udtiership/calculation_method':
             $options = array(
-                self::CM_MAX_FIRST_ADDITIONAL => $hlpv->__('Max first item other additional'),
-                self::CM_MAX_FIRST => $hlpv->__('Max first item (discard qty)'),
-                self::CM_SUM_FIRST_ADDITIONAL => $hlpv->__('Sum first item other additional'),
-                self::CM_SUM_FIRST => $hlpv->__('Sum first item (discard qty)'),
-                self::CM_MULTIPLY_FIRST       => $hlpv->__('Multiply first item (additional not used)'),
+                self::CM_MAX_FIRST_ADDITIONAL => Mage::helper('udropship')->__('Max first item other additional'),
+                self::CM_MAX_FIRST => Mage::helper('udropship')->__('Max first item (discard qty)'),
+                self::CM_SUM_FIRST_ADDITIONAL => Mage::helper('udropship')->__('Sum first item other additional'),
+                self::CM_SUM_FIRST => Mage::helper('udropship')->__('Sum first item (discard qty)'),
+                self::CM_MULTIPLY_FIRST       => Mage::helper('udropship')->__('Multiply first item (additional not used)'),
             );
             break;
 
         case 'carriers/udtiership/fallback_lookup':
             $options = array(
-                self::FL_VENDOR_BASE => $hlpv->__('Vendor up to BASE'),
-                self::FL_VENDOR_DEFAULT => $hlpv->__('Vendor up to DEFAULT'),
-                self::FL_TIER => $hlpv->__('Vendor/Global by tier'),
+                self::FL_VENDOR_BASE => Mage::helper('udropship')->__('Vendor up to BASE'),
+                self::FL_VENDOR_DEFAULT => Mage::helper('udropship')->__('Vendor up to DEFAULT'),
+                self::FL_TIER => Mage::helper('udropship')->__('Vendor/Global by tier'),
             );
             break;
 
@@ -89,19 +89,19 @@ class Unirgy_DropshipTierShipping_Model_Source extends Unirgy_Dropship_Model_Sou
 
         case 'carriers/udtiership/use_simple_rates':
            $options = array(
-               self::USE_RATES_V1 => $hlpv->__('V1 Rates'),
-               self::USE_RATES_V1_SIMPLE => $hlpv->__('V1 Simple Rates'),
-               self::USE_RATES_V2 => $hlpv->__('V2 By Category/VendorClass First/Additional/Handling Rates'),
-               self::USE_RATES_V2_SIMPLE => $hlpv->__('V2 Simple First/Additional Rates'),
-               self::USE_RATES_V2_SIMPLE_COND => $hlpv->__('V2 Simple Conditional Rates'),
+               self::USE_RATES_V1 => Mage::helper('udropship')->__('V1 Rates'),
+               self::USE_RATES_V1_SIMPLE => Mage::helper('udropship')->__('V1 Simple Rates'),
+               self::USE_RATES_V2 => Mage::helper('udropship')->__('V2 By Category/VendorClass First/Additional/Handling Rates'),
+               self::USE_RATES_V2_SIMPLE => Mage::helper('udropship')->__('V2 Simple First/Additional Rates'),
+               self::USE_RATES_V2_SIMPLE_COND => Mage::helper('udropship')->__('V2 Simple Conditional Rates'),
            );
            break;
 
         case 'simple_condition':
             $options = array(
-                self::SIMPLE_COND_FULLWEIGHT => $hlpv->__('Full Weight'),
-                self::SIMPLE_COND_SUBTOTAL => $hlpv->__('Subtotal'),
-                self::SIMPLE_COND_TOTALQTY => $hlpv->__('Total Qty'),
+                self::SIMPLE_COND_FULLWEIGHT => Mage::helper('udropship')->__('Full Weight'),
+                self::SIMPLE_COND_SUBTOTAL => Mage::helper('udropship')->__('Subtotal'),
+                self::SIMPLE_COND_TOTALQTY => Mage::helper('udropship')->__('Total Qty'),
             );
             break;
 
@@ -112,11 +112,11 @@ class Unirgy_DropshipTierShipping_Model_Source extends Unirgy_Dropship_Model_Sou
             break;
 
         default:
-            Mage::throwException($hlp->__('Invalid request for source options: '.$this->getPath()));
+            Mage::throwException(Mage::helper('udropship')->__('Invalid request for source options: '.$this->getPath()));
         }
 
         if ($selector) {
-            $options = array(''=>$hlp->__('* Please select')) + $options;
+            $options = array(''=>Mage::helper('udropship')->__('* Please select')) + $options;
         }
 
         return $options;

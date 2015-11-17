@@ -43,7 +43,7 @@ class MageWorx_CustomerCredit_Block_Adminhtml_Customer_Edit_Tab_CustomerCredit_A
         $this->addItem('log', array(
             'title'       => Mage::helper('customer')->__('Activity Log'),
             'ajax'        => true,
-            'content_url' => $this->getUrl('admincustomercredit/adminhtml_credit/logGrid', array('_current' => true)),
+            'content_url' => $this->getUrl('adminhtml/credit/logGrid', array('_current' => true)),
         ));
     }
 }

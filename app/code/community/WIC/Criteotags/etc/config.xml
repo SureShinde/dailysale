@@ -2,7 +2,7 @@
 <config>
     <modules>
         <WIC_Criteotags>
-            <version>1.3.3</version>
+            <version>1.4.3</version>
         </WIC_Criteotags>
     </modules>
     <global>    
@@ -33,13 +33,13 @@
     </frontend>
     <admin>
         <routers>
-            <criteotags>
-                <use>admin</use>
-                <args>
-                    <module>WIC_Criteotags</module>
-                    <frontName>criteotags</frontName>
-                </args>
-            </criteotags>
+            <adminhtml>
+				<args>
+					<modules>
+						<criteotags before="Mage_Adminhtml">WIC_Criteotags_Adminhtml</criteotags>
+					</modules>
+				</args>
+			</adminhtml>
             <adminhtml>
                 <args>
                     <modules>
@@ -89,7 +89,7 @@
                     <cron_expr>0 1 * * *</cron_expr>
                 </schedule>
                 <run>
-                    <model>criteotags/export_xml::runExport</model>
+                    <model>criteotags/observer::cron</model>
                 </run>
             </export_criteo>
         </jobs>
@@ -100,10 +100,13 @@
                 <enable>0</enable>
                 <account></account>
                 <sitetype>d</sitetype>
+                <producttype>1</producttype>
             </general>
             <export_criteo>
                 <enable>0</enable>
                 <description>description</description>
+                <name_template>{name}</name_template>
+                <visibility>0</visibility>
             </export_criteo>
         </criteotags>
     </default>

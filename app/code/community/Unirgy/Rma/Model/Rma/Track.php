@@ -66,7 +66,7 @@ class Unirgy_Rma_Model_Rma_Track extends Mage_Sales_Model_Abstract
         }
 
         if (!$trackingInfo = $carrierInstance->getTrackingInfo($this->getNumber())) {
-            return Mage::helper('sales')->__('No detail for number "%s"', $this->getNumber());
+            return Mage::helper('udropship')->__('No detail for number "%s"', $this->getNumber());
         }
 
         return $trackingInfo;

@@ -41,22 +41,22 @@ class Unirgy_Dropship_Block_Adminhtml_Shipping_Grid extends Mage_Adminhtml_Block
         $hlp = Mage::helper('udropship');
 
         $this->addColumn('shipping_code', array(
-            'header'    => $hlp->__('Method Code'),
+            'header'    => Mage::helper('udropship')->__('Method Code'),
             'index'     => 'shipping_code',
         ));
 
         $this->addColumn('shipping_title', array(
-            'header'    => $hlp->__('Method Title'),
+            'header'    => Mage::helper('udropship')->__('Method Title'),
             'index'     => 'shipping_title',
         ));
 
         $this->addColumn('days_in_transit', array(
-            'header'    => $hlp->__('Days In Transit'),
+            'header'    => Mage::helper('udropship')->__('Days In Transit'),
             'index'     => 'days_in_transit',
         ));
 
         $this->addColumn('website_ids', array(
-            'header'        => Mage::helper('cms')->__('Website'),
+            'header'        => Mage::helper('udropship')->__('Website'),
             'index'         => 'website_ids',
             'type'          => 'options',
             'options'       => Mage::getModel('core/website')->getCollection()->toOptionHash(),
@@ -66,7 +66,7 @@ class Unirgy_Dropship_Block_Adminhtml_Shipping_Grid extends Mage_Adminhtml_Block
         ));
 
         $this->addColumn('system_methods_by_profile', array(
-            'header'    => $hlp->__('System Methods'),
+            'header'    => Mage::helper('udropship')->__('System Methods'),
             'index'     => 'system_methods_by_profile',
             'filter'    => false,
             'sortable'  => false,
@@ -80,8 +80,8 @@ class Unirgy_Dropship_Block_Adminhtml_Shipping_Grid extends Mage_Adminhtml_Block
         $column = $this->getColumn('website_ids');
         $column->setRenderer($this->getLayout()->createBlock('udropship/adminhtml_shipping_grid_renderer')->setColumn($column));
 
-        $this->addExportType('*/*/exportCsv', Mage::helper('adminhtml')->__('CSV'));
-        $this->addExportType('*/*/exportXml', Mage::helper('adminhtml')->__('XML'));
+        $this->addExportType('*/*/exportCsv', Mage::helper('udropship')->__('CSV'));
+        $this->addExportType('*/*/exportXml', Mage::helper('udropship')->__('XML'));
         return parent::_prepareColumns();
     }
     

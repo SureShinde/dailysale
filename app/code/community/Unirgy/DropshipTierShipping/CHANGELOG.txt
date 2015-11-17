@@ -1,3 +1,16 @@
+===== 2.4.1 =====
+  * Fixed per vendor v2 rates loading
+
+===== 2.4.0 =====
+  * CE 1.9.2.2 compatibility
+  * Fixed install "index too long" error on some mysql installations
+
+===== 2.2.0 =====
+  * Central translations file
+
+===== 2.1.5 =====
+  * Added customer group condition to setup shipping prices
+
 ===== 2.1.4 =====
   * Fixed rates calculation when use rates setup = 'V2 By Category/VendorClass First/Additional/Handling Rates'
 

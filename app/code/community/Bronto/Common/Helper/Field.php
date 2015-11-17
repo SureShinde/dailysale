@@ -6,6 +6,7 @@
  */
 class Bronto_Common_Helper_Field extends Bronto_Common_Helper_Data
 {
+    private static $_fieldCache = array();
     /**
      * @param string $name
      * @param array  $options
@@ -15,19 +16,22 @@ class Bronto_Common_Helper_Field extends Bronto_Common_Helper_Data
     public function getFieldByName($name, $options)
     {
         /* @var $fieldObject Bronto_Api_Field */
-        $fieldObject = $this->getApi()->getFieldObject();
+        $fieldObject = $this->getApi()->transferField();
 
-        if (!($field = $fieldObject->getFromCache($name))) {
-            $field        = $fieldObject->createRow();
-            $field->name  = $name;
-            $field->label = $options['label'];
-            $field->type  = $options['type'];
-            if (!empty($options['options'])) {
-                $field->options = $options['options'];
+        if (!array_key_exists($name, self::$_fieldCache)) {
+            $field = $fieldObject->getByName($name);
+            if (!$field) {
+                $field = $fieldObject->createObject()
+                    ->withName($name)
+                    ->withType($options['type']);
+                if (!empty($options['options'])) {
+                    $field->withOptions($options['options']);
+                }
             }
+            $field->withLabel($label);
             try {
-                $field->save();
-                $fieldObject->addToCache($name, $field);
+                $fieldObject->save($field);
+                $self::$_fieldCache[$name] = $field;
             } catch (Exception $e) {
                 $this->writeError($e);
             }

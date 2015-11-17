@@ -41,10 +41,10 @@ class Unirgy_DropshipTierShipping_Block_Vendor_SimpleRates extends Mage_Core_Blo
         $column = current($subkeyColumns);
         switch ($column[1]) {
             case 'cost':
-                $title = Mage::helper('udtiership')->__('Cost for the first item');
+                $title = Mage::helper('udropship')->__('Cost for the first item');
                 break;
             case 'additional':
-                $title = Mage::helper('udtiership')->__('Additional item cost');
+                $title = Mage::helper('udropship')->__('Additional item cost');
                 break;
         }
         return $title;

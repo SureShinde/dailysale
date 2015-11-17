@@ -177,12 +177,12 @@ class Bronto_Email_Model_Template extends Bronto_Common_Model_Email_Template
     /**
      * Log about the functionality of sending the email before it goes out
      *
-     * @param Bronto_Api_Contact_Row $contact
-     * @param Bronto_Api_Message_Row $message
+     * @param Bronto_Api_Model_Contact $contact
+     * @param Bronto_Api_Model_Message $message
      *
      * @return void
      */
-    protected function _beforeSend(Bronto_Api_Contact_Row $contact, Bronto_Api_Message_Row $message)
+    protected function _beforeSend(Bronto_Api_Model_Contact $contact, Bronto_Api_Model_Message $message)
     {
         Mage::dispatchEvent('bronto_email_send_before');
 
@@ -201,13 +201,13 @@ class Bronto_Email_Model_Template extends Bronto_Common_Model_Email_Template
     /**
      * Log data on sending message
      *
-     * @param bool                    $success
-     * @param string                  $error
-     * @param Bronto_Api_Delivery_Row $delivery
+     * @param bool                      $success
+     * @param string                    $error
+     * @param Bronto_Api_Model_Delivery $delivery
      *
      * @return void
      */
-    protected function _afterSend($success, $error = null, Bronto_Api_Delivery_Row $delivery = null)
+    protected function _afterSend($success, $error = null, Bronto_Api_Model_Delivery $delivery = null)
     {
         Mage::dispatchEvent('bronto_email_send_after');
 

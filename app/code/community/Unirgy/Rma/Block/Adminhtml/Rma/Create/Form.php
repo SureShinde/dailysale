@@ -29,6 +29,6 @@ class Unirgy_Rma_Block_Adminhtml_Rma_Create_Form extends Mage_Adminhtml_Block_Sa
 
     public function getSaveUrl()
     {
-        return $this->getUrl('urmaadmin/order_rma/save', array('order_id' => $this->getRma()->getOrderId()));
+        return $this->getUrl('adminhtml/urmaadmin_order_rma/save', array('order_id' => $this->getRma()->getOrderId()));
     }
 }

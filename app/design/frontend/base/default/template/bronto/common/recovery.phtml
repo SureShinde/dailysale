@@ -32,7 +32,8 @@
     <div id="bronto-cart-recovery-discount-amount"><?php echo $this->getDiscountAmount(); ?></div>
     <div id="bronto-cart-recovery-subtotal"><?php echo $this->getSalesObject()->getSubtotal(); ?></div>
     <div id="bronto-cart-recovery-tax-amount"><?php echo $this->getSalesObject()->getTaxAmount(); ?></div>
+    <div id="bronto-cart-recovery-email-address"><?php echo htmlentities($this->getSalesObject()->getCustomerEmail()); ?></div>
     <div id="bronto-cart-recovery-grand-total"><?php echo $this->getSalesObject()->getGrandTotal(); ?></div>
   </div>
-  <?php echo $this->getCartRecoveryCode(); ?>
 <?php endif; ?>
+<?php echo $this->getCartRecoveryCode(); ?>

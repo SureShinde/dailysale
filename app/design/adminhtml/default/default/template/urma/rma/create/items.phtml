@@ -26,11 +26,11 @@
 </div>
 <br />
 <div class="box-left entry-edit">
-    <div class="entry-edit-head"><h4><?php echo $this->__('Return Comments') ?></h4></div>
+    <div class="entry-edit-head"><h4><?php echo Mage::helper('udropship')->__('Return Comments') ?></h4></div>
     <fieldset>
         <div id="order-history_form">
             <span class="field-row">
-                <label class="normal" for="rma_comment_text"><?php echo Mage::helper('sales')->__('Return Comments') ?></label>
+                <label class="normal" for="rma_comment_text"><?php echo Mage::helper('udropship')->__('Return Comments') ?></label>
                 <textarea id="rma_comment_text" name="rma[comment_text]" rows="3" cols="5" style="height:6em; width:99%;"><?php echo $this->getRma()->getCommentText(); ?></textarea>
             </span>
             <div class="clear"></div>
@@ -50,11 +50,11 @@
                 </select>
             </p>
           <p>
-              <label class="normal" for="notify_customer"><?php echo Mage::helper('sales')->__('Append Comments') ?></label>
+              <label class="normal" for="notify_customer"><?php echo Mage::helper('udropship')->__('Append Comments') ?></label>
               <input id="notify_customer" name="rma[comment_customer_notify]" value="1" type="checkbox" />
           </p>
           <p>
-              <label class="normal" for="send_email"><?php echo Mage::helper('sales')->__('Email Copy of Return') ?></label>
+              <label class="normal" for="send_email"><?php echo Mage::helper('udropship')->__('Email Copy of Return') ?></label>
               <input id="send_email" name="rma[send_email]" value="1" type="checkbox" />
           </p>
           <div class="a-right">

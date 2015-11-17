@@ -49,6 +49,9 @@ class Bronto_Common_Model_Observer
                 $scopeId
             );
         }
+
+        Mage::getConfig()->reinit();
+        Mage::app()->reinitStores();
     }
 
     /**

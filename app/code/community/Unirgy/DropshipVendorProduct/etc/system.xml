@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <config>
     <sections>
-        <udprod>
+        <udprod translate="label" module="udropship">
             <tab>sales</tab>
             <label>Vendor Products Edit</label>
             <frontend_type>text</frontend_type>
@@ -27,7 +27,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </use_product_zoom>
-                        <use_configurable_preselect>
+                        <use_configurable_preselect translate="label">
                             <label>Preselect configurable options</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -108,7 +108,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </product_info_tabbed>
-                        <type_of_product translate="label">
+                        <type_of_product translate="label comment">
                             <label>Type of product</label>
                             <frontend_type>select</frontend_type>
                             <frontend_model>udprod/adminhtml_systemConfigField_typeOfProduct</frontend_model>
@@ -173,6 +173,16 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </allowed_types>
+                        <disable_name_check translate="label comment">
+                            <label>Disable product name "is empty" check</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>7</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>For some languages might not work (e.g. Arabic). In that case select "Yes"</comment>
+                        </disable_name_check>
                     </fields>
                 </general>
                 <notification translate="label">
@@ -325,7 +335,7 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <fields>
-                        <type_of_product translate="label">
+                        <type_of_product translate="label comment">
                             <label>Type of product</label>
                             <frontend_type>select</frontend_type>
                             <frontend_model>udprod/adminhtml_systemConfigField_typeOfProductSelector</frontend_model>
@@ -349,7 +359,7 @@
                         </value>
                     </fields>
                 </template_sku>
-                <form>
+                <form translate="label">
                     <label>Vendor Product Edit Form</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>410</sort_order>
@@ -369,7 +379,7 @@
                         </fieldsets>
                     </fields>
                 </form>
-                <quick_create_layout>
+                <quick_create_layout translate="label">
                     <label>Add Product Options Layout</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>510</sort_order>
@@ -386,7 +396,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </cfg_attributes>
-                        <cfg_attributes_title translate="label">
+                        <cfg_attributes_title translate="label comment">
                             <label>Configurable Attributes Column Title</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>30</sort_order>

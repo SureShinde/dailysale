@@ -32,13 +32,13 @@ class Unirgy_DropshipVendorProduct_Block_Vendor_Product_Renderer_QuickCreate ext
         $this->setChild('delete_button',
             $this->getLayout()->createBlock('adminhtml/widget_button')
                 ->setData(array(
-                    'label' => Mage::helper('catalog')->__('Delete'),
+                    'label' => Mage::helper('udropship')->__('Delete'),
                     'class' => 'delete delete-option'
                 )));
         $this->setChild('add_button',
             $this->getLayout()->createBlock('adminhtml/widget_button')
                 ->setData(array(
-                    'label' => Mage::helper('catalog')->__('Add'),
+                    'label' => Mage::helper('udropship')->__('Add'),
                     'class' => 'add',
                     'id'    => 'add_new_option_button'
                 )));
@@ -77,6 +77,16 @@ class Unirgy_DropshipVendorProduct_Block_Vendor_Product_Renderer_QuickCreate ext
         return Mage::getSingleton('udropship/source')->setPath('yesno')->toOptionHash(true);
     }
 
+    public function getCfgAttributeLabels()
+    {
+        $cfgAttrs = $this->getFirstAttributes();
+        $tuple = $this->getCfgAttributeValueTuple();
+        $labels = array();
+        foreach ($cfgAttrs as $__i => $__ca) {
+            $labels[] = $__ca->getSource()->getOptionText($tuple[$__i]);
+        }
+        return $labels;
+    }
     public function getCfgAttributeLabel()
     {
         return $this->getFirstAttribute()->getSource()->getOptionText($this->getCfgAttributeValue());
@@ -93,13 +103,28 @@ class Unirgy_DropshipVendorProduct_Block_Vendor_Product_Renderer_QuickCreate ext
     {
         $cfgAttrs = Mage::helper('udprod')->getConfigurableAttributes($this->getProduct(), !$this->getProduct()->getId());
         if ($skipFirst) {
-            array_shift($cfgAttrs);
+            $firstAttr = $this->getFirstAttributes();
+            $firstCnt = count($firstAttr);
+            while (--$firstCnt>=0) array_shift($cfgAttrs);
         }
         return $cfgAttrs;
+    }
+    public function getFirstAttributes()
+    {
+        return Mage::helper('udprod')->getCfgFirstAttributes($this->getProduct());
     }
     public function getFirstAttribute()
     {
         return Mage::helper('udprod')->getCfgFirstAttribute($this->getProduct());
+    }
+    public function getFirstAttributesValues($used=null, $filters=array(), $filterFlag=true)
+    {
+        $values = array();
+        $attrs = $this->getFirstAttributes();
+        foreach ($attrs as $attr) {
+            $values[] = $this->getAttributeValues($attr, $used, $filters, $filterFlag);
+        }
+        return $values;
     }
     public function getFirstAttributeValues($used=null, $filters=array(), $filterFlag=true)
     {
@@ -156,9 +181,15 @@ class Unirgy_DropshipVendorProduct_Block_Vendor_Product_Renderer_QuickCreate ext
     public function getSimpleProducts($filtered=true)
     {
         $prod = $this->_element->getProduct();
+        $cfgAttrs = $this->getFirstAttributes();
+        $filter = array();
+        $tuple = $this->getCfgAttributeValueTuple();
+        foreach ($cfgAttrs as $__i => $__ca) {
+            $filter[$__ca->getAttributeCode()] = $tuple[$__i];
+        }
         return $prod ?
             ($filtered
-                ? Mage::helper('udprod')->getFilteredSimpleProductData($prod, array($this->getCfgAttributeCode()=>$this->getCfgAttributeValue()))
+                ? Mage::helper('udprod')->getFilteredSimpleProductData($prod, $filter)
                 : Mage::helper('udprod')->getEditSimpleProductData($prod))
             : array();
     }
@@ -168,8 +199,8 @@ class Unirgy_DropshipVendorProduct_Block_Vendor_Product_Renderer_QuickCreate ext
     {
         if (null === $this->_galleryContent) {
             $this->_galleryContent = $this->getLayout()->createBlock('udprod/vendor_product_galleryCfgContent');
-            $this->_galleryContent->setCfgAttribute($this->getFirstAttribute());
-            $this->_galleryContent->setCfgAttributeValue($this->getCfgAttributeValue());
+            $this->_galleryContent->setCfgAttributes($this->getFirstAttributes());
+            $this->_galleryContent->setCfgAttributeValueTuple($this->getCfgAttributeValueTuple());
             $this->_galleryContent->setForm($this->_element->getForm());
             $this->_galleryContent->setProduct($this->getProduct());
         }

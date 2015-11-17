@@ -19,25 +19,19 @@ class Bronto_Common_Helper_Contact extends Bronto_Common_Helper_Data
             return false;
         }
 
-        /* @var $contactObject Bronto_Api_Contact */
-        $api           = $this->getApi(null, 'store', $store);
-        $contactObject = $api->getContactObject();
-
-        // Load Contact
-        $contact        = $contactObject->createRow(array('email' => $email));
-        $contact->email = $email;
+        $api      = $this->getApi(null, 'store', $store);
+        $contacts = $api->transferContact();
         try {
-            $contact = $contact->read();
+            return $contacts->read()
+                ->withIncludeLists(true)
+                ->where->email->equalTo($email)
+                ->first();
         } catch (Exception $e) {
-            // Contact doesn't exist
-            $this->writeDebug('No Contact exists with email: ' . $email);
-            // Set customSource if available
-            if (!empty($customSource)) {
-                $contact->customSource = $customSource;
-            }
+            $this->writeError('Failed to read contact ' . $email . ': ' . $e->getMessage());
         }
-
-        return $contact;
+        return $contacts->createObject()
+            ->withEmail($email)
+            ->withCustomSource($customSource);
     }
 
     /**
@@ -57,70 +51,37 @@ class Bronto_Common_Helper_Contact extends Bronto_Common_Helper_Data
         }
 
         $api = $this->getApi(null, 'store', $store);
-        $contactObject = $api->getContactObject();
-        $filter = array(
-            'type' => 'OR',
-            'email' => array(),
-        );
+        $contactObject = $api->transferContact();
+        $readContacts = $contactObject->read();
         foreach ($emails as $email) {
-            $filter['email'][] = array(
-                'operator' => 'EqualTo',
-                'value' => $email
-            );
+            $readContacts->or->email->equalTo($email);
         }
-
-        $results = $contactObject->readAll($filter);
+        $results = $readContacts->getIterator()->toArray();
         if (count($results) != count($emails)) {
             $contacts = array();
             foreach ($results as $contact) {
-                $contacts[$contact->email] = $contact;
+                $contacts[$contact->getEmail()] = $contact;
             }
 
             $newContacts = array();
             foreach ($emails as $email) {
                 if (!isset($contacts[$email])) {
-                    $contact = $contactObject->createRow(array('email' => $email));
-                    $contact->customSource = $customSource;
-                    $newContacts[$email] = $contact;
+                    $contact = $contactObject->createObject()
+                        ->withEmail($email)
+                        ->withStatus('transactional')
+                        ->withCustomSource($customSource);
+                    $newContacts[] = $contact;
                 }
             }
 
             if ($createNonExistent) {
-                return $contacts + $this->saveContacts($newContacts);
+                return array_merge($contacts, $this->saveContacts($contactObject, $newContacts));
             } else {
-                return $contacts + $newContacts;
+                return array_merge($contacts, $newContacts);
             }
         } else {
             return $results;
         }
-    }
-
-    /**
-     * @param Bronto_Api_Contact_Row $contact
-     * @param bool                   $persistOnly
-     *
-     * @return Bronto_Api_Contact_Row
-     */
-    public function saveContact(Bronto_Api_Contact_Row $contact, $persistOnly = false)
-    {
-
-        if ($persistOnly) {
-            $contact->persist();
-        } else {
-            try {
-                if ($contact->id) {
-                    $this->writeDebug("Updating existing Contact: ({$contact->email})...");
-                } else {
-                    $this->writeDebug("Saving new Contact: ({$contact->email})...");
-                }
-                $contact->save(false);
-            } catch (Exception $e) {
-                $this->writeError($e);
-            }
-            $this->_flushApiLogs($contact->getApi());
-        }
-
-        return $contact;
     }
 
     /**
@@ -129,33 +90,29 @@ class Bronto_Common_Helper_Contact extends Bronto_Common_Helper_Data
      * @param array Bronto_Api_Contact_Row
      * @return array Bronto_Api_Contact_Row
      */
-    public function saveContacts($contacts)
+    public function saveContacts($contactObject, $contacts)
     {
-        $contactObject = null;
-        $lookupTable = array();
-        foreach ($contacts as $index => $contact) {
-            $contactObject = $contact->getApiObject();
-            $this->saveContact($contact, true);
-            $lookupTable[] = $index;
+        if (empty($contacts)) {
+            return $contacts;
         }
-
-        if ($contactObject) {
-            try {
-                $results = $contactObject->flush();
-                foreach ($results as $index => $result) {
-                    $contact = $contacts[$lookupTable[$index]];
-                    if ($result->hasError()) {
-                        $this->writeError("Failed to create contact {$contact->email}: ({$result->getErrorCode()}): {$result->getErrorMessage()}");
-                        $contact->error = $result->getErrorMessage();
-                    } else {
-                        $contact->id = $result->id;
-                    }
+        try {
+            $newContacts = array();
+            foreach ($contactObject->addOrUpdate()->push($contacts) as $result) {
+                $item = $result->getItem();
+                $contact = $result->getOriginal();
+                if ($item->getIsError()) {
+                    $this->writeError("Failed to create contact {$contact->getEmail()}: ({$item->getErrorCode()}): {$item->getErrorString()}");
+                    $contact->withError($item->getErrorMessage());
+                } else {
+                    $contact->withId($item->getId());
                 }
-            } catch (Exception $e) {
-                $this->writeError($e);
+                $newContacts[] = $contact;
             }
-            $this->_flushApiLogs($contactObject->getApi());
+            return $newContacts;
+        } catch (Exception $e) {
+            $this->writeError($e);
         }
+        $this->_flushApiLogs($contactObject->getApi());
         return $contacts;
     }
 

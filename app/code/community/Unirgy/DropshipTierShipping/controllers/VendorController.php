@@ -115,21 +115,21 @@ class Unirgy_DropshipTierShipping_VendorController extends Unirgy_Dropship_Vendo
         if (Mage::helper('udtiership')->isV2SimpleRates()) {
             $ratesEl = $_form->addField('tiership_v2_simple_rates', 'select', array(
                 'name'=>'tiership_v2_simple_rates',
-                'label'=>Mage::helper('udtiership')->__('V2 Simple First/Additional Rates'),
+                'label'=>Mage::helper('udropship')->__('V2 Simple First/Additional Rates'),
                 'value'=>$tsHlp->getV2SimpleRates($deliveryType, $extraCond)
             ));
             $renderer = Mage::app()->getLayout()->createBlock('udtiership/vendor_v2_simpleRates');
         } elseif (Mage::helper('udtiership')->isV2SimpleConditionalRates()) {
             $ratesEl = $_form->addField('tiership_v2_simple_cond_rates', 'select', array(
                 'name'=>'tiership_v2_simple_cond_rates',
-                'label'=>Mage::helper('udtiership')->__('V2 Simple Conditional Rates'),
+                'label'=>Mage::helper('udropship')->__('V2 Simple Conditional Rates'),
                 'value'=>$tsHlp->getV2SimpleCondRates($deliveryType, $extraCond)
             ));
             $renderer = Mage::app()->getLayout()->createBlock('udtiership/vendor_v2_simpleCondRates');
         } else {
             $ratesEl = $_form->addField('tiership_v2_rates', 'select', array(
                 'name'=>'tiership_v2_rates',
-                'label'=>Mage::helper('udtiership')->__('V2 Rates'),
+                'label'=>Mage::helper('udropship')->__('V2 Rates'),
                 'value'=>$tsHlp->getV2Rates($deliveryType, $extraCond)
             ));
             $renderer = Mage::app()->getLayout()->createBlock('udtiership/vendor_v2_rates');

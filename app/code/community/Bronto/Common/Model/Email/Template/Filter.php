@@ -44,13 +44,6 @@ class Bronto_Common_Model_Email_Template_Filter extends Mage_Core_Model_Email_Te
     protected $_items = array();
 
     /**
-     * Assigned template variables
-     *
-     * @var array
-     */
-    protected $_variables = array();
-
-    /**
      * Available template variables
      *
      * @var array
@@ -71,6 +64,8 @@ class Bronto_Common_Model_Email_Template_Filter extends Mage_Core_Model_Email_Te
      * @var array
      */
     protected $_queryParams = array();
+
+    protected $_baseTemplate;
 
     /**
      * Map of keys that we would rather have a pretty name for.
@@ -112,6 +107,34 @@ class Bronto_Common_Model_Email_Template_Filter extends Mage_Core_Model_Email_Te
     {
         $this->_items[] = $item;
         return $this;
+    }
+
+    /**
+     * Sets the base template model for the processor
+     *
+     * @param Mage_Core_Model_Email_Template $_baseTemplate
+     * @return Bronto_Common_Model_Email_Template_Filter
+     */
+    public function setBaseTemplate($_baseTemplate)
+    {
+        $this->_baseTemplate = $_baseTemplate;
+        return $this;
+    }
+
+    /**
+     * Sets the inline CSS for this processor
+     *
+     * @param string $text
+     * @return string
+     */
+    protected function _applyInlineCssStyles($text)
+    {
+        if (method_exists($this, 'getInlineCssFile')) {
+            $stripDocType = preg_replace('/^<!DOCTYPE.+?>/', '', $this->_baseTemplate->getPreparedTemplateText($text));
+            $stripHtmlBody = preg_replace('/<html(?:[^>]+)>|<body(?:[^>]+)>/', '', $stripDocType);
+            return str_replace(array('</html>', '</body>'), array('', ''), $stripHtmlBody);
+        }
+        return $text;
     }
 
     /**
@@ -169,8 +192,11 @@ class Bronto_Common_Model_Email_Template_Filter extends Mage_Core_Model_Email_Te
                 }
             }
 
-            $variable                    = implode('_', $parts);
-            $this->_processedAvailable[] = $this->_camelize($variable);
+            $variable                    = $this->_camelize(implode('_', $parts));
+            if (strlen($variable) > 25) {
+                $variable = substr($variable, 0, 25);
+            }
+            $this->_processedAvailable[] = $variable;
 
         }
 
@@ -185,9 +211,9 @@ class Bronto_Common_Model_Email_Template_Filter extends Mage_Core_Model_Email_Te
         $this->_queryParams = array();
 
         // Add rule_id (if available)
-        if (isset($this->_variables['rule'])) {
-            if (class_exists('Bronto_Reminder_Model_Rule', false) && $this->_variables['rule'] instanceOf Bronto_Reminder_Model_Rule) {
-                $this->_queryParams['rule_id'] = $this->_variables['rule']->getId();
+        if (isset($this->_templateVars['rule'])) {
+            if (class_exists('Bronto_Reminder_Model_Rule', false) && $this->_templateVars['rule'] instanceOf Bronto_Reminder_Model_Rule) {
+                $this->_queryParams['rule_id'] = $this->_templateVars['rule']->getId();
             }
         }
 
@@ -206,7 +232,7 @@ class Bronto_Common_Model_Email_Template_Filter extends Mage_Core_Model_Email_Te
      */
     public function filter($delivery)
     {
-        if (!$delivery instanceof Bronto_Api_Delivery_Row) {
+        if (!$delivery instanceof Bronto_Api_Model_Delivery) {
             return parent::filter($delivery);
         }
 
@@ -216,7 +242,7 @@ class Bronto_Common_Model_Email_Template_Filter extends Mage_Core_Model_Email_Te
         $this->_processAvailable();
         $this->_processQueryParams();
 
-        foreach ($this->_variables as $var => $value) {
+        foreach ($this->_templateVars as $var => $value) {
 
             //
             // Handle strings
@@ -553,7 +579,7 @@ class Bronto_Common_Model_Email_Template_Filter extends Mage_Core_Model_Email_Te
 
             $this->_respectDesignTheme();
             $totals = $this->_getTotalsBlock(Mage::getSingleton('core/layout'), $order, 'sales/order_totals', 'order_totals');
-            $this->setField('orderTotals', $totals->toHtml());
+            $this->setField('orderTotals', $this->_applyInlineCssStyles($totals->toHtml()));
 
             $this->_filteredObjects[] = 'order';
         }
@@ -724,7 +750,7 @@ class Bronto_Common_Model_Email_Template_Filter extends Mage_Core_Model_Email_Te
                 $items->setQuote($item->getQuote());
 
                 $this->_respectDesignTheme();
-                $this->setField("cartItems", $items->toHtml());
+                $this->setField("cartItems", $this->_applyInlineCssStyles($items->toHtml()));
             }
 
             $this->_filteredObjects[] = 'quote';
@@ -807,7 +833,7 @@ class Bronto_Common_Model_Email_Template_Filter extends Mage_Core_Model_Email_Te
                 $items->setWishlist($item->getWishlist());
 
                 $this->_respectDesignTheme();
-                $this->setField("wishlistItems", $items->toHtml());
+                $this->setField("wishlistItems", $this->_applyInlineCssStyles($items->toHtml()));
             }
 
             $this->_filteredObjects[] = 'wishlist';
@@ -854,23 +880,10 @@ class Bronto_Common_Model_Email_Template_Filter extends Mage_Core_Model_Email_Te
      */
     protected function _filterOrderItems(Mage_Sales_Model_Order $order)
     {
-        $layout = Mage::getSingleton('core/layout');
-
-        /* @var $items Mage_Sales_Block_Items_Abstract */
-        $items = $layout->createBlock('sales/order_email_items', 'items');
-        $items->setTemplate('email/order/items.phtml');
-        $items->setOrder($order);
-
-        // Setup templates to use for products
-        $items->addItemRender('default', 'sales/order_email_items_order_default', 'email/order/items/order/default.phtml');
-        $items->addItemRender('grouped', 'sales/order_email_items_order_grouped', 'email/order/items/order/default.phtml');
-        $items->addItemRender('bundle', 'bundle/sales_order_items_renderer', 'bundle/email/order/items/order/default.phtml');
-
-        $this->_respectDesignTheme();
-        $totals = $this->_getTotalsBlock($layout, $order, 'sales/order_totals', 'order_totals');
-        $items->append($totals, 'order_totals');
-
-        return $items->toHtml();
+        $html = parent::layoutDirective(array(
+            2 => ' handle="sales_email_order_items" order=$order'
+        ));
+        return $this->_applyInlineCssStyles($html);
     }
 
     /**
@@ -937,25 +950,10 @@ class Bronto_Common_Model_Email_Template_Filter extends Mage_Core_Model_Email_Te
      */
     protected function _filterInvoiceItems(Mage_Sales_Model_Order_Invoice $invoice)
     {
-        $order  = $invoice->getOrder();
-        $layout = Mage::getSingleton('core/layout');
-
-        /* @var $items Mage_Sales_Block_Items_Abstract */
-        $items = $layout->createBlock('sales/order_email_invoice_items', 'items');
-        $items->setTemplate('email/order/invoice/items.phtml');
-        $items->setOrder($order);
-        $items->setInvoice($invoice);
-
-        // Setup templates to use for products
-        $items->addItemRender('default', 'sales/order_email_items_order_default', 'email/order/items/invoice/default.phtml');
-        $items->addItemRender('grouped', 'sales/order_email_items_order_grouped', 'email/order/items/invoice/default.phtml');
-        $items->addItemRender('bundle', 'bundle/sales_order_items_renderer', 'bundle/email/order/items/invoice/default.phtml');
-
-        $this->_respectDesignTheme();
-        $totals = $this->_getTotalsBlock($layout, $order, 'sales/order_invoice_totals', 'invoice_totals');
-        $items->append($totals, 'invoice_totals');
-
-        return $items->toHtml();
+        $html = parent::layoutDirective(array(
+            2 => ' area="frontend" handle="sales_email_order_invoice_items" invoice=$invoice order=$order'
+        ));
+        return $this->_applyInlineCssStyles($html);
     }
 
     /**
@@ -1022,22 +1020,10 @@ class Bronto_Common_Model_Email_Template_Filter extends Mage_Core_Model_Email_Te
      */
     protected function _filterShipmentItems(Mage_Sales_Model_Order_Shipment $shipment)
     {
-        $order  = $shipment->getOrder();
-        $layout = Mage::getSingleton('core/layout');
-
-        /* @var $items Mage_Sales_Block_Items_Abstract */
-        $items = $layout->createBlock('sales/order_email_shipment_items', 'items');
-        $items->setTemplate('email/order/shipment/items.phtml');
-        $items->setOrder($order);
-        $items->setShipment($shipment);
-
-        // Setup templates to use for products
-        $items->addItemRender('default', 'sales/order_email_items_order_default', 'email/order/items/shipment/default.phtml');
-        $items->addItemRender('grouped', 'sales/order_email_items_order_grouped', 'email/order/items/shipment/default.phtml');
-        $items->addItemRender('bundle', 'bundle/sales_order_items_renderer', 'bundle/email/order/items/shipment/default.phtml');
-
-        $this->_respectDesignTheme();
-        return $items->toHtml();
+        $html = parent::layoutDirective(array(
+            2 => ' handle="sales_email_order_shipment_items" shipment=$shipment order=$order'
+        ));
+        return $this->_applyInlineCssStyles($html);
     }
 
     /**
@@ -1054,7 +1040,7 @@ class Bronto_Common_Model_Email_Template_Filter extends Mage_Core_Model_Email_Te
         $block->setShipment($shipment);
         $block->setArea('frontend');
 
-        return $block->toHtml();
+        return $this->_applyInlineCssStyles($block->toHtml());
     }
 
     /**
@@ -1064,25 +1050,10 @@ class Bronto_Common_Model_Email_Template_Filter extends Mage_Core_Model_Email_Te
      */
     protected function _filterCreditmemoItems(Mage_Sales_Model_Order_Creditmemo $creditmemo)
     {
-        $order  = $creditmemo->getOrder();
-        $layout = Mage::getSingleton('core/layout');
-
-        /* @var $items Mage_Sales_Block_Items_Abstract */
-        $items = $layout->createBlock('sales/order_email_creditmemo_items', 'items');
-        $items->setTemplate('email/order/creditmemo/items.phtml');
-        $items->setOrder($order);
-        $items->setCreditmemo($creditmemo);
-
-        // Setup templates to use for products
-        $items->addItemRender('default', 'sales/order_email_items_order_default', 'email/order/items/creditmemo/default.phtml');
-        $items->addItemRender('grouped', 'sales/order_email_items_order_grouped', 'email/order/items/creditmemo/default.phtml');
-        $items->addItemRender('bundle', 'bundle/sales_order_items_renderer', 'bundle/email/order/items/creditmemo/default.phtml');
-
-        $this->_respectDesignTheme();
-        $totals = $this->_getTotalsBlock($layout, $order, 'sales/order_creditmemo_totals', 'creditmemo_totals');
-        $items->append($totals, 'creditmemo_totals');
-
-        return $items->toHtml();
+        $html = parent::layoutDirective(array(
+            2 => ' handle="sales_email_order_creditmemo_items" creditmemo=$creditmemo order=$order'
+        ));
+        return $this->_applyInlineCssStyles($html);
     }
 
     /**
@@ -1099,6 +1070,7 @@ class Bronto_Common_Model_Email_Template_Filter extends Mage_Core_Model_Email_Te
     {
         // Change this path for order totals
         $templatePath = 'sales/order/totals.phtml';
+        /*
         switch ($totals_block_name) {
             case 'creditmemo_totals':
             case 'invoice_totals':
@@ -1106,6 +1078,7 @@ class Bronto_Common_Model_Email_Template_Filter extends Mage_Core_Model_Email_Te
                 // inplace of 'totals' here
                 $templatePath = str_replace('totals', $totals_block_name, $templatePath);
         }
+        */
 
         $totals = $layout->createBlock($totals_block_type, $totals_block_name);
         $totals->setOrder($order);
@@ -1267,14 +1240,14 @@ class Bronto_Common_Model_Email_Template_Filter extends Mage_Core_Model_Email_Te
                 $new_value .= $value['region'] . $delim;
                 $new_value .= $value['postcode'] . $delim;
                 $new_value .= $value['country_id'];
-                $this->_delivery->setField($key, $new_value, $type);
+                $this->_delivery->withField($key, $new_value, $type);
             }
         } else {
             if (isset($this->_prettyMap[$key])) {
                 // Overwrite $key if we have a mapped overridden value
                 $key = $this->_prettyMap[$key];
             }
-            $this->_delivery->setField($key, $value, $type);
+            $this->_delivery->withField($key, $value, $type);
         }
 
         return $this;
@@ -1365,20 +1338,6 @@ class Bronto_Common_Model_Email_Template_Filter extends Mage_Core_Model_Email_Te
     public function getMessageId()
     {
         return $this->_messageId;
-    }
-
-    /**
-     * @param array $variables
-     *
-     * @return Bronto_Common_Model_Email_Template_Filter
-     */
-    public function setVariables(array $variables)
-    {
-        foreach ($variables as $name => $value) {
-            $this->_variables[$name] = $value;
-        }
-
-        return $this;
     }
 
     /**

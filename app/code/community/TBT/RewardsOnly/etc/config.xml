@@ -5,17 +5,6 @@
             <version>1.0.0.1</version>
         </TBT_RewardsOnly>
     </modules>
-    <admin>
-        <routers>
-            <rewardsonlyadmin>
-                <use>admin</use>
-                <args>
-                    <module>TBT_RewardsOnly</module>
-                    <frontName>rewardsonlyadmin</frontName>
-                </args>
-            </rewardsonlyadmin>
-        </routers>
-    </admin>
     <frontend>
         <routers>
             <rewardsonly>

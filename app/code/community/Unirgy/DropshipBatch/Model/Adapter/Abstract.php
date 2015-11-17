@@ -61,7 +61,7 @@ abstract class Unirgy_DropshipBatch_Model_Adapter_Abstract extends Varien_Object
         if (!$this->hasData('export_template')) {
             $exportTpl = $this->getBatchExportOrdersTemplate();
             if (trim($exportTpl) == '') {
-                Mage::throwException(Mage::helper('udbatch')->__('Empty Export Template'));
+                Mage::throwException(Mage::helper('udropship')->__('Empty Export Template'));
             }
             $this->setData('export_template', $exportTpl);
         }
@@ -73,7 +73,7 @@ abstract class Unirgy_DropshipBatch_Model_Adapter_Abstract extends Varien_Object
         if (!$this->hasData('item_export_template')) {
             $exportTpl = $this->getBatchExportOrdersItemTemplate();
             if (trim($exportTpl) == '') {
-                Mage::throwException(Mage::helper('udbatch')->__('Empty Item Export Template'));
+                Mage::throwException(Mage::helper('udropship')->__('Empty Item Export Template'));
             }
             $this->setData('item_export_template', $exportTpl);
         }
@@ -197,15 +197,15 @@ abstract class Unirgy_DropshipBatch_Model_Adapter_Abstract extends Varien_Object
         if ($gmId && ($_giftMessage = $gmHlp->getGiftMessage($gmId))
         ) {
             $object->setGiftMessageFrom($_giftMessage->getSender());
-            $object->setGiftMessageFromWithLabel($gmHlp->__('From:').' '.$_giftMessage->getSender());
+            $object->setGiftMessageFromWithLabel(Mage::helper('udropship')->__('From:').' '.$_giftMessage->getSender());
             $object->setGiftMessageTo($_giftMessage->getRecipient());
-            $object->setGiftMessageToWithLabel($gmHlp->__('To:').' '.$_giftMessage->getRecipient());
+            $object->setGiftMessageToWithLabel(Mage::helper('udropship')->__('To:').' '.$_giftMessage->getRecipient());
             $object->setGiftMessageText($_giftMessage->getMessage());
-            $object->setGiftMessageTextWithLabel($gmHlp->__('Message:').' '.$_giftMessage->getMessage());
+            $object->setGiftMessageTextWithLabel(Mage::helper('udropship')->__('Message:').' '.$_giftMessage->getMessage());
             $object->setGiftMessageCombined(
-                $gmHlp->__('From:').' '.$_giftMessage->getSender()."\n".
-                $gmHlp->__('To:').' '.$_giftMessage->getRecipient()."\n".
-                $gmHlp->__('Message:').' '.$_giftMessage->getMessage()
+                Mage::helper('udropship')->__('From:').' '.$_giftMessage->getSender()."\n".
+                Mage::helper('udropship')->__('To:').' '.$_giftMessage->getRecipient()."\n".
+                Mage::helper('udropship')->__('Message:').' '.$_giftMessage->getMessage()
             );
         }
     }

@@ -106,17 +106,19 @@ class Bronto_Reviews_Model_Log extends Mage_Core_Model_Abstract
     {
         if (array_key_exists($storeId, self::$_cancelableDeliveries)) {
             $api = Mage::helper('bronto_common')->getApi(null, 'store', $storeId);
-            $deliveryObject = $api->getDeliveryObject();
+            $deliveryObject = $api->transferDelivery();
             $deliveryRows = self::$_cancelableDeliveries[$storeId];
             try {
-                $result = $deliveryObject->update($deliveryRows);
-                if ($result->hasErrors()) {
-                    $errors = array();
-                    foreach ($result->getErrors() as $soapFault) {
-                        $errors[] = $soapFault['code'] . ": " . $soapFault['message'];
-                    }
-                    $error = implode('<br />', $errors);
-                    Mage::throwException($error);
+                $results = $deliveryObject->update()
+                    ->push($deliveryRows)
+                    ->getIterator()
+                    ->errorsOnly();
+                $errors = array();
+                foreach ($results as $result) {
+                    $errors[] = "{$result->getItem()->getErrorCode()}: {$result->getItem()->getErrorString}";
+                }
+                if (count($errors) > 1) {
+                    Mage::throwException(implode('<br/>', $errors));
                 }
             } catch (Exception $e) {
                 Mage::helper('bronto_reviews')->writeError('Failed Cancelling Deliveries: ' . $e->getMessage());

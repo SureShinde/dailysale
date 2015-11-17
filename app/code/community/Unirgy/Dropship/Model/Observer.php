@@ -39,11 +39,64 @@ class Unirgy_Dropship_Model_Observer extends Varien_Object
     {
         $this->setIsCartUpdateActionFlag(true);
     }
+    public function controller_action_predispatch_checkout($observer)
+    {
+        $action = $observer->getControllerAction();
+        $actionName = $action->getFullActionName();
+        $req = $action->getRequest();
+        if ($actionName == 'checkout_onepage_progress') {
+            $this->setIsCartUpdateActionFlag(true);
+        } elseif (in_array($actionName, array('checkout_onepage_saveBilling','checkout_onepage_saveShipping'))) {
+            $usingCase = 1;
+            $data = $req->getPost('billing', array());
+            if ($actionName == 'checkout_onepage_saveBilling') {
+                $usingCase = isset($data['use_for_shipping']) ? (int)$data['use_for_shipping'] : 0;
+            }
+            $this->setIsCartUpdateActionFlag(true);
+            $quote = Mage::getSingleton('checkout/type_onepage')->getQuote();
+            if ($usingCase) {
+                $quote->setRefreshVendorsFlag(true);
+            }
+        }
+    }
+    public function controller_action_postdispatch_checkout($observer)
+    {
+        $action = $observer->getControllerAction();
+        $actionName = $action->getFullActionName();
+        $req = $action->getRequest();
+        if (in_array($actionName, array('checkout_onepage_saveBilling','checkout_onepage_saveShipping'))) {
+            $usingCase = 1;
+            $data = $req->getPost('billing', array());
+            if ($actionName == 'checkout_onepage_saveBilling') {
+                $usingCase = isset($data['use_for_shipping']) ? (int)$data['use_for_shipping'] : 0;
+            }
+            if ($usingCase) {
+                $checkAgainst = array(
+                    Mage::helper('udropship')->__('Some items are not available for your location.'),
+                    Mage::helper('udropship')->__('Some items are not available for your country.'),
+                    Mage::helper('udropship')->__('Some items are not available for your zipcode.')
+                );
+                $quote = Mage::getSingleton('checkout/type_onepage')->getQuote();
+                foreach ($quote->getErrors() as $err) {
+                    if (in_array($err->getText(), $checkAgainst)) {
+                        Mage::app()->getResponse()->setBody(Mage::helper('core')->jsonEncode(array(
+                            'error' => 1, 'message' => $err->getText()
+                        )));
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
     public function sales_quote_load_after($observer)
     {
         try {
+            $hl = Mage::helper('udropship');
+            $quote = $observer->getQuote();
+            $qId = $quote->getId();
             $hlp = Mage::helper('udropship/protected');
-            if ($observer->getQuote()->getUdSkipQuoteLoadAfterEvent() || $this->_cartUpdateActionFlag) return;
+            if ($hl->isSkipQuoteLoadAfterEvent($qId) || $this->_cartUpdateActionFlag) return;
             $items = $observer->getQuote()->getAllItems();
             Mage::dispatchEvent('udropship_prepare_quote_items_before', array('items'=>$items));
             $hlp->setAllowReorginizeQuote(true);
@@ -427,20 +480,20 @@ class Unirgy_Dropship_Model_Observer extends Varien_Object
             if (($stId = $shipment->getStatementId())) {
                 $soi->setStatementId($stId);
                 if (($st = Mage::getModel('udropship/vendor_statement')->load($stId, 'statement_id')) && $st->getId()) {
-                    $soi->setStatementUrl(Mage::getModel('adminhtml/url')->getUrl('udropshipadmin/adminhtml_vendor_statement/edit', array('id'=>$st->getId())));
+                    $soi->setStatementUrl(Mage::getModel('adminhtml/url')->getUrl('adminhtml/udropshipadmin_vendor_statement/edit', array('id'=>$st->getId())));
                 }
             }
             if (Mage::helper('udropship')->isUdpayoutActive() && ($ptId = $shipment->getPayoutId())) {
                 $soi->setPayoutId($ptId);
                 if (($pt = Mage::getModel('udpayout/payout')->load($ptId)) && $pt->getId()) {
-                    $soi->setPayoutUrl(Mage::getModel('adminhtml/url')->getUrl('udpayoutadmin/payout/edit', array('id'=>$pt->getId())));
+                    $soi->setPayoutUrl(Mage::getModel('adminhtml/url')->getUrl('adminhtml/udpayoutadmin_payout/edit', array('id'=>$pt->getId())));
                 }
             }
         	if (Mage::helper('udropship')->isUdpoActive() && ($ptId = $shipment->getUdpoId())) {
                 $soi->setUdpoId($ptId);
                 if (Mage::helper('udpo')->getShipmentPo($shipment)) {
                 	$soi->setUdpoId($shipment->getUdpo()->getIncrementId());
-                    $soi->setUdpoUrl(Mage::getModel('adminhtml/url')->getUrl('udpoadmin/order_po/view', array('udpo_id'=>$shipment->getUdpo()->getId())));
+                    $soi->setUdpoUrl(Mage::getModel('adminhtml/url')->getUrl('adminhtml/udpoadmin_order_po/view', array('udpo_id'=>$shipment->getUdpo()->getId())));
                 }
             }
             if (Mage::helper('udropship')->isUdropshipOrder($shipment->getOrder())) {
@@ -617,6 +670,8 @@ class Unirgy_Dropship_Model_Observer extends Varien_Object
     public function before_submit_order($observer)
     {
         $observer->getEvent()->getOrder()->setNoDropshipFlag(true);
+        $observer->getEvent()->getOrder()->setData('ud_amount_fields', 1);
+        $observer->getEvent()->getOrder()->setData('udpo_amount_fields', 1);
         $this->unsQuote();
     }
     public function after_submit_order($observer)
@@ -727,7 +782,7 @@ js/udropship.js
             $customKey = $type->getCode().'_address_format';
             $store = $address->getConfig()->getStore();
             if ($vendor->getData($flagKey)) {
-                if (-1 !== $vendor->getData($flagKey)
+                if (-1 !== (int)$vendor->getData($flagKey)
                     && ($format = $vendor->getData($customKey))
                 ) {
                     $type->setDefaultFormat($format);
@@ -915,6 +970,60 @@ js/udropship.js
             $paths = array_keys($paths);
         }
         return $paths;
+    }
+
+    public function sales_order_item_cancel($observer)
+    {
+        $item = $observer->getItem();
+        $order = $item->getOrder();
+        foreach ($order->getShipmentsCollection() as $shipment) {
+            $canCancel = !in_array($shipment->getUdropshipStatus(), array(
+                Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_SHIPPED,
+                Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_DELIVERED,
+                Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_CANCELED,
+            ));
+            if ($canCancel) {
+                $canCancel = false;
+                foreach ($shipment->getAllItems() as $sItem) {
+                    if ($sItem->getOrderItemId()==$item->getId() && $item->getQtyToCancel()) {
+                        $canCancel = true;
+                        break;
+                    }
+                }
+                $shipment->setUdCanCancel($shipment->getUdCanCancel()||$canCancel);
+            }
+        }
+    }
+    public function order_cancel_after($observer)
+    {
+        $order = $observer->getOrder();
+        $hlp = Mage::helper('udropship');
+        foreach ($order->getShipmentsCollection() as $shipment) {
+            if ($shipment->getUdCanCancel()) {
+                $statusCanceled  = Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_CANCELED;
+                $statuses = Mage::getSingleton('udropship/source')->setPath('shipment_statuses')->toOptionHash();
+                $hlp->processShipmentStatusSave($shipment, $statusCanceled);
+                $commentText = Mage::helper('udropship')->__("ORDER WAS CANCELED: shipment status was changed to %s", $statuses[$statusCanceled]);
+                $comment = Mage::getModel('sales/order_shipment_comment')
+                    ->setComment($commentText)
+                    ->setIsCustomerNotified(false)
+                    ->setIsVendorNotified(true)
+                    ->setIsVisibleToVendor(true)
+                    ->setUdropshipStatus($statuses[$statusCanceled]);
+                $shipment->addComment($comment);
+                Mage::helper('udropship')->sendShipmentCommentNotificationEmail($shipment, $commentText);
+                Mage::helper('udropship')->processQueue();
+            }
+        }
+    }
+
+    public function sales_order_shipment_load_after($observer)
+    {
+        $shipment = $observer->getShipment();
+        $status = $this->getUdropshipStatus();
+        $statuses = Mage::getSingleton('udropship/source')->setPath('shipment_statuses')->toOptionHash();
+        $statusName = isset($statuses[$status]) ? $statuses[$status] : (in_array($status, $statuses) ? $status : 'Unknown');
+        $shipment->setUdropshipStatusName($statusName);
     }
 
     public function dummy() {}

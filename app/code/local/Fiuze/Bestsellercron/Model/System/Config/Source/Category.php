@@ -23,7 +23,6 @@ class Fiuze_Bestsellercron_Model_System_Config_Source_Category {
                 'value' => $category->getId()
             );
         }
-
         return $optionArray;
     }
 

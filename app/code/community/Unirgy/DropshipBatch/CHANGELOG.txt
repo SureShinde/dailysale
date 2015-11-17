@@ -1,3 +1,13 @@
+===== 2.4.0 =====
+  * CE 1.9.2.2 compatibility
+
+===== 2.3.0 =====
+  * Central translations file
+  * Fixed dates grid filter in action history
+
+===== 2.2.6 =====
+  * Added option to import tracking for all vendors
+
 ===== 2.2.5 =====
   * Few changes in vendor portal labels
 

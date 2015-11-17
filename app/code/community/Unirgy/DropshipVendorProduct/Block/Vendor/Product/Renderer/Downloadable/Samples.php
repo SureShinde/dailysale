@@ -17,7 +17,7 @@ class Unirgy_DropshipVendorProduct_Block_Vendor_Product_Renderer_Downloadable_Sa
         $this->getConfig()->setFileField('samples');
         $this->getConfig()->setFilters(array(
             'all'    => array(
-                'label' => Mage::helper('adminhtml')->__('All Files'),
+                'label' => Mage::helper('udropship')->__('All Files'),
                 'files' => array('*.*')
             )
         ));

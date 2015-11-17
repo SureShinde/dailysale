@@ -1,3 +1,11 @@
+===== 2.4.0 =====
+  * CE 1.9.2.2 compatibility
+  * Fixed installation issue when payout installed separately after MP
+
+===== 2.2.0 =====
+  * Central translations file
+  * Fixed processIpnPost run infinitely
+
 ===== 2.1.10 =====
   * Added support for dropship option to use statements as invoice
 

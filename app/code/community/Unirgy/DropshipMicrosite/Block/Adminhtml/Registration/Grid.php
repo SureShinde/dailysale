@@ -40,7 +40,7 @@ class Unirgy_DropshipMicrosite_Block_Adminhtml_Registration_Grid extends Mage_Ad
     {
         $hlp = Mage::helper('umicrosite');
         $this->addColumn('reg_id', array(
-            'header'    => $hlp->__('Registration ID'),
+            'header'    => Mage::helper('udropship')->__('Registration ID'),
             'align'     => 'right',
             'width'     => '50px',
             'index'     => 'reg_id',
@@ -48,24 +48,24 @@ class Unirgy_DropshipMicrosite_Block_Adminhtml_Registration_Grid extends Mage_Ad
         ));
 
         $this->addColumn('vendor_name', array(
-            'header'    => $hlp->__('Vendor Name'),
+            'header'    => Mage::helper('udropship')->__('Vendor Name'),
             'index'     => 'vendor_name',
         ));
 
         $this->addColumn('email', array(
-            'header'    => $hlp->__('Email'),
+            'header'    => Mage::helper('udropship')->__('Email'),
             'index'     => 'email',
         ));
 
         $this->addColumn('carrier_code', array(
-            'header'    => $hlp->__('Used Carrier'),
+            'header'    => Mage::helper('udropship')->__('Used Carrier'),
             'index'     => 'carrier_code',
             'type'      => 'options',
             'options'   => Mage::getSingleton('udropship/source')->setPath('carriers')->toOptionHash(),
         ));
 
-        $this->addExportType('*/*/exportCsv', Mage::helper('adminhtml')->__('CSV'));
-        $this->addExportType('*/*/exportXml', Mage::helper('adminhtml')->__('XML'));
+        $this->addExportType('*/*/exportCsv', Mage::helper('udropship')->__('CSV'));
+        $this->addExportType('*/*/exportXml', Mage::helper('udropship')->__('XML'));
         return parent::_prepareColumns();
     }
 

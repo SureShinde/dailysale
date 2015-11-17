@@ -50,7 +50,7 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Edit_Tab_Preferences extends Mage_A
             $fieldsets[$code] = array(
                 'position' => (int)$node->position,
                 'params' => array(
-                    'legend' => $hlp->__((string)$node->legend),
+                    'legend' => Mage::helper('udropship')->__((string)$node->legend),
                 ),
             );
         }
@@ -70,8 +70,8 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Edit_Tab_Preferences extends Mage_A
                 'params' => array(
                     'name' => $node->name ? (string)$node->name : $code,
                     'class' => (string)$node->class,
-                    'label' => $hlp->__((string)$node->label),
-                    'note' => $hlp->__((string)$node->note),
+                    'label' => Mage::helper('udropship')->__((string)$node->label),
+                    'note' => Mage::helper('udropship')->__((string)$node->note),
                     'field_config' => $node
                 ),
             );

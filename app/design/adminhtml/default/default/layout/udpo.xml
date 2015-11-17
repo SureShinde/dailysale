@@ -23,7 +23,7 @@
             <action method="addTab"><name>udpo_po</name><block>udpo/adminhtml_salesOrderViewTab_udpos</block></action>
         </reference>
     </adminhtml_sales_order_view>
-    <udpoadmin_order_po_editcosts>
+    <adminhtml_udpoadmin_order_po_editcosts>
         <reference name="content">
             <block type="udpo/adminhtml_po_editcosts" name="udpo_po_editcosts">
                 <block type="udpo/adminhtml_po_editcosts_form" name="form" template="udpo/po/editcosts/form.phtml">
@@ -36,8 +36,8 @@
                 </block>
             </block>
         </reference>
-    </udpoadmin_order_po_editcosts>
-    <udpoadmin_order_po_new>
+    </adminhtml_udpoadmin_order_po_editcosts>
+    <adminhtml_udpoadmin_order_po_new>
         <reference name="content">
             <block type="udpo/adminhtml_po_create" name="udpo_po_create">
                 <block type="udpo/adminhtml_po_create_form" name="form" template="udpo/po/create/form.phtml">
@@ -52,16 +52,16 @@
                 </block>
             </block>
         </reference>
-    </udpoadmin_order_po_new>
-    <udpoadmin_order_po_updateqty>
+    </adminhtml_udpoadmin_order_po_new>
+    <adminhtml_udpoadmin_order_po_updateqty>
         <block type="udpo/adminhtml_po_create_items" name="order_items" template="udpo/po/create/items.phtml">
             <action method="addItemRender"><type>default</type><block>adminhtml/sales_items_renderer_default</block><template>udpo/po/create/items/renderer/default.phtml</template></action>
             <action method="addItemRender"><type>bundle</type><block>udpo/adminhtml_po_bundle_itemsRenderer</block><template>udpo/po/create/items/renderer/bundle.phtml</template></action>
             <action method="addColumnRender"><column>qty</column><block>adminhtml/sales_items_column_qty</block><template>udpo/sales/items/column/qty.phtml</template></action>
             <action method="addColumnRender"><column>name</column><block>adminhtml/sales_items_column_name</block><template>sales/items/column/name.phtml</template></action>
         </block>
-    </udpoadmin_order_po_updateqty>
-    <udpoadmin_order_po_view>
+    </adminhtml_udpoadmin_order_po_updateqty>
+    <adminhtml_udpoadmin_order_po_view>
         <reference name="content">
             <block type="udpo/adminhtml_po_view" name="sales_po_edit"></block>
         </reference>
@@ -85,12 +85,12 @@
                 <action method="addTab"><name>order_shipments</name><block>udpo/adminhtml_po_view_tab_shipments</block></action>
             </block>
         </reference>
-    </udpoadmin_order_po_view>
-    <udpoadmin_order_po_addcomment>
+    </adminhtml_udpoadmin_order_po_view>
+    <adminhtml_udpoadmin_order_po_addcomment>
         <block type="udpo/adminhtml_po_view_comments" name="udpo_comments">
             <block type="udpo/adminhtml_po_comments_view"  name="order_comments" template="udpo/po/comments/view.phtml"></block>
         </block>
-    </udpoadmin_order_po_addcomment>
+    </adminhtml_udpoadmin_order_po_addcomment>
 
 
     <udpoadmin_change_qty_column_renderer>
@@ -118,7 +118,7 @@
         <update handle="udpoadmin_change_qty_column_renderer"/>
     </adminhtml_sales_order_creditmemo_updateqty>
     
-    <udpoadmin_order_po_newshipment>
+    <adminhtml_udpoadmin_order_po_newshipment>
         <reference name="content">
             <block type="udpo/adminhtml_shipment_create" name="sales_shipment_create">
                 <block type="udpo/adminhtml_shipment_createForm" name="form" template="sales/order/shipment/create/form.phtml">
@@ -136,7 +136,6 @@
             <block type="adminhtml/template" template="udpo/po/shipmentTotals.phtml" />
         </reference>
         <update handle="udpoadmin_change_qty_column_renderer"/>
-    </udpoadmin_order_po_newshipment>
     <adminhtml_sales_order_shipment_new>
         <!--<reference name="shipment_tracking">-->
             <!--<action method="setTemplate" ><file>udpo/custom/tracking.phtml</file></action>-->

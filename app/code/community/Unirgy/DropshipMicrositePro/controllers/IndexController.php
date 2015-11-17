@@ -30,8 +30,12 @@ class Unirgy_DropshipMicrositePro_IndexController extends Mage_Core_Controller_F
     {
         $vendor = Mage::helper('umicrosite')->getCurrentVendor();
         if ($vendor) {
-            if (!Mage::helper('cms/page')->renderPage($this, $vendor->getVendorLandingPage())) {
-                $this->_forward('default', 'index', 'umicrosite');
+            $defPageId = Mage::getStoreConfig('web/default/umicrosite_default_landingpage');
+            $vPageId = $vendor->getVendorLandingPage();
+            if (!Mage::helper('cms/page')->renderPage($this, $vPageId)) {
+                if (!Mage::helper('cms/page')->renderPage($this, $defPageId)) {
+                    $this->_forward('default', 'index', 'umicrosite');
+                }
             }
             return;
         }

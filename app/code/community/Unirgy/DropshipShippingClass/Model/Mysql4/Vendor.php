@@ -11,7 +11,7 @@ class Unirgy_DropshipShippingClass_Model_Mysql4_Vendor extends Mage_Core_Model_M
     {
         $this->_uniqueFields = array(array(
             'field' => array('class_name'),
-            'title' => Mage::helper('udshipclass')->__('An error occurred while saving this ship class. A class with the same name already exists.'),
+            'title' => Mage::helper('udropship')->__('An error occurred while saving this ship class. A class with the same name already exists.'),
         ));
         return $this;
     }

@@ -23,7 +23,7 @@ class Unirgy_DropshipBatch_Block_Adminhtml_Batch_Edit_Tabs extends Mage_Adminhtm
         parent::__construct();
         $this->setId('batch_tabs');
         $this->setDestElementId('edit_form');
-        $this->setTitle(Mage::helper('udbatch')->__('Manage Batches'));
+        $this->setTitle(Mage::helper('udropship')->__('Manage Batches'));
     }
 
     protected function _beforeToHtml()
@@ -42,8 +42,8 @@ class Unirgy_DropshipBatch_Block_Adminhtml_Batch_Edit_Tabs extends Mage_Adminhtm
 
             $export = in_array($batch->getBatchType(), array('export_orders', 'export_stockpo', 'export_inventory'));
             $this->addTab('dist_section', array(
-                'label'     => Mage::helper('udbatch')->__($export ? 'Destinations' : 'Sources'),
-                'title'     => Mage::helper('udbatch')->__($export ? 'Destinations' : 'Sources'),
+                'label'     => Mage::helper('udropship')->__($export ? 'Destinations' : 'Sources'),
+                'title'     => Mage::helper('udropship')->__($export ? 'Destinations' : 'Sources'),
                 'content'   => $this->getLayout()->createBlock('udbatch/adminhtml_batch_edit_tab_dist', 'udbatch.dist.grid')
                     ->setVendorId($id)
                     ->toHtml(),
@@ -55,8 +55,8 @@ class Unirgy_DropshipBatch_Block_Adminhtml_Batch_Edit_Tabs extends Mage_Adminhtm
                 $block = $this->getLayout()->createBlock('udbatch/adminhtml_batch_edit_tab_import_rows', 'udbatch.rows.grid');
             }
             $this->addTab('rows_section', array(
-                'label'     => Mage::helper('udbatch')->__('Data Rows'),
-                'title'     => Mage::helper('udbatch')->__('Data Rows'),
+                'label'     => Mage::helper('udropship')->__('Data Rows'),
+                'title'     => Mage::helper('udropship')->__('Data Rows'),
                 'content'   => $block->setVendorId($id)->toHtml(),
             ));
         } else {

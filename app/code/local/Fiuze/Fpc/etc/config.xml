@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Full Page Cache
+ *
+ * @author      ahofs
+ * @category    Fiuze
+ * @package     Fpc
+ * @copyright   Copyright (c) 2015 Fiuze
+ */
+-->
+<config>
+    <modules>
+        <Fiuze_Fpc>
+            <version>1.0.0</version>
+        </Fiuze_Fpc>
+    </modules>
+    <global>
+        <helpers>
+            <fpc>
+                <rewrite>
+                    <data>Fiuze_Fpc_Helper_Data</data>
+                </rewrite>
+            </fpc>
+        </helpers>
+        <models>
+            <fpc>
+                <rewrite>
+                    <processor>Fiuze_Fpc_Model_Processor</processor>
+                </rewrite>
+            </fpc>
+        </models>
+    </global>
+    <default>
+        <fpc>
+            <cache_rules>
+                <ignore_params><![CDATA[_bta_tid,_bta_c]]></ignore_params>
+            </cache_rules>
+        </fpc>
+    </default>
+</config>

@@ -23,7 +23,7 @@ class Unirgy_DropshipVendorProduct_Block_Vendor_Product_GalleryContent extends M
                 ->setFileField('image')
                 ->setFilters(array(
                     'images' => array(
-                        'label' => Mage::helper('adminhtml')->__('Images (.gif, .jpg, .png)'),
+                        'label' => Mage::helper('udropship')->__('Images (.gif, .jpg, .png)'),
                         'files' => array('*.gif', '*.jpg','*.jpeg', '*.png')
                     )
                 ));

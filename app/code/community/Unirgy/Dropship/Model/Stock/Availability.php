@@ -134,7 +134,8 @@ class Unirgy_Dropship_Model_Stock_Availability extends Varien_Object
             $sku = $product->getVendorSku() ? $product->getVendorSku() : $product->getSku();
             $requestVendors = array(
             	$vId=>array(
-            		'sku'=>$sku, 
+            		'sku'=>$sku,
+                    'address_match' => $v->isAddressMatch($hlp->getAddressByItem($item)),
             		'zipcode_match' => $v->isZipcodeMatch($hlp->getZipcodeByItem($item)),
                     'country_match' => $v->isCountryMatch($hlp->getCountryByItem($item)),
             	)
@@ -142,6 +143,7 @@ class Unirgy_Dropship_Model_Stock_Availability extends Varien_Object
             if (!empty($options['request_local'])) {
                 $requestVendors[$localVendorId] = array(
                 	'sku'=>$product->getSku(),
+                    'address_match' => $hlp->getVendor($localVendorId)->isAddressMatch($hlp->getAddressByItem($item)),
                 	'zipcode_match' => $hlp->getVendor($localVendorId)->isZipcodeMatch($hlp->getZipcodeByItem($item)),
                     'country_match' => $hlp->getVendor($localVendorId)->isCountryMatch($hlp->getCountryByItem($item)),
                 );
@@ -254,6 +256,7 @@ class Unirgy_Dropship_Model_Stock_Availability extends Varien_Object
         $ciHlp = Mage::helper('cataloginventory');
         $quote = null;
         $hasOutOfStock = false;
+        $allAddressMatch = true;
         $allZipcodeMatch = true;
         $allCountryMatch = true;
         foreach ($items as $item) {
@@ -272,10 +275,12 @@ class Unirgy_Dropship_Model_Stock_Availability extends Varien_Object
                 $vendors = array();
             }
             $outOfStock = true;
+            $addressMatch = true;
             $zipCodeMatch = true;
             $countryMatch = true;
             foreach ($vendors as $vId=>$v) {
                 $vObj = $hlp->getVendor($vId);
+                $addressMatch = $addressMatch && $vObj->isAddressMatch($hlp->getAddressByItem($item));
                 $zipCodeMatch = $zipCodeMatch && $vObj->isZipcodeMatch($hlp->getZipcodeByItem($item));
                 $countryMatch = $countryMatch && $vObj->isCountryMatch($hlp->getCountryByItem($item));
                 if ($this->getUseLocalStockIfAvailable($quote->getStoreId(), $vId)) {
@@ -287,18 +292,21 @@ class Unirgy_Dropship_Model_Stock_Availability extends Varien_Object
                     break;
                 }
             }
+            $allAddressMatch = $allAddressMatch && $addressMatch;
             $allZipcodeMatch = $allZipcodeMatch && $zipCodeMatch;
             $allCountryMatch = $allCountryMatch && $countryMatch;
             if ($outOfStock && !$item->getHasError() && !$item->getMessage()) {
                 $hasOutOfStock = true;
                 $item->setUdmultiOutOfStock(true);
                 $message = $item->getMessage() ? $item->getMessage().'<br/>' : '';
-                if (!$countryMatch) {
+                if (!$addressMatch) {
+                    $message .= Mage::helper('udropship')->__('This item is not available for your location.');
+                } elseif (!$countryMatch) {
                     $message .= Mage::helper('udropship')->__('This item is not available for your country.');
                 } elseif (!$zipCodeMatch ) {
                     $message .= Mage::helper('udropship')->__('This item is not available for your zipcode.');
                 } else {
-                    $message .= $ciHlp->__('This product is currently out of stock.');
+                    $message .= Mage::helper('udropship')->__('This product is currently out of stock.');
                 }
                 $item->setHasError(true)->setMessage($message);
                 if ($item->getParentItem()) {
@@ -314,12 +322,14 @@ class Unirgy_Dropship_Model_Stock_Availability extends Varien_Object
             }
         }
         if ($hasOutOfStock && !$quote->getHasError() && !$quote->getMessages()) {
-            if (!$allCountryMatch) {
+            if (!$allAddressMatch) {
+                $message = Mage::helper('udropship')->__('Some items are not available for your location.');
+            } elseif (!$allCountryMatch) {
                 $message = Mage::helper('udropship')->__('Some items are not available for your country.');
             } elseif (!$allZipcodeMatch) {
                 $message = Mage::helper('udropship')->__('Some items are not available for your zipcode.');
             } else {
-                $message = $ciHlp->__('Some of the products are currently out of stock');
+                $message = Mage::helper('udropship')->__('Some of the products are currently out of stock');
             }
             $quote->setHasError(true)->addMessage($message);
         }

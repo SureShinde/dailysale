@@ -8,13 +8,13 @@
             <col width="200">
             <thead>
                 <tr class="headings">
-                    <th class="a-center"><?php echo Mage::helper('udprod')->__('Attribute Set') ?></th>
-                    <th class="a-center"><?php echo Mage::helper('udprod')->__('Template SKU') ?></th>
-                    <th class="a-center"><?php echo Mage::helper('udprod')->__('Default Template SKU') ?></th>
-                    <th class="a-center"><?php echo Mage::helper('udprod')->__('Configurable Attributes') ?></th>
-                    <th class="a-center"><?php echo Mage::helper('udprod')->__('Default Configurable Attributes') ?></th>
-                    <th class="a-center"><?php echo Mage::helper('udprod')->__('Attributes Used To Identify Images') ?></th>
-                    <th class="a-center"><?php echo Mage::helper('udprod')->__('Default Attributes Used To Identify Images') ?></th>
+                    <th class="a-center"><?php echo Mage::helper('udropship')->__('Attribute Set') ?></th>
+                    <th class="a-center"><?php echo Mage::helper('udropship')->__('Template SKU') ?></th>
+                    <th class="a-center"><?php echo Mage::helper('udropship')->__('Default Template SKU') ?></th>
+                    <th class="a-center"><?php echo Mage::helper('udropship')->__('Configurable Attributes') ?></th>
+                    <th class="a-center"><?php echo Mage::helper('udropship')->__('Default Configurable Attributes') ?></th>
+                    <th class="a-center"><?php echo Mage::helper('udropship')->__('Attributes Used To Identify Images') ?></th>
+                    <th class="a-center"><?php echo Mage::helper('udropship')->__('Default Attributes Used To Identify Images') ?></th>
                 </tr>
             </thead>
             <tbody id="udprod_template_sku-table">
@@ -26,7 +26,7 @@
                     <td class="a-right"><?php echo isset($_globalTSC[$sId]['value']) && $_globalTSC[$sId]['value']!=='' ? $_globalTSC[$sId]['value'] : ''?></td>
                     <td class="a-center">
                         <select multiple="multiple" name="<?php echo $_element->getName()?>[<?php echo $sId?>][cfg_attributes][]">
-                            <option value=""><?php echo Mage::helper('udprod')->__('* Check to use default')?></option>
+                            <option value=""><?php echo Mage::helper('udropship')->__('* Check to use default')?></option>
                             <?php foreach ($this->getConfigurableAttributes($sId) as $cfgAttrId=>$cfgAttrLbl): ?>
                                 <option value="<?php echo $cfgAttrId?>" <?php if (@in_array($cfgAttrId, @$_curTS[$sId]['cfg_attributes'])) echo 'selected="selected"' ?>><?php echo $this->htmlEscape($cfgAttrLbl)?></option>
                             <?php endforeach ?>
@@ -41,7 +41,7 @@
                     </td>
                     <td class="a-center">
                         <select multiple="multiple" name="<?php echo $_element->getName()?>[<?php echo $sId?>][cfg_identify_image][]">
-                            <option value=""><?php echo Mage::helper('udprod')->__('* Check to use default')?></option>
+                            <option value=""><?php echo Mage::helper('udropship')->__('* Check to use default')?></option>
                             <?php foreach ($this->getConfigurableAttributes($sId) as $cfgAttrId=>$cfgAttrLbl): ?>
                                 <option value="<?php echo $cfgAttrId?>" <?php if (@in_array($cfgAttrId, @$_curTS[$sId]['cfg_identify_image'])) echo 'selected="selected"' ?>><?php echo $this->htmlEscape($cfgAttrLbl)?></option>
                             <?php endforeach ?>

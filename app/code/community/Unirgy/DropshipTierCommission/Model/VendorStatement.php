@@ -154,14 +154,24 @@ class Unirgy_DropshipTierCommission_Model_VendorStatement extends Unirgy_Dropshi
 
         $qtyOrdered = $orderItem->getQtyOrdered();
         $_rowDivider = $poItem->getQty()/($qtyOrdered>0 ? $qtyOrdered : 1);
+        $iHiddenTax = $orderItem->getBaseHiddenTaxAmount()*($_rowDivider>0 ? $_rowDivider : 1);
         $iTax = $orderItem->getBaseTaxAmount()*($_rowDivider>0 ? $_rowDivider : 1);
         $iDiscount = $orderItem->getBaseDiscountAmount()*($_rowDivider>0 ? $_rowDivider : 1);
+
+        if ($orderItem->getOrder()->getData('udpo_amount_fields') && $poItem->getPo()
+            || $orderItem->getOrder()->getData('ud_amount_fields') && $poItem->getShipment()
+        ) {
+            $iHiddenTax = $poItem->getBaseHiddenTaxAmount();
+            $iTax = $poItem->getBaseTaxAmount();
+            $iDiscount = $poItem->getBaseDiscountAmount();
+            $subtotal = $poItem->getBaseRowTotal();
+        }
 
         $shippingAmount = $po->getBaseShippingAmount();
         if ($this->getVendor()->getIsShippingTaxInShipping()) {
             $shippingAmount += $po->getBaseShippingTax();
         } else {
-            if ($onlySubtotal) {
+            if (!$onlySubtotal) {
                 $iTax += $po->getBaseShippingTax();
             }
         }
@@ -170,6 +180,7 @@ class Unirgy_DropshipTierCommission_Model_VendorStatement extends Unirgy_Dropshi
             'subtotal' => $subtotal,
             'shipping' => $onlySubtotal ? 0 : $shippingAmount,
             'tax' => $iTax,
+            'hidden_tax' => $iHiddenTax,
             'discount' => $iDiscount,
             'handling' => $onlySubtotal ? 0 : $po->getBaseHandlingFee(),
             'trans_fee' => $onlySubtotal ? 0 : $po->getTransactionFee(),
@@ -185,6 +196,7 @@ class Unirgy_DropshipTierCommission_Model_VendorStatement extends Unirgy_Dropshi
 
     public function calculateOrder($order)
     {
+        $taxInSubtotal = Mage::helper('tax')->displaySalesBothPrices() || Mage::helper('tax')->displaySalesPriceInclTax();
         if (is_null($order['com_percent'])) {
             $order['com_percent'] = $this->getVendor()->getCommissionPercent();
         }
@@ -193,34 +205,39 @@ class Unirgy_DropshipTierCommission_Model_VendorStatement extends Unirgy_Dropshi
             $order['po_com_percent'] = $this->getVendor()->getCommissionPercent();
         }
         $order['po_com_percent'] *= 1;
-        /*
-        if (is_null($order['amounts']['trans_fee'])) {
-            $order['amounts']['trans_fee'] = $this->getVendor()->getTransactionFee();
-        }
-        */
-        //$order['amounts']['trans_fee'] = @$order['trans_fee'];
-        $order['amounts']['com_amount'] = round($order['amounts']['subtotal']*$order['com_percent']/100, 2);
-        $order['amounts']['total_payout'] = $order['amounts']['subtotal']-$order['amounts']['com_amount']-$order['amounts']['trans_fee']+$order['amounts']['adj_amount'];
-        //+$order['tax']+$order['handling']+$order['shipping'];
-        $order['amounts']['total_payment'] = $order['amounts']['subtotal']+$order['amounts']['adj_amount'];
-
-        /*
-        foreach ($this->getWithholdOptions() as $k=>$l) {
-            if (!$this->hasWithhold($k) && isset($order['amounts'][$k])) {
-                $order['amounts']['total_payout'] += $order['amounts'][$k];
-            }
-        }
-        */
 
     	if (isset($order['amounts']['tax']) && in_array($this->getVendor()->getStatementTaxInPayout(), array('', 'include'))) {
-            if ($this->getVendor()->getApplyCommissionOnTax()) {
-                $taxCom = round($order['amounts']['tax']*$order['com_percent']/100, 2);
-                $order['amounts']['com_amount'] += $taxCom;
-                $order['amounts']['total_payout'] -= $taxCom;
+            if ($taxInSubtotal) {
+                if ($this->getVendor()->getApplyCommissionOnTax()) {
+                    $order['amounts']['subtotal'] += $order['amounts']['tax'];
+                    $order['amounts']['subtotal'] += $order['amounts']['hidden_tax'];
+                    $order['amounts']['com_amount'] = $order['amounts']['subtotal']*$order['com_percent']/100;
+                } else {
+                    $order['amounts']['com_amount'] = $order['amounts']['subtotal']*$order['com_percent']/100;
+                    $order['amounts']['subtotal'] += $order['amounts']['tax'];
+                    $order['amounts']['subtotal'] += $order['amounts']['hidden_tax'];
+                }
+            } else {
+                $order['amounts']['com_amount'] = $order['amounts']['subtotal']*$order['com_percent']/100;
+                $order['amounts']['total_payout']  += $order['amounts']['tax'];
+                $order['amounts']['total_payout']  += $order['amounts']['hidden_tax'];
+                $order['amounts']['total_payment'] += $order['amounts']['tax'];
+                $order['amounts']['total_payment'] += $order['amounts']['hidden_tax'];
+                if ($this->getVendor()->getApplyCommissionOnTax()) {
+                    $taxCom = round($order['amounts']['tax']*$order['com_percent']/100, 2);
+                    $order['amounts']['com_amount'] += $taxCom;
+                    $order['amounts']['total_payout'] -= $taxCom;
+                }
             }
-            $order['amounts']['total_payout'] += $order['amounts']['tax'];
+        } else {
+            $order['amounts']['com_amount'] = $order['amounts']['subtotal']*$order['com_percent']/100;
         }
-        $order['amounts']['total_payment'] += $order['amounts']['tax'];
+
+        $order['amounts']['com_amount'] = round($order['amounts']['com_amount'], 2);
+
+        $order['amounts']['total_payout'] = $order['amounts']['subtotal']-$order['amounts']['com_amount']-$order['amounts']['trans_fee']+$order['amounts']['adj_amount'];
+        $order['amounts']['total_payment'] = $order['amounts']['subtotal']+$order['amounts']['adj_amount'];
+
         if (isset($order['amounts']['discount']) && in_array($this->getVendor()->getStatementDiscountInPayout(), array('', 'include'))) {
             if ($this->getVendor()->getApplyCommissionOnDiscount()) {
                 $discountCom = round($order['amounts']['discount']*$order['com_percent']/100, 2);
@@ -230,6 +247,7 @@ class Unirgy_DropshipTierCommission_Model_VendorStatement extends Unirgy_Dropshi
             $order['amounts']['total_payout'] -= $order['amounts']['discount'];
         }
         $order['amounts']['total_payment'] -= $order['amounts']['discount'];
+
     	if (isset($order['amounts']['shipping']) && in_array($this->getVendor()->getStatementShippingInPayout(), array('', 'include'))) {
             if ($this->getVendor()->getApplyCommissionOnShipping()) {
                 $shipCom = round($order['amounts']['shipping']*$order['po_com_percent']/100, 2);
@@ -284,6 +302,8 @@ class Unirgy_DropshipTierCommission_Model_VendorStatement extends Unirgy_Dropshi
             'refund_item_id' => $refundItem->getRefundItemId()
         );
         $refundQty = min($refundItem->getQty(),$refundItem->getRefundQty());
+        $iHiddenTax = $refundItem->getBaseHiddenTaxAmount()/max(1,$refundItem->getQtyOrdered());
+        $iHiddenTax = $iHiddenTax*$refundQty;
         $iTax = $refundItem->getBaseTaxAmount()/max(1,$refundItem->getQtyOrdered());
         $iTax = $iTax*$refundQty;
         $iDiscount = $refundItem->getBaseDiscountAmount()/max(1,$refundItem->getQtyOrdered());
@@ -297,6 +317,7 @@ class Unirgy_DropshipTierCommission_Model_VendorStatement extends Unirgy_Dropshi
             'subtotal' => $subtotal,
             'shipping' => $onlySubtotal ? 0 : min($refundItem->getBaseShippingAmount(),$refundItem->getRefundShippingAmount()),
             'tax' => $iTax,
+            'hidden_tax' => $iHiddenTax,
             'discount' => $iDiscount,
         );
         foreach ($amountRow as &$_ar) {
@@ -309,6 +330,7 @@ class Unirgy_DropshipTierCommission_Model_VendorStatement extends Unirgy_Dropshi
 
     public function calculateRefund($refund)
     {
+        $taxInSubtotal = Mage::helper('tax')->displaySalesBothPrices() || Mage::helper('tax')->displaySalesPriceInclTax();
         if (is_null($refund['com_percent'])) {
             $refund['com_percent'] = $this->getVendor()->getCommissionPercent();
         }
@@ -318,19 +340,36 @@ class Unirgy_DropshipTierCommission_Model_VendorStatement extends Unirgy_Dropshi
         }
         $refund['po_com_percent'] *= 1;
 
-        $refund['amounts']['com_amount'] = round($refund['amounts']['subtotal']*$refund['com_percent']/100, 2);
-        $refund['amounts']['total_refund'] = $refund['amounts']['subtotal']-$refund['amounts']['com_amount'];
-        $refund['amounts']['refund_payment'] = $refund['amounts']['subtotal'];
-
         if (isset($refund['amounts']['tax']) && in_array($this->getVendor()->getStatementTaxInPayout(), array('', 'include'))) {
-            if ($this->getVendor()->getApplyCommissionOnTax()) {
-                $taxCom = round($refund['amounts']['tax']*$refund['com_percent']/100, 2);
-                $refund['amounts']['com_amount'] += $taxCom;
-                $refund['amounts']['total_refund'] -= $taxCom;
+            if ($taxInSubtotal) {
+                if ($this->getVendor()->getApplyCommissionOnTax()) {
+                    $refund['amounts']['subtotal'] += $refund['amounts']['tax'];
+                    $refund['amounts']['subtotal'] += $refund['amounts']['hidden_tax'];
+                    $refund['amounts']['com_amount'] = $refund['amounts']['subtotal']*$refund['com_percent']/100;
+                } else {
+                    $refund['amounts']['com_amount'] = $refund['amounts']['subtotal']*$refund['com_percent']/100;
+                    $refund['amounts']['subtotal'] += $refund['amounts']['tax'];
+                    $refund['amounts']['subtotal'] += $refund['amounts']['hidden_tax'];
+                }
+            } else {
+                $refund['amounts']['com_amount'] = $refund['amounts']['subtotal']*$refund['com_percent']/100;
+                $refund['amounts']['total_refund']  += $refund['amounts']['tax'];
+                $refund['amounts']['total_refund']  += $refund['amounts']['hidden_tax'];
+                $refund['amounts']['refund_payment'] += $refund['amounts']['tax'];
+                $refund['amounts']['refund_payment'] += $refund['amounts']['hidden_tax'];
+                if ($this->getVendor()->getApplyCommissionOnTax()) {
+                    $taxCom = round($refund['amounts']['tax']*$refund['com_percent']/100, 2);
+                    $refund['amounts']['com_amount'] += $taxCom;
+                    $refund['amounts']['total_refund'] -= $taxCom;
+                }
             }
-            $refund['amounts']['total_refund'] += $refund['amounts']['tax'];
         }
-        $refund['amounts']['refund_payment'] += $refund['amounts']['tax'];
+
+        $refund['amounts']['com_amount'] = round($refund['amounts']['com_amount'], 2);
+
+        $refund['amounts']['total_refund'] = $refund['amounts']['subtotal']-$refund['amounts']['com_amount']-$refund['amounts']['trans_fee']+$refund['amounts']['adj_amount'];
+        $refund['amounts']['refund_payment'] = $refund['amounts']['subtotal']+$refund['amounts']['adj_amount'];
+
         if (isset($refund['amounts']['discount']) && in_array($this->getVendor()->getStatementDiscountInPayout(), array('', 'include'))) {
             if ($this->getVendor()->getApplyCommissionOnDiscount()) {
                 $discountCom = round($refund['amounts']['discount']*$refund['com_percent']/100, 2);
@@ -361,7 +400,7 @@ class Unirgy_DropshipTierCommission_Model_VendorStatement extends Unirgy_Dropshi
             $stPoStatuses = explode(',', $stPoStatuses);
         }
         $baseCost = Mage::helper('udropship')->hasMageFeature('order_item.base_cost');
-        $fields = array('base_price', 'base_tax_amount', 'base_discount_amount', 'qty_ordered');
+        $fields = array('base_price', 'base_tax_amount', 'base_discount_amount', 'qty_ordered', 'base_hidden_tax_amount');
         //if ($baseCost) $fields[] = 'base_cost';
         $poType = $this->getVendor()->getStatementPoType();
         $res = Mage::getSingleton('core/resource');

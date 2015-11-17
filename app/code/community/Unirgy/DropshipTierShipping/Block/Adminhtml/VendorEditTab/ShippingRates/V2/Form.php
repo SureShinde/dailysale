@@ -32,14 +32,14 @@ class Unirgy_DropshipTierShipping_Block_Adminhtml_VendorEditTab_ShippingRates_V2
         $this->setForm($form);
 
         $fieldset = $form->addFieldset('tiership', array(
-            'legend'=>$hlp->__('Rates Definition')
+            'legend'=>Mage::helper('udropship')->__('Rates Definition')
         ));
 
         $fieldset->addType('tiership_use_v2_rates', Mage::getConfig()->getBlockClassName('udropship/adminhtml_vendor_helper_form_dependSelect'));
 
         $fieldset->addField('tiership_use_v2_rates', 'tiership_use_v2_rates', array(
             'name'      => 'tiership_use_v2_rates',
-            'label'     => $hlp->__('Use Vendor Specific Rates'),
+            'label'     => Mage::helper('udropship')->__('Use Vendor Specific Rates'),
             'options'   => Mage::getSingleton('udropship/source')->setPath('yesno')->toOptionHash(),
             'field_config' => array(
                 'depend_fields' => array(
@@ -55,7 +55,7 @@ class Unirgy_DropshipTierShipping_Block_Adminhtml_VendorEditTab_ShippingRates_V2
 
         $fieldset->addField('tiership_delivery_type_selector', 'tiership_delivery_type_selector', array(
             'name'      => 'tiership_delivery_type_selector',
-            'label'     => $hlp->__('Select Delivery Type To Setup Rates'),
+            'label'     => Mage::helper('udropship')->__('Select Delivery Type To Setup Rates'),
             'options'   => Mage::getSingleton('udtiership/source')->setPath('tiership_delivery_type_selector')->toOptionHash(),
         ));
 
@@ -65,7 +65,7 @@ class Unirgy_DropshipTierShipping_Block_Adminhtml_VendorEditTab_ShippingRates_V2
 
             $fieldset->addField('tiership_v2_simple_rates', 'tiership_v2_simple_rates', array(
                 'name'      => 'tiership_v2_simple_rates',
-                'label'     => $hlp->__('Rates'),
+                'label'     => Mage::helper('udropship')->__('Rates'),
             ));
 
         } elseif (Mage::helper('udtiership')->isV2SimpleConditionalRates()) {
@@ -74,7 +74,7 @@ class Unirgy_DropshipTierShipping_Block_Adminhtml_VendorEditTab_ShippingRates_V2
 
             $fieldset->addField('tiership_v2_simple_cond_rates', 'tiership_v2_simple_cond_rates', array(
                 'name'      => 'tiership_v2_simple_cond_rates',
-                'label'     => $hlp->__('Rates'),
+                'label'     => Mage::helper('udropship')->__('Rates'),
             ));
 
         } else {
@@ -83,7 +83,7 @@ class Unirgy_DropshipTierShipping_Block_Adminhtml_VendorEditTab_ShippingRates_V2
 
             $fieldset->addField('tiership_v2_rates', 'tiership_v2_rates', array(
                 'name'      => 'tiership_v2_rates',
-                'label'     => $hlp->__('Rates'),
+                'label'     => Mage::helper('udropship')->__('Rates'),
             ));
 
         }

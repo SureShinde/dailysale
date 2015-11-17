@@ -10,15 +10,15 @@ class Unirgy_DropshipVendorProduct_Model_ProductStatus extends Mage_Catalog_Mode
     static public function getOptionArray()
     {
         $res = array(
-            self::STATUS_ENABLED    => Mage::helper('catalog')->__('Enabled'),
-            self::STATUS_DISABLED   => Mage::helper('catalog')->__('Disabled'),
-            self::STATUS_PENDING    => Mage::helper('catalog')->__('Pending'),
-            self::STATUS_FIX        => Mage::helper('catalog')->__('Fix'),
-            self::STATUS_DISCARD    => Mage::helper('catalog')->__('Discard'),
-            self::STATUS_VACATION   => Mage::helper('catalog')->__('Vacation')
+            self::STATUS_ENABLED    => Mage::helper('udropship')->__('Enabled'),
+            self::STATUS_DISABLED   => Mage::helper('udropship')->__('Disabled'),
+            self::STATUS_PENDING    => Mage::helper('udropship')->__('Pending'),
+            self::STATUS_FIX        => Mage::helper('udropship')->__('Fix'),
+            self::STATUS_DISCARD    => Mage::helper('udropship')->__('Discard'),
+            self::STATUS_VACATION   => Mage::helper('udropship')->__('Vacation')
         );
         if (Mage::helper('udropship')->isModuleActive('Unirgy_DropshipVendorMembership')) {
-            $res[self::STATUS_SUSPENDED] = Mage::helper('catalog')->__('Suspended');
+            $res[self::STATUS_SUSPENDED] = Mage::helper('udropship')->__('Suspended');
         }
         return $res;
     }
@@ -27,7 +27,7 @@ class Unirgy_DropshipVendorProduct_Model_ProductStatus extends Mage_Catalog_Mode
         $res = array(
             array(
                 'value' => '',
-                'label' => Mage::helper('catalog')->__('-- Please Select --')
+                'label' => Mage::helper('udropship')->__('-- Please Select --')
             )
         );
         foreach (self::getOptionArray() as $index => $value) {

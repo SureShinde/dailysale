@@ -31,7 +31,7 @@ class Unirgy_SimpleUp_Block_Adminhtml_Module extends Mage_Adminhtml_Block_Widget
 
         $this->_addButton('check_updates', array(
             'label'     => $this->__('Check for version updates'),
-            'onclick'   => "location.href = '{$this->getUrl('usimpleupadmin/adminhtml_module/checkUpdates')}'",
+            'onclick'   => "location.href = '{$this->getUrl('adminhtml/usimpleupadmin_module/checkUpdates')}'",
             'class'     => 'save',
         ), 0);
 
@@ -54,7 +54,7 @@ class Unirgy_SimpleUp_Block_Adminhtml_Module extends Mage_Adminhtml_Block_Widget
 
         $this->_addButton('check_updates', array(
             'label'     => $this->__('Check for version updates'),
-            'onclick'   => "location.href = '{$this->getUrl('usimpleupadmin/adminhtml_module/checkUpdates')}'",
+            'onclick'   => "location.href = '{$this->getUrl('adminhtml/usimpleupadmin_module/checkUpdates')}'",
             'class'     => 'save',
         ), 0);
 

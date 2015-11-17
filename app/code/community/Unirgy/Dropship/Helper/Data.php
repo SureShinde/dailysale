@@ -520,23 +520,27 @@ class Unirgy_Dropship_Helper_Data extends Mage_Core_Helper_Abstract
                 'vendor_name'   => $vendor->getVendorName(),
                 'order_id'      => $order->getIncrementId(),
                 'shipment_id'   => $shipment->getIncrementId(),
-                'vendor_url'    => $ahlp->getUrl('udropship/adminhtml_vendor/edit', array(
-                    'id'        => $vendor->getId()
+                'vendor_url'    => $ahlp->getUrl('adminhtml/udropshipadmin_vendor/edit', array(
+                    'id'        => $vendor->getId(),
+                    '_store'    => 0
                 )),
                 'order_url'     => $ahlp->getUrl('adminhtml/sales_order/view', array(
-                    'order_id'  => $order->getId()
+                    'order_id'  => $order->getId(),
+                    '_store'    => 0
                 )),
                 'shipment_url'  => $ahlp->getUrl('adminhtml/sales_order_shipment/view', array(
                     'shipment_id'=> $shipment->getId(),
                     'order_id'  => $order->getId(),
+                    '_store'    => 0
                 )),
                 'comment'      => $comment,
             );
             if ($this->isUdpoActive() && ($po = Mage::helper('udpo')->getShipmentPo($shipment))) {
                 $data['po_id'] = $po->getIncrementId();
-                $data['po_url'] = $ahlp->getUrl('udpoadmin/order_po/view', array(
+                $data['po_url'] = $ahlp->getUrl('adminhtml/udpoadmin_order_po/view', array(
                     'udpo_id'  => $po->getId(),
                     'order_id' => $order->getId(),
+                    '_store'    => 0
                 ));
                 $template = preg_replace('/{{isPoAvailable}}(.*?){{\/isPoAvailable}}/s', '\1', $template);
             } else {
@@ -560,7 +564,7 @@ class Unirgy_Dropship_Helper_Data extends Mage_Core_Helper_Abstract
 
         Mage::helper('udropship')->addShipmentComment(
             $shipment,
-            $this->__($vendor->getVendorName().': '.$comment)
+            Mage::helper('udropship')->__($vendor->getVendorName().': '.$comment)
         );
         $shipment->getCommentsCollection()->save();
 
@@ -660,7 +664,6 @@ class Unirgy_Dropship_Helper_Data extends Mage_Core_Helper_Abstract
             $vendorId = Mage::getSingleton('udropship/session')->getVendorId();
             $vendor = Mage::helper('udropship')->getVendor($vendorId);
             $collection = Mage::getModel('sales/order_shipment')->getCollection();
-            $sqlMap = array();
             if (!$this->isSalesFlat()) {
                 $collection
                     ->addAttributeToSelect(array('order_id', 'total_qty', 'udropship_status', 'udropship_method', 'udropship_method_description'))
@@ -669,8 +672,8 @@ class Unirgy_Dropship_Helper_Data extends Mage_Core_Helper_Abstract
                     ->joinAttribute('shipping_method', 'order/shipping_method', 'order_id');
             } else {
                 $orderTableQted = $collection->getResource()->getReadConnection()->quoteIdentifier('sales/order');
-                $sqlMap['order_increment_id'] = "$orderTableQted.increment_id";
-                $sqlMap['order_created_at']   = "$orderTableQted.created_at";
+                $collection->addFilterToMap('ordertbl_increment_id', "$orderTableQted.increment_id");
+                $collection->addFilterToMap('ordertbl_created_at', "$orderTableQted.created_at");
                 $collection->join('sales/order', "$orderTableQted.entity_id=main_table.order_id", array(
                     'order_increment_id' => 'increment_id',
                     'order_created_at' => 'created_at',
@@ -678,29 +681,29 @@ class Unirgy_Dropship_Helper_Data extends Mage_Core_Helper_Abstract
                 ));
             }
 
-            $collection->addAttributeToFilter('udropship_vendor', $vendorId);
+            $collection->addAttributeToFilter('main_table.udropship_vendor', $vendorId);
 
 
             $r = Mage::app()->getRequest();
             if (($v = $r->getParam('filter_order_id_from'))) {
-                $collection->addAttributeToFilter($this->mapField('order_increment_id', $sqlMap), array('gteq'=>$v));
+                $collection->addAttributeToFilter('ordertbl_increment_id', array('gteq'=>$v));
             }
             if (($v = $r->getParam('filter_order_id_to'))) {
-                $collection->addAttributeToFilter($this->mapField('order_increment_id', $sqlMap), array('lteq'=>$v));
+                $collection->addAttributeToFilter('ordertbl_increment_id', array('lteq'=>$v));
             }
 
             if (($v = $r->getParam('filter_order_date_from'))) {
                 $_filterDate = Mage::app()->getLocale()->date();
                 $_filterDate->set($v, Mage::app()->getLocale()->getDateFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT));
                 $_filterDate->setTimezone(Mage_Core_Model_Locale::DEFAULT_TIMEZONE);
-                $collection->addAttributeToFilter($this->mapField('order_created_at', $sqlMap), array('gteq'=>$_filterDate->toString(Varien_Date::DATETIME_INTERNAL_FORMAT)));
+                $collection->addAttributeToFilter('ordertbl_created_at', array('gteq'=>$_filterDate->toString(Varien_Date::DATETIME_INTERNAL_FORMAT)));
             }
             if (($v = $r->getParam('filter_order_date_to'))) {
                 $_filterDate = Mage::app()->getLocale()->date();
                 $_filterDate->set($v, Mage::app()->getLocale()->getDateFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT));
                 $_filterDate->addDay(1);
                 $_filterDate->setTimezone(Mage_Core_Model_Locale::DEFAULT_TIMEZONE);
-                $collection->addAttributeToFilter($this->mapField('order_created_at', $sqlMap), array('lteq'=>$_filterDate->toString(Varien_Date::DATETIME_INTERNAL_FORMAT)));
+                $collection->addAttributeToFilter('ordertbl_created_at', array('lteq'=>$_filterDate->toString(Varien_Date::DATETIME_INTERNAL_FORMAT)));
 
             }
 
@@ -1338,6 +1341,7 @@ class Unirgy_Dropship_Helper_Data extends Mage_Core_Helper_Abstract
                     $arr = $obj->getData($_key);
                     if (!empty($arr['delete'])) {
                         @unlink(Mage::getConfig()->getBaseDir('media').DS.strtr($arr['value'], '/', DS));
+                        $obj->hasImageUpload(true);
                         $obj->unsetData($_key);
                     } else {
                         $obj->setData($_key, $arr['value']);
@@ -1466,13 +1470,17 @@ class Unirgy_Dropship_Helper_Data extends Mage_Core_Helper_Abstract
                             if ($status==Unirgy_Dropship_Model_Source::TRACK_STATUS_PENDING) continue;
                         }
 
-                        $track->setUdropshipStatus($status);
+                        if ($track->getUdropshipStatus()==Unirgy_Dropship_Model_Source::TRACK_STATUS_PENDING
+                            || $status==Unirgy_Dropship_Model_Source::TRACK_STATUS_DELIVERED
+                        ) {
+                            $track->setUdropshipStatus($status);
+                        }
                         if ($track->dataHasChangedFor('udropship_status')) {
                             switch ($status) {
                             case Unirgy_Dropship_Model_Source::TRACK_STATUS_READY:
                                 Mage::helper('udropship')->addShipmentComment(
                                     $track->getShipment(),
-                                    $this->__('Tracking ID %s was picked up from %s', $trackId, $v->getVendorName())
+                                    Mage::helper('udropship')->__('Tracking ID %s was picked up from %s', $trackId, $v->getVendorName())
                                 );
                                 $track->getShipment()->save();
                                 break;
@@ -1480,7 +1488,7 @@ class Unirgy_Dropship_Helper_Data extends Mage_Core_Helper_Abstract
                             case Unirgy_Dropship_Model_Source::TRACK_STATUS_DELIVERED:
                                 Mage::helper('udropship')->addShipmentComment(
                                     $track->getShipment(),
-                                    $this->__('Tracking ID %s was delivered to customer', $trackId)
+                                    Mage::helper('udropship')->__('Tracking ID %s was delivered to customer', $trackId)
                                 );
                                 $track->getShipment()->save();
                                 break;
@@ -1819,12 +1827,14 @@ class Unirgy_Dropship_Helper_Data extends Mage_Core_Helper_Abstract
         $shipment->setUdropshipStatus($newStatus);
         Mage::helper('udropship')->addShipmentComment(
             $shipment,
-            $this->__('Shipment has been complete')
+            Mage::helper('udropship')->__('Shipment has been complete')
         );
 
         foreach ($shipment->getAllItems() as $item) {
             $this->registerShipmentItem($item, $save);
         }
+
+        $shipment->getCommentsCollection()->save();
 
         $notifyOnOld = Mage::getStoreConfig('udropship/customer/notify_on', $storeId);
         $notifyOn = Mage::getStoreConfig('udropship/customer/notify_on_shipment', $storeId);
@@ -2626,7 +2636,7 @@ class Unirgy_Dropship_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     protected $_emptyStatementRefundTotalsAmount = array(
-        'subtotal'=>0, 'tax'=>0, 'shipping'=>0, 'discount'=>0,
+        'subtotal'=>0, 'tax'=>0, 'shipping'=>0, 'discount'=>0,'hidden_tax'=>0,
         'com_amount'=>0, 'total_refund'=>0, 'refund_payment'=>0, 'refund_invoice'=>0
     );
     protected $_emptyStatementRefundCalcTotalsAmount = array(
@@ -2658,7 +2668,7 @@ class Unirgy_Dropship_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     protected $_emptyStatementTotalsAmount = array(
-        'subtotal'=>0, 'tax'=>0, 'shipping'=>0, 'handling'=>0, 'discount'=>0,
+        'subtotal'=>0, 'tax'=>0, 'shipping'=>0, 'handling'=>0, 'discount'=>0,'hidden_tax'=>0,
         'com_amount'=>0, 'trans_fee'=>0, 'adj_amount'=>0, 'total_payout'=>0, 'total_refund'=>0,
         'refund_invoice'=>0,'refund_payment'=>0,
         'total_payment'=>0, 'total_invoice'=>0,
@@ -2742,31 +2752,13 @@ class Unirgy_Dropship_Helper_Data extends Mage_Core_Helper_Abstract
         }
     }
 
-	public function getZipcodeByItem($item)
+    public function getAddressByItem($item)
     {
         if ($item instanceof Mage_Sales_Model_Order_Item) {
             return $item->getOrder()->getShippingAddress()
-            	? $item->getOrder()->getShippingAddress()->getPostcode()
-            	: ($item->getOrder()->getBillingAddress()
-            		? $item->getOrder()->getBillingAddress()->getPostcode()
-            		: null
-            	);
-        } else {
-	        $address = $item->getQuote() ? $item->getQuote()->getShippingAddress() : null;
-            if ($item->getAddress()) {
-                $address = $item->getAddress();
-            }
-            return $address ? $address->getPostcode() : null;
-        }
-    }
-
-    public function getCountryByItem($item)
-    {
-        if ($item instanceof Mage_Sales_Model_Order_Item) {
-            return $item->getOrder()->getShippingAddress()
-                ? $item->getOrder()->getShippingAddress()->getCountryId()
+                ? $item->getOrder()->getShippingAddress()
                 : ($item->getOrder()->getBillingAddress()
-                    ? $item->getOrder()->getBillingAddress()->getCountryId()
+                    ? $item->getOrder()->getBillingAddress()
                     : null
                 );
         } else {
@@ -2774,8 +2766,28 @@ class Unirgy_Dropship_Helper_Data extends Mage_Core_Helper_Abstract
             if ($item->getAddress()) {
                 $address = $item->getAddress();
             }
-            return $address ? $address->getCountryId() : null;
+            return $address ? $address : null;
         }
+    }
+
+	public function getZipcodeByItem($item)
+    {
+        $address = $this->getAddressByItem($item);
+        return $address ? $address->getPostcode() : null;
+    }
+
+    public $returnCountryOnlyWhenHaveZip=true;
+    public function getCountryByItem($item)
+    {
+        $countryId = null;
+        $address = $this->getAddressByItem($item);
+        if ($address) {
+            $countryId = $address->getCountryId();
+            if ($this->returnCountryOnlyWhenHaveZip && !$address->getPostcode()) {
+                $countryId = null;
+            }
+        }
+        return $countryId;
     }
 
     public function getItemBaseCost($item, $altCost=null)
@@ -3182,7 +3194,8 @@ class Unirgy_Dropship_Helper_Data extends Mage_Core_Helper_Abstract
             }
             return $model->getUrl();
         } catch (Exception $e) {
-            return 'EXCEPTION: '.$e->getMessage().'; '.$file;
+            Mage::logException($e);
+            return false;
         }
     }
 
@@ -3484,6 +3497,31 @@ class Unirgy_Dropship_Helper_Data extends Mage_Core_Helper_Abstract
         }
     }
 
+    public function getVendorPortalJsBaseUrl()
+    {
+        $store = Mage::app()->getDefaultStoreView();
+        if (Mage::registry('uvp_url_store')) {
+            $store = Mage::registry('uvp_url_store');
+        }
+        $jsBaseUrl = Mage::app()->getStore($store)->getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB);
+        $vendorPortalUrl = Mage::helper('udropship')->getVendorPortalCustomUrl();
+        if ($vendorPortalUrl ) {
+            $jsBaseUrl = $vendorPortalUrl;
+        }
+        $jsBaseUrl = rtrim($jsBaseUrl, '/').'/js/';
+        return $jsBaseUrl;
+    }
+
+    public function getVendorPortalJsUrl($url, $params=array())
+    {
+        $store = Mage::app()->getDefaultStoreView();
+        if (Mage::registry('uvp_url_store')) {
+            $store = Mage::registry('uvp_url_store');
+        }
+        $params['_store'] = $store;
+        return $this->_getUrl($url, $params);
+    }
+
     public function sortBySortOrder($a, $b)
     {
         if (@$a['sort_order']<@$b['sort_order']) {
@@ -3492,6 +3530,19 @@ class Unirgy_Dropship_Helper_Data extends Mage_Core_Helper_Abstract
             return 1;
         }
         return 0;
+    }
+
+    protected $_skipQuoteLoadAfterEvent = array();
+    public function isSkipQuoteLoadAfterEvent($qId, $flag=null)
+    {
+        $oldFlag = !empty($this->_skipQuoteLoadAfterEvent[$qId]);
+        if ($flag!==null) $this->_skipQuoteLoadAfterEvent[$qId] = $flag;
+        return $oldFlag;
+    }
+
+    public function getAdminhtmlFrontName()
+    {
+        return Mage::app()->getFrontController()->getRouterByRoute('adminhtml')->getFrontNameByRoute('adminhtml');
     }
 
     public function filterObjectsInDump($data)

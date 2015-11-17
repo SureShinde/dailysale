@@ -8,7 +8,7 @@ class Unirgy_Rma_Block_Adminhtml_Rma_View_Tracking extends Mage_Adminhtml_Block_
         $this->setChild('save_button',
             $this->getLayout()->createBlock('adminhtml/widget_button')
                 ->setData(array(
-                    'label'   => Mage::helper('sales')->__('Add'),
+                    'label'   => Mage::helper('udropship')->__('Add'),
                     'class'   => 'save',
                     'onclick' => $onclick
                 ))
@@ -17,7 +17,7 @@ class Unirgy_Rma_Block_Adminhtml_Rma_View_Tracking extends Mage_Adminhtml_Block_
         $this->setChild('generate_button',
             $this->getLayout()->createBlock('adminhtml/widget_button')
                 ->setData(array(
-                    'label'   => Mage::helper('sales')->__('Generate'),
+                    'label'   => Mage::helper('udropship')->__('Generate'),
                     'class'   => 'save',
                     'onclick' => $onclick
                 ))
@@ -36,12 +36,12 @@ class Unirgy_Rma_Block_Adminhtml_Rma_View_Tracking extends Mage_Adminhtml_Block_
      */
     public function getSubmitUrl()
     {
-        return $this->getUrl('urmaadmin/order_rma/addTrack/', array('rma_id'=>$this->getRma()->getId()));
+        return $this->getUrl('adminhtml/urmaadmin_order_rma/addTrack/', array('rma_id'=>$this->getRma()->getId()));
     }
 
     public function getGenerateUrl()
     {
-        return $this->getUrl('urmaadmin/order_rma/createLabel/', array('rma_id'=>$this->getRma()->getId()));
+        return $this->getUrl('adminhtml/urmaadmin_order_rma/createLabel/', array('rma_id'=>$this->getRma()->getId()));
     }
 
     /**
@@ -65,7 +65,7 @@ class Unirgy_Rma_Block_Adminhtml_Rma_View_Tracking extends Mage_Adminhtml_Block_
      */
     public function getRemoveUrl($track)
     {
-        return $this->getUrl('urmaadmin/order_rma/removeTrack/', array(
+        return $this->getUrl('adminhtml/urmaadmin_order_rma/removeTrack/', array(
             'rma_id' => $this->getRma()->getId(),
             'track_id' => $track->getId()
         ));
@@ -78,7 +78,7 @@ class Unirgy_Rma_Block_Adminhtml_Rma_View_Tracking extends Mage_Adminhtml_Block_
      */
     public function getTrackInfoUrl($track)
     {
-        return $this->getUrl('urmaadmin/order_rma/viewTrack/', array(
+        return $this->getUrl('adminhtml/urmaadmin_order_rma/viewTrack/', array(
             'rma_id' => $this->getRma()->getId(),
             'track_id' => $track->getId()
         ));
@@ -95,7 +95,7 @@ class Unirgy_Rma_Block_Adminhtml_Rma_View_Tracking extends Mage_Adminhtml_Block_
         $carrierInstances = Mage::getSingleton('shipping/config')->getAllCarriers(
             $this->getRma()->getStoreId()
         );
-        $carriers['custom'] = Mage::helper('sales')->__('Custom Value');
+        $carriers['custom'] = Mage::helper('udropship')->__('Custom Value');
         foreach ($carrierInstances as $code => $carrier) {
             if ($carrier->isTrackingAvailable()) {
                 $carriers[$code] = $carrier->getConfigData('title');
@@ -110,7 +110,7 @@ class Unirgy_Rma_Block_Adminhtml_Rma_View_Tracking extends Mage_Adminhtml_Block_
             return $carrier->getConfigData('title');
         }
         else {
-            return Mage::helper('sales')->__('Custom Value');
+            return Mage::helper('udropship')->__('Custom Value');
         }
         return false;
     }
