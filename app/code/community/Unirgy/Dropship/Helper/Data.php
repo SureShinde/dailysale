@@ -1819,7 +1819,7 @@ class Unirgy_Dropship_Helper_Data extends Mage_Core_Helper_Abstract
 
         $newStatus = $delivered
             ? Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_DELIVERED
-            : Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_SHIPPED;
+            : Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_PENDING;
 
         if ($newStatus == $shipment->getUdropshipStatus()) {
             return $this;

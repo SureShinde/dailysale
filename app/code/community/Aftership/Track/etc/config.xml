@@ -2,11 +2,16 @@
 <config>
 	<modules>
 		<Aftership_Track>
-			<version>0.3.4</version>
+			<version>0.3.8</version>
 		</Aftership_Track>
 	</modules>
 
 	<global>
+        <blocks>
+            <aftership_track>
+                <class>Aftership_Track_Block</class>
+            </aftership_track>
+        </blocks>
 		<models>
 			<aftershiptrackcron>
 				<class>Aftership_Track_Model</class>
@@ -21,6 +26,9 @@
 					<track>
 						<table>as_track</table>
 					</track>
+                    <schedule>
+                        <table>schedule_aftership</table>
+                    </schedule>
 					<!--<user>
 						<table>as_user</table>
 					</user>-->
@@ -64,18 +72,52 @@
 		</helpers>
 	</global>
 
-	<crontab>
-		<jobs>
-			<aftershiptrackcron>
-				<schedule>
-					<cron_expr>0 */3 * * *</cron_expr>
-				</schedule>
-				<run>
-					<model>aftershiptrackcron/observer::cron</model>
-				</run>
-			</aftershiptrackcron>
-		</jobs>
-	</crontab>
+    <crontab>
+        <jobs>
+            <aftershiptrackcron>
+                <schedule>
+                    <cron_expr>0 */3 * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>aftershiptrackcron/observer::cron</model>
+                </run>
+            </aftershiptrackcron>
+            <one_cron>
+                <schedule>
+                    <config_path>aftership_options/messages/one_cron_config</config_path>
+                </schedule>
+                <run>
+                    <model>aftershiptrackcron/observer::runCronJob</model>
+                </run>
+            </one_cron>
+            <two_cron>
+                <schedule>
+                    <config_path>aftership_options/messages/two_cron_config</config_path>
+                </schedule>
+                <run>
+                    <model>aftershiptrackcron/observer::runCronJob</model>
+                </run>
+            </two_cron>
+            <three_cron>
+                <schedule>
+                    <config_path>aftership_options/messages/three_cron_config</config_path>
+                </schedule>
+                <run>
+                    <model>aftershiptrackcron/observer::runCronJob</model>
+                </run>
+            </three_cron>
+        </jobs>
+        <events>
+            <default>
+                <observers>
+                    <cron_observer_helper>
+                        <class>aftershiptrackcron/cronObserver</class>
+                        <method>runCronAftership</method>
+                    </cron_observer_helper>
+                </observers>
+            </default>
+        </events>
+    </crontab>
 
 	<frontend>
 		<routers>
@@ -89,6 +131,18 @@
 		</routers>
 	</frontend>
 
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <track before="Mage_Adminhtml">Aftership_Track_Adminhtml</track>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+
 	<adminhtml>
 		<layout>
 			<updates>
@@ -99,6 +153,15 @@
 		</layout>
 
 		<events>
+            <core_layout_block_create_after>
+                <observers>
+                    <fiuze_block_create>
+                        <type>singleton</type>
+                        <class>track/observer</class>
+                        <method>coreLayoutBlockCreateAfter</method>
+                    </fiuze_block_create>
+                </observers>
+            </core_layout_block_create_after>
 			<sales_order_shipment_track_save_after>
 				<observers>
 					<fishpig_save_product_data>
@@ -137,4 +200,12 @@
 			</resources>
 		</acl>
 	</adminhtml>
+
+    <default>
+        <aftership_options>
+            <messages>
+                <cron_schedule>6,24,48</cron_schedule>
+            </messages>
+        </aftership_options>
+    </default>
 </config>

@@ -1945,6 +1945,7 @@ Comment: {{comment}}
                 <estimate_error_action>fail</estimate_error_action>
                 <repeat_poll_tracking>12</repeat_poll_tracking>
                 <allow_shipping_extra_charge>0</allow_shipping_extra_charge>
+                <notify_on_tracking>0</notify_on_tracking>
             </customer>
             <stock>
                 <availability>always_assigned</availability>

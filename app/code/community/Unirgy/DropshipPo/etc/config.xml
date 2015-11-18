@@ -68,6 +68,7 @@
             </sales>
         </models>
 
+
         <resources>
             <udpo_setup>
                 <setup>
@@ -676,4 +677,16 @@ Comment: {{comment}}
             </pocombine>
 	    </udropship>
     </default>
+
+    <global>
+        <template>
+            <email>
+                <aftership_tracking_email module="Unirgy_DropshipPo">
+                    <label>Aftership tracking email</label>
+                    <file>aftership_tracking_email.html</file>
+                    <type>html</type>
+                </aftership_tracking_email>
+            </email>
+        </template>
+    </global>
 </config>
