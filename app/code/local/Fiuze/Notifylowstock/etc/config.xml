@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Fiuze_Notifylowstock>
-            <version>0.1.0</version>
+            <version>0.2.0</version>
         </Fiuze_Notifylowstock>
     </modules>
     <global>
@@ -26,18 +26,33 @@
             <fiuze_notifylowstock_setup>
                 <setup>
                     <module>Fiuze_Notifylowstock</module>
+                    <class>Mage_Eav_Model_Entity_Setup</class>
                 </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
             </fiuze_notifylowstock_setup>
         </resources>
-        <template>
-            <email>
-                <notifylowstock_core_custom_template translate="label" module="fiuze_notifylowstock">
-                    <label>Notify Low Stock</label>
-                    <file>notifylowstock/notifylowstock.html</file>
-                    <type>html</type>
-                </notifylowstock_core_custom_template>
-            </email>
-        </template>
+        <!--<template>-->
+            <!--<email>-->
+                <!--<notifylowstock_core_custom_template translate="label" module="fiuze_notifylowstock">-->
+                    <!--<label>Notify Low Stock</label>-->
+                    <!--<file>notifylowstock/notifylowstock.html</file>-->
+                    <!--<type>html</type>-->
+                <!--</notifylowstock_core_custom_template>-->
+            <!--</email>-->
+        <!--</template>-->
+        <events>
+            <cataloginventory_stock_item_save_after>
+                <observers>
+                    <cataloginventory_stock_item_save_after_handler>
+                        <type>model</type>
+                        <class>fiuze_notifylowstock/observer</class>
+                        <method>changeFlagNotify</method>
+                    </cataloginventory_stock_item_save_after_handler>
+                </observers>
+            </cataloginventory_stock_item_save_after>
+        </events>
     </global>
     <frontend>
         <routers>
