@@ -29,9 +29,9 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
 
     protected function _getItemsOrder($period, $categoryId, $fullCategory = false){
         if(!$fullCategory){
-            $idProduct = $this->_getIdProductForCategory($categoryId);
+            $idProduct = $this->_getIdProductForCategory($categoryId,true);
         }else{
-            $idProduct = $this->_getIdProductForCategory();
+            $idProduct = $this->_getIdProductForCategory(false,true);
         }
         $itemsOrder = Mage::getResourceModel('sales/order_item_collection')
             ->addFieldToFilter('created_at', array('gteq' => $period))
@@ -217,41 +217,15 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
 
         foreach ($orderItems as $orderItem) {
             $product = $orderItem->getProduct();
-            if($product->getTypeId()=='configurable'){
-                if(!$fullCategory){
-                    $idProduct = $this->_getIdProductForCategory($config['category']);
-                }else{
-                    $idProduct = $this->_getIdProductForCategory();
-                }
 
-                $itemsSimple = Mage::getResourceModel('sales/order_item_collection')
-                    ->addFieldToFilter('created_at', array('gteq' => $period))
-                    ->addFieldToFilter('parent_item_id', array('eq' => $orderItem->getId()))
-                    ->addFieldToFilter('product_id', array('in' => $idProduct))
-                    ->getItems();
-                foreach($itemsSimple as $simple){
-                    $productSimple = $simple->getProduct();
-                    $profit = (float) $this->_getRowTotalWithDiscountInclTax($orderItem);
-
-                    if ($profit > 0) {
-                        if(!is_null($productSimple->getId())){
-                            if(!is_null($items[$productSimple->getId()])){
-                                $items[$productSimple->getId()]->setParent($product->getId());
-                                $items[$productSimple->getId()]->setProfit($items[$productSimple->getId()]->getProfit()+$profit);
-                            }else{
-                                $object = new Varien_Object();
-                                $object->setParent($product->getId());
-                                $object->setProfit($profit);
-                                $items[$productSimple->getId()]=$object;
-                            }
-                        }
+                if(!is_null($product->getId() AND $orderItem->_data['created_at']>$this->_getPeriod())){
+                    if(isset($items[$product->getId()])){
+                        $items[$product->getId()] += $this->_getRowTotalWithDiscountInclTax($orderItem);
+                    }else{
+                        $items[$product->getId()] = $this->_getRowTotalWithDiscountInclTax($orderItem);
                     }
                 }
-            }else{
-                if(!is_null($product->getId())){
-                    $items[$product->getId()] += $this->_getRowTotalWithDiscountInclTax($orderItem);
-                }
-            }
+
         }
 
         return $items;
@@ -273,47 +247,15 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
 
         foreach ($orderItems as $orderItem) {
             $product = $orderItem->getProduct();
-            /**
-             * @todo will be set real price if cost doesn't exist
-             *          check cost in the live db
-             */
-            if($product->getTypeId()=='configurable'){
-                if(!$fullCategory){
-                    $idProduct = $this->_getIdProductForCategory($config['category']);
-                }else{
-                    $idProduct = $this->_getIdProductForCategory();
-                }
 
-                $itemsSimple = Mage::getResourceModel('sales/order_item_collection')
-                    ->addFieldToFilter('created_at', array('gteq' => $period))
-                    ->addFieldToFilter('parent_item_id', array('eq' => $orderItem->getId()))
-                    ->addFieldToFilter('product_id', array('in' => $idProduct))
-                    ->getItems();
-                foreach($itemsSimple as $simple){
-                    $productSimple = $simple->getProduct();
-                    $qty = (float) $simple->getQtyOrdered();
-                    if ($qty > 0) {
-                        if(!is_null($productSimple->getId())){
-                            if(!is_null($items[$productSimple->getId()])){
-                                $items[$productSimple->getId()]->setParent($product->getId());
-                                $items[$productSimple->getId()]->setProfit($items[$productSimple->getId()]->getProfit()+$qty);
-                            }else{
-                                $object = new Varien_Object();
-                                $object->setParent($product->getId());
-                                $object->setProfit($qty);
-                                $items[$productSimple->getId()]=$object;
-                            }
-                        }
-                    }
-                }
-            }else{
-                $qty   = $orderItem->getQtyOrdered();
-                if ($qty > 0) {
-                    if(!is_null($product->getId())){
-                        $items[$product->getId()] += $qty;
-                    }
+            if(!is_null($product->getId() AND $orderItem->_data['created_at']>$this->_getPeriod())){
+                if(isset($items[$product->getId()])){
+                    $items[$product->getId()] += $this->_getRowTotalWithDiscountInclTax($orderItem);
+                }else{
+                    $items[$product->getId()] = $this->_getRowTotalWithDiscountInclTax($orderItem);
                 }
             }
+
         }
 
         return $items;
@@ -322,7 +264,7 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
     /** Id Product For Category
      * @var array
      */
-    protected function _getIdProductForCategory($idCategory = false) {
+    protected function _getIdProductForCategory($idCategory = false, $panch_flag=false) {
         if(!$idCategory){
             if(!$this->idProductForCategory["false"]){
 //                $productCollection = Mage::getResourceModel('catalog/product_collection')
@@ -343,6 +285,27 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
                 }
 
             }
+            /// ///
+            if($panch_flag){
+                //                $productCollection = Mage::getResourceModel('catalog/product_collection')
+                //                    ->setStoreId(Mage_Core_Model_App::ADMIN_STORE_ID);
+                //                $this->idProductForCategory["false"] = array_keys ($productCollection->getItems());
+
+                #$this->idProductForCategory["false"] = Mage::getModel('sales/order')->getItemsCollection();
+                $this->getCurrentConfig('days_period');
+
+                $data_for_form = $this->getCurrentConfig('history')*86400;
+
+                $usl = Mage::getModel('core/date')->timestamp(time()) - $data_for_form;
+                $usl = date('Y-m-d h:i:s', $usl);
+                $this->idProductForCategory["false"] = Mage::getModel('sales/order')->getItemsCollection()->addAttributeToFilter('created_at',array('gteq'=>$usl))->getData();
+
+                foreach ($this->idProductForCategory["false"] as $item){
+                    $id_product[] = $item['product_id'];
+                }
+
+            }
+
             return $id_product;
         }
 
@@ -372,53 +335,15 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
 
         foreach ($orderItems as $orderItem) {
             $product = $orderItem->getProduct();
-            /**
-             * @todo will be set real price if cost doesn't exist
-             *          check cost in the live db
-             */
-            if($product->getTypeId()=='configurable'){
-                if(!$fullCategory){
-                    $idProduct = $this->_getIdProductForCategory($config['category']);
+
+            if(!is_null($product->getId() AND $orderItem->_data['created_at']>$this->_getPeriod())){
+                if(isset($items[$product->getId()])){
+                    $items[$product->getId()] += $this->_getRowTotalWithDiscountInclTax($orderItem);
                 }else{
-                    $idProduct = $this->_getIdProductForCategory();
-                }
-
-                $itemsSimple = Mage::getResourceModel('sales/order_item_collection')
-                    ->addFieldToFilter('created_at', array('gteq' => $period))
-                    ->addFieldToFilter('parent_item_id', array('eq' => $orderItem->getId()))
-                    ->addFieldToFilter('product_id', array('in' => $idProduct))
-                    ->getItems();
-                foreach($itemsSimple as $simple){
-                    $productSimple = $simple->getProduct();
-                    $cost   = ($productSimple->getCost()) ? $productSimple->getCost() : ($this->_getRowTotalWithDiscountInclTax($orderItem));
-                    $qtyCost   = ($productSimple->getCost()) ? $simple->getQtyOrdered() : (1);
-                    $profit = (float) ($this->_getRowTotalWithDiscountInclTax($orderItem) - $cost * $qtyCost);
-
-                    if ($profit > 0) {
-                        if(!is_null($productSimple->getId())){
-                            if(!is_null($items[$productSimple->getId()])){
-                                $items[$productSimple->getId()]->setParent($product->getId());
-                                $items[$productSimple->getId()]->setProfit($items[$productSimple->getId()]->getProfit()+$profit);
-                            }else{
-                                $object = new Varien_Object();
-                                $object->setParent($product->getId());
-                                $object->setProfit($profit);
-                                $items[$productSimple->getId()]=$object;
-                            }
-                        }
-                    }
-                }
-            }else{
-                $cost   = ($product->getCost()) ? $product->getCost() : ($this->_getRowTotalWithDiscountInclTax($orderItem));
-                $qtyCost   = ($product->getCost()) ? $orderItem->getQtyOrdered() : (1);
-                $profit = (float) ($this->_getRowTotalWithDiscountInclTax($orderItem) - $cost * $qtyCost);
-
-                if ($profit > 0) {
-                    if(!is_null($product->getId())){
-                        $items[$product->getId()] += $profit;
-                    }
+                    $items[$product->getId()] = $this->_getRowTotalWithDiscountInclTax($orderItem);
                 }
             }
+
         }
 
         return $items;
@@ -527,13 +452,7 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
             foreach ($bestSellersArray as $id) {
                 $product = Mage::getModel('catalog/product')->load($id);
 
-                if (isset($product['special_price'])) {
-                    $product_price = $product['special_price'];
-                } else {
-                    $product_price = $product['price'];
-                }
-
-                if($product_price==$priceFilter['0']) {
+                if($product->getFinalPrice()==$priceFilter['0']) {
                     $bestsell[] = $product['entity_id'];
                 }
             }
@@ -542,13 +461,7 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
             foreach ($bestSellersArray as $id) {
                 $product = Mage::getModel('catalog/product')->load($id);
 
-                if (isset($product['special_price'])) {
-                    $product_price = $product['special_price'];
-                } else {
-                    $product_price = $product['price'];
-                }
-
-                if ($product_price >= $priceFilter['0'] AND $product_price <= $priceFilter['1']) {
+                if ($product->getFinalPrice() >= $priceFilter['0'] AND $product->getFinalPrice() <= $priceFilter['1']) {
                     $bestsell[] = $product['entity_id'];
                 }
             }
