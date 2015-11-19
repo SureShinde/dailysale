@@ -6,7 +6,6 @@ class Bronto_Common_Block_Cart_Recovery extends Mage_Core_Block_Template
     private $_order;
     private $_displayOrder = false;
     private $_categoryCache = array();
-    private $_productCache = array();
 
     /**
      * Get the Cart Recovery Javascript
@@ -150,14 +149,19 @@ class Bronto_Common_Block_Cart_Recovery extends Mage_Core_Block_Template
      * @param Mage_Sales_Model_Quote_Item | Mage_Sales_Model_Order_Item
      * @return Mage_Catalog_Model_Product
      */
-    private function getProduct($lineItem)
+    private function getProduct($lineItem, $includeParent = true)
     {
-        if (!isset($this->_productCache[$lineItem->getProductId()])) {
-            $this->_productCache[$lineItem->getProductId()] = Mage::getModel('catalog/product')
-                ->setStoreId($this->getSalesObject()->getStoreId())
-                ->load($lineItem->getProductId());
-        }
-        return $this->_productCache[$lineItem->getProductId()];
+        return Mage::helper('bronto_common/item')->getProduct($lineItem, $includeParent);
+    }
+
+    private function getParentItem($lineItem)
+    {
+        return Mage::helper('bronto_common/item')->getParentItem($lineItem);
+    }
+
+    public function getName($lineItem)
+    {
+        return Mage::helper('bronto_common/item')->getName($lineItem);
     }
 
     /**
@@ -179,10 +183,7 @@ class Bronto_Common_Block_Cart_Recovery extends Mage_Core_Block_Template
      */
     public function getProductUrl($lineItem)
     {
-        if ($lineItem->getRedirectUrl()) {
-            return $lineItem->getRedirectUrl();
-        }
-        return Mage::helper('catalog/product')->getProductUrl($this->getProduct($lineItem));
+        return Mage::helper('bronto_common/item')->getProductUrl($lineItem);
     }
 
     /**
@@ -192,7 +193,7 @@ class Bronto_Common_Block_Cart_Recovery extends Mage_Core_Block_Template
      */
     public function getOther($lineItem)
     {
-        $product = $this->getProduct($lineItem);
+        $product = $this->getProduct($lineItem, false);
         $attributeCode = $this->getLineItemAttributeCode();
         if ($attributeCode) {
             $attributeValue = $product->getData($attributeCode);
@@ -215,7 +216,7 @@ class Bronto_Common_Block_Cart_Recovery extends Mage_Core_Block_Template
      */
     public function getImage($lineItem)
     {
-        return Mage::helper('bronto_common')->getProductImageUrl($this->getProduct($lineItem));
+        return Mage::helper('bronto_common/item')->getImage($lineItem);
     }
 
     /**
@@ -226,11 +227,7 @@ class Bronto_Common_Block_Cart_Recovery extends Mage_Core_Block_Template
      */
     public function getQty($lineItem)
     {
-        if ($lineItem instanceof Mage_Sales_Model_Order_Item) {
-            return $lineItem->getQtyOrdered();
-        } else {
-            return $lineItem->getQty();
-        }
+        return Mage::helper('bronto_common/item')->getQty($lineItem);
     }
 
     /**
@@ -246,6 +243,44 @@ class Bronto_Common_Block_Cart_Recovery extends Mage_Core_Block_Template
         } else {
             return $object->getDiscountAmount();
         }
+    }
+
+    public function getFlatItems()
+    {
+        return Mage::helper('bronto_common/item')->getFlatItems($this->getSalesObject());
+    }
+
+    /**
+     * Gets parent item's unit price
+     *
+     * @param mixed
+     * @return float
+     */
+    public function getOriginalPrice($lineItem)
+    {
+        return $this->getParentItem($lineItem)->getOriginalPrice();
+    }
+
+    /**
+     * Gets parent item's price
+     *
+     * @param mixed
+     * @return float
+     */
+    public function getPrice($lineItem)
+    {
+        return $this->getParentItem($lineItem)->getPrice();
+    }
+
+    /**
+     * Gets parent item's rowtotal
+     *
+     * @param mixed
+     * @return float
+     */
+    public function getRowTotal($lineItem)
+    {
+        return $this->getParentItem($lineItem)->getRowTotal();
     }
 
     /**

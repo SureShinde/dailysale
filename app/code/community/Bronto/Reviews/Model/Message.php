@@ -102,7 +102,7 @@ class Bronto_Reviews_Model_Message extends Bronto_Common_Model_Email_Template
     protected function _additionalFields($delivery, $variables)
     {
         foreach ($this->_additionalFields as $key => $value) {
-            $delivery->setField($key, $value, 'html');
+            $delivery->withField($key, $value, 'html');
         }
     }
 

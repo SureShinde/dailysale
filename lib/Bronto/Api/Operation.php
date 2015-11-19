@@ -146,6 +146,7 @@ class Bronto_Api_Operation
             return $this->createRead($readData);
         case 'save':
             $thing = $arguments[0];
+            $upsert = false;
             if (count($arguments) > 1) {
                 $upsert = (boolean) $arguments[1];
             }
@@ -231,8 +232,8 @@ class Bronto_Api_Operation
     {
         $modelClass = "Bronto_Api_Model_{$this->getTransferType()}";
         // Note: This snippet was generated with legacy conversion
-        if (is_string($modelClass) && !array_key_exists($modelClass, Bronto_ImportManager::$_fileCache)) {
-            $dir = str_replace(str_replace("_", "/", "Bronto_Api"), '', dirname(__FILE__));
+        if (is_string($modelClass) && !class_exists($modelClass, false) && !array_key_exists($modelClass, Bronto_ImportManager::$_fileCache)) {
+            $dir = preg_replace('|' . str_replace("_", "/", "Bronto_Api") . '$|', '', dirname(__FILE__));
             $file = $dir . str_replace("_", "/", $modelClass) . '.php';
             if (file_exists($file)) {
                 require_once $file;
@@ -242,7 +243,7 @@ class Bronto_Api_Operation
             }
         }
         // End Conversion Snippet
-        if (Bronto_ImportManager::$_fileCache[$modelClass]) {
+        if ((class_exists($modelClass, false) || Bronto_ImportManager::$_fileCache[$modelClass])) {
             return new $modelClass($data);
         }
         return new Bronto_Api_Object($this->_type, $data);
@@ -293,8 +294,8 @@ class Bronto_Api_Operation
         if (!$this->_supportedMethod($method)) {
             throw new BadMethodCallException("Method $method is not supported.");
         }
-        $limit = $limit ?: $this->_writeLimit;
-        $original = $original ?: $method;
+        $limit = $limit ? $limit : $this->_writeLimit;
+        $original = $original ? $original : $method;
         return new Bronto_Api_Write($this, $method, $limit, $original, $this->_resolvedWriteKey($original));
     }
 }

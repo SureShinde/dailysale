@@ -7,6 +7,15 @@ class Bronto_Product_Adminhtml_RecommendationsController extends Mage_Adminhtml_
     protected $_helper;
 
     /**
+     * Override for ACL permissions
+     */
+    protected function _isAllowed()
+    {
+        $session = Mage::getSingleton('admin/session');
+        return $session->isAllowed('admin/promo/bronto_product');
+    }
+
+    /**
      * Gets the product helper related to this module
      *
      * @return Bronto_Product_Helper_Data

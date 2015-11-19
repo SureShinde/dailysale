@@ -102,7 +102,7 @@ class Bronto_Api_Write extends Bronto_Object implements Bronto_Api_Request, Iter
      */
     public function withFlusher($callback = null)
     {
-        $this->_flusher = $callback ?: array($this, '_autoFlusher');
+        $this->_flusher = $callback ? $callback : array($this, '_autoFlusher');
         return $this;
     }
 

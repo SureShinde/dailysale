@@ -48,11 +48,14 @@ class Bronto_Common_Model_Flusher implements Bronto_Api_Write_Flusher
             switch ($e->getCode()) {
             case 107:
                 foreach ($objects as $object) {
+                    if (is_array($object) && !($object instanceof Bronto_Object)) {
+                        $object = new Bronto_Object($object);
+                    }
                     $queueRow = $this->_queueEntry($object->getQueueRow());
                     try {
                         $iterator->getOperation()->getApi()->execute(new Bronto_Object(array(
                             'method' => $request->getMethod(),
-                            'data' => array($request->getKey() => array($object)),
+                            'data' => array($request->getKey() => array($object->toArray())),
                             'hasUpdates' => true
                         )));
                         $queueRow
@@ -73,6 +76,9 @@ class Bronto_Common_Model_Flusher implements Bronto_Api_Write_Flusher
             default:
                 if ($e->getCode() > 200) {
                     foreach ($objects as $object) {
+                        if (is_array($object) && !($object instanceof Bronto_Object)) {
+                            $object = new Bronto_Object($object);
+                        }
                         $this->_queueEntry($object->getQueueRow())
                             ->setBrontoImported(null)
                             ->setBrontoSuppressed($e->getMessage())

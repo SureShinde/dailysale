@@ -47,17 +47,17 @@ class Bronto_Common_Model_List
         $listIds = $this->getExclusionLists('store', $storeId);
         $recipients = array();
         if ($listIds) {
-            $listObject = $this->_helper->getApi(null, 'store', $storeId)->getListObject();
             try {
-                  $lists = $listObject->readAll(array('id' => $listIds));
-                  foreach ($lists->iterate() as $list) {
-                      $this->_helper->writeDebug("Excluding list: {$list->name} ({$list->id})");
-                      $recipients[] = array(
-                          'type' => 'list',
-                          'id' => $list->id,
-                          'deliveryType' => 'ineligible'
-                      );
-                  }
+                $listObject = $this->_helper->getApi(null, 'store', $storeId)->transferMailList();
+                $lists = $listObject->read()->where->id->in($listIds);
+                foreach ($lists as $list) {
+                    $this->_helper->writeDebug("Excluding list: {$list->getName()} ({$list->getId()})");
+                    $recipients[] = array(
+                        'type' => 'list',
+                        'id' => $list->getId(),
+                        'deliveryType' => 'ineligible'
+                    );
+                }
             } catch (Exception $e) {
                 $this->_helper->writeError("Unable to add exclusion lists: " . $e->getMessage());
             }

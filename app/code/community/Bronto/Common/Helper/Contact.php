@@ -22,10 +22,13 @@ class Bronto_Common_Helper_Contact extends Bronto_Common_Helper_Data
         $api      = $this->getApi(null, 'store', $store);
         $contacts = $api->transferContact();
         try {
-            return $contacts->read()
+            $contact = $contacts->read()
                 ->withIncludeLists(true)
                 ->where->email->equalTo($email)
                 ->first();
+            if (!is_null($contact)) {
+                return $contact;
+            }
         } catch (Exception $e) {
             $this->writeError('Failed to read contact ' . $email . ': ' . $e->getMessage());
         }

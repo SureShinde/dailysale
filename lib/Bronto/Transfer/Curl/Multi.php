@@ -28,7 +28,7 @@ class Bronto_Transfer_Curl_Multi
      */
     public function __construct($multi = null)
     {
-        $this->_multi = $multi ?: new Bronto_Resource_Proxy('curl_multi_');
+        $this->_multi = $multi ? $multi : new Bronto_Resource_Proxy('curl_multi_');
         $this->_multi->addExcluded('getcontent');
         $this->_multi->init();
     }

@@ -44,10 +44,10 @@ abstract class Bronto_Functional_Option implements Bronto_Functional_Monadic
      * @param callable $function
      * @return Bronto_Functional_Monadic
      */
-    public function each(callable $function)
+    public function each($function)
     {
         if ($this->isDefined()) {
-            $function($this->get());
+            call_user_func($function, $this->get());
         }
         return $this;
     }
@@ -57,9 +57,9 @@ abstract class Bronto_Functional_Option implements Bronto_Functional_Monadic
      * @param callable $function
      * @return Bronto_Functional_Monadic
      */
-    public function filter(callable $function)
+    public function filter($function)
     {
-        if ($this->isDefined() && $function($this->get())) {
+        if ($this->isDefined() && call_user_func($function, $this->get())) {
             return $this;
         }
         return new Bronto_Functional_None();
@@ -70,10 +70,10 @@ abstract class Bronto_Functional_Option implements Bronto_Functional_Monadic
      * @param callable $function
      * @return Bronto_Functional_Monadic
      */
-    public function map(callable $function)
+    public function map($function)
     {
         if ($this->isDefined()) {
-            return new Bronto_Functional_Some($function($this->get()));
+            return new Bronto_Functional_Some(call_user_func($function, $this->get()));
         }
         return $this;
     }
@@ -98,10 +98,10 @@ abstract class Bronto_Functional_Option implements Bronto_Functional_Monadic
      * @param callable $function
      * @return Bronto_Functional_Some
      */
-    public function orElse(callable $function)
+    public function orElse($function)
     {
         if ($this->isEmpty()) {
-            return new Bronto_Functional_Some($function());
+            return new Bronto_Functional_Some(call_user_func($function));
         }
         return $this;
     }
