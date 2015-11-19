@@ -44,7 +44,7 @@ class Bronto_Api_Read_Filter extends Bronto_Object {
             throw new LogicException("Filter statement was never completed.");
         }
         $this->_opened = true;
-        $this->_openedType = $type ?: $this->getType();
+        $this->_openedType = $type ? $type : $this->getType();
         return $this;
     }
 
