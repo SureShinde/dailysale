@@ -177,7 +177,7 @@ class Bronto_Common_Model_Email_Template extends Mage_Core_Model_Email_Template
         $appEmu = Mage::getSingleton('core/app_emulation');
         $emuInfo = $appEmu->startEnvironmentEmulation($processor->getStoreId(), 'frontend');
         try {
-            $this->setInlineCssFile($this->getInlineCss());
+            $this->setInlineCssFile($this->getInlineCss() ? $this->getInlineCss() : 'email-inline.css');
             $processor->setBaseTemplate($this);
             $delivery = $processor->filter($delivery);
         } catch (Exception $e) {
@@ -363,10 +363,7 @@ class Bronto_Common_Model_Email_Template extends Mage_Core_Model_Email_Template
         $variables['name']  = reset($names);
         $this->setUseAbsoluteLinks(true);
 
-        $apiHelper = Mage::helper('bronto_common/api');
-        $api = $apiHelper->getApi(null, 'store', $variables['store']->getId());
-
-        $delivery = $api->transferDelivery()->createObject();
+        $delivery = new Bronto_Api_Model_Delivery();
         $delivery = $this->getProcessedDelivery($delivery, $variables);
         $this->_additionalFields($delivery, $variables);
         $productContext = Mage::helper('bronto_product')
@@ -398,11 +395,11 @@ class Bronto_Common_Model_Email_Template extends Mage_Core_Model_Email_Template
 
         $queue = Mage::getModel('bronto_common/queue')
             ->setStoreId($variables['store']->getId())
-            ->setApi($api)
             ->setUnserializedEmailData($data)
             ->setEmailClass($this->_emailClass())
             ->setCreatedAt(Mage::getSingleton('core/date')->gmtDate());
 
+        $apiHelper = Mage::helper('bronto_common/api');
         if ($this->_queuable() && $apiHelper->canUseQueue('store', $queue->getStoreId())) {
             try {
                 $queue->save();
@@ -412,7 +409,8 @@ class Bronto_Common_Model_Email_Template extends Mage_Core_Model_Email_Template
                 return $this->sendDeliveryFromQueue($queue);
             }
         } else {
-            return $this->sendDeliveryFromQueue($queue);
+            $api = $apiHelper->getApi(null, 'store', $variables['store']->getId());
+            return $this->sendDeliveryFromQueue($queue->setApi($api));
         }
     }
 

@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Bronto_Common>
-            <version>2.4.2</version>
+            <version>2.4.4</version>
         </Bronto_Common>
     </modules>
     <global>
@@ -194,7 +194,6 @@
             </queue_settings>
             <soap_options>
                 <soap_client>SoapClient</soap_client>
-                <observer>Bronto_Common_Model_Api</observer>
                 <retryer>Bronto_Common_Model_Error</retryer>
                 <stream_context>0</stream_context>
                 <retry_limit>2</retry_limit>

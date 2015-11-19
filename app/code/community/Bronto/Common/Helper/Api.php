@@ -21,7 +21,6 @@ class Bronto_Common_Helper_Api extends Bronto_Common_Helper_Data
     const XML_PATH_QUEUE_FREQUENCY_MIN = 'bronto_api/queue_settings/minutes';
 
     const XML_PATH_SOAP_CLIENT             = 'bronto_api/soap_options/soap_client';
-    const XML_PATH_API_OBSERVER            = 'bronto_api/soap_options/observer';
     const XML_PATH_API_RETRYER             = 'bronto_api/soap_options/retryer';
     const XML_PATH_SOAP_STREAM_CONTEXT     = 'bronto_api/soap_options/stream_context';
     const XML_PATH_SOAP_RETRY_LIMIT        = 'bronto_api/soap_options/retry_limit';
@@ -197,7 +196,7 @@ class Bronto_Common_Helper_Api extends Bronto_Common_Helper_Data
      */
     public function getApiObserver()
     {
-        return $this->getAdminScopedConfig(self::XML_PATH_API_OBSERVER);
+        return '';
     }
 
     /**

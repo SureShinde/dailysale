@@ -136,8 +136,8 @@ class Bronto_Api_Options extends Bronto_Object
             if (array_key_exists($field, $this->_data)) {
                 $value = $this->_data[$field];
         // Note: This snippet was generated with legacy conversion
-        if (is_string($value) && !array_key_exists($value, Bronto_ImportManager::$_fileCache)) {
-            $dir = str_replace(str_replace("_", "/", "Bronto_Api"), '', dirname(__FILE__));
+        if (is_string($value) && !class_exists($value, false) && !array_key_exists($value, Bronto_ImportManager::$_fileCache)) {
+            $dir = preg_replace('|' . str_replace("_", "/", "Bronto_Api") . '$|', '', dirname(__FILE__));
             $file = $dir . str_replace("_", "/", $value) . '.php';
             if (file_exists($file)) {
                 require_once $file;
@@ -147,7 +147,7 @@ class Bronto_Api_Options extends Bronto_Object
             }
         }
         // End Conversion Snippet
-                if (is_string($value) && Bronto_ImportManager::$_fileCache[$value]) {
+                if (is_string($value) && (class_exists($value, false) || Bronto_ImportManager::$_fileCache[$value])) {
                     $value = new $value();
                 }
                 if (is_a($value, $className)) {

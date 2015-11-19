@@ -34,7 +34,7 @@ class Bronto_Order_Model_Queue extends Mage_Core_Model_Abstract
 
         // Add Filters
         if (($quoteId > 0) && ($orderId > 0)) {
-            $collection->getSelect()->where("`quote_id` = $quoteId AND `order_id` = $orderId");
+            $collection->getSelect()->where("quote_id = $quoteId AND order_id = $orderId");
         } elseif (($quoteId > 0)) {
             $collection->addFieldToFilter('quote_id', $quoteId);
         } elseif (($orderId > 0)) {
@@ -96,7 +96,7 @@ class Bronto_Order_Model_Queue extends Mage_Core_Model_Abstract
         $select->from(
             array('order' => $resource->getTable('sales/order')), array(new Zend_Db_Expr('COUNT(entity_id) as count'))
         )
-            ->where('`order`.`entity_id` NOT IN (?)', $this->_getSubselect($resource, $adapter));
+            ->where('order.entity_id NOT IN (?)', $this->_getSubselect($resource, $adapter));
 
         // Get Results
         $result = $adapter->query($select)->fetch();
@@ -146,7 +146,7 @@ class Bronto_Order_Model_Queue extends Mage_Core_Model_Abstract
             ->from(
                 array('order' => $resource->getTable('sales/order')), array('entity_id', 'store_id', 'quote_id', 'created_at')
             )
-            ->where('`order`.`entity_id` NOT IN (?)', $this->_getSubselect($resource, $adapter))
+            ->where('order.entity_id NOT IN (?)', $this->_getSubselect($resource, $adapter))
             ->limit($count);
 
         // Get Results

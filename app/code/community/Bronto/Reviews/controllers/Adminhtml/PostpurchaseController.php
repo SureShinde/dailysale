@@ -6,6 +6,15 @@ class Bronto_Reviews_Adminhtml_PostpurchaseController extends Mage_Adminhtml_Con
     protected $_module = 'bronto_reviews';
 
     /**
+     * Override for ACL permissions
+     */
+    protected function _isAllowed()
+    {
+        $session = Mage::getSingleton('admin/session');
+        return $session->isAllowed('admin/system/bronto_reviews');
+    }
+
+    /**
      * Gets the block for the grid for certain things
      *
      * @return Mage_Adminhtml_Block_Abstract

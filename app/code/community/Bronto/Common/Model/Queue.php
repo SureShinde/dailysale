@@ -152,7 +152,7 @@ class Bronto_Common_Model_Queue extends Mage_Core_Model_Abstract
     {
         if (is_null($this->_message)) {
             $deliveryData = $this->getUnserializedEmailData()->getDelivery();
-            $this->_message = Mage::helper('bronto_common/message')->getMessageById($deliveryData['messageId']);
+            $this->_message = Mage::helper('bronto_common/message')->getMessageById($deliveryData['messageId'], $this->getStoreId());
         }
         return $this->_message;
     }

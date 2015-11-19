@@ -12,19 +12,19 @@
       <div id="bronto-cart-recovery-cart-id"><?php echo $this->getQuote()->getId(); ?></div>
     <?php endif; ?>
     <div id="bronto-cart-recovery-line-items">
-      <?php foreach ($this->getSalesObject()->getAllVisibleItems() as $lineItem): ?>
+      <?php foreach ($this->getFlatItems() as $lineItem): ?>
         <div class="bronto-cart-recovery-line-item">
           <div class="bronto-cart-recovery-line-item-sku"><?php echo $lineItem->getSku(); ?></div>
-          <div class="bronto-cart-recovery-line-item-name"><?php echo htmlentities($lineItem->getName()); ?></div>
+          <div class="bronto-cart-recovery-line-item-name"><?php echo htmlentities($this->getName($lineItem)); ?></div>
           <div class="bronto-cart-recovery-line-item-description"><?php echo htmlentities($this->getDescription($lineItem)); ?></div>
           <div class="bronto-cart-recovery-line-item-category"><?php echo htmlentities($this->renderCategories($lineItem)); ?></div>
           <div class="bronto-cart-recovery-line-item-url"><?php echo $this->getProductUrl($lineItem); ?></div>
           <div class="bronto-cart-recovery-line-item-image"><?php echo $this->getImage($lineItem); ?></div>
           <div class="bronto-cart-recovery-line-item-other"><?php echo $this->getOther($lineItem); ?></div>
-          <div class="bronto-cart-recovery-line-item-unit-price"><?php echo $lineItem->getOriginalPrice(); ?></div>
-          <div class="bronto-cart-recovery-line-item-sale-price"><?php echo $lineItem->getPrice(); ?></div>
+          <div class="bronto-cart-recovery-line-item-unit-price"><?php echo $this->getOriginalPrice($lineItem); ?></div>
+          <div class="bronto-cart-recovery-line-item-sale-price"><?php echo $this->getPrice($lineItem); ?></div>
           <div class="bronto-cart-recovery-line-item-quantity"><?php echo $this->getQty($lineItem); ?></div>
-          <div class="bronto-cart-recovery-line-item-total-price"><?php echo $lineItem->getRowTotal(); ?></div>
+          <div class="bronto-cart-recovery-line-item-total-price"><?php echo $this->getRowTotal($lineItem); ?></div>
         </div>
       <?php endforeach; ?>
     </div>
@@ -32,7 +32,9 @@
     <div id="bronto-cart-recovery-discount-amount"><?php echo $this->getDiscountAmount(); ?></div>
     <div id="bronto-cart-recovery-subtotal"><?php echo $this->getSalesObject()->getSubtotal(); ?></div>
     <div id="bronto-cart-recovery-tax-amount"><?php echo $this->getSalesObject()->getTaxAmount(); ?></div>
+    <?php if ($this->getSalesObject()->getCustomerEmail()) : ?>
     <div id="bronto-cart-recovery-email-address"><?php echo htmlentities($this->getSalesObject()->getCustomerEmail()); ?></div>
+    <?php endif; ?>
     <div id="bronto-cart-recovery-grand-total"><?php echo $this->getSalesObject()->getGrandTotal(); ?></div>
   </div>
 <?php endif; ?>

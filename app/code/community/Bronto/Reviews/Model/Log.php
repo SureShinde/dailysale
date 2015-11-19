@@ -115,7 +115,7 @@ class Bronto_Reviews_Model_Log extends Mage_Core_Model_Abstract
                     ->errorsOnly();
                 $errors = array();
                 foreach ($results as $result) {
-                    $errors[] = "{$result->getItem()->getErrorCode()}: {$result->getItem()->getErrorString}";
+                    $errors[] = "{$result->getItem()->getErrorCode()}: {$result->getItem()->getErrorString()}";
                 }
                 if (count($errors) > 1) {
                     Mage::throwException(implode('<br/>', $errors));
