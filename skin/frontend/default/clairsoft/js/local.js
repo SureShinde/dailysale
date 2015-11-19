@@ -26,54 +26,6 @@ $j(document).ready(function(){
 		return false;
 	});
 
-//popup window with cookie
-
-	//set dialog options
-	$j("#subscribe-pop").hide();
-	$j( "#subscribe-pop" ).dialog({
-		height: 220,
-		width: 425,
-		autoOpen: false,
-		dialogClass: 'dialogSubscribe',
-		modal: true,
-		show: {effect: "drop",
-			direction:"right"},
-		hide: {effect: "drop",
-			direction:"down"},
-		draggable: false,
-		resizable: false,
-		close: function(){
-			$j.cookie('subscribe', 'closed', { expires: 15, path: '/' });
-		}
-	});
-
-	$j("#subscribe-pop button").click(function(){
-		$j.cookie('subscribe', 'closed', { expires: 730, path: '/' });
-	});
-
-	//click outside to close modal popup
-	$j('body').on('click','.ui-widget-overlay',function(){ $j('#subscribe-pop').dialog('close'); });
-
-
-	//timer script for popup action
-
-	var idleTime = 0;
-	function timerIncrement() {
-		idleTime = idleTime + 1;
-			if (idleTime > 15 && $j.cookie('subscribe') !== "closed"){
-				$j("#subscribe-pop").dialog("open");
-				idleTime = 0;
-			}
-		}
-
-	setInterval(timerIncrement, 1000); // 1 second
-
-	//move subscribe window to center on resize
-	$j(window).resize(function() {
-    	$j("#subscribe-pop").dialog( "option", "position", { my: "center", at: "center", of: window } );
-    	//$j("#subscribe-pop").dialog("close");
-	});
-
 	//main page border hovers
 
 	var borderEnter = function(){
