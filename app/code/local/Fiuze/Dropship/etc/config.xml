@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Dropship
+ *
+ * @author      ahofs
+ * @category    Fiuze
+ * @package     Dropship
+ * @copyright   Copyright (c) 2015 Fiuze
+ *
+ * Override to change frontname for vendor portal
+ */
+-->
+<config>
+    <modules>
+        <Fiuze_Dropship>
+            <version>1.0.0</version>
+        </Fiuze_Dropship>
+    </modules>
+    <frontend>
+        <routers>
+            <udropship>
+                <use>standard</use>
+                <args>
+                    <module>Unirgy_Dropship</module>
+                    <frontName>portal</frontName>
+                </args>
+            </udropship>
+        </routers>
+    </frontend>
+</config>

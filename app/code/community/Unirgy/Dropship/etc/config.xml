@@ -1556,7 +1556,7 @@
                 <use>standard</use>
                 <args>
                     <module>Unirgy_Dropship</module>
-                    <frontName>portal</frontName>
+                    <frontName>udropship</frontName>
                 </args>
             </udropship>
         </routers>
