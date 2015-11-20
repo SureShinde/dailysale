@@ -3,7 +3,7 @@
 <config>
     <modules>
         <Turnto_Admin>
-            <version>2.2.0</version>
+            <version>2.2.9</version>
         </Turnto_Admin>
     </modules> 
 
@@ -64,7 +64,7 @@
                 <use>standard</use>
                 <args>
                     <module>Turnto_Admin_Adminhtml</module>
-                    <frontName>version</frontName>
+                    <frontName>turntoversion</frontName>
                 </args>
             </turntoversion>
         </routers>
