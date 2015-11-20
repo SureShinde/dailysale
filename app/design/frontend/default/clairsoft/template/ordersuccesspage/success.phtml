@@ -109,6 +109,16 @@ $orderObj = Mage::getModel('sales/order')->loadByIncrementId($this->getOrderId()
 
 <!-- END OF FLEXOFFERS.COM TRACKING CODE -->
 
+<!-- set google remarketing ecomm value -->
+
+<?php if (!empty($subtotal)){ ?>
+  <script type="text/javascript">
+  var google_tag_params = {
+  ecomm_totalvalue: <?php echo($subtotal); ?>
+  };
+  </script>
+<?php } ?>
+
 <!-- Google Code for Daily Sale Conversion Conversion Page -->
 <script type="text/javascript">
 /* <![CDATA[ */
