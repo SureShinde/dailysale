@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Core
+ *
+ * @author      ahofs
+ * @category    Fiuze
+ * @package     Core
+ * @copyright   Copyright (c) 2015 Fiuze
+ */
+-->
+<config>
+    <modules>
+        <Fiuze_Core>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <Mage_Core />
+            </depends>
+        </Fiuze_Core>
+    </modules>
+</config>
