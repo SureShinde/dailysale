@@ -1,28 +1,10 @@
 <?php
 /**
- * Magento
- *
- * NOTICE OF LICENSE
- *
- * This source file is subject to the Academic Free License (AFL 3.0)
- * that is bundled with this package in the file LICENSE_AFL.txt.
- * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/afl-3.0.php
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@magentocommerce.com so we can send you a copy immediately.
- *
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade Magento to newer
- * versions in the future. If you wish to customize Magento for your
- * needs please refer to http://www.magentocommerce.com for more information.
- *
  * @category    design
- * @package     base_default
- * @copyright   Copyright (c) 2014 Magento Inc. (http://www.magentocommerce.com)
- * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ * @package     clairsoft
+ * @copyright   Copyright (c) 2015 Fiuze
  */
+/** @var $this Mage_Page_Block_Html_Head */
 ?>
 <meta http-equiv="Content-Type" content="<?php echo $this->getContentType() ?>" />
 <title><?php echo $this->getTitle() ?></title>
@@ -48,134 +30,116 @@
 		$order = Mage::getModel('sales/order')->loadByIncrementId(Mage::getSingleton('checkout/session')->getLastRealOrderId());
 		$amount = number_format($order->getGrandTotal(),2);
 	?>
-
-	<!-- Facebook Conversion Code for DailySale Checkout -->
-	<script>(function() {
-	  var _fbq = window._fbq || (window._fbq = []);
-	  if (!_fbq.loaded) {
-	    var fbds = document.createElement('script');
-	    fbds.async = true;
-	    fbds.src = '//connect.facebook.net/en_US/fbds.js';
-	    var s = document.getElementsByTagName('script')[0];
-	    s.parentNode.insertBefore(fbds, s);
-	    _fbq.loaded = true;
-	  }
-	})();
-	window._fbq = window._fbq || [];
-	window._fbq.push(['track', '6019180810815', {'value': <?php echo $amount; ?>,'currency':'USD'}]);
-	console.log(<?php echo $amount?>);
+	<?php //Facebook Conversion Code for DailySale Checkout ?>
+	<script type="text/javascript">
+	//<![CDATA[
+	    jQuery(document).ready(function() {
+            (function() {
+              var _fbq = window._fbq || (window._fbq = []);
+              if (!_fbq.loaded) {
+                var fbds = document.createElement('script');
+                fbds.async = true;
+                fbds.src = '//connect.facebook.net/en_US/fbds.js';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(fbds, s);
+                _fbq.loaded = true;
+              }
+            })();
+            window._fbq = window._fbq || [];
+            window._fbq.push(['track', '6019180810815', {'value': <?php echo $amount; ?>,'currency':'USD'}]);
+        });
+	//]]>
 	</script>
 	<noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?ev=6019180810815&amp;cd[value]=<?php echo $amount; ?>&amp;cd[currency]=USD&amp;noscript=1" /></noscript>
-
 <?php endif; ?>
 
-<!-- Facebook custom audience pixel -->
-
-<script>(function() {
-var _fbq = window._fbq || (window._fbq = []);
-if (!_fbq.loaded) {
-var fbds = document.createElement('script');
-fbds.async = true;
-fbds.src = '//connect.facebook.net/en_US/fbds.js';
-var s = document.getElementsByTagName('script')[0];
-s.parentNode.insertBefore(fbds, s);
-_fbq.loaded = true;
-}
-_fbq.push(['addPixelId', '663833153700547']);
-_fbq.push(['track',<?php echo ("'".$order."'"); ?>,{'value':<?php echo ("'".$subtotal."'"); ?>,'currency':'USD'}]);
-})();
-window._fbq = window._fbq || [];
-window._fbq.push(['track', 'PixelInitialized', {}]);
-</script>
-<noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?id=663833153700547&amp;ev=PixelInitialized" /></noscript>
-
-<!-- google tracking pixel -->
-
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-29292590-3', 'auto');
-  ga('send', 'pageview');
-
-</script>
-
-<!-- BEGIN: Google Trusted Stores -->
 <script type="text/javascript">
-  var gts = gts || [];
+//<![CDATA[
+    jQuery(document).ready(function() {
+        <?php //Facebook custom audience pixel ?>
+        (function() {
+        var _fbq = window._fbq || (window._fbq = []);
+        if (!_fbq.loaded) {
+        var fbds = document.createElement('script');
+        fbds.async = true;
+        fbds.src = '//connect.facebook.net/en_US/fbds.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(fbds, s);
+        _fbq.loaded = true;
+        }
+        _fbq.push(['addPixelId', '663833153700547']);
+        //_fbq.push(['track',<?php //echo ("'" . $order . "'"); ?>,{'value':<?php //echo ("'" . $subtotal . "'"); ?>,'currency':'USD'}]);
+        })();
+        window._fbq = window._fbq || [];
+        window._fbq.push(['track', 'PixelInitialized', {}]);
 
-  gts.push(["id", "483554"]);
-  gts.push(["badge_position", "BOTTOM_RIGHT"]);
-  gts.push(["locale", "PAGE_LANGUAGE"]);
-  gts.push(["google_base_offer_id", "ITEM_GOOGLE_SHOPPING_ID"]);
-  gts.push(["google_base_subaccount_id", "ITEM_GOOGLE_SHOPPING_ACCOUNT_ID"]);
-  gts.push(["google_base_country", "ITEM_GOOGLE_SHOPPING_COUNTRY"]);
-  gts.push(["google_base_language", "ITEM_GOOGLE_SHOPPING_LANGUAGE"]);
+        <?php //google tracking pixel ?>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-  (function() {
-    var gts = document.createElement("script");
-    gts.type = "text/javascript";
-    gts.async = true;
-    gts.src = "https://www.googlecommerce.com/trustedstores/api/js";
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(gts, s);
-  })();
-</script>
-<!-- END: Google Trusted Stores -->
+        ga('create', 'UA-29292590-3', 'auto');
+        ga('send', 'pageview');
 
-<!-- Adroll Smart Pixel -->
+        <?php //google trusted stores ?>
+        var gts = gts || [];
+        gts.push(["id", "483554"]);
+        gts.push(["badge_position", "BOTTOM_RIGHT"]);
+        gts.push(["locale", "PAGE_LANGUAGE"]);
+        gts.push(["google_base_offer_id", "ITEM_GOOGLE_SHOPPING_ID"]);
+        gts.push(["google_base_subaccount_id", "ITEM_GOOGLE_SHOPPING_ACCOUNT_ID"]);
+        gts.push(["google_base_country", "ITEM_GOOGLE_SHOPPING_COUNTRY"]);
+        gts.push(["google_base_language", "ITEM_GOOGLE_SHOPPING_LANGUAGE"]);
+        (function() {
+            var gts = document.createElement("script");
+            gts.type = "text/javascript";
+            gts.async = true;
+            gts.src = "https://www.googlecommerce.com/trustedstores/api/js";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(gts, s);
+        })();
 
-<script type="text/javascript">
-adroll_adv_id = "E3M62ZQJ25HOXEMXRJAVQ2";
-adroll_pix_id = "QXQPAX4K7NEZ5APU6YEVRO";
-(function () {
-var oldonload = window.onload;
-window.onload = function(){
-__adroll_loaded=true;
-var scr = document.createElement("script");
-var host = (("https:" == document.location.protocol) ? "https://s.adroll.com" : "http://a.adroll.com");
-scr.setAttribute('async', 'true');
-scr.type = "text/javascript";
-scr.src = host + "/j/roundtrip.js";
-((document.getElementsByTagName('head') || [null])[0] ||
-document.getElementsByTagName('script')[0].parentNode).appendChild(scr);
-if(oldonload){oldonload()}};
-}());
-</script>
+        <?php //adroll ?>
+        adroll_adv_id = "E3M62ZQJ25HOXEMXRJAVQ2";
+        adroll_pix_id = "QXQPAX4K7NEZ5APU6YEVRO";
+        (function () {
+            var oldonload = window.onload;
+            window.onload = function(){
+                __adroll_loaded=true;
+                var scr = document.createElement("script");
+                var host = (("https:" == document.location.protocol) ? "https://s.adroll.com" : "http://a.adroll.com");
+                scr.setAttribute('async', 'true');
+                scr.type = "text/javascript";
+                scr.src = host + "/j/roundtrip.js";
+                ((document.getElementsByTagName('head') || [null])[0] ||
+                        document.getElementsByTagName('script')[0].parentNode).appendChild(scr);
+                if(oldonload){oldonload()}};
+        }());
 
-<!-- end adroll smart pixel -->
-
-<!-- Bing Ads tracking pixel -->
-
-<script>(function(w,d,t,r,u){var f,n,i;w[u]=w[u]||[],f=function(){var o={ti:"4021715"};o.q=w[u],w[u]=new UET(o),w[u].push("pageLoad")},n=d.createElement(t),n.src=r,n.async=1,n.onload=n.onreadystatechange=function(){var s=this.readyState;s&&s!=="loaded"&&s!=="complete"||(f(),n.onload=n.onreadystatechange=null)},i=d.getElementsByTagName(t)[0],i.parentNode.insertBefore(n,i)})(window,document,"script","//bat.bing.com/bat.js","uetq");</script>
-
-<!-- end bing pixel -->
-
-<!-- EEngine tracking -->
-<script src="//embed.experimentengine.com/js/3vE75p.js"></script>
-<!-- end EEngine -->
-<!-- Google Code for Remarketing Tag -->
-
-<script type="text/javascript">
-var google_tag_params = {
-ecomm_totalvalue: <?php echo($subtotal); ?>
-};
-</script>
-<script type="text/javascript">
-/* <![CDATA[ */
-var google_conversion_id = 1003172301;
-var google_custom_params = window.google_tag_params;
-var google_remarketing_only = true;
-/* ]]> */
-</script>
-<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+        <?php //bing ads ?>
+        (function(w,d,t,r,u){var f,n,i;w[u]=w[u]||[],f=function(){var o={ti:"4021715"};o.q=w[u],w[u]=new UET(o),w[u].push("pageLoad")},n=d.createElement(t),n.src=r,n.async=1,n.onload=n.onreadystatechange=function(){var s=this.readyState;s&&s!=="loaded"&&s!=="complete"||(f(),n.onload=n.onreadystatechange=null)},i=d.getElementsByTagName(t)[0],i.parentNode.insertBefore(n,i)})(window,document,"script","//bat.bing.com/bat.js","uetq");
+    });
+//]]>
 </script>
 <noscript>
-<div style="display:inline;">
-<img height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/1003172301/?value=0&amp;guid=ON&amp;script=0"/>
-</div>
+    <img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?id=663833153700547&amp;ev=PixelInitialized" />
 </noscript>
 
-<!-- End Google Code for Remarketing Tag -->
+<?php //EEngine ?>
+<script src="//embed.experimentengine.com/js/3vE75p.js"></script>
+
+<?php //google remarketing ?>
+<script type="text/javascript">
+/* <![CDATA[ */
+    var google_conversion_id = 1003172301;
+    var google_custom_params = window.google_tag_params;
+    var google_remarketing_only = true;
+/* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js"></script>
+<noscript>
+    <div style="display:inline;">
+        <img height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/1003172301/?value=0&amp;guid=ON&amp;script=0"/>
+    </div>
+</noscript>
