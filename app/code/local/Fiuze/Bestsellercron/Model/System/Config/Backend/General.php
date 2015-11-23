@@ -6,7 +6,7 @@ class Fiuze_Bestsellercron_Model_System_Config_Backend_General extends Mage_Admi
     private function _getTimeStampByCron($cron){
         //replace '*' to '0'
         $time_arr = explode(' ', trim($cron));
-        for($i=count($time_arr)-1;$i>=0;$i--){
+        for($i=count($time_arr)-2;$i>=0;$i--){
             if(strpos($time_arr[$i],'/') OR is_numeric($time_arr[$i])){
                 $find_interval = $i;
             }
@@ -65,7 +65,37 @@ class Fiuze_Bestsellercron_Model_System_Config_Backend_General extends Mage_Admi
             }else{
                 $first_run['3']=$current_date['mon'];
             }
-            $result['timestamp_run']  = strtotime("{$first_run['1']}.{$first_run['0']} {$first_run['2']}-{$first_run['3']}-{$current_date['year']}");
+            //week
+            if($time_arr['4']!='*'){
+                $first_run['4']=(int)$time_arr['4'];
+            }else{
+                $first_run['4']=$current_date['wday'];
+            }
+            $first_run['4']++;
+            switch ($first_run['4']){
+                case 1:
+                    $first_run['4']='Sun';
+                    break;
+                case 2:
+                    $first_run['4']='Mon';
+                    break;
+                case 3:
+                    $first_run['4']='Tue';
+                    break;
+                case 4:
+                    $first_run['4']='Wed';
+                    break;
+                case 5:
+                    $first_run['4']='Thu';
+                    break;
+                case 6:
+                    $first_run['4']='Fri';
+                    break;
+                case 7:
+                    $first_run['4']='Sat';
+                    break;
+            }
+            $result['timestamp_run']  = strtotime("{$first_run['4']}, {$first_run['1']}.{$first_run['0']} {$first_run['2']}-{$first_run['3']}-{$current_date['year']}");
         }
         //logic for get interval run
 
@@ -117,9 +147,6 @@ class Fiuze_Bestsellercron_Model_System_Config_Backend_General extends Mage_Admi
                 'cycle_data'=>$interval_data
             );
             $result['step_time']=serialize($serialize_data);
-            //TODO
-
-
         } else{
             //logic for get simple interval run
             if(isset($arr_step)){
@@ -153,6 +180,10 @@ class Fiuze_Bestsellercron_Model_System_Config_Backend_General extends Mage_Admi
                 $result['step_time'] = $factor_step['1'] * $result['step_time'];
             }
             $curr_time = time();
+            //fix for correct week interval
+            if($time_arr['4']!='*'){
+                $result['step_time'] = 604800;
+            }
             //correct timestamprun for current timestamp
             while($result['timestamp_run']<$curr_time){
                 $result['timestamp_run']+=$result['step_time'];
