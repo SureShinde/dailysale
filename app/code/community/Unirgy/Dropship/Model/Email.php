@@ -4,6 +4,7 @@ class Unirgy_Dropship_Model_Email extends Mage_Core_Model_Email_Template
 {
     public function send($email, $name=null, array $variables = array())
     {
+        Mage::log('send mail.',null,'mail_logs.log');
         if(!$this->isValidForSend()) {
             return false;
         }

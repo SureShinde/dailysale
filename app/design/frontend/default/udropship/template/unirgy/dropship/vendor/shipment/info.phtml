@@ -504,7 +504,7 @@ $fcBlock->setFieldValue(array(
                     
                     <li id="tracking_id-1-<?php echo $_masterId?>">
                         <label for="tracking_id-<?php echo $_masterId?>"><?php echo $_hlp->__('Add Tracking ID') ?></label>
-                        <input id="tracking_id-<?php echo $_masterId?>" name="tracking_id" value="" title="<?php echo $_hlp->__('Add Tracking ID') ?>" type="text" class="input-text" style="width:250px;" />
+                        <input id="tracking_id-<?php echo $_masterId?>" name="tracking_id" value="<?php echo $_session->getData('tracking_id'); $_session->unsetData('tracking_id');?>" title="<?php echo $_hlp->__('Add Tracking ID') ?>" type="text" class="input-text" style="width:250px;" />
                     </li>
                     <li>
                         <label for="comment-<?php echo $_masterId?>"><?php echo $_hlp->__('Add Comment<br/>(for retailer)') ?></label>

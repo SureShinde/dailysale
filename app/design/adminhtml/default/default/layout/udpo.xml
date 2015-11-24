@@ -137,6 +137,13 @@
         </reference>
         <update handle="udpoadmin_change_qty_column_renderer"/>
     </udpoadmin_order_po_newshipment>
-    
+    <adminhtml_sales_order_shipment_new>
+        <!--<reference name="shipment_tracking">-->
+            <!--<action method="setTemplate" ><file>udpo/custom/tracking.phtml</file></action>-->
+        <!--</reference>-->
+        <reference name="form">
+            <block type="aftership_track/adminhtml_sales_order_shipment_view_tracking" name="shipment_tracking" template="udpo/custom/trackingAjax.phtml"></block>
+        </reference>
+    </adminhtml_sales_order_shipment_new>
     
 </layout>
