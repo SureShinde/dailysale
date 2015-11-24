@@ -11,7 +11,7 @@ class Unirgy_Rma_Block_Adminhtml_Rma_Create extends Mage_Adminhtml_Block_Widget_
 
         parent::__construct();
 
-        //$this->_updateButton('save', 'label', Mage::helper('sales')->__('Submit Shipment'));
+        //$this->_updateButton('save', 'label', Mage::helper('udropship')->__('Submit Shipment'));
         $this->_removeButton('save');
         $this->_removeButton('delete');
     }
@@ -28,12 +28,12 @@ class Unirgy_Rma_Block_Adminhtml_Rma_Create extends Mage_Adminhtml_Block_Widget_
 
     public function getHeaderText()
     {
-        $header = Mage::helper('sales')->__('New Return for Order #%s', $this->getRma()->getOrder()->getRealOrderId());
+        $header = Mage::helper('udropship')->__('New Return for Order #%s', $this->getRma()->getOrder()->getRealOrderId());
         return $header;
     }
 
     public function getBackUrl()
     {
-        return $this->getUrl('*/sales_order/view', array('order_id'=>$this->getRma()->getOrderId()));
+        return $this->getUrl('adminhtml/sales_order/view', array('order_id'=>$this->getRma()->getOrderId()));
     }
 }

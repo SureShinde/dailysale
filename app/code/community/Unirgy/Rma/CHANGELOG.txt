@@ -1,3 +1,18 @@
+===== 2.4.1 =====
+  * CE 1.9.2.2 compatibility vendor portal filter fix
+
+===== 2.4.0 =====
+  * CE 1.9.2.2 compatibility
+
+===== 2.1.0 =====
+  * Central translations file
+  * Fixed back link in create uReturn page
+
+==== 2.0.0 =====
+  * Major release
+  * Added view rma link in customer area orders tables
+  * Fixed null rma_status (pending used if null)
+
 ===== 1.2.5 =====
   * Added order id and order date in vendor portal rma grid
   * Added vendor sku in new RMA vendor notification emails

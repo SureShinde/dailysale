@@ -33,12 +33,18 @@ class Unirgy_DropshipBatch_Block_Adminhtml_Batch_Edit_Tab_Import extends Unirgy_
 
         $batchType = $this->getRequest()->getParam('type');
 
-        $fieldset = $form->addFieldset('batch_form', array('legend'=>$hlp->__('Batch Info')));
+        $fieldset = $form->addFieldset('batch_form', array('legend'=>Mage::helper('udropship')->__('Batch Info')));
         $this->_addElementTypes($fieldset);
 
-        $fieldset->addField('vendor_id', 'udropship_vendor', array(
+        if (Mage::getStoreConfigFlag('udropship/batch/allow_all_vendors_import')) {
+            $vendorField = 'vendors_import_orders';
+        } else {
+            $vendorField = 'udropship_vendor';
+        }
+
+        $fieldset->addField('vendor_id', $vendorField, array(
             'name'      => 'vendor_id',
-            'label'     => $hlp->__('Vendor'),
+            'label'     => Mage::helper('udropship')->__('Vendor'),
             'class'     => 'required-entry',
             'required'  => true,
         ));
@@ -49,38 +55,38 @@ class Unirgy_DropshipBatch_Block_Adminhtml_Batch_Edit_Tab_Import extends Unirgy_
         ));
         $fieldset->addField('use_custom_template', 'select', array(
             'name'      => 'use_custom_template',
-            'label'     => $hlp->__('Use Template'),
+            'label'     => Mage::helper('udropship')->__('Use Template'),
             'options'   => Mage::getSingleton('udbatch/source')->setPath('use_custom_template')->toOptionHash(),
         ));
 
-        $fieldset = $form->addFieldset('default_form', array('legend'=>$hlp->__("Import from vendor's default locations")));
+        $fieldset = $form->addFieldset('default_form', array('legend'=>Mage::helper('udropship')->__("Import from vendor's default locations")));
 
         $fieldset->addField("{$batchType}_default", 'select', array(
             'name'      => "{$batchType}_default",
-            'label'     => $hlp->__('Default locations'),
+            'label'     => Mage::helper('udropship')->__('Default locations'),
             'options'   => Mage::getSingleton('udropship/source')->setPath('yesno')->toOptionHash(),
         ));
 
-        $fieldset = $form->addFieldset('upload_form', array('legend'=>$hlp->__('Import from uploaded file')));
+        $fieldset = $form->addFieldset('upload_form', array('legend'=>Mage::helper('udropship')->__('Import from uploaded file')));
 
         $fieldset->addField("{$batchType}_upload", 'file', array(
             'name'      => "{$batchType}_upload",
-            'label'     => $hlp->__('Upload file'),
+            'label'     => Mage::helper('udropship')->__('Upload file'),
         ));
 
-        $fieldset = $form->addFieldset('textarea_form', array('legend'=>$hlp->__('Import from pasted content')));
+        $fieldset = $form->addFieldset('textarea_form', array('legend'=>Mage::helper('udropship')->__('Import from pasted content')));
 
         $fieldset->addField("{$batchType}_textarea", 'textarea', array(
             'name'      => "{$batchType}_textarea",
-            'label'     => $hlp->__('Paste content'),
+            'label'     => Mage::helper('udropship')->__('Paste content'),
         ));
 
-        $fieldset = $form->addFieldset('locations_form', array('legend'=>$hlp->__('Import from custom locations')));
+        $fieldset = $form->addFieldset('locations_form', array('legend'=>Mage::helper('udropship')->__('Import from custom locations')));
 
         $fieldset->addField("{$batchType}_locations", 'textarea', array(
             'name'      => "{$batchType}_locations",
-            'label'     => $hlp->__('Custom locations'),
-            'note'      => $hlp->__('Use <a href="http://unirgy.com/wiki/udropship/batch/reference" target="udbatch_reference">reference</a> for location format, separate multiple locations with new line'),
+            'label'     => Mage::helper('udropship')->__('Custom locations'),
+            'note'      => Mage::helper('udropship')->__('Use <a href="http://unirgy.com/wiki/udropship/batch/reference" target="udbatch_reference">reference</a> for location format, separate multiple locations with new line'),
         ));
 
         if ($batch) {
@@ -88,6 +94,13 @@ class Unirgy_DropshipBatch_Block_Adminhtml_Batch_Edit_Tab_Import extends Unirgy_
         }
 
         return parent::_prepareForm();
+    }
+
+    protected function _getAdditionalElementTypes()
+    {
+        return array_merge(parent::_getAdditionalElementTypes(), array(
+            'vendors_import_orders'=>Mage::getConfig()->getBlockClassName('udbatch/vendor_htmlselect')
+        ));
     }
 
 }

@@ -118,7 +118,7 @@ class Unirgy_DropshipMicrositePro_VendorController extends Mage_Core_Controller_
             $key     = $this->getRequest()->getParam('key', false);
             $backUrl = $this->getRequest()->getParam('back_url', false);
             if (empty($id) || empty($key)) {
-                throw new Exception($this->__('Bad request.'));
+                throw new Exception(Mage::helper('udropship')->__('Bad request.'));
             }
             try {
                 $vendor = Mage::getModel('udropship/vendor')->load($id);
@@ -126,7 +126,7 @@ class Unirgy_DropshipMicrositePro_VendorController extends Mage_Core_Controller_
                     throw new Exception('Failed to load vendor by id.');
                 }
                 if ($vendor->getConfirmation() !== $key) {
-                    throw new Exception($this->__('Wrong confirmation key.'));
+                    throw new Exception(Mage::helper('udropship')->__('Wrong confirmation key.'));
                 }
 
                 // activate customer
@@ -143,7 +143,7 @@ class Unirgy_DropshipMicrositePro_VendorController extends Mage_Core_Controller_
                     }
                 }
                 catch (Exception $e) {
-                    throw new Exception($this->__('Failed to confirm vendor account.'));
+                    throw new Exception(Mage::helper('udropship')->__('Failed to confirm vendor account.'));
                 }
 
                 Mage::helper('umicrosite')->sendVendorWelcomeEmail($vendor);
@@ -152,7 +152,7 @@ class Unirgy_DropshipMicrositePro_VendorController extends Mage_Core_Controller_
                 return;
             }
             catch (Exception $e) {
-                throw new Exception($this->__('Wrong vendor account specified.'));
+                throw new Exception(Mage::helper('udropship')->__('Wrong vendor account specified.'));
             }
         }
         catch (Exception $e) {

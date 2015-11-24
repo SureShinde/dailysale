@@ -29,11 +29,11 @@ if ($isPartial==2 && $isCheckedCustomercredit) $this->getQuote()->getPayment()->
                         <input id="p_method_<?php echo $_code ?>" value="customercredit" type="checkbox" name="payment[use_internal_credit]" title="<?php echo $this->htmlEscape($_method->getTitle()) ?>" class="checkbox" onclick="save_shipping_method(shipping_method_url,true,true,$('p_method_<?php echo $_code ?>').checked);" <?php if ($isCheckedCustomercredit) { ?>checked="checked"<?php } ?> />
 
                     <?php elseif ($_code=='customercredit' && $isPartial==-1): ?>
-                        <input id="p_method_<?php echo $_code ?>_disabled" disabled="disabled" value="1" type="checkbox" name="payment[use_internal_credit]" title="<?php echo $this->htmlEscape($_method->getTitle()) ?>" class="checkbox" />
+                        <input id="p_method_<?php echo $_code ?>_disabled" disabled="disabled" value="1" type="checkbox" name="payment[use_internal_credit]" title="<?php echo $this->htmlEscape($_method->getTitle()) ?>" class="checkbox" onclick="save_shipping_method(shipping_method_url,true,true,$('p_method_<?php echo $_code ?>').checked);" />
                     <?php elseif ($_code=='customercredit' && $isPartial==0) : ?>
-                        <input id="p_method_<?php echo $_code ?>_disabled" disabled="disabled" value="<?php echo $_code ?>" type="radio" name="payment[method]" title="<?php echo $this->htmlEscape($_method->getTitle()) ?>" class="radio" />
+                        <input id="p_method_<?php echo $_code ?>_disabled" disabled="disabled" value="<?php echo $_code ?>" type="radio" name="payment[method]" title="<?php echo $this->htmlEscape($_method->getTitle()) ?>" class="radio" onclick="save_shipping_method(shipping_method_url,true,true,$('p_method_<?php echo $_code ?>').checked);" />
                     <?php else: ?>
-                        <input id="p_method_<?php echo $_code ?>" value="<?php echo $_code ?>" type="radio" name="payment[method]" title="<?php echo $this->htmlEscape($_method->getTitle()) ?>" class="radio" onclick="save_shipping_method(shipping_method_url);"<?php if($this->getSelectedMethodCode()==$_code): ?> checked="checked"<?php endif; ?> />
+                        <input onclick="save_shipping_method(shipping_method_url,true,true,$('p_method_<?php echo $_code ?>').checked);" id="p_method_<?php echo $_code ?>" value="<?php echo $_code ?>" type="radio" name="payment[method]" title="<?php echo $this->htmlEscape($_method->getTitle()) ?>" class="radio" onclick="save_shipping_method(shipping_method_url);"<?php if($this->getSelectedMethodCode()==$_code): ?> checked="checked"<?php endif; ?> />
                     <?php endif; ?>
 
                 <?php else: ?>

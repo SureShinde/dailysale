@@ -8,9 +8,9 @@
  * Please refer to http://www.magentocommerce.com for more information.
  *
  * @category  Mirasvit
- * @package   Full Page Cache
- * @version   1.0.1
- * @build     348
+ * @package   Fast Asynchronous Re-indexing
+ * @version   1.1.6
+ * @build     363
  * @copyright Copyright (C) 2015 Mirasvit (http://mirasvit.com/)
  */
 
@@ -22,13 +22,13 @@ class Mirasvit_MstCore_Helper_Validator_Abstract extends Mage_Core_Helper_Abstra
     const INFO    = 3;
     const FAILED  = 0;
 
-    public function runTests()
+    public function runTests($testType)
     {
         $results = array();
 
         $methods = get_class_methods($this);
         foreach ($methods as $method) {
-            if (substr($method, 0, 4) == 'test') {
+            if (substr($method, 0, strlen($testType)) == $testType) {
                 $key = get_class($this).$method;
                 try {
                     $results[$key] = call_user_func(array($this, $method));
@@ -70,6 +70,7 @@ class Mirasvit_MstCore_Helper_Validator_Abstract extends Mage_Core_Helper_Abstra
             if (!$this->dbTableExists($table)) {
                 $description[] = "Table '$table' doesn't exist";
                 $result = self::FAILED;
+                continue;
             }
             if ($table == 'catalogsearch/fulltext') {
                 continue;

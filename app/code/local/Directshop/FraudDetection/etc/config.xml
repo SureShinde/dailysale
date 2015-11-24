@@ -135,14 +135,5 @@
 			<description/>
 			<image/>
 		</attributes>
-		<routers>
-			<frauddetection>
-				<use>admin</use>
-				<args>
-					<module>Directshop_FraudDetection</module>
-					<frontName>frauddetection</frontName>
-				</args>
-			</frauddetection>
-		</routers>
 	</admin>
 </config>

@@ -20,7 +20,7 @@
 <config>
     <modules>
         <Unirgy_DropshipTierShipping>
-            <version>2.1.4</version>
+            <version>2.4.1</version>
         </Unirgy_DropshipTierShipping>
     </modules>
 
@@ -222,13 +222,13 @@
 
     <admin>
         <routers>
-            <udtiershipadmin>
-                <use>admin</use>
+            <adminhtml>
                 <args>
-                    <module>Unirgy_DropshipTierShipping_Adminhtml</module>
-                    <frontName>udtiershipadmin</frontName>
+                    <modules>
+                        <udtiershipadmin after="Mage_Adminhtml">Unirgy_DropshipTierShipping</udtiershipadmin>
+                    </modules>
                 </args>
-            </udtiershipadmin>
+            </adminhtml>
         </routers>
     </admin>
 
@@ -271,6 +271,7 @@
                 <calculation_method>1</calculation_method>
                 <fallback_lookup>2</fallback_lookup>
                 <use_simple_rates>0</use_simple_rates>
+                <use_customer_group>0</use_customer_group>
             </udtiership>
         </carriers>
     </default>

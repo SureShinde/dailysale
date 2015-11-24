@@ -8,6 +8,7 @@ class Unirgy_DropshipVendorProduct_Block_Vendor_Product_Form_QuickCreate extends
         $this->_renderer->setProduct($this->_product);
         $this->_renderer->setCfgAttribute($this->getCfgAttribute());
         $this->_renderer->setCfgAttributeValue($this->getCfgAttributeValue());
+        $this->_renderer->setCfgAttributeValueTuple($this->getCfgAttributeValueTuple());
         $this->_renderer->setCfgAttributeLabel($this->getCfgAttributeLabel());
         return parent::getHtml();
     }

@@ -61,10 +61,10 @@ class Unirgy_DropshipTierShipping_Block_Adminhtml_VendorEditTab_ShippingRates_Re
         $column = current($subkeyColumns);
         switch ($column[1]) {
             case 'cost':
-                $title = Mage::helper('udtiership')->__('Cost for the first item');
+                $title = Mage::helper('udropship')->__('Cost for the first item');
                 break;
             case 'additional':
-                $title = Mage::helper('udtiership')->__('Additional item cost');
+                $title = Mage::helper('udropship')->__('Additional item cost');
                 break;
         }
         return $title;

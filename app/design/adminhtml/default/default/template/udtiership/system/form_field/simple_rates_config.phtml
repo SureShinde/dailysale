@@ -25,7 +25,7 @@ $tableWidth = '650px';
         <?php endfor ?>
         <thead>
         <tr class="headings">
-            <th class="a-center"><?php echo $_tsHlp->__('Customer') ?></th>
+            <th class="a-center"><?php echo Mage::helper('udropship')->__('Customer') ?></th>
             <?php for ($i=0; $i<count($subkeyColumns); $i++): ?>
             <th class="a-center"><?php echo $this->getColumnTitle($subkeyColumns, $i) ?></th>
             <?php endfor ?>

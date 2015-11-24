@@ -14,7 +14,7 @@ class Unirgy_DropshipVendorProduct_Block_Adminhtml_SystemConfigField_TypeOfProdu
         $elHtml = $element->getElementHtml();
         $htmlId = $element->getHtmlId();
         $targetHtmlId = str_replace('type_of_product', 'value', $htmlId).'_container';
-        $targetUrl = $this->getUrl('udprodadmin/udprod/loadTemplateSku', array('_query'=>array('type_of_product'=>'TYPEOFPRODUCT')));
+        $targetUrl = $this->getUrl('adminhtml/udprodadmin_udprod/loadTemplateSku', array('_query'=>array('type_of_product'=>'TYPEOFPRODUCT')));
         $elHtml .= "
             <script type=\"text/javascript\">
                 Event.observe('$htmlId', 'change', function(){

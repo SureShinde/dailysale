@@ -20,7 +20,7 @@
     <sections>
         <udropship>
             <groups>
-                <microsite>
+                <microsite translate="label">
                     <label>MicroSite Options</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>50</sort_order>
@@ -28,7 +28,7 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <fields>
-                        <show_products_menu_item>
+                        <show_products_menu_item translate="label comment">
                             <label>Enable "System View" menu item in vendor portal</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -38,7 +38,16 @@
                             <show_in_store>0</show_in_store>
                             <comment>If enabled this option gives vendors limited access to admin area to create new products, update existing (filtered by Dropship Vendor attribute). The option may be overridden on vendor level.</comment>
                         </show_products_menu_item>
-                        <subdomain_level>
+                        <allow_mixed_subdomain_level translate="label">
+                            <label>Allow per vendor sudomain level selection</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>9</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </allow_mixed_subdomain_level>
+                        <subdomain_level translate="label">
                             <label>Subdomain level to use for vendor</label>
                             <frontend_type>select</frontend_type>
                             <source_model>umicrosite/source</source_model>
@@ -48,7 +57,7 @@
                             <show_in_store>0</show_in_store>
                         </subdomain_level>
                         
-                        <landing_page_title>
+                        <landing_page_title translate="label">
                             <label>Landing page title</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>15</sort_order>
@@ -56,7 +65,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </landing_page_title>
-                        <landing_meta_keywords>
+                        <landing_meta_keywords translate="label">
                             <label>Landing page Meta Keywords</label>
                             <frontend_type>textarea</frontend_type>
                             <sort_order>16</sort_order>
@@ -64,7 +73,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </landing_meta_keywords>
-                        <landing_meta_description>
+                        <landing_meta_description translate="label">
                             <label>Landing page Meta Description</label>
                             <frontend_type>textarea</frontend_type>
                             <sort_order>17</sort_order>
@@ -73,7 +82,7 @@
                             <show_in_store>1</show_in_store>
                         </landing_meta_description>
 
-                        <template_vendor>
+                        <template_vendor translate="label">
                             <label>Use this vendor as a template for new registrations</label>
                             <frontend_type>select</frontend_type>
                             <source_model>umicrosite/source</source_model>
@@ -92,7 +101,7 @@
                             <show_in_store>1</show_in_store>
                         </update_store_base_url>
 
-                        <auto_approve>
+                        <auto_approve translate="label">
                             <label>Automatically approve vendor applications</label>
                             <frontend_type>select</frontend_type>
                             <source_model>umicrosite/source</source_model>
@@ -121,7 +130,7 @@
                             <show_in_store>1</show_in_store>
                         </welcome_template>
 
-                        <registration_carriers>
+                        <registration_carriers translate="label">
                             <label>Carriers to allow during vendor registration</label>
                             <frontend_type>multiselect</frontend_type>
                             <source_model>umicrosite/source</source_model>
@@ -131,7 +140,7 @@
                             <show_in_store>0</show_in_store>
                         </registration_carriers>
 
-                        <registration_receiver>
+                        <registration_receiver translate="label comment">
                             <label>New Registrations Receiver(s)</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>100</sort_order>
@@ -140,7 +149,7 @@
                             <show_in_store>1</show_in_store>
                             <comment>Comma separated</comment>
                         </registration_receiver>
-                        <registration_subject>
+                        <registration_subject translate="label">
                             <label>New Registrations Email Subject</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>110</sort_order>
@@ -148,7 +157,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </registration_subject>
-                        <registration_template>
+                        <registration_template translate="label">
                             <label>New Registrations Template</label>
                             <frontend_type>textarea</frontend_type>
                             <sort_order>120</sort_order>
@@ -197,7 +206,7 @@
                 </microsite>
                 <stock>
                     <fields>
-                        <stick_microsite>
+                        <stick_microsite translate="label comment">
                             <label>Stick microsite products in cart</label>
                             <frontend_type>select</frontend_type>
                             <source_model>umicrosite/source</source_model>

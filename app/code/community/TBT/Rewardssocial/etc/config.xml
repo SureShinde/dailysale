@@ -7,17 +7,6 @@
             <version>1.0.0.8</version>
         </TBT_Rewardssocial>
     </modules>
-    <admin>
-        <routers>
-            <rewardssocialadmin>
-                <use>admin</use>
-                <args>
-                    <module>TBT_Rewardssocial</module>
-                    <frontName>rewardssocialadmin</frontName>
-                </args>
-            </rewardssocialadmin>
-        </routers>
-    </admin>
 
     <frontend>
         <routers>

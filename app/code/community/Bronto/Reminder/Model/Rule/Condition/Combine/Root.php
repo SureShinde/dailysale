@@ -136,13 +136,13 @@ class Bronto_Reminder_Model_Rule_Condition_Combine_Root extends Bronto_Reminder_
             // Set main select to pull use subselect as root and pull required fields
             $select->from(array('root' => $subselect), array(
                 'unique_id'   => new Zend_Db_Expr(
-                        "CONCAT(:rule_id, '-', `root`.`store_id`, '-', `root`.`quote_id`, '-', `root`.`wishlist_id`, '-', `root`.`customer_email`)"
+                        "CONCAT(:rule_id, '-', root.store_id, '-', root.quote_id, '-', root.wishlist_id, '-', root.customer_email)"
                     ),
                 'store_id',
-                'customer_id' => new Zend_Db_Expr("IF(`root`.`customer_id` IS NULL, 0, `root`.`customer_id`)"),
+                'customer_id' => new Zend_Db_Expr("IF(root.customer_id IS NULL, 0, root.customer_id)"),
                 'customer_email',
-                'quote_id'    => new Zend_Db_Expr("IF(`root`.`quote_id` IS NULL, 0, `root`.`quote_id`)"),
-                'wishlist_id' => new Zend_Db_Expr("IF(`root`.`wishlist_id` IS NULL, 0, `root`.`wishlist_id`)")
+                'quote_id'    => new Zend_Db_Expr("IF(root.quote_id IS NULL, 0, root.quote_id)"),
+                'wishlist_id' => new Zend_Db_Expr("IF(root.wishlist_id IS NULL, 0, root.wishlist_id)")
             ))
                 /*->group($groupby)*/;
         }

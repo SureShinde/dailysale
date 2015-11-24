@@ -9,13 +9,13 @@
     
     <admin>
         <routers>
-            <tbtbillboard>
-                <use>admin</use>
-                <args>
-                    <module>TBT_Billboard</module>
-                    <frontName>tbtbillboard</frontName>
-                </args>
-            </tbtbillboard>
+            <adminhtml>
+				<args>
+					<modules>
+						<tbtbillboard before="Mage_Adminhtml">TBT_Billboard_Adminhtml</tbtbillboard>
+					</modules>
+				</args>
+			</adminhtml>
         </routers>
     </admin>
     

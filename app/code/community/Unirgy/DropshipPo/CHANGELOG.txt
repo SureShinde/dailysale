@@ -1,3 +1,33 @@
+===== 2.4.1 =====
+  * CE 1.9.2.2 compatibility vendor portal filter fix
+  * Added method selection in admin > po > new shipment > generate label
+
+===== 2.4.0 =====
+  * CE 1.9.2.2 compatibility
+
+===== 2.3.0 =====
+  * Central translations file
+
+===== 2.2.20 =====
+  * Added option to show both vendor and system sku in POs
+
+===== 2.2.19 =====
+  * Added cancel PO when order canceled
+
+===== 2.2.18 =====
+  * Fixed po shipping method assign if using non-dropship method on order place
+  * Fixed report grid
+
+===== 2.2.17 =====
+  * Fixed rounding in statement/payout calculation
+
+===== 2.2.16 =====
+  * Fixed partially rounding in statement/payout calculation
+
+===== 2.2.15 =====
+  * Added delete PO functionality (hidden)
+  * Fixed status filter for udropship_new theme
+
 ===== 2.2.14 =====
   * Added actions 'Create Shipments' and 'Create Shipments and Send Customer Notifications' in vendor portal orders grid
 

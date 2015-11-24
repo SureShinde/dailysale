@@ -57,13 +57,13 @@
     </frontend>
     <admin>
         <routers>
-            <onestepcheckoutadmin>
-                <use>admin</use>
-                <args>
-                    <module>Magestore_Onestepcheckout</module>
-                    <frontName>onestepcheckoutadmin</frontName>
-                </args>
-            </onestepcheckoutadmin>
+            <adminhtml>
+				<args>
+					<modules>
+						<onestepcheckoutadmin before="Mage_Adminhtml">Magestore_Onestepcheckout_Adminhtml</onestepcheckoutadmin>
+					</modules>
+				</args>
+			</adminhtml>
         </routers>
     </admin>
     <adminhtml>

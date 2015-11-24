@@ -33,7 +33,7 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Edit_Tab_Form extends Mage_Adminhtm
         $this->setForm($form);
 
         $fieldset = $form->addFieldset('vendor_form', array(
-            'legend'=>$hlp->__('Vendor Info')
+            'legend'=>Mage::helper('udropship')->__('Vendor Info')
         ));
 
         $fieldset->addField('reg_id', 'hidden', array(
@@ -48,7 +48,7 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Edit_Tab_Form extends Mage_Adminhtm
 
         $fieldset->addField('vendor_name', 'text', array(
             'name'      => 'vendor_name',
-            'label'     => $hlp->__('Vendor Name'),
+            'label'     => Mage::helper('udropship')->__('Vendor Name'),
             'class'     => 'required-entry',
             'required'  => true,
         ));
@@ -70,7 +70,7 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Edit_Tab_Form extends Mage_Adminhtm
 
         $fieldset->addField('status', $udVendorStatusType, array(
             'name'      => 'status1',
-            'label'     => $hlp->__('Status'),
+            'label'     => Mage::helper('udropship')->__('Status'),
             'class'     => 'required-entry',
             'required'  => true,
             'options'   => Mage::getSingleton('udropship/source')->setPath('vendor_statuses')->toOptionHash(),
@@ -83,7 +83,7 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Edit_Tab_Form extends Mage_Adminhtm
             }
             $fieldset->addField('__udmember_profile', 'note', array(
                 'name'      => '__udmember_profile',
-                'label'     => $hlp->__('Membership Profile'),
+                'label'     => Mage::helper('udropship')->__('Membership Profile'),
                 'text'      => $profile->getId() ? sprintf('<a href="%s">%s (%s)</a>', $this->getUrl('adminhtml/sales_recurring_profile/view', array('profile'=>$profile->getId())), $profile->getReferenceId(), $profile->renderData('state')) : '',
             ));
             $mOptions = Mage::getModel('udmember/membership')->getCollection()->toOptionHash('membership_code', 'membership_title');
@@ -91,33 +91,35 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Edit_Tab_Form extends Mage_Adminhtm
                 $mTitle = $vendor->getData('udmember_membership_title');
                 $mOptions[$mCode] = $mTitle ? $mTitle : $mCode;
             }
-            $mOptions = array(''=>$hlp->__('* Please select')) + $mOptions;
+            $mOptions = array(''=>Mage::helper('udropship')->__('* Please select')) + $mOptions;
             $fieldset->addField('udmember_membership_code', 'select', array(
                 'name'      => 'udmember_membership_code',
-                'label'     => $hlp->__('Membership'),
+                'label'     => Mage::helper('udropship')->__('Membership'),
                 'options'   => $mOptions,
             ));
             $fieldset->addField('udmember_allow_microsite', 'select', array(
                 'name'      => 'udmember_allow_microsite',
-                'label'     => $hlp->__('Allow Microsite'),
+                'label'     => Mage::helper('udropship')->__('Allow Microsite'),
                 'options'   => Mage::getSingleton('udropship/source')->setPath('yesno')->toOptionHash(true),
             ));
             $fieldset->addField('udmember_limit_products', 'text', array(
                 'name'      => 'udmember_limit_products',
-                'label'     => $hlp->__('Limit Products'),
+                'label'     => Mage::helper('udropship')->__('Limit Products'),
             ));
             if ($vendor && $vendor->getData('udmember_billing_type')) {
                 $fieldset->addField('__billing_type', 'note', array(
                     'name'      => '__billing_type',
-                    'label'     => $hlp->__('Billing Type'),
+                    'label'     => Mage::helper('udropship')->__('Billing Type'),
                     'text'      => $vendor->getData('udmember_billing_type'),
                 ));
             }
             $fieldset->addField('udmember_membership_title', 'hidden', array(
                 'name' => 'udmember_membership_title',
             ));
-            $fieldset->addField('udmember_profile_sync_off', 'hidden', array(
+            $fieldset->addField('udmember_profile_sync_off', 'select', array(
                 'name' => 'udmember_profile_sync_off',
+                'label'     => Mage::helper('udropship')->__('DO NOT Automatically synchronize status with profile'),
+                'options'   => Mage::getSingleton('udropship/source')->setPath('yesno')->toOptionHash(true),
             ));
             $fieldset->addField('udmember_billing_type', 'hidden', array(
                 'name' => 'udmember_billing_type',
@@ -127,39 +129,39 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Edit_Tab_Form extends Mage_Adminhtm
         if (Mage::helper('udropship')->isModuleActive('udmspro')) {
             $fieldset->addField('reject_reason', 'textarea', array(
                 'name'      => 'reject_reason',
-                'label'     => $hlp->__('Reject Reason'),
+                'label'     => Mage::helper('udropship')->__('Reject Reason'),
                 'class'     => 'required-entry',
                 'required'  => true,
                 'style'     => 'height:100px',
             ));
             $fieldset->addField('send_reject_email', 'select', array(
                 'name'      => 'send_reject_email',
-                'label'     => $hlp->__('Send Reject Email'),
+                'label'     => Mage::helper('udropship')->__('Send Reject Email'),
                 'options'   => Mage::getSingleton('udropship/source')->setPath('yesno')->toOptionHash(true),
             ));
             $fieldset->addField('send_confirmation_email', 'select', array(
                 'name'      => 'send_confirmation_email',
                 'label'     => $vendor && $vendor->getConfirmationSent()
-                    ? $hlp->__('Resend Confirmation Email')
-                    : $hlp->__('Send Confirmation Email'),
+                    ? Mage::helper('udropship')->__('Resend Confirmation Email')
+                    : Mage::helper('udropship')->__('Send Confirmation Email'),
                 'options'   => Mage::getSingleton('udropship/source')->setPath('yesno')->toOptionHash(true),
                 'note'      => $vendor && $vendor->getConfirmationSent()
-                    ? $hlp->__('Resending confirmation email will reset password (revoke old one). New password will be sent to vendor in separate email once he click at the link in this confirmation email.')
-                    : $hlp->__('Send Confirmation Email. Password will be sent to vendor in separate email once he click at the link in this confirmation email.'),
+                    ? Mage::helper('udropship')->__('Resending confirmation email will reset password (revoke old one). New password will be sent to vendor in separate email once he click at the link in this confirmation email.')
+                    : Mage::helper('udropship')->__('Send Confirmation Email. Password will be sent to vendor in separate email once he click at the link in this confirmation email.'),
             ));
             $fieldset->addField('confirmation', 'select', array(
                 'name'      => 'confirmation',
-                'label'     => $hlp->__('Waiting for email confirmation'),
+                'label'     => Mage::helper('udropship')->__('Waiting for email confirmation'),
                 'options'   => array(
-                    '' => $hlp->__('No'),
-                    ($vendor && $vendor->getConfirmation() ? $vendor->getConfirmation() : 1) => $hlp->__('Yes'),
+                    '' => Mage::helper('udropship')->__('No'),
+                    ($vendor && $vendor->getConfirmation() ? $vendor->getConfirmation() : 1) => Mage::helper('udropship')->__('Yes'),
                 ),
             ));
         }
 
         $fieldset->addField('carrier_code', 'select', array(
             'name'      => 'carrier_code',
-            'label'     => $hlp->__('Preferred Carrier'),
+            'label'     => Mage::helper('udropship')->__('Preferred Carrier'),
             'class'     => 'required-entry',
             'required'  => true,
             'options'   => Mage::getSingleton('udropship/source')->setPath('carriers')->toOptionHash(true),
@@ -167,50 +169,50 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Edit_Tab_Form extends Mage_Adminhtm
 
         $fieldset->addField('use_rates_fallback', 'select', array(
             'name'      => 'use_rates_fallback',
-            'label'     => $hlp->__('Use Rates Fallback Chain'),
+            'label'     => Mage::helper('udropship')->__('Use Rates Fallback Chain'),
             'class'     => 'required-entry',
             'required'  => true,
             'options'   => Mage::getSingleton('udropship/source')->setPath('yesno')->toOptionHash(true),
-            'note'      => $hlp->__('Will try to find available estimate rate for dropship shipping methods in order <br>1. Estimate Carrier <br>2. Override Carrier <br>3. Default Carrier'),
+            'note'      => Mage::helper('udropship')->__('Will try to find available estimate rate for dropship shipping methods in order <br>1. Estimate Carrier <br>2. Override Carrier <br>3. Default Carrier'),
         ));
 
         $fieldset->addField('email', 'text', array(
             'name'      => 'email',
-            'label'     => $hlp->__('Vendor Email'),
+            'label'     => Mage::helper('udropship')->__('Vendor Email'),
             'class'     => 'required-entry validate-email',
             'required'  => true,
-            'note'      => $hlp->__('Email is also used as username'),
+            'note'      => Mage::helper('udropship')->__('Email is also used as username'),
         ));
 
         $fieldset->addField('password', 'password', array(
             'name'      => 'password',
-            'label'     => $hlp->__('New Password'),
+            'label'     => Mage::helper('udropship')->__('New Password'),
             'class'     => 'validate-password',
-            'note'      => $hlp->__('Leave empty for no change'),
+            'note'      => Mage::helper('udropship')->__('Leave empty for no change'),
         ));
 /*
         $fieldset->addField('password', 'password', array(
             'name'      => 'password',
-            'label'     => $hlp->__('Log In Password'),
-            'note'      => $hlp->__('Login disabled if empty'),
+            'label'     => Mage::helper('udropship')->__('Log In Password'),
+            'note'      => Mage::helper('udropship')->__('Login disabled if empty'),
         ));
 */
         $fieldset->addField('telephone', 'text', array(
             'name'      => 'telephone',
-            'label'     => $hlp->__('Vendor Telephone'),
-            'note'      => $hlp->__('Phone number is required for FedEx label printing'),
+            'label'     => Mage::helper('udropship')->__('Vendor Telephone'),
+            'note'      => Mage::helper('udropship')->__('Phone number is required for FedEx label printing'),
         ));
 
         $fieldset->addField('fax', 'text', array(
             'name'      => 'fax',
-            'label'     => $hlp->__('Vendor Fax'),
+            'label'     => Mage::helper('udropship')->__('Vendor Fax'),
         ));
 
         $templates = Mage::getSingleton('adminhtml/system_config_source_email_template')->toOptionArray();
-        $templates[0]['label'] = $hlp->__('Use Default Configuration');
+        $templates[0]['label'] = Mage::helper('udropship')->__('Use Default Configuration');
         $fieldset->addField('email_template', 'select', array(
             'name'      => 'email_template',
-            'label'     => $hlp->__('Notification Template'),
+            'label'     => Mage::helper('udropship')->__('Notification Template'),
             'values'   => $templates,
         ));
 
@@ -224,25 +226,25 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Edit_Tab_Form extends Mage_Adminhtm
         if (Mage::getStoreConfigFlag('udropship/customer/allow_shipping_extra_charge')) {
             $fieldset->addField('allow_shipping_extra_charge', 'select', array(
                 'name'      => 'allow_shipping_extra_charge',
-                'label'     => $hlp->__('Allow shipping extra charge'),
+                'label'     => Mage::helper('udropship')->__('Allow shipping extra charge'),
                 'options'   => Mage::getSingleton('udropship/source')->setPath('yesno')->toOptionHash(true),
             ));
             $fieldset->addField('default_shipping_extra_charge_suffix', 'text', array(
                 'name'      => 'default_shipping_extra_charge_suffix',
-                'label'     => $hlp->__('Default shipping extra charge suffix'),
+                'label'     => Mage::helper('udropship')->__('Default shipping extra charge suffix'),
             ));
             $fieldset->addField('default_shipping_extra_charge_type', 'select', array(
                 'name'      => 'default_shipping_extra_charge_type',
-                'label'     => $hlp->__('Default shipping extra charge type'),
+                'label'     => Mage::helper('udropship')->__('Default shipping extra charge type'),
                 'options'   => Mage::getSingleton('udropship/source')->setPath('shipping_extra_charge_type')->toOptionHash(true),
             ));
             $fieldset->addField('default_shipping_extra_charge', 'text', array(
                 'name'      => 'default_shipping_extra_charge',
-                'label'     => $hlp->__('Default shipping extra charge'),
+                'label'     => Mage::helper('udropship')->__('Default shipping extra charge'),
             ));
             $fieldset->addField('is_extra_charge_shipping_default', 'select', array(
                 'name'      => 'is_extra_charge_shipping_default',
-                'label'     => $hlp->__('Is extra charge shipping default'),
+                'label'     => Mage::helper('udropship')->__('Is extra charge shipping default'),
                 'options'   => Mage::getSingleton('udropship/source')->setPath('yesno')->toOptionHash(true),
             ));
         }
@@ -250,7 +252,7 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Edit_Tab_Form extends Mage_Adminhtm
 /*
         $fieldset->addField('url_key', 'text', array(
             'name'      => 'url_key',
-            'label'     => $hlp->__('URL friendly identifier'),
+            'label'     => Mage::helper('udropship')->__('URL friendly identifier'),
         ));
 */
         $countries = Mage::getModel('adminhtml/system_config_source_country')
@@ -270,23 +272,23 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Edit_Tab_Form extends Mage_Adminhtm
         $regions = $regionCollection->toOptionArray();
 
         if ($regions) {
-            $regions[0]['label'] = $hlp->__('Please select state...');
+            $regions[0]['label'] = Mage::helper('udropship')->__('Please select state...');
         } else {
             $regions = array(array('value'=>'', 'label'=>''));
         }
 
         $fieldset = $form->addFieldset('address_form', array(
-            'legend'=>$hlp->__('Shipping Origin Address')
+            'legend'=>Mage::helper('udropship')->__('Shipping Origin Address')
         ));
 
         $fieldset->addField('vendor_attn', 'text', array(
             'name'      => 'vendor_attn',
-            'label'     => $hlp->__('Attention To'),
+            'label'     => Mage::helper('udropship')->__('Attention To'),
         ));
 
         $fieldset->addField('street', 'textarea', array(
             'name'      => 'street',
-            'label'     => $hlp->__('Street'),
+            'label'     => Mage::helper('udropship')->__('Street'),
             'class'     => 'required-entry',
             'required'  => true,
             'style'     => 'height:50px',
@@ -294,21 +296,21 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Edit_Tab_Form extends Mage_Adminhtm
 
         $fieldset->addField('city', 'text', array(
             'name'      => 'city',
-            'label'     => $hlp->__('City'),
+            'label'     => Mage::helper('udropship')->__('City'),
             'class'     => 'required-entry',
             'required'  => true,
         ));
 
         $fieldset->addField('zip', 'text', array(
             'name'      => 'zip',
-            'label'     => $hlp->__('Zip / Postal code'),
+            'label'     => Mage::helper('udropship')->__('Zip / Postal code'),
         ));
 
         $country = $fieldset->addField('country_id', 'select',
             array(
                 'name' => 'country_id',
-                'label' => $hlp->__('Country'),
-                'title' => $hlp->__('Please select Country'),
+                'label' => Mage::helper('udropship')->__('Country'),
+                'title' => Mage::helper('udropship')->__('Please select Country'),
                 'class' => 'required-entry',
                 'required' => true,
                 'values' => $countries,
@@ -318,16 +320,16 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Edit_Tab_Form extends Mage_Adminhtm
         $fieldset->addField('region_id', 'select',
             array(
                 'name' => 'region_id',
-                'label' => $hlp->__('State'),
-                'title' => $hlp->__('Please select State'),
+                'label' => Mage::helper('udropship')->__('State'),
+                'title' => Mage::helper('udropship')->__('Please select State'),
                 'values' => $regions,
             )
         );
         $fieldset->addField('region', 'text',
             array(
                 'name' => 'region',
-                'label' => $hlp->__('State'),
-                'title' => $hlp->__('Please select State'),
+                'label' => Mage::helper('udropship')->__('State'),
+                'title' => Mage::helper('udropship')->__('Please select State'),
             )
         );
 
@@ -337,14 +339,14 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Edit_Tab_Form extends Mage_Adminhtm
         }
 
         $fieldset = $form->addFieldset('billing_form', array(
-            'legend'=>$hlp->__('Billing Address')
+            'legend'=>Mage::helper('udropship')->__('Billing Address')
         ));
 
         $fieldset->addType('billing_use_shipping', Mage::getConfig()->getBlockClassName('udropship/adminhtml_vendor_helper_form_dependSelect'));
 
         $fieldset->addField('billing_use_shipping', 'billing_use_shipping', array(
             'name'      => 'billing_use_shipping',
-            'label'     => $hlp->__('Same as Shipping'),
+            'label'     => Mage::helper('udropship')->__('Same as Shipping'),
             'options'   => Mage::getSingleton('udropship/source')->setPath('billing_use_shipping')->toOptionHash(),
             'field_config' => array(
                 'depend_fields' => array(
@@ -364,13 +366,13 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Edit_Tab_Form extends Mage_Adminhtm
 
         $fieldset->addField('billing_vendor_attn', 'text', array(
             'name'      => 'billing_vendor_attn',
-            'label'     => $hlp->__('Attention To'),
-            'note'      => $hlp->__('Leave empty to use shipping origin'),
+            'label'     => Mage::helper('udropship')->__('Attention To'),
+            'note'      => Mage::helper('udropship')->__('Leave empty to use shipping origin'),
         ));
 
         $fieldset->addField('billing_street', 'textarea', array(
             'name'      => 'billing_street',
-            'label'     => $hlp->__('Street'),
+            'label'     => Mage::helper('udropship')->__('Street'),
             'class'     => 'required-entry',
             'required'  => true,
             'style'     => 'height:50px',
@@ -378,21 +380,21 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Edit_Tab_Form extends Mage_Adminhtm
 
         $fieldset->addField('billing_city', 'text', array(
             'name'      => 'billing_city',
-            'label'     => $hlp->__('City'),
+            'label'     => Mage::helper('udropship')->__('City'),
             'class'     => 'required-entry',
             'required'  => true,
         ));
 
         $fieldset->addField('billing_zip', 'text', array(
             'name'      => 'billing_zip',
-            'label'     => $hlp->__('Zip / Postal code'),
+            'label'     => Mage::helper('udropship')->__('Zip / Postal code'),
         ));
 
         $bCountry = $fieldset->addField('billing_country_id', 'select',
             array(
                 'name' => 'billing_country_id',
-                'label' => $hlp->__('Country'),
-                'title' => $hlp->__('Please select Country'),
+                'label' => Mage::helper('udropship')->__('Country'),
+                'title' => Mage::helper('udropship')->__('Please select Country'),
                 'class' => 'required-entry',
                 'required' => true,
                 'values' => $countries,
@@ -402,36 +404,36 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Edit_Tab_Form extends Mage_Adminhtm
         $fieldset->addField('billing_region_id', 'select',
             array(
                 'name' => 'billing_region_id',
-                'label' => $hlp->__('State'),
-                'title' => $hlp->__('Please select State'),
+                'label' => Mage::helper('udropship')->__('State'),
+                'title' => Mage::helper('udropship')->__('Please select State'),
                 'values' => $regions,
             )
         );
         $fieldset->addField('billing_region', 'text',
             array(
                 'name' => 'billing_region',
-                'label' => $hlp->__('State'),
-                'title' => $hlp->__('Please select State'),
+                'label' => Mage::helper('udropship')->__('State'),
+                'title' => Mage::helper('udropship')->__('Please select State'),
             )
         );
 
         $fieldset->addField('billing_email', 'text', array(
             'name'      => 'billing_email',
-            'label'     => $hlp->__('Email'),
+            'label'     => Mage::helper('udropship')->__('Email'),
             'class'     => 'validate-email',
-            'note'      => $hlp->__('Leave empty to use default'),
+            'note'      => Mage::helper('udropship')->__('Leave empty to use default'),
         ));
 
         $fieldset->addField('billing_telephone', 'text', array(
             'name'      => 'billing_telephone',
-            'label'     => $hlp->__('Telephone'),
-            'note'      => $hlp->__('Leave empty to use default'),
+            'label'     => Mage::helper('udropship')->__('Telephone'),
+            'note'      => Mage::helper('udropship')->__('Leave empty to use default'),
         ));
 
         $fieldset->addField('billing_fax', 'text', array(
             'name'      => 'billing_fax',
-            'label'     => $hlp->__('Fax'),
-            'note'      => $hlp->__('Leave empty to use default'),
+            'label'     => Mage::helper('udropship')->__('Fax'),
+            'note'      => Mage::helper('udropship')->__('Leave empty to use default'),
         ));
 
         Mage::dispatchEvent('udropship_adminhtml_vendor_edit_prepare_form', array('block'=>$this, 'form'=>$form, 'id'=>$id));
@@ -450,6 +452,12 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Edit_Tab_Form extends Mage_Adminhtm
                 }
                 $vendor->setVendorShipping(Zend_Json::encode($shipping));
                 $vendor->setSendConfirmationEmail(!Mage::getStoreConfigFlag('udropship/microsite/skip_confirmation'));
+            } else {
+                try {
+                    Zend_Json::decode($vendor->getVendorShipping());
+                } catch (Exception $e) {
+                    $vendor->setVendorShipping('{}');
+                }
             }
             $form->setValues($vendor->getData());
         }

@@ -153,7 +153,7 @@
 
     <?php if ($this->helper('tax')->displayCartPriceExclTax($this->getStore()) || $this->helper('tax')->displayCartBothPrices($this->getStore())): ?>
         <?php if ($this->helper('tax')->displayCartBothPrices($this->getStore())): ?>
-            <span class="label"><?php echo $this->__('Excl. Tax'); ?>:</span>
+            <span class="label"><?php echo Mage::helper('udropship')->__('Excl. Tax'); ?>:</span>
         <?php endif; ?>
         <?php if (Mage::helper('weee')->typeOfDisplay($_item, array(0, 1, 4), 'sales')): ?>
             <?php echo $this->formatPrice($_item->getCalculationPrice()+$_item->getWeeeTaxAppliedAmount()+$_item->getWeeeTaxDisposition()); ?>
@@ -184,7 +184,7 @@
 
             <?php if (Mage::helper('weee')->typeOfDisplay($_item, 2, 'sales')): ?>
                 <br />
-                <span class="nobr"><?php echo Mage::helper('weee')->__('Total'); ?>:<br /> <?php echo $this->formatPrice($_item->getCalculationPrice()+$_item->getWeeeTaxAppliedAmount()+$_item->getWeeeTaxDisposition()); ?></span>
+                <span class="nobr"><?php echo Mage::helper('udropship')->__('Total'); ?>:<br /> <?php echo $this->formatPrice($_item->getCalculationPrice()+$_item->getWeeeTaxAppliedAmount()+$_item->getWeeeTaxDisposition()); ?></span>
             <?php endif; ?>
         <?php endif; ?>
     <?php endif; ?>
@@ -192,7 +192,7 @@
 
     <?php if ($this->helper('tax')->displayCartPriceInclTax($this->getStore()) || $this->helper('tax')->displayCartBothPrices($this->getStore())): ?>
         <?php if ($this->helper('tax')->displayCartBothPrices($this->getStore())): ?>
-            <br /><span class="label"><?php echo $this->__('Incl. Tax'); ?>:</span>
+            <br /><span class="label"><?php echo Mage::helper('udropship')->__('Incl. Tax'); ?>:</span>
         <?php endif; ?>
         <?php $_incl = $this->helper('checkout')->getPriceInclTax($_item); ?>
             <?php if (Mage::helper('weee')->typeOfDisplay($_item, array(0, 1, 4), 'sales')): ?>
@@ -221,7 +221,7 @@
             <?php endif; ?>
 
             <?php if (Mage::helper('weee')->typeOfDisplay($_item, 2, 'sales')): ?>
-                <span class="nobr"><?php echo Mage::helper('weee')->__('Total incl. tax'); ?>:<br /> <?php echo $this->formatPrice($_incl+$_item->getWeeeTaxAppliedAmount()); ?></span>
+                <span class="nobr"><?php echo Mage::helper('udropship')->__('Total incl. tax'); ?>:<br /> <?php echo $this->formatPrice($_incl+$_item->getWeeeTaxAppliedAmount()); ?></span>
             <?php endif; ?>
         <?php endif; ?>
     <?php endif; ?>
@@ -250,7 +250,7 @@
 
     <?php if ($this->helper('tax')->displayCartPriceExclTax($this->getStore()) || $this->helper('tax')->displayCartBothPrices($this->getStore())): ?>
         <?php if ($this->helper('tax')->displayCartBothPrices($this->getStore())): ?>
-            <span class="label"><?php echo $this->__('Excl. Tax'); ?>:</span>
+            <span class="label"><?php echo Mage::helper('udropship')->__('Excl. Tax'); ?>:</span>
         <?php endif; ?>
         <?php if (Mage::helper('weee')->typeOfDisplay($_item, array(0, 1, 4), 'sales')): ?>
             <?php echo $this->formatPrice($_item->getRowTotal()+$_item->getWeeeTaxAppliedRowAmount()+$_item->getWeeeTaxRowDisposition()); ?>
@@ -281,7 +281,7 @@
 
             <?php if (Mage::helper('weee')->typeOfDisplay($_item, 2, 'sales')): ?>
                 <br />
-                <span class="nobr"><?php echo Mage::helper('weee')->__('Total'); ?>:<br /> <?php echo $this->formatPrice($_item->getCalculationPrice()+$_item->getWeeeTaxAppliedRowAmount()+$_item->getWeeeTaxRowDisposition()); ?></span>
+                <span class="nobr"><?php echo Mage::helper('udropship')->__('Total'); ?>:<br /> <?php echo $this->formatPrice($_item->getCalculationPrice()+$_item->getWeeeTaxAppliedRowAmount()+$_item->getWeeeTaxRowDisposition()); ?></span>
             <?php endif; ?>
         <?php endif; ?>
     <?php endif; ?>
@@ -289,7 +289,7 @@
 
     <?php if ($this->helper('tax')->displayCartPriceInclTax($this->getStore()) || $this->helper('tax')->displayCartBothPrices($this->getStore())): ?>
         <?php if ($this->helper('tax')->displayCartBothPrices($this->getStore())): ?>
-            <br /><span class="label"><?php echo $this->__('Incl. Tax'); ?>:</span>
+            <br /><span class="label"><?php echo Mage::helper('udropship')->__('Incl. Tax'); ?>:</span>
         <?php endif; ?>
         <?php $_incl = $this->helper('checkout')->getSubtotalInclTax($_item); ?>
             <?php if (Mage::helper('weee')->typeOfDisplay($_item, array(0, 1, 4), 'sales')): ?>
@@ -318,7 +318,7 @@
             <?php endif; ?>
 
             <?php if (Mage::helper('weee')->typeOfDisplay($_item, 2, 'sales')): ?>
-                <span class="nobr"><?php echo Mage::helper('weee')->__('Total incl. tax'); ?>:<br /> <?php echo $this->formatPrice($_incl+$_item->getWeeeTaxAppliedRowAmount()); ?></span>
+                <span class="nobr"><?php echo Mage::helper('udropship')->__('Total incl. tax'); ?>:<br /> <?php echo $this->formatPrice($_incl+$_item->getWeeeTaxAppliedRowAmount()); ?></span>
             <?php endif; ?>
         <?php endif; ?>
     <?php endif; ?>
@@ -337,7 +337,7 @@
     <?php if ($this->helper('tax')->displayCartPriceExclTax($this->getStore()) || $this->helper('tax')->displayCartBothPrices($this->getStore())): ?>
         <?php $_rowTotalWithoutDiscount = $_item->getRowTotal() - $_item->getDiscountAmount();?>
         <?php if ($this->helper('tax')->displayCartBothPrices($this->getStore())): ?>
-            <span class="label"><?php echo $this->__('Excl. Tax'); ?>:</span>
+            <span class="label"><?php echo Mage::helper('udropship')->__('Excl. Tax'); ?>:</span>
         <?php endif; ?>
         <?php if (Mage::helper('weee')->typeOfDisplay($_item, array(0, 1, 4), 'sales')): ?>
             <?php echo $this->formatPrice($_rowTotalWithoutDiscount+$_item->getWeeeTaxAppliedRowAmount()+$_item->getWeeeTaxRowDisposition()); ?>
@@ -368,7 +368,7 @@
 
             <?php if (Mage::helper('weee')->typeOfDisplay($_item, 2, 'sales')): ?>
                 <br />
-                <span class="nobr"><?php echo Mage::helper('weee')->__('Total'); ?>:<br /> <?php echo $this->formatPrice($_item->getCalculationPrice()+$_item->getWeeeTaxAppliedRowAmount()+$_item->getWeeeTaxRowDisposition()); ?></span>
+                <span class="nobr"><?php echo Mage::helper('udropship')->__('Total'); ?>:<br /> <?php echo $this->formatPrice($_item->getCalculationPrice()+$_item->getWeeeTaxAppliedRowAmount()+$_item->getWeeeTaxRowDisposition()); ?></span>
             <?php endif; ?>
         <?php endif; ?>
     <?php endif; ?>
@@ -376,7 +376,7 @@
 
     <?php if ($this->helper('tax')->displayCartPriceInclTax($this->getStore()) || $this->helper('tax')->displayCartBothPrices($this->getStore())): ?>
         <?php if ($this->helper('tax')->displayCartBothPrices($this->getStore())): ?>
-            <br /><span class="label"><?php echo $this->__('Incl. Tax'); ?>:</span>
+            <br /><span class="label"><?php echo Mage::helper('udropship')->__('Incl. Tax'); ?>:</span>
         <?php endif; ?>
         <?php $_incl = $_item->getRowTotal()-$_item->getDiscountAmount()+$_item->getTaxAmount(); ?>
         <?php if (Mage::helper('weee')->typeOfDisplay($_item, array(0, 1, 4), 'sales')): ?>
@@ -405,7 +405,7 @@
             <?php endif; ?>
 
             <?php if (Mage::helper('weee')->typeOfDisplay($_item, 2, 'sales')): ?>
-                <span class="nobr"><?php echo Mage::helper('weee')->__('Total incl. tax'); ?>:<br /> <?php echo $this->formatPrice($_incl+$_item->getWeeeTaxAppliedRowAmount()); ?></span>
+                <span class="nobr"><?php echo Mage::helper('udropship')->__('Total incl. tax'); ?>:<br /> <?php echo $this->formatPrice($_incl+$_item->getWeeeTaxAppliedRowAmount()); ?></span>
             <?php endif; ?>
         <?php endif; ?>
     <?php endif; ?>

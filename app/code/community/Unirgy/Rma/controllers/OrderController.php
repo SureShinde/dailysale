@@ -45,7 +45,7 @@ class Unirgy_Rma_OrderController extends Mage_Sales_OrderController
             $order      = Mage::getModel('sales/order')->load($orderId);
 
             if (!$order->getId()) {
-                Mage::throwException($this->__('The order no longer exists.'));
+                Mage::throwException(Mage::helper('udropship')->__('The order no longer exists.'));
             }
 
             $data = $this->getRequest()->getParam('rma');
@@ -84,7 +84,7 @@ class Unirgy_Rma_OrderController extends Mage_Sales_OrderController
             } else {
                 $response = array(
                     'error'     => true,
-                    'message'   => $this->__('Cannot initialize rma.'),
+                    'message'   => Mage::helper('udropship')->__('Cannot initialize rma.'),
                 );
             }
         } catch (Mage_Core_Exception $e) {
@@ -95,7 +95,7 @@ class Unirgy_Rma_OrderController extends Mage_Sales_OrderController
         } catch (Exception $e) {
             $response = array(
                 'error'     => true,
-                'message'   => $this->__('Cannot printf label.'),
+                'message'   => Mage::helper('udropship')->__('Cannot printf label.'),
             );
         }
         if (is_array($response)) {

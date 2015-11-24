@@ -183,4 +183,26 @@ class Fiuze_All_Model_Observer{
         $captchaParams = $request->getPost(Mage_Captcha_Helper_Data::INPUT_NAME_FIELD_VALUE);
         return $captchaParams[$formId];
     }
+
+    /**
+    * Fix problem email address already registered.
+    * @param Varien_Event_Observer $observer
+    */
+    public function salesQuoteSaveBefore(Varien_Event_Observer $observer)
+    {
+        $queue = $observer->getQuote();
+        $email = $queue->getData('customer_email');
+        $address = $queue->getBillingAddress();
+        if ($address->getEmail()) {
+            $address->setEmail($email);
+        }
+
+        if (class_exists('Bronto_Order_Helper_Data')) {
+            if (Mage::helper('bronto_order')->isEnabled('default', $queue->getStoreId())) {
+                $email = $queue->getData('customer_email');
+                $bronto = Mage::getModel('bronto_emailcapture/queue');
+                $bronto->updateEmail($email);
+            }
+        }
+    }
 } 

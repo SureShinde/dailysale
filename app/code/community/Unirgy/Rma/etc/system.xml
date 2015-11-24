@@ -4,7 +4,7 @@
     <sections>
         <sales_email>
             <groups>
-                <rma translate="label">
+                <rma translate="label" module="udropship">
                     <label>uReturns</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>20</sort_order>
@@ -59,7 +59,7 @@
                         </copy_method>
                     </fields>
                 </rma>
-                <rma_comment translate="label">
+                <rma_comment translate="label" module="udropship">
                     <label>uReturns Comments</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>30</sort_order>
@@ -116,7 +116,7 @@
                 </rma_comment>
             </groups>
         </sales_email>
-        <urma>
+        <urma translate="label" module="udropship">
             <tab>sales</tab>
             <label>uReturns</label>
             <frontend_type>text</frontend_type>
@@ -133,7 +133,7 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <fields>
-                        <vendor_comments_receiver>
+                        <vendor_comments_receiver translate="label">
                             <label>Vendor Comments Receiver (store owner)</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_email_identity</source_model>
@@ -142,7 +142,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </vendor_comments_receiver>
-                        <vendor_comments_subject>
+                        <vendor_comments_subject translate="label">
                             <label>Vendor Comments Email Subject</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>20</sort_order>
@@ -150,7 +150,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </vendor_comments_subject>
-                        <vendor_comments_template>
+                        <vendor_comments_template translate="label">
                             <label>Vendor Comments Template</label>
                             <frontend_type>textarea</frontend_type>
                             <sort_order>30</sort_order>
@@ -176,7 +176,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </rma_comment_vendor_email_template>
-                        <customer_hide_order_info>
+                        <customer_hide_order_info translate="label">
                             <label>Hide order information from customer on existing RMA page</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -185,7 +185,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </customer_hide_order_info>
-                        <customer_new_hide_order_info>
+                        <customer_new_hide_order_info translate="label">
                             <label>Hide order information from customer on "Request New RMA" page</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -227,7 +227,7 @@
                         </item_conditions>
                     </fields>
                 </general>
-                <fedex>
+                <fedex translate="label">
                     <label>Fedex Settings</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>10</sort_order>
@@ -235,7 +235,7 @@
                     <show_in_website>0</show_in_website>
                     <show_in_store>0</show_in_store>
                     <fields>
-                        <fedex_test_mode>
+                        <fedex_test_mode translate="label">
                             <label>Test Mode</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -245,7 +245,7 @@
                             <show_in_store>0</show_in_store>
                         </fedex_test_mode>
 
-                        <fedex_user_key>
+                        <fedex_user_key translate="label">
                             <label>User Key</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>20</sort_order>
@@ -253,7 +253,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </fedex_user_key>
-                        <fedex_user_password>
+                        <fedex_user_password translate="label">
                             <label>User Password</label>
                             <frontend_type>password</frontend_type>
                             <sort_order>22</sort_order>
@@ -261,7 +261,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </fedex_user_password>
-                        <fedex_account_number>
+                        <fedex_account_number translate="label">
                             <label>Account Number</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>24</sort_order>
@@ -269,7 +269,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </fedex_account_number>
-                        <fedex_meter_number>
+                        <fedex_meter_number translate="label">
                             <label>Meter Number</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>26</sort_order>
@@ -278,7 +278,7 @@
                             <show_in_store>0</show_in_store>
                         </fedex_meter_number>
 
-                        <fedex_dry_ice_weight>
+                        <fedex_dry_ice_weight translate="label">
                             <label>Default Dry Ice Weight (KG)</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>40</sort_order>
@@ -287,7 +287,7 @@
                             <show_in_store>0</show_in_store>
                         </fedex_dry_ice_weight>
 
-                        <fedex_dropoff_type>
+                        <fedex_dropoff_type translate="label">
                             <label>Drop Off Type</label>
                             <frontend_type>select</frontend_type>
                             <source_model>urma/source</source_model>
@@ -297,7 +297,7 @@
                             <show_in_store>0</show_in_store>
                         </fedex_dropoff_type>
 
-                        <fedex_label_stock_type>
+                        <fedex_label_stock_type translate="label">
                             <label>Label Stock Type</label>
                             <frontend_type>select</frontend_type>
                             <source_model>urma/source</source_model>
@@ -306,7 +306,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </fedex_label_stock_type>
-                        <fedex_pdf_label_width>
+                        <fedex_pdf_label_width translate="label">
                             <label>PDF Label Width</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>70</sort_order>
@@ -314,7 +314,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </fedex_pdf_label_width>
-                        <fedex_pdf_label_height>
+                        <fedex_pdf_label_height translate="label">
                             <label>PDF Label Height</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>80</sort_order>
@@ -323,7 +323,7 @@
                             <show_in_store>0</show_in_store>
                         </fedex_pdf_label_height>
 
-                        <fedex_signature_option>
+                        <fedex_signature_option translate="label">
                             <label>Signature Option</label>
                             <frontend_type>select</frontend_type>
                             <source_model>urma/source</source_model>
@@ -333,7 +333,7 @@
                             <show_in_store>0</show_in_store>
                         </fedex_signature_option>
 
-                        <fedex_notify_on>
+                        <fedex_notify_on translate="label">
                             <label>Shipment notification types</label>
                             <frontend_type>multiselect</frontend_type>
                             <source_model>urma/source</source_model>
@@ -343,7 +343,7 @@
                             <show_in_store>0</show_in_store>
                         </fedex_notify_on>
 
-                        <fedex_notify_email>
+                        <fedex_notify_email translate="label">
                             <label>Shipment notification email(s)</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>120</sort_order>
@@ -353,7 +353,7 @@
                             <comment>Comma separated</comment>
                         </fedex_notify_email>
 
-                        <fedex_itn>
+                        <fedex_itn translate="label">
                             <label>ITN (Internal Transaction Number)</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>150</sort_order>
@@ -364,7 +364,7 @@
                         </fedex_itn>
                     </fields>
                 </fedex>
-                <endicia>
+                <endicia translate="label">
                     <label>Endicia Settings</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>10</sort_order>
@@ -372,7 +372,7 @@
                     <show_in_website>0</show_in_website>
                     <show_in_store>0</show_in_store>
                     <fields>
-                        <endicia_api_url>
+                        <endicia_api_url translate="label">
                             <label>Endicia API URL</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>1</sort_order>
@@ -380,7 +380,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </endicia_api_url>
-                        <endicia_test_mode>
+                        <endicia_test_mode translate="label">
                             <label>Label Test Mode</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -390,7 +390,7 @@
                             <show_in_store>0</show_in_store>
                         </endicia_test_mode>
 
-                        <endicia_requester_id>
+                        <endicia_requester_id translate="label">
                             <label>Requester ID</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>30</sort_order>
@@ -398,7 +398,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </endicia_requester_id>
-                        <endicia_account_id>
+                        <endicia_account_id translate="label">
                             <label>Account ID</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>40</sort_order>
@@ -406,7 +406,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </endicia_account_id>
-                        <endicia_pass_phrase>
+                        <endicia_pass_phrase translate="label">
                             <label>Pass Phrase</label>
                             <frontend_type>text</frontend_type>
                             <encrypted>1</encrypted>
@@ -416,7 +416,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </endicia_pass_phrase>
-                        <endicia_new_pass_phrase>
+                        <endicia_new_pass_phrase translate="label">
                             <label>New Pass Phrase</label>
                             <frontend_type>text</frontend_type>
                             <encrypted>1</encrypted>
@@ -427,7 +427,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </endicia_new_pass_phrase>
-                        <endicia_new_pass_phrase_confirm>
+                        <endicia_new_pass_phrase_confirm translate="label">
                             <label>Confirm New Pass Phrase</label>
                             <frontend_type>text</frontend_type>
                             <encrypted>1</encrypted>
@@ -438,7 +438,7 @@
                             <show_in_store>0</show_in_store>
                         </endicia_new_pass_phrase_confirm>
 
-                        <endicia_label_type>
+                        <endicia_label_type translate="label">
                             <label>Label Type</label>
                             <frontend_type>select</frontend_type>
                             <source_model>urma/source</source_model>
@@ -447,7 +447,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </endicia_label_type>
-                        <endicia_mail_class>
+                        <endicia_mail_class translate="label">
                             <label>Default Mail Class</label>
                             <frontend_type>select</frontend_type>
                             <source_model>urma/source</source_model>
@@ -456,7 +456,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </endicia_mail_class>
-                        <endicia_mailpiece_shape>
+                        <endicia_mailpiece_shape translate="label">
                             <label>Default Mail Piece Shape</label>
                             <frontend_type>select</frontend_type>
                             <source_model>urma/source</source_model>
@@ -466,7 +466,7 @@
                             <show_in_store>0</show_in_store>
                         </endicia_mailpiece_shape>
 
-                        <endicia_stealth>
+                        <endicia_stealth translate="label">
                             <label>Stealth</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -475,7 +475,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </endicia_stealth>
-                        <endicia_delivery_confirmation>
+                        <endicia_delivery_confirmation translate="label">
                             <label>Delivery Confirmation</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -484,7 +484,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </endicia_delivery_confirmation>
-                        <endicia_signature_confirmation>
+                        <endicia_signature_confirmation translate="label">
                             <label>Signature Confirmation</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -493,7 +493,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </endicia_signature_confirmation>
-                        <endicia_return_receipt>
+                        <endicia_return_receipt translate="label">
                             <label>Return Receipt</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -502,7 +502,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </endicia_return_receipt>
-                        <endicia_electronic_return_receipt>
+                        <endicia_electronic_return_receipt translate="label">
                             <label>Electronic Return Receipt</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -511,7 +511,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </endicia_electronic_return_receipt>
-                        <endicia_insured_mail>
+                        <endicia_insured_mail translate="label">
                             <label>Insured Mail</label>
                             <frontend_type>select</frontend_type>
                             <source_model>urma/source</source_model>
@@ -520,7 +520,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </endicia_insured_mail>
-                        <endicia_restricted_delivery>
+                        <endicia_restricted_delivery translate="label">
                             <label>Restricted Delivery</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -529,7 +529,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </endicia_restricted_delivery>
-                        <endicia_cod>
+                        <endicia_cod translate="label">
                             <label>COD</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -539,7 +539,7 @@
                             <show_in_store>0</show_in_store>
                         </endicia_cod>
 
-                        <endicia_balance_threshold>
+                        <endicia_balance_threshold translate="label">
                             <label>Balance Threshold</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>120</sort_order>
@@ -548,7 +548,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </endicia_balance_threshold>
-                        <endicia_recredit_amount>
+                        <endicia_recredit_amount translate="label">
                             <label>Recredit Amount</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>121</sort_order>
@@ -557,7 +557,7 @@
                             <show_in_store>0</show_in_store>
                         </endicia_recredit_amount>
 
-                        <endicia_pdf_label_width>
+                        <endicia_pdf_label_width translate="label">
                             <label>PDF Label Width</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>150</sort_order>
@@ -565,7 +565,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </endicia_pdf_label_width>
-                        <endicia_pdf_label_height>
+                        <endicia_pdf_label_height translate="label">
                             <label>PDF Label Height</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>151</sort_order>
@@ -575,7 +575,7 @@
                         </endicia_pdf_label_height>
                     </fields>
                 </endicia>
-                <ups>
+                <ups translate="label">
                     <label>UPS Settings</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>10</sort_order>
@@ -583,7 +583,7 @@
                     <show_in_website>0</show_in_website>
                     <show_in_store>0</show_in_store>
                     <fields>
-                        <ups_api_url>
+                        <ups_api_url translate="label">
                             <label>UPS API URL</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>1</sort_order>
@@ -592,7 +592,7 @@
                             <show_in_store>0</show_in_store>
                         </ups_api_url>
 
-                        <ups_shipper_number>
+                        <ups_shipper_number translate="label">
                             <label>UPS Shipper Number</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>2</sort_order>
@@ -600,7 +600,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </ups_shipper_number>
-                        <ups_thirdparty_account_number>
+                        <ups_thirdparty_account_number translate="label">
                             <label>3rd Party Account Number</label>
                             <type>text</type>
                             <sort_order>4</sort_order>
@@ -608,7 +608,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </ups_thirdparty_account_number>
-                        <ups_thirdparty_country>
+                        <ups_thirdparty_country translate="label">
                             <label>3rd Party Country</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_country</source_model>
@@ -617,7 +617,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </ups_thirdparty_country>
-                        <ups_thirdparty_postcode>
+                        <ups_thirdparty_postcode translate="label">
                             <label>3rd Party Postal Code</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>6</sort_order>
@@ -626,7 +626,7 @@
                             <show_in_store>0</show_in_store>
                         </ups_thirdparty_postcode>
     
-                        <ups_insurance>
+                        <ups_insurance translate="label">
                             <label>Insurance</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -635,7 +635,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </ups_insurance>
-                        <ups_delivery_confirmation>
+                        <ups_delivery_confirmation translate="label">
                             <label>Delivery Confirmation</label>
                             <frontend_type>select</frontend_type>
                             <source_model>urma/source</source_model>
@@ -644,7 +644,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </ups_delivery_confirmation>
-                        <ups_verbal_confirmation>
+                        <ups_verbal_confirmation translate="label">
                             <label>Verbal Confirmation</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -654,7 +654,7 @@
                             <show_in_store>0</show_in_store>
                         </ups_verbal_confirmation>
     
-                        <ups_pickup>
+                        <ups_pickup translate="label">
                             <label>Pickup Type</label>
                             <frontend_type>select</frontend_type>
                             <source_model>urma/source</source_model>
@@ -663,7 +663,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </ups_pickup>
-                        <ups_container>
+                        <ups_container translate="label">
                             <label>Container Type</label>
                             <frontend_type>select</frontend_type>
                             <source_model>urma/source</source_model>
@@ -672,7 +672,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </ups_container>
-                        <ups_dest_type>
+                        <ups_dest_type translate="label">
                             <label>Destination Type</label>
                             <frontend_type>select</frontend_type>
                             <source_model>urma/source</source_model>
@@ -682,7 +682,7 @@
                             <show_in_store>0</show_in_store>
                         </ups_dest_type>
     
-                        <ups_pdf_label_width>
+                        <ups_pdf_label_width translate="label">
                             <label>PDF Label Width</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>50</sort_order>
@@ -690,7 +690,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </ups_pdf_label_width>
-                        <ups_pdf_label_height>
+                        <ups_pdf_label_height translate="label">
                             <label>PDF Label Height</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>51</sort_order>
@@ -708,7 +708,7 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <fields>
-                        <customer_success>
+                        <customer_success translate="label">
                             <label>Customer success</label>
                             <frontend_type>textarea</frontend_type>
                             <sort_order>10</sort_order>
@@ -716,7 +716,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </customer_success>
-                        <customer_no_items>
+                        <customer_no_items translate="label">
                             <label>Customer no items selected</label>
                             <frontend_type>textarea</frontend_type>
                             <sort_order>20</sort_order>
@@ -724,7 +724,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </customer_no_items>
-                        <new_instructions_html>
+                        <new_instructions_html translate="label">
                             <label>Customer instructions on "Request New RMA" page</label>
                             <frontend_type>textarea</frontend_type>
                             <sort_order>30</sort_order>

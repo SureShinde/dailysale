@@ -93,7 +93,7 @@ class Unirgy_DropshipVendorProduct_Downloadable_Product_EditController extends U
             try {
                 $this->_processDownload($resource, $resourceType);
             } catch (Mage_Core_Exception $e) {
-                Mage::getSingleton('udropship/session')->addError(Mage::helper('downloadable')->__('An error occurred while getting the requested content.'));
+                Mage::getSingleton('udropship/session')->addError(Mage::helper('udropship')->__('An error occurred while getting the requested content.'));
             }
         }
         exit(0);

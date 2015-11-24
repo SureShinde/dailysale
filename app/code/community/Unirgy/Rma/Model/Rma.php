@@ -76,7 +76,7 @@ class Unirgy_Rma_Model_Rma extends Mage_Sales_Model_Abstract
     {
         if ($this->getId()) {
             Mage::throwException(
-                Mage::helper('sales')->__('Cannot register existing rma')
+                Mage::helper('udropship')->__('Cannot register existing rma')
             );
         }
 
@@ -167,7 +167,12 @@ class Unirgy_Rma_Model_Rma extends Mage_Sales_Model_Abstract
     public function saveComments()
     {
         if ($this->_commentsChanged) {
-            $this->getCommentsCollection()->save();
+            foreach($this->getCommentsCollection() as $comment) {
+                if (!$comment->getRmaStatus()) {
+                    $comment->setRmaStatus($this->getRmaStatus());
+                }
+                $comment->save();
+            }
         }
         return $this;
     }
@@ -214,7 +219,7 @@ class Unirgy_Rma_Model_Rma extends Mage_Sales_Model_Abstract
     {
         if ((!$this->getId() || null !== $this->_items) && !count($this->getAllItems())) {
             Mage::throwException(
-                Mage::helper('sales')->__('Cannot create an empty rma.')
+                Mage::helper('udropship')->__('Cannot create an empty rma.')
             );
         }
 
@@ -530,6 +535,14 @@ class Unirgy_Rma_Model_Rma extends Mage_Sales_Model_Abstract
         return false;
     }
 
+    public function getRmaStatus()
+    {
+        $rmaStatus = $this->getData('rma_status');
+        if ($rmaStatus === null) {
+            $rmaStatus = 'pending';
+        }
+        return $rmaStatus;
+    }
     public function getRmaStatusName()
     {
         return Mage::helper('urma')->getRmaStatusName($this->getRmaStatus());
@@ -540,7 +553,7 @@ class Unirgy_Rma_Model_Rma extends Mage_Sales_Model_Abstract
     }
     public function getStatusLabel()
     {
-        return Mage::helper('urma')->__($this->getRmaStatus());
+        return Mage::helper('udropship')->__($this->getRmaStatus());
     }
     public function getStatusCustomerNotes()
     {

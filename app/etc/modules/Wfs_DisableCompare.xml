@@ -33,7 +33,7 @@
 <config>
     <modules>
         <Wfs_DisableCompare>
-            <active>true</active>
+            <active>false</active>
             <codePool>community</codePool>
             <depends>
                 <Mage_Catalog/>

@@ -42,7 +42,7 @@ class Unirgy_Rma_Block_Order_Rma extends Mage_Core_Block_Template
     protected function _prepareLayout()
     {
         if ($headBlock = $this->getLayout()->getBlock('head')) {
-            $headBlock->setTitle($this->__('Order # %s', $this->getOrder()->getRealOrderId()));
+            $headBlock->setTitle(Mage::helper('udropship')->__('Order # %s', $this->getOrder()->getRealOrderId()));
         }
         $this->setChild(
             'payment_info',

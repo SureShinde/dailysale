@@ -72,7 +72,7 @@ class Unirgy_DropshipPayout_Helper_Data extends Mage_Core_Helper_Abstract
         }
         
         if (empty($vendors)) {
-            Mage::throwException($hlp->__('Please select vendors'));
+            Mage::throwException(Mage::helper('udropship')->__('Please select vendors'));
         }
         
         $payouts = Mage::getResourceModel('udpayout/payout_collection')->setDateFrom($dateFrom)->setDateTo($dateTo);

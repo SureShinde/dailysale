@@ -116,7 +116,7 @@ var uMultiRegionUpdater = Class.create(RegionUpdater, {
             <tr id="<?php echo $this->suffixId('rowTpl')?>" style="display:none">
                 <td>
                     <select id="<?php echo $name?>_$ROW_country_id" name="<?php echo $name?>[$ROW][country_id]">
-                    <option value=""><?php echo $this->__('* Please select')?></option>
+                    <option value=""><?php echo Mage::helper('udropship')->__('* Please select')?></option>
                     <?php if (is_array($countries)): foreach ($countries as $country): ?>
                         <option value="<?php echo $country['value']?>" alt="country_id"><?php echo $this->htmlEscape($country['label'])?></option>
                     <?php endforeach; endif; ?>
@@ -149,7 +149,7 @@ var uMultiRegionUpdater = Class.create(RegionUpdater, {
                 <th colspan="2" class="a-left">
                     <div class="left">
                         <select id="<?php echo $name?>_country_selector" multiple="multiple" style="height: 200px">
-                            <option value=""><?php echo $this->__('* Please select')?></option>
+                            <option value=""><?php echo Mage::helper('udropship')->__('* Please select')?></option>
                             <?php if (is_array($countries)): foreach ($countries as $country): ?>
                             <option value="<?php echo $country['value']?>"><?php echo $this->htmlEscape($country['label'])?></option>
                             <?php endforeach; endif; ?>
@@ -157,7 +157,7 @@ var uMultiRegionUpdater = Class.create(RegionUpdater, {
                     </div>
                 </th>
                 <th colspan="2" class="a-right">
-                    <div class="right"><button type="button" class="scalable add" id="<?php echo $this->suffixId('addBtn')?>"><span><?php echo $this->__('Add Country Rows') ?></span></button></div>
+                    <div class="right"><button type="button" class="scalable add" id="<?php echo $this->suffixId('addBtn')?>"><span><?php echo Mage::helper('udropship')->__('Add Country Rows') ?></span></button></div>
                 </th>
             </tr>
         </tfoot>

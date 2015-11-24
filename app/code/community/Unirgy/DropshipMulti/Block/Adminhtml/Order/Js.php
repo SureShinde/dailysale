@@ -268,6 +268,7 @@ class Unirgy_DropshipMulti_Block_Adminhtml_Order_Js extends Mage_Adminhtml_Block
                 if (empty($this->_vendors[$itemId]['all'][$vpVid])) {
                     $this->_vendors[$itemId]['all'][$vpVid] = array(
                         'name' => $this->htmlEscape($vp->getVendorName()),
+                        'vendor_sku' => $vp->getVendorSku() ? $vp->getVendorSku() : $item->getSku(),
                         'methods' => &$this->_vMethods[$vpVid],
                     );
                 }

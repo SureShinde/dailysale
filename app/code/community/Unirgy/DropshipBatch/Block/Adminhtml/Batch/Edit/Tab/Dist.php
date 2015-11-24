@@ -49,28 +49,28 @@ class Unirgy_DropshipBatch_Block_Adminhtml_Batch_Edit_Tab_Dist extends Mage_Admi
     protected function _prepareColumns()
     {
         $this->addColumn('dist_id', array(
-            'header'    => Mage::helper('udbatch')->__('ID'),
+            'header'    => Mage::helper('udropship')->__('ID'),
             'sortable'  => true,
             'width'     => '60',
             'index'     => 'dist_id'
         ));
         $this->addColumn('location', array(
-            'header'    => Mage::helper('udbatch')->__('Location'),
+            'header'    => Mage::helper('udropship')->__('Location'),
             'index'     => 'location'
         ));
         $this->addColumn('dist_status', array(
-            'header'    => Mage::helper('udbatch')->__('Status'),
+            'header'    => Mage::helper('udropship')->__('Status'),
             'index'     => 'dist_status',
             'type'      => 'options',
             'options'   => Mage::getSingleton('udbatch/source')->setPath('dist_status')->toOptionHash(),
             'renderer'  => 'udbatch/adminhtml_dist_grid_status',
         ));
         $this->addColumn('error_info', array(
-            'header'    => Mage::helper('udbatch')->__('Error'),
+            'header'    => Mage::helper('udropship')->__('Error'),
             'index'     => 'error_info'
         ));
         $this->addColumn('updated_at', array(
-            'header'    => Mage::helper('udbatch')->__('Updated At'),
+            'header'    => Mage::helper('udropship')->__('Updated At'),
             'index'     => 'updated_at',
             'type'      => 'datetime',
         ));

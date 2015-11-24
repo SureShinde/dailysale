@@ -18,7 +18,7 @@ $_yesnoOpts = Mage::getSingleton('udropship/source')->setPath('yesno')->toOption
             <tr id="<?php echo $this->suffixId('rowTpl')?>" style="display:none">
                 <td>
                     <select name="<?php echo $this->getFieldName()?>[$ROW][column_field]">
-                    <option value=""><?php echo $this->__('* Please select')?></option>
+                    <option value=""><?php echo Mage::helper('udropship')->__('* Please select')?></option>
                     <?php if (is_array($efConfig)): foreach ($efConfig as $efc): ?>
                         <optgroup label="<?php echo $this->htmlEscape($efc['label'])?>">
                         <?php if (is_array($efc['values'])): foreach ($efc['values'] as $fId=>$fLbl): ?>
@@ -42,7 +42,7 @@ $_yesnoOpts = Mage::getSingleton('udropship/source')->setPath('yesno')->toOption
         <tfoot>
             <tr>
                 <th colspan="4" class="a-left">
-                    <div class="left"><button type="button" class="scalable add" id="<?php echo $this->suffixId('addBtn')?>"><span><?php echo $this->__('Add Field') ?></span></button></div>
+                    <div class="left"><button type="button" class="scalable add" id="<?php echo $this->suffixId('addBtn')?>"><span><?php echo Mage::helper('udropship')->__('Add Field') ?></span></button></div>
                 </th>
             </tr>
         </tfoot>

@@ -19,7 +19,7 @@ class Unirgy_DropshipPo_Block_Adminhtml_Shipment_Create extends Mage_Adminhtml_B
 {
 	public function getHeaderText()
     {
-        $header = Mage::helper('udpo')->__('New Shipment for PO #%s [Order #%s]',
+        $header = Mage::helper('udropship')->__('New Shipment for PO #%s [Order #%s]',
         	$this->getShipment()->getUdpo()->getIncrementId(), 
         	$this->getShipment()->getOrder()->getRealOrderId()
         );

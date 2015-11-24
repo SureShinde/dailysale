@@ -16,14 +16,14 @@ class Unirgy_DropshipTierShipping_Model_Observer
         $block = $observer->getBlock();
         if (!$tsHlp->isV2Rates()) {
             $block->addTab('udtiership', array(
-                'label'     => Mage::helper('udtiership')->__('Shipping Rates'),
+                'label'     => Mage::helper('udropship')->__('Shipping Rates'),
                 'after'     => 'shipping_section',
                 'content'   => Mage::app()->getLayout()->createBlock('udtiership/adminhtml_vendorEditTab_shippingRates_form', 'vendor.tiership.form')
                     ->toHtml()
             ));
         } else {
             $block->addTab('udtiership', array(
-                'label'     => Mage::helper('udtiership')->__('Shipping Rates'),
+                'label'     => Mage::helper('udropship')->__('Shipping Rates'),
                 'after'     => 'shipping_section',
                 'content'   => Mage::app()->getLayout()->createBlock('udtiership/adminhtml_vendorEditTab_shippingRates_v2_form', 'vendor.tiership.form')
                     ->toHtml()
@@ -63,6 +63,13 @@ class Unirgy_DropshipTierShipping_Model_Observer
     {
         if (!Mage::helper('udtiership')->isV2Rates()) return;
         Mage::getConfig()->setNode('global/models/udtiership/rewrite/carrier', 'Unirgy_DropshipTierShipping_Model_V2_Carrier');
+        foreach (array(
+                     Mage::app()->getStore(),
+                     Mage::app()->getStore(0),
+                 ) as $store) {
+            $store->setConfig('carriers/udtiership/udtiership/model', 'udtiership/v2_carrier');
+            Mage::getConfig()->setNode('default/carriers/udtiership/model', 'udtiership/v2_carrier');
+        }
     }
 
 }

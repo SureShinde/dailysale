@@ -43,6 +43,7 @@ class Aftership_Track_Model_Observer {
         ob_end_clean();
     }
 
+
     /** For vendor
      * @param Varien_Event_Observer $observer
      */

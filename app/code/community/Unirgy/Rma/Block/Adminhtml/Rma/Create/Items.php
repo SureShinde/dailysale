@@ -22,7 +22,7 @@ class Unirgy_Rma_Block_Adminhtml_Rma_Create_Items extends Mage_Adminhtml_Block_S
         $this->setChild(
             'submit_button',
             $this->getLayout()->createBlock('adminhtml/widget_button')->setData(array(
-                'label'     => Mage::helper('sales')->__('Submit Return'),
+                'label'     => Mage::helper('udropship')->__('Submit Return'),
                 'class'     => 'save submit-button',
                 'onclick'   => 'editForm.submit()',
             ))

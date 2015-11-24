@@ -31,7 +31,7 @@ class Unirgy_DropshipMicrositePro_Model_Source extends Unirgy_Dropship_Model_Sou
 
         case 'cms_landing_page':
             $_options = Mage::getSingleton('adminhtml/system_config_source_cms_page')->toOptionArray();
-            $options[-1] = $hlp->__('* Use config');
+            $options[-1] = Mage::helper('udropship')->__('* Use config');
             foreach ($_options as $_opt) {
                 $options[$_opt['value']] = $_opt['label'];
             }
@@ -51,16 +51,16 @@ class Unirgy_DropshipMicrositePro_Model_Source extends Unirgy_Dropship_Model_Sou
 
         case 'agree_terms_conditions':
             $options = array(
-                '1' => $hlp->__('Yes Agree')
+                '1' => Mage::helper('udropship')->__('Yes Agree')
             );
             break;
 
         default:
-            Mage::throwException($hlp->__('Invalid request for source options: '.$this->getPath()));
+            Mage::throwException(Mage::helper('udropship')->__('Invalid request for source options: '.$this->getPath()));
         }
 
         if ($selector) {
-            $options = array(''=>$hlp->__($selectorLabel)) + $options;
+            $options = array(''=>Mage::helper('udropship')->__($selectorLabel)) + $options;
         }
 
         return $options;

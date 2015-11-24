@@ -124,7 +124,7 @@ class Unirgy_DropshipVendorProduct_Block_Vendor_Product extends Mage_Core_Block_
     {
         $cfgFieldset = $this->_form->addFieldset('configurable',
             array(
-                'legend'=>Mage::helper('catalog')->__('Add Product Options'),
+                'legend'=>Mage::helper('udropship')->__('Add Product Options'),
                 'class'=>'fieldset-wide',
         ));
         $this->addAdditionalElementType(
@@ -148,7 +148,7 @@ class Unirgy_DropshipVendorProduct_Block_Vendor_Product extends Mage_Core_Block_
 
         $cfgQcEl = $cfgFieldset->addField('_cfg_quick_create', 'cfg_quick_create', array(
             'name'      => '_cfg_attribute[quick_create]',
-            'label'     => Mage::helper('udprod')->__('Simples Management'),
+            'label'     => Mage::helper('udropship')->__('Simples Management'),
             'value_filter' => new Varien_Filter_Sprintf('%s', 2),
             'product' => $prod,
             'used_product_attributes' => Mage::helper('udprod')->getTplConfigurableAttributes(
@@ -167,7 +167,7 @@ class Unirgy_DropshipVendorProduct_Block_Vendor_Product extends Mage_Core_Block_
     {
         $coFieldset = $this->_form->addFieldset('grouped_assoc_products',
             array(
-                'legend'=>Mage::helper('catalog')->__('Associated Products'),
+                'legend'=>Mage::helper('udropship')->__('Associated Products'),
                 'class'=>'fieldset-wide',
             ));
         $this->addAdditionalElementType(
@@ -178,7 +178,7 @@ class Unirgy_DropshipVendorProduct_Block_Vendor_Product extends Mage_Core_Block_
 
         $coEl = $coFieldset->addField('_grouped_assoc_products', 'grouped_assoc_products', array(
             'name'      => 'options',
-            'label'     => Mage::helper('udprod')->__('Associated Products'),
+            'label'     => Mage::helper('udropship')->__('Associated Products'),
             'value_filter' => new Varien_Filter_Sprintf('%s', 2),
             'product' => $prod,
             'is_top'=>true,
@@ -194,7 +194,7 @@ class Unirgy_DropshipVendorProduct_Block_Vendor_Product extends Mage_Core_Block_
     {
         $coFieldset = $this->_form->addFieldset('custom_options',
             array(
-                'legend'=>Mage::helper('catalog')->__('Custom Options'),
+                'legend'=>Mage::helper('udropship')->__('Custom Options'),
                 'class'=>'fieldset-wide',
             ));
         $this->addAdditionalElementType(
@@ -205,7 +205,7 @@ class Unirgy_DropshipVendorProduct_Block_Vendor_Product extends Mage_Core_Block_
 
         $coEl = $coFieldset->addField('_custom_options', 'custom_options', array(
             'name'      => 'options',
-            'label'     => Mage::helper('udprod')->__('Custom Options Management'),
+            'label'     => Mage::helper('udropship')->__('Custom Options Management'),
             'value_filter' => new Varien_Filter_Sprintf('%s', 2),
             'product' => $prod,
             'is_top'=>true,
@@ -221,7 +221,7 @@ class Unirgy_DropshipVendorProduct_Block_Vendor_Product extends Mage_Core_Block_
     {
         $coFieldset = $this->_form->addFieldset('downloadable_options',
             array(
-                'legend'=>Mage::helper('catalog')->__('Downloadable Options'),
+                'legend'=>Mage::helper('udropship')->__('Downloadable Options'),
                 'class'=>'fieldset-wide',
             ));
         $this->addAdditionalElementType(
@@ -232,7 +232,7 @@ class Unirgy_DropshipVendorProduct_Block_Vendor_Product extends Mage_Core_Block_
 
         $coEl = $coFieldset->addField('_downloadable_options', 'downloadable_options', array(
             'name'      => 'options',
-            'label'     => Mage::helper('udprod')->__('Downloadable Options Management'),
+            'label'     => Mage::helper('udropship')->__('Downloadable Options Management'),
             'value_filter' => new Varien_Filter_Sprintf('%s', 2),
             'product' => $prod,
             'is_top'=>true,
@@ -459,7 +459,7 @@ class Unirgy_DropshipVendorProduct_Block_Vendor_Product extends Mage_Core_Block_
                         ) {
                             $fieldset = $this->_form->addFieldset('group_fields_images',
                                 array(
-                                    'legend'=>$this->__('Images'),
+                                    'legend'=>Mage::helper('udropship')->__('Images'),
                                     'class'=>'fieldset-wide',
                             ));
                             $this->_addElementTypes($fieldset);
@@ -477,6 +477,7 @@ class Unirgy_DropshipVendorProduct_Block_Vendor_Product extends Mage_Core_Block_
                                     'class'     => $attribute->getFrontend()->getClass(),
                                     'required'  => $attribute->getIsRequired(),
                                     'note'      => $attribute->getNote(),
+                                    'is_top'    => true
                                 )
                             )
                             ->setExplicitSection(true)

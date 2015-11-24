@@ -41,11 +41,11 @@
             <children>
                 <rechargecode translate="title" module="customercredit">
                     <title>Recharge Codes</title>
-                    <action>admincustomercredit/adminhtml_code</action>
+                    <action>adminhtml/code</action>
                 </rechargecode>
                 <creditrules translate="title" module="customercredit">
                     <title>Credit Rules</title>
-                    <action>admincustomercredit/adminhtml_rules</action>
+                    <action>adminhtml/rules</action>
                 </creditrules>
             </children>
         </promo>
@@ -55,7 +55,7 @@
                <customercredit translate="title" module="reports">
                    <title>Customer Credit</title>
                    <sort_order>1000</sort_order> 
-                   <action>admincustomercredit/adminhtml_report</action>       
+                   <action>adminhtml/report</action>       
                </customercredit>
            </children>
        </report>
@@ -66,12 +66,12 @@
                     <children>
                         <import_credits translate="title" module="customercredit">
                             <title>Customer Credit Import</title>
-                            <action>admincustomercredit/adminhtml_import_credit</action>
+                            <action>adminhtml/import_credit</action>
                             <sort_order>100</sort_order>
                         </import_credits>
                         <import_codes translate="title" module="customercredit">
                             <title>Recharge Code Import</title>
-                            <action>admincustomercredit/adminhtml_import_code</action>
+                            <action>adminhtml/import_code</action>
                             <sort_order>200</sort_order>
                         </import_codes>
                     </children>

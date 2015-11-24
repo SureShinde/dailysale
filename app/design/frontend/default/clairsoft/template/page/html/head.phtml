@@ -42,7 +42,6 @@
 <?php echo $this->getCssJsHtml() ?>
 <?php echo $this->getChildHtml() ?>
 <?php echo $this->helper('core/js')->getTranslatorScript() ?>
-<?php echo $this->getIncludes() ?>
 
 <?php if((strpos($_SERVER['REQUEST_URI'],'success')==true)): ?>
 	<?php //Get Order Number & Order Total
@@ -83,6 +82,7 @@ s.parentNode.insertBefore(fbds, s);
 _fbq.loaded = true;
 }
 _fbq.push(['addPixelId', '663833153700547']);
+_fbq.push(['track',<?php echo ("'".$order."'"); ?>,{'value':<?php echo ("'".$subtotal."'"); ?>,'currency':'USD'}]);
 })();
 window._fbq = window._fbq || [];
 window._fbq.push(['track', 'PixelInitialized', {}]);

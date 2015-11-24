@@ -64,7 +64,7 @@ class Unirgy_Dropship_Block_Adminhtml_Batch_Grid extends Mage_Adminhtml_Block_Wi
         ));
 
         $this->addColumn('page_actions', array(
-            'header'    => Mage::helper('cms')->__('Action'),
+            'header'    => Mage::helper('udropship')->__('Action'),
             'width'     => 150,
             'sortable'  => false,
             'filter'    => false,

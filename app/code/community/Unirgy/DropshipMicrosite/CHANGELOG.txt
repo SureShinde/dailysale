@@ -1,3 +1,19 @@
+===== 2.4.1 =====
+  * Fixed registration edit _forward
+
+===== 2.4.0 =====
+  * CE 1.9.2.2 compatibility
+
+===== 2.2.0 =====
+  * Central translations file
+
+===== 2.1.21 =====
+  * Added option to use mixing of 'update store base url' per vendor
+
+===== 2.1.20 =====
+  * Added option to use mixing of subdomain level per vendor
+  * Fix skip confirmation email in autoapprove
+
 ===== 2.1.19 =====
   * Added vendors list page
 

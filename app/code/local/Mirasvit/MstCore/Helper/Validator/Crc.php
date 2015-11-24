@@ -8,9 +8,9 @@
  * Please refer to http://www.magentocommerce.com for more information.
  *
  * @category  Mirasvit
- * @package   Full Page Cache
- * @version   1.0.1
- * @build     348
+ * @package   Fast Asynchronous Re-indexing
+ * @version   1.1.6
+ * @build     363
  * @copyright Copyright (C) 2015 Mirasvit (http://mirasvit.com/)
  */
 
@@ -110,6 +110,9 @@ class Mirasvit_MstCore_Helper_Validator_Crc extends Mirasvit_MstCore_Helper_Vali
                 continue;
             }
             if (strpos($file, 'Helper/Code.php')) {
+                continue;
+            }
+            if (strpos($file, '.csv')) {
                 continue;
             }
             if (count($filters)) {

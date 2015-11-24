@@ -1,0 +1,72 @@
+<h4>Catalog Feed</h4>
+<p style="width:650px">Go to your Settings in TurnTo Management area and enter:
+<br>
+ <i><?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_LINK) . 'turntocatalogfeed';?><?php if(count(Mage::registry('websites')) > 1) { ?>?websiteId=WEBSITE_ID<?php } ?><?php if(count(Mage::registry('stores')) > 1) { ?>&storeId=STORE_ID<?php } ?></i>
+<br>
+<?php if(count(Mage::registry('stores')) > 1 || count(Mage::registry('websites'))) { ?>
+<b>NOTE: You appear to have multiple sites or stores on your magento installation so you will need to supply a scope in the URL.  Replace <i>WEBSITE_ID</i> and <i>STORE_ID</i> in the url above with the appropriate values from the drop-downs below (just the number. For instance: siteId=1)</b>
+<br>
+<?php } ?>
+<br>
+ in the <b>Catalog Feed Url:</b> input field.
+<br>
+<br>
+ This will set up the automation of the catalog feed in order to keep you products up to date. </p>
+<br>
+<br>
+<br>
+To manually create a catalog feed press Generate to build a catalog feed. This feed can be downloaded and uploaded via the TurnTo management form.
+
+<br>
+<form id="cat_feed_form" name="cat_feed_form" method="post" action="<?php echo $this->getUrl('*/*/post') ?>">
+	<input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>" />
+	<input name="feed_type" type="hidden" value="catalog" />
+	<table>
+		<!--
+		<tr>
+			<td>Site Key:</td>
+			<td><input id="siteKey" name="siteKey" type="text" /></td>
+		</tr>
+		<tr>
+			<td>Auth Key:</td>
+			<td><input id="authKey" name="authKey" type="text" /></td>
+		</tr>
+		-->
+		<tr>
+		<?php
+			echo '<td>Website/Store:</td>';
+                                echo '<td><select id="websiteId" name="websiteId">'; 
+			foreach (Mage::registry('websites') as $website) {
+				foreach ($website->getGroups() as $group) {
+                                	$stores = $group->getStores();
+                               		foreach ($stores as $store) {
+                                       		//echo '<option value="'.$website->getId().'_'.store->getId().'">Website</option>';
+						echo '<option value="'.$website->getId().'_'.$store->getId().'">'.$website->getId().': '.$website->getName().' '.$store->getId().': '.$store->getName().'</option>';	
+                                	}
+                        	}
+                	}
+			echo '</select></td>'
+		?>
+		</tr>
+		<tr>
+			<td></td>
+			<td align="right">
+
+<input id="submit" name="submit" value="Generate" type="submit" /></td>
+
+		</tr>
+	</table>
+
+
+
+
+	
+	<?php 
+		$file = Mage::getBaseDir('media') . DS . 'turnto/catfeed.csv';
+		
+		if(file_exists($file)){
+			echo '<br /><br /><a href="/media/turnto/catfeed.csv">Download catalog feed</a> - created '.date('m/d/Y G:i',filectime($file));
+		}
+	?>
+</form>
+

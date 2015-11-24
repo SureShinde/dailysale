@@ -137,7 +137,7 @@ abstract class Unirgy_DropshipBatch_Model_Adapter_ExportStockpo_Abstract extends
         if (!$this->hasData('export_template')) {
         	$exportTpl = $this->getBatch()->getVendor()->getBatchExportStockpoTemplate();
         	if (trim($exportTpl) == '') {
-        		Mage::throwException(Mage::helper('udbatch')->__('Empty Export Template'));
+        		Mage::throwException(Mage::helper('udropship')->__('Empty Export Template'));
         	}
             $this->setData('export_template', $exportTpl);
         }

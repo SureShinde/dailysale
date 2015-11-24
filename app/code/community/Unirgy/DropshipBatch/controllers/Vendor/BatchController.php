@@ -65,7 +65,7 @@ class Unirgy_DropshipBatch_Vendor_BatchController extends Unirgy_Dropship_Contro
                     'message'=>$e->getMessage()
                 );
             } else {
-                $this->_getSession()->addError($this->__($e->getMessage()));
+                $this->_getSession()->addError(Mage::helper('udropship')->__($e->getMessage()));
             }
         }
         if ($this->getRequest()->getParam('use_json_response')) {
@@ -116,7 +116,7 @@ class Unirgy_DropshipBatch_Vendor_BatchController extends Unirgy_Dropship_Contro
                     'message'=>$e->getMessage()
                 );
             } else {
-                $this->_getSession()->addError($this->__($e->getMessage()));
+                $this->_getSession()->addError(Mage::helper('udropship')->__($e->getMessage()));
             }
         }
         if ($this->getRequest()->getParam('use_json_response')) {
@@ -172,27 +172,27 @@ class Unirgy_DropshipBatch_Vendor_BatchController extends Unirgy_Dropship_Contro
 	            @file_put_contents($filename, $r->getParam('import_inventory_textarea'));
 	        }
 	        if (!isset($filename)) {
-	        	Mage::throwException($bHlp->__('Empty input'));
+	        	Mage::throwException(Mage::helper('udropship')->__('Empty input'));
 	        }
         	if (!($delimiter = $r->getParam('import_inventory_delimiter'))) {
-        		Mage::throwException($bHlp->__('Empty delimiter'));
+        		Mage::throwException(Mage::helper('udropship')->__('Empty delimiter'));
         	}
         	if (!($enclosure = $r->getParam('import_inventory_enclosure'))) {
-        		Mage::throwException($bHlp->__('Empty enclosure'));
+        		Mage::throwException(Mage::helper('udropship')->__('Empty enclosure'));
         	}
         	if (!($fields = $r->getParam('import_inventory_fields')) || !is_array($fields)) {
-        		Mage::throwException($bHlp->__('Empty fields'));
+        		Mage::throwException(Mage::helper('udropship')->__('Empty fields'));
         	}
         	if (!in_array('sku', $fields) && (!$allowVendorSku || !in_array('vendor_sku', $fields))) {
                 if ($allowVendorSku) {
-        		    Mage::throwException($bHlp->__('Required "%s" (or "%s") field is not specified', 'sku', 'vendor_sku'));
+        		    Mage::throwException(Mage::helper('udropship')->__('Required "%s" (or "%s") field is not specified', 'sku', 'vendor_sku'));
                 } else {
-                    Mage::throwException($bHlp->__('Required "%s" field is not specified', 'sku'));
+                    Mage::throwException(Mage::helper('udropship')->__('Required "%s" field is not specified', 'sku'));
                 }
         	}
         	foreach ($fields as $i=>$field) {
         		if (!empty($field) && !$this->isAllowedField($fields[$i])) {
-        			$this->_getSession()->addNotice($bHlp->__('"%s" field is not allowed. will be ignored.', $field));
+        			$this->_getSession()->addNotice(Mage::helper('udropship')->__('"%s" field is not allowed. will be ignored.', $field));
         		}
         	}
             $content = file_get_contents($filename);
@@ -321,22 +321,22 @@ class Unirgy_DropshipBatch_Vendor_BatchController extends Unirgy_Dropship_Contro
 	        unset($r);
 
 	        if (!empty($invalidRows)) {
-	        	$this->_getSession()->addError($bHlp->__('Invalid rows: %s', implode(',', $invalidRows)));
+	        	$this->_getSession()->addError(Mage::helper('udropship')->__('Invalid rows: %s', implode(',', $invalidRows)));
 	        }
     		if (!empty($emptyRows)) {
-	        	$this->_getSession()->addError($bHlp->__('Empty rows: %s', implode(',', $emptyRows)));
+	        	$this->_getSession()->addError(Mage::helper('udropship')->__('Empty rows: %s', implode(',', $emptyRows)));
 	        }
     		if (!empty($missingReqField)) {
-	        	$this->_getSession()->addError($bHlp->__('Missing required field in rows: %s', implode(',', $missingReqField)));
+	        	$this->_getSession()->addError(Mage::helper('udropship')->__('Missing required field in rows: %s', implode(',', $missingReqField)));
 	        }
     		if (!empty($duplicateSku)) {
-	        	$this->_getSession()->addError($bHlp->__('Duplicate sku within file in rows: %s', implode(',', $duplicateSku)));
+	        	$this->_getSession()->addError(Mage::helper('udropship')->__('Duplicate sku within file in rows: %s', implode(',', $duplicateSku)));
 	        }
     		if (!empty($notFoundProducts)) {
-	        	$this->_getSession()->addError($bHlp->__('Product not found for sku in rows: %s', implode(',', $notFoundProducts)));
+	        	$this->_getSession()->addError(Mage::helper('udropship')->__('Product not found for sku in rows: %s', implode(',', $notFoundProducts)));
 	        }
     		if (!empty($notAssociatedProducts)) {
-	        	$this->_getSession()->addError($bHlp->__('Products not associated with vendor in rows: %s', implode(',', $notAssociatedProducts)));
+	        	$this->_getSession()->addError(Mage::helper('udropship')->__('Products not associated with vendor in rows: %s', implode(',', $notAssociatedProducts)));
 	        }
 
 	        $cnt = 0;
@@ -349,9 +349,9 @@ class Unirgy_DropshipBatch_Vendor_BatchController extends Unirgy_Dropship_Contro
                 }
 	        }
     		if ($cnt) {
-                $this->_getSession()->addSuccess($hlp->__($cnt==1 ? '%s product was updated' : '%s products were updated', $cnt));
+                $this->_getSession()->addSuccess(Mage::helper('udropship')->__($cnt==1 ? '%s product was updated' : '%s products were updated', $cnt));
             } else {
-                $this->_getSession()->addNotice($hlp->__('No updates were made'));
+                $this->_getSession()->addNotice(Mage::helper('udropship')->__('No updates were made'));
             }
 
     	} catch (Exception $e) {

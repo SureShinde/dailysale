@@ -92,5 +92,8 @@ class Bronto_Common_Model_System_Config_Backend_Token extends Mage_Core_Model_Co
                 $this->getScopeId()
             );
         }
+
+        Mage::getConfig()->reinit();
+        Mage::app()->reinitStores();
     }
 }

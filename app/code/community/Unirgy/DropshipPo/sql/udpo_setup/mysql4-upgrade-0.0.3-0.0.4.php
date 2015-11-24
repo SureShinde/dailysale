@@ -16,7 +16,7 @@
  */
 
 $hlp = Mage::helper('udropship');
-if (!$hlp->hasMageFeature('sales_flat')) Mage::throwException($hlp->__('Unirgy_DropshipPo module does not support this version of magento'));
+if (!$hlp->hasMageFeature('sales_flat')) Mage::throwException(Mage::helper('udropship')->__('Unirgy_DropshipPo module does not support this version of magento'));
 if (!$hlp->isUdpoActive()) return false;
 
 /* @var $installer Mage_Sales_Model_Entity_Setup */

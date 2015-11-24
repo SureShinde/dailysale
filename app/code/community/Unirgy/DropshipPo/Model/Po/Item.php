@@ -127,7 +127,7 @@ class Unirgy_DropshipPo_Model_Po_Item extends Mage_Core_Model_Abstract
         }
         else {
             Mage::throwException(
-                Mage::helper('sales')->__('Invalid qty to create purchase order for item "%s"', $this->getName())
+                Mage::helper('udropship')->__('Invalid qty to create purchase order for item "%s"', $this->getName())
             );
         }
         return $this;

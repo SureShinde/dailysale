@@ -87,7 +87,7 @@ class Unirgy_DropshipVendorProduct_Model_ProductAttributeBackendMedia extends Ma
                 if(isset($image['value_id'])) {
                     $mediaChanged = true;
                     Mage::helper('udprod')->setNeedToUnpublish($object, 'image_removed');
-                    $attrChanged['media.removed'] = Mage::helper('udprod')->__('Removed Image(s)');
+                    $attrChanged['media.removed'] = Mage::helper('udropship')->__('Removed Image(s)');
                     $toDelete[] = $image['value_id'];
                 }
                 continue;
@@ -105,7 +105,7 @@ class Unirgy_DropshipVendorProduct_Model_ProductAttributeBackendMedia extends Ma
                 $image['value_id']      = $this->_getResource()->insertGallery($data);
                 $mediaChanged = true;
                 Mage::helper('udprod')->setNeedToUnpublish($object, 'image_added');
-                $attrChanged['media.added'] = Mage::helper('udprod')->__('Added Image(s)');
+                $attrChanged['media.added'] = Mage::helper('udropship')->__('Added Image(s)');
             } else {
                 $data = array();
                 $data['super_attribute'] = Mage::helper('core')->jsonEncode(@$image['super_attribute']);

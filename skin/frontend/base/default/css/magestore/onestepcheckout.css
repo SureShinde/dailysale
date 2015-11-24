@@ -1132,7 +1132,9 @@ button.place-order-loader span {
     background:none repeat scroll 0 0 #CCCCCC !important;
 }
 #email-error-message{
-    width:84%;
+    width: 150%;
+    color: red;
+    font-weight: bold;
 }
 /*20130121*/
 .customer-dob{float:left;width:100%;}

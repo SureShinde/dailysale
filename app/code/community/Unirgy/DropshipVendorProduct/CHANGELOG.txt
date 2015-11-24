@@ -1,3 +1,27 @@
+===== 2.4.0 =====
+  * CE 1.9.2.2 compatibility
+  * Fixed limit categories in admin
+
+===== 2.1.0 =====
+  * Central translations file
+
+===== 1.2.26 =====
+  * Fixed simples not linked when all attributes identify image
+  * Added jsQuoteEscape in config gallery
+  * Fixed config gallery when all attributes identify image
+
+===== 1.2.25 =====
+  * Added ability to upload images per multiple identify image configurable attributes
+  * Added option Disable product name "is empty" check
+  * Fixed wysiwyg when admin have custom domain url
+  * Fixed configurable swatches for CE 1.9.1
+
+==== 1.2.24 =====
+  * Added register js base url
+
+==== 1.2.23 =====
+  * Fixed storeview save in admin
+
 ==== 1.2.22 =====
   * Autohide template product texts on form element focus and require validation when template text not changed
 

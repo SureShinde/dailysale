@@ -2,7 +2,7 @@
 <tr>
     <td class="label"><?php echo trim($_element->getLabelHtml()) ?></td>
     <td class="grid" colspan=10>
-    <input id="<?php echo $_element->getName()?>" type="hidden" />
+    <input id="<?php echo $_element->getId()?>" type="hidden" />
     <table cellspacing="0" class="data" cellpadding="0" style="width: 400px">
         <col width="150">
         <col width="150">
@@ -147,7 +147,7 @@ if($('udtcFixed_config_add_new_option_button')){
     Event.observe('udtcFixed_config_add_new_option_button', 'click', udtcFixedCFGattributeOption.add.bind(udtcFixedCFGattributeOption));
 }
 Validation.addAllThese([
-    ['required-option', '<?php echo Mage::helper('catalog')->__('Failed') ?>', function(v) {
+    ['required-option', '<?php echo Mage::helper('udropship')->__('Failed') ?>', function(v) {
         return !Validation.get('IsEmpty').test(v);
 }]]);
 

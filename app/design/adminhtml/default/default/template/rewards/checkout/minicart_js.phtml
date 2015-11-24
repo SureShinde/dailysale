@@ -3,7 +3,7 @@
     slider_ajax_timeout = false;
     slider_ajax_timeout_delay = 500;
     last_slider_ajax_request = false;
-    changePointsSpendingUri = '<?php echo Mage::getModel('adminhtml/url')->getUrl('rewardsadmin/adminhtml_sales_order/changePointsSpending', array('_forced_secure' => $this->getRequest()->isSecure())) ?>';
+    changePointsSpendingUri = '<?php echo Mage::getModel('adminhtml/url')->getUrl('adminhtml/sales_order/changePointsSpending', array('_forced_secure' => $this->getRequest()->isSecure())) ?>';
 
     isPointsSliderChanged = false;
     isPointsSliderSliding = false;
@@ -111,8 +111,8 @@
     })();
 	
     toggleCartRule = function(checkbox_elem) {
-        var add_rule_url = '<?php echo Mage::getModel('adminhtml/url')->getUrl('rewardsadmin/adminhtml_sales_order/cartadd', array('_forced_secure' => $this->getRequest()->isSecure())); ?>';
-        var remove_rule_url = '<?php echo Mage::getModel('adminhtml/url')->getUrl('rewardsadmin/adminhtml_sales_order/cartremove', array('_forced_secure' => $this->getRequest()->isSecure())); ?>';
+        var add_rule_url = '<?php echo Mage::getModel('adminhtml/url')->getUrl('adminhtml/sales_order/cartadd', array('_forced_secure' => $this->getRequest()->isSecure())); ?>';
+        var remove_rule_url = '<?php echo Mage::getModel('adminhtml/url')->getUrl('adminhtml/sales_order/cartremove', array('_forced_secure' => $this->getRequest()->isSecure())); ?>';
         var url = '';
         var rid = checkbox_elem.value;
         checkbox_elem.disabled =  true;

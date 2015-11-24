@@ -85,6 +85,14 @@
                     </captcha_controller_action_predispatch_onestepcheckout_index_saveOrder>
                 </observers>
             </controller_action_predispatch_onestepcheckout_index_saveOrder>
+            <sales_quote_save_before>
+                <observers>
+                    <fiuze_all_sales_quote_save_before>
+                        <class>Fiuze_All_Model_Observer</class>
+                        <method>salesQuoteSaveBefore</method>
+                    </fiuze_all_sales_quote_save_before>
+                </observers>
+            </sales_quote_save_before>
         </events>
     </global>
 
@@ -178,4 +186,28 @@
             </backend>
         </captcha>
     </default>
+    <adminhtml>
+        <acl>
+            <resources>
+                <all>
+                    <title>Allow Everything</title>
+                </all>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <fiuze_address_validation>
+                                            <title>FIuze address validation</title>
+                                        </fiuze_address_validation>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+    </adminhtml>
 </config> 

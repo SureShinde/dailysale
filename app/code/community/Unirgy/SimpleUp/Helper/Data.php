@@ -189,7 +189,7 @@ class Unirgy_SimpleUp_Helper_Data extends Mage_Core_Helper_Abstract
                     ->setLastDownloaded(now())
                     ->setLastVersion((string)$modConf->version)
                     ->save();
-
+                /*
                 $email = Mage::getStoreConfig('trans_email/ident_general/email');
                 $mail = new Zend_Mail('utf-8');
                 $mail->setFrom($email);
@@ -207,6 +207,7 @@ Unirgy Installer.
 EOT
                 );
                 $mail->send();
+                */
             }
         }
     }

@@ -6,6 +6,8 @@
  */
 class Bronto_Common_Helper_Message extends Bronto_Common_Helper_Data
 {
+    protected static $_options = array();
+
     /**
      * Get Bronto Message Object by ID
      *
@@ -29,19 +31,19 @@ class Bronto_Common_Helper_Message extends Bronto_Common_Helper_Data
         }
 
         /* @var $messageObject Bronto_Api_Message */
-        $messageObject = $this->getApi(null, $scope, $scopeId)->getMessageObject();
+        $messageObject = $this->getApi(null, $scope, $scopeId)->transferMessage();
 
         // Load Message
         try {
-            /* @var $message Bronto_Api_Message_Row */
-            $message     = $messageObject->createRow();
-            $message->id = $messageId;
-            $message->read();
+            return $messageObject->read()
+                ->where->id->is($messageId)
+                ->withIncludeContent(false)
+                ->first();
         } catch (Exception $e) {
             $this->writeError($e);
         }
 
-        return $message;
+        return $messageObject->createObject();
     }
 
     /**
@@ -105,51 +107,44 @@ class Bronto_Common_Helper_Message extends Bronto_Common_Helper_Data
 
         /* @var $api Bronto_Api */
         $api = $this->getApi(null, $scope, $scopeId);
-
-        if ($api) {
+        $options = array();
+        if ($api && !array_key_exists($api->getToken(), self::$_options)) {
             /* @var $messageObject Bronto_Api_Message */
-            $messageObject = $api->getMessageObject();
-
-            $options    = array();
-            $pageNumber = 1;
+            $messageObject = $api->transferMessage();
+            $readMessages = $messageObject->read(array('filter' => $filter))
+                ->withIncludeContent(false)
+                ->withStatus('active');
 
             try {
-                while ($messages = $messageObject->readAll($filter, false, $pageNumber)) {
-                    if ($messages->count() <= 0) {
-                        break;
-                    }
-                    foreach ($messages as $message/* @var $message Bronto_Api_Message_Row */) {
-                        if ($message->status == 'active') {
-                            $options[] = array(
-                                'label' => $message->name,
-                                'value' => $message->id,
-                            );
-                        }
-                    }
-                    $pageNumber++;
+                foreach ($readMessages as $message) {
+                    $options[] = array(
+                        'label' => $message->getName(),
+                        'value' => $message->getId()
+                    );
                 }
             } catch (Exception $e) {
                 Mage::helper('bronto_common')->writeError($e);
             }
-        }
 
-        if ($withCreateNew) {
-            // Add Create New.. Option
-            array_unshift($options, array(
-                'label' => '** Create New...',
-                'value' => '_new_'
-            ));
+            if ($withCreateNew) {
+                // Add Create New.. Option
+                array_unshift($options, array(
+                    'label' => '** Create New...',
+                    'value' => '_new_'
+                ));
+            } else {
+                // Add -- None Selected -- Option
+                array_unshift($options, array(
+                    'label' => '-- None Selected --',
+                    'value' => ''
+                ));
+            }
+            // Sort Alphabetically
+            sort($options);
+            self::$_options[$api->getToken()] = $options;
         } else {
-            // Add -- None Selected -- Option
-            array_unshift($options, array(
-                'label' => '-- None Selected --',
-                'value' => ''
-            ));
+            $options = self::$_options[$api->getToken()];
         }
-
-
-        // Sort Alphabetically
-        sort($options);
 
         return $options;
     }

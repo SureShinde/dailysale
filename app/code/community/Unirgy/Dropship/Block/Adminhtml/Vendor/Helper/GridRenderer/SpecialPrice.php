@@ -15,9 +15,9 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Helper_GridRenderer_SpecialPrice ex
         if ($toDate) {
             $toDate = $hlp->dateInternalToLocale($toDate);
         }
-        $spLabel = $hlp->__('Special Price');
-        $sfdLabel = $hlp->__('From Date');
-        $stdLabel = $hlp->__('To Date');
+        $spLabel = Mage::helper('udropship')->__('Special Price');
+        $sfdLabel = Mage::helper('udropship')->__('From Date');
+        $stdLabel = Mage::helper('udropship')->__('To Date');
         $_dateFormat = Mage::app()->getLocale()->getDateFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT);
         $_calDateFormat = Varien_Date::convertZendToStrFtime($_dateFormat, true, false);
         if ($this->getColumn()->getEditable()) {

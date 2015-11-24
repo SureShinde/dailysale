@@ -40,8 +40,8 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Statement_Edit_Tabs extends Mage_Ad
         ));
         if (Mage::helper('udropship')->isUdpayoutActive()) {
             $this->addTab('payouts_section', array(
-                'label'     => Mage::helper('udpayout')->__('Payouts'),
-                'title'     => Mage::helper('udpayout')->__('Payouts'),
+                'label'     => Mage::helper('udropship')->__('Payouts'),
+                'title'     => Mage::helper('udropship')->__('Payouts'),
                 'content'   => $this->getLayout()->createBlock('udropship/adminhtml_vendor_statement_edit_tab_payouts', 'statement.payouts.grid')->setVendorId($id)->toHtml(),
             ));
         }

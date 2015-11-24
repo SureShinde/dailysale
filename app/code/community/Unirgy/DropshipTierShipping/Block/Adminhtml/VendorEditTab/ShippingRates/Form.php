@@ -32,7 +32,7 @@ class Unirgy_DropshipTierShipping_Block_Adminhtml_VendorEditTab_ShippingRates_Fo
         $this->setForm($form);
 
         $fieldset = $form->addFieldset('tiership', array(
-            'legend'=>$hlp->__('Rates Definition')
+            'legend'=>Mage::helper('udropship')->__('Rates Definition')
         ));
 
         if (Mage::getStoreConfig('carriers/udtiership/use_simple_rates')) {
@@ -41,7 +41,7 @@ class Unirgy_DropshipTierShipping_Block_Adminhtml_VendorEditTab_ShippingRates_Fo
 
             $fieldset->addField('tiership_simple_rates', 'tiership_simple_rates', array(
                 'name'      => 'tiership_simple_rates',
-                'label'     => $hlp->__('Rates'),
+                'label'     => Mage::helper('udropship')->__('Rates'),
             ));
 
         } else {
@@ -50,7 +50,7 @@ class Unirgy_DropshipTierShipping_Block_Adminhtml_VendorEditTab_ShippingRates_Fo
 
             $fieldset->addField('tiership_rates', 'tiership_rates', array(
                 'name'      => 'tiership_rates',
-                'label'     => $hlp->__('Rates'),
+                'label'     => Mage::helper('udropship')->__('Rates'),
             ));
 
         }

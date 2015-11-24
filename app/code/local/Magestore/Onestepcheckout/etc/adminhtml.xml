@@ -8,12 +8,12 @@
                     <!-- <country module="onestepcheckout" translate="title">
                         <title>Update GeoIP Database</title>
                         <sort_order>0</sort_order>
-                        <action>onestepcheckoutadmin/adminhtml_geoip</action>
+                        <action>adminhtml/geoip</action>
                     </country>
                     <geoip module="onestepcheckout" translate="title">
                         <title>Update Country Postcode Database</title>
                         <sort_order>10</sort_order>
-                        <action>onestepcheckoutadmin/adminhtml_country</action>
+                        <action>adminhtml/country</action>
                     </geoip> -->
                     <settings module="onestepcheckout" translate="title">
                         <title>Settings</title>
@@ -49,12 +49,12 @@
                                 <!-- <country module="onestepcheckout" translate="title">
                                     <title>Update GeoIP Database</title>
                                     <sort_order>0</sort_order>
-                                    <action>onestepcheckoutadmin/adminhtml_geoip</action>
+                                    <action>adminhtml/geoip</action>
                                 </country>
                                 <geoip module="onestepcheckout" translate="title">
                                     <title>Update Country Postcode Database</title>
                                     <sort_order>10</sort_order>
-                                    <action>onestepcheckoutadmin/adminhtml_country</action>
+                                    <action>adminhtml/country</action>
                                 </geoip> -->
                                 <settings module="onestepcheckout" translate="title">
                                     <title>Settings</title>

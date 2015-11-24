@@ -305,6 +305,15 @@ input:not([type=submit]):not([type=checkbox]):not([type=radio]){
 		@include clairsoft-default-button;
 	}
 
+.shipping-tracking-popup button{
+	@include clairsoft-default-button;
+
+	span{
+		background: none;
+	}
+}
+
+
 /*-------------------------------------------- */
 /*----------- Modular SCSS imports ------------*/
 /*-------------------------------------------- */
