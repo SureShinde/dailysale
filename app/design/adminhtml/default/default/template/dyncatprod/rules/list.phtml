@@ -1,0 +1,18 @@
+<?php $parentCategories = $this->getParentConditionCategories(); ?>
+<?php if (count($parentCategories) > 0): ?>
+    <div class="entry-edit">
+        <div class="rule-tree">
+            <div class="entry-edit-head entry-edit-head-parents" style="background-color: #9E2116">`
+                <h4 class="icon-head head-edit-form fieldset-legend">This
+                    category will include rules defined in parent
+                    categories:</h4>
+            </div>
+            <fieldset>
+                <?php foreach ($parentCategories as $key => $_parentCategory):?>
+                    <h4>From: <?php echo $_parentCategory->getName();?></h4>
+                    <?php echo $this->getCategoryParentRuleModel($_parentCategory); ?>
+                <?php endforeach; ?>
+            </fieldset>
+        </div>
+    </div>
+<?php endif; ?>
