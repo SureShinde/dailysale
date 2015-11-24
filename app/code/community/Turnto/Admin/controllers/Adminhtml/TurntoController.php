@@ -75,59 +75,59 @@ class Turnto_Admin_Adminhtml_TurntoController extends Mage_Adminhtml_Controller_
 				$currentPage = 1;
 				do {
 					$orders->setCurPage($currentPage);
-				foreach($orders as $order) {
-					$itemlineid = 0;
-                                        foreach($order->getAllVisibleItems() as $item) {
-						//ORDERID
-						fwrite($handle, $order->getRealOrderId());
-						fwrite($handle, "\t");
-						//ORDERDATE
-						fwrite($handle, $order->getCreatedAtDate()->toString('Y-MM-d'));
-						fwrite($handle, "\t");
-						//EMAIL
-    						fwrite($handle, $order->getCustomerEmail());
-						fwrite($handle, "\t");
-						//ITEMTITLE
-						fwrite($handle, $item->getName());
-						fwrite($handle, "\t");
-						//ITEMURL
-						$product = $item->getProduct();
-						fwrite($handle, $product->getProductUrl());
-						fwrite($handle, "\t");
-						//ITEMLINEID
-						fwrite($handle, $itemlineid++);
-						fwrite($handle, "\t");					
-						//ZIP
-						fwrite($handle, $order->getShippingAddress()->getPostcode());
-						fwrite($handle, "\t");
-						//FIRSTNAME
-						$name = explode(' ', $order->getCustomerName());
-						fwrite($handle, $name[0]);
-						fwrite($handle, "\t");
-						//LASTNAME
-						if (isset($name[1])){
-							fwrite($handle, $name[1]);
+					foreach ($orders as $order) {
+						$itemlineid = 0;
+						foreach ($order->getAllVisibleItems() as $item) {
+							//ORDERID
+							fwrite($handle, $order->getRealOrderId());
+							fwrite($handle, "\t");
+							//ORDERDATE
+							fwrite($handle, $order->getCreatedAtDate()->toString('Y-MM-d'));
+							fwrite($handle, "\t");
+							//EMAIL
+							fwrite($handle, $order->getCustomerEmail());
+							fwrite($handle, "\t");
+							//ITEMTITLE
+							fwrite($handle, $item->getName());
+							fwrite($handle, "\t");
+							//ITEMURL
+							$product = $item->getProduct();
+							fwrite($handle, $product->getProductUrl());
+							fwrite($handle, "\t");
+							//ITEMLINEID
+							fwrite($handle, $itemlineid++);
+							fwrite($handle, "\t");
+							//ZIP
+							fwrite($handle, $order->getShippingAddress()->getPostcode());
+							fwrite($handle, "\t");
+							//FIRSTNAME
+							$name = explode(' ', $order->getCustomerName());
+							fwrite($handle, $name[0]);
+							fwrite($handle, "\t");
+							//LASTNAME
+							if (isset($name[1])) {
+								fwrite($handle, $name[1]);
+							}
+							fwrite($handle, "\t");
+							//SKU
+							fwrite($handle, $item->getSku());
+							fwrite($handle, "\t");
+							//PRICE
+							fwrite($handle, $item->getOriginalPrice());
+							fwrite($handle, "\t");
+							//ITEMIMAGEURL
+							if ($product->getImage() != null && $product->getImage() != "no_selection") {
+								fwrite($handle, Mage::getModel('catalog/product_media_config')->getMediaUrl($product->getImage()));
+							} else if ($product->getSmallImage() != null && $product->getSmallImage() != "no_selection") {
+								fwrite($handle, Mage::getModel('catalog/product_media_config')->getMediaUrl($product->getSmallImage()));
+							} else if ($product->getThumbnail() != null && $product->getThumbnail() != "no_selection") {
+								fwrite($handle, Mage::getModel('catalog/product_media_config')->getMediaUrl($product->getThumbnail()));
+							}
+							fwrite($handle, "\n");
 						}
-						fwrite($handle, "\t");
-						//SKU
-						fwrite($handle, $item->getSku());
-						fwrite($handle, "\t");
-						//PRICE
-						fwrite($handle, $item->getOriginalPrice());
-						fwrite($handle, "\t");
-						//ITEMIMAGEURL
-						if($product->getImage() != null && $product->getImage() != "no_selection") {
-                                                       fwrite($handle, Mage::getModel('catalog/product_media_config')->getMediaUrl( $product->getImage() ));
-                                                } else if ($product->getSmallImage() != null && $product->getSmallImage() != "no_selection") {
-                                                        fwrite($handle, Mage::getModel('catalog/product_media_config')->getMediaUrl( $product->getSmallImage() ));
-                                                } else if ($product->getThumbnail() != null && $product->getThumbnail() != "no_selection") {
-                                                        fwrite($handle, Mage::getModel('catalog/product_media_config')->getMediaUrl( $product->getThumbnail() ));
-                                                }
-						fwrite($handle, "\n");
 					}
-				}
 					$currentPage++;
-				} while($currentPage <= $pages);
+				} while ($currentPage <= $pages);
 				
 				fclose($handle); 
 							
