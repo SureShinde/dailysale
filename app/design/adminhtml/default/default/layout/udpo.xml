@@ -136,6 +136,9 @@
             <block type="adminhtml/template" template="udpo/po/shipmentTotals.phtml" />
         </reference>
         <update handle="udpoadmin_change_qty_column_renderer"/>
+
+
+
     <adminhtml_sales_order_shipment_new>
         <!--<reference name="shipment_tracking">-->
             <!--<action method="setTemplate" ><file>udpo/custom/tracking.phtml</file></action>-->
