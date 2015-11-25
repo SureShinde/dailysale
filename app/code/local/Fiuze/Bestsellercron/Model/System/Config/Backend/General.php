@@ -224,6 +224,7 @@ class Fiuze_Bestsellercron_Model_System_Config_Backend_General extends Mage_Admi
                 setTaskId($key)->
                 setCurrentTimestamp($result['timestamp_run'])->
                 setStepTimestamp($result['step_time'])->
+                setCronname(Mage::getModel('catalog/category')->load($task['category'])->getName())->
                 save();
         }
         $this->setValue($value);
