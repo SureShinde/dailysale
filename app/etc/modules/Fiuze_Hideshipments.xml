@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<config>
-    <modules>
-        <Fiuze_Hideshipments>
-            <active>true</active>
-            <codePool>local</codePool>
-        </Fiuze_Hideshipments>
-    </modules>
-</config>

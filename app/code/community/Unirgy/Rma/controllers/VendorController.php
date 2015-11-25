@@ -83,9 +83,7 @@ class Unirgy_Rma_VendorController extends Unirgy_Dropship_VendorController
                     false, true
                 );
                 $urma->setData('___dummy',1)->save();
-
-                $session->addSuccess($this->__('Tracking ID has been uploaded and we will email the results of the upload within 24 hours.'));
-
+                $session->addSuccess(Mage::helper('udropship')->__('Tracking ID has been added'));
 
                 $highlight['tracking'] = true;
             }

@@ -140,9 +140,7 @@ class Unirgy_DropshipBatch_Model_Batch extends Mage_Core_Model_Abstract
         $this->_incToIdMap[$po->getIncrementId()] = $po->getId();
         $this->_incToOrderIdMap[$po->getIncrementId()] = $po->getOrder()->getId();
         $this->_incToOrderIncIdMap[$po->getIncrementId()] = $po->getOrder()->getIncrementId();
-        if($this->getAdapter()->addPO($po)){
-            $po->setUdropshipStatus('10');
-        }
+        $this->getAdapter()->addPO($po);
         return $this;
     }
     public function addStockPOToExport($po)
@@ -150,9 +148,7 @@ class Unirgy_DropshipBatch_Model_Batch extends Mage_Core_Model_Abstract
         $this->_incToIdMap[$po->getIncrementId()] = $po->getId();
         $this->_incToOrderIdMap[$po->getIncrementId()] = $po->getOrder()->getId();
         $this->_incToOrderIncIdMap[$po->getIncrementId()] = $po->getOrder()->getIncrementId();
-        if($this->getAdapter()->addPO($po)){
-            $po->setUdropshipStatus('10');
-        }
+        $this->getAdapter()->addPO($po);
         return $this;
     }
 
