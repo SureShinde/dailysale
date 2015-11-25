@@ -1,4 +1,13 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Setup
+ *
+ * @category    Fiuze
+ * @package     Setup
+ * @copyright   Copyright (c) 2015 Fiuze
+ */
+-->
 <config>
     <modules>
         <Fiuze_Setup>
@@ -37,4 +46,16 @@
             </adminhtml>
         </blocks>
     </global>
+    <stores>
+        <admin>
+            <design>
+                <package>
+                    <name>default</name>
+                </package>
+                <theme>
+                    <default>dailysale</default>
+                </theme>
+            </design>
+        </admin>
+    </stores>
 </config> 
