@@ -265,31 +265,6 @@ class Unirgy_Dropship_VendorController extends Unirgy_Dropship_Controller_Vendor
             $carrier = $r->getParam('carrier');
             $carrierTitle = $r->getParam('carrier_title');
 
-            if (empty($number)) {
-                $this->_forward('udpoInfo');
-            }else{
-                $carrierCheck = $this->asTrackNumber($number);
-                $carrierInstances = Mage::getSingleton('shipping/config')->getAllCarriers();
-                $carriers = array();
-                foreach ($carrierInstances as $code => $carrier) {
-                    if ($carrier->isTrackingAvailable()) {
-                        $carriers[$code] = $carrier->getConfigData('title');
-                    }
-                }
-                $key = array_search($carrierCheck, $carriers);
-                $carrierTitle = $carriers[$key];
-                $carrier = $key;
-            }
-            if(!$carrierCheck){
-                $this->_getSession()->addError($this->__('Cannot save shipment. Invalid it is track number'));
-                $this->_getSession()->setData('tracking_id',$number);
-                $this->_forward('shipmentInfo');
-                return;
-            }else{
-                $r->setParam('carrier',$key);
-                $r->setParam('carrier_title',$carrierTitle);
-            }
-
             $notifyOn = Mage::getStoreConfig('udropship/customer/notify_on', $store);
             $pollTracking = Mage::getStoreConfig('udropship/customer/poll_tracking', $store);
             $autoComplete = Mage::getStoreConfig('udropship/vendor/auto_shipment_complete', $store);
@@ -406,7 +381,7 @@ class Unirgy_Dropship_VendorController extends Unirgy_Dropship_Controller_Vendor
                     Mage::helper('udropship')->__('%s added tracking ID %s', $vendor->getVendorName(), $number)
                 );
                 $shipment->save();
-                $session->addSuccess($this->__('Tracking ID has been uploaded and we will email the results of the upload within 24 hours.'));
+                $session->addSuccess(Mage::helper('udropship')->__('Tracking ID has been added'));
 
                 $highlight['tracking'] = true;
             }
@@ -545,6 +520,7 @@ class Unirgy_Dropship_VendorController extends Unirgy_Dropship_Controller_Vendor
         } catch (Exception $e) {
             $session->addError($e->getMessage());
         }
+
         $this->_forward('shipmentInfo');
     }
 
@@ -818,24 +794,5 @@ class Unirgy_Dropship_VendorController extends Unirgy_Dropship_Controller_Vendor
     public function getVendorShipmentCollection()
     {
         return Mage::helper('udropship')->getVendorShipmentCollection();
-    }
-
-    public function asTrackNumber($trackingNumber){
-        $api_key = Mage::app()->getWebsite(0)->getConfig('aftership_options/messages/api_key');
-        $courier = new AfterShip\Couriers($api_key);
-        $response = $courier->detect($trackingNumber);
-        $data = $response['data'];
-        $courier = reset($data['couriers']);
-        switch($courier['name']){
-            case 'DHL eCommerce':
-                $nameCourier = reset(explode(' ', $courier['name']));
-                $data['total'] ? $result = $nameCourier : $result = false;
-                return $result;
-            default:
-                $data['total'] ? $result = $courier['other_name'] : $result = false;
-                return $result;
-                break;
-
-        }
     }
 }

@@ -17,17 +17,18 @@ $_hlp = Mage::helper('udropship');
                     <label for="import_orders_textarea"><?php echo Mage::helper('udropship')->__('Import Content') ?></label><br/>
                     <textarea id="import_orders_textarea" name="import_orders_textarea" title="<?php echo Mage::helper('udropship')->__('Import Orders Content') ?>" type="file"   style="width:300px; height: 400px"></textarea>
                 </li>
-                <li>
-                    <input type="submit" value="import" style="display:none" />
-                    <button class="form-button" name="submit_action" type="submit" id="filter-search" value="import"><span><?php echo $_hlp->__('Submit') ?></span></button>
-                </li>
             </ul>
         </div>
         <div class="col-2">
             <ul class="form-list">
-
-                <?php echo $this->getChildHtml("udbatch_aftershipstatus"); ?>
-
+                <li>
+                    <label for="batch_notes"><?php echo Mage::helper('udropship')->__('Notes') ?></label><br/>
+                    <textarea id="batch_notes" name="batch_notes" title="<?php echo Mage::helper('udropship')->__('Notes') ?>" type="file"   style="width:300px;"></textarea>
+                </li>
+                <li>
+                    <input type="submit" value="import" style="display:none" />
+                    <button class="form-button" name="submit_action" type="submit" id="filter-search" value="import"><span><?php echo Mage::helper('udropship')->__('Import') ?></span></button>
+                </li>
             </ul>
         </div>
     </div>

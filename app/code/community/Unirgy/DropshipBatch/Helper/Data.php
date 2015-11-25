@@ -1,5 +1,4 @@
 <?php
-require_once Mage::getBaseDir('lib').DS.'SweetTooth/pest/vendor/autoload.php';
 
 class Unirgy_DropshipBatch_Helper_Data extends Mage_Core_Helper_Abstract
 {
@@ -205,30 +204,39 @@ class Unirgy_DropshipBatch_Helper_Data extends Mage_Core_Helper_Abstract
         switch ($r->getParam('batch_type')) {
         case 'import_orders':
             if (!empty($_FILES['import_orders_upload']['tmp_name'])) {
-                $filename = Mage::getConfig()->getVarDir('udbatch') . '/' . $_FILES['import_orders_upload']['name'];
+                $filename = Mage::getConfig()->getVarDir('udbatch').'/'.$_FILES['import_orders_upload']['name'];
                 @move_uploaded_file($_FILES['import_orders_upload']['tmp_name'], $filename);
                 try {
-                    $csv = new Varien_File_Csv();
-                    $csv->setDelimiter(";");
-                    $trackingNumbersTmp = $csv->getData($filename);
-                } catch (Exception $ex) {
-
+                    $this->importVendorOrdersSFA($vendor, $filename);
+                    $this->_batch->setStatus('success');
+                } catch (Exception $e) {
+                    if ($this->_batch) {
+                        $this->_batch->setBatchStatus('error')->setErrorInfo($e->getMessage());
+                    }
+                    $errors = true;
                 }
-                $trackingNumbersContent = array();
-                foreach ($trackingNumbersTmp as $item) {
-                    $trackingNumbersContent[] = implode(';', $item);
+                if ($this->_batch) {
+                    $this->_batch->setNotes($notes)->save();
                 }
-                $this->trackigForImport($trackingNumbersContent);
-                Mage::getSingleton('core/session')->setData('tracking_numbers_content',$trackingNumbersContent);
+                $this->_batch->setSkipFileactionsFlag(false);
             }
-            //track from textarea
             if ($r->getParam('import_orders_textarea')) {
-                $content = trim($r->getParam('import_orders_textarea'));
-                $trackingNumbersContent = preg_split("/[\s,]+/", $content);
-                $this->trackigForImport($trackingNumbersContent);
-                Mage::getSingleton('core/session')->setData('tracking_numbers_content',$trackingNumbersContent);
+                $filename = Mage::getConfig()->getVarDir('udbatch').'/import_orders-'.date('YmdHis').'.txt';
+                @file_put_contents($filename, $r->getParam('import_orders_textarea'));
+                try {
+                    $this->importVendorOrdersSFA($vendor, $filename);
+                    $this->_batch->setStatus('success');
+                } catch (Exception $e) {
+                    if ($this->_batch) {
+                        $this->_batch->setBatchStatus('error')->setErrorInfo($e->getMessage());
+                    }
+                    $errors = true;
+                }
+                if ($this->_batch) {
+                    $this->_batch->setNotes($notes)->save();
+                }
+                $this->_batch->setSkipFileactionsFlag(false);
             }
-            //
             if ($r->getParam('import_orders_locations')) {
                 try {
                     $this->importVendorOrders($vendor, $r->getParam('import_orders_locations'));
@@ -262,7 +270,7 @@ class Unirgy_DropshipBatch_Helper_Data extends Mage_Core_Helper_Abstract
                 Mage::throwException(Mage::helper('udropship')->__('Errors during importing, please see individual batches for details'));
             }
             break;
-        //end
+
         case 'export_orders':
             $batch = $this->createBatch('export_orders', $vendor, 'processing')
                 ->save();
@@ -492,7 +500,7 @@ class Unirgy_DropshipBatch_Helper_Data extends Mage_Core_Helper_Abstract
                 Mage::throwException(Mage::helper('udropship')->__('Errors during importing, please see individual batches for details'));
             }
             break;
-
+            
 
         default:
             Mage::throwException(Mage::helper('udropship')->__('Invalid batch type'));
@@ -624,135 +632,5 @@ class Unirgy_DropshipBatch_Helper_Data extends Mage_Core_Helper_Abstract
         Mage::app()->saveCache(time(), self::CACHE_KEY_LAST_HISTORY_CLEANUP_AT, array('crontab'), null);
 
         return $this;
-    }
-
-    /**
-     * @param $trackingNumbersContent array['order','tracking']
-     * @throws Mage_Core_Exception
-     */
-    public function trackigForImport($trackingNumbersContent){
-        $_poHlp = Mage::helper('udpo');
-        $_udpos = Mage::helper('core')->decorateArray($_poHlp->getVendorPoCollection(true), '');
-
-        foreach ($trackingNumbersContent as $trackingOrder) {
-            $currentRow = preg_split("/;/", $trackingOrder);
-            if(count($currentRow) != 2){
-                Mage::throwException($_poHlp->__("Incorrect input format"));
-            }
-            $currentTrackingNumber = $currentRow[1];
-            //validation of tracknumbers
-            $api_key = Mage::app()->getWebsite(0)->getConfig('aftership_options/messages/api_key');
-            $courier = new AfterShip\Couriers($api_key);
-            $response = $courier->detect($currentTrackingNumber);
-            $trackings = new AfterShip\Trackings($api_key);
-            $response = $trackings->get($response['data']['couriers'][0]['slug'], $currentTrackingNumber, array('title', 'order_id'));
-            if ($response['meta']['code'] != 4004) {
-                Mage::throwException($_poHlp->__("Track number " . $currentTrackingNumber . " are already tracked."));
-            }
-        }
-        foreach ($trackingNumbersContent as $trackingOrder) {
-            $currentRow = preg_split("/;/", $trackingOrder);
-
-            $currentOrderId = $currentRow[0];
-            $currentTrackingNumber = $currentRow[1];
-            foreach ($_udpos as $keyPo => $item) {
-                $orderId = $item->getOrderIncrementId();
-                if ($orderId == $currentOrderId) {
-                    //$_session = Mage::getSingleton('udropship/session');
-                    //$_vendor = $_session->getVendor();
-                    $hlp = Mage::helper('udropship');
-                    $udpoHlp = Mage::helper('udpo');
-                    $po = Mage::getModel('udpo/po')->load($keyPo);
-                    $vendor = $hlp->getVendor($po->getUdropshipVendor());
-
-                    $carrierInstances = Mage::getSingleton('shipping/config')->getAllCarriers();
-                    $carriers['custom'] = Mage::helper('sales')->__('Custom Value');
-                    foreach ($carrierInstances as $code => $carrier) {
-                        if ($carrier->isTrackingAvailable()) {
-                            $carriers[$code] = $carrier->getConfigData('title');
-                        }
-                    }
-                    $method = explode('_', $po->getUdropshipMethod(), 2);
-                    $api_key = Mage::app()->getWebsite(0)->getConfig('aftership_options/messages/api_key');
-                    $courier = new AfterShip\Couriers($api_key);
-                    $track_carrier = $courier->detect($currentTrackingNumber);
-                    for($i=0;$i<$track_carrier['data']['total'];$i++){
-                        if (array_key_exists($track_carrier['data']['couriers'][$i]['slug'], $carriers)) {
-                            $carrier = $track_carrier['data']['couriers'][$i]['slug'];
-                            $title = $track_carrier['data']['couriers'][$i]['name'];
-                            $trackingNumber = trim($currentTrackingNumber);
-                            if($this->asTrackNumber($trackingNumber, $orderId)){
-                                $track = Mage::getModel('sales/order_shipment_track')
-                                    ->setNumber($trackingNumber)
-                                    ->setCarrierCode($carrier)
-                                    ->setTitle($title)
-                                    ->setUdropshipStatus(Unirgy_Dropship_Model_Source::TRACK_STATUS_READY);
-                                $trackItems = Mage::getModel('track/track')
-                                    ->getCollection()
-                                    ->addFieldToFilter('tracking_number', array('eq' => $trackingNumber))
-                                    ->addFieldToFilter('order_id', array('eq' => $orderId))
-                                    ->getItems();
-                                $trackItem = reset($trackItems);
-                                if($trackItem){
-                                    $trackItem->setErrorTracking('Tracking already exists.');
-                                    $trackItem->save();
-                                }
-                                $shipment = $po;
-                                if ($po instanceof Unirgy_DropshipPo_Model_Po) {
-                                    $_shipment = false;
-                                    foreach ($po->getShipmentsCollection() as $_s) {
-                                        if ($_s->getUdropshipStatus() == Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_CANCELED) {
-                                            continue;
-                                        }
-                                        $_shipment = $_s;
-                                    }
-                                    if (!$_shipment) {
-                                        $shipment = Mage::helper('udpo')->createShipmentFromPo($po);
-                                    } else {
-                                        $shipment = $_shipment;
-                                    }
-                                }
-                                if (empty($shipment)) Mage::throwException('cannot find/initialize shipment record');
-                                $shipment->addTrack($track);
-                                if ($track->getData('__update_date')) {
-                                    $shipment->setCreatedAt($track->getCreatedAt());
-                                }
-                                Mage::helper('udropship')->addShipmentComment(
-                                    $shipment,
-                                    Mage::helper('udbatch')->__('Tracking ID %s was added', $track->getNumber())
-                                );
-                                Mage::helper('udropship')->processTrackStatus($track, true, true);
-                                //$shipment->setData('__dummy', 1)->save();
-                            }else{//remove track number
-                                $tracks = Mage::getModel('sales/order_shipment_track')
-                                    ->getCollection()
-                                    ->addFieldToFilter('track_number', array('eq' => $trackingNumber))
-                                    ->addFieldToFilter('carrier_code', array('eq' => $carrier))
-                                    ->getItems();
-                                foreach($tracks as $item){
-                                    $item->delete();
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    public function asTrackNumber($trackingNumber, $orderId){
-        $api_key = Mage::app()->getWebsite(0)->getConfig('aftership_options/messages/api_key');
-        $courier = new AfterShip\Couriers($api_key);
-        $response = $courier->detect($trackingNumber);
-        $data = $response['data'];
-        $data['total']? $result = true: $result = false;
-        if(!$result){
-            $track = Mage::getModel('track/track');
-            $track->setTrackingNumber($trackingNumber);
-            $track->setOrderId($orderId);
-            $track->setErrorTracking('Not valid.');
-            $track->save();
-        }
-        return $result;
     }
 }
