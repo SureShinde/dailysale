@@ -120,17 +120,17 @@ class Unirgy_DropshipPo_Model_Source extends Unirgy_Dropship_Model_Source_Abstra
         case 'initial_virtual_po_status':
         case 'vendor_po_grid_status_filter':
             $options = array(
-                self::UDPO_STATUS_PENDING    => Mage::helper('udropship')->__('Pending'),
-                self::UDPO_STATUS_EXPORTED   => Mage::helper('udropship')->__('Exported'),
-                self::UDPO_STATUS_ACK        => Mage::helper('udropship')->__('Acknowledged'),
-                self::UDPO_STATUS_BACKORDER  => Mage::helper('udropship')->__('Backorder'),
-                self::UDPO_STATUS_ONHOLD     => Mage::helper('udropship')->__('On Hold'),
-                self::UDPO_STATUS_READY      => Mage::helper('udropship')->__('Ready to Ship'),
-                self::UDPO_STATUS_PARTIAL    => Mage::helper('udropship')->__('Partially Shipped'),
-                self::UDPO_STATUS_SHIPPED    => Mage::helper('udropship')->__('Shipped'),
-                self::UDPO_STATUS_DELIVERED  => Mage::helper('udropship')->__('Delivered'),
-                self::UDPO_STATUS_CANCELED   => Mage::helper('udropship')->__('Canceled'),
-                self::UDPO_STATUS_RETURNED   => Mage::helper('udropship')->__('Returned'),
+                self::UDPO_STATUS_PENDING    => $hlp->__('Pending'),
+                self::UDPO_STATUS_EXPORTED   => $hlp->__('Exported'),
+                self::UDPO_STATUS_ACK        => $hlp->__('Acknowledged'),
+                self::UDPO_STATUS_BACKORDER  => $hlp->__('Backorder'),
+                self::UDPO_STATUS_ONHOLD     => $hlp->__('On Hold'),
+                self::UDPO_STATUS_READY      => $hlp->__('Ready to Ship'),
+                self::UDPO_STATUS_PARTIAL    => $hlp->__('Partially shipped'),
+                self::UDPO_STATUS_SHIPPED    => $hlp->__('Shipped'),
+                self::UDPO_STATUS_DELIVERED  => $hlp->__('Delivered'),
+                self::UDPO_STATUS_CANCELED   => $hlp->__('Canceled'),
+                self::UDPO_STATUS_RETURNED   => $hlp->__('Returned'),
             );
             if (Mage::helper('udropship')->isModuleActive('ustockpo')) {
                 $options[self::UDPO_STATUS_STOCKPO_READY]   = Mage::helper('udropship')->__('Ready for stock PO');
