@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Fiuze_Dashboard>
+            <version>0.1.0</version>
+        </Fiuze_Dashboard>
+    </modules>
+    <global>
+        <models>
+            <fiuze_dashboard>
+                <class>Fiuze_Dashboard_Model</class>
+                <resourceModel>fiuze_dashboard_resource</resourceModel>
+            </fiuze_dashboard>
+            <fiuze_dashboard_resource>
+                <class>Fiuze_Dashboard_Model_Resource</class>
+            </fiuze_dashboard_resource>
+        </models>
+        <blocks>
+            <fiuze_dashboard>
+                <class>Fiuze_Dashboard_Block</class>
+            </fiuze_dashboard>
+        </blocks>
+        <helpers>
+            <fiuze_dashboard>
+                <class>Fiuze_Dashboard_Helper</class>
+            </fiuze_dashboard>
+        </helpers>
+    </global>
+    <frontend>
+        <routers>
+            <udpo>
+                <args>
+                    <modules>
+                        <fiuze_dashboard before="Unirgy_DropshipPo">Fiuze_Dashboard</fiuze_dashboard>
+                    </modules>
+                </args>
+            </udpo>
+        </routers>
+    </frontend>
+</config>

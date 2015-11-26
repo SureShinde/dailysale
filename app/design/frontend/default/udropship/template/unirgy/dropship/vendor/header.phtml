@@ -51,7 +51,6 @@ $_isTierShip = $_session->getVendor()->getAllowTiershipModify();
         <?php
         }
         ?>
-        <li class=" <?php if ($_active=='dashboard'): ?>active<?php endif ?>"><a href="<?php echo $_dashboardUrl?>"><?php echo $this->__('Orders')?></a></li>
 <?php if ($_isUrmaActive): ?>
     <li <?php if ($_active=='urmas'): ?>class="active"<?php endif ?>><a href="<?php echo $this->getUrl('urma/vendor/') ?>"><?php echo $this->__('Returns')?></a></li>
 <?php endif ?>

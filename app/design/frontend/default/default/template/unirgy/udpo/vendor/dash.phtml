@@ -1,5 +1,7 @@
 <?php
-$dashboard_data = Mage::getModel('udropship/vendor')->getShipmentsCurrentVendor();
+
+$dashboard_data = Mage::getModel('fiuze_dashboard/dashboard')->getShipmentsCurrentVendor();
+
 $count = $dashboard_data['-1'];
 unset($dashboard_data['-1']);
 ?>
