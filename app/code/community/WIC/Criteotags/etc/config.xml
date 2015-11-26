@@ -33,13 +33,13 @@
     </frontend>
     <admin>
         <routers>
-            <criteotags>
-                <use>admin</use>
-                <args>
-                    <module>WIC_Criteotags</module>
-                    <frontName>criteotags</frontName>
-                </args>
-            </criteotags>
+            <adminhtml>
+				<args>
+					<modules>
+						<criteotags before="Mage_Adminhtml">WIC_Criteotags_Adminhtml</criteotags>
+					</modules>
+				</args>
+			</adminhtml>
             <adminhtml>
                 <args>
                     <modules>

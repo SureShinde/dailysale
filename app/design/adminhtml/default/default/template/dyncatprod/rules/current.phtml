@@ -1,0 +1,25 @@
+<?php
+$_element = $this->getElement();
+?>
+<div class="rule-tree">
+    <div class="entry-edit-head">
+        <h4 class="icon-head head-edit-form fieldset-legend"><?php echo $_element->getLegend() ?></h4>
+        <h5 style="float: right;">Last Rebuild: <?php echo $_element->getContainer()->getCategory()->getDynamicRebuildDatetime(); ?></h5>
+    </div>
+    <fieldset id="<?php echo $_element->getHtmlId() ?>" <?php echo $_element->serialize(array('class')) ?>>
+
+	<?php if ($_element->getComment()): ?>
+    	<p class="comment"><?php echo $this->escapeHtml($_element->getComment()) ?></p>
+	<?php endif; ?>
+	<?php echo $_element->getChildrenHtml() ?>
+    </fieldset>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+<?php echo $_element->getHtmlId() ?> = new VarienRulesForm('<?php echo $_element->getHtmlId() ?>', '<?php echo $this->getNewChildUrl() ?>');
+//]]>
+</script>
+<?php if ($this->getDebugMode() && mage::getIsDeveloperMode()): ?>
+    <div class="debug"><?php Zend_Debug::dump(unserialize(trim($this->getRawRuleData())), 'RAW RULE DATA', true); ?></div>
+    <div class="debug"><textarea style="width:100%;" rows="5"><?php echo $this->getRawRuleData(); ?></textarea></div>
+<?php endif; ?>

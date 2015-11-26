@@ -125,7 +125,7 @@ class Unirgy_Dropship_Model_Pdf_Shipment extends Mage_Sales_Model_Order_Pdf_Ship
 
             $page->setFillColor(new Zend_Pdf_Color_GrayScale(1));
             $this->_setFontRegular($page);
-            $page->drawText(Mage::helper('sales')->__('Packingslip # ') . $shipment->getIncrementId(), 35, ($top-=25), 'UTF-8');
+            $page->drawText(Mage::helper('udropship')->__('Packingslip # ') . $shipment->getIncrementId(), 35, ($top-=25), 'UTF-8');
 
             /* Add table */
             $page->setFillColor(new Zend_Pdf_Color_RGB(0.93, 0.92, 0.92));
@@ -137,9 +137,9 @@ class Unirgy_Dropship_Model_Pdf_Shipment extends Mage_Sales_Model_Order_Pdf_Ship
             $page->drawRectangle(25, $this->y, 570, $this->y-15);
             $this->y -=10;
             $page->setFillColor(new Zend_Pdf_Color_RGB(0.4, 0.4, 0.4));
-            $page->drawText(Mage::helper('sales')->__('Qty'), 35, $this->y, 'UTF-8');
-            $page->drawText(Mage::helper('sales')->__('Products'), 60, $this->y, 'UTF-8');
-            $page->drawText(Mage::helper('sales')->__('SKU'), 470, $this->y, 'UTF-8');
+            $page->drawText(Mage::helper('udropship')->__('Qty'), 35, $this->y, 'UTF-8');
+            $page->drawText(Mage::helper('udropship')->__('Products'), 60, $this->y, 'UTF-8');
+            $page->drawText(Mage::helper('udropship')->__('SKU'), 470, $this->y, 'UTF-8');
 
             $this->y -=15;
 
@@ -188,15 +188,15 @@ class Unirgy_Dropship_Model_Pdf_Shipment extends Mage_Sales_Model_Order_Pdf_Ship
         }
 
         if ($putOrderId) {
-            $page->drawText(Mage::helper('sales')->__('Order # ').$order->getRealOrderId(), 35, ($top -= 10), 'UTF-8');
+            $page->drawText(Mage::helper('udropship')->__('Order # ').$order->getRealOrderId(), 35, ($top -= 10), 'UTF-8');
             if (!empty($po)) {
-                $page->drawText(Mage::helper('udpo')->__('Purchase Order # ').$po->getIncrementId(), 135, $top, 'UTF-8');
+                $page->drawText(Mage::helper('udropship')->__('Purchase Order # ').$po->getIncrementId(), 135, $top, 'UTF-8');
             }
         }
-        //$page->drawText(Mage::helper('sales')->__('Order Date: ') . date( 'D M j Y', strtotime( $order->getCreatedAt() ) ), 35, 760, 'UTF-8');
-        $page->drawText(Mage::helper('sales')->__('Order Date: ') . Mage::helper('core')->formatDate($order->getCreatedAtStoreDate(), 'medium', false), 35, ($top -= 30), 'UTF-8');
+        //$page->drawText(Mage::helper('udropship')->__('Order Date: ') . date( 'D M j Y', strtotime( $order->getCreatedAt() ) ), 35, 760, 'UTF-8');
+        $page->drawText(Mage::helper('udropship')->__('Order Date: ') . Mage::helper('core')->formatDate($order->getCreatedAtStoreDate(), 'medium', false), 35, ($top -= 30), 'UTF-8');
         if (!empty($po)) {
-            $page->drawText(Mage::helper('udpo')->__('Purchase Order Date: ') . Mage::helper('core')->formatDate($po->getCreatedAtStoreDate(), 'medium', false), 135, $top, 'UTF-8');
+            $page->drawText(Mage::helper('udropship')->__('Purchase Order Date: ') . Mage::helper('core')->formatDate($po->getCreatedAtStoreDate(), 'medium', false), 135, $top, 'UTF-8');
         }
 
         $page->setFillColor(new Zend_Pdf_Color_Rgb(0.93, 0.92, 0.92));
@@ -236,13 +236,13 @@ class Unirgy_Dropship_Model_Pdf_Shipment extends Mage_Sales_Model_Order_Pdf_Ship
 
         $page->setFillColor(new Zend_Pdf_Color_GrayScale(0));
         $this->_setFontRegular($page);
-        $page->drawText(Mage::helper('sales')->__('SOLD TO:'), 35, ($top-15) , 'UTF-8');
+        $page->drawText(Mage::helper('udropship')->__('SOLD TO:'), 35, ($top-15) , 'UTF-8');
 
         if (!$order->getIsVirtual()) {
-            $page->drawText(Mage::helper('sales')->__('SHIP TO:'), 285, ($top-15) , 'UTF-8');
+            $page->drawText(Mage::helper('udropship')->__('SHIP TO:'), 285, ($top-15) , 'UTF-8');
         }
         else {
-            $page->drawText(Mage::helper('sales')->__('Payment Method:'), 285, ($top-15) , 'UTF-8');
+            $page->drawText(Mage::helper('udropship')->__('Payment Method:'), 285, ($top-15) , 'UTF-8');
         }
 
         if (!$order->getIsVirtual()) {
@@ -284,8 +284,8 @@ class Unirgy_Dropship_Model_Pdf_Shipment extends Mage_Sales_Model_Order_Pdf_Ship
             $this->y -=15;
             $this->_setFontBold($page);
             $page->setFillColor(new Zend_Pdf_Color_GrayScale(0));
-            $page->drawText(Mage::helper('sales')->__('Payment Method'), 35, $this->y, 'UTF-8');
-            $page->drawText(Mage::helper('sales')->__('Shipping Method:'), 285, $this->y , 'UTF-8');
+            $page->drawText(Mage::helper('udropship')->__('Payment Method'), 35, $this->y, 'UTF-8');
+            $page->drawText(Mage::helper('udropship')->__('Shipping Method:'), 285, $this->y , 'UTF-8');
 
             $this->y -=10;
             $page->setFillColor(new Zend_Pdf_Color_GrayScale(1));
@@ -317,7 +317,7 @@ class Unirgy_Dropship_Model_Pdf_Shipment extends Mage_Sales_Model_Order_Pdf_Ship
 
             $curVendor = Mage::helper('udropship')->getVendor($this->_currentShipment->getUdropshipVendor());
             if (!$curVendor->getHidePackingslipAmount()) {
-                $totalShippingChargesText = "(" . Mage::helper('sales')->__('Total Shipping Charges') . " " . $order->getBaseCurrency()->formatTxt($order->getBaseShippingAmount()) . ")";
+                $totalShippingChargesText = "(" . Mage::helper('udropship')->__('Total Shipping Charges') . " " . $order->getBaseCurrency()->formatTxt($order->getBaseShippingAmount()) . ")";
 
                 $page->drawText($totalShippingChargesText, 285, $yShipments-7, 'UTF-8');
             }
@@ -332,9 +332,9 @@ class Unirgy_Dropship_Model_Pdf_Shipment extends Mage_Sales_Model_Order_Pdf_Ship
 
                 $this->_setFontRegular($page);
                 $page->setFillColor(new Zend_Pdf_Color_GrayScale(0));
-                //$page->drawText(Mage::helper('sales')->__('Carrier'), 290, $yShipments - 7 , 'UTF-8');
-                $page->drawText(Mage::helper('sales')->__('Title'), 290, $yShipments - 7, 'UTF-8');
-                $page->drawText(Mage::helper('sales')->__('Number'), 385, $yShipments - 7, 'UTF-8');
+                //$page->drawText(Mage::helper('udropship')->__('Carrier'), 290, $yShipments - 7 , 'UTF-8');
+                $page->drawText(Mage::helper('udropship')->__('Title'), 290, $yShipments - 7, 'UTF-8');
+                $page->drawText(Mage::helper('udropship')->__('Number'), 385, $yShipments - 7, 'UTF-8');
 
                 $yShipments -=17;
                 $this->_setFontRegular($page, 6);
@@ -348,7 +348,7 @@ class Unirgy_Dropship_Model_Pdf_Shipment extends Mage_Sales_Model_Order_Pdf_Ship
                     }
                     else
                     {
-                        $carrierTitle = Mage::helper('sales')->__('Custom Value');
+                        $carrierTitle = Mage::helper('udropship')->__('Custom Value');
                     }
 
                     //$truncatedCarrierTitle = substr($carrierTitle, 0, 35) . (strlen($carrierTitle) > 35 ? '...' : '');

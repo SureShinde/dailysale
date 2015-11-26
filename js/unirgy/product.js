@@ -16,7 +16,7 @@ var UnirgyProductConfig = Class.create(Product.Config, {
         this.config     = config;
         this.taxConfig  = this.config.taxConfig;
         this.settings   = this.frontOptions.saSelectClass ? $$('.'+this.frontOptions.saSelectClass) : $$('.super-attribute-select');
-        
+
         this.state      = new Hash();
         this.priceTemplate = new Template(this.config.template);
         this.prices     = config.prices;
@@ -39,6 +39,7 @@ var UnirgyProductConfig = Class.create(Product.Config, {
         }.bind(this))
 
         // Init settings dropdown
+        /// ///
         var childSettings = [];
         for(var i=this.settings.length-1;i>=0;i--){
             var prevSetting = this.settings[i-1] ? this.settings[i-1] : false;
@@ -46,9 +47,9 @@ var UnirgyProductConfig = Class.create(Product.Config, {
             if(i==0){
                 this.fillSelect(this.settings[i])
             }
-            else {
-                this.settings[i].disabled=true;
-            }
+            //else {
+            //    this.settings[i].disabled=true;
+            //}
             $(this.settings[i]).childSettings = childSettings.clone();
             $(this.settings[i]).prevSetting   = prevSetting;
             $(this.settings[i]).nextSetting   = nextSetting;
@@ -84,12 +85,12 @@ var UnirgyProductConfig = Class.create(Product.Config, {
                 }
             }
         }
-        if (!initFlag && !!element.options[1] && !this.frontOptions.noPreselect) {
-            //element.selectedIndex = 1
-            this.state[element.config.id] = element.value = element.options[1].value
-        }
+        //if (!initFlag && !!element.options[1] && !this.frontOptions.noPreselect) {
+        //    //element.selectedIndex = 1
+        //    this.state[element.config.id] = element.value = element.options[1].value
+        //}
         try {
-        $super(element)
+            $super(element)
         } catch (e) {}
         this.markSelectedOption(element)
         if (element.nextSetting) {
@@ -114,7 +115,7 @@ var UnirgyProductConfig = Class.create(Product.Config, {
         if (this.frontOptions.usePerAttrChooseText
             && this.config.perAttrChooseText
             && this.config.perAttrChooseText[attributeId]
-        ) {
+            ) {
             chooseText = this.config.perAttrChooseText[attributeId];
         }
         element.options[0] = new Option(chooseText, '');
@@ -252,7 +253,7 @@ var UnirgyProductConfig = Class.create(Product.Config, {
         var allowedProducts = [];
 
         if ((typeof optionalAllowedProducts != 'undefined') && (optionalAllowedProducts.length > 0)) {
-           // alert("starting with: " + optionalAllowedProducts.inspect());
+            // alert("starting with: " + optionalAllowedProducts.inspect());
             allowedProducts = optionalAllowedProducts;
         }
 
@@ -264,9 +265,9 @@ var UnirgyProductConfig = Class.create(Product.Config, {
             if (s==0 && allowedProducts.length == 0){
                 allowedProducts = selected.config.allowedProducts;
             } else {
-               // alert("merging: " + allowedProducts.inspect() + " with: " + selected.config.allowedProducts.inspect());
+                // alert("merging: " + allowedProducts.inspect() + " with: " + selected.config.allowedProducts.inspect());
                 allowedProducts = allowedProducts.intersect(selected.config.allowedProducts).uniq();
-               // alert("to give: " + allowedProducts.inspect());
+                // alert("to give: " + allowedProducts.inspect());
             }
         }
 

@@ -64,7 +64,7 @@ class Amasty_Audit_Block_Adminhtml_Active_Grid extends Mage_Adminhtml_Block_Widg
         ))
         ;
 
-        $link= Mage::helper('adminhtml')->getUrl('amaudit/adminhtml_active/terminate') .'session_id/$session_id';
+        $link= Mage::helper('adminhtml')->getUrl('adminhtml/active/terminate') .'session_id/$session_id';
         $this->addColumn('action', array(
             'header'   => $hlp->__('Actions'),
             'sortable' => false,

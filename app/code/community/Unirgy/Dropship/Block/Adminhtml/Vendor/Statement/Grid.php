@@ -29,26 +29,26 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Statement_Grid extends Mage_Adminht
         $baseUrl = $this->getUrl();
 
         $this->addColumn('vendor_statement_id', array(
-            'header'    => $hlp->__('ID'),
+            'header'    => Mage::helper('udropship')->__('ID'),
             'index'     => 'vendor_statement_id',
             'width'     => 10,
             'type'      => 'number',
         ));
 
         $this->addColumn('created_at', array(
-            'header'    => $hlp->__('Created At'),
+            'header'    => Mage::helper('udropship')->__('Created At'),
             'index'     => 'created_at',
             'type'      => 'datetime',
             'width'     => 150,
         ));
 
         $this->addColumn('statement_id', array(
-            'header'    => $hlp->__('Statement ID'),
+            'header'    => Mage::helper('udropship')->__('Statement ID'),
             'index'     => 'statement_id',
         ));
 
         $this->addColumn('vendor_id', array(
-            'header' => $hlp->__('Vendor'),
+            'header' => Mage::helper('udropship')->__('Vendor'),
             'index' => 'vendor_id',
             'type' => 'options',
             'options' => Mage::getSingleton('udropship/source')->setPath('vendors')->toOptionHash(),
@@ -56,19 +56,19 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Statement_Grid extends Mage_Adminht
         ));
 
         $this->addColumn('statement_period', array(
-            'header' => $hlp->__('Period'),
+            'header' => Mage::helper('udropship')->__('Period'),
             'index' => 'statement_period',
         ));
 
         $this->addColumn('total_orders', array(
-            'header'    => $hlp->__('# of Orders'),
+            'header'    => Mage::helper('udropship')->__('# of Orders'),
             'index'     => 'total_orders',
             'type'      => 'number',
         ));
 
         if (!$hlp->isStatementAsInvoice()) {
             $this->addColumn('total_payout', array(
-                'header'    => $hlp->__('Total Payment'),
+                'header'    => Mage::helper('udropship')->__('Total Payment'),
                 'index'     => 'total_payout',
                 'type'      => 'price',
                 'currency_code' => Mage::app()->getStore()->getBaseCurrency()->getCode(),
@@ -76,13 +76,13 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Statement_Grid extends Mage_Adminht
 
             if ($hlp->isUdpayoutActive()) {
                 $this->addColumn('total_paid', array(
-                    'header'    => $hlp->__('Total Paid'),
+                    'header'    => Mage::helper('udropship')->__('Total Paid'),
                     'index'     => 'total_paid',
                     'type'      => 'price',
                     'currency_code' => Mage::app()->getStore()->getBaseCurrency()->getCode(),
                 ));
                 $this->addColumn('total_due', array(
-                    'header'    => $hlp->__('Total Due'),
+                    'header'    => Mage::helper('udropship')->__('Total Due'),
                     'index'     => 'total_due',
                     'type'      => 'price',
                     'currency_code' => Mage::app()->getStore()->getBaseCurrency()->getCode(),
@@ -90,7 +90,7 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Statement_Grid extends Mage_Adminht
             }
         } else {
             $this->addColumn('total_invoice', array(
-                'header'    => $hlp->__('Total Invoice'),
+                'header'    => Mage::helper('udropship')->__('Total Invoice'),
                 'index'     => 'total_invoice',
                 'type'      => 'price',
                 'currency_code' => Mage::app()->getStore()->getBaseCurrency()->getCode(),
@@ -98,14 +98,14 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Statement_Grid extends Mage_Adminht
         }
 
         $this->addColumn('email_sent', array(
-            'header' => $hlp->__('Sent'),
+            'header' => Mage::helper('udropship')->__('Sent'),
             'index' => 'email_sent',
             'type' => 'options',
             'options' => Mage::getSingleton('udropship/source')->setPath('yesno')->toOptionHash(),
         ));
 
-        $this->addExportType('*/*/exportCsv', Mage::helper('adminhtml')->__('CSV'));
-        $this->addExportType('*/*/exportXml', Mage::helper('adminhtml')->__('XML'));
+        $this->addExportType('*/*/exportCsv', Mage::helper('udropship')->__('CSV'));
+        $this->addExportType('*/*/exportXml', Mage::helper('udropship')->__('XML'));
         return parent::_prepareColumns();
     }
 

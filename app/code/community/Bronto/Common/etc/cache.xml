@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config>
+  <placeholders>
+    <bronto_cart_recovery>
+      <block>bronto_common/cart_recovery</block>
+      <name>bronto.cartrecovery</name>
+      <template>bronto/common/recovery.phtml</template>
+      <placeholder>BRONTO_CART_RECOVERY</placeholder>
+      <container>Bronto_Common_Model_Container_Cart_Recovery</container>
+      <cache_lifetime>false</cache_lifetime>
+    </bronto_cart_recovery>
+  </placeholders>
+</config>

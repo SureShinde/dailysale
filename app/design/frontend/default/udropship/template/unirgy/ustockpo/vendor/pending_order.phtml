@@ -33,16 +33,16 @@ $_udVendor = Mage::helper('udropship')->getVendor($_vendor->getDistributorId());
 ?>
 
 <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
-<h4><?php echo $_hlp->__('Stock PO Items') ?></h4>
+<h4><?php echo Mage::helper('udropship')->__('Stock PO Items') ?></h4>
 <table cellspacing="0" class="data-table" id="order-items-<?php echo $_id ?>">
     <col />
     <col width="25%" />
     <col width="1" />
     <thead>
         <tr>
-            <th><?php echo $_hlp->__('Product Name') ?></th>
-            <th><?php echo $_hlp->__('SKU') ?></th>
-            <th class="a-center"><span class="nobr"><?php echo $_hlp->__('Qty') ?></span></th>
+            <th><?php echo Mage::helper('udropship')->__('Product Name') ?></th>
+            <th><?php echo Mage::helper('udropship')->__('SKU') ?></th>
+            <th class="a-center"><span class="nobr"><?php echo Mage::helper('udropship')->__('Qty') ?></span></th>
         </tr>
     </thead>
     <tbody>

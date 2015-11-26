@@ -19,25 +19,25 @@ class Amasty_Geoip_Block_Adminhtml_Settings_DownloadNImport extends Amasty_Geoip
         );
 
         foreach ($importTypes as $type) {
-            $startDownloadingUrl = $this->getUrl('amgeoip/adminhtml_import/startDownloading', array(
+            $startDownloadingUrl = $this->getUrl('adminhtml/import/startDownloading', array(
                 'type' => $type,
                 'action' => 'download_and_import'
             ))
             ;
 
-            $startUrl = $this->getUrl('amgeoip/adminhtml_import/start', array(
+            $startUrl = $this->getUrl('adminhtml/import/start', array(
                 'type' => $type,
                 'action' => 'download_and_import'
             ))
             ;
 
-            $processUrl = $this->getUrl('amgeoip/adminhtml_import/process', array(
+            $processUrl = $this->getUrl('adminhtml/import/process', array(
                 'type' => $type,
                 'action' => 'download_and_import'
             ))
             ;
 
-            $commitUrl = $this->getUrl('amgeoip/adminhtml_import/commit', array(
+            $commitUrl = $this->getUrl('adminhtml/import/commit', array(
                 'type' => $type,
                 'action' => 'download_and_import',
                 'is_download' => true,

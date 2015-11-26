@@ -10,7 +10,7 @@ class Amasty_Audit_Block_Button extends Mage_Adminhtml_Block_System_Config_Form_
     protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element)
     {
         $this->setElement($element);
-        $url = $this->getUrl('amaudit/adminhtml_login/clearlock'); 
+        $url = $this->getUrl('adminhtml/login/clearlock'); 
 
         $html = $this->getLayout()->createBlock('adminhtml/widget_button')
                     ->setType('button')

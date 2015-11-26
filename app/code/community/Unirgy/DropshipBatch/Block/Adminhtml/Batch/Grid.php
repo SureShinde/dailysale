@@ -84,8 +84,8 @@ class Unirgy_DropshipBatch_Block_Adminhtml_Batch_Grid extends Mage_Adminhtml_Blo
             'width'     => 150,
         ));
 
-        $this->addExportType('*/*/exportCsv', Mage::helper('adminhtml')->__('CSV'));
-        $this->addExportType('*/*/exportXml', Mage::helper('adminhtml')->__('XML'));
+        $this->addExportType('*/*/exportCsv', Mage::helper('udropship')->__('CSV'));
+        $this->addExportType('*/*/exportXml', Mage::helper('udropship')->__('XML'));
 
         return parent::_prepareColumns();
     }

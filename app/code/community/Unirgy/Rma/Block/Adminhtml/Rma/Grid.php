@@ -52,38 +52,38 @@ class Unirgy_Rma_Block_Adminhtml_Rma_Grid extends Mage_Adminhtml_Block_Widget_Gr
     protected function _prepareColumns()
     {
         $this->addColumn('increment_id', array(
-            'header'    => Mage::helper('urma')->__('Return #'),
+            'header'    => Mage::helper('udropship')->__('Return #'),
             'index'     => 'increment_id',
             'filter_index' => 'main_table.increment_id',
             'type'      => 'text',
         ));
 
         $this->addColumn('created_at', array(
-            'header'    => Mage::helper('urma')->__('Return Created'),
+            'header'    => Mage::helper('udropship')->__('Return Created'),
             'index'     => 'created_at',
             'filter_index' => 'main_table.created_at',
             'type'      => 'datetime',
         ));
 
         $this->addColumn('order_increment_id', array(
-            'header'    => Mage::helper('sales')->__('Order #'),
+            'header'    => Mage::helper('udropship')->__('Order #'),
             'index'     => 'order_increment_id',
             'type'      => 'number',
         ));
 
         $this->addColumn('order_created_at', array(
-            'header'    => Mage::helper('sales')->__('Order Date'),
+            'header'    => Mage::helper('udropship')->__('Order Date'),
             'index'     => 'order_created_at',
             'type'      => 'datetime',
         ));
 
         $this->addColumn('shipping_name', array(
-            'header' => Mage::helper('sales')->__('Shipper Name'),
+            'header' => Mage::helper('udropship')->__('Shipper Name'),
             'index' => 'shipping_name',
         ));
         
         $this->addColumn('rma_status', array(
-            'header' => Mage::helper('sales')->__('Status'),
+            'header' => Mage::helper('udropship')->__('Status'),
             'index' => 'rma_status',
             'type' => 'options',
             'options' => Mage::helper('urma')->getVendorRmaStatuses(),
@@ -112,13 +112,13 @@ class Unirgy_Rma_Block_Adminhtml_Rma_Grid extends Mage_Adminhtml_Block_Widget_Gr
 
         $this->addColumn('action',
             array(
-                'header'    => Mage::helper('sales')->__('Action'),
+                'header'    => Mage::helper('udropship')->__('Action'),
                 'width'     => '50px',
                 'type'      => 'action',
                 'getter'     => 'getId',
                 'actions'   => array(
                     array(
-                        'caption' => Mage::helper('sales')->__('View'),
+                        'caption' => Mage::helper('udropship')->__('View'),
                         'url'     => array('base'=>'*/rma/view'),
                         'field'   => 'rma_id'
                     )
@@ -128,8 +128,8 @@ class Unirgy_Rma_Block_Adminhtml_Rma_Grid extends Mage_Adminhtml_Block_Widget_Gr
                 'is_system' => true
         ));
 
-        $this->addExportType('*/*/exportCsv', Mage::helper('sales')->__('CSV'));
-        $this->addExportType('*/*/exportExcel', Mage::helper('sales')->__('Excel'));
+        $this->addExportType('*/*/exportCsv', Mage::helper('udropship')->__('CSV'));
+        $this->addExportType('*/*/exportExcel', Mage::helper('udropship')->__('Excel'));
 
         return parent::_prepareColumns();
     }
@@ -140,7 +140,7 @@ class Unirgy_Rma_Block_Adminhtml_Rma_Grid extends Mage_Adminhtml_Block_Widget_Gr
             return false;
         }
 
-        return $this->getUrl('*/rma/view',
+        return $this->getUrl('*/urmaadmin_rma/view',
             array(
                 'rma_id'=> $row->getId(),
             )

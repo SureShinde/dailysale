@@ -58,22 +58,22 @@ class Unirgy_DropshipMulti_Block_Adminhtml_Vendor_Products
             'index'     => 'entity_id'
         ));
         $this->addColumn('entity_id', array(
-            'header'    => Mage::helper('catalog')->__('ID'),
+            'header'    => Mage::helper('udropship')->__('ID'),
             'sortable'  => true,
             'width'     => '60',
             'index'     => 'entity_id'
         ));
         $this->addColumn('name', array(
-            'header'    => Mage::helper('catalog')->__('Name'),
+            'header'    => Mage::helper('udropship')->__('Name'),
             'index'     => 'name'
         ));
         $this->addColumn('sku', array(
-            'header'    => $this->__('Magento SKU'),
+            'header'    => Mage::helper('udropship')->__('Magento SKU'),
             'width'     => '80',
             'index'     => 'sku'
         ));
         $this->addColumn('_vendor_sku', array(
-            'header'    => $this->__('Vendor SKU'),
+            'header'    => Mage::helper('udropship')->__('Vendor SKU'),
             'index'     => 'vendor_sku',
             'editable'  => true,
             'sortable'  => false,
@@ -81,13 +81,13 @@ class Unirgy_DropshipMulti_Block_Adminhtml_Vendor_Products
             'width'     => '100',
         ));
         $this->addColumn('price', array(
-            'header'    => $this->__('Magento Price'),
+            'header'    => Mage::helper('udropship')->__('Magento Price'),
             'type'      => 'currency',
             'currency_code' => (string) Mage::getStoreConfig(Mage_Directory_Model_Currency::XML_PATH_CURRENCY_BASE),
             'index'     => 'price'
         ));
         $this->addColumn('_vendor_cost', array(
-            'header'    => $this->__('Vendor Cost'),
+            'header'    => Mage::helper('udropship')->__('Vendor Cost'),
             'type'      => 'number',
             'index'     => 'vendor_cost',
             'editable'  => true,
@@ -95,7 +95,7 @@ class Unirgy_DropshipMulti_Block_Adminhtml_Vendor_Products
             'filter'    => false,
         ));
         $this->addColumn('_stock_qty', array(
-            'header'    => $this->__('Vendor Stock Qty'),
+            'header'    => Mage::helper('udropship')->__('Vendor Stock Qty'),
             'type'      => 'number',
             'index'     => 'stock_qty',
             'editable'  => true,

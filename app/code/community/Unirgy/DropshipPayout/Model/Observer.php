@@ -49,8 +49,8 @@ class Unirgy_DropshipPayout_Model_Observer
 
         if (Mage::helper('udpayout')->isVendorEnabled($v)) {
             $block->addTab('payouts_section', array(
-                'label'     => Mage::helper('udpayout')->__('Payouts'),
-                'title'     => Mage::helper('udpayout')->__('Payouts'),
+                'label'     => Mage::helper('udropship')->__('Payouts'),
+                'title'     => Mage::helper('udropship')->__('Payouts'),
                 'content'   => $block->getLayout()->createBlock('udpayout/adminhtml_vendor_payout_grid', 'udropship.payout.grid')
                     ->setVendorId($id)
                     ->toHtml(),

@@ -41,7 +41,7 @@ class Unirgy_Rma_Block_Vendor_Rma_Info extends Mage_Sales_Block_Items_Abstract
         $carrierInstances = Mage::getSingleton('shipping/config')->getAllCarriers(
             $this->getRma()->getStoreId()
         );
-        $carriers['custom'] = Mage::helper('sales')->__('Custom Value');
+        $carriers['custom'] = Mage::helper('udropship')->__('Custom Value');
         foreach ($carrierInstances as $code => $carrier) {
             if ($carrier->isTrackingAvailable()) {
                 $carriers[$code] = $carrier->getConfigData('title');
@@ -56,7 +56,7 @@ class Unirgy_Rma_Block_Vendor_Rma_Info extends Mage_Sales_Block_Items_Abstract
             return $carrier->getConfigData('title');
         }
         else {
-            return Mage::helper('sales')->__('Custom Value');
+            return Mage::helper('udropship')->__('Custom Value');
         }
         return false;
     }

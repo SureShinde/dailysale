@@ -47,7 +47,7 @@ class Unirgy_Dropship_Model_ProductImage extends Mage_Catalog_Model_Product_Imag
         $baseFile = $baseDir . $file;
 
         if ((!$file) || (!file_exists($baseFile))) {
-            throw new Exception(Mage::helper('catalog')->__('Image file was not found: %s', $file));
+            throw new Exception(Mage::helper('udropship')->__('Image file was not found: %s', $file));
         }
 
         $this->_baseFile = $baseFile;
@@ -92,11 +92,14 @@ class Unirgy_Dropship_Model_ProductImage extends Mage_Catalog_Model_Product_Imag
 
     public function clearCache($vId=null)
     {
+        $hasImageUpload = true;
         $subDir = '';
         if ($vId instanceof Unirgy_Dropship_Model_Vendor) {
+            $hasImageUpload = $vId->hasImageUpload();
             $vId = $vId->getId();
             $subDir = DS.'vendor'.DS.$vId;
         }
+        if (!$hasImageUpload) return;
         $directory = Mage::getBaseDir('media').DS.'cache'.$subDir.DS;
         $io = new Varien_Io_File();
         $io->rmdir($directory, true);

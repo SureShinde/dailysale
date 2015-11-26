@@ -7,13 +7,13 @@
     </modules>
     <admin>
         <routers>
-			<magenotification>
-				<use>admin</use>
+			<adminhtml>
 				<args>
-					<module>Magestore_Magenotification</module>
-					<frontName>magenotification</frontName>
+					<modules>
+						<magenotification before="Mage_Adminhtml">Magestore_Magenotification_Adminhtml</magenotification>
+					</modules>
 				</args>
-			</magenotification>
+			</adminhtml>
         </routers>
     </admin>
     <adminhtml>

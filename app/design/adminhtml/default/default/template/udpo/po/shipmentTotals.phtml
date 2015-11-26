@@ -5,38 +5,50 @@ $_po = Mage::registry('current_udpo');
 $method = explode('_', $_po->getUdropshipMethod(), 2);
 $_vendor = $_po->getVendor();
 $carrierCode = !empty($method[0]) ? $method[0] : $_vendor->getCarrierCode();
+$poShippingMethod = $_po->getUdropshipMethod();
+if (null == $poShippingMethod) {
+    $poShippingMethod = $_po->getOrder()->getShippingMethod();
+}
 ?>
 
 <div id="udpo-shipment-totals" class="order-totals-bottom">
 <p>
-    <label class="normal" for="shipment_generate_label"><?php echo $_hlp->__('Generate Label') ?></label>
+    <label class="normal" for="shipment_generate_label"><?php echo Mage::helper('udropship')->__('Generate Label') ?></label>
     <input id="shipment_generate_label" name="shipment[generate_label]" value="1" type="checkbox" onclick="$('shipment_generate_label_form').toggle()" />
 </p>
 <div id="shipment_generate_label_form" style="display:none">
 
 <p>
-    <label for="shipment_label_weight"><?php echo $_hlp->__('Shipment Info')?></label>
-    <?php echo $_hlp->__('Weight:') ?>
-    <input id="shipment_label_weight" name="shipment[label_info][weight]" value="<?php echo $_po->getRemainingWeight() ?>" title="<?php echo $_hlp->__('Weight') ?>" type="text" class="input-text" style="width:50px;" /> LB
-&nbsp;&nbsp;
-    <?php echo $_hlp->__('Value:') ?>
-    <input id="shipment_label_value" name="shipment[label_info][value]" value="<?php echo $_po->getRemainingValue() ?>" title="<?php echo $_hlp->__('Declared Value') ?>" type="text" class="input-text" style="width:50px;"/> <?php echo $_po->getOrder()->getStoreCurrencyCode() ?>
+    <label for="shipment_label_use_method_code"><?php echo Mage::helper('udropship')->__('Shipping Method') ?></label>
+    <select id="shipment_label_use_method_code" name="shipment[label_info][use_method_code]">
+        <?php foreach($_poHlp->getPoAvailableMethods($_po) as $_amCode => $_amDesc): ?>
+            <option value="<?php echo $_amCode?>" <?php if ($poShippingMethod==$_amCode): ?> selected<?php endif?>><?php echo $_amDesc?></option>
+        <?php endforeach ?>
+    </select>
 </p>
 <p>
-    <label for="shipment_label_length"><?php echo $_hlp->__('Pkg. Dimensions')?></label>
-    <?php echo $_hlp->__('Length:') ?>
-    <input id="shipment_label_length" name="shipment[label_info][length]" value="<?php echo (float)$_vendor->getDefaultPkgLength()?>" title="<?php echo $_hlp->__('Length') ?>" type="text" class="input-text" style="width:30px;" />
+    <label for="shipment_label_weight"><?php echo Mage::helper('udropship')->__('Shipment Info')?></label>
+    <?php echo Mage::helper('udropship')->__('Weight:') ?>
+    <input id="shipment_label_weight" name="shipment[label_info][weight]" value="<?php echo $_po->getRemainingWeight() ?>" title="<?php echo Mage::helper('udropship')->__('Weight') ?>" type="text" class="input-text" style="width:50px;" /> LB
+&nbsp;&nbsp;
+    <?php echo Mage::helper('udropship')->__('Value:') ?>
+    <input id="shipment_label_value" name="shipment[label_info][value]" value="<?php echo $_po->getRemainingValue() ?>" title="<?php echo Mage::helper('udropship')->__('Declared Value') ?>" type="text" class="input-text" style="width:50px;"/> <?php echo $_po->getOrder()->getStoreCurrencyCode() ?>
+</p>
+<p>
+    <label for="shipment_label_length"><?php echo Mage::helper('udropship')->__('Pkg. Dimensions')?></label>
+    <?php echo Mage::helper('udropship')->__('Length:') ?>
+    <input id="shipment_label_length" name="shipment[label_info][length]" value="<?php echo (float)$_vendor->getDefaultPkgLength()?>" title="<?php echo Mage::helper('udropship')->__('Length') ?>" type="text" class="input-text" style="width:30px;" />
     &nbsp;&nbsp;
-    <?php echo $_hlp->__('Width:') ?>
-    <input id="shipment_label_width" name="shipment[label_info][width]" value="<?php echo (float)$_vendor->getDefaultPkgWidth()?>" title="<?php echo $_hlp->__('Width') ?>" type="text" class="input-text" style="width:30px;" />
+    <?php echo Mage::helper('udropship')->__('Width:') ?>
+    <input id="shipment_label_width" name="shipment[label_info][width]" value="<?php echo (float)$_vendor->getDefaultPkgWidth()?>" title="<?php echo Mage::helper('udropship')->__('Width') ?>" type="text" class="input-text" style="width:30px;" />
     &nbsp;&nbsp;
-    <?php echo $_hlp->__('Height:') ?>
-    <input id="shipment_label_height" name="shipment[label_info][height]" value="<?php echo (float)$_vendor->getDefaultPkgHeight()?>" title="<?php echo $_hlp->__('Height') ?>" type="text" class="input-text" style="width:30px;" />
+    <?php echo Mage::helper('udropship')->__('Height:') ?>
+    <input id="shipment_label_height" name="shipment[label_info][height]" value="<?php echo (float)$_vendor->getDefaultPkgHeight()?>" title="<?php echo Mage::helper('udropship')->__('Height') ?>" type="text" class="input-text" style="width:30px;" />
 </p>    
 <p>    
     <?php if ($carrierCode=='fedex'): ?>
-    <label for="shipment_label_package_count"><?php echo $_hlp->__('Package Count') ?></label>
-    <select id="shipment_label_package_count" name="shipment[label_info][package_count]" value="1" title="<?php echo $_hlp->__('Package Count') ?>">
+    <label for="shipment_label_package_count"><?php echo Mage::helper('udropship')->__('Package Count') ?></label>
+    <select id="shipment_label_package_count" name="shipment[label_info][package_count]" value="1" title="<?php echo Mage::helper('udropship')->__('Package Count') ?>">
         <?php foreach(range(1,10) as $pcIdx): ?>
             <option value="<?php echo $pcIdx?>"><?php echo $pcIdx?></option>
         <?php endforeach ?>
@@ -45,28 +57,28 @@ $carrierCode = !empty($method[0]) ? $method[0] : $_vendor->getCarrierCode();
     <?php endif ?>
 </p>
 <p>
-    <label for="shipment_label_reference"><?php echo $_hlp->__('Reference') ?></label>
-    <input id="shipment_label_reference" name="shipment[label_info][reference]" value="<?php echo $_po->getIncrementId() ?>" title="<?php echo $_hlp->__('Reference') ?>" type="text" class="input-text" style="width:250px;" />
+    <label for="shipment_label_reference"><?php echo Mage::helper('udropship')->__('Reference') ?></label>
+    <input id="shipment_label_reference" name="shipment[label_info][reference]" value="<?php echo $_po->getIncrementId() ?>" title="<?php echo Mage::helper('udropship')->__('Reference') ?>" type="text" class="input-text" style="width:250px;" />
 </p>
 <p>
-    <label for="shipment_label_use_label_shipping_amount"><?php echo $_hlp->__('Use Label Amount') ?></label>
-    <input id="shipment_label_use_label_shipping_amount" name="shipment[use_label_shipping_amount]" value="1" title="<?php echo $_hlp->__('Use Label Shipping Amount') ?>" type="checkbox" class="input-checkbox" onchange="$('shipment_shipping_amount_ctr').toggle()" />
+    <label for="shipment_label_use_label_shipping_amount"><?php echo Mage::helper('udropship')->__('Use Label Amount') ?></label>
+    <input id="shipment_label_use_label_shipping_amount" name="shipment[use_label_shipping_amount]" value="1" title="<?php echo Mage::helper('udropship')->__('Use Label Shipping Amount') ?>" type="checkbox" class="input-checkbox" onchange="$('shipment_shipping_amount_ctr').toggle()" />
     <br />
 </p>    
 </div>
 
 <p id="shipment_shipping_amount_ctr">
-    <label class="normal" for="shipment_shipping_amount"><?php echo $_hlp->__('Shipping Amount') ?></label>
+    <label class="normal" for="shipment_shipping_amount"><?php echo Mage::helper('udropship')->__('Shipping Amount') ?></label>
     <input id="shipment_shipping_amount" name="shipment[shipping_amount]" value="<?php echo $_po->getBaseShippingAmountLeft()?>" />
 </p>
 
 <p>
-    <label class="normal" for="shipment_do_invoice"><?php echo Mage::helper('sales')->__('Invoice Shipment') ?></label>
+    <label class="normal" for="shipment_do_invoice"><?php echo Mage::helper('udropship')->__('Invoice Shipment') ?></label>
     <input id="shipment_do_invoice" name="shipment[do_invoice]" value="1" type="checkbox" />
 </p>
 
 <p>
-    <label class="normal" for="shipment_mark_as_shipped"><?php echo Mage::helper('sales')->__('Mark As Shipped') ?></label>
+    <label class="normal" for="shipment_mark_as_shipped"><?php echo Mage::helper('udropship')->__('Mark As Shipped') ?></label>
     <input id="shipment_mark_as_shipped" name="shipment[mark_as_shipped]" value="1" type="checkbox" />
 </p>
 

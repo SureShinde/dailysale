@@ -24,7 +24,7 @@ class Unirgy_Dropship_Model_BundleProductType extends Mage_Bundle_Model_Product_
             $selection = $productSelections->getItemById($selectionId);
             if (!$selection || (!$selection->isSalable() && !$skipSaleableCheck)) {
                 Mage::throwException(
-                    Mage::helper('bundle')->__('Selected required options are not available.')
+                    Mage::helper('udropship')->__('Selected required options are not available.')
                 );
             }
         }
@@ -35,7 +35,7 @@ class Unirgy_Dropship_Model_BundleProductType extends Mage_Bundle_Model_Product_
         foreach ($optionsCollection->getItems() as $option) {
             if ($option->getRequired() && empty($bundleOption[$option->getId()])) {
                 Mage::throwException(
-                    Mage::helper('bundle')->__('Required options are not selected.')
+                    Mage::helper('udropship')->__('Required options are not selected.')
                 );
             }
         }

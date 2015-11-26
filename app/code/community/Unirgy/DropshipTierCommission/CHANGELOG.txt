@@ -1,3 +1,24 @@
+===== 2.4.0 =====
+  * CE 1.9.2.2 compatibility
+
+===== 2.1.1 =====
+  * Fixed vendor edit > tier commissions possible js error
+
+===== 2.1.0 =====
+  * Central translations file
+
+===== 2.0.1 =====
+  * Fixed commission calculation when exclude tax in payout
+
+===== 2.0.0 =====
+  * Major release
+
+===== 1.1.17 =====
+  * Fixed rounding in statement/payout calculation
+
+===== 1.1.16 =====
+  * Fixed shipping tax to include in first row
+
 ===== 1.1.15 =====
   * Fixed statement refunds' pos status filter
 

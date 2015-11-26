@@ -37,7 +37,7 @@ class Unirgy_DropshipPo_Block_Adminhtml_Po_Create extends Mage_Adminhtml_Block_W
 
     public function getHeaderText()
     {
-        $header = Mage::helper('udpo')->__('New Purchase Orders for Order #%s', $this->getOrder()->getRealOrderId());
+        $header = Mage::helper('udropship')->__('New Purchase Orders for Order #%s', $this->getOrder()->getRealOrderId());
         return $header;
     }
 

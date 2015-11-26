@@ -31,14 +31,14 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Statement_Edit extends Mage_Adminht
         if (Mage::helper('udropship')->isUdpayoutActive()) {
             $this->_addButton('save_pay', array(
                 'id'      => 'statement_save_pay_btn', 
-                'label'   => Mage::helper('adminhtml')->__('Save and Pay'),
+                'label'   => Mage::helper('udropship')->__('Save and Pay'),
                 'onclick'   => "\$('pay_flag').value=1; editForm.submit();",
                 'class'   => 'save',
             ), 1);
         }
         $this->_addButton('save_refresh', array(
             'id'      => 'statement_save_refresh_btn', 
-            'label'   => Mage::helper('adminhtml')->__('Save and Refresh'),
+            'label'   => Mage::helper('udropship')->__('Save and Refresh'),
             'onclick'   => "\$('refresh_flag').value=1; editForm.submit();",
             'class'   => 'save',
         ), 1);

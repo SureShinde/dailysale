@@ -50,9 +50,25 @@
                 <block type="umicrosite/frontend_vendorListToolbar" name="umicrosite_list.toolbar" as="toolbar">
                     <block type="page/html_pager" name="vendor_list_toolbar_pager"/>
                 </block>
-                <!--action method="setMode"><name>grid</name></action-->
                 <action method="setColumnCount"><name>4</name></action>
             </block>
         </reference>
     </umicrosite_index_vendors>
+
+<!-- one column version
+    <umicrosite_index_vendors>
+        <reference name="root">
+            <action method="setTemplate"><template>page/1column.phtml</template></action>
+            <action method="setLayoutCode"><code>one_column</code></action>
+        </reference>
+        <reference name="content">
+            <block type="umicrosite/frontend_vendorList" name="umicrosite_list" template="umicrosite/vendor/list.phtml" >
+                <block type="umicrosite/frontend_vendorListToolbar" name="umicrosite_list.toolbar" as="toolbar">
+                    <block type="page/html_pager" name="vendor_list_toolbar_pager"/>
+                </block>
+                <action method="setColumnCount"><name>4</name></action>
+            </block>
+        </reference>
+    </umicrosite_index_vendors>
+-->
 </layout>

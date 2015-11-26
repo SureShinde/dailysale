@@ -1,0 +1,159 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright (c) 2015 S.L.I. Systems, Inc. (www.sli-systems.com) - All Rights
+ * Reserved
+ * This file is part of Learning Search Connect.
+ * Learning Search Connect is distributed under a limited and restricted
+ * license – please visit www.sli-systems.com/LSC for full license details.
+ *
+ * THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY
+ * KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
+ * PARTICULAR PURPOSE. TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO
+ * EVENT WILL SLI BE LIABLE TO YOU OR ANY OTHER PARTY FOR ANY GENERAL, DIRECT,
+ * INDIRECT, SPECIAL, INCIDENTAL OR CONSEQUENTIAL LOSS OR DAMAGES OF ANY
+ * CHARACTER ARISING OUT OF THE USE OF THE CODE AND/OR THE LICENSE INCLUDING
+ * BUT NOT LIMITED TO PERSONAL INJURY, LOSS OF DATA, LOSS OF PROFITS, LOSS OF
+ * ASSIGNMENTS, DATA OR OUTPUT FROM THE SERVICE BEING RENDERED INACCURATE,
+ * FAILURE OF CODE, SERVER DOWN TIME, DAMAGES FOR LOSS OF GOODWILL, BUSINESS
+ * INTERRUPTION, COMPUTER FAILURE OR MALFUNCTION, OR ANY AND ALL OTHER DAMAGES
+ * OR LOSSES OF WHATEVER NATURE, EVEN IF SLI HAS BEEN INFORMED OF THE
+ * POSSIBILITY OF SUCH DAMAGES.
+ */
+
+/**
+ * SLI Systems Search integration.
+ *
+ * @package SLI
+ * @subpackage Search
+ */
+-->
+<config>
+    <modules>
+        <SLI_Search>
+            <version>3.0.0</version>
+        </SLI_Search>
+    </modules>
+    <global>
+        <blocks>
+            <sli_search>
+                <class>SLI_Search_Block</class>
+            </sli_search>
+            <adminhtml>
+                <rewrite>
+                    <system_config_form>SLI_Search_Block_System_Config_Form</system_config_form>
+                </rewrite>
+            </adminhtml>
+        </blocks>
+        <helpers>
+            <sli_search>
+                <class>SLI_Search_Helper</class>
+            </sli_search>
+        </helpers>
+        <models>
+            <sli_search>
+                <class>SLI_Search_Model</class>
+            </sli_search>
+        </models>
+        <resources>
+            <sli_search_setup>
+                <setup>
+                    <module>SLI_Search</module>
+                </setup>
+            </sli_search_setup>
+        </resources>
+        <template>
+            <email>
+                <sli_feed_email_template translate="label" module="adminhtml">
+                    <label>SLI Feed Notification</label>
+                    <file>sli/feed_email_template.html</file>
+                    <type>html</type>
+                </sli_feed_email_template>
+            </email>
+        </template>
+    </global>
+    <frontend>
+        <routers>
+            <sli_search>
+                <use>standard</use>
+                <args>
+                    <module>SLI_Search</module>
+                    <frontName>sli</frontName>
+                </args>
+            </sli_search>
+        </routers>
+        <layout>
+            <updates>
+                <sli_search module="SLI_Search">
+                    <file>sli/search.xml</file>
+                </sli_search>
+            </updates>
+        </layout>
+    </frontend>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <frontName>sli</frontName>
+                        <SLI_Search before="Mage_Adminhtml">SLI_Search_Adminhtml</SLI_Search>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+    <default>
+        <sli_search>
+            <general>
+                <form_enabled>0</form_enabled>
+                <feed_enabled>1</feed_enabled>
+                <price_feed>0</price_feed>
+                <log_level>1</log_level>
+            </general>
+            <feed>
+                <backup>1</backup>
+                <submittal/>
+                <stockstatus>1</stockstatus>
+                <email_setting>1</email_setting>
+                <emailto/>
+                <generate/>
+                <write_batch>1000</write_batch>
+            </feed>
+            <ftp>
+                <enabled>1</enabled>
+                <user/>
+                <pass backend_model="adminhtml/system_config_backend_encrypted"/>
+                <path/>
+            </ftp>
+            <form>
+                <customform>0</customform>
+                <formcode>&lt;!-- Please get configuration from SLI Systems !--&gt;</formcode>
+            </form>
+            <js>
+                <header>&lt;!-- Please get configuration from SLI Systems !--&gt;</header>
+                <footer/>
+                <autocomplete/>
+                <domain/>
+            </js>
+            <cron>
+                <email/>
+                <frequency backend_model="sli_search/system_config_backend_cron">D</frequency>
+                <time>2,0</time>
+                <disabled>0</disabled>
+            </cron>
+            <attributes>
+                <attributes backend_model="sli_search/system_config_backend_minigrid"/>
+            </attributes>
+        </sli_search>
+    </default>
+    <crontab>
+        <jobs>
+            <!-- job code: SLI_Search_Model_Cron::JOB_CODE_GENERATE_FEEDS -->
+            <sli_search>
+                <schedule><cron_expr>0 2 * * *</cron_expr></schedule>
+                <run><model>sli_search/cron::generateFeeds</model></run>
+            </sli_search>
+        </jobs>
+    </crontab>
+</config>

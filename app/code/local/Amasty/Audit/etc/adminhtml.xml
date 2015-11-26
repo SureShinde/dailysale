@@ -18,15 +18,15 @@
                     <children>
                         <amaudit translate="title" module="amaudit">
                             <title>Login Attempts</title>
-                            <action>amaudit/adminhtml_login</action>
+                            <action>adminhtml/login</action>
                         </amaudit>
                         <log translate="title" module="amaudit">
                             <title>Action Log</title>
-                            <action>amaudit/adminhtml_log</action>
+                            <action>adminhtml/log</action>
                         </log>
                         <active translate="title" module="amaudit">
                             <title>Active Sessions</title>
-                            <action>amaudit/adminhtml_active</action>
+                            <action>adminhtml/active</action>
                         </active>
                     </children>
                     <sort_order>70</sort_order>

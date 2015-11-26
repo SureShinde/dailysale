@@ -27,13 +27,13 @@
 ?>
 <?php  $_results = $this->getTrackingInfo() ?>
 <div class="page-title title-buttons">
-    <h1><?php echo $this->__('Tracking Information'); ?></h1>
-    <button class="button" onclick="window.close(); window.opener.focus();"><span><span><?php echo $this->__('Close Window') ?></span></span></button>
+    <h1><?php echo Mage::helper('udropship')->__('Tracking Information'); ?></h1>
+    <button class="button" onclick="window.close(); window.opener.focus();"><span><span><?php echo Mage::helper('udropship')->__('Close Window') ?></span></span></button>
 </div>
 <?php if(sizeof($_results)>0): ?>
 <?php foreach($_results as $shipid => $_result): ?>
     <?php if($shipid): ?>
-    <h2 class="sub-title"><?php echo $this->__('RMA #').$shipid; ?></h2>
+    <h2 class="sub-title"><?php echo Mage::helper('udropship')->__('RMA #').$shipid; ?></h2>
     <?php endif; ?>
     <?php if(sizeof($_result)>0): ?>
         <?php $rowCount = sizeof($_result); $counter = 1; ?>
@@ -44,76 +44,76 @@
                 <tbody>
                 <?php if(is_object($track)): ?>
                     <tr>
-                        <th class="label"><?php echo $this->__('Tracking Number:'); ?></th>
+                        <th class="label"><?php echo Mage::helper('udropship')->__('Tracking Number:'); ?></th>
                         <td class="value"><?php echo $track->getTracking(); ?></td>
                     </tr>
                     <?php if ($track->getCarrierTitle()): ?>
                     <tr>
-                        <th class="label"><?php echo $this->__('Carrier:'); ?></th>
+                        <th class="label"><?php echo Mage::helper('udropship')->__('Carrier:'); ?></th>
                         <td class="value"><?php echo $track->getCarrierTitle(); ?></td>
                     </tr>
                     <?php endif; ?>
                     <?php if($track->getErrorMessage()): ?>
                     <tr>
-                        <th class="label"><?php echo $this->__('Error:'); ?></th>
-                        <td class="error"><?php echo $this->__('Tracking information is currently not available. Please '); if ($this->getContactUsEnabled()) : ?><a href="<?php echo $this->getContactUs() ?>" title="<?php echo $this->__('contact us') ?>" onclick="this.target='_blank'"><?php echo $this->__('contact us') ?></a><?php echo $this->__(' for more information or '); endif; echo $this->__('email us at '); ?><a href="mailto:<?php echo $this->getStoreSupportEmail() ?>"><?php echo $this->getStoreSupportEmail() ?></a></td>
+                        <th class="label"><?php echo Mage::helper('udropship')->__('Error:'); ?></th>
+                        <td class="error"><?php echo Mage::helper('udropship')->__('Tracking information is currently not available. Please '); if ($this->getContactUsEnabled()) : ?><a href="<?php echo $this->getContactUs() ?>" title="<?php echo Mage::helper('udropship')->__('contact us') ?>" onclick="this.target='_blank'"><?php echo Mage::helper('udropship')->__('contact us') ?></a><?php echo Mage::helper('udropship')->__(' for more information or '); endif; echo Mage::helper('udropship')->__('email us at '); ?><a href="mailto:<?php echo $this->getStoreSupportEmail() ?>"><?php echo $this->getStoreSupportEmail() ?></a></td>
                     </tr>
                     <?php elseif($track->getTrackSummary()): ?>
                     <tr>
-                        <th class="label"><?php echo $this->__('Info:'); ?></th>
+                        <th class="label"><?php echo Mage::helper('udropship')->__('Info:'); ?></th>
                         <td class="value"><?php echo $track->getTrackSummary(); ?></td>
                     </tr>
                     <?php elseif($track->getUrl()): ?>
                     <tr>
-                        <th class="label"><?php echo $this->__('Track:'); ?></th>
+                        <th class="label"><?php echo Mage::helper('udropship')->__('Track:'); ?></th>
                         <td class="value"><a href="<?php echo $track->getUrl(); ?>" onclick="this.target='_blank'"><?php echo $track->getUrl(); ?></a></td>
                     </tr>
                     <?php else: ?>
                         <?php if ($track->getStatus()): ?>
                         <tr>
-                            <th class="label"><?php echo $this->__('Status:'); ?></th>
+                            <th class="label"><?php echo Mage::helper('udropship')->__('Status:'); ?></th>
                             <td class="value"><?php echo $track->getStatus(); ?></td>
                         </tr>
                         <?php endif; ?>
 
                         <?php if ($track->getDeliverydate()): ?>
                         <tr>
-                            <th class="label"><?php echo $this->__('Delivered on:'); ?></th>
+                            <th class="label"><?php echo Mage::helper('udropship')->__('Delivered on:'); ?></th>
                             <td class="value"><?php echo $this->formatDeliveryDateTime($track->getDeliverydate(),$track->getDeliverytime()); ?></td>
                         </tr>
                         <?php endif; ?>
 
                         <?php if ($track->getSignedby()): ?>
                         <tr>
-                            <th class="label"><?php echo $this->__('Signed by:'); ?></th>
+                            <th class="label"><?php echo Mage::helper('udropship')->__('Signed by:'); ?></th>
                             <td class="value"><?php echo $track->getSignedby(); ?></td>
                         </tr>
                         <?php endif; ?>
 
                         <?php if ($track->getDeliveryLocation()): ?>
                         <tr>
-                            <th class="label"><?php echo $this->__('Delivered to:'); ?></th>
+                            <th class="label"><?php echo Mage::helper('udropship')->__('Delivered to:'); ?></th>
                             <td class="value"><?php echo $track->getDeliveryLocation(); ?></td>
                         </tr>
                         <?php endif; ?>
 
                         <?php if ($track->getShippedDate()): ?>
                         <tr>
-                            <th class="label"><?php echo $this->__('Shipped or billed on:'); ?></th>
+                            <th class="label"><?php echo Mage::helper('udropship')->__('Shipped or billed on:'); ?></th>
                             <td class="value"><?php echo $track->getShippedDate(); ?></td>
                         </tr>
                         <?php endif; ?>
 
                         <?php if ($track->getService()): ?>
                         <tr>
-                            <th class="label"><?php echo $this->__('Service Type:'); ?></th>
+                            <th class="label"><?php echo Mage::helper('udropship')->__('Service Type:'); ?></th>
                             <td class="value"><?php echo $track->getService(); ?></td>
                         </tr>
                         <?php endif; ?>
 
                         <?php if ($track->getWeight()): ?>
                         <tr>
-                            <th class="label"><?php echo $this->__('Weight:'); ?></th>
+                            <th class="label"><?php echo Mage::helper('udropship')->__('Weight:'); ?></th>
                             <td class="value"><?php echo $track->getWeight(); ?></td>
                         </tr>
                         <?php endif; ?>
@@ -121,7 +121,7 @@
                 <?php elseif(isset($track['title']) && isset($track['number']) && $track['number']): ?>
                     <!--if the tracking is custom value-->
                     <tr>
-                        <th class="label"><?php echo ($track['title'] ? $this->escapeHtml($track['title']) : $this->__('N/A')); ?>:</th>
+                        <th class="label"><?php echo ($track['title'] ? $this->escapeHtml($track['title']) : Mage::helper('udropship')->__('N/A')); ?>:</th>
                         <td class="value"><?php echo (isset($track['number']) ? $this->escapeHtml($track['number']) : ''); ?></td>
                     </tr>
                 <?php endif; ?>
@@ -137,10 +137,10 @@
                     <col />
                     <thead>
                         <tr>
-                            <th><?php echo $this->__('Location') ?></th>
-                            <th><?php echo $this->__('Date') ?></th>
-                            <th><?php echo $this->__('Local Time') ?></th>
-                            <th><?php echo $this->__('Description') ?></th>
+                            <th><?php echo Mage::helper('udropship')->__('Location') ?></th>
+                            <th><?php echo Mage::helper('udropship')->__('Date') ?></th>
+                            <th><?php echo Mage::helper('udropship')->__('Local Time') ?></th>
+                            <th><?php echo Mage::helper('udropship')->__('Description') ?></th>
                         </tr>
                    </thead>
                    <tbody>
@@ -165,13 +165,13 @@
         <!--end for each tracking information-->
         <?php endforeach; ?>
     <?php else: ?>
-        <p><?php echo $this->__('There is no tracking available for this shipment.'); ?></p>
+        <p><?php echo Mage::helper('udropship')->__('There is no tracking available for this shipment.'); ?></p>
     <?php endif; ?>
 
 <?php endforeach; ?>
 <?php else: ?>
-    <p><?php echo $this->__('There is no tracking available.'); ?></p>
+    <p><?php echo Mage::helper('udropship')->__('There is no tracking available.'); ?></p>
 <?php endif; ?>
 <div class="buttons-set">
-    <button type="button" title="<?php echo $this->__('Close Window') ?>" class="button" onclick="window.close(); window.opener.focus();"><span><span><?php echo $this->__('Close Window') ?></span></span></button>
+    <button type="button" title="<?php echo Mage::helper('udropship')->__('Close Window') ?>" class="button" onclick="window.close(); window.opener.focus();"><span><span><?php echo Mage::helper('udropship')->__('Close Window') ?></span></span></button>
 </div>

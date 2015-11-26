@@ -16,7 +16,7 @@ class Unirgy_DropshipShippingClass_Model_Observer
     {
         $grid = $observer->getGrid();
         $grid->addColumn('customer_ship_class', array(
-            'header'        => Mage::helper('udshipclass')->__('Customer Ship Class'),
+            'header'        => Mage::helper('udropship')->__('Customer Ship Class'),
             'index'         => 'customer_ship_class',
             'type'          => 'options',
             'options'       => Mage::getSingleton('udshipclass/source')->setPath('customer_ship_class')->toOptionHash(),
@@ -24,7 +24,7 @@ class Unirgy_DropshipShippingClass_Model_Observer
             'filter'        => false,
         ));
         $grid->addColumn('vendor_ship_class', array(
-            'header'        => Mage::helper('udshipclass')->__('Vendor Ship Class'),
+            'header'        => Mage::helper('udropship')->__('Vendor Ship Class'),
             'index'         => 'vendor_ship_class',
             'type'          => 'options',
             'options'       => Mage::getSingleton('udshipclass/source')->setPath('vendor_ship_class')->toOptionHash(),
@@ -48,12 +48,12 @@ class Unirgy_DropshipShippingClass_Model_Observer
 
         $fieldset->addField('vendor_ship_class', 'multiselect', array(
             'name'      => 'vendor_ship_class',
-            'label'     => Mage::helper('udshipclass')->__('Vendor Ship Class'),
+            'label'     => Mage::helper('udropship')->__('Vendor Ship Class'),
             'values'   => Mage::getSingleton('udshipclass/source')->setPath('vendor_ship_class')->toOptionArray(true),
         ));
         $fieldset->addField('customer_ship_class', 'multiselect', array(
             'name'      => 'customer_ship_class',
-            'label'     => Mage::helper('udshipclass')->__('Customer Ship Class'),
+            'label'     => Mage::helper('udropship')->__('Customer Ship Class'),
             'values'   => Mage::getSingleton('udshipclass/source')->setPath('customer_ship_class')->toOptionArray(true),
         ));
     }
@@ -89,15 +89,15 @@ class Unirgy_DropshipShippingClass_Model_Observer
         $scHlp = Mage::helper('udshipclass');
         $scHlp->processShipClass($shipping, 'vendor_ship_class');
         $scHlp->processShipClass($shipping, 'customer_ship_class');
-        $_vClass = $scHlp->getVendorShipClass($vendor);
-        $_cClass = $scHlp->getCustomerShipClass($address);
+        $_vClass = $scHlp->getAllVendorShipClass($vendor);
+        $_cClass = $scHlp->getAllCustomerShipClass($address);
         $vClass = $shipping->getVendorShipClass();
         $cClass = $shipping->getCustomerShipClass();
         $resFlag = null;
-        if (!empty($vClass) && is_array($vClass) && !in_array($_vClass, $vClass)) {
+        if (!empty($vClass) && is_array($vClass) && !array_intersect($_vClass, $vClass)) {
             $resFlag = true;
         }
-        if (!empty($cClass) && is_array($cClass) && !in_array($_cClass, $cClass)) {
+        if (!empty($cClass) && is_array($cClass) && !array_intersect($_cClass, $cClass)) {
             $resFlag = true;
         }
         if ($resFlag !== null) {

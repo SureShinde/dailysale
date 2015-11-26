@@ -20,11 +20,18 @@ class Unirgy_DropshipMicrosite_Block_Frontend_VendorListToolbar extends Mage_Pag
     {
         parent::_construct();
         $this->setTemplate('umicrosite/vendor/list_toolbar.phtml');
-        $this->_availableMode = array('grid' => $this->__('Grid'), 'list' =>  $this->__('List'));
+        $this->_availableMode = array('grid' => Mage::helper('udropship')->__('Grid'), 'list' =>  Mage::helper('udropship')->__('List'));
     }
     public function isOrderCurrent($order)
     {
         return ($order == $this->getCurrentOrder());
+    }
+    public function getCurrentPage()
+    {
+        if ($page = (int) $this->getRequest()->getParam($this->getPageVarName())) {
+            return $page;
+        }
+        return 1;
     }
     public function getPageVarName()
     {

@@ -10,15 +10,18 @@ $_htmlId = $_element->getId();
 $_dateFormat = Mage::app()->getLocale()->getDateFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT);
 $_calDateFormat = Varien_Date::convertZendToStrFtime($_dateFormat, true, false);
 $cfgAttr = $this->getFirstAttribute();
+$cfgAttrs = $this->getFirstAttributes();
 $cfgAttrId = $cfgAttr->getId();
-$cfgAttrVal = $this->getCfgAttributeValue();
+$cfgAttrValTuple = $this->getCfgAttributeValueTuple();
+$cfgAttrVal = current($cfgAttrValTuple);
+$cfgAttrLabels = $this->getCfgAttributeLabels();
 $cfgAttrCode = $this->getCfgAttributeCode();
-$cfgSuf = '_'.$cfgAttrId.'_'.$cfgAttrVal;
-$firstAttrLabel = '';
+$cfgSuf = '_'.$cfgAttrId.'_'.implode('_', $cfgAttrValTuple);
+$otherAttrLabel = '';
 $oneAttrMode = true;
 foreach ($this->getConfigurableAttributes(true) as $_cfgAttr) {
     $oneAttrMode = false;
-    $firstAttrLabel = $this->htmlEscape($_cfgAttr->getFrontend()->getLabel());
+    $otherAttrLabel = $this->htmlEscape($_cfgAttr->getFrontend()->getLabel());
 }
 $columnsCount = 1;
 $cfgColumnsCount = $this->isOneColumnCfgAttrs() ? 1 : count($this->getConfigurableAttributes(true));
@@ -26,14 +29,19 @@ $extraColumnsCount = $this->getColumnsForm()->getElements()->count();
 $columnsCount += $cfgColumnsCount;
 $columnsCount += $extraColumnsCount;
 $addAnotherLabel = $cfgColumnsCount==1
-    ? $this->__('Add Another %s', $firstAttrLabel)
-    : $this->__('Add Other Options');
+    ? Mage::helper('udropship')->__('Add Another %s', $otherAttrLabel)
+    : Mage::helper('udropship')->__('Add Other Options');
 ?>
 
 <div id="content-wrapper-<?php echo $cfgSuf?>" class="content-wrapper">
 <div class="cfg-content-header">
-<h2><?php echo $cfgAttr->getFrontend()->getLabel().': '.$this->getCfgAttributeLabel()?></h2>
-<p><button type="button" class="btn-remove"><span><?php echo $this->__('Remove') ?></span></button></p>
+<h2>
+    <?php foreach ($cfgAttrs as $__i => $__ca): ?>
+    <?php echo $__ca->getFrontend()->getLabel().': '.$cfgAttrLabels[$__i]?>
+    <?php if ($__i<count($cfgAttrs)-1): ?>, <?php endif?>
+    <?php endforeach ?>
+</h2>
+<p><button type="button" class="btn-remove"><span><?php echo Mage::helper('udropship')->__('Remove') ?></span></button></p>
 </div>
 <div class="content">
 	<div class="col-gallery">
@@ -43,8 +51,8 @@ $addAnotherLabel = $cfgColumnsCount==1
         <?php endif ?>
 	</div>
 	<div class="col-info">
-        <input type="hidden" id="udvalidate_cfg_required-row-<?php echo $cfgAttrVal?>" class="udvalidate-cfg-required-row" value="<?php echo $cfgAttrVal?>" />
-        <br /><div style="display: none;" id="advice-udvalidate_cfg_required-row-<?php echo $cfgAttrVal?>" class="advice-udvalidate-cfg-required-udvalidate_cfg_required-row validation-advice"><?php echo $this->__('At least one option should be added') ?></div>
+        <input type="hidden" id="udvalidate_cfg_required-row-<?php echo implode('_', $cfgAttrValTuple)?>" class="udvalidate-cfg-required-row" value="<?php echo implode('_', $cfgAttrValTuple)?>" />
+        <br /><div style="display: none;" id="advice-udvalidate_cfg_required-row-<?php echo implode('_', $cfgAttrValTuple)?>" class="advice-udvalidate-cfg-required-udvalidate_cfg_required-row validation-advice"><?php echo Mage::helper('udropship')->__('At least one option should be added') ?></div>
 	    <table id="cfg_quick_create<?php echo $cfgSuf?>" cellspacing="0" class="data data-table" cellpadding="0" style="width: 100%">
             <?php if ($this->isOneColumnCfgAttrs() && !$oneAttrMode): ?>
             <col width="150">
@@ -70,7 +78,7 @@ $addAnotherLabel = $cfgColumnsCount==1
                     <th><?php echo $this->htmlEscape($columnEl->getLegend()) ?></th>
                     <?php endforeach ?>
 	                <?php if (!$oneAttrMode): ?>
-	                <th><?php echo $_hlp->__('Action') ?></th>
+	                <th><?php echo Mage::helper('udropship')->__('Action') ?></th>
 	                <?php endif ?>
 	            </tr>
 	            <tr style="display:none" id="cfg_quick_create<?php echo $cfgSuf?>_row_template">
@@ -91,7 +99,9 @@ $addAnotherLabel = $cfgColumnsCount==1
 	                    </select>
 	                    <br />
                         <?php if (!$hiddenInserted): $hiddenInserted++;?>
-                        <input type="hidden" id="<?php echo $_htmlId?>-$ROW-<?php echo $cfgAttrCode?>" name="<?php echo $_name?>[$ROW][<?php echo $cfgAttrCode?>]" id="udmulti_vendors[$ROW][<?php echo $cfgAttrCode?>]" value="<?php echo $cfgAttrVal?>">
+                        <?php foreach ($cfgAttrs as $__i => $__ca): $cfgAttrCode = $__ca->getAttributeCode(); ?>
+                        <input type="hidden" id="<?php echo $_htmlId?>-$ROW-<?php echo $cfgAttrCode?>" name="<?php echo $_name?>[$ROW][<?php echo $cfgAttrCode?>]" id="udmulti_vendors[$ROW][<?php echo $cfgAttrCode?>]" value="<?php echo $cfgAttrValTuple[$__i]?>">
+                        <?php endforeach ?>
 	                    <input type="hidden" id="<?php echo $_htmlId?>-$ROW-simple_id" name="<?php echo $_name?>[$ROW][simple_id]" id="udmulti_vendors[$ROW][simple_id]" value="$SIMPLE_ID" class="cfg-quick-create-qty">
                         <?php endif ?>
 	                <?php if (!$this->isOneColumnCfgAttrs()): ?></td><?php endif ?>
@@ -111,7 +121,9 @@ $addAnotherLabel = $cfgColumnsCount==1
                         <?php echo str_replace('<option ', '<option alt="'.$lcElement->getId().'"', $lcElement->getElementHtml()) ?><br />
                         <?php endforeach; ?>
                         <?php if (!$hiddenInserted): $hiddenInserted++;?>
-                        <input type="hidden" id="<?php echo $_htmlId?>-$ROW-<?php echo $cfgAttrCode?>" name="<?php echo $_name?>[$ROW][<?php echo $cfgAttrCode?>]" id="udmulti_vendors[$ROW][<?php echo $cfgAttrCode?>]" value="<?php echo $cfgAttrVal?>">
+                        <?php foreach ($cfgAttrs as $__i => $__ca): $cfgAttrCode = $__ca->getAttributeCode(); ?>
+                            <input type="hidden" id="<?php echo $_htmlId?>-$ROW-<?php echo $cfgAttrCode?>" name="<?php echo $_name?>[$ROW][<?php echo $cfgAttrCode?>]" id="udmulti_vendors[$ROW][<?php echo $cfgAttrCode?>]" value="<?php echo $cfgAttrValTuple[$__i]?>">
+                        <?php endforeach ?>
 	                    <input type="hidden" id="<?php echo $_htmlId?>-$ROW-simple_id" name="<?php echo $_name?>[$ROW][simple_id]" id="udmulti_vendors[$ROW][simple_id]" value="$SIMPLE_ID" class="cfg-quick-create-qty">
                         <?php endif ?>
                     </td>
@@ -119,7 +131,7 @@ $addAnotherLabel = $cfgColumnsCount==1
                     <?php endforeach ?>
 
 	                <?php if (!$oneAttrMode): ?>
-	                <td><button type="button" class="btn-remove"><span><?php echo $this->__('Remove') ?></span></button></td>
+	                <td><button type="button" class="btn-remove"><span><?php echo Mage::helper('udropship')->__('Remove') ?></span></button></td>
 	                <?php endif ?>
 	            </tr>
 	        </thead>
@@ -242,7 +254,7 @@ $addAnotherLabel = $cfgColumnsCount==1
                     el.className = $w(el.className).collect(function(s){ return s.gsub('udorg--', '');}).join(' ');
                 });
 	            tr.addClassName(lastRowNum%2 ? 'odd' : 'even');
-                $(tr).down('.cfg-quick-create-qty').addClassName('cfg-quick-create-qty-<?php echo $cfgAttrVal?>');
+                $(tr).down('.cfg-quick-create-qty').addClassName('cfg-quick-create-qty-<?php echo implode('_', $cfgAttrValTuple)?>');
 	            var del = $(tr).select('button')[0];
 	            if (del) {
 	                $(del).observe('click', function(e) { e.stop(); $(del.parentNode.parentNode).remove() })

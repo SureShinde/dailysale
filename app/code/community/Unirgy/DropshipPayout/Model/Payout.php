@@ -125,7 +125,7 @@ class Unirgy_DropshipPayout_Model_Payout extends Unirgy_Dropship_Model_Vendor_St
     public function afterPay()
     {
         $this->markDueAmountsPaid($this);
-        $this->addMessage(Mage::helper('udpayout')->__('Successfully paid'), self::STATUS_PAID)->setIsJustPaid(true);
+        $this->addMessage(Mage::helper('udropship')->__('Successfully paid'), self::STATUS_PAID)->setIsJustPaid(true);
         $this->initTotals();
         foreach ($this->_orders as &$order) {
             $order['paid'] = true;

@@ -29,26 +29,26 @@
 <?php Mage::helper('urma')->initOrderRmasCollection($_order); ?>
 <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
 <div class="page-title title-buttons">
-    <h1><?php echo $this->__('Order #%s - %s', $_order->getRealOrderId(), $_order->getStatusLabel()) ?></h1>
+    <h1><?php echo Mage::helper('udropship')->__('Order #%s - %s', $_order->getRealOrderId(), $_order->getStatusLabel()) ?></h1>
    
     <?php if($this->helper('rss/order')->isStatusNotificationAllow()): ?>
-        <a href="<?php echo $this->helper('rss/order')->getStatusHistoryRssUrl($_order) ?>" class="link-rss"><?php echo $this->__('Subscribe to Order Status') ?></a>
+        <a href="<?php echo $this->helper('rss/order')->getStatusHistoryRssUrl($_order) ?>" class="link-rss"><?php echo Mage::helper('udropship')->__('Subscribe to Order Status') ?></a>
         <span class="separator">|</span>
     <?php endif; ?>
     <?php if ($this->helper('urma')->canRMA($_order)) : ?>
-        <a href="<?php echo $this->helper('urma')->getRMAUrl($_order) ?>" class="link-rma"><?php echo $this->__('Request RMA') ?></a>
+        <a href="<?php echo $this->helper('urma')->getRMAUrl($_order) ?>" class="link-rma"><?php echo Mage::helper('udropship')->__('Request RMA') ?></a>
         <span class="separator">|</span>
     <?php endif ?>
     <?php if ($this->helper('sales/reorder')->canReorder($_order)) : ?>
-        <a href="<?php echo $this->getReorderUrl($_order) ?>" class="link-reorder"><?php echo $this->__('Reorder') ?></a>
+        <a href="<?php echo $this->getReorderUrl($_order) ?>" class="link-reorder"><?php echo Mage::helper('udropship')->__('Reorder') ?></a>
         <span class="separator">|</span>
     <?php endif ?>
-    <a href="<?php echo $this->getPrintUrl($_order) ?>" class="link-print" onclick="this.target='_blank';"><?php echo $this->__('Print Order') ?></a>
+    <a href="<?php echo $this->getPrintUrl($_order) ?>" class="link-print" onclick="this.target='_blank';"><?php echo Mage::helper('udropship')->__('Print Order') ?></a>
 
 </div>
 <?php echo $this->getStatusHistoryRssUrl($_order) ?>
 <dl class="order-info">
-    <dt><?php echo $this->__('About This Order:') ?></dt>
+    <dt><?php echo Mage::helper('udropship')->__('About This Order:') ?></dt>
     <dd>
         <?php $_links = $this->getLinks(); if (!$_order->getHasUrmas()) unset($_links['rma']); ?>
         <ul id="order-info-tabs">
@@ -63,14 +63,14 @@
         <script type="text/javascript">decorateGeneric($('order-info-tabs').select('LI'),['first','last']);</script>
     </dd>
 </dl>
-<p class="order-date"><?php echo $this->__('Order Date: %s', $this->formatDate($_order->getCreatedAtStoreDate(), 'long')) ?></p>
+<p class="order-date"><?php echo Mage::helper('udropship')->__('Order Date: %s', $this->formatDate($_order->getCreatedAtStoreDate(), 'long')) ?></p>
 <?php if (!$this->getIsRmaPage() || $this->getIsRmaPage()=='new' && !Mage::getStoreConfigFlag('urma/general/customer_new_hide_order_info') || $this->getIsRmaPage()=='existing' && !Mage::getStoreConfigFlag('urma/general/customer_hide_order_info')): ?>
 <?php if (!$_order->getIsVirtual()): ?>
 <div class="col2-set order-info-box">
     <div class="col-1">
         <div class="box">
             <div class="box-title">
-                <h2><?php echo $this->__('Shipping Address') ?></h2>
+                <h2><?php echo Mage::helper('udropship')->__('Shipping Address') ?></h2>
             </div>
             <div class="box-content">
                 <address><?php echo $_order->getShippingAddress()->format('html') ?></address>
@@ -80,7 +80,7 @@
     <div class="col-2">
         <div class="box">
             <div class="box-title">
-                <h2><?php echo $this->__('Shipping Method') ?></h2>
+                <h2><?php echo Mage::helper('udropship')->__('Shipping Method') ?></h2>
             </div>
             <div class="box-content">
                 <?php if ($_order->getShippingDescription()): ?>
@@ -97,7 +97,7 @@
     <div class="col-1">
         <div class="box">
             <div class="box-title">
-                <h2><?php echo $this->__('Billing Address') ?></h2>
+                <h2><?php echo Mage::helper('udropship')->__('Billing Address') ?></h2>
             </div>
             <div class="box-content">
                 <address><?php echo $_order->getBillingAddress()->format('html') ?></address>
@@ -107,7 +107,7 @@
     <div class="col-2">
         <div class="box box-payment">
             <div class="box-title">
-                <h2><?php echo $this->__('Payment Method') ?></h2>
+                <h2><?php echo Mage::helper('udropship')->__('Payment Method') ?></h2>
             </div>
             <div class="box-content">
                 <?php echo $this->getPaymentInfoHtml() ?>
@@ -122,7 +122,7 @@
     <div class="col-1">
         <div class="box">
             <div class="box-title">
-                <h2><?php echo Mage::helper('urma')->__('Instructions') ?></h2>
+                <h2><?php echo Mage::helper('udropship')->__('Instructions') ?></h2>
             </div>
             <div class="box-content">
                 <?php echo Mage::getStoreConfig('urma/message/new_instructions_html'); ?>

@@ -32,7 +32,7 @@ class Unirgy_DropshipPo_Block_Adminhtml_Po_Editcosts_Items extends Mage_Adminhtm
         $this->setChild(
             'submit_button',
             $this->getLayout()->createBlock('adminhtml/widget_button')->setData(array(
-                'label'     => Mage::helper('udpo')->__('Save Costs Update'),
+                'label'     => Mage::helper('udropship')->__('Save Costs Update'),
                 'class'     => 'save submit-button',
                 'onclick'   => 'disableElements(\'submit-button\');$(\'edit_form\').submit()',
             ))

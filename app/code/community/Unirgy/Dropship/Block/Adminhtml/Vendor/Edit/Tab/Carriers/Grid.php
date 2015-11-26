@@ -73,7 +73,7 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Edit_Tab_Carriers_Grid
         $this->setChild('add_button',
             $this->getLayout()->createBlock('adminhtml/widget_button')
                 ->setData(array(
-                    'label'     => Mage::helper('catalog')->__('Add Carrier'),
+                    'label'     => Mage::helper('udropship')->__('Add Carrier'),
                     'onclick'   => 'carrierControl.addItem()',
                     'class' => 'add'
                 )));

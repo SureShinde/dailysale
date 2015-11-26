@@ -26,61 +26,61 @@ class Unirgy_DropshipPayout_Model_Source extends Unirgy_Dropship_Model_Source_Ab
 
         case 'payout_type':
             $options = array(
-                '' => $ptHlp->__('* No Payout'),
-                Unirgy_DropshipPayout_Model_Payout::TYPE_AUTO      => $ptHlp->__('Auto'),
-                Unirgy_DropshipPayout_Model_Payout::TYPE_MANUAL    => $ptHlp->__('Manual'),
-                Unirgy_DropshipPayout_Model_Payout::TYPE_SCHEDULED => $ptHlp->__('Scheduled'),
+                '' => Mage::helper('udropship')->__('* No Payout'),
+                Unirgy_DropshipPayout_Model_Payout::TYPE_AUTO      => Mage::helper('udropship')->__('Auto'),
+                Unirgy_DropshipPayout_Model_Payout::TYPE_MANUAL    => Mage::helper('udropship')->__('Manual'),
+                Unirgy_DropshipPayout_Model_Payout::TYPE_SCHEDULED => Mage::helper('udropship')->__('Scheduled'),
             );
             break;
         case 'payout_type_internal':
             $options = array(
-                '' => $ptHlp->__('* No Payout'),
-                Unirgy_DropshipPayout_Model_Payout::TYPE_AUTO      => $ptHlp->__('Auto'),
-                Unirgy_DropshipPayout_Model_Payout::TYPE_MANUAL    => $ptHlp->__('Manual'),
-                Unirgy_DropshipPayout_Model_Payout::TYPE_SCHEDULED => $ptHlp->__('Scheduled'),
-                Unirgy_DropshipPayout_Model_Payout::TYPE_STATEMENT => $ptHlp->__('Statement'),
+                '' => Mage::helper('udropship')->__('* No Payout'),
+                Unirgy_DropshipPayout_Model_Payout::TYPE_AUTO      => Mage::helper('udropship')->__('Auto'),
+                Unirgy_DropshipPayout_Model_Payout::TYPE_MANUAL    => Mage::helper('udropship')->__('Manual'),
+                Unirgy_DropshipPayout_Model_Payout::TYPE_SCHEDULED => Mage::helper('udropship')->__('Scheduled'),
+                Unirgy_DropshipPayout_Model_Payout::TYPE_STATEMENT => Mage::helper('udropship')->__('Statement'),
             );
             break;
 
         case 'payout_method':
             $options = array();
             foreach (Mage::app()->getConfig()->getNode('global/udropship/payout/method')->children() as $method) {
-                $options[$method->getName()] = $ptHlp->__((string)$method->title);
+                $options[$method->getName()] = Mage::helper('udropship')->__((string)$method->title);
             }
             break;
             
         case 'po_status_type':
             $options = array(
-                'statement' => $ptHlp->__('Use Statement preferences'),
-            	'payout' => $ptHlp->__('Custom'),
+                'statement' => Mage::helper('udropship')->__('Use Statement preferences'),
+            	'payout' => Mage::helper('udropship')->__('Custom'),
             );
             break;
 
         case 'payout_status':
         case 'po_payout_status':
             $options = array(
-                Unirgy_DropshipPayout_Model_Payout::STATUS_PENDING    => $ptHlp->__('Pending'),
-                Unirgy_DropshipPayout_Model_Payout::STATUS_SCHEDULED  => $ptHlp->__('Scheduled'),
-                Unirgy_DropshipPayout_Model_Payout::STATUS_PROCESSING => $ptHlp->__('Processing'),
-                Unirgy_DropshipPayout_Model_Payout::STATUS_HOLD       => $ptHlp->__('Hold'),
-                Unirgy_DropshipPayout_Model_Payout::STATUS_PAYPAL_IPN => $ptHlp->__('Waiting for Paypal IPN'),
-                Unirgy_DropshipPayout_Model_Payout::STATUS_PAID       => $ptHlp->__('Paid'),
-                Unirgy_DropshipPayout_Model_Payout::STATUS_ERROR      => $ptHlp->__('Error'),
-                Unirgy_DropshipPayout_Model_Payout::STATUS_CANCELED   => $ptHlp->__('Canceled'),
+                Unirgy_DropshipPayout_Model_Payout::STATUS_PENDING    => Mage::helper('udropship')->__('Pending'),
+                Unirgy_DropshipPayout_Model_Payout::STATUS_SCHEDULED  => Mage::helper('udropship')->__('Scheduled'),
+                Unirgy_DropshipPayout_Model_Payout::STATUS_PROCESSING => Mage::helper('udropship')->__('Processing'),
+                Unirgy_DropshipPayout_Model_Payout::STATUS_HOLD       => Mage::helper('udropship')->__('Hold'),
+                Unirgy_DropshipPayout_Model_Payout::STATUS_PAYPAL_IPN => Mage::helper('udropship')->__('Waiting for Paypal IPN'),
+                Unirgy_DropshipPayout_Model_Payout::STATUS_PAID       => Mage::helper('udropship')->__('Paid'),
+                Unirgy_DropshipPayout_Model_Payout::STATUS_ERROR      => Mage::helper('udropship')->__('Error'),
+                Unirgy_DropshipPayout_Model_Payout::STATUS_CANCELED   => Mage::helper('udropship')->__('Canceled'),
             );
             break;
 
         case 'payout_schedule_type':
             $options = $ptHlp->getPayoutSchedules('code2title');
-            $options['-1'] = $hlp->__('* Use Custom');
+            $options['-1'] = Mage::helper('udropship')->__('* Use Custom');
             break;
 
         default:
-            Mage::throwException($hlp->__('Invalid request for source options: '.$this->getPath()));
+            Mage::throwException(Mage::helper('udropship')->__('Invalid request for source options: '.$this->getPath()));
         }
 
         if ($selector) {
-            $options = array(''=>$hlp->__('* Please select')) + $options;
+            $options = array(''=>Mage::helper('udropship')->__('* Please select')) + $options;
         }
 
         return $options;

@@ -27,41 +27,41 @@
 <?php /* @var $this Mage_Sales_Block_Order_Print_Rma */?>
 <?php $order = $this->getOrder(); ?>
 <?php Mage::helper('urma')->initOrderRmasCollection($_order) ?>
-<h1><?php echo $this->__('Order #%s', $this->getObjectData($order, 'real_order_id')); ?></h1>
-<p class="order-date"><?php echo $this->__('Order Date: %s', $this->formatDate($this->getObjectData($order, 'created_at_store_date'), 'long')) ?></p>
+<h1><?php echo Mage::helper('udropship')->__('Order #%s', $this->getObjectData($order, 'real_order_id')); ?></h1>
+<p class="order-date"><?php echo Mage::helper('udropship')->__('Order Date: %s', $this->formatDate($this->getObjectData($order, 'created_at_store_date'), 'long')) ?></p>
 <?php if (!$this->getObjectData($order, 'is_virtual')): ?>
 <?php foreach ($this->getRmasCollection() as $rma): ?>
-    <h2 class="h2"><?php echo $this->__('Shipment #%s', $this->getObjectData($rma, 'increment_id')); ?></h2>
+    <h2 class="h2"><?php echo Mage::helper('udropship')->__('Shipment #%s', $this->getObjectData($rma, 'increment_id')); ?></h2>
     <div class="col2-set">
         <div class="col first">
-            <h3><?php echo $this->__('Shipping Address') ?></h3>
+            <h3><?php echo Mage::helper('udropship')->__('Shipping Address') ?></h3>
             <address><?php echo $this->getShipmentAddressFormattedHtml($rma); ?></address>
         </div>
         <div class="col last">
-            <h3><?php echo $this->__('Billing Address') ?></h3>
+            <h3><?php echo Mage::helper('udropship')->__('Billing Address') ?></h3>
             <address><?php echo $this->getBillingAddressFormattedHtml($order); ?></address>
         </div>
     </div>
     <div class="col2-set">
         <div class="col first">
-            <h3><?php echo $this->__('Shipping Method') ?></h3>
+            <h3><?php echo Mage::helper('udropship')->__('Shipping Method') ?></h3>
              <?php echo $this->escapeHtml($this->getObjectData($order, 'shipping_description')); ?>
         </div>
         <div class="col last">
-            <h3><?php echo $this->__('Payment Method') ?></h3>
+            <h3><?php echo Mage::helper('udropship')->__('Payment Method') ?></h3>
             <?php echo $this->getPaymentInfoHtml() ?>
         </div>
     </div>
-    <h3><?php echo $this->__('RMA Items') ?></h3>
+    <h3><?php echo Mage::helper('udropship')->__('RMA Items') ?></h3>
     <table class="data-table" id="my-shipment-table-<?php echo $this->getObjectData($rma, 'id') ?>">
         <col />
         <col width="1" />
         <col width="1" />
         <thead>
             <tr>
-                <th><?php echo $this->__('Product Name') ?></th>
-                <th><?php echo $this->__('SKU') ?></th>
-                <th class="a-center"><span class="nobr"><?php echo $this->__('Qty') ?></span></th>
+                <th><?php echo Mage::helper('udropship')->__('Product Name') ?></th>
+                <th><?php echo Mage::helper('udropship')->__('SKU') ?></th>
+                <th class="a-center"><span class="nobr"><?php echo Mage::helper('udropship')->__('Qty') ?></span></th>
             </tr>
         </thead>
         <?php foreach ($this->getRmaItems($rma) as $item): ?>

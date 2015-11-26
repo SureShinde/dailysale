@@ -35,7 +35,7 @@
 <table cellspacing="0" class="form-list">
     <tbody>
         <tr class="headings">
-            <td class="label"><label for="name"><?php echo Mage::helper('downloadable')->__('Title')?></label>
+            <td class="label"><label for="name"><?php echo Mage::helper('udropship')->__('Title')?></label>
             </td>
             <td class="value">
                 <input type="text" class="input-text" id="downloadable_links_title" name="product[links_title]" value="<?php echo $_product->getId()?$_product->getLinksTitle():$this->getLinksTitle() ?>" />
@@ -47,7 +47,7 @@
 <table cellspacing="0" class="form-list">
     <tbody>
         <tr class="headings">
-            <td class="label"><label for="name"><?php echo Mage::helper('downloadable')->__('Links can be purchased separately')?></label>
+            <td class="label"><label for="name"><?php echo Mage::helper('udropship')->__('Links can be purchased separately')?></label>
             </td>
             <td class="value">
                 <?php echo $this->getPurchasedSeparatelySelect()?>
@@ -70,15 +70,15 @@
     <col width="1" />
     <thead>
         <tr class="headings">
-            <th><?php echo Mage::helper('downloadable')->__('Title')?> <span class="required">*</span></th>
+            <th><?php echo Mage::helper('udropship')->__('Title')?> <span class="required">*</span></th>
             <?php if ($this->getCanReadPrice() !== false) : ?>
-            <th><?php echo Mage::helper('downloadable')->__('Price')?></th>
+            <th><?php echo Mage::helper('udropship')->__('Price')?></th>
             <?php endif; ?>
-            <th><span class="nobr"><?php echo Mage::helper('downloadable')->__('Max. Downloads')?></span></th>
-            <th><?php echo Mage::helper('downloadable')->__('Shareable')?></th>
-            <th><?php echo Mage::helper('downloadable')->__('Sample')?></th>
-            <th><?php echo Mage::helper('downloadable')->__('File')?></th>
-            <th><span class="nobr"><?php echo Mage::helper('downloadable')->__('Sort Order')?></span></th>
+            <th><span class="nobr"><?php echo Mage::helper('udropship')->__('Max. Downloads')?></span></th>
+            <th><?php echo Mage::helper('udropship')->__('Shareable')?></th>
+            <th><?php echo Mage::helper('udropship')->__('Sample')?></th>
+            <th><?php echo Mage::helper('udropship')->__('File')?></th>
+            <th><span class="nobr"><?php echo Mage::helper('udropship')->__('Sort Order')?></span></th>
             <th>&nbsp;</th>
         </tr>
     </thead>
@@ -90,7 +90,7 @@
     <tbody id="link_items_body">
     </tbody>
 </table>
-<div><small><?php echo Mage::helper('downloadable')->__('Alphanumeric, dash and underscore characters are recommended for filenames. Improper characters are replaced with \'_\'.')?></small></div>
+<div><small><?php echo Mage::helper('udropship')->__('Alphanumeric, dash and underscore characters are recommended for filenames. Improper characters are replaced with \'_\'.')?></small></div>
 </div>
 </div>
 </div>
@@ -137,7 +137,7 @@ var linkTemplate = '<tr>'+
                     '<div id="downloadable_link_{{id}}_sample_file-new" class="file-row-info"></div>'+
                     '<div class="buttons">'+
                         '<div id="downloadable_link_{{id}}_sample_file-install-flash" style="display:none">'+
-                            '<?php echo $this->jsQuoteEscape(Mage::helper('media')->__('This content requires last version of Adobe Flash Player. <a href="%s">Get Flash</a>', 'http://www.adobe.com/go/getflash/')) ?>'+
+                            '<?php echo $this->jsQuoteEscape(Mage::helper('udropship')->__('This content requires last version of Adobe Flash Player. <a href="%s">Get Flash</a>', 'http://www.adobe.com/go/getflash/')) ?>'+
                         '</div>'+
                     '</div>'+
                     '<div class="clear"></div>'+
@@ -161,7 +161,7 @@ var linkTemplate = '<tr>'+
                     '<div id="downloadable_link_{{id}}_file-new" class="file-row-info new-file"></div>'+
                     '<div class="buttons">'+
                         '<div id="downloadable_link_{{id}}_file-install-flash" style="display:none">'+
-                            '<?php echo $this->jsQuoteEscape(Mage::helper('media')->__('This content requires last version of Adobe Flash Player. <a href="%s">Get Flash</a>', 'http://www.adobe.com/go/getflash/')) ?>'+
+                            '<?php echo $this->jsQuoteEscape(Mage::helper('udropship')->__('This content requires last version of Adobe Flash Player. <a href="%s">Get Flash</a>', 'http://www.adobe.com/go/getflash/')) ?>'+
                         '</div>'+
                     '</div>'+
                     '<div class="clear"></div>'+
@@ -177,7 +177,7 @@ var linkTemplate = '<tr>'+
     '</td>'+
     '<td class="a-center"><input type="text" name="downloadable[link][{{id}}][sort_order]" value="{{sort_order}}" class="input-text sort" /></td>'+
     '<td>'+
-        '<button id="downloadable_link_{{id}}_delete_button" type="button" class="scalable delete icon-btn delete-link-item"><span><span><span><?php echo Mage::helper('downloadable')->__('Delete'); ?></span></span></span></button>'+
+        '<button id="downloadable_link_{{id}}_delete_button" type="button" class="scalable delete icon-btn delete-link-item"><span><span><span><?php echo Mage::helper('udropship')->__('Delete'); ?></span></span></span></button>'+
     '</td>'+
 '</tr>';
 

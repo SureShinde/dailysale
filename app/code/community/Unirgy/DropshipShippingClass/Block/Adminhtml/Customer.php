@@ -6,7 +6,7 @@ class Unirgy_DropshipShippingClass_Block_Adminhtml_Customer extends Mage_Adminht
     {
         $this->_blockGroup = 'udshipclass';
         $this->_controller = 'adminhtml_customer';
-        $this->_headerText = Mage::helper('udshipclass')->__('Customer Ship Classes');
+        $this->_headerText = Mage::helper('udropship')->__('Customer Ship Classes');
         parent::__construct();
     }
 

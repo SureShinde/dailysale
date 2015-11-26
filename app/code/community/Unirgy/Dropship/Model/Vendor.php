@@ -70,7 +70,7 @@ class Unirgy_Dropship_Model_Vendor extends Mage_Core_Model_Abstract
     {
         if ($this->getConfirmation()) {
             if (!$raise) return false;
-            Mage::throwException(Mage::helper('customer')->__('This account is not confirmed.'));
+            Mage::throwException(Mage::helper('udropship')->__('This account is not confirmed.'));
         }
         Mage::dispatchEvent('udropship_vendor_auth_after', array('vendor'=>$this));
         return true;
@@ -716,7 +716,7 @@ class Unirgy_Dropship_Model_Vendor extends Mage_Core_Model_Abstract
         $cb = explode('::', (string)$config->$method->callback);
         $cb[0] = Mage::getSingleton($cb[0]);
         if (empty($cb[0]) || empty($cb[1]) || !is_callable($cb)) {
-            Mage::throwException($this->__('Invalid stock check callback: %s', (string)$config->$method->callback));
+            Mage::throwException(Mage::helper('udropship')->__('Invalid stock check callback: %s', (string)$config->$method->callback));
         }
         return $cb;
     }
@@ -952,18 +952,23 @@ class Unirgy_Dropship_Model_Vendor extends Mage_Core_Model_Abstract
         }
     }
 
+    public function hasImageUpload($flag=null)
+    {
+        $oldFlag = $this->_hasImageUpload;
+        if ($flag!==null) {
+            $this->_hasImageUpload = $flag;
+        }
+        return $oldFlag;
+    }
+    protected $_hasImageUpload=false;
     protected function _afterSave()
     {
-        if ($this->_inAfterSave) {
-            return;
-        }
-        $this->_inAfterSave = true;
-
         parent::_afterSave();
 
         if (!empty($_FILES)) {
             $baseDir = Mage::getConfig()->getBaseDir('media').DS.'vendor'.DS.$this->getId();
             Mage::getConfig()->createDirIfNotExists($baseDir);
+            $changedFields = array();
             foreach ($_FILES as $k=>$img) {
                 if (empty($img['tmp_name']) || empty($img['name']) || empty($img['type'])) {
                     continue;
@@ -971,11 +976,16 @@ class Unirgy_Dropship_Model_Vendor extends Mage_Core_Model_Abstract
                 if (!@move_uploaded_file($img['tmp_name'], $baseDir.DS.$img['name'])) {
                     Mage::throwException('Error while uploading file: '.$img['name']);
                 }
+                $changedFields[] = $k;
                 $this->setData($k, 'vendor/'.$this->getId().'/'.$img['name']);
             }
-            $this->save();
+            if (!empty($changedFields)) {
+                $this->_hasImageUpload = true;
+                $changedFields[] = 'custom_vars_combined';
+                Mage::helper('udropship')->processCustomVars($this);
+                Mage::getResourceSingleton('udropship/helper')->updateModelFields($this, $changedFields);
+            }
         }
-        $this->_inAfterSave = false;
     }
 
     public function afterCommitCallback()
@@ -986,6 +996,7 @@ class Unirgy_Dropship_Model_Vendor extends Mage_Core_Model_Abstract
             );
         }
         parent::afterCommitCallback();
+        $this->_hasImageUpload = false;
         return $this;
     }
 
@@ -1002,6 +1013,19 @@ class Unirgy_Dropship_Model_Vendor extends Mage_Core_Model_Abstract
     public function isZipcodeMatch($zipCode)
     {
     	return Mage::helper('udropship')->isZipcodeMatch($zipCode, $this->getLimitZipcode());
+    }
+    public function isAddressMatch($address)
+    {
+        $result = true;
+        static $transport;
+        if ($transport === null) {
+            $transport = new Varien_Object;
+        }
+        $transport->setAllowed($result);
+        if ($address) {
+            Mage::dispatchEvent('udropship_vendor_is_address_match', array('address' => $address, 'vendor' => $this, 'transport' => $transport));
+        }
+        return $transport->getAllowed();
     }
 
     protected function _afterLoad()
@@ -1116,7 +1140,7 @@ class Unirgy_Dropship_Model_Vendor extends Mage_Core_Model_Abstract
     {
         if (!Mage::helper('udropship')->isModuleActive('Unirgy_DropshipMicrositePro')) return false;
         $pageId = Mage::getStoreConfig('web/default/umicrosite_default_landingpage');
-        if (-1!=$this->getData('cms_landing_page')) {
+        if (-1!=$this->getData('cms_landing_page') && $this->getData('cms_landing_page')) {
             $pageId = $this->getData('cms_landing_page');
         }
         return $pageId;

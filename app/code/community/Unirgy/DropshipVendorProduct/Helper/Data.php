@@ -303,7 +303,7 @@ class Unirgy_DropshipVendorProduct_Helper_Data extends Mage_Core_Helper_Abstract
         }
 
         if (!$product->getStockItem() || $this->hasDataChanged($product->getStockItem())) {
-            $attrChanged['stock.data'] = $this->__('Stock Data');
+            $attrChanged['stock.data'] = Mage::helper('udropship')->__('Stock Data');
             Mage::helper('udprod')->setNeedToUnpublish($product, 'stock_changed');
         }
 
@@ -371,6 +371,7 @@ class Unirgy_DropshipVendorProduct_Helper_Data extends Mage_Core_Helper_Abstract
         $prHlp = Mage::helper('udprod');
         $newPids = array();
         if ('configurable' == $prod->getTypeId()) {
+            $cfgFirstAttrs = $this->getCfgFirstAttributes($prod, $isNew);
             $cfgFirstAttr = $this->getCfgFirstAttribute($prod, $isNew);
             $cfgFirstAttrId = $cfgFirstAttr->getId();
             $cfgFirstAttrCode = $cfgFirstAttr->getAttributeCode();
@@ -381,7 +382,13 @@ class Unirgy_DropshipVendorProduct_Helper_Data extends Mage_Core_Helper_Abstract
             if (is_array($quickCreate)) {
             $allExistingQC = Mage::helper('udprod')->getEditSimpleProductData($prod, true);
             foreach ($quickCreate as $_qcKey => $qc) {
-                $cfgFirstAttrKey = $cfgFirstAttrId.'-'.$qc[$cfgFirstAttrCode];
+                $cfgFirstAttrKey = '';
+                foreach ($cfgFirstAttrs as $__ca) {
+                    $__id = $__ca->getAttributeId();
+                    $__code = $__ca->getAttributeCode();
+                    $cfgFirstAttrKey .= $__id.'-'.$qc[$__code].'-';
+                }
+                $cfgFirstAttrKey = rtrim($cfgFirstAttrKey, '-');
                 if ($_qcKey == '$ROW') continue;
                 $pId = @$qc['simple_id'];
                 $qcMP = (array)@$qc['udmulti'];
@@ -484,7 +491,11 @@ class Unirgy_DropshipVendorProduct_Helper_Data extends Mage_Core_Helper_Abstract
                         }
                     }
                     $autogenerateOptions = array();
-                    $ufName = $prod->formatUrlKey(@$qc['name']);
+                    if (!Mage::getStoreConfigFlag('udprod/general/disable_name_check')) {
+                        $ufName = $prod->formatUrlKey(@$qc['name']);
+                    } else {
+                        $ufName = @$qc['name'];
+                    }
                     $ufName = trim($ufName);
                     foreach (Mage::helper('udprod')->getConfigurableAttributes($prod, $isNew) as $attribute) {
                         if ($attribute->getAttributeCode()!='name'||$ufName) {
@@ -495,7 +506,11 @@ class Unirgy_DropshipVendorProduct_Helper_Data extends Mage_Core_Helper_Abstract
                     }
                     if (!$pId) {
                         if (empty($qc['name']) || !$ufName || !empty($qc['name_auto'])) {
-                            $qcProd->setName($prod->getName().'-'.implode('-', $autogenerateOptions));
+                            $autoName = $prod->getName().'-'.implode('-', $autogenerateOptions);
+                            if (!Mage::getStoreConfigFlag('udprod/general/disable_name_check')) {
+                                $autoName = $prod->formatUrlKey($autoName);
+                            }
+                            $qcProd->setName($autoName);
                         }
                         $qcProd->setVisibility(Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE);
                     }
@@ -672,7 +687,7 @@ class Unirgy_DropshipVendorProduct_Helper_Data extends Mage_Core_Helper_Abstract
             $_descrText = sprintf('id: %s; sku: %s; stock qty: %s; stock status: %s;',
                 $csdProd->getId(), $csdProd->getSku(),
                 $csdSI->getQty(),
-                ($csdSI->getIsInStock() ? $siHlp->__('In Stock') : $siHlp->__('Out of Stock'))
+                ($csdSI->getIsInStock() ? Mage::helper('udropship')->__('In Stock') : Mage::helper('udropship')->__('Out of Stock'))
             );
             foreach (Mage::helper('udprod')->getConfigurableAttributes($prod, $isNew) as $cfgAttr) {
                 $_descrText .= sprintf('%s [%s]: %s;',
@@ -701,15 +716,16 @@ class Unirgy_DropshipVendorProduct_Helper_Data extends Mage_Core_Helper_Abstract
 
     public function processQcMediaChange($prod, $qcProd, $isNew)
     {
-        $cfgFirstAttr = $this->getCfgFirstAttribute($prod, $isNew);
-        $cfgFirstAttrId = $cfgFirstAttr->getId();
-        $cfgFirstAttrCode = $cfgFirstAttr->getAttributeCode();
-        $mediaImgKey = sprintf('media_gallery/cfg_images/%s-%s',
-            $cfgFirstAttrId, $qcProd->getData($cfgFirstAttrCode)
-        );
-        $mediaImgValKey = sprintf('media_gallery/cfg_values/%s-%s',
-            $cfgFirstAttrId, $qcProd->getData($cfgFirstAttrCode)
-        );
+        $cfgFirstAttrs = $this->getCfgFirstAttributes($prod, $isNew);
+        $cfgFirstAttrKey = '';
+        foreach ($cfgFirstAttrs as $__ca) {
+            $__id = $__ca->getAttributeId();
+            $__code = $__ca->getAttributeCode();
+            $cfgFirstAttrKey .= $__id.'-'.$qcProd->getData($__code).'-';
+        }
+        $cfgFirstAttrKey = rtrim($cfgFirstAttrKey, '-');
+        $mediaImgKey = sprintf('media_gallery/cfg_images/'.$cfgFirstAttrKey);
+        $mediaImgValKey = sprintf('media_gallery/cfg_values/'.$cfgFirstAttrKey);
         $mediaGallery = array(
             'images' => $prod->getData($mediaImgKey),
             'values' => $prod->getData($mediaImgValKey),
@@ -750,9 +766,8 @@ class Unirgy_DropshipVendorProduct_Helper_Data extends Mage_Core_Helper_Abstract
         }
         $qcProd->setData('media_gallery', $mediaGallery);
         foreach ($qcProd->getMediaAttributes() as $_mAttr) {
-            $mediaAttrKey = sprintf('media_gallery/cfg_attributes/%s-%s/%s',
-                $cfgFirstAttrId,
-                $qcProd->getData($cfgFirstAttrCode),
+            $mediaAttrKey = sprintf('media_gallery/cfg_attributes/%s/%s',
+                $cfgFirstAttrKey,
                 $_mAttr->getAttributeCode()
             );
             $qcProd->setData($_mAttr->getAttributeCode(), $prod->getData($mediaAttrKey));
@@ -1273,12 +1288,50 @@ class Unirgy_DropshipVendorProduct_Helper_Data extends Mage_Core_Helper_Abstract
         }
         return $usedCfgAttrs;
     }
+    public function getCfgFirstAttributes($product, $isNew=null)
+    {
+        $isNew = null === $isNew ? !$product->getId() : $isNew;
+        $attrs = $this->getIdentifyImageAttributes($product, $isNew);
+        if (empty($attrs)) {
+            $attrs[] = $this->getCfgFirstAttribute($product, $isNew);
+        }
+        return $attrs;
+    }
     public function getCfgFirstAttribute($product, $isNew=null)
     {
         $isNew = null === $isNew ? !$product->getId() : $isNew;
         $cfgAttributes = Mage::helper('udprod')->getConfigurableAttributes($product, $isNew);
         $cfgAttribute = !empty($cfgAttributes) ? array_shift($cfgAttributes) : false;
         return $cfgAttribute;
+    }
+    public function getCfgFirstAttributesValueTuples($product, $pair=false)
+    {
+        $cfgAttributes = $this->getCfgFirstAttributes($product);
+        $usedValueTuples = array();
+        $simpleProds = Mage::helper('udprod')->getEditSimpleProductData($product);
+        foreach ($simpleProds as $simpleProd) {
+            $simpleProd = $simpleProd['product'];
+            $usedValue = array();
+            foreach ($cfgAttributes as $__i=>$cfgAttribute) {
+                $usedValue[] = $simpleProd->getData($cfgAttribute->getAttributeCode());
+            }
+            $usedValueTuples[implode('-',$usedValue)] = $usedValue;
+        }
+        $usedValueTuples = array_values($usedValueTuples);
+        $valueTuples = array();
+        foreach ($usedValueTuples as $usedValue) {
+            $valueTuple = array();
+            foreach ($cfgAttributes as $__i=>$cfgAttribute) {
+                $values = $cfgAttribute->getSource()->getAllOptions();
+                foreach ($values as $value) {
+                    if ($value['value']==$usedValue[$__i]) {
+                        $valueTuple[$__i] = $pair ? $value : $value['value'];
+                    }
+                }
+            }
+            $valueTuples[] = $valueTuple;
+        }
+        return $valueTuples;
     }
     public function getCfgFirstAttributeValues($product, $used=null, $filters=array(), $filterFlag=true)
     {
@@ -1303,29 +1356,20 @@ class Unirgy_DropshipVendorProduct_Helper_Data extends Mage_Core_Helper_Abstract
     public function getIdentifyImageAttributes($prod, $isNew)
     {
         $vendor = Mage::helper('udropship')->getVendor($prod->getUdropshipVendor());
-        $cfgFirstAttr = Mage::helper('udprod')->getCfgFirstAttribute($prod, $isNew);
-        $cfgFirstAttrId = $cfgFirstAttr->getId();
         $usedCfgAttrs = array();
         if ($prod->getId() && !$isNew) {
             $_usedCfgAttrs = $prod->getTypeInstance(true)->getConfigurableAttributes($prod);
             foreach ($_usedCfgAttrs as $_usedCfgAttr) {
-                if ($_usedCfgAttr->getIdentifyImage()
-                    || $cfgFirstAttrId==$_usedCfgAttr->getId()
-                ) {
+                if ($_usedCfgAttr->getIdentifyImage()) {
                     $usedCfgAttrs[] = $_usedCfgAttr->getProductAttribute();
                 }
             }
         } else {
             $cfgAttributes = $prod->getTypeInstance(true)->getSetAttributes($prod);
-            $usedCfgAttrIds = Mage::helper('udprod')->getTplIdentifyImageAttributes(
-                $vendor,
-                $prod->getAttributeSetId()
-            );
+            $usedCfgAttrIds = $this->getTplIdentifyImageAttributes($vendor);
             if (is_array($usedCfgAttrIds)) {
                 foreach ($cfgAttributes as $cfgAttribute) {
-                    if (in_array($cfgAttribute->getId(), $usedCfgAttrIds)
-                        || $cfgFirstAttrId==$cfgAttribute->getId()
-                    ) {
+                    if (in_array($cfgAttribute->getId(), $usedCfgAttrIds)) {
                         $usedCfgAttrs[] = $cfgAttribute;
                     }
                 }
@@ -1550,11 +1594,11 @@ class Unirgy_DropshipVendorProduct_Helper_Data extends Mage_Core_Helper_Abstract
         $editFields['product']['label'] = 'Product Attributes';
         $editFields['product']['values'] = $paValues;
         if (Mage::helper('udropship')->isUdmultiActive()) {
-            $editFields['udmulti']['label'] = Mage::helper('udmulti')->__('Vendor Specific Fields');
+            $editFields['udmulti']['label'] = Mage::helper('udropship')->__('Vendor Specific Fields');
             $editFields['udmulti']['values']  = $this->getVendorEditFieldsConfig();
         } else {
-            $sdValues['stock_data.qty'] = Mage::helper('cataloginventory')->__('Stock Qty').' [stock_item.qty]';
-            $sdValues['stock_data.is_in_stock'] = Mage::helper('cataloginventory')->__('Stock Status').' [stock_item.is_in_stock]';
+            $sdValues['stock_data.qty'] = Mage::helper('udropship')->__('Stock Qty').' [stock_item.qty]';
+            $sdValues['stock_data.is_in_stock'] = Mage::helper('udropship')->__('Stock Status').' [stock_item.is_in_stock]';
             $editFields['stock_data']['label'] = Mage::helper('udropship')->__('Stock Item Fields');
             $editFields['stock_data']['values']  = $sdValues;
         }
@@ -1579,21 +1623,21 @@ class Unirgy_DropshipVendorProduct_Helper_Data extends Mage_Core_Helper_Abstract
 
         $editFields['system']['label'] = 'System Attributes';
         $editFields['system']['values'] = array(
-            'system.product_categories' => Mage::helper('catalog')->__('Categories'),
-            'system.product_websites'   => Mage::helper('catalog')->__('Websites')
+            'system.product_categories' => Mage::helper('udropship')->__('Categories'),
+            'system.product_websites'   => Mage::helper('udropship')->__('Websites')
         );
 
         if (Mage::helper('udropship')->isUdmultiActive()) {
-            $editFields['udmulti']['label'] = Mage::helper('udmulti')->__('Vendor Specific Fields');
+            $editFields['udmulti']['label'] = Mage::helper('udropship')->__('Vendor Specific Fields');
             $editFields['udmulti']['values']  = $this->getVendorEditFieldsConfig();
         } else {
-            $sdValues['stock_data.qty'] = Mage::helper('cataloginventory')->__('Stock Qty').' [stock_item.qty]';
-            $sdValues['stock_data.is_in_stock'] = Mage::helper('cataloginventory')->__('Stock Status').' [stock_item.is_in_stock]';
-            $sdValues['stock_data.manage_stock'] = Mage::helper('cataloginventory')->__('Manage Stock').' [stock_item.manage_stock]';
-            $sdValues['stock_data.backorders'] = Mage::helper('cataloginventory')->__('Backorders').' [stock_item.backorders]';
-            $sdValues['stock_data.min_qty'] = Mage::helper('cataloginventory')->__('Qty for Item\'s Status to Become Out of Stock').' [stock_item.min_qty]';
-            $sdValues['stock_data.min_sale_qty'] = Mage::helper('cataloginventory')->__('Minimum Qty Allowed in Shopping Cart').' [stock_item.min_sale_qty]';
-            $sdValues['stock_data.max_sale_qty'] = Mage::helper('cataloginventory')->__('Maximum Qty Allowed in Shopping Cart').' [stock_item.max_sale_qty]';
+            $sdValues['stock_data.qty'] = Mage::helper('udropship')->__('Stock Qty').' [stock_item.qty]';
+            $sdValues['stock_data.is_in_stock'] = Mage::helper('udropship')->__('Stock Status').' [stock_item.is_in_stock]';
+            $sdValues['stock_data.manage_stock'] = Mage::helper('udropship')->__('Manage Stock').' [stock_item.manage_stock]';
+            $sdValues['stock_data.backorders'] = Mage::helper('udropship')->__('Backorders').' [stock_item.backorders]';
+            $sdValues['stock_data.min_qty'] = Mage::helper('udropship')->__('Qty for Item\'s Status to Become Out of Stock').' [stock_item.min_qty]';
+            $sdValues['stock_data.min_sale_qty'] = Mage::helper('udropship')->__('Minimum Qty Allowed in Shopping Cart').' [stock_item.min_sale_qty]';
+            $sdValues['stock_data.max_sale_qty'] = Mage::helper('udropship')->__('Maximum Qty Allowed in Shopping Cart').' [stock_item.max_sale_qty]';
             $editFields['stock_data']['label'] = Mage::helper('udropship')->__('Stock Item Fields');
             $editFields['stock_data']['values']  = $sdValues;
         }
@@ -1602,7 +1646,7 @@ class Unirgy_DropshipVendorProduct_Helper_Data extends Mage_Core_Helper_Abstract
     public function getEditFieldsConfigSelect2Json()
     {
         $fConfig = $this->getEditFieldsConfig();
-        $fRes = array(array('id'=>'','text'=>$this->__('* Please select')));
+        $fRes = array(array('id'=>'','text'=>Mage::helper('udropship')->__('* Please select')));
         foreach ($fConfig as $efc) {
             if (!is_array($efc['values'])) continue;
             $_fRes = array(
@@ -1621,21 +1665,23 @@ class Unirgy_DropshipVendorProduct_Helper_Data extends Mage_Core_Helper_Abstract
     public function getVendorEditFieldsConfig()
     {
         $udmHlp = Mage::helper('udmulti');
-        $udmv['udmulti.vendor_sku']        = $udmHlp->__('Vendor SKU ').' [udmulti.vendor_sku]';
-        $udmv['udmulti.stock_qty']         = $udmHlp->__('Vendor Stock Qty ').' [udmulti.stock_qty]';
-        $udmv['udmulti.vendor_cost']       = $udmHlp->__('Vendor Cost ').' [udmulti.vendor_cost]';
-        $udmv['udmulti.status']            = $udmHlp->__('Vendor Status ').' [udmulti.status]';
-        $udmv['udmulti.backorders']        = $udmHlp->__('Vendor Backorders ').' [udmulti.backorders]';
+        $udmv['udmulti.vendor_sku']        = Mage::helper('udropship')->__('Vendor SKU ').' [udmulti.vendor_sku]';
+        $udmv['udmulti.stock_qty']         = Mage::helper('udropship')->__('Vendor Stock Qty ').' [udmulti.stock_qty]';
+        $udmv['udmulti.vendor_cost']       = Mage::helper('udropship')->__('Vendor Cost ').' [udmulti.vendor_cost]';
+        $udmv['udmulti.status']            = Mage::helper('udropship')->__('Vendor Status ').' [udmulti.status]';
+        $udmv['udmulti.backorders']        = Mage::helper('udropship')->__('Vendor Backorders ').' [udmulti.backorders]';
         if (Mage::helper('udropship')->isUdmultiPriceAvailable()) {
-        $udmv['udmulti.vendor_price']      = $udmHlp->__('Vendor Price ').' [udmulti.vendor_price]';
-        $udmv['udmulti.special_price']     = $udmHlp->__('Vendor Special Price ').' [udmulti.special_price]';
-        $udmv['udmulti.special_from_date'] = $udmHlp->__('Vendor Special From Date ').' [udmulti.special_from_date]';
-        $udmv['udmulti.special_to_date']   = $udmHlp->__('Vendor Special To Date ').' [udmulti.special_to_date]';
-        $udmv['udmulti.freeshipping']      = $udmHlp->__('Vendor Free Shipping ').' [udmulti.freeshipping]';
-        $udmv['udmulti.shipping_price']    = $udmHlp->__('Vendor Shipping Price ').' [udmulti.shipping_price]';
-        $udmv['udmulti.state']             = $udmHlp->__('Vendor State(Condition) ').' [udmulti.state]';
-        $udmv['udmulti.state_descr']       = $udmHlp->__('Vendor State Description ').' [udmulti.state_descr]';
-        $udmv['udmulti.vendor_title']      = $udmHlp->__('Vendor Title ').' [udmulti.vendor_title]';
+        $udmv['udmulti.vendor_price']      = Mage::helper('udropship')->__('Vendor Price ').' [udmulti.vendor_price]';
+        $udmv['udmulti.group_price']       = Mage::helper('udropship')->__('Vendor Group Price ').' [udmulti.group_price]';
+        $udmv['udmulti.tier_price']        = Mage::helper('udropship')->__('Vendor Tier Price ').' [udmulti.tier_price]';
+        $udmv['udmulti.special_price']     = Mage::helper('udropship')->__('Vendor Special Price ').' [udmulti.special_price]';
+        $udmv['udmulti.special_from_date'] = Mage::helper('udropship')->__('Vendor Special From Date ').' [udmulti.special_from_date]';
+        $udmv['udmulti.special_to_date']   = Mage::helper('udropship')->__('Vendor Special To Date ').' [udmulti.special_to_date]';
+        $udmv['udmulti.freeshipping']      = Mage::helper('udropship')->__('Vendor Free Shipping ').' [udmulti.freeshipping]';
+        $udmv['udmulti.shipping_price']    = Mage::helper('udropship')->__('Vendor Shipping Price ').' [udmulti.shipping_price]';
+        $udmv['udmulti.state']             = Mage::helper('udropship')->__('Vendor State(Condition) ').' [udmulti.state]';
+        $udmv['udmulti.state_descr']       = Mage::helper('udropship')->__('Vendor State Description ').' [udmulti.state_descr]';
+        $udmv['udmulti.vendor_title']      = Mage::helper('udropship')->__('Vendor Title ').' [udmulti.vendor_title]';
         }
         return $udmv;
     }

@@ -235,10 +235,12 @@ class Bronto_Common_Helper_Support extends Bronto_Common_Helper_Data
 
         $yesNo         = Mage::getModel('adminhtml/system_config_source_yesno');
         foreach (array('using_solution_partner', 'terms') as $formKey) {
-            $selectedValue = $formData[$formKey];
-            foreach ($yesNo->toOptionArray() as $option) {
-                if ($option['value'] == $selectedValue) {
-                    $formData[$formKey] = $option['label'];
+            if (array_key_exists($formKey, $formData)) {
+                $selectedValue = $formData[$formKey];
+                foreach ($yesNo->toOptionArray() as $option) {
+                    if ($option['value'] == $selectedValue) {
+                        $formData[$formKey] = $option['label'];
+                    }
                 }
             }
         }

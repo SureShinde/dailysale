@@ -43,13 +43,13 @@
   </modules>
     <admin>
         <routers>
-            <mageworx>
-                <use>admin</use>
-                <args>
-                    <module>MageWorx_Adminhtml</module>
-                    <frontName>mageworx</frontName>
-                </args>
-            </mageworx>
+            <adminhtml>
+				<args>
+					<modules>
+						<mageworx before="Mage_Adminhtml">MageWorx_Adminhtml</mageworx>
+					</modules>
+				</args>
+			</adminhtml>
         </routers>
     </admin>
     <adminhtml>

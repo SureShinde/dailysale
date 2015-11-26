@@ -46,7 +46,7 @@ class Unirgy_DropshipTierCommission_Block_Adminhtml_VendorEditTab_ComRates_Rende
 
     public function getGlobalTierComConfig()
     {
-        $value = Mage::getStoreConfig('udropship/tiercom/rates');
+        $value = Mage::getStoreConfig('udropship/tiercom/rates', $this->getStore());
         if (is_string($value)) {
             $value = unserialize($value);
         }
@@ -55,6 +55,9 @@ class Unirgy_DropshipTierCommission_Block_Adminhtml_VendorEditTab_ComRates_Rende
 
     public function getStore()
     {
-        return Mage::app()->getDefaultStoreView();
+        if ($this->getElement()->getStore()) {
+            return $this->getElement()->getStore();
+        }
+        return Mage_Core_Model_App::ADMIN_STORE_ID;
     }
 }

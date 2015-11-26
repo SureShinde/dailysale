@@ -121,7 +121,7 @@ class Amasty_Audit_Adminhtml_LogController extends Mage_Adminhtml_Controller_Act
         }
         $element->save();
 
-        $backUrl = $this->getUrl('amaudit/adminhtml_log');
+        $backUrl = $this->getUrl('adminhtml/log');
         $this->getResponse()->setRedirect($backUrl);
     }
 }

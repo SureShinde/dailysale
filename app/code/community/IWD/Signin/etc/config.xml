@@ -52,19 +52,6 @@
 		</translate>
 		
     </frontend>
-	
-	
-	 <admin>
-		<routers>
-			<signin>
-				<use>admin</use>
-				<args>
-					<module>IWD_Signin</module>
-					<frontName>signin</frontName>
-				</args>
-			</signin>
-        </routers>
-    </admin>
     
     <adminhtml>
     

@@ -14,7 +14,7 @@ class Amasty_Audit_Block_Adminhtml_Tooltip extends Mage_Core_Block_Template
     
     public function getAjaxUrl()
     {
-        $url = $this->getUrl('amaudit/adminhtml_ajax/ajax');
+        $url = $this->getUrl('adminhtml/ajax/ajax');
         if (isset($_SERVER['HTTPS']) && 'off' != $_SERVER['HTTPS'] && $_SERVER['HTTPS'] != "")
         {
             $url = str_replace('http:', 'https:', $url);

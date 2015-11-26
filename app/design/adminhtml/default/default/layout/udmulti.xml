@@ -63,14 +63,14 @@
     </adminhtml_catalog_product_edit>
     -->
 
-    <udpoadmin_order_po_new>
+    <adminhtml_udpoadmin_order_po_new>
         <reference name="before_body_end">
             <block type="udmulti/adminhtml_order_js" name="udmulti_po_js" template="udmulti/po/js.phtml" />
         </reference>
-    </udpoadmin_order_po_new>
-    <udpoadmin_order_po_updateqty>
+    </adminhtml_udpoadmin_order_po_new>
+    <adminhtml_udpoadmin_order_po_updateqty>
         <block type="udmulti/adminhtml_order_js" name="udmulti_po_js" template="udmulti/po/js.phtml" />
-    </udpoadmin_order_po_updateqty>
+    </adminhtml_udpoadmin_order_po_updateqty>
 
     <adminhtml_sales_order_view>
         <reference name="before_body_end">

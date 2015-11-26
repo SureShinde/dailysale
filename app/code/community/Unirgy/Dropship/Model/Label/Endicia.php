@@ -224,6 +224,7 @@ class Unirgy_Dropship_Model_Label_Endicia
                 $value += ($item->getBasePrice() ? $item->getBasePrice() : $item->getPrice())*$_qty;
             }
         }
+        $value = round($value, 2);
 
         $length = $track->getLength() ? $track->getLength() : $v->getDefaultPkgLength();
         $width = $track->getWidth() ? $track->getWidth() : $v->getDefaultPkgWidth();

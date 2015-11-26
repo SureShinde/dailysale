@@ -7,7 +7,7 @@
  */
 -->
 <layout>
-    <amaudit_adminhtml_log_edit>
+    <adminhtml_log_edit>
         <reference name="head">
             <action method="addItem">
                 <type>skin_css</type>
@@ -42,9 +42,9 @@
                    name='amaudit_userlog_edit_tab_view_details_popup'>
             </block>
         </reference>
-    </amaudit_adminhtml_log_edit>
+    </adminhtml_log_edit>
 
-    <amaudit_adminhtml_log_index>
+    <adminhtml_log_index>
         <reference name="head">
             <action method="addCss">
                 <name>css/amasty/amaudit.css</name>
@@ -64,7 +64,7 @@
         <reference name="content">
             <block type="amaudit/adminhtml_tooltip" name="tooltip" template="amaudit/tooltip.phtml"/>
         </reference>
-    </amaudit_adminhtml_log_index>
+    </adminhtml_log_index>
 
     <adminhtml_catalog_product_edit>
         <update handle="amaudit_adminhtml_log_index"/>

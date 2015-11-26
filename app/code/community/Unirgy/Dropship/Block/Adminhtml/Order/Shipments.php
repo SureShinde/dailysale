@@ -41,31 +41,31 @@ class Unirgy_Dropship_Block_Adminhtml_Order_Shipments
     protected function _prepareColumns()
     {
         $this->addColumn('increment_id', array(
-            'header' => Mage::helper('sales')->__('Shipment #'),
+            'header' => Mage::helper('udropship')->__('Shipment #'),
             'index' => 'increment_id',
         ));
 
         $this->addColumn('created_at', array(
-            'header' => Mage::helper('sales')->__('Date Shipped'),
+            'header' => Mage::helper('udropship')->__('Date Shipped'),
             'index' => 'created_at',
             'type' => 'datetime',
         ));
 
         $this->addColumn('total_qty', array(
-            'header' => Mage::helper('sales')->__('Total Qty'),
+            'header' => Mage::helper('udropship')->__('Total Qty'),
             'index' => 'total_qty',
             'type'  => 'number',
         ));
 
         $this->addColumn('base_shipping_amount', array(
-            'header' => Mage::helper('sales')->__('Shipping Price'),
+            'header' => Mage::helper('udropship')->__('Shipping Price'),
             'index' => 'base_shipping_amount',
             'type'  => 'price',
             'currency_code' => $this->getOrder()->getBaseCurrencyCode(),
         ));
 
         $this->addColumn('udropship_status', array(
-            'header' => Mage::helper('sales')->__('Status'),
+            'header' => Mage::helper('udropship')->__('Status'),
             'index' => 'udropship_status',
             'type' => 'options',
             'options' => Mage::getSingleton('udropship/source')->setPath('shipment_statuses')->toOptionHash(),

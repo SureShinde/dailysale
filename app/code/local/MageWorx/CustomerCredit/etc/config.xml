@@ -88,13 +88,13 @@
     </frontend>
     <admin>
         <routers>
-            <admincustomercredit>
-                <use>admin</use>
-                <args>
-                    <module>MageWorx_CustomerCredit</module>
-                    <frontName>admincustomercredit</frontName>
-                </args>
-            </admincustomercredit>
+            <adminhtml>
+				<args>
+					<modules>
+						<admincustomercredit before="Mage_Adminhtml">MageWorx_CustomerCredit_Adminhtml</admincustomercredit>
+					</modules>
+				</args>
+			</adminhtml>
         </routers>
     </admin>
     <adminhtml>

@@ -24,12 +24,12 @@ class Unirgy_Rma_Block_Adminhtml_Rma_View_Tab_Info
      */
     public function getTabLabel()
     {
-        return Mage::helper('sales')->__('Information');
+        return Mage::helper('udropship')->__('Information');
     }
 
     public function getTabTitle()
     {
-        return Mage::helper('sales')->__('Order Information');
+        return Mage::helper('udropship')->__('Order Information');
     }
 
     public function canShowTab()

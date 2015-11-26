@@ -132,6 +132,15 @@
                         </li>
                     <?php endif ?>
                 <?php endfor ?>
+                <li id='shipping_fiuze_adress_server_error' style="background-color: #ff0000; padding: 10px; width: 80%; display: none">
+
+                </li>
+                <li id='shipping_fiuze_adress_error' style="background-color: #ff0000; padding: 10px; width: 80%; display: none">
+                    <span style="color: white"> Please enter a valid address </span>
+                </li>
+                <li id='shipping_fiuze_adress_progress' >
+
+                </li>
                     <?php if ($checkCountry == 0): ?>
                     <div style="display:none;">
                     <?php echo $this->getCountryHtmlSelect('shipping') ?>
@@ -143,7 +152,10 @@
                     <li><input type="hidden" name="shipping[save_in_address_book]" value="1" /></li>
     <?php endif; ?>
             </ul>
-        </fieldset> 
+        </fieldset>
+    </div>
+    <div id="fiuze_shipping_address_write_error"  style="display: none;">
+        <span style="display: inline-block; padding:13px; margin:20px; background-color: rgb(255, 0, 0); color: white"> Please enter a valid address </span>
     </div>
 <?php endif; ?>
 <script type="text/javascript">

@@ -97,6 +97,7 @@ class Unirgy_DropshipMulti_Model_Method_Abstract extends Varien_Object
                 $data['stock_qty'] = is_null($vp->getStockQty()) || $vp->getStockQty()==='' ? null : 1*$vp->getStockQty();
                 $data['vendor_sku'] = $vp->getVendorSku() ? $vp->getVendorSku() : $skus[$pId];
                 $data['vendor_cost'] = $vp->getVendorCost() ? $vp->getVendorCost() : $costs[$pId];
+                $data['address_match'] = $v->isAddressMatch($hlp->getAddressByItem($itemsByPid[$pId]));
                 $data['zipcode_match'] = $v->isZipcodeMatch($hlp->getZipcodeByItem($itemsByPid[$pId]));
                 $data['country_match'] = $v->isCountryMatch($hlp->getCountryByItem($itemsByPid[$pId]));
                 $requests[$method]['products'][$pId]['vendors'][$vId] = $data;

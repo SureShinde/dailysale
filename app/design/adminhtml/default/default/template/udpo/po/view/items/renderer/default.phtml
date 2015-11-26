@@ -28,18 +28,18 @@ $qtyLast = !$isViewCost ? 'last' : '';
     <td class="<?php echo $qtyLast?> ">
         <table cellspacing="0" class="qty-table">
             <tr>
-                <td style="white-space:nowrap"><?php echo Mage::helper('udpo')->__('PO Sent') ?></td>
+                <td style="white-space:nowrap"><?php echo Mage::helper('udropship')->__('PO Sent') ?></td>
                 <td><strong><?php echo $_item->getQty()*1 ?></strong></td>
             </tr>
             <?php if ((float) $_item->getQtyCanceled()): ?>
             <tr>
-                <td style="white-space:nowrap"><?php echo Mage::helper('udpo')->__('PO Canceled') ?></td>
+                <td style="white-space:nowrap"><?php echo Mage::helper('udropship')->__('PO Canceled') ?></td>
                 <td><strong><?php echo $_item->getQtyCanceled()*1 ?></strong></td>
             </tr>
             <?php endif; ?>
             <?php if ((float) $_item->getQtyShipped()): ?>
             <tr>
-                <td><?php echo Mage::helper('sales')->__('Shipped') ?></td>
+                <td><?php echo Mage::helper('udropship')->__('Shipped') ?></td>
                 <td><strong><?php echo $_item->getQtyShipped()*1 ?></strong></td>
             </tr>
             <?php endif; ?>

@@ -230,28 +230,28 @@ class Unirgy_DropshipPayout_Model_Mysql4_Payout_Collection extends Mage_Core_Mod
         foreach ($this as $pt) {
             if ($pt->getPayoutStatus() == Unirgy_DropshipPayout_Model_Payout::STATUS_PAID) { 
                 $pt->addMessage(
-                    $ptHlp->__("This payout already paid")
+                    Mage::helper('udropship')->__("This payout already paid")
                 );
                 $pt->save();
                 continue;
             }
             if ($pt->getPayoutStatus() == Unirgy_DropshipPayout_Model_Payout::STATUS_CANCELED) { 
                 $pt->addMessage(
-                    $ptHlp->__("This payout is canceled")
+                    Mage::helper('udropship')->__("This payout is canceled")
                 );
                 $pt->save();
                 continue;
             }
             if ($pt->getPayoutStatus() == Unirgy_DropshipPayout_Model_Payout::STATUS_PAYPAL_IPN) { 
                 $pt->addMessage(
-                    $ptHlp->__("This payout wait paypal IPN")
+                    Mage::helper('udropship')->__("This payout wait paypal IPN")
                 );
                 $pt->save();
                 continue;
             }
             if ($pt->getTotalDue()<=0) {
                 $pt->addMessage(
-                    $ptHlp->__('Payout "total due" must be positive'), 
+                    Mage::helper('udropship')->__('Payout "total due" must be positive'),
                     Unirgy_DropshipPayout_Model_Payout::STATUS_ERROR
                 );
                 $pt->save();
@@ -259,7 +259,7 @@ class Unirgy_DropshipPayout_Model_Mysql4_Payout_Collection extends Mage_Core_Mod
             }
             if (!$pt->getPayoutMethod()) {
                 $pt->addMessage(
-                    $ptHlp->__('Empty payout method'), 
+                    Mage::helper('udropship')->__('Empty payout method'),
                     Unirgy_DropshipPayout_Model_Payout::STATUS_ERROR
                 );
                 $pt->save();
@@ -270,7 +270,7 @@ class Unirgy_DropshipPayout_Model_Mysql4_Payout_Collection extends Mage_Core_Mod
                 $methodClass = $pmNode->getClassName();
                 if (!class_exists($methodClass)) {
                     $pt->addMessage(
-                        $ptHlp->__("Can't find payout method class"), 
+                        Mage::helper('udropship')->__("Can't find payout method class"),
                         Unirgy_DropshipPayout_Model_Payout::STATUS_ERROR
                     );
                     $pt->save();
@@ -295,7 +295,7 @@ class Unirgy_DropshipPayout_Model_Mysql4_Payout_Collection extends Mage_Core_Mod
                         if (!Mage::getStoreConfigFlag('udropship/payout_paypal/use_ipn')) {
                             $pt->afterPay();
                         } else {
-                            $pt->addMessage(Mage::helper('udpayout')->__('Successfully send payment. Waiting for IPN to complete.'), Unirgy_DropshipPayout_Model_Payout::STATUS_PAYPAL_IPN)->setIsJustPaid(true);
+                            $pt->addMessage(Mage::helper('udropship')->__('Successfully send payment. Waiting for IPN to complete.'), Unirgy_DropshipPayout_Model_Payout::STATUS_PAYPAL_IPN)->setIsJustPaid(true);
                         }
                         $pt->save();
                     }

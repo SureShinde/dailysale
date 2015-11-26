@@ -28,6 +28,7 @@ class Fiuze_Dailysale_AccountController extends Mage_Customer_AccountController
             'logoutsuccess',
             'forgotpassword',
             'forgotpasswordpost',
+            'changeforgotten',
             'resetpassword',
             'resetpasswordpost',
             'confirm',

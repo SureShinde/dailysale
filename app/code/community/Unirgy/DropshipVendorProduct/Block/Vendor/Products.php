@@ -94,11 +94,11 @@ class Unirgy_DropshipVendorProduct_Block_Vendor_Products extends Mage_Core_Block
         }
         $param = $r->getParam('filter_price_from');
         if (!is_null($param) && $param!=='') {
-            $collection->addAttributeToFilter('cost', array('gteq'=>$param));
+            $collection->addAttributeToFilter('price', array('gteq'=>$param));
         }
         $param = $r->getParam('filter_price_to');
         if (!is_null($param) && $param!=='') {
-            $collection->addAttributeToFilter('cost', array('lteq'=>$param));
+            $collection->addAttributeToFilter('price', array('lteq'=>$param));
         }
         return $this;
     }
@@ -144,7 +144,7 @@ class Unirgy_DropshipVendorProduct_Block_Vendor_Products extends Mage_Core_Block
             $collection = Mage::getResourceModel('udprod/product_collection')
                 ->setFlag('has_group_entity', 1)
                 ->addAttributeToFilter('type_id', array('in'=>array('simple','configurable','downloadable','virtual')))
-                ->addAttributeToSelect(array('sku', 'name', 'status', 'price', 'cost'))
+                ->addAttributeToSelect(array('sku', 'name', 'status', 'price'))
             ;
             $collection->addAttributeToFilter('entity_id', array('in'=>$v->getAssociatedProductIds()));
             $collection->addAttributeToFilter('visibility', array('in'=>Mage::getSingleton('catalog/product_visibility')->getVisibleInSiteIds()));
@@ -197,7 +197,7 @@ $collection->addAttributeToFilter('udropship_vendor', $v->getId());
         return $this->getLayout()->createBlock('core/html_select')
             ->setName('set_id')
             ->setId('set_id')
-            ->setTitle(Mage::helper('checkout')->__('Attribute Set'))
+            ->setTitle(Mage::helper('udropship')->__('Attribute Set'))
             ->setClass('validate-select absolute-advice')
             ->setOptions($options)->toHtml();
     }

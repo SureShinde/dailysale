@@ -49,6 +49,18 @@ class Unirgy_DropshipVendorProduct_Block_Vendor_Product_Renderer_QuickCreateFiel
         }
         return $firstAttr;
     }
+    public function getFirstAttributes()
+    {
+        $firstAttr = Mage::helper('udprod')->getCfgFirstAttributes($this->getProduct());
+        if (!$firstAttr) {
+            Mage::throwException('Options are not defined for this type of product');
+        }
+        return $firstAttr;
+    }
+    public function getFirstAttributesValueTuples()
+    {
+        return Mage::helper('udprod')->getCfgFirstAttributesValueTuples($this->getProduct());
+    }
     public function getFirstAttributeValues($used=null, $filters=array(), $filterFlag=true)
     {
         return $this->getAttributeValues($this->getFirstAttribute(), $used, $filters, $filterFlag);

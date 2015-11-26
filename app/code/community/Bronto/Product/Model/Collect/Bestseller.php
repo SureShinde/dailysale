@@ -13,7 +13,9 @@ class Bronto_Product_Model_Collect_Bestseller extends Bronto_Product_Model_Colle
             ->setPeriod('day')
             ->addStoreFilter(array($this->getStoreId()))
             ->setDateRange(date('Y-m-d', strtotime('-' . self::DAYS_THRESHOLD . 'days')), date('Y-m-d'))
-            ->setPageSize($this->getRemainingCount());
+            ->setPageSize($this->getRemainingCount())
+            ->setOrder('qty_ordered', 'DESC');
+
 
         if (!empty($this->_excluded)) {
             $bestSellers->addFieldToFilter('product_id', array('nin' => array_keys($this->_excluded)));

@@ -3,7 +3,7 @@
     <sections>
         <carriers>
             <groups>
-                <udshipclass translate="label">
+                <udshipclass translate="label" module="udropship">
                     <label>Shipping Classes</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>400</sort_order>

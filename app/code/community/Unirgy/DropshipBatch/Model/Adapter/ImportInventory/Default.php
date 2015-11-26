@@ -58,7 +58,7 @@ class Unirgy_DropshipBatch_Model_Adapter_ImportInventory_Default extends Unirgy_
             $r = @fgetcsv($fp, 0, $this->getVendor()->getBatchImportInventoryFieldDelimiter(), '"');
             if (!$idx++ && $this->getVendor()->getBatchImportInventorySkipHeader()) continue;
             if (!$r) {
-                $rows[] = array('error'=>$hlp->__('Invalid row format'));
+                $rows[] = array('error'=>Mage::helper('udropship')->__('Invalid row format'));
                 continue;
             }
             $row = array();
@@ -104,21 +104,21 @@ class Unirgy_DropshipBatch_Model_Adapter_ImportInventory_Default extends Unirgy_
             }
             if (empty($r['sku']) && (!$allowVendorSku || empty($r['vendor_sku']))) {
                 if ($allowVendorSku) {
-                    $r['error'] = $hlp->__('Missing required field: sku or vendor_sku');
+                    $r['error'] = Mage::helper('udropship')->__('Missing required field: sku or vendor_sku');
                 } else {
-                    $r['error'] = $hlp->__('Missing required field: sku');
+                    $r['error'] = Mage::helper('udropship')->__('Missing required field: sku');
                 }
                 continue;
             }
             if (!empty($r['sku'])) {
                 if (!empty($skus[$r['sku']])) {
-                    $r['error'] = $hlp->__('Duplicate sku within file');
+                    $r['error'] = Mage::helper('udropship')->__('Duplicate sku within file');
                     continue;
                 }
                 $skus[$r['sku']] = $i;
             } elseif ($allowVendorSku && !empty($r['vendor_sku'])) {
                 if (!empty($vendorSkus[$r['vendor_sku']])) {
-                    $r['error'] = $hlp->__('Duplicate vendor sku within file');
+                    $r['error'] = Mage::helper('udropship')->__('Duplicate vendor sku within file');
                     continue;
                 }
                 $vendorSkus[$r['vendor_sku']] = $i;
@@ -195,19 +195,19 @@ class Unirgy_DropshipBatch_Model_Adapter_ImportInventory_Default extends Unirgy_
             $_pIds = explode(',', $_pIdsStr);
             $_pIdsCnt = count($_pIds);
             if (empty($r['sku']) && empty($r['vendor_sku'])) {
-                $r['error'] = $hlp->__('Neither sku or vendor_sku specified');
+                $r['error'] = Mage::helper('udropship')->__('Neither sku or vendor_sku specified');
             } elseif (empty($r[$skuKey]) || empty($skuPids[$r[$skuKey]])) {
-        		$r['error'] = $hlp->__('Product not found for '.($isVsKey ? 'vendor ' : '').'sku "%s"', $r[$skuKey]);
+        		$r['error'] = Mage::helper('udropship')->__('Product not found for '.($isVsKey ? 'vendor ' : '').'sku "%s"', $r[$skuKey]);
             } elseif ($_pIdsCnt>1
                 && $vskuMultipid == Unirgy_DropshipBatch_Model_Source::INVIMPORT_VSKU_MULTIPID_REPORT
             ) {
-                $r['error'] = $hlp->__('Vendor sku "%s" maps to multiple products (ids: "%s")', $r[$skuKey], $_pIdsStr);
+                $r['error'] = Mage::helper('udropship')->__('Vendor sku "%s" maps to multiple products (ids: "%s")', $r[$skuKey], $_pIdsStr);
         	} elseif (Mage::helper('udropship')->isUdmultiAvailable()
                 && $_pIdsCnt==1
                 && !in_array($skuPids[$r[$skuKey]], $this->getVendor()->getVendorTableProductIds())
             ) {
                 if (!$_newAssocAllowed) {
-        		    $r['error'] = $hlp->__('Product with '.($isVsKey ? 'vendor ' : '').'sku "%s" does not associate with vendor', $r[$skuKey]);
+        		    $r['error'] = Mage::helper('udropship')->__('Product with '.($isVsKey ? 'vendor ' : '').'sku "%s" does not associate with vendor', $r[$skuKey]);
                 } else {
                     $newAssocSql[] = $_readCon->quote(array(
                         'product_id' => $skuPids[$r[$skuKey]],

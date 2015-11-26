@@ -1,10 +1,5 @@
 <?php 
-$jsBaseUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB);
-$vendorPortalUrl = Mage::helper('udropship')->getVendorPortalCustomUrl();
-if ($vendorPortalUrl) {
-    $jsBaseUrl = $vendorPortalUrl;
-}
-$jsBaseUrl = rtrim($jsBaseUrl, '/').'/js/';
+$jsBaseUrl = Mage::helper('udropship')->getVendorPortalJsBaseUrl();
 ?>
 
 <div id="<?php echo $this->getHtmlId() ?>" class="uploader">
@@ -13,7 +8,7 @@ $jsBaseUrl = rtrim($jsBaseUrl, '/').'/js/';
         <?php  /*echo $this->getBrowseButtonHtml()*/  ?>
         <?php  /*echo $this->getUploadButtonHtml()*/  ?>
         <div id="<?php echo $this->getHtmlId() ?>-install-flash" style="display:none">
-            <?php echo Mage::helper('media')->__('This content requires last version of Adobe Flash Player. <a href="%s">Get Flash</a>', 'http://www.adobe.com/go/getflash/') ?>
+            <?php echo Mage::helper('udropship')->__('This content requires last version of Adobe Flash Player. <a href="%s">Get Flash</a>', 'http://www.adobe.com/go/getflash/') ?>
         </div>
     </div>
     <div class="clear"></div>

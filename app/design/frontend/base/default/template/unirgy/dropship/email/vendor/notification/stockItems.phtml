@@ -21,14 +21,14 @@ $hlp = Mage::helper('udropship');
 <table cellspacing="0" cellpadding="0" border="0" width="100%" style="border:1px solid #bebcb7; background:#f8f7f5;">
     <thead>
         <tr>
-            <th align="left" bgcolor="#d9e5ee" style="padding:3px 9px"><?php echo $this->__('Item') ?></th>
+            <th align="left" bgcolor="#d9e5ee" style="padding:3px 9px"><?php echo Mage::helper('udropship')->__('Item') ?></th>
             <?php if (Mage::helper('udropship')->isUdmultiAvailable()): ?>
-            <th align="left" bgcolor="#d9e5ee" style="padding:3px 9px"><?php echo $this->__('System Sku') ?></th>
-            <th align="left" bgcolor="#d9e5ee" style="padding:3px 9px"><?php echo $this->__('Vendor Sku') ?></th>
+            <th align="left" bgcolor="#d9e5ee" style="padding:3px 9px"><?php echo Mage::helper('udropship')->__('System Sku') ?></th>
+            <th align="left" bgcolor="#d9e5ee" style="padding:3px 9px"><?php echo Mage::helper('udropship')->__('Vendor Sku') ?></th>
             <?php else: ?>
-            <th align="left" bgcolor="#d9e5ee" style="padding:3px 9px"><?php echo $this->__('Sku') ?></th>
+            <th align="left" bgcolor="#d9e5ee" style="padding:3px 9px"><?php echo Mage::helper('udropship')->__('Sku') ?></th>
             <?php endif ?>
-            <th align="center" bgcolor="#d9e5ee" style="padding:3px 9px"><?php echo $this->__('Stock Qty') ?></th>
+            <th align="center" bgcolor="#d9e5ee" style="padding:3px 9px"><?php echo Mage::helper('udropship')->__('Stock Qty') ?></th>
         </tr>
     </thead>
     <?php $i=0; foreach ($this->getStockItems() as $_item): ?>

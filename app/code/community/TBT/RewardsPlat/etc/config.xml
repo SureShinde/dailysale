@@ -5,17 +5,6 @@
             <version>1.7.5.3</version>
         </TBT_RewardsPlat>
     </modules>
-    <admin>
-        <routers>
-            <rewardsplatadmin>
-                <use>admin</use>
-                <args>
-                    <module>TBT_RewardsPlat</module>
-                    <frontName>rewardsplatadmin</frontName>
-                </args>
-            </rewardsplatadmin>
-        </routers>
-    </admin>
     <frontend>
         <routers>
             <rewardsplat>

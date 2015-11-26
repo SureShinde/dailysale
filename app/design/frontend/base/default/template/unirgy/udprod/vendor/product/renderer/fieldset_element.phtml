@@ -11,7 +11,7 @@ $type = $this->getElement()->getType();
 <script type="text/javascript">
 //<![CDATA[
 unirgyDomLoaded(function(){
-    var tpl = '<?php echo $this->jsQuoteEscape($tplData)?>';
+    var tpl = '<?php echo preg_replace("/\r\n|\n\r|\r|\n/", '\\n', $this->jsQuoteEscape($tplData))?>';
     var el = $('<?php echo $id?>');
     if (el) {
         el.emptyText = tpl;

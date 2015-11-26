@@ -111,14 +111,14 @@ class Unirgy_DropshipMulti_Model_InventoryObserver extends Mage_CatalogInventory
                 if (!array_key_exists($pId, $mvData)) {
                     if (Mage::app()->getStore()->isAdmin()) continue;
                     Mage::throwException(
-                        Mage::helper('cataloginventory')->__('Stock configuration problem')
+                        Mage::helper('udropship')->__('Stock configuration problem')
                     );
                 }
                 $_mv = $mvData[$pId];
                 if (!$hlpm->isQtySalableByVendorData($qtyCheck, (array)@$siData[$pId], $vId, $_mv)) {
                     if (Mage::app()->getStore()->isAdmin()) continue;
                     Mage::throwException(
-                        Mage::helper('cataloginventory')->__('Not all products are available in the requested quantity')
+                        Mage::helper('udropship')->__('Not all products are available in the requested quantity')
                     );
                 }
             }
