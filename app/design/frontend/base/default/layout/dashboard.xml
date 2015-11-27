@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<layout>
+    <udpo_vendor_dash>
+        <update handle="udropship_vendor"/>
+        <reference name="head">
+            <action method="addCss">
+                <stylesheet>css/fiuze_dash.css</stylesheet>
+            </action>
+        </reference>
+        <reference name="header">
+            <action method="setTemplate"><file>fiuze/dashboard/head.phtml</file>
+            </action>
+        </reference>
+    </udpo_vendor_dash>
+</layout>

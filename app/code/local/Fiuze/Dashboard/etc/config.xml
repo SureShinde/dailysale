@@ -36,5 +36,12 @@
                 </args>
             </udpo>
         </routers>
+        <layout>
+            <updates>
+                <fiuze_dashboard>
+                    <file>dashboard.xml</file>
+                </fiuze_dashboard>
+            </updates>
+        </layout>
     </frontend>
 </config>
