@@ -20,3 +20,4 @@
 *.DS_Store
 
 /app/code/local/Alanstormdotcom/
+app/etc/modules/Alanstormdotcom_Layoutviewer.xml

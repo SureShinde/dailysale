@@ -34,21 +34,6 @@
             </block>
         </reference>
     </udpo_vendor_index>
-    <!--<udpo_vendor_dash>-->
-        <!--<update handle="udropship_vendor" />-->
-        <!--<reference name="head">-->
-            <!--<action method="addCss"><stylesheet>css/fiuze_dash.css</stylesheet></action>-->
-        <!--</reference>-->
-        <!--<reference name="content">-->
-            <!--&lt;!&ndash;<block type="core/html_calendar" name="head.udropship.calendar" as="udropship.calendar" template="unirgy/dropship/calendar.phtml"></block>&ndash;&gt;-->
-            <!--<block type="core/template" template="unirgy/udpo/vendor/dash.phtml" name="dash">-->
-                <!--&lt;!&ndash;<block type="udpo/vendor_po_pager" name="udpo.grid.toolbar">&ndash;&gt;-->
-                    <!--&lt;!&ndash;<action method="checkCompat"/>&ndash;&gt;-->
-                <!--&lt;!&ndash;</block>&ndash;&gt;-->
-                <!--&lt;!&ndash;<block type="udpo/vendor_po_grid" template="unirgy/udpo/vendor/po/grid.phtml" name="udpo.grid" as="udpos"/>&ndash;&gt;-->
-            <!--</block>-->
-        <!--</reference>-->
-    <!--</udpo_vendor_dash>-->
     <udpo_vendor_udpoinfo>
         <block type="udpo/vendor_po_info" template="unirgy/udpo/vendor/po/info.phtml" name="info"/>
     </udpo_vendor_udpoinfo>
