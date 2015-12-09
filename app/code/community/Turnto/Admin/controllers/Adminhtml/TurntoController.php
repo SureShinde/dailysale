@@ -69,12 +69,14 @@ class Turnto_Admin_Adminhtml_TurntoController extends Mage_Adminhtml_Controller_
 				->getCollection()
 				->addFieldToFilter('store_id', $scope)
 				->addAttributeToFilter('created_at', array('from'=>$fromDate))
-				->addAttributeToSort('entity_id', 'DESC');
-				$orders->setPageSize(100);
+				->addAttributeToSort('entity_id', 'DESC')
+				->setPageSize(100);
+
 				$pages = $orders->getLastPageNumber();
-				$currentPage = 1;
-				do {
-					$orders->setCurPage($currentPage);
+
+				for ($curPage = 1; $curPage <= $pages; $curPage++) {
+					$orders->setCurPage($curPage);
+					$orders->load();
 					foreach ($orders as $order) {
 						$itemlineid = 0;
 						foreach ($order->getAllVisibleItems() as $item) {
@@ -126,8 +128,8 @@ class Turnto_Admin_Adminhtml_TurntoController extends Mage_Adminhtml_Controller_
 							fwrite($handle, "\n");
 						}
 					}
-					$currentPage++;
-				} while ($currentPage <= $pages);
+					$orders->clear();
+				}
 				
 				fclose($handle); 
 							
