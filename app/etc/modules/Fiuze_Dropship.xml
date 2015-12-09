@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Fuize_Dropship>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <Unirgy_Dropship />
+            </depends>
+        </Fuize_Dropship>
+    </modules>
+</config>

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layout>
+    <udpo_vendor_index>
+        <reference name="udpo.grid">
+            <action method="setTemplate"><template>fiuze/udpo/vendor/po/grid.phtml</template></action>
+        </reference>
+    </udpo_vendor_index>
+</layout>

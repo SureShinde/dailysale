@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Fiuze_DropshipPo>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <Unirgy_DropshipPo/>
+            </depends>
+        </Fiuze_DropshipPo>
+    </modules>
+</config>
