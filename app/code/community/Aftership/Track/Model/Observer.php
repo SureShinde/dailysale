@@ -43,37 +43,6 @@ class Aftership_Track_Model_Observer {
         ob_end_clean();
     }
 
-    /** For vendor
-     * @param Varien_Event_Observer $observer
-     */
-    public function salesOrderShipmentTrackSaveAfterVendor(Varien_Event_Observer $observer) {
-        ob_start();
-
-        $magento_track = $observer->getEvent()->getTrack();
-
-        $magento_order = $magento_track->getShipment()->getOrder();
-        $website_config = $this->_getWebsiteConfig($magento_order);
-
-        $tracks = Mage::getModel('track/track')
-            ->getCollection()
-            ->addFieldToFilter('tracking_number', array('eq' => $this->_getTrackNo($magento_track)))
-            ->addFieldToFilter('order_id', array('eq' => $magento_order->getIncrementId()))
-            ->getItems();
-
-        if (empty($tracks)) {
-            $track = $this->_saveTrack($magento_track);
-        }
-        else {
-            $track = reset($tracks);
-        }
-
-        if ($website_config->status) {
-            $this->_sendTrack($track);
-        }
-
-        ob_end_clean();
-    }
-
     /**
      * Cron to sync trackings
      */
@@ -240,37 +209,20 @@ class Aftership_Track_Model_Observer {
         $response = $this->_callApiCreateTracking($api_key, $track->getTrackingNumber(), $carrier_code, $country_id, $telephone, $email, $title, $order_id, $customer_name);
         $responseJson = Mage::helper('core')->jsonDecode($response);
         $http_status = $responseJson['meta']['code'];
-        $data = $responseJson['data'];
-        $configValue = Mage::getStoreConfig('aftership_options/messages/aftership_validation');
         //save, 422: repeated
-        if($configValue){
-            if ($http_status == '201' || $http_status == '422') {
-                $track->setPosted(self::POSTED_DONE)->save();
-            }else {
-                if ($track->getPackageCount() > 1) {
-                    foreach (Mage::getResourceModel('sales/order_shipment_track_collection')
-                                 ->addAttributeToFilter('master_tracking_id', $track->getMasterTrackingId())
-                             as $_track
-                    ) {
-                        $_track->delete();
-                    }
-                }
-                if ($track->getPackTracking() !== '1') {
-                    $track->setErrorTracking($responseJson['meta']['message']);
-                    $track->save();
-                    //Mage::throwException($responseJson['meta']['message']);
-                } else {
-                    $track->setErrorTracking($responseJson['meta']['message']);
-                    $track->save();
+        if ($http_status == '201' || $http_status == '422') {
+            $track->setPosted(self::POSTED_DONE)->save();
+        }else{
+            $track->delete();
+            if ($track->getPackageCount()>1) {
+                foreach (Mage::getResourceModel('sales/order_shipment_track_collection')
+                             ->addAttributeToFilter('master_tracking_id', $track->getMasterTrackingId())
+                         as $_track
+                ) {
+                    $_track->delete();
                 }
             }
-            if($http_status == '201' && array_key_exists('tracking',$data)){
-                $tracking = $data['tracking'];
-                $track->setTrackingId(array_key_exists('id',$tracking)?$tracking['id']:0);
-                $track->setSlug(array_key_exists('slug',$tracking)?$tracking['slug']:0);
-                $track->setPackTracking(false);
-                $track->save();
-            }
+            Mage::throwException($responseJson['meta']['message']);
         }
 
         return $http_status;
@@ -328,7 +280,7 @@ class Aftership_Track_Model_Observer {
         $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
-        return $response;
+        return $http_status;
     }
 
     /**

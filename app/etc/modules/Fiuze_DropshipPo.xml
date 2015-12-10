@@ -5,6 +5,7 @@
             <active>true</active>
             <codePool>local</codePool>
             <depends>
+                <Unirgy_DropshipBatch/>
                 <Unirgy_DropshipPo/>
             </depends>
         </Fiuze_DropshipPo>

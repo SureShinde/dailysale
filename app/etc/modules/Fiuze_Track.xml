@@ -1,9 +1,12 @@
 <?xml version="1.0"?>
 <config>
-<modules>
-    <Fiuze_Track>
-        <active>true</active>
-        <codepool>local</codepool>
-    </Fiuze_Track>
-</modules>
+    <modules>
+        <Fiuze_Track>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <Aftership_Track />
+            </depends>
+        </Fiuze_Track>
+    </modules>
 </config>

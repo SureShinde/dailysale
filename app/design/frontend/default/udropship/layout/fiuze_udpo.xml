@@ -5,4 +5,25 @@
             <action method="setTemplate"><template>fiuze/udpo/vendor/po/grid.phtml</template></action>
         </reference>
     </udpo_vendor_index>
+
+    <adminhtml_sales_order_shipment_new>
+        <reference name="shipment_tracking">
+            <action method="setTemplate" ><file>fiuze/udpo/custom/tracking.phtml</file></action>
+        </reference>
+    </adminhtml_sales_order_shipment_new>
+
+    <udpo_vendor_udpoinfo>
+        <reference name="info">
+            <action method="setTemplate"><template>fiuze/udpo/vendor/po/info.phtml</template></action>
+        </reference>
+    </udpo_vendor_udpoinfo>
+    <udbatch_vendor_batch_importorders>
+        <update handle="udropship_vendor" />
+        <reference name="udbatch_importstock">
+            <action method="setTemplate"><template>fiuze/udbatch/vendor/importorders.phtml</template></action>
+            <block type="fiuze_dropshippo/vendor_po_importOrderAftershipStatus"
+                   template="fiuze/udbatch/vendor/importorderaftershipstatus.phtml"
+                   name="udbatch_aftershipstatus"/>
+        </reference>
+    </udbatch_vendor_batch_importorders>
 </layout>

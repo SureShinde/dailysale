@@ -1,7 +1,7 @@
 <?php
 require_once Mage::getBaseDir('lib').DS.'SweetTooth/pest/vendor/autoload.php';
 
-class Aftership_Track_Model_Observer {
+class Fiuze_Track_Model_Observer {
 
     const ENDPOINT_TRACKING = 'https://api.aftership.com/v4/trackings';
     const ENDPOINT_AUTHENTICATE = 'https://api.aftership.com/v4/couriers';
@@ -395,8 +395,8 @@ class Aftership_Track_Model_Observer {
         return $track_no;
     }
 
-    public function notificationMail(){
-
+    public function notificationMail(Varien_Event_Observer $observer){
+        $item = $observer->getEvent();
         $collectionVendor = Mage::getModel('udropship/vendor')->getCollection()->getItems();
 
         foreach($collectionVendor as $key => $vendor){
@@ -454,8 +454,7 @@ class Aftership_Track_Model_Observer {
     }
 
     private function _getHeadersForCsv(){
-        //$row = array('order_id','order_created_at','tracking_number','status','error_tracking');
-        $row = array('Order id','PO ID','Tracking number','Carrier','Error tracking');
+        $row = array('order_id','order_created_at','tracking_number','status','error_tracking');
         return $row;
     }
     private function _getBodyTotalsForCsv($vendor, $io){
@@ -468,9 +467,8 @@ class Aftership_Track_Model_Observer {
             foreach($trackNumbers as $trackNumber){
                 $row = array();
                 $row[] = $trackNumber->getOrderId();
-                $row[] = $shipment->getUdpoIncrementId();
-                $row[] = "'".$trackNumber->getTrackingNumber()."'";
-                $row[] = $trackNumber->getShipCompCode();
+                $row[] = $shipment->getOrderCreatedAt();
+                $row[] = $trackNumber->getTrackingNumber();
 
                 if($trackNumber->getTrackingId()){
                     $api_key = Mage::app()->getWebsite(0)->getConfig('aftership_options/messages/api_key');
@@ -479,6 +477,9 @@ class Aftership_Track_Model_Observer {
                     $status = $this->_getStatus($responseJson);
                     $trackNumber->setStatus($status);
                     $trackNumber->save();
+                    $row[] = $status;
+                }else{
+                    $row[] = '';
                 }
 
                 if($trackNumber->getErrorTracking() == 'Tracking already exists.'){
@@ -490,7 +491,7 @@ class Aftership_Track_Model_Observer {
                 if(count($row)){
                     $io->streamWriteCsv($row);
                 }
-                if($error){
+                if(!$error){
                     $trackNumber->delete();
                 }
                 if($error == 'Not valid.'){
@@ -566,114 +567,5 @@ class Aftership_Track_Model_Observer {
             );
             $emailTemplate->send($vendor->getEmail(), $vendor->getVendorName(), $emailTemplateVariables);
         }
-    }
-
-    public function coreLayoutBlockCreateAfter(Varien_Event_Observer $observer){
-        $block = $observer->getBlock();
-        if($block instanceof Mage_Adminhtml_Block_Sales_Order_View_Tab_History){
-            $block->setTemplate('fiuze/aftership/sales/order/view/tab/history.phtml');
-        }
-    }
-
-    /**
-     * Sending email with Invoice data
-     *
-     * @return Mage_Sales_Model_Order_Invoice
-     */
-    public function changeStatusShip(){
-        $collectionVendor = Mage::getModel('udropship/vendor')->getCollection()->getItems();
-
-        foreach($collectionVendor as $key => $vendor){
-            //checking the quantity track number
-            $collectionShipments = $this->getVendorShipmentCollection($vendor);
-            foreach($collectionShipments as $shipment){
-                $trackNumbers = Mage::getModel('track/track')->getCollection()
-                    ->addFieldToFilter('order_id', array('eq' => $shipment->getOrderIncrementId()))
-                    ->getItems();
-                $trackNumbers2 = Mage::getModel('sales/order_shipment_track')->getCollection()
-                    ->addFieldToFilter('order_id', array('eq' => $shipment->getOrderId()))
-                    ->getItems();
-                foreach($trackNumbers2 as $track){
-                    foreach ($trackNumbers as $a_track){
-                        if(strcasecmp($a_track->getTrackingNumber(),$track->getTrackNumber()) === 0){
-                            $fullTrack[]=array_merge($track->getData(),$a_track->getData());
-                        }
-                    }
-                }
-                $countShipped   = 0;
-                $countDelivered = 0;
-                $countPending = 0;
-                foreach($fullTrack as $trackNumber){
-                    if($trackNumber['tracking_id']){
-                        $api_key = Mage::app()->getWebsite(0)->getConfig('aftership_options/messages/api_key');
-                        $trackings = new AfterShip\Trackings($api_key);
-                        $responseJson = $trackings->get_by_id($trackNumber['tracking_id']);
-                        $status = $this->_getStatus($responseJson);
-                        if($status === 'Delivered'){
-                            $countDelivered++;
-                        }elseif($status==='Pending' OR $status==='Expired' OR $status==='Info Received'){
-                            $countPending++;
-                        }else{
-                            $countShipped++;
-                        }
-                        $trackNumberModel = Mage::getModel('track/track')->load($trackNumber['entity_id']);
-                        $trackNumberModel->setStatus($status);
-                        $trackNumberModel->save();
-                    }
-                }
-                //логика изменения шипмента
-                $count_track = count($fullTrack);
-                if (count($trackNumbers) > 0) {
-                    if($countPending==$count_track){
-                        //all pending
-                        //do nothing
-                    }elseif($countDelivered==$count_track){
-                        //all delivered
-                        $shipment->setUdropshipStatus(Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_DELIVERED);
-                        $shipment->save();
-
-                        //close order
-                        $order = Mage::getModel('sales/order')->load($shipment->getOrderId());
-                        $order->setData('state', "complete");
-                        $order->setStatus("complete");
-                        $order->save();
-
-                        /// ///
-                        //$this->processPoStatusSave($po, Unirgy_DropshipPo_Model_Source::UDPO_STATUS_DELIVERED, $save);
-                        /// ///
-
-                        //complete shipment
-                        $udpo = Mage::helper('udpo')->getShipmentPo($shipment);
-                        $udpo->setUdropshipStatus(Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_DELIVERED);
-                        $udpo->save();
-                        //   $history = $order->addStatusHistoryComment('Order marked as complete because shipment is delivered.', false);
-//                        $history->setIsCustomerNotified(false);
-                    }elseif($countPending==0){
-                        //all shipped
-                        $shipment->setUdropshipStatus(Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_SHIPPED);
-                        $shipment->save();
-                        //po status shipped
-                        $udpo = Mage::helper('udpo')->getShipmentPo($shipment);
-                        $udpo->setUdropshipStatus(Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_SHIPPED);
-                        $udpo->save();
-
-                    }else{
-                        //partially shipped
-                        $shipment->setUdropshipStatus(Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_PARTIAL);
-                        $shipment->save();
-                        //po status partial
-                        $udpo = Mage::helper('udpo')->getShipmentPo($shipment);
-                        $udpo->setUdropshipStatus(Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_PARTIAL);
-                        $udpo->save();
-
-                    }
-                }
-            }
-        }
-    }
-
-    public function runCronJob(){
-        $this->changeStatusShip();
-        $this->notificationMail();
     }
 }

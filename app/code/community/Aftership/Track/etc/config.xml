@@ -26,9 +26,9 @@
 					<track>
 						<table>as_track</table>
 					</track>
-                    <schedule>
+<!--                    <schedule>
                         <table>schedule_aftership</table>
-                    </schedule>
+                    </schedule>-->
 					<!--<user>
 						<table>as_user</table>
 					</user>-->
@@ -70,17 +70,6 @@
 				<class>Aftership_Track_Helper</class>
 			</aftership>
 		</helpers>
-        <events>
-            <sales_order_shipment_track_save_after>
-                <observers>
-                    <fishpig_save_product_data_vendor>
-                        <type>singleton</type>
-                        <class>track/observer</class>
-                        <method>salesOrderShipmentTrackSaveAfterVendor</method>
-                    </fishpig_save_product_data_vendor>
-                </observers>
-            </sales_order_shipment_track_save_after>
-        </events>
 	</global>
 
     <crontab>
@@ -118,16 +107,6 @@
                 </run>
             </three_cron>
         </jobs>
-        <events>
-            <default>
-                <observers>
-                    <cron_observer_helper>
-                        <class>aftershiptrackcron/cronObserver</class>
-                        <method>runCronAftership</method>
-                    </cron_observer_helper>
-                </observers>
-            </default>
-        </events>
     </crontab>
 
 	<frontend>

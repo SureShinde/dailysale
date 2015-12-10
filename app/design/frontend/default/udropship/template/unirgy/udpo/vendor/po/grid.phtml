@@ -140,18 +140,18 @@ $_dateFormat = Varien_Date::convertZendToStrFtime(Mage::app()->getLocale()->getD
                 </strong>
                 <select id="submit_action" name="submit_action">
                     <option value=""><?php echo $_hlp->__('* No action')?></option>
-                    <option value="udpoMultiPdf"><?php echo $_hlp->__('Download Packing Slips')?></option>
-<!--                    <option value="packingSlips">--><?php //echo $_hlp->__('Download Packing Slips')?><!--</option>-->
-<?php //if ($_vendor->getLabelType()): ?>
-<!--                    <option value="udpoLabelBatch">--><?php //echo $_hlp->__('Create and Download Labels Batch')?><!--</option>-->
-<!--                    <option value="existingLabelBatch">--><?php //echo $_hlp->__('Download Existing Labels Batch')?><!--</option>-->
-<?php //endif ?>
-<!--                    <option value="updateUdpoStatus">--><?php //echo $_hlp->__('Update Status')?><!--</option>-->
-                    <?php if ($_hlp->isModuleActive('Unirgy_DropshipBatch')): ?>
-                    <option value="udbatchExport"><?php echo $_hlp->__('Export Orders')?></option>
+                    <!--                    <option value="udpoMultiPdf">--><?php //echo $_hlp->__('Download Packing Slips')?><!--</option>-->
+                    <!--                    <option value="packingSlips">--><?php //echo $_hlp->__('Download Packing Slips')?><!--</option>-->
+                    <?php if ($_vendor->getLabelType()): ?>
+                        <option value="udpoLabelBatch"><?php echo $_hlp->__('Create and Download Labels Batch')?></option>
+                        <option value="existingLabelBatch"><?php echo $_hlp->__('Download Existing Labels Batch')?></option>
                     <?php endif ?>
-<!--                    <option value="createShipment">--><?php //echo $_hlp->__('Create Shipments')?><!--</option>-->
-<!--                    <option value="createShipmentAndEmail">--><?php //echo $_hlp->__('Create Shipments and Send Customer Notifications')?><!--</option>-->
+                    <!--                    <option value="updateUdpoStatus">--><?php //echo $_hlp->__('Update Status')?><!--</option>-->
+                    <!--                    --><?php //if ($_hlp->isModuleActive('Unirgy_DropshipBatch')): ?>
+                    <!--                    <option value="udbatchExport">--><?php //echo $_hlp->__('Export Orders')?><!--</option>-->
+                    <!--                    --><?php //endif ?>
+                    <!--                    <option value="createShipment">--><?php //echo $_hlp->__('Create Shipments')?><!--</option>-->
+                    <!--                    <option value="createShipmentAndEmail">--><?php //echo $_hlp->__('Create Shipments and Send Customer Notifications')?><!--</option>-->
                 </select>
                 <select id="batch_update_status" name="update_status">
                     <option value=""><?php echo $_hlp->__('* Automatic') ?></option>
@@ -563,19 +563,16 @@ function initShipmentForm(udpoId, shipmentId) {
 
 function validateShipmentSubmit(id)
 {
-    if($('change_status-'+id) != null){
-        switch ($('change_status-'+id).value) {
-            case '<?php echo Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_CANCELED ?>':
-                return confirm('<?php echo $this->jsQuoteEscape($_hlp->__('This will cancel shipment (if possible).')) ?>');
-            case '<?php echo Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_SHIPPED ?>':
-                return confirm('<?php echo $this->jsQuoteEscape($_hlp->__('This will mark shipment as shipped (and if possible change PO status as well).')) ?>');
-            case '<?php echo Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_DELIVERED ?>':
-                return confirm('<?php echo $this->jsQuoteEscape($_hlp->__('This will mark shipment as delivered (and if possible change PO status as well).')) ?>');
-            default:
-                return true;
-        }
+    switch ($('change_status-'+id).value) {
+        case '<?php echo Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_CANCELED ?>':
+            return confirm('<?php echo $this->jsQuoteEscape($_hlp->__('This will cancel shipment (if possible).')) ?>');
+        case '<?php echo Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_SHIPPED ?>':
+            return confirm('<?php echo $this->jsQuoteEscape($_hlp->__('This will mark shipment as shipped (and if possible change PO status as well).')) ?>');
+        case '<?php echo Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_DELIVERED ?>':
+            return confirm('<?php echo $this->jsQuoteEscape($_hlp->__('This will mark shipment as delivered (and if possible change PO status as well).')) ?>');
+        default:
+            return true;
     }
-    return true;
 }
 
 function useLabelShippingAmountChanged(cb)

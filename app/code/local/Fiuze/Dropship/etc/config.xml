@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Fiuze_Dropship>
+            <version>2.2.34</version>
+        </Fiuze_Dropship>
+    </modules>
+    <frontend>
+        <layout>
+            <updates>
+                <fiuze_dropship module="Fuize_Dropship">
+                    <file>dropship.xml</file>
+                </fiuze_dropship>
+            </updates>
+        </layout>
+    </frontend>
+    <frontend>
+        <routers>
+            <udropship>
+                <args>
+                    <frontName>portal</frontName>
+                </args>
+            </udropship>
+            <udropship>>
+                <args>
+                    <modules>
+                        <Fiuze_Dropship before="Unirgy_Dropship">Fiuze_Dropship</Fiuze_Dropship>
+                    </modules>
+                </args>
+            </udropship>
+        </routers>
+        <secure_url>
+            <udropship_vendor>/vendor/vendor/</udropship_vendor>
+        </secure_url>
+    </frontend>
+</config>

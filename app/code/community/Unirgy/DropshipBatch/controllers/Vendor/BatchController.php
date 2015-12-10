@@ -143,7 +143,7 @@ class Unirgy_DropshipBatch_Vendor_BatchController extends Unirgy_Dropship_Contro
                 );
             }
         }
-        if ($bHlp->getBatch() != null && $bHlp->getBatch()->getStatus() == 'success') {
+        if ($bHlp->getBatch()->getStatus() == 'success') {
             $this->_getSession()->addSuccess($hlp->__('Processed %s import rows', $bHlp->getBatch()->getNumRows()));
         }
         $this->_redirect('udbatch/vendor_batch/importOrders');

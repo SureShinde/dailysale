@@ -1,6 +1,6 @@
 <?php
 
-class Aftership_Track_Model_ScheduleAftership extends Mage_Core_Model_Abstract
+class Fiuze_Track_Model_ScheduleAftership extends Mage_Core_Model_Abstract
 {
     const STATUS_PENDING = 'pending';
     const STATUS_RUNNING = 'running';

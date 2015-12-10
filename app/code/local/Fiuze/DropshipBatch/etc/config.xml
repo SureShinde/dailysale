@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Fiuze_DropshipBatch>
+            <version>2.2.5</version>
+        </Fiuze_DropshipBatch>
+    </modules>
+    <global>
+        <helpers>
+            <udbatch>
+                <rewrite>
+                    <data>Fiuze_DropshipBatch_Helper_Data</data>
+                </rewrite>
+            </udbatch>
+        </helpers>
+        <models>
+            <udbatch>
+                <rewrite>
+                    <batch>Fiuze_DropshipBatch_Model_Batch</batch>
+                    <templateFilter>Fiuze_DropshipBatch_Model_TemplateFilter</templateFilter>
+                </rewrite>
+            </udbatch>
+        </models>
+    </global>
+    <frontend>
+        <routers>
+            <udbatch>
+                <args>
+                    <modules>
+                        <Fiuze_DropshipBatch before="Unirgy_DropshipBatch">Fiuze_DropshipBatch</Fiuze_DropshipBatch>
+                    </modules>
+                </args>
+            </udbatch>
+        </routers>
+        <updates>
+            <fiuze_dropshipbatch module="Fuize_DropshipBatch">
+                <file>fiuze_udbatch.xml</file>
+            </fiuze_dropshipbatch>
+        </updates>
+    </frontend>
+</config>

@@ -1,14 +1,13 @@
 <?php
 require_once Mage::getBaseDir('lib').DS.'SweetTooth/pest/vendor/autoload.php';
 
-class Unirgy_DropshipPo_Block_Vendor_Po_ImportOrderAftershipStatus extends Mage_Core_Block_Template
+class Fiuze_DropshipPo_Block_Vendor_Po_ImportOrderAftershipStatus extends Mage_Core_Block_Template
 {
     public $messageMail;
     private $_trackingNumbersContent;
 
     protected function _prepareLayout()
     {
-
         Mage::getConfig()->init()->loadEventObservers('crontab');
         Mage::app()->addEventArea('crontab');
         Mage::dispatchEvent('default');
@@ -43,7 +42,7 @@ class Unirgy_DropshipPo_Block_Vendor_Po_ImportOrderAftershipStatus extends Mage_
                         $trackings = new AfterShip\Trackings($api_key);
                         $responseJson = $trackings->get_by_id($trackingId);
                         if(!$message){
-                            $message = 'Sent successfully';
+                            $message = 'sent successfully';
                         }
                         $resultStutus[$itemRow] = $message.'&#13;&#10;'.'Status --->'.$this->_getStatus($responseJson);
                         $messageMail[$trackingNumber]['status'] = $this->_getStatus($responseJson);

@@ -1,9 +1,13 @@
 <?xml version="1.0"?>
 <config>
     <modules>
-        <Envato_Catalog>
+        <Fiuze_DropshipBatch>
             <active>true</active>
             <codePool>local</codePool>
-        </Envato_Catalog>
+            <depends>
+                <Unirgy_DropshipBatch />
+                <Unirgy_DropshipPo />
+            </depends>
+        </Fiuze_DropshipBatch>
     </modules>
 </config>

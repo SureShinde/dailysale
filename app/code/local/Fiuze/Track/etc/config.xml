@@ -1,17 +1,60 @@
 <?xml version="1.0"?>
 <config>
-<modules>
-    <fuize_track>
-        <version>0.3.6</version>
-    </fuize_track>
-</modules>
+    <modules>
+        <Fiuze_Track>
+            <version>0.3.4</version>
+        </Fiuze_Track>
+    </modules>
 <global>
     <models>
         <track>
             <rewrite>
-                <observer>Fuize_Track_Model_Observer</observer>
+                <observer>Fiuze_Track_Model_Observer</observer>
             </rewrite>
         </track>
     </models>
+    <models>
+        <fiuzetrackcron>
+            <class>Fiuze_Track_Model</class>
+        </fiuzetrackcron>
+        <track>
+            <class>Fiuze_Track_Model</class>
+            <resourceModel>track_mysql4</resourceModel>
+        </track>
+        <track_mysql4>
+            <class>Fiuze_Track_Model_Resource</class>
+            <entities>
+                <schedule>
+                    <table>schedule_aftership</table>
+                </schedule>
+            </entities>
+        </track_mysql4>
+    </models>
+    <events>
+        <sales_order_shipment_track_save_after>
+            <observers>
+                <fishpig_save_product_data_vendor>
+                    <type>singleton</type>
+                    <class>track/observer</class>
+                    <method>salesOrderShipmentTrackSaveAfterVendor</method>
+                </fishpig_save_product_data_vendor>
+            </observers>
+        </sales_order_shipment_track_save_after>
+    </events>
 </global>
+
+
+    <adminhtml>
+        <events>
+            <sales_order_shipment_track_save_after>
+                <observers>
+                    <fishpig_save_product_data>
+                        <type>singleton</type>
+                        <class>track/observer</class>
+                        <method>salesOrderShipmentTrackSaveAfter</method>
+                    </fishpig_save_product_data>
+                </observers>
+            </sales_order_shipment_track_save_after>
+        </events>
+    </adminhtml>
 </config>

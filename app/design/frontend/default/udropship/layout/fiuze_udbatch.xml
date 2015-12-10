@@ -1,0 +1,12 @@
+<layout>
+    <!--<udbatch_vendor_batch_importorders>
+        <update handle="udropship_vendor" />
+        <reference name="content">
+            <block type="core/template" template="unirgy/udbatch/vendor/importorders.phtml" name="udbatch_importstock">
+                <block type="fiuze_dropshippo/vendor_po_importOrderAftershipStatus"
+                       template="fiuze/udbatch/vendor/importorderaftershipstatus.phtml"
+                       name="udbatch_aftershipstatus"/>
+            </block>
+        </reference>
+    </udbatch_vendor_batch_importorders>-->
+</layout>

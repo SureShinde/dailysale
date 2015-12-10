@@ -542,7 +542,35 @@ class Unirgy_Dropship_VendorController extends Unirgy_Dropship_Controller_Vendor
             }
 
             $session->setHighlight($highlight);
+            $this->_forward('shipmentInfo');
         } catch (Exception $e) {
+            $configValue = Mage::getStoreConfig('aftership_options/messages/aftership_validation');
+            //save, 422: repeated
+            if($configValue) {
+                if (!(count($shipment->getTracksCollection()->getItems()) > 1)) {
+                    $r = $this->getRequest();
+                    $id = $r->getParam('id');
+                    $po = Mage::getModel('udpo/po')->load($id);
+                    Mage::helper('udropship')->assignVendorSkus($po);
+                    Mage::helper('udropship/item')->hideVendorIdOption($po);
+
+                    $store = Mage::app()->getStore();
+                    Mage::app()->setCurrentStore(Mage_Core_Model_App::ADMIN_STORE_ID);
+                    foreach ($po->getOrder()->getItemsCollection()->getItems() as $item) {
+                        $item->setQtyShipped(0);
+                        $item->setQtyCanceled(0);
+                        $item->save();
+                    }
+                    foreach ($po->getItemsCollection()->getItems() as $item) {
+                        $item->setQtyShipped(0);
+                        $item->setQtyCanceled(0);
+                        $item->save();
+                    }
+                    $shipment->delete();
+                    $po->save();
+                    Mage::app()->setCurrentStore($store);
+                }
+            }
             $session->addError($e->getMessage());
         }
         $this->_forward('shipmentInfo');

@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Fiuze_DropshipPo>
+            <version>2.2.14</version>
+        </Fiuze_DropshipPo>
+    </modules>
+    <global>
+        <helpers>
+            <udpo>
+                <rewrite>
+                    <data>Fiuze_DropshipPo_Helper_Data</data>
+                </rewrite>
+            </udpo>
+        </helpers>
+        <blocks>
+            <fiuze_dropshippo>
+                <class>Fiuze_DropshipPo_Block</class>
+            </fiuze_dropshippo>
+        </blocks>
+    </global>
+    <frontend>
+        <routers>
+            <udpo>
+                <args>
+                    <modules>
+                        <Fiuze_DropshipPo before="Unirgy_DropshipPo">Fiuze_DropshipPo</Fiuze_DropshipPo>
+                    </modules>
+                </args>
+            </udpo>
+        </routers>
+        <layout>
+            <updates>
+                <fiuze_dropshippo module="Fuize_DropshipPo">
+                    <file>fiuze_udpo.xml</file>
+                </fiuze_dropshippo>
+            </updates>
+        </layout>
+    </frontend>
+</config>

@@ -1,6 +1,6 @@
 <?php
 
-class Aftership_Track_Model_CronObserver {
+class Fiuze_Track_Model_CronObserver {
 
     const CONFIG_NODE_JOBS = 'crontab/jobs_aftership';
     const AFTERSHIP_STATUS_NODE = 'aftership_options/messages/status';
