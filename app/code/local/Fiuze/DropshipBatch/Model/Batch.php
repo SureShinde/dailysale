@@ -150,4 +150,28 @@ class Fiuze_DropshipBatch_Model_Batch extends Unirgy_DropshipPo_Model_Batch
 
         return $this;
     }
+
+    protected $_incToIdMap = array();
+    protected $_incToOrderIdMap = array();
+    protected $_incToOrderIncIdMap= array();
+    public function addPOToExport($po)
+    {
+        $this->_incToIdMap[$po->getIncrementId()] = $po->getId();
+        $this->_incToOrderIdMap[$po->getIncrementId()] = $po->getOrder()->getId();
+        $this->_incToOrderIncIdMap[$po->getIncrementId()] = $po->getOrder()->getIncrementId();
+        if($this->getAdapter()->addPO($po)){
+            $po->setUdropshipStatus('10');
+        }
+        return $this;
+    }
+    public function addStockPOToExport($po)
+    {
+        $this->_incToIdMap[$po->getIncrementId()] = $po->getId();
+        $this->_incToOrderIdMap[$po->getIncrementId()] = $po->getOrder()->getId();
+        $this->_incToOrderIncIdMap[$po->getIncrementId()] = $po->getOrder()->getIncrementId();
+        if($this->getAdapter()->addPO($po)){
+            $po->setUdropshipStatus('10');
+        }
+        return $this;
+    }
 }

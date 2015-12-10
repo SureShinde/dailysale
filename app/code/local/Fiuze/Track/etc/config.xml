@@ -13,7 +13,7 @@
             </rewrite>
         </track>
     </models>
-    <models>
+<!--    <models>
         <fiuzetrackcron>
             <class>Fiuze_Track_Model</class>
         </fiuzetrackcron>
@@ -29,7 +29,7 @@
                 </schedule>
             </entities>
         </track_mysql4>
-    </models>
+    </models>-->
     <events>
         <sales_order_shipment_track_save_after>
             <observers>
