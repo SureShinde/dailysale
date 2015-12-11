@@ -64,7 +64,12 @@ class ParadoxLabs_TokenBase_Model_Method extends Mage_Payment_Model_Method_Cc
 	 */
 	public function setStore( $id )
 	{
-		$this->_storeId	= $id;
+		// Whelp.
+		if( $id instanceof Mage_Core_Model_Store ) {
+			$id = $id->getId();
+		}
+		
+		$this->_storeId	= intval( $id );
 		$this->_gateway	= null;
 		
 		return $this;
@@ -124,7 +129,8 @@ class ParadoxLabs_TokenBase_Model_Method extends Mage_Payment_Model_Method_Cc
 				'login'			=> $this->getConfigData('login'),
 				'password'		=> $this->getConfigData('trans_key'),
 				'secret_key'	=> $this->getConfigData('secrey_key'),
-				'test_mode'		=> $this->getConfigData('test')
+				'test_mode'		=> $this->getConfigData('test'),
+				'verify_ssl'	=> $this->getConfigData('verify_ssl'),
 			));
 		}
 		
@@ -202,10 +208,10 @@ class ParadoxLabs_TokenBase_Model_Method extends Mage_Payment_Model_Method_Cc
 	 */
 	public function assignData( $data )
 	{
-        if (!($data instanceof Varien_Object)) {
-            $data = new Varien_Object($data);
-        }
-        
+		if (!($data instanceof Varien_Object)) {
+			$data = new Varien_Object($data);
+		}
+		
 		parent::assignData( $data );
 		
 		if( $data->hasCardId() && $data->getCardId() != '' ) {
@@ -232,7 +238,7 @@ class ParadoxLabs_TokenBase_Model_Method extends Mage_Payment_Model_Method_Cc
 				$this->getInfoInstance()->setCcLast4( $data->getCcLast4() );
 			}
 			
-			if( $data->getCcExpYear() > date('Y') || ( $data->getCcExpYear() == date('Y') && $data->getCcExpMonth() >= date('n') ) ) {
+			if( $data->getCcExpYear() != ''  && $data->getCcExpMonth() != '' ) {
 				$this->getInfoInstance()->setCcExpYear( $data->getCcExpYear() )
 										->setCcExpMonth( $data->getCcExpMonth() );
 			}
@@ -283,8 +289,32 @@ class ParadoxLabs_TokenBase_Model_Method extends Mage_Payment_Model_Method_Cc
 	{
 		$this->_log( sprintf( 'validate(%s)', $this->getInfoInstance()->getCardId() ) );
 		
+		/**
+		 * If no tokenbase ID, we must have a new card. Make sure all the details look valid.
+		 */
 		if( $this->getInfoInstance()->hasTokenbaseId() === false ) {
 			return parent::validate();
+		}
+		/**
+		 * If there is an ID, this might be an edit. Validate there too, as much as we can.
+		 */
+		else {
+			if( $this->getInfoInstance()->getCcNumber() != '' && substr( $this->getInfoInstance()->getCcNumber(), 0, 4 ) != 'XXXX' ) {
+				// remove credit card number delimiters such as "-" and space
+				$this->getInfoInstance()->setData( 'cc_number', preg_replace( '/[\-\s]+/', '', $this->getInfoInstance()->getCcNumber() ) );
+				
+				if( strlen( $this->getInfoInstance()->getCcNumber() ) < 13
+					|| !is_numeric( $this->getInfoInstance()->getCcNumber() )
+					|| !$this->validateCcNum( $this->getInfoInstance()->getData('cc_number') ) ) {
+					throw Mage::exception( 'Mage_Payment_Model_Info', Mage::helper('payment')->__('Invalid Credit Card Number') );
+				}
+			}
+			
+			if( $this->getInfoInstance()->getCcExpYear() != '' && $this->getInfoInstance()->getCcExpMonth() != '' ) {
+				if( !$this->_validateExpDate( $this->getInfoInstance()->getCcExpYear(), $this->getInfoInstance()->getCcExpMonth() ) ) {
+					throw Mage::exception( 'Mage_Payment_Model_Info', Mage::helper('payment')->__('Incorrect credit card expiration date.') );
+				}
+			}
 		}
 		
 		return $this;
@@ -314,6 +344,8 @@ class ParadoxLabs_TokenBase_Model_Method extends Mage_Payment_Model_Method_Cc
 		/**
 		 * Process transaction and results
 		 */
+		$this->_resyncStoredCard( $payment );
+		
 		if( $this->getAdvancedConfigData('send_line_items') ) {
 			$this->gateway()->setLineItems( $payment->getOrder()->getAllVisibleItems() );
 		}
@@ -322,18 +354,20 @@ class ParadoxLabs_TokenBase_Model_Method extends Mage_Payment_Model_Method_Cc
 		$response = $this->gateway()->authorize( $payment, $amount );
 		$this->_afterAuthorize( $payment, $amount, $response );
 		
+		$payment->setTransactionAdditionalInfo( Mage_Sales_Model_Order_Payment_Transaction::RAW_DETAILS, $response->getData() );
+		
 		if( $response->getIsFraud() === true ) {
 			$payment->setIsTransactionPending(true)
 					->setIsFraudDetected(true)
 					->setTransactionAdditionalInfo( 'is_transaction_fraud', true );
 		}
-		else {
+		elseif( $payment->getOrder()->getStatus() != $this->getConfigData('order_status') ) {
 			$payment->getOrder()->setStatus( $this->getConfigData('order_status') );
 		}
 		
 		$payment->getOrder()->setExtOrderId( sprintf( '%s:%s', $response->getTransactionId(), $response->getAuthCode() ) );
 		
-		$payment->setTransactionId( $response->getTransactionId() )
+		$payment->setTransactionId( $this->_getValidTransactionId( $payment, $response->getTransactionId() ) )
 				->setAdditionalInformation( array_merge( $payment->getAdditionalInformation(), $response->getData() ) )
 				->setIsTransactionClosed(0);
 		
@@ -364,7 +398,13 @@ class ParadoxLabs_TokenBase_Model_Method extends Mage_Payment_Model_Method_Cc
 		if( !empty( $transactionId[1] ) ) {
 			$this->gateway()->setHaveAuthorized( true );
 			$this->gateway()->setAuthCode( $transactionId[1] );
-			$this->gateway()->setTransactionId( $transactionId[0] );
+			
+			if( $payment->getParentTransactionId() != '' ) {
+				$this->gateway()->setTransactionId( $payment->getParentTransactionId() );
+			}
+			else {
+				$this->gateway()->setTransactionId( $transactionId[0] );
+			}
 		}
 		else {
 			$this->gateway()->setHaveAuthorized( false );
@@ -373,11 +413,16 @@ class ParadoxLabs_TokenBase_Model_Method extends Mage_Payment_Model_Method_Cc
 		/**
 		 * Grab transaction ID from the invoice in case partial invoicing.
 		 */
-		$realTransactionId	= null;
-		$invoice			= Mage::registry('current_invoice');
+		if( $payment->hasInvoice() && $payment->getInvoice() instanceof Mage_Sales_Model_Order_Invoice ) {
+			$invoice	= $payment->getInvoice();
+		}
+		else {
+			$invoice	= Mage::registry('current_invoice');
+		}
+		
 		if( !is_null( $invoice ) ) {
 			if( $invoice->getTransactionId() != '' ) {
-				$realTransactionId = $invoice->getTransactionId();
+				$this->gateway()->setTransactionId( $invoice->getTransactionId() );
 			}
 			
 			if( $this->getAdvancedConfigData('send_line_items') ) {
@@ -391,9 +436,13 @@ class ParadoxLabs_TokenBase_Model_Method extends Mage_Payment_Model_Method_Cc
 		/**
 		 * Process transaction and results
 		 */
+		$this->_resyncStoredCard( $payment );
+		
 		$this->_beforeCapture( $payment, $amount );
-		$response = $this->gateway()->capture( $payment, $amount, $realTransactionId );
+		$response = $this->gateway()->capture( $payment, $amount );
 		$this->_afterCapture( $payment, $amount, $response );
+		
+		$payment->setTransactionAdditionalInfo( Mage_Sales_Model_Order_Payment_Transaction::RAW_DETAILS, $response->getData() );
 		
 		if( $response->getIsFraud() === true ) {
 			$payment->setIsTransactionPending(true)
@@ -401,16 +450,26 @@ class ParadoxLabs_TokenBase_Model_Method extends Mage_Payment_Model_Method_Cc
 					->setTransactionAdditionalInfo( 'is_transaction_fraud', true );
 		}
 		elseif( $this->gateway()->getHaveAuthorized() === false ) {
-			$payment->getOrder()->setStatus( $this->getConfigData('order_status') )
-								->setExtOrderId( sprintf( '%s:%s', $response->getTransactionId(), $response->getAuthCode() ) );
+			if( $payment->getOrder()->getStatus() != $this->getConfigData('order_status') ) {
+				$payment->getOrder()->setStatus( $this->getConfigData('order_status') );
+			}
+			
+			$payment->getOrder()->setExtOrderId( sprintf( '%s:%s', $response->getTransactionId(), $response->getAuthCode() ) );
 		}
 		
-		if( $response->getIsFraud() !== true ) {
-			$payment->setIsTransactionClosed(1);
+		$payment->setIsTransactionClosed(0);
+		
+		// Set transaction id iff different from the last txn id -- use Magento's generated ID otherwise.
+		if( $payment->getParentTransactionId() != $response->getTransactionId() ) {
+			$payment->setTransactionId( $this->_getValidTransactionId( $payment, $response->getTransactionId() ) );
 		}
 		
-		$payment->setTransactionId( $response->getTransactionId() )
-				->setAdditionalInformation( array_merge( $payment->getAdditionalInformation(), $response->getData() ) );
+		if( $this->gateway()->getHaveAuthorized() ) {
+			$payment->setParentTransactionId( $this->gateway()->getTransactionId() );
+			$payment->setShouldCloseParentTransaction(1);
+		}
+		
+		$payment->setAdditionalInformation( array_merge( $payment->getAdditionalInformation(), $response->getData() ) );
 		
 		$this->getCard()->updateLastUse()->save();
 		
@@ -432,40 +491,62 @@ class ParadoxLabs_TokenBase_Model_Method extends Mage_Payment_Model_Method_Cc
 			return $this;
 		}
 		
+		$creditmemo		= $payment->getCreditmemo();
+		
 		/**
 		 * Grab transaction ID from the order
 		 */
-		$transactionId = explode( ':', $payment->getOrder()->getExtOrderId() );
-		
-		$this->gateway()->setTransactionId( $transactionId[0] );
-		
-		/**
-		 * Grab transaction ID from the invoice in case partial invoicing.
-		 */
-		$realTransactionId	= null;
-		$creditmemo			= $payment->getCreditmemo();
-		if( !is_null( $creditmemo ) ) {
-			if( $creditmemo->getInvoice()->getTransactionId() != '' ) {
-				$realTransactionId = $creditmemo->getInvoice()->getTransactionId();
+		if( $payment->getParentTransactionId() != '' ) {
+			$transactionId = substr( $payment->getParentTransactionId(), 0, strcspn( $payment->getParentTransactionId(), '-' ) );
+		}
+		else {
+			if( $creditmemo && $creditmemo->getInvoice()->getTransactionId() != '' ) {
+				$transactionId = $creditmemo->getInvoice()->getTransactionId();
 			}
-			
-			if( $this->getAdvancedConfigData('send_line_items') ) {
-				$this->gateway()->setLineItems( $creditmemo->getAllItems() );
+			else {
+				$transactionId = explode( ':', $payment->getOrder()->getExtOrderId() );
+				$transactionId = $transactionId[0];
 			}
 		}
-		elseif( $this->getAdvancedConfigData('send_line_items') ) {
-			$this->gateway()->setLineItems( $payment->getOrder()->getAllVisibleItems() );
+		
+		$this->gateway()->setTransactionId( $transactionId );
+		
+		/**
+		 * Add line items.
+		 */
+		if( $this->getAdvancedConfigData('send_line_items') ) {
+			if( $creditmemo ) {
+				$this->gateway()->setLineItems( $creditmemo->getAllItems() );
+			}
+			else {
+				$this->gateway()->setLineItems( $payment->getOrder()->getAllVisibleItems() );
+			}
 		}
 		
 		/**
 		 * Process transaction and results
 		 */
 		$this->_beforeRefund( $payment, $amount );
-		$response = $this->gateway()->refund( $payment, $amount, $realTransactionId );
+		$response = $this->gateway()->refund( $payment, $amount );
 		$this->_afterRefund( $payment, $amount, $response );
 		
 		$payment->setIsTransactionClosed(1)
-				->setAdditionalInformation( array_merge( $payment->getAdditionalInformation(), $response->getData() ) );
+				->setAdditionalInformation( array_merge( $payment->getAdditionalInformation(), $response->getData() ) )
+				->setTransactionAdditionalInfo( Mage_Sales_Model_Order_Payment_Transaction::RAW_DETAILS, $response->getData() );
+		
+		if( $response->getTransactionId() != '' && $response->getTransactionId() != $transactionId ) {
+			$payment->setTransactionId( $this->_getValidTransactionId( $payment, $response->getTransactionId() ) );
+		}
+		else {
+			$payment->setTransactionId( $this->_getValidTransactionId( $payment, $transactionId . '-refund' ) );
+		}
+		
+		if( $creditmemo && $creditmemo->getInvoice() && $creditmemo->getInvoice()->getBaseTotalRefunded() < $creditmemo->getInvoice()->getBaseGrandTotal() ) {
+			$payment->setShouldCloseParentTransaction(0);
+		}
+		else {
+			$payment->setShouldCloseParentTransaction(1);
+		}
 		
 		$this->getCard()->updateLastUse()->save();
 		
@@ -486,9 +567,7 @@ class ParadoxLabs_TokenBase_Model_Method extends Mage_Payment_Model_Method_Cc
 		/**
 		 * Grab transaction ID from the order
 		 */
-		$transactionId = explode( ':', $payment->getOrder()->getExtOrderId() );
-		
-		$this->gateway()->setTransactionId( $transactionId[0] );
+		$this->gateway()->setTransactionId( $payment->getParentTransactionId() );
 		
 		/**
 		 * Process transaction and results
@@ -497,17 +576,15 @@ class ParadoxLabs_TokenBase_Model_Method extends Mage_Payment_Model_Method_Cc
 		$response = $this->gateway()->void( $payment );
 		$this->_afterVoid( $payment, $response );
 			
-		$transactionId = $response->getTransactionId() != '' && $response->getTransactionId() != '0' ? $response->getTransactionId() : $transactionId[0].'-2';
+		$transactionId = $response->getTransactionId() != '' && $response->getTransactionId() != '0' ? $response->getTransactionId() : $payment->getTransactionId();
 		
 		$payment->getOrder()->setExtOrderId( $transactionId );
 		
-		$payment->getOrder()->addStatusToHistory( false, Mage::helper('tokenbase')->__( 'Voided Authorize.Net transaction %s.', $this->gateway()->getTransactionId() ), false );
-		
-		$payment->setTransactionId( $transactionId )
-				->setAdditionalInformation( array_merge( $payment->getAdditionalInformation(), $response->getData() ) )
+		$payment->setAdditionalInformation( array_merge( $payment->getAdditionalInformation(), $response->getData() ) )
 				->setShouldCloseParentTransaction(1)
-				->setIsTransactionClosed(1)
-				->save();
+				->setIsTransactionClosed(1);
+		
+		$payment->setTransactionAdditionalInfo( Mage_Sales_Model_Order_Payment_Transaction::RAW_DETAILS, $response->getData() );
 		
 		$this->getCard()->updateLastUse()->save();
 		
@@ -554,7 +631,41 @@ class ParadoxLabs_TokenBase_Model_Method extends Mage_Payment_Model_Method_Cc
 		
 		$this->_log( json_encode( $response->getData() ) );
 		
-		return parent::fetchTransactionInfo( $payment, $transactionId );
+		return array_merge( parent::fetchTransactionInfo( $payment, $transactionId ), $response->getData() );
+	}
+	
+	/**
+	 * We can't have two transactions with the same ID. Make sure that doesn't happen.
+	 */
+	protected function _getValidTransactionId( Varien_Object $payment, $transactionId )
+	{
+		$transactions = Mage::getModel('sales/order_payment_transaction')->getCollection()
+								->setOrderFilter( $payment->getOrder() )
+								->addPaymentIdFilter( $payment->getId() )
+								->setOrder( 'created_at', Varien_Data_Collection::SORT_ORDER_DESC )
+								->setOrder( 'transaction_id', Varien_Data_Collection::SORT_ORDER_DESC );
+		
+		$baseId		= $transactionId;
+		$increment	= 1;
+		
+		/**
+		 * Iterate over the txn collection, adding to an increment until we get one that does not exist.
+		 * will try txnId, txnId-1, txnId-2, etc.
+		 */
+		do {
+			$found = false;
+			
+			foreach( $transactions as $txn ) {
+				if( $txn->getTxnId() == $transactionId ) {
+					$found = true;
+					$transactionId = $baseId . '-' . $increment++;
+					break;
+				}
+			}
+		}
+		while( $found == true );
+		
+		return $transactionId;
 	}
 	
 	/**
@@ -565,12 +676,12 @@ class ParadoxLabs_TokenBase_Model_Method extends Mage_Payment_Model_Method_Cc
 	{
 		$this->_log( sprintf( '_loadOrCreateCard(%s %s)', get_class( $payment ), $payment->getId() ) );
 		
-		if( !is_null( $this->_card ) ) {
+		if( !is_null( $this->getCard() ) ) {
 			$this->setCard( $this->getCard() );
 			
 			return $this->getCard();
 		}
-		elseif( $payment->hasTokenbaseId() ) {
+		elseif( $payment->hasTokenbaseId() && $payment->getTokenbaseId() ) {
 			return $this->loadAndSetCard( $payment->getTokenbaseId() );
 		}
 		elseif( $this->_paymentContainsCard( $payment ) === true ) {
@@ -589,7 +700,7 @@ class ParadoxLabs_TokenBase_Model_Method extends Mage_Payment_Model_Method_Cc
 			else {
 				throw Mage::exception( 'Mage_Payment_Model_Info', Mage::helper('tokenbase')->__('Could not find billing address.') );
 			}
-				 
+			
 			$card->save();
 			
 			$this->setCard( $card );
@@ -615,6 +726,56 @@ class ParadoxLabs_TokenBase_Model_Method extends Mage_Payment_Model_Method_Cc
 		}
 		
 		return false;
+	}
+	
+	/**
+	 * Resync billing address et al. before auth/capture.
+	 */
+	protected function _resyncStoredCard( $payment )
+	{
+		$this->_log( sprintf( '_resyncStoredCard(%s %s)', get_class( $payment ), $payment->getId() ) );
+		
+		if( $this->getCard() instanceof ParadoxLabs_TokenBase_Model_Card && $this->getCard()->getId() > 0 ) {
+			$haveChanges = false;
+			
+			/**
+			 * Any changes that we can see? Check the payment info and main address fields.
+			 */
+			if( $this->getCard()->getOrigData('additional') != null && $this->getCard()->getOrigData('additional') != $this->getCard()->getData('additional') ) {
+				$haveChanges = true;
+			}
+			
+			if( $payment->getOrder() ) {
+				$address = $payment->getOrder()->getBillingAddress();
+			}
+			elseif( $payment->getBillingAddress() ) {
+				$address = $payment->getBillingAddress();
+			}
+			
+			if( isset( $address ) && $address instanceof Mage_Customer_Model_Address_Abstract ) {
+				foreach( array( 'firstname', 'lastname', 'company', 'street', 'city', 'country_id', 'region', 'region_id', 'postcode' ) as $field ) {
+					if( $this->getCard()->getAddress( $field ) != $address->getData( $field ) ) {
+						$this->getCard()->setAddress( $address );
+						
+						$haveChanges = true;
+						break;
+					}
+				}
+			}
+			
+			if( $haveChanges === true ) {
+				if( $this->hasInfoInstance() !== true ) {
+					$this->setInfoInstance( $payment );
+				}
+				
+				$this->getCard()->setMethodInstance( $this );
+				$this->getCard()->setInfoInstance( $payment );
+				
+				$this->getCard()->save();
+			}
+		}
+		
+		return $this;
 	}
 	
 	/**

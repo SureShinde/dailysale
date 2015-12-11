@@ -33,7 +33,7 @@ class ParadoxLabs_TokenBase_Adminhtml_Customer_PaymentinfoController extends Mag
 			exit;
 		}
 		
-		Mage::register( 'current_customer', $customer );
+		Mage::register( 'current_customer', $customer, true );
 		
 		return $this;
 	}
@@ -195,9 +195,13 @@ class ParadoxLabs_TokenBase_Adminhtml_Customer_PaymentinfoController extends Mag
 						$cardData['cc_last4']	= substr( $cardData['cc_number'], -4 );
 					}
 					
+					$quote = Mage::getModel('sales/quote');
+					$quote->setStoreId( Mage::helper('tokenbase')->getCurrentStoreId() );
+					$quote->setCustomerId( $card->getCustomerId() );
+					
 					$newPayment = Mage::getModel('sales/quote_payment');
-					$newPayment->setQuote( Mage::getSingleton('checkout/session')->getQuote() );
-                    $newPayment->getQuote()->getBillingAddress()->setCountryId( $newAddr->getCountryId() );
+					$newPayment->setQuote( $quote );
+					$newPayment->getQuote()->getBillingAddress()->setCountryId( $newAddr->getCountryId() );
 					$newPayment->importData( $cardData );
 					
 					/**
@@ -209,7 +213,7 @@ class ParadoxLabs_TokenBase_Adminhtml_Customer_PaymentinfoController extends Mag
 					$card->importPaymentInfo( $newPayment );
 					$card->save();
 					
-					Mage::getSingleton('customer/session')->unsTokenbaseFormData();
+					Mage::getSingleton('adminhtml/session')->unsTokenbaseFormData();
 				}
 				else {
 					$this->getResponse()->setBody( json_encode( array( 'success' => false, 'message' => $this->__('Invalid Request.') ) ) );
@@ -217,7 +221,7 @@ class ParadoxLabs_TokenBase_Adminhtml_Customer_PaymentinfoController extends Mag
 				}
 			}
 			catch( Exception $e ) {
-				Mage::getSingleton('customer/session')->setTokenbaseFormData( $input );
+				Mage::getSingleton('adminhtml/session')->setTokenbaseFormData( $input );
 				
 				Mage::helper('tokenbase')->log( $method, (string)$e );
 				$this->getResponse()->setBody( json_encode( array( 'success' => false, 'message' => $this->__( 'ERROR: %s', $e->getMessage() ) ) ) );
@@ -295,5 +299,13 @@ class ParadoxLabs_TokenBase_Adminhtml_Customer_PaymentinfoController extends Mag
 		}
 		
 		return false;
+	}
+	
+	/**
+	 * Check ACP perms
+	 */
+	protected function _isAllowed()
+	{
+		return Mage::getSingleton('admin/session')->isAllowed('customer/manage');
 	}
 }

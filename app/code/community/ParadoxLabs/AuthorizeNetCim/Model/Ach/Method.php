@@ -134,6 +134,29 @@ class ParadoxLabs_AuthorizeNetCim_Model_Ach_Method extends ParadoxLabs_Authorize
 			
 			return Mage_Payment_Model_Method_Abstract::validate();
 		}
+		/**
+		 * If there is an ID, this might be an edit. Validate there too, as much as we can.
+		 */
+		else {
+			if( $this->getInfoInstance()->getData('echeck_account_name') != '' && strlen( $this->getInfoInstance()->getData('echeck_account_name') ) > 22 ) {
+				throw Mage::exception( 'Mage_Payment_Model_Info', Mage::helper('tokenbase')->__('Please limit your account name to 22 characters.') );
+			}
+			
+			if( $this->getInfoInstance()->getData('echeck_routing_no') != '' && substr( $this->getInfoInstance()->getData('echeck_routing_no'), 0, 4 ) != 'XXXX' ) {
+				if( strlen( $this->getInfoInstance()->getData('echeck_routing_no') ) != 9 
+					|| !is_numeric( $this->getInfoInstance()->getData('echeck_routing_no') ) ) {
+					throw Mage::exception( 'Mage_Payment_Model_Info', Mage::helper('tokenbase')->__('Your routing number must be 9 digits long. Please recheck the value you entered.') );
+				}
+			}
+			
+			if( $this->getInfoInstance()->getData('echeck_account_no') != '' && substr( $this->getInfoInstance()->getData('echeck_account_no'), 0, 4 ) != 'XXXX' ) {
+				if( strlen( $this->getInfoInstance()->getData('echeck_account_no') ) < 5 
+					|| strlen( $this->getInfoInstance()->getData('echeck_account_no') ) > 17
+					|| !is_numeric( $this->getInfoInstance()->getData('echeck_account_no') ) ) {
+					throw Mage::exception( 'Mage_Payment_Model_Info', Mage::helper('tokenbase')->__('Your account number must be between 5 and 17 digits. Please recheck the value you entered.') );
+				}
+			}
+		}
 		
 		return $this;
 	}

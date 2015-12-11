@@ -55,6 +55,14 @@ class ParadoxLabs_TokenBase_Block_Customer_Form extends Mage_Core_Block_Template
 	}
 	
 	/**
+	 * Return the form submit action.
+	 */
+	public function getAction()
+	{
+		return Mage::getUrl( '*/*/save', array( '_secure' => true ) );
+	}
+	
+	/**
 	 * Return whether or not this is a card edit.
 	 */
 	public function isEdit()

@@ -80,6 +80,14 @@ class ParadoxLabs_TokenBase_Model_Api_Api extends Mage_Api_Model_Resource_Abstra
 	 */
 	public function updateCard( $method, $customerData, $addressData, $paymentData, $cardId=null )
 	{
+		$customerData	= (array)$customerData;
+		$addressData	= (array)$addressData;
+		$paymentData	= (array)$paymentData;
+		
+		if( isset( $addressData['street'] ) && !is_array( $addressData['street'] ) ) {
+			$addressData['street'] = array( $addressData['street'] );
+		}
+		
 		/**
 		 * Convert inputs into an address and payment object for storage.
 		 */
@@ -95,14 +103,14 @@ class ParadoxLabs_TokenBase_Model_Api_Api extends Mage_Api_Model_Resource_Abstra
 			 */
 			if( !is_null( $cardId ) && (int)$cardId > 0 ) {
 				$card->load( (int)$cardId );
-				
-				if( isset( $customerData['customer_id'] ) && intval( $customerData['customer_id'] ) > 0 ) {
-					$card->setCustomerId( $customerData['customer_id'] );
-				}
-				
-				if( isset( $customerData['customer_email'] ) ) {
-					$card->setCustomerEmail( $customerData['customer_email'] );
-				}
+			}
+			
+			if( isset( $customerData['customer_id'] ) && intval( $customerData['customer_id'] ) > 0 ) {
+				$card->setCustomerId( $customerData['customer_id'] );
+			}
+			
+			if( isset( $customerData['customer_email'] ) ) {
+				$card->setCustomerEmail( $customerData['customer_email'] );
 			}
 			
 			if( isset( $customerData['customer_ip'] ) ) {
@@ -143,7 +151,9 @@ class ParadoxLabs_TokenBase_Model_Api_Api extends Mage_Api_Model_Resource_Abstra
 			}
 			
 			$quote = Mage::getModel('sales/quote');
+			$quote->setStoreId( Mage::helper('tokenbase')->getCurrentStoreId() );
 			$quote->setCustomerId( $card->getCustomerId() );
+			$quote->getBillingAddress()->setCountryId( $newAddr->getCountryId() );
 			
 			$newPayment = Mage::getModel('sales/quote_payment');
 			$newPayment->setQuote( $quote );
@@ -156,6 +166,8 @@ class ParadoxLabs_TokenBase_Model_Api_Api extends Mage_Api_Model_Resource_Abstra
 			$card->setAddress( $newAddr );
 			$card->importPaymentInfo( $newPayment );
 			$card->save();
+			
+			return $card->getId();
 		}
 		catch( Exception $e ) {
 			Mage::helper('tokenbase')->log( $method, (string)$e );

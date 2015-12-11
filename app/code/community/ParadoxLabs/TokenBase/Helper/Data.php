@@ -66,7 +66,7 @@ class ParadoxLabs_TokenBase_Helper_Data extends Mage_Core_Helper_Abstract
 					$websiteId	= Mage::registry('current_customer')->getWebsiteId();
 					$store		= Mage::getModel('core/website')->load( $websiteId )->getDefaultStore();
 					
-					if( $store instanceof Varien_Object ) {
+					if( $store instanceof Mage_Core_Model_Store ) {
 						$storeId = $store->getId();
 					}
 				}
@@ -229,10 +229,18 @@ class ParadoxLabs_TokenBase_Helper_Data extends Mage_Core_Helper_Abstract
 					$cardData['card_id']	= $data['id'];
 					$cardData['cc_cid']		= '000'; // This bypasses the validation check in importData below. Does not matter otherwise.
 					
+					unset( $cardData['cc_number'] );
+					unset( $cardData['echeck_account_no'] );
+					unset( $cardData['echeck_routing_no'] );
+					
 					$newPayment = Mage::getModel('sales/quote_payment');
 					$newPayment->setQuote( Mage::getSingleton('checkout/session')->getQuote() );
 					$newPayment->getQuote()->getBillingAddress()->setCountryId( $this->_card->getAddress('country_id') );
-					$newPayment->importData( $cardData );
+					
+					try {
+						$newPayment->importData( $cardData );
+					}
+					catch( Exception $e ) {}
 					
 					$this->_card->importPaymentInfo( $newPayment );
 				}
@@ -259,7 +267,7 @@ class ParadoxLabs_TokenBase_Helper_Data extends Mage_Core_Helper_Abstract
 				
 				if( $this->getCurrentCustomer()->getId() > 0 ) {
 					// Manual select -- only because collections don't let us do the complex condition. (soz.)
-					$this->_cards[ $method ]->getSelect()->where( sprintf( "id='%s' or (active=1 and customer_id='%s')", $tokenbaseId, $this->getCurrentCustomer()->getId() ) );
+					$this->_cards[ $method ]->getSelect()->where( sprintf( "(id='%s' and customer_id='%s') or (active=1 and customer_id='%s')", $tokenbaseId, $this->getCurrentCustomer()->getId(), $this->getCurrentCustomer()->getId() ) );
 				}
 				else {
 					$this->_cards[ $method ]->addFieldToFilter( 'id', $tokenbaseId );

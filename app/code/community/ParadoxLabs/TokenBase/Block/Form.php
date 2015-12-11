@@ -68,8 +68,14 @@ abstract class ParadoxLabs_TokenBase_Block_Form extends Mage_Payment_Block_Form_
 	 */
 	public function isGuestCheckout()
 	{
-		if( Mage::getSingleton('customer/session')->isLoggedIn() == false && Mage::getSingleton('checkout/session')->getQuote()->getCheckoutMethod() != 'register' ) {
-			return true;
+		if( Mage::app()->getStore()->isAdmin() ) {
+			// Admin has no guest checkout feature (out of box).
+			return false;
+		}
+		else {
+			if( Mage::getSingleton('customer/session')->isLoggedIn() == false && Mage::getSingleton('checkout/session')->getQuote()->getCheckoutMethod() != 'register' ) {
+				return true;
+			}
 		}
 		
 		return false;
@@ -80,7 +86,18 @@ abstract class ParadoxLabs_TokenBase_Block_Form extends Mage_Payment_Block_Form_
 	 */
 	public function isNominalCheckout()
 	{
-		$quote	= Mage::getSingleton('checkout/session')->getQuote();
+		if( Mage::app()->getStore()->isAdmin() ) {
+			if( Mage::getSingleton('adminhtml/session_quote')->hasQuoteId() ) {
+				$quote	= Mage::getSingleton('adminhtml/session_quote')->getQuote();
+			}
+			else {
+				$quote	= false;
+			}
+		}
+		else {
+			$quote	= Mage::getSingleton('checkout/session')->getQuote();
+		}
+		
 		if( $quote && $quote->getId() ) {
 			$items	= $quote->getAllItems();
 			

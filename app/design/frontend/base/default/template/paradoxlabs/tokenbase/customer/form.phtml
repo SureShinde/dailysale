@@ -6,7 +6,7 @@
 	<h2><?php echo $this->__('Add A Credit Card'); ?></h2>
 <?php endif; ?>
 
-<form action="<?php echo Mage::getUrl('*/*/save', array('_secure' => true)); ?>" method="post" id="form-validate">
+<form action="<?php echo $this->getAction(); ?>" method="post" id="form-validate">
 	<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
 	<input type="hidden" name="id" value="<?php echo $this->getCard()->getId(); ?>" />
 	<input type="hidden" name="method" value="<?php echo $code; ?>" />

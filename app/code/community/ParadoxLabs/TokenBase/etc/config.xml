@@ -2,7 +2,7 @@
 <config>
 	<modules>
 		<ParadoxLabs_TokenBase>
-			<version>2.1.0.20150415</version>
+			<version>2.2.2.20151125</version>
 		</ParadoxLabs_TokenBase>
 	</modules>
 	<global>
@@ -61,6 +61,14 @@
 					</tokenbase_refund>
 				</observers>
 			</sales_order_creditmemo_refund>
+			<sales_order_payment_capture>
+				<observers>
+					<tokenbase_capture>
+						<class>tokenbase/observer_capture</class>
+						<method>processCapture</method>
+					</tokenbase_capture>
+				</observers>
+			</sales_order_payment_capture>
 			<tokenbase_before_load_active_cards>
 				<observers>
 					<tokenbase_check_queue_deletion>
