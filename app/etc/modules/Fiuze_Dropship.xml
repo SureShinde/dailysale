@@ -4,9 +4,9 @@
         <Fiuze_Dropship>
             <active>true</active>
             <codePool>local</codePool>
-<!--            <depends>
-                <Unirgy_DropshipPo />
-            </depends>-->
+            <depends>
+                <Unirgy_Dropship />
+            </depends>
         </Fiuze_Dropship>
     </modules>
 </config>
