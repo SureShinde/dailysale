@@ -14,7 +14,7 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Helper_GridRenderer_StockQty extend
         ) {
             $rQty = $row->getReservedQty()*1;
             $htmlId = '_'.md5(uniqid(microtime(), true));
-            $lbl = $hlp->__('Includes Reserved Qty')." ($rQty)";
+            $lbl = Mage::helper('udropship')->__('Includes Reserved Qty')." ($rQty)";
             $html .=<<<EOT
 <nobr><br />
 <input id="$htmlId" type="checkbox" name="{$this->getColumn()->getUrqId()}" value="1"  /> $lbl

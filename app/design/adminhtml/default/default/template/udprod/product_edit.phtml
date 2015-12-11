@@ -1,4 +1,4 @@
-<button style="" onclick="udprodToggleRequired(this)" class="scalable " type="button" title="<?php echo Mage::helper('udprod')->__('Turn OFF Required')?>" id="udprod-toggle-required"><span><span><span><?php echo Mage::helper('udprod')->__('Turn OFF Required')?></span></span></span></button>
+<button style="" onclick="udprodToggleRequired(this)" class="scalable " type="button" title="<?php echo Mage::helper('udropship')->__('Turn OFF Required')?>" id="udprod-toggle-required"><span><span><span><?php echo Mage::helper('udropship')->__('Turn OFF Required')?></span></span></span></button>
 
 <script type="text/javascript">
     function udprodToggleRequired(btn)
@@ -10,9 +10,9 @@
             btn.udtgrOffFlag = true;
         }
         if (btn.udtgrOffFlag) {
-            $('udprod-toggle-required').down(2).update('<?php echo Mage::helper('udprod')->__('Turn ON Required')?>')
+            $('udprod-toggle-required').down(2).update('<?php echo Mage::helper('udropship')->__('Turn ON Required')?>')
         } else {
-            $('udprod-toggle-required').down(2).update('<?php echo Mage::helper('udprod')->__('Turn OFF Required')?>')
+            $('udprod-toggle-required').down(2).update('<?php echo Mage::helper('udropship')->__('Turn OFF Required')?>')
         }
         $('product_edit_form').select('input, select, textarea').each(function(el){
             if (el.id!='sku') {

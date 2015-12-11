@@ -88,6 +88,27 @@ class Bronto_Newsletter_Helper_Contact extends Bronto_Common_Helper_Contact
     }
 
     /**
+     * Supercedes the previous method
+     *
+     * @param string $scope
+     * @param string $scopeId
+     * @return array
+     */
+    public function getActualLists($scope = 'default', $scopeId = 0)
+    {
+        $listIds = $this->getListIds($scope, $scopeId);
+        if (!empty($listIds) && $api = $this->getApi(null, $scope, $scopeId)) {
+            $listObject = $api->transferMailList();
+            try {
+                return $listObject->read()->where->id->in($listIds)->getIterator()->toArray();
+            } catch (Exception $e) {
+                Mage::helper('bronto_newsletter')->writeError('Failed to retrieve lists: ' . $e->getMessage());
+            }
+        }
+        return array();
+    }
+
+    /**
      * Retrieve helper module name
      *
      * @return string
@@ -109,20 +130,20 @@ class Bronto_Newsletter_Helper_Contact extends Bronto_Common_Helper_Contact
         // Set correct status based on subscriber status
         switch ($subscriber->getStatus()) {
             case Mage_Newsletter_Model_Subscriber::STATUS_SUBSCRIBED:
-                $status = Bronto_Api_Contact::STATUS_ACTIVE;
+                $status = Bronto_Api_Model_Contact::STATUS_ACTIVE;
                 break;
 
             case Mage_Newsletter_Model_Subscriber::STATUS_UNSUBSCRIBED:
-                $status = Bronto_Api_Contact::STATUS_UNSUBSCRIBED;
+                $status = Bronto_Api_Model_Contact::STATUS_UNSUBSCRIBED;
                 break;
 
             case Mage_Newsletter_Model_Subscriber::STATUS_UNCONFIRMED:
-                $status = Bronto_Api_Contact::STATUS_UNCONFIRMED;
+                $status = Bronto_Api_Model_Contact::STATUS_UNCONFIRMED;
                 break;
 
             case Mage_Newsletter_Model_Subscriber::STATUS_NOT_ACTIVE:
             default:
-                $status = Bronto_Api_Contact::STATUS_TRANSACTIONAL;
+                $status = Bronto_Api_Model_Contact::STATUS_TRANSACTIONAL;
                 break;
         }
 

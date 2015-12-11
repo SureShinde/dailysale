@@ -40,7 +40,7 @@ class Unirgy_SimpleUp_Block_Adminhtml_Module_Grid extends Mage_Adminhtml_Block_W
             $this->getLayout()->createBlock('adminhtml/widget_button')
                 ->setData(array(
                     'label'     => Mage::helper('usimpleup')->__('Check For Updates'),
-                    'onclick'   => "location.href = '{$this->getUrl('usimpleupadmin/adminhtml_module/checkUpdates')}'",
+                    'onclick'   => "location.href = '{$this->getUrl('adminhtml/usimpleupadmin_module/checkUpdates')}'",
                     'class'     => 'save',
                 ))
         );

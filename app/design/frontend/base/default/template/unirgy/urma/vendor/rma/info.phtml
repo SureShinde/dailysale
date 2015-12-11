@@ -50,12 +50,12 @@ $_udVendor = $_rma->getVendor();
             <div class="content">
                 <div class="col2-set">
                     <div class="col-1">
-                        <strong><?php echo $_hlp->__('Shipping Address')?></strong><br/>
+                        <strong><?php echo Mage::helper('udropship')->__('Shipping Address')?></strong><br/>
                         <?php echo Mage::helper('udropship')->formatCustomerAddress($_address, 'html', $_vendor) ?>
                     </div>
                     <div class="col-2" <?php if (!empty($_highlight['tracking'])): ?>class="highlight"<?php endif ?>>
                         <?php if (count($_tracking)): ?>
-                        <h4><?php echo $_hlp->__('Tracking IDs') ?></h4>
+                        <h4><?php echo Mage::helper('udropship')->__('Tracking IDs') ?></h4>
                         <ul class="tracking-numbers">
                         <?php $_prevTmtId = null; foreach ($_tracking as $_t): $_tId = $_t->getId(); $_tmtId = $_t->getMasterTrackingId(); $_pckCnt = $_t->getPackageCount(); $_tbId = $_t->getBatchId() ?>
                             <?php if ($_tmtId!=$_prevTmtId && !is_null($_tmtId) && $_pckCnt>1): ?>
@@ -63,7 +63,7 @@ $_udVendor = $_rma->getVendor();
                                  <!--<a class="toggle" href="#" onclick="return false"><span></span></a>-->
                                  <nobr>
                                 <?php echo $this->htmlEscape($_tmtId) ?>
-                                <a class="delete" href="#" onclick="deleteTrack(<?php echo $_id ?>, <?php echo $_tId ?>); return false" title="<?php echo $_hlp->__('Delete tracking number') ?>"><span></span></a>
+                                <a class="delete" href="#" onclick="deleteTrack(<?php echo $_id ?>, <?php echo $_tId ?>); return false" title="<?php echo Mage::helper('udropship')->__('Delete tracking number') ?>"><span></span></a>
                                 </nobr>
                             </li>
                             <?php $_prevTmtId = $_tmtId; continue; endif ?>
@@ -72,7 +72,7 @@ $_udVendor = $_rma->getVendor();
                                 <!--<a class="toggle" href="#" onclick="return false"><span></span></a>-->
                                 <?php echo $this->htmlEscape($_t->getNumber()) ?>
                                 <?php if (is_null($_tmtId) || $_pckCnt==1): ?>
-                                <a class="delete" href="#" onclick="deleteTrack(<?php echo $_id ?>, <?php echo $_tId ?>); return false" title="<?php echo $_hlp->__('Delete tracking number')?>"><span></span></a>
+                                <a class="delete" href="#" onclick="deleteTrack(<?php echo $_id ?>, <?php echo $_tId ?>); return false" title="<?php echo Mage::helper('udropship')->__('Delete tracking number')?>"><span></span></a>
                                 <?php endif ?>
                             </li>
                             <?php $_prevTmtId = $_tmtId ?>
@@ -84,17 +84,17 @@ $_udVendor = $_rma->getVendor();
                 <div class="clear"></div>
                 <br />
 
-                <h4><?php echo $_hlp->__('RMA Items') ?></h4>
+                <h4><?php echo Mage::helper('udropship')->__('RMA Items') ?></h4>
                 <table cellspacing="0" class="data-table" id="order-items-<?php echo $_id ?>">
                     <col />
                     <col width="25%" />
                     <col width="1" />
                     <thead>
                         <tr>
-                            <th><?php echo $_hlp->__('Product Name') ?></th>
-                            <th><?php echo $_hlp->__('SKU') ?></th>
-                            <th><?php echo $_hlp->__('Condition') ?></th>
-                            <th class="a-center"><span class="nobr"><?php echo $_hlp->__('Qty') ?></span></th>
+                            <th><?php echo Mage::helper('udropship')->__('Product Name') ?></th>
+                            <th><?php echo Mage::helper('udropship')->__('SKU') ?></th>
+                            <th><?php echo Mage::helper('udropship')->__('Condition') ?></th>
+                            <th class="a-center"><span class="nobr"><?php echo Mage::helper('udropship')->__('Qty') ?></span></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -115,7 +115,7 @@ $_udVendor = $_rma->getVendor();
 
                 <ul class="form-list">
                     <li id="carrier-1-<?php echo $_id?>">
-                        <label for="carrier-<?php echo $_id?>"><?php echo $_hlp->__('Carrier') ?></label>
+                        <label for="carrier-<?php echo $_id?>"><?php echo Mage::helper('udropship')->__('Carrier') ?></label>
                         <select id="carrier-<?php echo $_id?>" name="carrier" class="select" style="width:250px" onchange="selectCarrier(this, 'carrier_title-<?php echo $_id?>')">
                             <?php foreach ($this->getCarriers() as $_code=>$_name): ?>
                             <option value="<?php echo $_code ?>"><?php echo $_name ?></option>
@@ -123,45 +123,45 @@ $_udVendor = $_rma->getVendor();
                         </select>
                     </li>
                     <li id="carrier_title-1-<?php echo $_id?>">
-                        <label for="carrier_title-<?php echo $_id?>"><?php echo $_hlp->__('Carrier Title') ?></label>
-                        <input id="carrier_title-<?php echo $_id?>" name="carrier_title" value="" title="<?php echo $_hlp->__('Carrier Title') ?>" type="text" class="input-text" style="width:250px;" />
+                        <label for="carrier_title-<?php echo $_id?>"><?php echo Mage::helper('udropship')->__('Carrier Title') ?></label>
+                        <input id="carrier_title-<?php echo $_id?>" name="carrier_title" value="" title="<?php echo Mage::helper('udropship')->__('Carrier Title') ?>" type="text" class="input-text" style="width:250px;" />
                     </li>
                     <li id="tracking_id-1-<?php echo $_id?>">
-                        <label for="tracking_id-<?php echo $_id?>"><?php echo $_hlp->__('Add Tracking ID') ?></label>
-                        <input id="tracking_id-<?php echo $_id?>" name="tracking_id" value="" title="<?php echo $_hlp->__('Add Tracking ID') ?>" type="text" class="input-text" style="width:250px;" />
+                        <label for="tracking_id-<?php echo $_id?>"><?php echo Mage::helper('udropship')->__('Add Tracking ID') ?></label>
+                        <input id="tracking_id-<?php echo $_id?>" name="tracking_id" value="" title="<?php echo Mage::helper('udropship')->__('Add Tracking ID') ?>" type="text" class="input-text" style="width:250px;" />
                     </li>
                     <li>
-                        <label for="comment-<?php echo $_id?>"><?php echo $_hlp->__('Add Comment') ?></label>
-                        <textarea id="comment-<?php echo $_id?>" name="comment" class="textarea" style="width:250px; height:70px;" title="<?php echo $_hlp->__('Add Comment') ?>" ></textarea>
+                        <label for="comment-<?php echo $_id?>"><?php echo Mage::helper('udropship')->__('Add Comment') ?></label>
+                        <textarea id="comment-<?php echo $_id?>" name="comment" class="textarea" style="width:250px; height:70px;" title="<?php echo Mage::helper('udropship')->__('Add Comment') ?>" ></textarea>
                         <br />
                         <div style="margin-left: 120px">
-                        <input name="is_customer_notified" type="checkbox" id="customer_comment_notify-<?php echo $_id?>" value="1" onclick="syncRmaCheckboxes(this, 'comment_visible-<?php echo $_id?>')" /> <label style="float: none; display: inline;" class="normal" for="customer_comment_notify-<?php echo $_id?>"><?php echo Mage::helper('sales')->__('Notify Customer By Email') ?></label><br />
-                        <input name="is_visible_on_front" type="checkbox" id="comment_visible-<?php echo $_id?>" value="1" /><label style="float: none; display: inline;" class="normal" for="comment_visible-<?php echo $_id?>"> <?php echo Mage::helper('sales')->__('Visible to Customer') ?></label><br />
+                        <input name="is_customer_notified" type="checkbox" id="customer_comment_notify-<?php echo $_id?>" value="1" onclick="syncRmaCheckboxes(this, 'comment_visible-<?php echo $_id?>')" /> <label style="float: none; display: inline;" class="normal" for="customer_comment_notify-<?php echo $_id?>"><?php echo Mage::helper('udropship')->__('Notify Customer By Email') ?></label><br />
+                        <input name="is_visible_on_front" type="checkbox" id="comment_visible-<?php echo $_id?>" value="1" /><label style="float: none; display: inline;" class="normal" for="comment_visible-<?php echo $_id?>"> <?php echo Mage::helper('udropship')->__('Visible to Customer') ?></label><br />
                         </div>
                     </li>
                     <li id="tracking_id-2-<?php echo $_id?>">
-                        <label for="change_status-<?php echo $_id?>"><?php echo $_hlp->__('Change Status') ?></label>
-                        <select id="change_status-<?php echo $_id?>" name="status" title="<?php echo $_hlp->__('Change Status') ?>" class="select" onchange="selectRmaStatus(this, 'resolution-notes-<?php echo $_id?>', <?php echo 1*$_rma->isAllowedResolutionNotes()?>)"/>
-                            <option value=""><?php echo $_hlp->__('* Automatic') ?></option>
+                        <label for="change_status-<?php echo $_id?>"><?php echo Mage::helper('udropship')->__('Change Status') ?></label>
+                        <select id="change_status-<?php echo $_id?>" name="status" title="<?php echo Mage::helper('udropship')->__('Change Status') ?>" class="select" onchange="selectRmaStatus(this, 'resolution-notes-<?php echo $_id?>', <?php echo 1*$_rma->isAllowedResolutionNotes()?>)"/>
+                            <option value=""><?php echo Mage::helper('udropship')->__('* Automatic') ?></option>
                         <?php foreach ($_statuses as $_k=>$_v): ?>
                             <option value="<?php echo $_k ?>"><?php echo $_v ?></option>
                         <?php endforeach ?>
                         </select>
                     </li>
                     <li style="<?php if (!$_rma->isAllowedResolutionNotes()) echo 'display: none'?>">
-                        <label for="resolution-notes-<?php echo $_id?>"><?php echo $_hlp->__('Resolution Notes') ?></label>
-                        <textarea <?php if (!$_rma->isAllowedResolutionNotes()) echo 'disabled="disabled"'?> id="resolution-notes-<?php echo $_id?>" name="resolution_notes" class="textarea" style="width:250px; height:70px;" title="<?php echo $_hlp->__('Resolution Notes') ?>" ><?php echo $this->htmlEscape($_rma->getResolutionNotes()) ?></textarea>
+                        <label for="resolution-notes-<?php echo $_id?>"><?php echo Mage::helper('udropship')->__('Resolution Notes') ?></label>
+                        <textarea <?php if (!$_rma->isAllowedResolutionNotes()) echo 'disabled="disabled"'?> id="resolution-notes-<?php echo $_id?>" name="resolution_notes" class="textarea" style="width:250px; height:70px;" title="<?php echo Mage::helper('udropship')->__('Resolution Notes') ?>" ><?php echo $this->htmlEscape($_rma->getResolutionNotes()) ?></textarea>
                     </li>
                     <li>
                         <label>&nbsp;</label>
-                        <button class="form-button" type="button" id="addcomment-<?php echo $_id ?>"><span><?php echo $_hlp->__('Add RMA Comment') ?></span></button>
-                        <span class="shipment-info-loader" style="display:none" id="submit-loader-<?php echo $_id ?>"><?php echo $_hlp->__('Please wait, submitting...')?></span>
+                        <button class="form-button" type="button" id="addcomment-<?php echo $_id ?>"><span><?php echo Mage::helper('udropship')->__('Add RMA Comment') ?></span></button>
+                        <span class="shipment-info-loader" style="display:none" id="submit-loader-<?php echo $_id ?>"><?php echo Mage::helper('udropship')->__('Please wait, submitting...')?></span>
                     </li>
                 </ul>
 
                 <?php if (count($_comments)): ?>
                 <br />
-                <h4><?php echo $_hlp->__('Comments history') ?></h4>
+                <h4><?php echo Mage::helper('udropship')->__('Comments history') ?></h4>
                 <table cellspacing="0" class="data-table" <?php if (!empty($_highlight['comment'])): ?>class="highlight"<?php endif ?>><tbody>
                     <?php foreach ($_comments as $_c): ?>
                     <tr <?php if (!empty($_highlight['comment_'.$_c->getId()])): ?>class="highlight"<?php endif ?> >

@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<config>
+    <modules>
+        <Turnto_Login>
+            <active>true</active>
+            <codePool>community</codePool>
+        </Turnto_Login>
+    </modules>
+</config>

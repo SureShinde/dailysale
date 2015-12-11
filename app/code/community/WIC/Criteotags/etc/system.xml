@@ -46,9 +46,9 @@
                             <source_model>criteotags/source_sitetype</source_model>
                         </sitetype>
                         <producttype>
-                            <label>For Configurable and Grouped Product display product :</label>
+                            <label>Product type passed in sales and basket tags</label>
                             <frontend_type>select</frontend_type>
-                            <tooltip>Choose product type included in Sales and Basket Tags</tooltip>
+                            <tooltip>Choose product type included in sales and basket tags for Configurable, Grouped and Bundle products</tooltip>
                             <sort_order>13</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -66,7 +66,7 @@
                     <fields>
                         <enable translate="label, comment, tooltip">
                             <label>Enabled</label>
-                            <comment><![CDATA[Generate an XML file available at this url : <strong>http://{{your-domain}}/media/criteo/default/export-criteo.xml</strong>]]></comment>
+                            <comment><![CDATA[Generate an XML file available at this url : <strong>http://{{your-domain}}/media/criteo/{{store-code}}/export-criteo.xml</strong>]]></comment>
                             <tooltip>Cron needs to be set up for the feed to be automaticaly generated</tooltip>
                             <frontend_type>select</frontend_type>
                             <sort_order>20</sort_order>
@@ -94,19 +94,47 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>							
                         </name_template>
+                        <visibility>
+                            <label>Product Visibility exported in the feed</label>
+                            <frontend_type>select</frontend_type>
+                            <tooltip>Choose product visibility to be included in the feed</tooltip>
+                            <sort_order>23</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <source_model>criteotags/source_visibility</source_model>
+                        </visibility>
                         <run translate="label, comment, tooltip">
                             <label/>
                             <tooltip>Manually Export default store products</tooltip>
                             <frontend_type>button</frontend_type>
                             <frontend_model>criteotags/system_config_run</frontend_model>
                             <comment>Please save configuration before running the export manually</comment>						
-                            <sort_order>23</sort_order>
+                            <sort_order>24</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </run>						
-                    </fields>
+                    </fields>                     
                 </export_criteo>
+                <debug>
+                    <label>Debug</label>
+                    <sort_order>100</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <fopen>
+                             <label>Open each image to check if exists</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                        </fopen>
+                    </fields>
+                </debug>
             </groups>
         </criteotags>
     </sections>

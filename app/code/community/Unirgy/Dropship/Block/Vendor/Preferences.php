@@ -129,7 +129,7 @@ class Unirgy_Dropship_Block_Vendor_Preferences extends Mage_Core_Block_Template
         $regions = $regionCollection->toOptionArray();
 
         if ($regions) {
-            $regions[0]['label'] = $hlp->__('Please select state...');
+            $regions[0]['label'] = Mage::helper('udropship')->__('Please select state...');
         } else {
             $regions = array(array('value'=>'', 'label'=>''));
         }

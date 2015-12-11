@@ -18,7 +18,7 @@
 <?php if ($_entity = $this->getEntity()): ?>
 <div id="comments_block">
     <span class="field-row">
-        <label class="normal" for="comment_status"><?php echo Mage::helper('sales')->__('Status') ?></label><br/>
+        <label class="normal" for="comment_status"><?php echo Mage::helper('udropship')->__('Status') ?></label><br/>
         <select name="comment[status]" class="select" id="comment_status" onchange="udpoStatusChanged(this)">
         <?php foreach ($this->getStatuses() as $_code=>$_label): ?>
             <option value="<?php echo $_code ?>"<?php if($_code==$this->getEntity()->getUdropshipStatus()): ?> selected="selected"<?php endif; ?>><?php echo $_label ?></option>
@@ -30,20 +30,20 @@
         </script>
     </span>
     <div class="f-left" id="comment-full-cancel" style="display:none; clear:both">
-        <small><?php echo $this->__('By default only items that do not have corresponding shipment items will be canceled')?></small><br /><br />
-        <input id="comment-nonshipped-cancel-cb" type="checkbox" name="comment[nonshipped_cancel]" value="1"> <label for="comment-nonshipped-cancel-cb"><?php echo $this->__('Nonshipped Cancel') ?></label><br/>
-        <small><?php echo $this->__('This will cancel non shipped shipments')?></small><br /><br />
-        <input id="comment-full-cancel-cb" type="checkbox" name="comment[full_cancel]" value="1"> <label for="comment-full-cancel-cb"><?php echo $this->__('Full Cancel')?></label><br/>
-        <small><?php echo $this->__('This will cancel even shipped shipments')?></small><br /><br />
+        <small><?php echo Mage::helper('udropship')->__('By default only items that do not have corresponding shipment items will be canceled')?></small><br /><br />
+        <input id="comment-nonshipped-cancel-cb" type="checkbox" name="comment[nonshipped_cancel]" value="1"> <label for="comment-nonshipped-cancel-cb"><?php echo Mage::helper('udropship')->__('Nonshipped Cancel') ?></label><br/>
+        <small><?php echo Mage::helper('udropship')->__('This will cancel non shipped shipments')?></small><br /><br />
+        <input id="comment-full-cancel-cb" type="checkbox" name="comment[full_cancel]" value="1"> <label for="comment-full-cancel-cb"><?php echo Mage::helper('udropship')->__('Full Cancel')?></label><br/>
+        <small><?php echo Mage::helper('udropship')->__('This will cancel even shipped shipments')?></small><br /><br />
     </div>
     <div style="clear:both"></div>
     <span class="field-row">
-        <label class="normal" for="comment_comment"><?php echo Mage::helper('sales')->__('Comment Text') ?></label>
+        <label class="normal" for="comment_comment"><?php echo Mage::helper('udropship')->__('Comment Text') ?></label>
         <textarea name="comment[comment]" rows="3" cols="5" style="height:6em; width:99%;" id="comment_comment"></textarea>
     </span>
     <div class="f-left">
-        <input name="comment[is_vendor_notified]" type="checkbox" id="comment_notify" value="1" /><label class="normal" for="comment_notify"> <?php echo Mage::helper('sales')->__('Notify Vendor by Email') ?></label><br />
-        <input name="comment[is_visible_to_vendor]" type="checkbox" id="comment_visible" value="1" /><label class="normal" for="comment_visible"> <?php echo Mage::helper('sales')->__('Visible to Vendor') ?></label>
+        <input name="comment[is_vendor_notified]" type="checkbox" id="comment_notify" value="1" /><label class="normal" for="comment_notify"> <?php echo Mage::helper('udropship')->__('Notify Vendor by Email') ?></label><br />
+        <input name="comment[is_visible_to_vendor]" type="checkbox" id="comment_visible" value="1" /><label class="normal" for="comment_visible"> <?php echo Mage::helper('udropship')->__('Visible to Vendor') ?></label>
     </div>
     <div class="f-right">
         <?php echo $this->getChildHtml('submit_button') ?>
@@ -83,7 +83,7 @@ function validatePoStatusSubmit()
         if (<?php echo (int)Mage::getStoreConfigFlag('udropship/vendor/allow_forced_po_status_change')?>
             && window.allowedPoStatuses && -1 === window.allowedPoStatuses.indexOf($('comment_status').value)
         ) {
-            if (confirm('<?php echo Mage::helper('udpo')->__('Such status change is not allowed. Please confirm forced transition') ?>')) {
+            if (confirm('<?php echo Mage::helper('udropship')->__('Such status change is not allowed. Please confirm forced transition') ?>')) {
                 $('force_status_change_flag').value = '1'
                 return true
             } else {
@@ -100,11 +100,11 @@ function _validatePoStatusSubmit()
 {
     switch ($('comment_status').value) {
         case '<?php echo Unirgy_DropshipPo_Model_Source::UDPO_STATUS_CANCELED ?>':
-            return confirm('<?php echo Mage::helper('udpo')->__('This will cancel purchase order and all shipments (if possible).') ?>');
+            return confirm('<?php echo Mage::helper('udropship')->__('This will cancel purchase order and all shipments (if possible).') ?>');
         case '<?php echo Unirgy_DropshipPo_Model_Source::UDPO_STATUS_SHIPPED ?>':
-            return confirm('<?php echo Mage::helper('udpo')->__('This will mark as shipped purchase order and all shipments (if possible).') ?>');
+            return confirm('<?php echo Mage::helper('udropship')->__('This will mark as shipped purchase order and all shipments (if possible).') ?>');
         case '<?php echo Unirgy_DropshipPo_Model_Source::UDPO_STATUS_DELIVERED ?>':
-            return confirm('<?php echo Mage::helper('udpo')->__('This will mark as shipped purchase order and all shipments (if possible).') ?>');
+            return confirm('<?php echo Mage::helper('udropship')->__('This will mark as shipped purchase order and all shipments (if possible).') ?>');
         default:
             return true;
     }

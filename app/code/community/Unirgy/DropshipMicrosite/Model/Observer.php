@@ -59,9 +59,9 @@ class Unirgy_DropshipMicrosite_Model_Observer
         if (Mage::getStoreConfigFlag('udropship/microsite/filter_vendor_categories')) {
             Mage::getConfig()->setNode('global/models/catalog_resource/rewrite/category_tree', 'Unirgy_DropshipMicrosite_Model_Mysql4_CategoryTree');
             Mage::getConfig()->setNode('global/models/catalog_resource/rewrite/category_flat', 'Unirgy_DropshipMicrosite_Model_Mysql4_CategoryFlat');
-            Mage::getConfig()->setNode('global/blocks/catalog/rewrite/navigation', 'Unirgy_DropshipMicrosite_Block_CatalogNavigation');
-            Mage::getConfig()->setNode('global/blocks/page/rewrite/html_topmenu', 'Unirgy_DropshipMicrosite_Block_PageTopmenu');
         }
+        Mage::getConfig()->setNode('global/blocks/catalog/rewrite/navigation', 'Unirgy_DropshipMicrosite_Block_CatalogNavigation');
+        Mage::getConfig()->setNode('global/blocks/page/rewrite/html_topmenu', 'Unirgy_DropshipMicrosite_Block_PageTopmenu');
     }
 
     public function catalog_category_flat_loadnodes_before($observer)
@@ -187,7 +187,7 @@ echo 2;
         $isUdmulti = Mage::helper('udropship')->isUdmultiActive();
         $isInUdm = $product->getUdmultiStock($vendor->getId());
         if (!$isMyProduct && !($showAll && $isUdmulti && $isInUdm)) {
-            Mage::throwException('Product is filtered out by vendor');
+            //Mage::throwException('Product is filtered out by vendor');
         }
     }
 

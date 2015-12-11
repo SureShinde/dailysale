@@ -17,7 +17,7 @@ class Unirgy_DropshipTierShipping_Block_Adminhtml_VendorEditTab_ShippingRates_V2
             $targetHtmlId = str_replace('delivery_type_selector', 'v2_rates', $htmlId).'_container';
         }
 
-        $targetUrl = Mage::getModel('core/url')->getUrl('udtiershipadmin/index/loadVendorRates', array('delivery_type'=>'DELIVERYTYPE','vendor_id'=>$vId));
+        $targetUrl = Mage::getModel('adminhtml/url')->getUrl('adminhtml/udtiershipadmin_index/loadVendorRates', array('delivery_type'=>'DELIVERYTYPE','vendor_id'=>$vId));
         $html .= "
             <script type=\"text/javascript\">
                 Event.observe('$htmlId', 'change', function(){

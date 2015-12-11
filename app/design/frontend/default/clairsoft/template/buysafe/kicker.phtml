@@ -1,0 +1,15 @@
+<?php $kickers = array() ?>
+<?php foreach($this->getKickerList() as $key => $array): ?>
+	<?php $kickers[$array['value']] = $array['label'] ?>
+<?php endforeach ?>
+<?php if($this->isEnabled() && $this->hasHash()): ?>
+	<?php if($this->getIsSidebar()): ?>
+		<div class="block">
+			<div class="block-content a-center">
+	<?php endif ?>
+				<span id="_GUARANTEE_Kicker" name="_GUARANTEE_Kicker" type="Kicker Custom 1"></span>
+	<?php if($this->getIsSidebar()): ?>
+			</div>
+		</div>
+	<?php endif ?>
+<?php endif ?>

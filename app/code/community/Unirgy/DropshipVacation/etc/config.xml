@@ -20,7 +20,7 @@
 <config>
     <modules>
         <Unirgy_DropshipVacation>
-            <version>1.0.1</version>
+            <version>2.4.0</version>
         </Unirgy_DropshipVacation>
     </modules>
 
@@ -139,13 +139,6 @@
 
     <admin>
         <routers>
-            <udvacationadmin>
-                <use>admin</use>
-                <args>
-                    <module>Unirgy_DropshipVacation_Adminhtml</module>
-                    <frontName>udvacationadmin</frontName>
-                </args>
-            </udvacationadmin>
         </routers>
     </admin>
 
@@ -170,6 +163,7 @@
 
     <default>
         <udropship>
+            <vacation_message>This item will be shipped at {{vacation_end}}</vacation_message>
 	    </udropship>
     </default>
 

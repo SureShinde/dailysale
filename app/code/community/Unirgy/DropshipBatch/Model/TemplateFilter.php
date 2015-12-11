@@ -67,7 +67,6 @@ class Unirgy_DropshipBatch_Model_TemplateFilter extends Mage_Core_Model_Email_Te
     {
         $value = parent::varDirective($construction);
         $value = str_replace('"', '""', $value);
-
         return $value;
     }
 }

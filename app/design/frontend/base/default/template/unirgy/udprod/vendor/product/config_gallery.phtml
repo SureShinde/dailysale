@@ -1,28 +1,37 @@
 <?php
 $_block = $this;
-$cfgAttr = $this->getCfgAttribute();
-$cfgAttrId = $cfgAttr->getId();
-$cfgAttrVal = $this->getCfgAttributeValue();
-$cfgAttrCode = $cfgAttr->getAttributeCode();
-$cfgSuf = '_'.$cfgAttrId.'_'.$cfgAttrVal;
+$cfgAttrs = $this->getCfgAttributes();
+$cfgAttrIds = array();
+foreach ($cfgAttrs as $__ca) {
+    $cfgAttrIds[] = $__ca->getAttributeId();
+}
+$cfgAttrVals = $this->getCfgAttributeValueTuple();
+$cfgSuf = '_';
+$cfgIdKey = '';
+foreach ($cfgAttrs as $__i=>$__ca) {
+    $cfgIdKey .= $cfgAttrIds[$__i].'-'.$cfgAttrVals[$__i].'-';
+    $cfgSuf .= $cfgAttrIds[$__i].'_'.$cfgAttrVals[$__i].'_';
+}
+$cfgSuf = substr($cfgSuf, 0, -1);
+$cfgIdKey = substr($cfgIdKey, 0, -1);
 $isShowSortOrder = true;
 $isCfgUploadImagesSimple = $_block->isCfgUploadImagesSimple();
 ?>
 
 <div id="cfg_qc_main_image<?php echo $cfgSuf?>" class="cfg_qc_main_image">
 <?php if ($mImgData = $this->getMainImageData()): ?>
-<!--<div class="place-holder" onmouseover="<?php echo $_block->getJsObjectName(); ?>.loadImage('<?php echo $mImgData['file'] ?>')"><span><?php echo Mage::helper('catalog')->__('Roll Over for preview') ?></span></div>-->
+<!--<div class="place-holder" onmouseover="<?php echo $_block->getJsObjectName(); ?>.loadImage('<?php echo $mImgData['file'] ?>')"><span><?php echo Mage::helper('udropship')->__('Roll Over for preview') ?></span></div>-->
 <?php endif ?>
 	<!--<a href="javascript:void(0)" onclick="imagePreview($(this).down())"><img src="<?php echo $this->getSkinUrl('images/spacer.gif')?>" width="100" style="display:none;" alt="" /></a>
     <br/><br/-->
-	<a href="javascript:void(0)" onclick="unirgyShowThisModal('cfg_qc_gallery_modal<?php echo $cfgSuf?>')"><?php echo $this->__('Add/Edit Images')?></a>
-    <br /><div style="display: none;" id="advice-<?php echo $_block->getHtmlId() ?>_save" class="validation-advice"><?php echo $this->__('Please upload images') ?></div>
+	<a href="javascript:void(0)" onclick="unirgyShowThisModal('cfg_qc_gallery_modal<?php echo $cfgSuf?>')"><?php echo Mage::helper('udropship')->__('Add/Edit Images')?></a>
+    <br /><div style="display: none;" id="advice-<?php echo $_block->getHtmlId() ?>_save" class="validation-advice"><?php echo Mage::helper('udropship')->__('Please upload images') ?></div>
 </div>
 <div id="cfg_qc_additional_images_wrapper<?php echo $cfgSuf?>" class="cfg_qc_additional_images_wrapper">
 <ul id="cfg_qc_additional_images<?php echo $cfgSuf?>">
 <?php $i=0; foreach ($this->getImagesData() as $img): ?>
 <li id="cfg_qc_additional_images<?php echo $cfgSuf?>-image-<?php echo base64_encode($img['file'])?>">
-<div class="place-holder" onmouseover="<?php echo $_block->getJsObjectName(); ?>.loadImage('<?php echo $img['file'] ?>')"><span><?php echo Mage::helper('catalog')->__('Roll Over for preview') ?></span></div>
+<div class="place-holder" onmouseover="<?php echo $_block->getJsObjectName(); ?>.loadImage('<?php echo $img['file'] ?>')"><span><?php echo Mage::helper('udropship')->__('Roll Over for preview') ?></span></div>
 <a href="javascript:void(0)" onclick="imagePreview($(this).down())"><img src="<?php echo $this->getSkinUrl('images/spacer.gif')?>" width="100" style="display:none;" alt="" /></a>
 </li>
 <?php endforeach ?>
@@ -36,7 +45,7 @@ $isCfgUploadImagesSimple = $_block->isCfgUploadImagesSimple();
         <div class="content">
 
 <div class="block-title">
-	<h1><?php echo $this->__('Upload Pictures')?></h1>
+	<h1><?php echo Mage::helper('udropship')->__('Upload Pictures')?></h1>
 </div>
 <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('prodimage-upload-intro')->toHtml() ?>
             
@@ -49,25 +58,25 @@ $isCfgUploadImagesSimple = $_block->isCfgUploadImagesSimple();
     <col width="70" />
     <thead>
         <tr class="headings">
-            <th><?php echo Mage::helper('catalog')->__('Image') ?></th>
-            <th><?php echo Mage::helper('catalog')->__('Label') ?></th>
+            <th><?php echo Mage::helper('udropship')->__('Image') ?></th>
+            <th><?php echo Mage::helper('udropship')->__('Label') ?></th>
             <?php if ($isShowSortOrder): ?>
-            <th><?php echo Mage::helper('catalog')->__('Sort Order') ?></th>
+            <th><?php echo Mage::helper('udropship')->__('Sort Order') ?></th>
             <?php endif ?>
             <?php if ($isCfgUploadImagesSimple): ?>
             <?php foreach ($_block->getImageTypes() as $typeId=>$type): ?>
                 <th><?php echo $type['label'] ?></th>
             <?php endforeach; ?>
-            <th><?php echo Mage::helper('catalog')->__('Exclude') ?></th>
+            <th><?php echo Mage::helper('udropship')->__('Exclude') ?></th>
             <?php else: ?>
-            <th><?php echo Mage::helper('catalog')->__('Main Image') ?></th>
+            <th><?php echo Mage::helper('udropship')->__('Main Image') ?></th>
             <?php endif ?>
-            <th class="last"><?php echo Mage::helper('catalog')->__('Remove') ?></th>
+            <th class="last"><?php echo Mage::helper('udropship')->__('Remove') ?></th>
         </tr>
     </thead>
     <tbody id="<?php echo $_block->getHtmlId() ?>_list">
         <tr id="<?php echo $_block->getHtmlId() ?>_template" class="template no-display">
-                <td class="cell-image"><div class="place-holder" onmouseover="<?php echo $_block->getJsObjectName(); ?>.loadImage('__file__')"><span><?php echo Mage::helper('catalog')->__('Roll Over for preview') ?></span></div><a href="javascript:void(0)" onclick="imagePreview($(this).down())"><img src="<?php echo $this->getSkinUrl('images/spacer.gif')?>" width="100" style="display:none;" alt="" /></a></td>
+                <td class="cell-image"><div class="place-holder" onmouseover="<?php echo $_block->getJsObjectName(); ?>.loadImage('__file__')"><span><?php echo Mage::helper('udropship')->__('Roll Over for preview') ?></span></div><a href="javascript:void(0)" onclick="imagePreview($(this).down())"><img src="<?php echo $this->getSkinUrl('images/spacer.gif')?>" width="100" style="display:none;" alt="" /></a></td>
                 <td class="cell-label"><input type="text" class="input-text" onkeyup="<?php echo $_block->getJsObjectName(); ?>.updateImage('__file__')" onchange="<?php echo $_block->getJsObjectName(); ?>.updateImage('__file__')" /></td>
                 <?php if ($isShowSortOrder): ?>
                 <td class="cell-position"><input type="text" class="input-text" onkeyup="<?php echo $_block->getJsObjectName(); ?>.updateImage('__file__')" onchange="<?php echo $_block->getJsObjectName(); ?>.updateImage('__file__')" /></td>
@@ -84,7 +93,7 @@ $isCfgUploadImagesSimple = $_block->isCfgUploadImagesSimple();
         </tr>
         <?php if ($isCfgUploadImagesSimple): ?>
         <tr id="<?php echo $_block->getHtmlId() ?>-image-0">
-            <td class="cell-image"><?php echo Mage::helper('catalog')->__('No image') ?></td>
+            <td class="cell-image"><?php echo Mage::helper('udropship')->__('No image') ?></td>
             <td class="cell-label"><input type="hidden" />&nbsp;</td>
             <td class="cell-position"><input type="hidden" />&nbsp;</td>
             <?php foreach ($_block->getImageTypes() as $typeId=>$type): ?>
@@ -110,16 +119,16 @@ $isCfgUploadImagesSimple = $_block->isCfgUploadImagesSimple();
 </div>
 </div>
 
-<input type="hidden" class="udvalidate-images-required" id="<?php echo $_block->getHtmlId() ?>_save" name="product[media_gallery][cfg_images][<?php echo $cfgAttrId.'-'.$cfgAttrVal?>]" value="<?php echo $_block->htmlEscape($_block->getImagesJson()) ?>" />
+<input type="hidden" class="udvalidate-images-required" id="<?php echo $_block->getHtmlId() ?>_save" name="product[media_gallery][cfg_images][<?php echo $cfgIdKey?>]" value="<?php echo $_block->htmlEscape($_block->getImagesJson()) ?>" />
 <?php if ($isCfgUploadImagesSimple): ?>
-<input type="hidden" id="<?php echo $_block->getHtmlId() ?>_has_changes" name="product[udprod_cfg_media_changed][<?php echo $cfgAttrId.'-'.$cfgAttrVal?>]" value="0" />
-<input type="hidden" id="<?php echo $_block->getHtmlId() ?>_save_image" name="product[media_gallery][cfg_values][<?php echo $cfgAttrId.'-'.$cfgAttrVal?>]" value="<?php echo $_block->htmlEscape($_block->getImagesValuesJson()) ?>" />
+<input type="hidden" id="<?php echo $_block->getHtmlId() ?>_has_changes" name="product[udprod_cfg_media_changed][<?php echo $cfgIdKey?>]" value="0" />
+<input type="hidden" id="<?php echo $_block->getHtmlId() ?>_save_image" name="product[media_gallery][cfg_values][<?php echo $cfgIdKey?>]" value="<?php echo $_block->htmlEscape($_block->getImagesValuesJson()) ?>" />
 <?php endif ?>
 <script type="text/javascript">
 //<![CDATA[
 (function () {
 var UnirgyProductGallery = Class.create(Product.Gallery, {
-    initialize : function($super, containerId, uploader, imageTypes, cfgMainImgId, cfgAdditionalImgId, cfgAttrId, cfgAttrVal) {
+    initialize : function($super, containerId, uploader, imageTypes, cfgMainImgId, cfgAdditionalImgId, cfgAttrIds, cfgAttrVals) {
         this.hasImagesValues = <?php if ($isCfgUploadImagesSimple) {echo 'true';} else {echo 'false';} ?>;
         this.hasSortOrder = <?php if ($isShowSortOrder) {echo 'true';} else {echo 'false';} ?>;
         this.containerId = containerId, this.container = $(this.containerId);
@@ -129,8 +138,8 @@ var UnirgyProductGallery = Class.create(Product.Gallery, {
         this.uploader = uploader;
         this.cfgMainImgId = cfgMainImgId;
         this.cfgAdditionalImgId = cfgAdditionalImgId;
-        this.cfgAttrId = cfgAttrId;
-        this.cfgAttrVal = cfgAttrVal;
+        this.cfgAttrIds = $A(cfgAttrIds);
+        this.cfgAttrVals = $A(cfgAttrVals);
         this.imageTypes = imageTypes;
         if (this.uploader) {
             this.uploader.onFilesComplete = this.handleUploadComplete
@@ -261,13 +270,15 @@ var UnirgyProductGallery = Class.create(Product.Gallery, {
             }
             newImage.removed = 0;
             newImage.super_attribute = {};
-            newImage.super_attribute[this.cfgAttrId] = this.cfgAttrVal;
+            for (var __i=0; __i<this.cfgAttrIds.length; __i++) {
+                newImage.super_attribute[this.cfgAttrIds[__i]] = this.cfgAttrVals[__i];
+            }
             this.images.push(newImage);
             this.uploader.removeFile(item.id);
             var file=newImage.file;
             var imgLi = $(this.cfgAdditionalImgId+'-image-'+encode_base64(file));
             if (!imgLi) {
-                $(this.cfgAdditionalImgId).insert('<li id="'+this.cfgAdditionalImgId+'-image-'+encode_base64(file)+'"><div class="place-holder" onmouseover="<?php echo $_block->getJsObjectName(); ?>.loadImage(\''+file+'\')"><span><?php echo Mage::helper('catalog')->__('Roll Over for preview') ?></span></div><a href="javascript:void(0)" onclick="imagePreview($(this).down())"><img src="<?php echo $this->getSkinUrl('images/spacer.gif')?>" width="100" style="display:none;" alt="" /></a></li>');
+                $(this.cfgAdditionalImgId).insert('<li id="'+this.cfgAdditionalImgId+'-image-'+encode_base64(file)+'"><div class="place-holder" onmouseover="<?php echo $_block->getJsObjectName(); ?>.loadImage(\''+file+'\')"><span><?php echo $this->jsQuoteEscape(Mage::helper('udropship')->__('Roll Over for preview')) ?></span></div><a href="javascript:void(0)" onclick="imagePreview($(this).down())"><img src="<?php echo $this->getSkinUrl('images/spacer.gif')?>" width="100" style="display:none;" alt="" /></a></li>');
                 var imgLis = $(this.cfgAdditionalImgId).childElements();
                 imgLi = imgLis[imgLis.length-1];
             }
@@ -320,7 +331,7 @@ var UnirgyProductGallery = Class.create(Product.Gallery, {
         }
         var imgLi = $(this.cfgAdditionalImgId+'-image-'+encode_base64(file));
         if (!imgLi) {
-            $(this.cfgAdditionalImgId).insert('<li id="'+this.cfgAdditionalImgId+'-image-'+encode_base64(file)+'"><div class="place-holder" onmouseover="<?php echo $_block->getJsObjectName(); ?>.loadImage(\''+file+'\')"><span><?php echo Mage::helper('catalog')->__('Roll Over for preview') ?></span></div><a href="javascript:void(0)" onclick="imagePreview($(this).down())"><img src="<?php echo $this->getSkinUrl('images/spacer.gif')?>" width="100" style="display:none;" alt="" /></a></li>');
+            $(this.cfgAdditionalImgId).insert('<li id="'+this.cfgAdditionalImgId+'-image-'+encode_base64(file)+'"><div class="place-holder" onmouseover="<?php echo $_block->getJsObjectName(); ?>.loadImage(\''+file+'\')"><span><?php echo $this->jsQuoteEscape(Mage::helper('udropship')->__('Roll Over for preview')) ?></span></div><a href="javascript:void(0)" onclick="imagePreview($(this).down())"><img src="<?php echo $this->getSkinUrl('images/spacer.gif')?>" width="100" style="display:none;" alt="" /></a></li>');
             var imgLis = $(this.cfgAdditionalImgId).childElements();
             imgLi = imgLis[imgLis.length-1];
         }
@@ -347,7 +358,7 @@ var UnirgyProductGallery = Class.create(Product.Gallery, {
         }
     }
 });
-window['<?php echo $_block->getJsObjectName(); ?>'] = new UnirgyProductGallery('<?php echo $_block->getHtmlId() ?>', window['<?php echo $_block->getUploader()->getJsObjectName() ?>'], <?php echo $_block->getImageTypesJson() ?>, 'cfg_qc_main_image<?php echo $cfgSuf?>', 'cfg_qc_additional_images<?php echo $cfgSuf?>', '<?php echo $cfgAttrId?>', '<?php echo $cfgAttrVal?>');
+window['<?php echo $_block->getJsObjectName(); ?>'] = new UnirgyProductGallery('<?php echo $_block->getHtmlId() ?>', window['<?php echo $_block->getUploader()->getJsObjectName() ?>'], <?php echo $_block->getImageTypesJson() ?>, 'cfg_qc_main_image<?php echo $cfgSuf?>', 'cfg_qc_additional_images<?php echo $cfgSuf?>', <?php echo Zend_Json::encode($cfgAttrIds)?>, <?php echo Zend_Json::encode($cfgAttrVals)?>);
 }).defer();
 //]]>
 </script>

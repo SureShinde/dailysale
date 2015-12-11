@@ -35,20 +35,20 @@ class Unirgy_DropshipShippingClass_Model_Source extends Unirgy_Dropship_Model_So
 
         case 'vendor_ship_class':
             $options = Mage::getResourceSingleton('udshipclass/vendor_collection')->toOptionHash();
-            $options[-1] = $hlpv->__('* Other Vendor');
+            $options[-1] = Mage::helper('udropship')->__('* Other Vendor');
             break;
 
         case 'customer_ship_class':
             $options = Mage::getResourceSingleton('udshipclass/customer_collection')->toOptionHash();
-            $options[-1] = $hlpv->__('* Other Customer');
+            $options[-1] = Mage::helper('udropship')->__('* Other Customer');
             break;
 
         default:
-            Mage::throwException($hlp->__('Invalid request for source options: '.$this->getPath()));
+            Mage::throwException(Mage::helper('udropship')->__('Invalid request for source options: '.$this->getPath()));
         }
 
         if ($selector) {
-            $options = array(''=>$hlp->__('* Please select')) + $options;
+            $options = array(''=>Mage::helper('udropship')->__('* Please select')) + $options;
         }
 
         return $options;

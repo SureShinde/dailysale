@@ -78,21 +78,21 @@ class Unirgy_DropshipPo_Block_Adminhtml_ReportItem_Grid extends Mage_Adminhtml_B
         $hlp = Mage::helper('udropship');
         
         $this->addColumn('order_increment_id', array(
-            'header'    => $hlp->__('Order #'),
+            'header'    => Mage::helper('udropship')->__('Order #'),
             'index'     => 'order_increment_id',
         	'filter_index' => !$flat ? null : 'o.increment_id',
             'type'      => 'number',
         ));
 
         $this->addColumn('order_created_at', array(
-            'header'    => $hlp->__('Order Date'),
+            'header'    => Mage::helper('udropship')->__('Order Date'),
             'index'     => 'order_created_at',
         	'filter_index' => !$flat ? null : 'o.created_at',
             'type'      => 'datetime',
         ));
         
         $this->addColumn('order_status', array(
-            'header'    => $hlp->__('Order Status'),
+            'header'    => Mage::helper('udropship')->__('Order Status'),
             'index'     => 'order_status',
             'filter_index' => !$flat ? null : 'o.status',
             'type' => 'options',
@@ -100,21 +100,21 @@ class Unirgy_DropshipPo_Block_Adminhtml_ReportItem_Grid extends Mage_Adminhtml_B
         ));
         
         $this->addColumn('po_increment_id', array(
-            'header'    => $hlp->__('PO #'),
+            'header'    => Mage::helper('udropship')->__('PO #'),
             'index'     => 'po_increment_id',
             'filter_index' => !$flat ? null : 't.increment_id',
             'type'      => 'text',
         ));
 
         $this->addColumn('created_at', array(
-            'header'    => $hlp->__('PO Date'),
+            'header'    => Mage::helper('udropship')->__('PO Date'),
             'index'     => 'created_at',
             'filter_index' => !$flat ? null : 't.created_at',
             'type'      => 'datetime',
         ));
         
         $this->addColumn('udropship_status', array(
-            'header' => $hlp->__('PO Status'),
+            'header' => Mage::helper('udropship')->__('PO Status'),
             'index' => 'udropship_status',
             'filter_index' => !$flat ? null : 't.udropship_status',
             'type' => 'options',
@@ -123,7 +123,7 @@ class Unirgy_DropshipPo_Block_Adminhtml_ReportItem_Grid extends Mage_Adminhtml_B
 
         /*
         $this->addColumn('base_shipping_amount', array(
-            'header' => $hlp->__('PO Shipping Price'),
+            'header' => Mage::helper('udropship')->__('PO Shipping Price'),
             'index' => 'base_shipping_amount',
             'filter_index' => !$flat ? null : 't.base_shipping_amount',
             'type'  => 'price',
@@ -133,7 +133,7 @@ class Unirgy_DropshipPo_Block_Adminhtml_ReportItem_Grid extends Mage_Adminhtml_B
         */
         
         $this->addColumn('udropship_vendor', array(
-            'header' => $hlp->__('Vendor'),
+            'header' => Mage::helper('udropship')->__('Vendor'),
             'index' => 'udropship_vendor',
         	'filter_index' => !$flat ? null : 't.udropship_vendor',
             'type' => 'options',
@@ -142,19 +142,19 @@ class Unirgy_DropshipPo_Block_Adminhtml_ReportItem_Grid extends Mage_Adminhtml_B
         ));
         
         $this->addColumn('sku', array(
-            'header' => $hlp->__('PO Item SKU'),
+            'header' => Mage::helper('udropship')->__('PO Item SKU'),
             'index' => 'sku',
         	'filter_index' => !$flat ? null : 'main_table.sku',
         ));
         
         $this->addColumn('name', array(
-            'header' => $hlp->__('PO Item Name'),
+            'header' => Mage::helper('udropship')->__('PO Item Name'),
             'index' => 'name',
         	'filter_index' => !$flat ? null : 'main_table.name',
         ));
         
         $this->addColumn('base_price', array(
-            'header' => $hlp->__('PO Item Price'),
+            'header' => Mage::helper('udropship')->__('PO Item Price'),
             'index' => 'base_price',
         	'filter_index' => !$flat ? null : 'oi.base_price',
             'type'  => 'price',
@@ -163,7 +163,7 @@ class Unirgy_DropshipPo_Block_Adminhtml_ReportItem_Grid extends Mage_Adminhtml_B
         ));
         
         $this->addColumn('discount_amount', array(
-            'header' => $hlp->__('PO Item Discount'),
+            'header' => Mage::helper('udropship')->__('PO Item Discount'),
             'index' => 'discount_amount',
         	'filter_index' => !$flat ? null : 'oi.base_discount_amount',
             'type'  => 'price',
@@ -172,7 +172,7 @@ class Unirgy_DropshipPo_Block_Adminhtml_ReportItem_Grid extends Mage_Adminhtml_B
         ));
         
         $this->addColumn('cost', array(
-            'header' => $hlp->__('PO Item Cost'),
+            'header' => Mage::helper('udropship')->__('PO Item Cost'),
             'index' => 'cost',
         	'filter_index' => !$flat ? null : 'oi.base_cost',
             'type'  => 'price',
@@ -181,13 +181,13 @@ class Unirgy_DropshipPo_Block_Adminhtml_ReportItem_Grid extends Mage_Adminhtml_B
         ));
         
         $this->addColumn('qty', array(
-            'header'    => $hlp->__('PO Item Qty'),
+            'header'    => Mage::helper('udropship')->__('PO Item Qty'),
             'index'     => 'qty',
             'type'      => 'number',
         ));
 
         $this->addColumn('tax_amount', array(
-            'header' => $hlp->__('PO Item Tax'),
+            'header' => Mage::helper('udropship')->__('PO Item Tax'),
             'index' => 'tax_amount',
         	'filter_index' => !$flat ? null : $this->_getFlatExpressionColumn('tax_amount'),
             'type'  => 'price',
@@ -196,7 +196,7 @@ class Unirgy_DropshipPo_Block_Adminhtml_ReportItem_Grid extends Mage_Adminhtml_B
         ));
 
         $this->addColumn('po_row_total', array(
-            'header' => $hlp->__('PO Item Row Total'),
+            'header' => Mage::helper('udropship')->__('PO Item Row Total'),
             'index' => 'po_row_total',
             'filter_index' => !$flat ? null : $this->_getFlatExpressionColumn('po_row_total'),
             'type'  => 'price',
@@ -204,8 +204,8 @@ class Unirgy_DropshipPo_Block_Adminhtml_ReportItem_Grid extends Mage_Adminhtml_B
             'currency_code' => Mage::getStoreConfig('currency/options/base'),
         ));
 
-        $this->addExportType('*/*/itemExportCsv', Mage::helper('adminhtml')->__('CSV'));
-        $this->addExportType('*/*/itemExportXml', Mage::helper('adminhtml')->__('XML'));
+        $this->addExportType('*/*/itemExportCsv', Mage::helper('udropship')->__('CSV'));
+        $this->addExportType('*/*/itemExportXml', Mage::helper('udropship')->__('XML'));
         return parent::_prepareColumns();
     }
 

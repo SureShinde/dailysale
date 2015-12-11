@@ -21,9 +21,9 @@ $hlp = Mage::helper('udropship');
 <table cellspacing="0" cellpadding="0" border="0" width="100%" style="border:1px solid #bebcb7; background:#f8f7f5;">
     <thead>
         <tr>
-            <th align="left" bgcolor="#d9e5ee" style="padding:3px 9px"><?php echo $this->__('Name') ?></th>
-            <th align="left" bgcolor="#d9e5ee" style="padding:3px 9px"><?php echo $this->__('Sku') ?></th>
-            <th align="left" bgcolor="#d9e5ee" style="padding:3px 9px"><?php echo $this->__('Required Fixes') ?></th>
+            <th align="left" bgcolor="#d9e5ee" style="padding:3px 9px"><?php echo Mage::helper('udropship')->__('Name') ?></th>
+            <th align="left" bgcolor="#d9e5ee" style="padding:3px 9px"><?php echo Mage::helper('udropship')->__('Sku') ?></th>
+            <th align="left" bgcolor="#d9e5ee" style="padding:3px 9px"><?php echo Mage::helper('udropship')->__('Required Fixes') ?></th>
         </tr>
     </thead>
     <?php $i=0; foreach ($this->getProducts() as $prod): ?>

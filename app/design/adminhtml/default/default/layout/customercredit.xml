@@ -45,7 +45,7 @@
                  <action method="addTab"><name>adminhtml_customer_edit_tab_customercredit</name><block>adminhtml_customer_edit_tab_customercredit</block></action>
         </reference>
     </adminhtml_customer_edit>
-   <admincustomercredit_adminhtml_import_credit_import>
+   <adminhtml_import_credit_import>
         <remove name="root"/>
         <block type="adminhtml/page" name="convert_root" output="toHtml" template="page.phtml">
             <block type="adminhtml/page_head" name="convert_root_head" as="head" template="page/head.phtml">
@@ -57,15 +57,15 @@
             </block>
             <block type="adminhtml/template" name="generate" template="customercredit/generate.phtml" output="toHtml"/>
         </block>
-    </admincustomercredit_adminhtml_import_credit_import>
+    </adminhtml_import_credit_import>
     
-   <admincustomercredit_adminhtml_import_credit_index>
+   <adminhtml_import_credit_index>
         <reference name="content">
             <block type="customercredit/adminhtml_import" name="customercredit.import.form" />
         </reference>
-    </admincustomercredit_adminhtml_import_credit_index>
+    </adminhtml_import_credit_index>
     
-    <admincustomercredit_adminhtml_import_code_import>
+    <adminhtml_import_code_import>
         <remove name="root"/>
         <block type="adminhtml/page" name="convert_root" output="toHtml" template="page.phtml">
             <block type="adminhtml/page_head" name="convert_root_head" as="head" template="page/head.phtml">
@@ -77,30 +77,30 @@
             </block>
             <block type="adminhtml/template" name="generate" template="customercredit/generate.phtml" output="toHtml"/>
         </block>
-    </admincustomercredit_adminhtml_import_code_import>
+    </adminhtml_import_code_import>
     
-   <admincustomercredit_adminhtml_import_code_index>
+   <adminhtml_import_code_index>
         <reference name="content">
             <block type="customercredit/adminhtml_import" name="customercredit.import.form" />
         </reference>
-    </admincustomercredit_adminhtml_import_code_index>
+    </adminhtml_import_code_index>
     
-    <admincustomercredit_adminhtml_credit_index>
+    <adminhtml_credit_index>
         <block type="core/text_list" name="root">
             <block type="customercredit/adminhtml_customer_edit_tab_customercredit_adjust" name="customercredit.adjust"/>
             <block type="customercredit/adminhtml_customer_edit_tab_customercredit_log" name="customercredit.credit.log" template="customercredit/customer/tab/view/log.phtml">
                 <block type="customercredit/adminhtml_customer_edit_tab_customercredit_log_grid" name="customercredit.credit.log.grid" as="customercredit_credit_log_grid"/>
             </block> 
         </block>
-    </admincustomercredit_adminhtml_credit_index>
+    </adminhtml_credit_index>
     
-    <admincustomercredit_adminhtml_report_index>
+    <adminhtml_report_index>
         <reference name="content">
             <!--<block type="customercredit/adminhtml_report" template="customercredit/report/form.phtml" name="customercredit.report.form" />-->
         </reference>
-    </admincustomercredit_adminhtml_report_index>
+    </adminhtml_report_index>
     
-    <admincustomercredit_adminhtml_report_grid>
+    <adminhtml_report_grid>
         
         <block type="core/text_list" name="root" output="toHtml">
               <reference name="head">
@@ -108,9 +108,9 @@
         </reference>
             <block type="customercredit/adminhtml_report_grid" name="customercredit.report.grid"/>
         </block>
-    </admincustomercredit_adminhtml_report_grid>
+    </adminhtml_report_grid>
 
-    <admincustomercredit_adminhtml_rules_info>
+    <adminhtml_rules_info>
 <!--        <remove name="header"/>
         <remove name="menu"/>
         <remove name="notifications"/>
@@ -123,27 +123,27 @@
         </reference>
           <remove name="footer"/>-->
           <block type="customercredit/adminhtml_rules_grid_info" output="toHtml" name="root"/>
-    </admincustomercredit_adminhtml_rules_info>
+    </adminhtml_rules_info>
     
-    <admincustomercredit_adminhtml_rules_new>
+    <adminhtml_rules_new>
          <reference name="head">
             <action method="addJs"><file>customercredit/conditions.js</file></action>
         </reference>
-    </admincustomercredit_adminhtml_rules_new>
+    </adminhtml_rules_new>
     
-    <admincustomercredit_adminhtml_rules_edit>
+    <adminhtml_rules_edit>
          <reference name="head">
             <action method="addJs"><file>customercredit/conditions.js</file></action>
         </reference>
-    </admincustomercredit_adminhtml_rules_edit>
-    <admincustomercredit_adminhtml_rules_index>
+    </adminhtml_rules_edit>
+    <adminhtml_rules_index>
         <reference name="head">
             <action method="addJs"><file>customercredit/conditions.js</file></action>
         </reference>
         <reference name="content">
             <block type="core/template" name='diallog_box' template="customercredit/diallog.phtml" />
         </reference>
-    </admincustomercredit_adminhtml_rules_index>
+    </adminhtml_rules_index>
     
     <adminhtml_sales_order_view>
         <reference name="order_totals">

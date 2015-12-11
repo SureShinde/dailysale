@@ -10,6 +10,6 @@ class Magestore_Magenotification_Block_Adminhtml_License_Purchaseform
 	
 	public function getPurchaseUrl()
 	{
-		return $this->getUrl('magenotification/adminhtml_license/purchase',array('extension'=>$this->getExtensionName(),'_secure'=>true));
+		return $this->getUrl('adminhtml/license/purchase',array('extension'=>$this->getExtensionName(),'_secure'=>true));
 	}
 }

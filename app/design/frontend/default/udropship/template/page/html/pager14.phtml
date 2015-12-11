@@ -40,35 +40,35 @@
     <?php if($this->getShowAmounts()): ?>
     <p class="amount">
         <?php if($this->getLastPageNum()>1): ?>
-            <?php echo $this->__('Items %s to %s of %s total', $this->getFirstNum(), $this->getLastNum(), $this->getTotalNum()) ?>
+            <?php echo Mage::helper('udropship')->__('Items %s to %s of %s total', $this->getFirstNum(), $this->getLastNum(), $this->getTotalNum()) ?>
         <?php else: ?>
-            <strong><?php echo $this->__('%s Item(s)', $this->getTotalNum()) ?></strong>
+            <strong><?php echo Mage::helper('udropship')->__('%s Item(s)', $this->getTotalNum()) ?></strong>
         <?php endif; ?>
     </p>
     <?php endif ?>
 
     <?php if($this->getShowPerPage()): ?>
     <div class="limiter">
-        <label><?php echo $this->__('Show') ?></label>
+        <label><?php echo Mage::helper('udropship')->__('Show') ?></label>
         <select onchange="setLocation(this.value)">
         <?php foreach ($this->getAvailableLimit() as  $_key=>$_limit): ?>
             <option value="<?php echo $this->getLimitUrl($_key) ?>"<?php if($this->isLimitCurrent($_key)): ?> selected="selected"<?php endif ?>>
                 <?php echo $_limit ?>
             </option>
         <?php endforeach; ?>
-        </select> <?php echo $this->__('per page') ?>
+        </select> <?php echo Mage::helper('udropship')->__('per page') ?>
     </div>
     <?php endif ?>
 
     <?php if($this->getLastPageNum()>1): ?>
     <div class="pages">
-        <strong><?php echo $this->__('Page:') ?></strong>
+        <strong><?php echo Mage::helper('udropship')->__('Page:') ?></strong>
         <ol>
         <?php if (!$this->isFirstPage()): ?>
             <li>
-                <a class="previous" href="<?php echo $this->getPreviousPageUrl() ?>" title="<?php echo $this->__('Previous') ?>">
+                <a class="previous" href="<?php echo $this->getPreviousPageUrl() ?>" title="<?php echo Mage::helper('udropship')->__('Previous') ?>">
                     <?php if(!$this->getAnchorTextForPrevious()): ?>
-                        <img src="<?php echo $this->getSkinUrl('images/i_pager-prev.gif') ?>" alt="<?php echo $this->__('Previous') ?>" class="v-middle" />
+                        <img src="<?php echo $this->getSkinUrl('images/i_pager-prev.gif') ?>" alt="<?php echo Mage::helper('udropship')->__('Previous') ?>" class="v-middle" />
                     <?php else: ?>
                         <?php echo $this->getAnchorTextForPrevious() ?>
                     <?php endif;?>
@@ -103,9 +103,9 @@
 
         <?php if (!$this->isLastPage()): ?>
             <li>
-                <a class="next" href="<?php echo $this->getNextPageUrl() ?>" title="<?php echo $this->__('Next') ?>">
+                <a class="next" href="<?php echo $this->getNextPageUrl() ?>" title="<?php echo Mage::helper('udropship')->__('Next') ?>">
                     <?php if(!$this->getAnchorTextForNext()): ?>
-                        <img src="<?php echo $this->getSkinUrl('images/i_pager-next.gif') ?>" alt="<?php echo $this->__('Next') ?>" class="v-middle" />
+                        <img src="<?php echo $this->getSkinUrl('images/i_pager-next.gif') ?>" alt="<?php echo Mage::helper('udropship')->__('Next') ?>" class="v-middle" />
                     <?php else: ?>
                         <?php echo $this->getAnchorTextForNext() ?>
                     <?php endif;?>

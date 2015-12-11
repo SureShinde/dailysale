@@ -112,7 +112,7 @@ class Unirgy_DropshipMulti_Model_StockIndexer_CE1620_Default
     public function getTypeId()
     {
         if (is_null($this->_typeId)) {
-            Mage::throwException(Mage::helper('cataloginventory')->__('Undefined product type.'));
+            Mage::throwException(Mage::helper('udropship')->__('Undefined product type.'));
         }
         return $this->_typeId;
     }

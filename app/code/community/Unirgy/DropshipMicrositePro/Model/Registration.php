@@ -55,14 +55,14 @@ class Unirgy_DropshipMicrositePro_Model_Registration extends Unirgy_DropshipMicr
                 && !in_array($rfName, array('payout_paypal_email'))
             ) {
                 if ($rfName != 'region_id' || !$this->getData('region')) {
-                    Mage::throwException($hlp->__('Incomplete form data'));
+                    Mage::throwException(Mage::helper('udropship')->__('Incomplete form data'));
                 }
             }
             $hasPasswordField = $hasPasswordField || in_array($rfName, array('password_confirm','password'));
             if ($rfName=='password_confirm'
                 && $this->getData('password') != $this->getData('password_confirm')
             ) {
-                Mage::throwException($hlp->__('Passwords do not match'));
+                Mage::throwException(Mage::helper('udropship')->__('Passwords do not match'));
             }
         }
 

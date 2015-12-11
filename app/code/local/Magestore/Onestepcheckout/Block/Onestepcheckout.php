@@ -170,7 +170,7 @@ class Magestore_Onestepcheckout_Block_Onestepcheckout extends Mage_Checkout_Bloc
         if (!$this->isCustomerLoggedIn()) {
             return $this->getQuote()->getShippingAddress();
         } else {
-            return Mage::getModel('sales/quote_address');
+            return $this->getQuote()->getShippingAddress();
         }
     }
 

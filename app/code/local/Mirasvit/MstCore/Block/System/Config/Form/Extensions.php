@@ -8,9 +8,9 @@
  * Please refer to http://www.magentocommerce.com for more information.
  *
  * @category  Mirasvit
- * @package   Full Page Cache
- * @version   1.0.1
- * @build     348
+ * @package   Fast Asynchronous Re-indexing
+ * @version   1.1.6
+ * @build     363
  * @copyright Copyright (C) 2015 Mirasvit (http://mirasvit.com/)
  */
 
@@ -28,7 +28,7 @@ class Mirasvit_MstCore_Block_System_Config_Form_Extensions extends Mage_Adminhtm
         }
         $html .= '</table>';
 
-        $url = Mage::getSingleton('adminhtml/url')->getUrl('mstcore/adminhtml_validator/index', array('modules' => ''));
+        $url = Mage::getSingleton('adminhtml/url')->getUrl('adminhtml/validator/index', array('modules' => ''));
 
         $html .= '<br><button onclick="window.location=\''.$url.'\'" type="button"><span>Run validation tests for all extensions</span></button>';
 

@@ -53,7 +53,7 @@ class Unirgy_DropshipBatch_Model_Batch extends Mage_Core_Model_Abstract
             }
             $model = Mage::getConfig()->getNode("global/udropship/{$container}/{$code}/model");
             if (!$model) {
-                Mage::throwException(Mage::helper('udbatch')->__('Invalid model for %s (%s)', $code, $model));
+                Mage::throwException(Mage::helper('udropship')->__('Invalid model for %s (%s)', $code, $model));
             }
             $this->_adapter = Mage::getModel($model);
             $this->_adapter->setBatch($this);
@@ -222,7 +222,7 @@ class Unirgy_DropshipBatch_Model_Batch extends Mage_Core_Model_Abstract
             }
             $newRow['has_error'] = !empty($r['error']);
             $newRow['error_info'] = !empty($r['error']) ? $r['error']
-                : (!empty($r['new_assoc']) ? Mage::helper('udbatch')->__('Added new vendor/product association') : null);
+                : (!empty($r['new_assoc']) ? Mage::helper('udropship')->__('Added new vendor/product association') : null);
             $newRow['row_json'] = '';
             $this->_data['rows_log'][] = $newRow;
         } else {
@@ -285,7 +285,7 @@ class Unirgy_DropshipBatch_Model_Batch extends Mage_Core_Model_Abstract
         } else {
             $useWildcard = false;
         }
-        $locations = explode("\n", $locations);
+        $locations = array_filter(preg_split("/\r\n|\n\r|\r|\n/", $locations));
         foreach ($locations as $l) {
             if (trim($l)==='') {
                 continue;
@@ -364,7 +364,6 @@ class Unirgy_DropshipBatch_Model_Batch extends Mage_Core_Model_Abstract
         } else {
             $rowsText = $this->getData('rows_text');
         }
-
         return $rowsText;
     }
 
@@ -473,7 +472,7 @@ class Unirgy_DropshipBatch_Model_Batch extends Mage_Core_Model_Abstract
                     }
                 } else {
                     if (!($ioAdapter = Mage::getSingleton('udbatch/io')->get($l, $this))) {
-                        Mage::throwException(Mage::helper('udbatch')->__("Unsupported destination '%s'", $l));
+                        Mage::throwException(Mage::helper('udropship')->__("Unsupported destination '%s'", $l));
                     }
                     foreach ($contentArr as $poId => $content) {
                         $content = !empty($header) ? $header."\n".$content : $content;
@@ -486,7 +485,7 @@ class Unirgy_DropshipBatch_Model_Batch extends Mage_Core_Model_Abstract
                         if (!$ioAdapter->write($_filename, $content)) {
                             $_location = $ioAdapter->createLocationString($_filename, true);
                             Mage::throwException(
-                                Mage::helper('udbatch')->__("Could not write to file '%s'", $_location)
+                                Mage::helper('udropship')->__("Could not write to file '%s'", $_location)
                             );
                         }
                     }
@@ -664,7 +663,7 @@ class Unirgy_DropshipBatch_Model_Batch extends Mage_Core_Model_Abstract
         }
         Mage::helper('udropship')->addShipmentComment(
             $shipment,
-            Mage::helper('udbatch')->__('Tracking ID %s was added', $track->getNumber())
+            Mage::helper('udropship')->__('Tracking ID %s was added', $track->getNumber())
         );
         Mage::helper('udropship')->processTrackStatus($track, true, $markAsShipped);
         $shipment->setData('__dummy',1)->save();
@@ -702,7 +701,7 @@ class Unirgy_DropshipBatch_Model_Batch extends Mage_Core_Model_Abstract
                     $text = @file_get_contents($l);
                 }
                 if ($text===false || is_null($text)) {
-                    Mage::throwException(Mage::helper('udbatch')->__("Could not read from file '%s'", $l));
+                    Mage::throwException(Mage::helper('udropship')->__("Could not read from file '%s'", $l));
                 }
                 if ($text=='') {
                     $d->setDistStatus('empty')->save();
@@ -764,7 +763,7 @@ class Unirgy_DropshipBatch_Model_Batch extends Mage_Core_Model_Abstract
                     $text = @file_get_contents($l);
                 }
                 if ($text===false || is_null($text)) {
-                    Mage::throwException(Mage::helper('udbatch')->__("Could not read from file '%s'", $l));
+                    Mage::throwException(Mage::helper('udropship')->__("Could not read from file '%s'", $l));
                 }
                 if ($text=='') {
                     $d->setDistStatus('empty')->save();

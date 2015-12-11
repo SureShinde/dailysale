@@ -28,40 +28,44 @@ class Unirgy_DropshipMicrosite_Model_Source extends Unirgy_Dropship_Model_Source
 
         switch ($this->getPath()) {
 
+        case 'subdomain_level';
         case 'udropship/microsite/subdomain_level':
             $options = array(
-                0 => $hlpc->__('Disable'),
-                1 => $hlpc->__('From URL Path (domain.com/vendor)'),
-                2 => $hlpc->__('2nd level subdomain (vendor.com)'),
-                3 => $hlpc->__('3rd level subdomain (vendor.domain.com)'),
-                4 => $hlpc->__('4th level subdomain (vendor.subdomain.domain.com)'),
-                5 => $hlpc->__('5th level subdomain (vendor.subdomain2.subdomain1.domain.com)'),
+                0 => Mage::helper('udropship')->__('Disable'),
+                1 => Mage::helper('udropship')->__('From URL Path (domain.com/vendor)'),
+                2 => Mage::helper('udropship')->__('2nd level subdomain (vendor.com)'),
+                3 => Mage::helper('udropship')->__('3rd level subdomain (vendor.domain.com)'),
+                4 => Mage::helper('udropship')->__('4th level subdomain (vendor.subdomain.domain.com)'),
+                5 => Mage::helper('udropship')->__('5th level subdomain (vendor.subdomain2.subdomain1.domain.com)'),
             );
+            if ($this->getPath()=='subdomain_level') {
+                $options[0] = Mage::helper('udropship')->__('* Use Config');
+            }
             break;
 
         case 'udropship/microsite/auto_approve':
             $options = array(
-                self::AUTO_APPROVE_NO => $hlpc->__('No'),
-                self::AUTO_APPROVE_YES => $hlpc->__('Yes'),
-                self::AUTO_APPROVE_YES_ACTIVE => $hlpc->__('Yes and activate'),
+                self::AUTO_APPROVE_NO => Mage::helper('udropship')->__('No'),
+                self::AUTO_APPROVE_YES => Mage::helper('udropship')->__('Yes'),
+                self::AUTO_APPROVE_YES_ACTIVE => Mage::helper('udropship')->__('Yes and activate'),
             );
             break;
 
         case 'udropship/stock/stick_microsite':
             $options = array(
-                0 => $hlpc->__('No'),
-                1 => $hlpc->__('Yes'),
-                2 => $hlpc->__('Yes and display vendor'),
-                3 => $hlpc->__('Yes (only when in stock)'),
-                4 => $hlpc->__('Yes (only when in stock) and display vendor'),
+                0 => Mage::helper('udropship')->__('No'),
+                1 => Mage::helper('udropship')->__('Yes'),
+                2 => Mage::helper('udropship')->__('Yes and display vendor'),
+                3 => Mage::helper('udropship')->__('Yes (only when in stock)'),
+                4 => Mage::helper('udropship')->__('Yes (only when in stock) and display vendor'),
             );
             break;
 
         case 'is_limit_categories':
             $options = array(
-                0 => $hlpc->__('No'),
-                1 => $hlpc->__('Enable Selected'),
-                2 => $hlpc->__('Disable Selected'),
+                0 => Mage::helper('udropship')->__('No'),
+                1 => Mage::helper('udropship')->__('Enable Selected'),
+                2 => Mage::helper('udropship')->__('Disable Selected'),
             );
             break;
 
@@ -87,7 +91,7 @@ class Unirgy_DropshipMicrosite_Model_Source extends Unirgy_Dropship_Model_Source
         case 'limit_websites':
         case 'udropship/microsite/staging_website':
             $collection = Mage::getModel('core/website')->getResourceCollection();
-            $options = array('' => $hlpc->__('* None'));
+            $options = array('' => Mage::helper('udropship')->__('* None'));
             foreach ($collection as $w) {
                 $options[$w->getId()] = $w->getName();
             }
@@ -108,18 +112,18 @@ class Unirgy_DropshipMicrosite_Model_Source extends Unirgy_Dropship_Model_Source
 
         case 'cms_landing_page':
             $_options = Mage::getSingleton('adminhtml/system_config_source_cms_page')->toOptionArray();
-            $options[-1] = $hlp->__('* Use config');
+            $options[-1] = Mage::helper('udropship')->__('* Use config');
             foreach ($_options as $_opt) {
                 $options[$_opt['value']] = $_opt['label'];
             }
             break;
 
         default:
-            Mage::throwException($hlp->__('Invalid request for source options: '.$this->getPath()));
+            Mage::throwException(Mage::helper('udropship')->__('Invalid request for source options: '.$this->getPath()));
         }
 
         if ($selector) {
-            $options = array(''=>$hlp->__('* Please select')) + $options;
+            $options = array(''=>Mage::helper('udropship')->__('* Please select')) + $options;
         }
 
         return $options;

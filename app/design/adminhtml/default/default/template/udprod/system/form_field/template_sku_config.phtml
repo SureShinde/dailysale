@@ -12,11 +12,11 @@ $_element = $this->getElement()
     <col />
     <thead>
         <tr class="headings">
-            <th class="a-center"><?php echo $_tsHlp->__('Attribute Set') ?></th>
-            <th class="a-center"><?php echo $_tsHlp->__('Default Template SKU') ?></th>
-            <th class="a-center"><?php echo $_tsHlp->__('Default Configurable Attributes') ?></th>
-            <th class="a-center"><?php echo $_tsHlp->__('Websites') ?></th>
-            <th class="a-center"><?php echo $_tsHlp->__('Category') ?></th>
+            <th class="a-center"><?php echo Mage::helper('udropship')->__('Attribute Set') ?></th>
+            <th class="a-center"><?php echo Mage::helper('udropship')->__('Default Template SKU') ?></th>
+            <th class="a-center"><?php echo Mage::helper('udropship')->__('Default Configurable Attributes') ?></th>
+            <th class="a-center"><?php echo Mage::helper('udropship')->__('Websites') ?></th>
+            <th class="a-center"><?php echo Mage::helper('udropship')->__('Category') ?></th>
         </tr>
     </thead>
     <tbody id="global_udprod_template_sku-table">
@@ -55,13 +55,13 @@ $_element = $this->getElement()
             <td class="a-left">
                 <strong><?php echo $sName?></strong>
                 <br /><br />
-                <input type="checkbox" style="width: auto;" value="1" <?php if ($allowGroupedValue) echo 'checked="checked"'?> id="<?php echo $allowGroupedNameId?>" name="<?php echo $allowGroupedName?>" /> <label for="<?php echo $allowGroupedNameId?>"><?php echo $_tsHlp->__('Allow grouped') ?></label>
+                <input type="checkbox" style="width: auto;" value="1" <?php if ($allowGroupedValue) echo 'checked="checked"'?> id="<?php echo $allowGroupedNameId?>" name="<?php echo $allowGroupedName?>" /> <label for="<?php echo $allowGroupedNameId?>"><?php echo Mage::helper('udropship')->__('Allow grouped') ?></label>
                 <br />
-                <input type="checkbox" style="width: auto;" value="1" <?php if ($allowDwldValue) echo 'checked="checked"'?> id="<?php echo $allowDwldNameId?>" name="<?php echo $allowDwldName?>" /> <label for="<?php echo $allowDwldNameId?>"><?php echo $_tsHlp->__('Allow downloadables') ?></label>
+                <input type="checkbox" style="width: auto;" value="1" <?php if ($allowDwldValue) echo 'checked="checked"'?> id="<?php echo $allowDwldNameId?>" name="<?php echo $allowDwldName?>" /> <label for="<?php echo $allowDwldNameId?>"><?php echo Mage::helper('udropship')->__('Allow downloadables') ?></label>
                 <br />
-                <input type="checkbox" style="width: auto;" value="1" <?php if ($allowVirtualValue) echo 'checked="checked"'?> id="<?php echo $allowVirtualNameId?>" name="<?php echo $allowVirtualName?>" /> <label for="<?php echo $allowVirtualNameId?>"><?php echo $_tsHlp->__('Allow virtual') ?></label>
+                <input type="checkbox" style="width: auto;" value="1" <?php if ($allowVirtualValue) echo 'checked="checked"'?> id="<?php echo $allowVirtualNameId?>" name="<?php echo $allowVirtualName?>" /> <label for="<?php echo $allowVirtualNameId?>"><?php echo Mage::helper('udropship')->__('Allow virtual') ?></label>
                 <br />
-                <input type="checkbox" style="width: auto;" value="1" <?php if ($disallowSimpleValue) echo 'checked="checked"'?> id="<?php echo $disallowSimpleNameId?>" name="<?php echo $disallowSimpleName?>" /> <label for="<?php echo $disallowSimpleNameId?>"><?php echo $_tsHlp->__('Disallow simple') ?></label>
+                <input type="checkbox" style="width: auto;" value="1" <?php if ($disallowSimpleValue) echo 'checked="checked"'?> id="<?php echo $disallowSimpleNameId?>" name="<?php echo $disallowSimpleName?>" /> <label for="<?php echo $disallowSimpleNameId?>"><?php echo Mage::helper('udropship')->__('Disallow simple') ?></label>
             </td>
             <td class="a-center"><input name="<?php echo $_element->getName()?>[<?php echo $sIdEnc?>][value]" class="input-text" type="text" value="<?php echo $this->getCfgValue($_globalTSC, $sId, 'value')?>"/></td>
             <td class="a-center">
@@ -77,7 +77,7 @@ $_element = $this->getElement()
                 ?>
             </td>
             <td class="a-left">
-                <input type="checkbox" style="width: auto;" value="1" <?php if ($upwValue) echo 'checked="checked"'?> id="<?php echo $upwNameId?>" name="<?php echo $upwName?>" onclick="$('<?php echo $wcNameId?>').toggle()" /> <label for="<?php echo $upwNameId?>"><?php echo $_tsHlp->__('Use from template product') ?></label>
+                <input type="checkbox" style="width: auto;" value="1" <?php if ($upwValue) echo 'checked="checked"'?> id="<?php echo $upwNameId?>" name="<?php echo $upwName?>" onclick="$('<?php echo $wcNameId?>').toggle()" /> <label for="<?php echo $upwNameId?>"><?php echo Mage::helper('udropship')->__('Use from template product') ?></label>
                 <div id="<?php echo $wcNameId?>" class="tpl-sku-website" style="margin-top: 7px; <?php if ($upwValue) echo 'display: none'?>">
                 <select id="<?php echo $wNameId?>" name="<?php echo $wName?>" style="width:170px" multiple="multiple">
                     <?php foreach (Mage::app()->getWebsites() as $website): ?>
@@ -87,7 +87,7 @@ $_element = $this->getElement()
                 </div>
             </td>
             <td class="a-left tplsku-tree-container">
-                <input type="checkbox" value="1" <?php if ($upcValue) echo 'checked="checked"'?> id="<?php echo $upcNameId?>" name="<?php echo $upcName?>" onclick="$('<?php echo $ccNameId?>').toggle()" /> <label for="<?php echo $upcNameId?>"><?php echo $_tsHlp->__('Use from template product') ?></label>
+                <input type="checkbox" value="1" <?php if ($upcValue) echo 'checked="checked"'?> id="<?php echo $upcNameId?>" name="<?php echo $upcName?>" onclick="$('<?php echo $ccNameId?>').toggle()" /> <label for="<?php echo $upcNameId?>"><?php echo Mage::helper('udropship')->__('Use from template product') ?></label>
                 <div id="<?php echo $ccNameId?>" class="tpl-sku-category" style="margin-top: 7px; <?php if ($upcValue) echo 'display: none'?>">
                 <?php
                     $catValue = $this->getCfgValue($_globalTSC, $sId, 'category');

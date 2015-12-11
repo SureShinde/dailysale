@@ -48,8 +48,8 @@ class Unirgy_DropshipBatch_Model_Observer
 
         if (Mage::helper('udbatch')->isVendorEnabled($v)) {
             $block->addTab('batches_section', array(
-                'label'     => Mage::helper('udbatch')->__('Import/Export Batches'),
-                'title'     => Mage::helper('udbatch')->__('Import/Export Batches'),
+                'label'     => Mage::helper('udropship')->__('Import/Export Batches'),
+                'title'     => Mage::helper('udropship')->__('Import/Export Batches'),
                 'content'   => $block->getLayout()->createBlock('udbatch/adminhtml_vendor_batch_grid', 'udropship.batch.grid')
                     ->setVendorId($id)
                     ->toHtml(),

@@ -5,6 +5,8 @@ $this->setFieldName($_element->getName());
 $fValue = $_element->getValue();
 $cShipClass = Mage::getSingleton('udshipclass/source')->setPath('customer_ship_class')->toOptionHash();
 $deliveryTypes = Mage::getResourceModel('udtiership/deliveryType_collection')->toOptionHash();
+$customerGroupIds = $_tsHlp->getCustomerGroups();
+$useCustomerGroup = Mage::getStoreConfigFlag('carriers/udtiership/use_customer_group');
 $store = Mage::app()->getDefaultStoreView();
 $columnsCount = 5 + (int)$this->isShowAdditionalColumn() + (int)$this->isShowHandlingColumn();
 ?>
@@ -27,14 +29,14 @@ $columnsCount = 5 + (int)$this->isShowAdditionalColumn() + (int)$this->isShowHan
             <col width="50" />
             <thead>
             <tr class="headings">
-                <th><?php echo $_tsHlp->__('Delivery Type') ?></th>
-                <th><?php echo $_tsHlp->__('Customer') ?></th>
-                <th><?php echo $_tsHlp->__('Cost for the first item') ?></th>
+                <th><?php echo Mage::helper('udropship')->__('Delivery Type') ?></th>
+                <th><?php echo Mage::helper('udropship')->__('Customer') ?></th>
+                <th><?php echo Mage::helper('udropship')->__('Cost for the first item') ?></th>
                 <?php if ($this->isShowAdditionalColumn()): ?>
-                    <th><?php echo $_tsHlp->__('Additional item cost') ?></th>
+                    <th><?php echo Mage::helper('udropship')->__('Additional item cost') ?></th>
                 <?php endif ?>
                 <?php if ($this->isShowHandlingColumn()): ?>
-                    <th><?php echo $_tsHlp->__('Tier handling fee') ?></th>
+                    <th><?php echo Mage::helper('udropship')->__('Tier handling fee') ?></th>
                 <?php endif ?>
                 <th><?php echo Mage::helper('udropship')->__('Sort Order') ?></th>
                 <th><?php echo Mage::helper('udropship')->__('Action') ?></th>
@@ -49,11 +51,22 @@ $columnsCount = 5 + (int)$this->isShowAdditionalColumn() + (int)$this->isShowHan
                 </td>
                 <td>
                     <select multiple="multiple" name="<?php echo $this->getFieldName()?>[$ROW][customer_shipclass_id][]" style="width:150px; height: 150px">
-                        <option alt="customer_shipclass_id" value="*"><?php echo $this->__('*** All ***')?></option>
+                        <option alt="customer_shipclass_id" value="*"><?php echo Mage::helper('udropship')->__('*** All ***')?></option>
                         <?php foreach ($cShipClass as $cscId=>$cscLabel): ?>
                             <option alt="customer_shipclass_id" value="<?php echo $cscId?>"><?php echo $this->htmlEscape($cscLabel)?></option>
                         <?php endforeach; ?>
                     </select>
+                    <?php if ($useCustomerGroup): ?>
+                        <h4><?php echo Mage::helper('udropship')->__('Custmer Group')?></h4>
+                        <select multiple="multiple" name="<?php echo $this->getFieldName()?>[$ROW][customer_group_id][]" style="width:150px; height: 150px">
+                            <option alt="customer_group_id" value="*"><?php echo Mage::helper('udropship')->__('*** All ***')?></option>
+                            <?php foreach ($customerGroupIds as $cscId=>$cscLabel): ?>
+                                <option alt="customer_group_id" value="<?php echo $cscId?>"><?php echo $this->htmlEscape($cscLabel)?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    <?php else: ?>
+                        <input type="hidden" name="<?php echo $this->getFieldName()?>[$ROW][customer_group_id][]" value="*" />
+                    <?php endif ?>
                 </td>
                 <td>
                     <input name="<?php echo $this->getFieldName()?>[$ROW][cost]" class="input-text" type="text"  value="$COST" style="width: 100px" />
@@ -82,7 +95,7 @@ $columnsCount = 5 + (int)$this->isShowAdditionalColumn() + (int)$this->isShowHan
             <tfoot>
             <tr>
                 <th colspan="<?php echo 1*$columnsCount?>" class="a-left">
-                    <div class="left"><button type="button" class="scalable add" id="<?php echo $this->suffixId('addBtn')?>"><span>+ <?php echo $this->__('Add Rate') ?></span></button></div>
+                    <div class="left"><button type="button" class="scalable add" id="<?php echo $this->suffixId('addBtn')?>"><span>+ <?php echo Mage::helper('udropship')->__('Add Rate') ?></span></button></div>
                 </th>
             </tr>
             </tfoot>
@@ -108,6 +121,7 @@ $columnsCount = 5 + (int)$this->isShowAdditionalColumn() + (int)$this->isShowHan
             var data = {
                 delivery_type_id: '',
                 customer_shipclass_id: '',
+                customer_group_id: '',
                 cost: '0',
                 additional: '0',
                 handling: '0',
@@ -138,7 +152,7 @@ $columnsCount = 5 + (int)$this->isShowAdditionalColumn() + (int)$this->isShowHan
                 new Template('<input (([^>]*(alt="?#{key}"?|value="?#{value}"?(?=[\\s>])|type="?checkbox"?)){3})'),
                 new Template('<input $1 checked="checked"')
             ];
-            var selectFields = $H({customer_shipclass_id:1,delivery_type_id:0});
+            var selectFields = $H({customer_shipclass_id:1,customer_group_id:1,delivery_type_id:0});
             selectFields.each(function(pair){
                 var varsForEval, value=data[pair.key], key=pair.key;
                 for (var rxIdx=0; rxIdx<regExTpl.length; rxIdx+=2) {

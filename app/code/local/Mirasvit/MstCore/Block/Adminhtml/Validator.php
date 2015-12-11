@@ -8,9 +8,9 @@
  * Please refer to http://www.magentocommerce.com for more information.
  *
  * @category  Mirasvit
- * @package   Full Page Cache
- * @version   1.0.1
- * @build     348
+ * @package   Fast Asynchronous Re-indexing
+ * @version   1.1.6
+ * @build     363
  * @copyright Copyright (C) 2015 Mirasvit (http://mirasvit.com/)
  */
 
@@ -22,16 +22,22 @@ class Mirasvit_MstCore_Block_Adminhtml_Validator extends Mage_Adminhtml_Block_Te
         $this->setTemplate('mstcore/validator.phtml');
     }
 
-    public function getResults()
+    /**
+     * Get test results
+     *
+     * @param  string $testType 'test' - for common tests, 'dev' - for dev tests
+     * @return array
+     */
+    public function getResults($testType = 'test')
     {
         $results = array();
 
-        $modules = $this->getModules();
+        $modules = Mage::helper('mstcore')->getModules();
 
         foreach ($modules as $module) {
             $helper = $this->getValidatorHelper($module);
             if ($helper) {
-                $results += $helper->runTests();
+                $results += $helper->runTests($testType);
             }
         }
 
@@ -55,34 +61,18 @@ class Mirasvit_MstCore_Block_Adminhtml_Validator extends Mage_Adminhtml_Block_Te
         }
     }
 
-    public function getModules()
-    {
-        $modules = Mage::app()->getRequest()->getParam('modules');
-        if ($modules != '') {
-            $modules = explode(',', $modules);
-        }
-
-        if (count($modules) == 0) {
-            $mstdir = Mage::getBaseDir('app').DS.'code'.DS.'local'.DS.'Mirasvit';
-
-            if ($handle = opendir($mstdir)) {
-                while (false !== ($entry = readdir($handle))) {
-                    if (substr($entry, 0, 1) != '.') {
-                        if (!Mage::helper('mstcore')->isModuleInstalled("Mirasvit_$entry")) {
-                            continue;
-                        }
-                        $modules[] = $entry;
-                    }
-                }
-                closedir($handle);
-            }
-        }
-
-        return $modules;
-    }
-
     public function getBackUrl()
     {
         return Mage::helper('core/http')->getHttpReferer();
+    }
+
+    public function getClearCacheUrl()
+    {
+        return Mage::helper('adminhtml')->getUrl('*/*/clearCache');
+    }
+
+    public function isUsedExternalCache()
+    {
+        return (bool) count(Mage::helper('mstcore')->getUsedCaches()) > 0;
     }
 }

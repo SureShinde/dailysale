@@ -20,7 +20,7 @@
 <config>
     <modules>
         <Unirgy_DropshipPo>
-            <version>2.2.14</version>
+            <version>2.4.2</version>
             <usimpleup remote="http://download.unirgy.com/simple/client_api/version/"
                 changelog="http://unirgy.com/support/portal/announcements"
                 uninstall="udpo/observer::usimpleup_uninstall"/>
@@ -284,6 +284,11 @@
                     <file>udpo_vendor_po.html</file>
                     <type>html</type>
                 </udropship_purchase_order_new_po_vendor_email_template>
+                <udropship_purchase_order_delete_po_vendor_email_template module="udpo">
+                    <label>PO Deleted Vendor Notification</label>
+                    <file>udpo_vendor_po_deleted.html</file>
+                    <type>html</type>
+                </udropship_purchase_order_delete_po_vendor_email_template>
                 <udropship_purchase_order_po_comment_vendor_email_template module="udpo">
                     <label>PO Comment Vendor Notification</label>
                     <file>udpo_vendor_po_comment.html</file>
@@ -293,6 +298,22 @@
         </template>
 
         <events>
+            <order_cancel_after>
+                <observers>
+                    <udropship>
+                        <class>udpo/observer</class>
+                        <method>order_cancel_after</method>
+                    </udropship>
+                </observers>
+            </order_cancel_after>
+            <sales_order_item_cancel>
+                <observers>
+                    <udropship>
+                        <class>udpo/observer</class>
+                        <method>sales_order_item_cancel</method>
+                    </udropship>
+                </observers>
+            </sales_order_item_cancel>
             <udpo_po_cancel>
                 <observers>
                     <udpo>
@@ -421,13 +442,13 @@
 
     <admin>
         <routers>
-            <udpoadmin>
-                <use>admin</use>
+            <adminhtml>
                 <args>
-                    <module>Unirgy_DropshipPo_Adminhtml</module>
-                    <frontName>udpoadmin</frontName>
+                    <modules>
+                        <udpoadmin after="Mage_Adminhtml">Unirgy_DropshipPo</udpoadmin>
+                    </modules>
                 </args>
-            </udpoadmin>
+            </adminhtml>
         </routers>
     </admin>
 
@@ -446,7 +467,7 @@
                         <children>
                             <udpo translate="title" module="udpo">
                                 <title>Purchase Orders</title>
-                                <action>udpoadmin/po</action>
+                                <action>adminhtml/udpoadmin_po</action>
                                 <sort_order>55</sort_order>
                             </udpo>
                         </children>
@@ -460,12 +481,12 @@
                             <advanced module="udpo">
                                 <title>Advanced PO Details</title>
                                 <sort_order>5</sort_order>
-                                <action>udpoadmin/report</action>
+                                <action>adminhtml/udpoadmin_report</action>
                             </advanced>
                             <advanced_item module="udpo">
                                 <title>Advanced PO Item Details</title>
                                 <sort_order>7</sort_order>
-                                <action>udpoadmin/report/item</action>
+                                <action>adminhtml/udpoadmin_report/item</action>
                             </advanced_item>
                             <general module="udpo">
                                 <title>Shipment Details</title>
@@ -488,17 +509,25 @@
                                     <children>
                                         <actions>
                                             <children>
-                                                <udpo module="udpo" translate="title"><title>Purchase Order</title></udpo>
-                                                <udpo_view_order_cost module="udpo" translate="title"><title>View Order Costs</title></udpo_view_order_cost>
-                                                <udpo_view_cost module="udpo" translate="title"><title>View PO Costs</title></udpo_view_cost>
-                                                <udpo_edit_cost module="udpo" translate="title"><title>Edit PO Costs</title></udpo_edit_cost>
+                                                <udpo translate="title" module="udropship">
+                                                    <title>Purchase Order</title>
+                                                </udpo>
+                                                <udpo_view_order_cost translate="title" module="udropship">
+                                                    <title>View Order Costs</title>
+                                                </udpo_view_order_cost>
+                                                <udpo_view_cost translate="title" module="udropship">
+                                                    <title>View PO Costs</title>
+                                                </udpo_view_cost>
+                                                <udpo_edit_cost translate="title" module="udropship">
+                                                    <title>Edit PO Costs</title>
+                                                </udpo_edit_cost>
                                             </children>
                                         </actions>
                                     </children>
                                 </order>
                                 <udropship>
                                     <children>
-                                        <udpo>
+                                        <udpo translate="title" module="udropship">
                                             <title>Purchase Orders</title>
                                             <sort_order>55</sort_order>
                                         </udpo>
@@ -510,15 +539,15 @@
                             <children>
                                 <udropship translate="title">
                                     <children>
-                                        <advanced module="udpo" translate="title">
+                                        <advanced translate="title" module="udropship">
                                             <title>Advanced PO Details</title>
                                             <sort_order>5</sort_order>
                                         </advanced>
-                                        <advanced_item translate="title">
+                                        <advanced_item translate="title" module="udropship">
                                             <title>Advanced PO Item Details</title>
                                             <sort_order>7</sort_order>
                                         </advanced_item>
-                                        <general>
+                                        <general translate="title" module="udropship">
                                             <title>Shipment Details</title>
                                         </general>
                                     </children>
@@ -569,6 +598,15 @@
                     </udpo>
                 </observers>
             </sales_order_save_before>
+            <core_block_abstract_to_html_before>
+                <observers>
+                    <udropship>
+                        <type>singleton</type>
+                        <class>udpo/observer</class>
+                        <method>core_block_abstract_to_html_before</method>
+                    </udropship>
+                </observers>
+            </core_block_abstract_to_html_before>
         </events>
     </adminhtml>
 
@@ -583,12 +621,15 @@
                 <statement_po_status>1</statement_po_status>
             </statement>
 	        <purchase_order>
+                <admin_show_vendorsku>0</admin_show_vendorsku>
+                <allow_delete_po>0</allow_delete_po>
 	            <autoinvoice_shipment>0</autoinvoice_shipment>
 	            <autoinvoice_shipment_statuses>1</autoinvoice_shipment_statuses>
 	            <attach_po_pdf>0</attach_po_pdf>
 	            <ready_on_pdf>1</ready_on_pdf>
 	            <po_increment_type>order_based</po_increment_type>
 	            <shipment_increment_type>po_based</shipment_increment_type>
+                <delete_po_vendor_email_template>udropship_purchase_order_delete_po_vendor_email_template</delete_po_vendor_email_template>
 	            <new_po_vendor_email_template>udropship_purchase_order_new_po_vendor_email_template</new_po_vendor_email_template>
 	            <po_comment_vendor_email_template>udropship_purchase_order_po_comment_vendor_email_template</po_comment_vendor_email_template>
 	        </purchase_order>

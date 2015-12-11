@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Fiuze_Aftershipcustomization>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Fiuze_Aftershipcustomization>
+    </modules>
+</config>

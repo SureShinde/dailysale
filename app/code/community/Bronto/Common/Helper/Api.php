@@ -21,7 +21,6 @@ class Bronto_Common_Helper_Api extends Bronto_Common_Helper_Data
     const XML_PATH_QUEUE_FREQUENCY_MIN = 'bronto_api/queue_settings/minutes';
 
     const XML_PATH_SOAP_CLIENT             = 'bronto_api/soap_options/soap_client';
-    const XML_PATH_API_OBSERVER            = 'bronto_api/soap_options/observer';
     const XML_PATH_API_RETRYER             = 'bronto_api/soap_options/retryer';
     const XML_PATH_SOAP_STREAM_CONTEXT     = 'bronto_api/soap_options/stream_context';
     const XML_PATH_SOAP_RETRY_LIMIT        = 'bronto_api/soap_options/retry_limit';
@@ -30,7 +29,8 @@ class Bronto_Common_Helper_Api extends Bronto_Common_Helper_Data
     const XML_PATH_SOAP_EXCEPTIONS         = 'bronto_api/soap_options/exceptions';
     const XML_PATH_WSDL_CACHE              = 'bronto_api/soap_options/wsdl_cache';
 
-    const DEFAULT_SOAP_CLIENT              = 'Bronto_SoapClient';
+    const DEFAULT_SOAP_CLIENT              = 'SoapClient';
+    const DEFAULT_OLD_SOAP_CLIENT          = 'Bronto_SoapClient';
 
     /**
      * Gets the Canonical name of the helper
@@ -148,15 +148,16 @@ class Bronto_Common_Helper_Api extends Bronto_Common_Helper_Data
     {
         // Return Default Options
         return array(
-            'soap_client'        => $this->getSoapClient(),
+            'soapClass'          => $this->getSoapClient(),
             'observer'           => $this->getApiObserver(),
-            'retry_limit'        => $this->getSoapRetryLimit(),
-            'connection_timeout' => $this->getSoapConnectionTimeout(),
-            'trace'              => $this->getSoapTrace(),
-            'exceptions'         => $this->getSoapExceptions(),
-            'cache_wsdl'         => $this->getSoapCacheWsdl(),
-            'debug'              => $this->isDebugEnabled(),
-            'retryer'            => $this->getApiRetryer()
+            'retries'            => $this->getSoapRetryLimit(),
+            'retryer'            => $this->getApiRetryer(),
+            'soapOptions'        => array(
+                'connection_timeout' => $this->getSoapConnectionTimeout(),
+                'trace'              => $this->getSoapTrace() || $this->isVerboseEnabled(),
+                'exceptions'         => $this->getSoapExceptions(),
+                'cache_wsdl'         => $this->getSoapCacheWsdl()
+            )
         );
     }
 
@@ -168,13 +169,10 @@ class Bronto_Common_Helper_Api extends Bronto_Common_Helper_Data
     public function getApiRetryer()
     {
         $class = $this->getAdminScopedConfig(self::XML_PATH_API_RETRYER);
-        $options = array('type' => 'custom');
-        if (empty($class) || !class_exists($class)) {
-            $options['object'] = Mage::getModel('bronto_common/error');
-        } else {
-            $options['path'] = $class;
+        if (!empty($class) && class_exists($class)) {
+            return Mage::getModel('bronto_common/error');
         }
-        return $options;
+        return '';
     }
 
     /**
@@ -185,14 +183,8 @@ class Bronto_Common_Helper_Api extends Bronto_Common_Helper_Data
     public function getSoapClient()
     {
         $class = $this->getAdminScopedConfig(self::XML_PATH_SOAP_CLIENT);
-        if (empty($class)) {
+        if (empty($class) || $class == self::DEFAULT_OLD_SOAP_CLIENT || !class_exists($class)) {
             $class = self::DEFAULT_SOAP_CLIENT;
-        }
-        if (
-            $this->isStreamContextOverride() &&
-            $class == self::DEFAULT_SOAP_CLIENT
-        ) {
-            $class = 'Bronto_Common_Model_SoapClient';
         }
         return $class;
     }
@@ -204,7 +196,7 @@ class Bronto_Common_Helper_Api extends Bronto_Common_Helper_Data
      */
     public function getApiObserver()
     {
-        return $this->getAdminScopedConfig(self::XML_PATH_API_OBSERVER);
+        return '';
     }
 
     /**

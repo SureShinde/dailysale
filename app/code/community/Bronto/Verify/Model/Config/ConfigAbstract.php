@@ -7,7 +7,6 @@
  * @package   Bronto_Verify
  * @author    Adam Daniels <adam.daniels@atlanticbt.com>
  * @copyright 2013 Adam Daniels
- * @license   http://www.atlanticbt.com/ Atlantic BT
  */
 abstract class Bronto_Verify_Model_Config_ConfigAbstract
     extends Mage_Core_Model_Abstract

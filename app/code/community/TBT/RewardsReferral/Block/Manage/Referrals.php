@@ -8,7 +8,7 @@ class TBT_RewardsReferral_Block_Manage_Referrals extends Mage_Adminhtml_Block_Wi
         $this->_headerText = Mage::helper('rewardsref')->__('Customer Referrals');
         parent::__construct();
         $this->_removeButton('add');
-        $importLink = Mage::helper("adminhtml")->getUrl("rewardsrefadmin/adminhtml_referrals_import/index/", array());
+        $importLink = Mage::helper("adminhtml")->getUrl("adminhtml/referrals_import/index/", array());
         $this->addButton('referrals_import', array(
                'label' =>  'Import List of Referrals',
                'onclick'   => "setLocation('{$importLink}');"

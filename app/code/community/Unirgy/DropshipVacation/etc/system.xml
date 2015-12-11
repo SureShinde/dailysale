@@ -23,7 +23,7 @@
             <groups>
                 <customer>
                     <fields>
-                        <vacation_message translate="label">
+                        <vacation_message translate="label comment">
                             <label>Vendor Vacation Message</label>
                             <frontend_type>textarea</frontend_type>
                             <sort_order>300</sort_order>

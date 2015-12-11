@@ -245,7 +245,7 @@ class Bronto_Email_Helper_Data
             $brontoTable   = Mage::getSingleton('core/resource')->getTableName('bronto_email/message');
             $templates->getSelect()->joinLeft(
                 $brontoTable,
-                "`{$templateTable}`.`template_id` = `{$brontoTable}`.`core_template_id`"
+                "{$templateTable}.template_id = {$brontoTable}.core_template_id"
             );
         }
 

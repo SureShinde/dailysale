@@ -71,14 +71,6 @@
     padding: 0px 3px;
 }
 
-ul.tabs a.awall-section span, ul.tabs a.awall-section:hover span {
-    background: url("../images/store.png") no-repeat scroll 0 0 transparent;
-    height: 0;
-    overflow: hidden;
-    padding: 21px 0 0;
-    width: 192px;
-}
-
 ul.tabs a.awall-section, ul.tabs a.awall-section:hover {
     background: url("../../images/tabs_span_bg.gif") repeat-x scroll 0 100% transparent;
     border-bottom: medium none;

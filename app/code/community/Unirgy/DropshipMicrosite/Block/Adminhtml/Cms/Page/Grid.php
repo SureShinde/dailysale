@@ -39,7 +39,7 @@ class Unirgy_DropshipMicrosite_Block_Adminhtml_Cms_Page_Grid extends Mage_Adminh
 
         if (!Mage::helper('umicrosite')->getCurrentVendor()) {
             $this->addColumn('udropship_vendor', array(
-                'header'  => Mage::helper('cms')->__('Dropship Vendor'),
+                'header'  => Mage::helper('udropship')->__('Dropship Vendor'),
                 'index'   => 'udropship_vendor',
                 'type'    => 'options',
                 'options' => Mage::getSingleton('udropship/source')->setPath('vendors')->toOptionHash(),

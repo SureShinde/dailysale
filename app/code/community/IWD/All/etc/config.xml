@@ -8,13 +8,13 @@
 
     <admin>
         <routers>
-            <iwdall>
-                <use>admin</use>
-                <args>
-                    <module>IWD_All</module>
-                    <frontName>iwdall</frontName>
-                </args>
-            </iwdall>
+            <adminhtml>
+				<args>
+					<modules>
+						<iwdall before="Mage_Adminhtml">IWD_All_Adminhtml</iwdall>
+					</modules>
+				</args>
+			</adminhtml>
         </routers>
     </admin>
 

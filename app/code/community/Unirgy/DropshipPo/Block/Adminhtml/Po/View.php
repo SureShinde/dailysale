@@ -28,14 +28,17 @@ class Unirgy_DropshipPo_Block_Adminhtml_Po_View extends Mage_Adminhtml_Block_Wid
         parent::__construct();
 
         $this->_removeButton('reset');
-        $this->_removeButton('delete');
         $this->_removeButton('save');
+
+        if (!Mage::getStoreConfigFlag('udropship/purchase_order/allow_delete_po')) {
+            $this->_removeButton('delete');
+        }
 
         if ($this->getPo()->getId()) {
 
             if (Mage::getSingleton('admin/session')->isAllowed('sales/order/actions/udpo_edit_cost')) {
                 $this->_addButton('po_editcosts', array(
-                    'label'     => Mage::helper('udpo')->__('Edit Costs'),
+                    'label'     => Mage::helper('udropship')->__('Edit Costs'),
                     'onclick'   => 'setLocation(\'' . $this->getEditCostsUrl() . '\')',
                     'class'     => 'go'
                 ));
@@ -43,14 +46,14 @@ class Unirgy_DropshipPo_Block_Adminhtml_Po_View extends Mage_Adminhtml_Block_Wid
 
 	        if (Mage::getSingleton('admin/session')->isAllowed('sales/order/actions/ship') && $this->getPo()->canCreateShipment()) {
 	            $this->_addButton('po_create_shipment', array(
-	                'label'     => Mage::helper('udpo')->__('Create Shipment'),
+	                'label'     => Mage::helper('udropship')->__('Create Shipment'),
 	                'onclick'   => 'setLocation(\'' . $this->getCreateShipmentUrl() . '\')',
 	                'class'     => 'go'
 	            ));
 	        }
         	
             $this->_addButton('print', array(
-                'label'     => Mage::helper('sales')->__('Print'),
+                'label'     => Mage::helper('udropship')->__('Print'),
                 'class'     => 'save',
                 'onclick'   => 'setLocation(\''.$this->getPrintUrl().'\')'
                 )
@@ -75,7 +78,7 @@ class Unirgy_DropshipPo_Block_Adminhtml_Po_View extends Mage_Adminhtml_Block_Wid
 
     public function getHeaderText()
     {
-        return Mage::helper('udpo')->__('Purchase Order #%1$s | %2$s', $this->getPo()->getIncrementId(), $this->formatDate($this->getPo()->getCreatedAtDate(), 'medium', true));
+        return Mage::helper('udropship')->__('Purchase Order #%1$s | %2$s', $this->getPo()->getIncrementId(), $this->formatDate($this->getPo()->getCreatedAtDate(), 'medium', true));
     }
 
     public function getBackUrl()
@@ -90,7 +93,7 @@ class Unirgy_DropshipPo_Block_Adminhtml_Po_View extends Mage_Adminhtml_Block_Wid
 
     public function getPrintUrl()
     {
-        return $this->getUrl('*/po/print', array(
+        return $this->getUrl('*/udpoadmin_po/print', array(
             'udpo_id' => $this->getPo()->getId()
         ));
     }
@@ -98,7 +101,7 @@ class Unirgy_DropshipPo_Block_Adminhtml_Po_View extends Mage_Adminhtml_Block_Wid
     public function updateBackButtonUrl($flag)
     {
         if ($flag) {
-            return $this->_updateButton('back', 'onclick', 'setLocation(\'' . $this->getUrl('*/po/') . '\')');
+            return $this->_updateButton('back', 'onclick', 'setLocation(\'' . $this->getUrl('*/udpoadmin_po/') . '\')');
         }
         return $this;
     }

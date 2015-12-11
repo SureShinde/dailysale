@@ -316,6 +316,7 @@
 		color: white;
 		text-shadow: 1px 1px 0px shade($main-color, 20%);
 		font-size: 16px;
+		margin-bottom: 10px;
 
 		&:hover{
 			@include background-image(linear-gradient(tint($darker-color, 15%), $darker-color));
@@ -479,6 +480,7 @@ ul.tabs{
 			li{
 				margin-left: 15px;
 				clear: left;
+				list-style: disc;
 			}
 		}
 

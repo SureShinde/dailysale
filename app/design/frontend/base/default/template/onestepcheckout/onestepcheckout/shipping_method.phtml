@@ -53,7 +53,7 @@ if (!($_shippingRateGroups = $this->getShippingRates())): ?>
                                         }
                                     </style>
                                 <?php endif;?>                                   
-                                <input name="shipping_method" type="radio" value="<?php echo $_rate->getCode() ?>" id="s_method_<?php echo $_rate->getCode() ?>"<?php if(($smcode == null && $j==1 && $code===Mage::getStoreConfig('onestepcheckout/general/default_shipping',Mage::app()->getStore()->getStoreId()))|| ($smcode !=null && $_rate->getCode() == $smcode)) echo ' checked="checked"' ?> class="radio validate-one-required-by-name" onclick="save_shipping_method(shipping_method_url, update_shipping_payment, update_shipping_review);" />
+                                <input name="shipping_method" type="radio" value="<?php echo $_rate->getCode() ?>" id="s_method_<?php echo $_rate->getCode() ?>"<?php if(($smcode == null && $j==1 && $code===Mage::getStoreConfig('onestepcheckout/general/default_shipping',Mage::app()->getStore()->getStoreId()))|| ($smcode !=null && $_rate->getCode() == $smcode)) echo ' checked="checked"' ?> class="radio validate-one-required-by-name" onclick="save_shipping_method(shipping_method_url, update_shipping_payment, update_shipping_review, true);" />
                             <?php endif; ?>
                             <label for="s_method_<?php echo $_rate->getCode() ?>"><?php echo $_rate->getMethodTitle() ?>
                             <?php $_excl = $this->getShippingPrice($_rate->getPrice(), $this->helper('tax')->displayShippingPriceIncludingTax()); ?>

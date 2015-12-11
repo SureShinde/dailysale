@@ -41,12 +41,12 @@ class Unirgy_DropshipPo_Block_Adminhtml_Po_Editcosts extends Mage_Adminhtml_Bloc
 
     public function getHeaderText()
     {
-        $header = Mage::helper('udpo')->__('Edit Costs for Purchase Orders #%s', $this->getPo()->getIncrementId());
+        $header = Mage::helper('udropship')->__('Edit Costs for Purchase Orders #%s', $this->getPo()->getIncrementId());
         return $header;
     }
 
     public function getBackUrl()
     {
-        return $this->getUrl('udpoadmin/order_po/view', array('udpo_id'=>$this->getPo()->getId()));
+        return $this->getUrl('adminhtml/udpoadmin_order_po/view', array('udpo_id'=>$this->getPo()->getId()));
     }
 }

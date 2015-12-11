@@ -14,9 +14,13 @@ class Unirgy_DropshipVendorProduct_Model_Product extends Mage_Catalog_Model_Prod
     }
     protected function _beforeSave()
     {
-        $ufName = $this->formatUrlKey($this->getName());
-        if (!trim($ufName)) {
-            Mage::throwException(Mage::helper('udropship')->__('Product name is invalid'));
+        if ($this->getName() !== false) {
+            if (!Mage::getStoreConfigFlag('udprod/general/disable_name_check')) {
+                $ufName = $this->formatUrlKey($this->getName());
+                if (!trim($ufName)) {
+                    Mage::throwException(Mage::helper('udropship')->__('Product name is invalid'));
+                }
+            }
         }
         return parent::_beforeSave();
     }

@@ -7,7 +7,6 @@
  * @package   Bronto_Verify
  * @author    Adam Daniels <adam.daniels@atlanticbt.com>
  * @copyright 2013 Adam Daniels
- * @license   http://www.atlanticbt.com/ Atlantic BT
  */
 class Bronto_Verify_Model_Roundtrip
 {
@@ -40,7 +39,7 @@ class Bronto_Verify_Model_Roundtrip
         // Commented out due to a 500 error when not requesting body
         //	curl_setopt($ch, CURLOPT_NOBODY, true); // don't return body, just return header
 
-        $ch = curl_init(Bronto_Api::BASE_WSDL);
+        $ch = curl_init(Bronto_Api::BASE_URI);
         curl_exec($ch);
         $retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);

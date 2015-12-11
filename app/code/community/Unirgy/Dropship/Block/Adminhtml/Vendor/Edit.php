@@ -27,7 +27,7 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Edit extends Mage_Adminhtml_Block_W
         $this->_updateButton('save', 'label', Mage::helper('udropship')->__('Save Vendor'));
         $this->_updateButton('save_continue', 'label', Mage::helper('udropship')->__('Save and Continue Edit'));
         $this->_addButton('save_continue', array(
-            'label'     => Mage::helper('adminhtml')->__('Save and Continue Edit'),
+            'label'     => Mage::helper('udropship')->__('Save and Continue Edit'),
             'onclick'   => '$(\'save_continue\').value=1; editForm.submit();',
             'class'     => 'save',
         ), 10);

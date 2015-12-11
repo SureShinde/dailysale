@@ -74,6 +74,7 @@ class Unirgy_DropshipBatch_Block_Adminhtml_Dist_Grid extends Mage_Adminhtml_Bloc
         $this->addColumn('batch_created_at', array(
             'header'    => Mage::helper('udropship')->__('Batch Created At'),
             'index'     => 'batch_created_at',
+            'filter_index' => 'b.created_at',
             'type'      => 'datetime',
             'width'     => 150,
         ));
@@ -81,6 +82,7 @@ class Unirgy_DropshipBatch_Block_Adminhtml_Dist_Grid extends Mage_Adminhtml_Bloc
         $this->addColumn('updated_at', array(
             'header'    => Mage::helper('udropship')->__('Hist Updated At'),
             'index'     => 'updated_at',
+            'filter_index' => 'main_table.updated_at',
             'type'      => 'datetime',
             'width'     => 150,
         ));
@@ -93,8 +95,8 @@ class Unirgy_DropshipBatch_Block_Adminhtml_Dist_Grid extends Mage_Adminhtml_Bloc
             'renderer'  => 'udbatch/adminhtml_dist_grid_status',
         ));
 
-        $this->addExportType('*/*/exportCsv', Mage::helper('adminhtml')->__('CSV'));
-        $this->addExportType('*/*/exportXml', Mage::helper('adminhtml')->__('XML'));
+        $this->addExportType('*/*/exportCsv', Mage::helper('udropship')->__('CSV'));
+        $this->addExportType('*/*/exportXml', Mage::helper('udropship')->__('XML'));
 
         return parent::_prepareColumns();
     }
@@ -105,7 +107,7 @@ class Unirgy_DropshipBatch_Block_Adminhtml_Dist_Grid extends Mage_Adminhtml_Bloc
         $this->getMassactionBlock()->setFormFieldName('dist');
 
         $this->getMassactionBlock()->addItem('retry', array(
-             'label'=> Mage::helper('udbatch')->__('Retry'),
+             'label'=> Mage::helper('udropship')->__('Retry'),
              'url'  => $this->getUrl('*/*/massRetry'),
              'confirm' => Mage::helper('udropship')->__('Are you sure?')
         ));

@@ -34,7 +34,7 @@ class Unirgy_DropshipPo_VendorController extends Unirgy_Dropship_VendorControlle
                 $this->_forward('udpoLabelBatch', 'vendor', 'udpo');
                 return;
 	        case 'labelBatch':
-	        case $_hlp->__('Create and Download Labels Batch'):
+	        case Mage::helper('udropship')->__('Create and Download Labels Batch'):
 	            $this->_forward('labelBatch', 'vendor', 'udpo');
 	            return;
 
@@ -43,7 +43,7 @@ class Unirgy_DropshipPo_VendorController extends Unirgy_Dropship_VendorControlle
 	            return;
 
 	        case 'packingSlips':
-	        case $_hlp->__('Download Packing Slips'):
+	        case Mage::helper('udropship')->__('Download Packing Slips'):
 	            $this->_forward('packingSlips', 'vendor', 'udpo');
 	            return;
 
@@ -233,7 +233,7 @@ class Unirgy_DropshipPo_VendorController extends Unirgy_Dropship_VendorControlle
                         $session->addSuccess('Label was succesfully created');
                         Mage::helper('udropship')->addShipmentComment(
                             $shipment,
-                            $this->__('%s printed label ID %s', $vendor->getVendorName(), $track->getNumber())
+                            Mage::helper('udropship')->__('%s printed label ID %s', $vendor->getVendorName(), $track->getNumber())
                         );
                         $shipment->save();
                         $highlight['tracking'] = true;
@@ -242,7 +242,7 @@ class Unirgy_DropshipPo_VendorController extends Unirgy_Dropship_VendorControlle
                     if ($batch->getErrors()) {
                     	$batchError = '';
                         foreach ($batch->getErrors() as $error=>$cnt) {
-                        	$batchError .= $hlp->__($error, $cnt)." \n";
+                        	$batchError .= Mage::helper('udropship')->__($error, $cnt)." \n";
                         }
                         if ($r->getParam('use_method_code')) {
                             $shipment->setUdropshipMethod($oldUdropshipMethod);
@@ -282,7 +282,7 @@ class Unirgy_DropshipPo_VendorController extends Unirgy_Dropship_VendorControlle
 
                 Mage::helper('udropship')->addShipmentComment(
                     $shipment,
-                    $this->__('%s added tracking ID %s', $vendor->getVendorName(), $number)
+                    Mage::helper('udropship')->__('%s added tracking ID %s', $vendor->getVendorName(), $number)
                 );
                 $shipment->save();
                 $session->addSuccess($this->__('Tracking ID has been uploaded and we will email the results of the upload within 24 hours.'));
@@ -307,7 +307,7 @@ class Unirgy_DropshipPo_VendorController extends Unirgy_Dropship_VendorControlle
                     $udpo->setForceStatusChangeFlag(true);
                 }
                 if ($oldStatus==$poStatusCanceled && !$udpo->getForceStatusChangeFlag()) {
-                    Mage::throwException(Mage::helper('udpo')->__('Canceled purchase order cannot be reverted'));
+                    Mage::throwException(Mage::helper('udropship')->__('Canceled purchase order cannot be reverted'));
                 }
                 if ($poStatus==$poStatusShipped || $poStatus==$poStatusDelivered) {
                     foreach ($udpo->getShipmentsCollection() as $_s) {
@@ -330,9 +330,9 @@ class Unirgy_DropshipPo_VendorController extends Unirgy_Dropship_VendorControlle
                 }
                 $udpo->getCommentsCollection()->save();
                 if ($poStatusChanged) {
-                    $session->addSuccess($this->__('Purchase order status has been changed'));
+                    $session->addSuccess(Mage::helper('udropship')->__('Purchase order status has been changed'));
                 } else {
-                    $session->addError($this->__('Cannot change purchase order status'));
+                    $session->addError(Mage::helper('udropship')->__('Cannot change purchase order status'));
                 }
             }
 
@@ -349,19 +349,20 @@ class Unirgy_DropshipPo_VendorController extends Unirgy_Dropship_VendorControlle
                         if (!array_key_exists($item->getId(), $partialQty) || '' === $partialQty[$item->getId()]) {
                             continue;
                         }
-                        $comment .= $this->__('%s x [%s] %s', $partialQty[$item->getId()], $item->getName(), $item->getSku())."\n";
+                        $comment .= Mage::helper('udropship')->__('%s x [%s] %s', $partialQty[$item->getId()], $item->getName(), $item->getSku())."\n";
                     }
                 }
 
                 //$udpo->addComment($comment, false, true)->getCommentsCollection()->save();
                 Mage::helper('udpo')->sendVendorComment($udpo, $comment);
-                $session->addSuccess($this->__('Your comment has been sent to store administrator'));
+                $session->addSuccess(Mage::helper('udropship')->__('Your comment has been sent to store administrator'));
 
                 $highlight['comment'] = true;
             }
 
             $session->setHighlight($highlight);
         } catch (Exception $e) {
+
             $configValue = Mage::getStoreConfig('aftership_options/messages/aftership_validation');
             //save, 422: repeated
             if($configValue) {
@@ -448,7 +449,7 @@ class Unirgy_DropshipPo_VendorController extends Unirgy_Dropship_VendorControlle
                     $udpo->setForceStatusChangeFlag(true);
                 }
                 if ($oldStatus==$poStatusCanceled && !$udpo->getForceStatusChangeFlag()) {
-                    Mage::throwException(Mage::helper('udpo')->__('Canceled purchase order cannot be reverted'));
+                    Mage::throwException(Mage::helper('udropship')->__('Canceled purchase order cannot be reverted'));
                 }
                 if ($poStatus==$poStatusShipped || $poStatus==$poStatusDelivered) {
                     foreach ($udpo->getShipmentsCollection() as $_s) {
@@ -471,9 +472,9 @@ class Unirgy_DropshipPo_VendorController extends Unirgy_Dropship_VendorControlle
                 }
                 $udpo->getCommentsCollection()->save();
                 if ($poStatusChanged) {
-                    $session->addSuccess($this->__('Purchase order status has been changed'));
+                    $session->addSuccess(Mage::helper('udropship')->__('Purchase order status has been changed'));
                 } else {
-                    $session->addError($this->__('Cannot change purchase order status'));
+                    $session->addError(Mage::helper('udropship')->__('Cannot change purchase order status'));
                 }
             }
 
@@ -485,13 +486,13 @@ class Unirgy_DropshipPo_VendorController extends Unirgy_Dropship_VendorControlle
                         if (empty($partialQty[$item->getId()])) {
                             continue;
                         }
-                        $comment .= $this->__('%s x [%s] %s', $partialQty[$item->getId()], $item->getName(), $item->getSku())."\n";
+                        $comment .= Mage::helper('udropship')->__('%s x [%s] %s', $partialQty[$item->getId()], $item->getName(), $item->getSku())."\n";
                     }
                 }
 
                 //$udpo->addComment($comment, false, true)->getCommentsCollection()->save();
                 Mage::helper('udpo')->sendVendorComment($udpo, $comment);
-                $session->addSuccess($this->__('Your comment has been sent to store administrator'));
+                $session->addSuccess(Mage::helper('udropship')->__('Your comment has been sent to store administrator'));
 
                 $highlight['comment'] = true;
             }
@@ -526,11 +527,11 @@ class Unirgy_DropshipPo_VendorController extends Unirgy_Dropship_VendorControlle
                     $labelModel = Mage::helper('udropship')->getLabelCarrierInstance($track->getCarrierCode())->setVendor($vendor);
                     try {
                         $labelModel->voidLabel($track);
-                        $udpo->addComment($this->__('%s voided tracking ID %s', $vendor->getVendorName(), $track->getNumber()));
-                        $session->addSuccess($this->__('Track %s was voided', $track->getNumber()));
+                        $udpo->addComment(Mage::helper('udropship')->__('%s voided tracking ID %s', $vendor->getVendorName(), $track->getNumber()));
+                        $session->addSuccess(Mage::helper('udropship')->__('Track %s was voided', $track->getNumber()));
                     } catch (Exception $e) {
-                        $udpo->addComment($this->__('%s attempted to void tracking ID %s: %s', $vendor->getVendorName(), $track->getNumber(), $e->getMessage()));
-                        $session->addSuccess($this->__('Problem voiding track %s: %s', $track->getNumber(), $e->getMessage()));
+                        $udpo->addComment(Mage::helper('udropship')->__('%s attempted to void tracking ID %s: %s', $vendor->getVendorName(), $track->getNumber(), $e->getMessage()));
+                        $session->addSuccess(Mage::helper('udropship')->__('Problem voiding track %s: %s', $track->getNumber(), $e->getMessage()));
                     }
                 } catch (Exception $e) {
                     // doesn't support voiding
@@ -545,12 +546,12 @@ class Unirgy_DropshipPo_VendorController extends Unirgy_Dropship_VendorControlle
                         $_track->delete();
                     }
                 }
-                $udpo->addComment($this->__('%s deleted tracking ID %s', $vendor->getVendorName(), $track->getNumber()))->save();
+                $udpo->addComment(Mage::helper('udropship')->__('%s deleted tracking ID %s', $vendor->getVendorName(), $track->getNumber()))->save();
                 #$save = true;
                 $highlight['tracking'] = true;
-                $session->addSuccess($this->__('Track %s was deleted', $track->getNumber()));
+                $session->addSuccess(Mage::helper('udropship')->__('Track %s was deleted', $track->getNumber()));
             } else {
-                $session->addError($this->__('Track %s was not found', $track->getNumber()));
+                $session->addError(Mage::helper('udropship')->__('Track %s was not found', $track->getNumber()));
             }
         }
         $this->_forward('udpoInfo');
@@ -579,15 +580,15 @@ class Unirgy_DropshipPo_VendorController extends Unirgy_Dropship_VendorControlle
                         $labelModel->voidLabel($track);
                         Mage::helper('udropship')->addShipmentComment(
                             $shipment,
-                            $this->__('%s voided tracking ID %s', $vendor->getVendorName(), $track->getNumber())
+                            Mage::helper('udropship')->__('%s voided tracking ID %s', $vendor->getVendorName(), $track->getNumber())
                         );
-                        $session->addSuccess($this->__('Track %s was voided', $track->getNumber()));
+                        $session->addSuccess(Mage::helper('udropship')->__('Track %s was voided', $track->getNumber()));
                     } catch (Exception $e) {
                         Mage::helper('udropship')->addShipmentComment(
                             $shipment,
-                            $this->__('%s attempted to void tracking ID %s: %s', $vendor->getVendorName(), $track->getNumber(), $e->getMessage())
+                            Mage::helper('udropship')->__('%s attempted to void tracking ID %s: %s', $vendor->getVendorName(), $track->getNumber(), $e->getMessage())
                         );
-                        $session->addSuccess($this->__('Problem voiding track %s: %s', $track->getNumber(), $e->getMessage()));
+                        $session->addSuccess(Mage::helper('udropship')->__('Problem voiding track %s: %s', $track->getNumber(), $e->getMessage()));
                     }
                 } catch (Exception $e) {
                     // doesn't support voiding
@@ -604,14 +605,14 @@ class Unirgy_DropshipPo_VendorController extends Unirgy_Dropship_VendorControlle
                 }
                 Mage::helper('udropship')->addShipmentComment(
                     $shipment,
-                    $this->__('%s deleted tracking ID %s', $vendor->getVendorName(), $track->getNumber())
+                    Mage::helper('udropship')->__('%s deleted tracking ID %s', $vendor->getVendorName(), $track->getNumber())
                 );
                 $shipment->save();
                 #$save = true;
                 $highlight['tracking'] = true;
-                $session->addSuccess($this->__('Track %s was deleted', $track->getNumber()));
+                $session->addSuccess(Mage::helper('udropship')->__('Track %s was deleted', $track->getNumber()));
             } else {
-                $session->addError($this->__('Track %s was not found', $track->getNumber()));
+                $session->addError(Mage::helper('udropship')->__('Track %s was not found', $track->getNumber()));
             }
         }
         $this->_forward('shipmentInfo');
@@ -630,10 +631,10 @@ class Unirgy_DropshipPo_VendorController extends Unirgy_Dropship_VendorControlle
             $poStatuses = Mage::getSingleton('udpo/source')->setPath('po_statuses')->toOptionHash();
 
             if (!$udpos->getSize()) {
-                Mage::throwException($this->__('No purchase orders found for these criteria'));
+                Mage::throwException(Mage::helper('udropship')->__('No purchase orders found for these criteria'));
             }
             if (is_null($poStatus) || $poStatus==='') {
-                Mage::throwException($this->__('No status selected'));
+                Mage::throwException(Mage::helper('udropship')->__('No status selected'));
             }
 
             $vendorId = $this->_getSession()->getId();
@@ -656,7 +657,7 @@ class Unirgy_DropshipPo_VendorController extends Unirgy_Dropship_VendorControlle
                 ) {
                     $oldStatus = $udpo->getUdropshipStatus();
                     if ($oldStatus==$poStatusCanceled) {
-                        Mage::throwException(Mage::helper('udpo')->__('Canceled purchase order cannot be reverted'));
+                        Mage::throwException(Mage::helper('udropship')->__('Canceled purchase order cannot be reverted'));
                     }
                     if ($poStatus==$poStatusShipped || $poStatus==$poStatusDelivered) {
                         foreach ($udpo->getShipmentsCollection() as $_s) {
@@ -679,9 +680,9 @@ class Unirgy_DropshipPo_VendorController extends Unirgy_Dropship_VendorControlle
                     }
                 }
             }
-            $this->_getSession()->addSuccess($this->__('Purchase Order status has been updated for the selected orders'));
+            $this->_getSession()->addSuccess(Mage::helper('udropship')->__('Purchase Order status has been updated for the selected orders'));
         } catch (Exception $e) {
-            $this->_getSession()->addError($this->__($e->getMessage()));
+            $this->_getSession()->addError(Mage::helper('udropship')->__($e->getMessage()));
         }
         $this->_redirect('udpo/vendor/', array('_current'=>true, '_query'=>array('submit_action'=>'')));
     }
@@ -705,7 +706,7 @@ class Unirgy_DropshipPo_VendorController extends Unirgy_Dropship_VendorControlle
             return $this->_preparePoMultiPdf($udpos);
 
         } catch (Exception $e) {
-            $this->_getSession()->addError($this->__($e->getMessage()));
+            $this->_getSession()->addError(Mage::helper('udropship')->__($e->getMessage()));
         }
         $this->_redirect('udpo/vendor/');
     }
@@ -728,7 +729,7 @@ class Unirgy_DropshipPo_VendorController extends Unirgy_Dropship_VendorControlle
         			'message'=>$e->getMessage()
         		);
         	} else {
-            	$this->_getSession()->addError($this->__($e->getMessage()));
+            	$this->_getSession()->addError(Mage::helper('udropship')->__($e->getMessage()));
         	}
         }
         if ($this->getRequest()->getParam('use_json_response')) {
@@ -754,7 +755,7 @@ class Unirgy_DropshipPo_VendorController extends Unirgy_Dropship_VendorControlle
         if (Mage::getStoreConfig('udropship/purchase_order/ready_on_pdf')) {
             $udpoHlp = Mage::helper('udpo');
             foreach ($udpos as $udpo) {
-                $udpo->addComment($this->__('%s printed purchase order pdf', $vendor->getVendorName()), false, true);
+                $udpo->addComment(Mage::helper('udropship')->__('%s printed purchase order pdf', $vendor->getVendorName()), false, true);
                 if ($udpo->getUdropshipStatus()==Unirgy_DropshipPo_Model_Source::UDPO_STATUS_PENDING) {
                     $udpoHlp->processPoStatusSave($udpo, Unirgy_DropshipPo_Model_Source::UDPO_STATUS_READY, true);
                 }
@@ -843,7 +844,7 @@ class Unirgy_DropshipPo_VendorController extends Unirgy_Dropship_VendorControlle
         			'message'=>$e->getMessage()
         		);
         	} else {
-            	$this->_getSession()->addError($this->__($e->getMessage()));
+            	$this->_getSession()->addError(Mage::helper('udropship')->__($e->getMessage()));
         	}
         }
     	if ($this->getRequest()->getParam('use_json_response')) {
@@ -891,7 +892,7 @@ class Unirgy_DropshipPo_VendorController extends Unirgy_Dropship_VendorControlle
                 Mage::throwException('Cannot create shipments (maybe nothing to create)');
             }
 
-            $this->_getSession()->addSuccess($this->__('Created %d shipments', $createdShipments));
+            $this->_getSession()->addSuccess(Mage::helper('udropship')->__('Created %d shipments', $createdShipments));
 
             $notificationsSent = 0;
             if ($this->getRequest()->getParam('send_customer_notification')) {
@@ -900,7 +901,7 @@ class Unirgy_DropshipPo_VendorController extends Unirgy_Dropship_VendorControlle
                     $shipment->setEmailSent(true);
                     $notificationsSent++;
                 }
-                $this->_getSession()->addSuccess($this->__('Sent %d shipment customer notifications', $notificationsSent));
+                $this->_getSession()->addSuccess(Mage::helper('udropship')->__('Sent %d shipment customer notifications', $notificationsSent));
             }
 
         } catch (Exception $e) {
@@ -911,7 +912,7 @@ class Unirgy_DropshipPo_VendorController extends Unirgy_Dropship_VendorControlle
                     'message'=>$e->getMessage()
                 );
             } else {
-                $this->_getSession()->addError($this->__($e->getMessage()));
+                $this->_getSession()->addError(Mage::helper('udropship')->__($e->getMessage()));
             }
         }
         if ($this->getRequest()->getParam('use_json_response')) {

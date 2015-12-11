@@ -186,7 +186,7 @@ class Magestore_Onestepcheckout_Block_Adminhtml_Country_Grid extends Mage_Adminh
 	
 	public function linkImport()
     {
-		$link = Mage::getSingleton('adminhtml/url')->getUrl('onestepcheckoutadmin/adminhtml_geoip/showGeoip',array(
+		$link = Mage::getSingleton('adminhtml/url')->getUrl('adminhtml/geoip/showGeoip',array(
 			'website' => $this->getRequest()->getParam('website'),					
 		));
 		return $link;

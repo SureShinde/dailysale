@@ -88,22 +88,22 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Edit_Tab_Shipping extends Mage_Admi
             'index'     => 'shipping_id'
         ));
         $this->addColumn('shipping_code', array(
-            'header'    => $hlp->__('Code'),
+            'header'    => Mage::helper('udropship')->__('Code'),
             'index'     => 'shipping_code'
         ));
         $this->addColumn('shipping_title', array(
-            'header'    => $hlp->__('Title'),
+            'header'    => Mage::helper('udropship')->__('Title'),
             'index'     => 'shipping_title'
         ));
 
         $this->addColumn('days_in_transit', array(
-            'header'    => $hlp->__('Days In Transit'),
+            'header'    => Mage::helper('udropship')->__('Days In Transit'),
             'index'     => 'days_in_transit'
         ));
 
         if ($this->getVendor()->getAllowShippingExtraCharge()) {
             $this->addColumn('_allow_extra_charge', array(
-                'header'    => $this->__('Extra Charge'),
+                'header'    => Mage::helper('udropship')->__('Extra Charge'),
                 'index'     => 'allow_extra_charge',
                 'renderer'  => 'udropship/adminhtml_vendor_helper_gridRenderer_shippingExtraCharge',
                 'sortable'  => false,
@@ -114,10 +114,10 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Edit_Tab_Shipping extends Mage_Admi
         }
 
         $carriers = Mage::getSingleton('udropship/source')->setPath('carriers')->toOptionHash(true);
-        $carriers[''] = $hlp->__('* Use Default');
+        $carriers[''] = Mage::helper('udropship')->__('* Use Default');
 
         $this->addColumn('_est_carrier_code', array(
-            'header'    => $hlp->__('Estimate Carrier'),
+            'header'    => Mage::helper('udropship')->__('Estimate Carrier'),
             'index'     => 'est_carrier_code',
             'sortable'  => false,
             'filter'    => false,
@@ -125,10 +125,10 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Edit_Tab_Shipping extends Mage_Admi
             'options'   => $carriers,
         ));
 
-        $carriers['**estimate**'] = $hlp->__('* Use Estimate');
+        $carriers['**estimate**'] = Mage::helper('udropship')->__('* Use Estimate');
 
         $this->addColumn('_carrier_code', array(
-            'header'    => $hlp->__('Carrier Override'),
+            'header'    => Mage::helper('udropship')->__('Carrier Override'),
             'index'     => 'carrier_code',
             'sortable'  => false,
             'filter'    => false,
@@ -138,7 +138,7 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Edit_Tab_Shipping extends Mage_Admi
 
         if ($this->getVendor()->getAllowShippingExtraCharge()) {
             $this->addColumn('_priority', array(
-                'header'    => $hlp->__('Priority'),
+                'header'    => Mage::helper('udropship')->__('Priority'),
                 'index'     => 'priority',
                 'sortable'  => false,
                 'filter'    => false,
@@ -147,7 +147,7 @@ class Unirgy_Dropship_Block_Adminhtml_Vendor_Edit_Tab_Shipping extends Mage_Admi
         }
 
         $this->addColumn('_default', array(
-            'header'    => $hlp->__('Default'),
+            'header'    => Mage::helper('udropship')->__('Default'),
             'index'     => 'shipping_id',
             'sortable'  => false,
             'filter'    => false,

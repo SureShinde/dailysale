@@ -35,15 +35,15 @@ $subkeyColumns = array(
         <?php endfor ?>
         <thead>
         <tr class="headings">
-            <th class="a-center" rowspan=2><?php echo $_tsHlp->__('Customer') ?></th>
+            <th class="a-center" rowspan=2><?php echo Mage::helper('udropship')->__('Customer') ?></th>
             <?php for ($i=0; $i<count($subkeyColumns); $i+=2): ?>
             <th class="a-center" colspan=2><?php echo $this->getColumnTitle($subkeyColumns, $i) ?></th>
             <?php endfor ?>
         </tr>
         <tr class="headings">
             <?php for ($i=0; $i<count($subkeyColumns); $i+=2): ?>
-            <th class="a-center"><?php echo $_tsHlp->__('Value') ?></th>
-            <th class="a-right"><?php echo $_tsHlp->__('Default') ?></th>
+            <th class="a-center"><?php echo Mage::helper('udropship')->__('Value') ?></th>
+            <th class="a-right"><?php echo Mage::helper('udropship')->__('Default') ?></th>
             <?php endfor ?>
         </tr>
         </thead>
@@ -70,10 +70,10 @@ $subkeyColumns = array(
 
     <div class="button-set" style="text-align:left">
         <div style="float:left">
-            <button class="form-button" type="submit"><span><?php echo $this->__('Save') ?></span></button>
+            <button class="form-button" type="submit"><span><?php echo Mage::helper('udropship')->__('Save') ?></span></button>
         </div>
         <div style="float:right">
-            <button class="form-button" type="submit"><span><?php echo $this->__('Save') ?></span></button>
+            <button class="form-button" type="submit"><span><?php echo Mage::helper('udropship')->__('Save') ?></span></button>
         </div>
     </div>
 </form>

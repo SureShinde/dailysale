@@ -20,7 +20,7 @@ class Magestore_Onestepcheckout_Block_Adminhtml_Geoipgrid extends Mage_Adminhtml
 	
 	public function linkImportGeoip()
 	{
-		$link = Mage::getSingleton('adminhtml/url')->getUrl('onestepcheckoutadmin/adminhtml_geoip/showGeoip',array(
+		$link = Mage::getSingleton('adminhtml/url')->getUrl('adminhtml/geoip/showGeoip',array(
 			'website' => $this->getRequest()->getParam('website'),		
 			'_query'  => array('isAjax'  => 'false'),
 			'version'  => '1',

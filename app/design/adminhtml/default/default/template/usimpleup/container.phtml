@@ -9,7 +9,7 @@
                 <h3 class="icon-head head-adminhtml-modules"><?php echo $this->__('Unirgy Installer') ?></h3>
             </div>
             <div class="entry-edit">
-                <form id="edit_form" enctype="multipart/form-data" method="post" action="<?php echo $this->getUrl('usimpleupadmin/adminhtml_module/post')?>">
+                <form id="edit_form" enctype="multipart/form-data" method="post" action="<?php echo $this->getUrl('adminhtml/usimpleupadmin_module/post')?>">
                     <div><input type="hidden" value="<?php echo $this->getFormKey() ?>" name="form_key"/></div>
 
                     <?php echo $this->getLayout()->createBlock('adminhtml/template')->setTemplate('usimpleup/ftp.phtml')->toHtml() ?>

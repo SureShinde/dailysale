@@ -64,7 +64,7 @@ class Unirgy_Rma_Model_Rma_Item extends Mage_Core_Model_Abstract
         }
         else {
             Mage::throwException(
-                Mage::helper('sales')->__('Invalid qty to create rma for item "%s"', $this->getName())
+                Mage::helper('udropship')->__('Invalid qty to create rma for item "%s"', $this->getName())
             );
         }
         return $this;

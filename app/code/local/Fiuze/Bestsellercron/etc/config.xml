@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Fiuze_Bestsellercron>
-            <version>0.1.0</version>
+            <version>0.3.2</version>
         </Fiuze_Bestsellercron>
     </modules>
     <global>
@@ -19,7 +19,19 @@
         <models>
             <bestsellercron>
                 <class>Fiuze_Bestsellercron_Model</class>
+                <resourceModel>bestsellercron_resource</resourceModel>
             </bestsellercron>
+            <bestsellercron_resource>
+                <class>Fiuze_Bestsellercron_Model_Resource</class>
+                <entities>
+                    <fiuze_tasks>
+                        <table>fiuze_tasks</table>
+                    </fiuze_tasks>
+                    <fiuze_task_logs>
+                        <table>fiuze_task_logs</table>
+                    </fiuze_task_logs>
+                </entities>
+            </bestsellercron_resource>
         </models>
         <resources>
             <bestsellercron_setup>
@@ -29,7 +41,37 @@
                 </setup>
             </bestsellercron_setup>
         </resources>
+        <events>
+            <controller_front_init_before>
+                <observers>
+                    <bestsellers_controller_front_init_before>
+                        <class>bestsellercron/observer</class>
+                        <method>controllerFrontInitBefore</method>
+                    </bestsellers_controller_front_init_before>
+                </observers>
+            </controller_front_init_before>
+            <catalog_block_product_list_collection>
+                <observers>
+                    <bestsellers_catalog_product_collection_load_after>
+                        <class>bestsellercron/observer</class>
+                        <method>catalogProductCollectionLoadAfter</method>
+                    </bestsellers_catalog_product_collection_load_after>
+                </observers>
+            </catalog_block_product_list_collection>
+        </events>
     </global>
+    <crontab>
+        <jobs>
+            <runcustomcron>
+                <schedule>
+                    <cron_expr>* * * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>bestsellercron/customcron::runCustomCron</model>
+                </run>
+            </runcustomcron>
+        </jobs>
+    </crontab>
     <frontend>
         <product>
             <collection>
@@ -48,40 +90,16 @@
             </bestsellercron>
         </routers>
     </frontend>
-    <crontab>
-        <jobs>
-            <bestsellercron>
-                <schedule>
-                    <config_path>bestsellers_settings_sec/bestsellers_settings_grp/scheduler</config_path>
-                </schedule>
-                <run>
-                    <model>bestsellercron/cron::bestSellers</model>
-                </run>
-            </bestsellercron>
-        </jobs>
-    </crontab>
-    <default>
-        <bestsellers_settings_sec>
-            <bestsellers_settings_grp>
-                <products>10</products>
-                <time>00,00,00</time>
-                <days>1</days>
-                <category>1</category>
-                <criteria>revenue</criteria>
-                <scheduler>1 1 * * *</scheduler>
-            </bestsellers_settings_grp>
-        </bestsellers_settings_sec>
-    </default>
     <adminhtml>
         <events>
-            <admin_system_config_changed_section_bestsellers_settings_sec>
+            <core_block_abstract_prepare_layout_after>
                 <observers>
-                    <bestsellers_admin_system_config_changed_section_bestsellers_settings_sec>
+                    <bestsellers_core_block_abstract_prepare_layout_after>
                         <class>bestsellercron/observer</class>
-                        <method>adminSystemConfigChangedBestsellersSettingsSec</method>
-                    </bestsellers_admin_system_config_changed_section_bestsellers_settings_sec>
+                        <method>coreBlockAbstractPrepareLayoutAfter</method>
+                    </bestsellers_core_block_abstract_prepare_layout_after>
                 </observers>
-            </admin_system_config_changed_section_bestsellers_settings_sec>
+            </core_block_abstract_prepare_layout_after>
         </events>
     </adminhtml>
 </config>

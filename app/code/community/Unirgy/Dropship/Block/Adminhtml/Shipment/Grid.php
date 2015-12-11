@@ -68,57 +68,57 @@ class Unirgy_Dropship_Block_Adminhtml_Shipment_Grid
         $flat = Mage::helper('udropship')->isSalesFlat();
         
         $this->addColumn('increment_id', array(
-            'header'    => Mage::helper('sales')->__('Shipment #'),
+            'header'    => Mage::helper('udropship')->__('Shipment #'),
             'index'     => 'increment_id',
             'filter_index' => !$flat ? null : 'main_table.increment_id',
             'type'      => 'text',
         ));
 
         $this->addColumn('created_at', array(
-            'header'    => Mage::helper('sales')->__('Date Shipped'),
+            'header'    => Mage::helper('udropship')->__('Date Shipped'),
             'index'     => 'created_at',
             'filter_index' => !$flat ? null : 'main_table.created_at',
             'type'      => 'datetime',
         ));
 
         $this->addColumn('order_increment_id', array(
-            'header'    => Mage::helper('sales')->__('Order #'),
+            'header'    => Mage::helper('udropship')->__('Order #'),
             'index'     => 'order_increment_id',
             'type'      => 'number',
         ));
 
         $this->addColumn('order_created_at', array(
-            'header'    => Mage::helper('sales')->__('Order Date'),
+            'header'    => Mage::helper('udropship')->__('Order Date'),
             'index'     => 'order_created_at',
             'type'      => 'datetime',
         ));
 
         if (Mage::helper('udropship')->isSalesFlat()) {
             $this->addColumn('shipping_name', array(
-                'header' => Mage::helper('sales')->__('Ship to Name'),
+                'header' => Mage::helper('udropship')->__('Ship to Name'),
                 'index' => 'shipping_name',
             ));
         } else {
             $this->addColumn('shipping_firstname', array(
-                'header' => Mage::helper('sales')->__('Ship to First name'),
+                'header' => Mage::helper('udropship')->__('Ship to First name'),
                 'index' => 'shipping_firstname',
             ));
 
             $this->addColumn('shipping_lastname', array(
-                'header' => Mage::helper('sales')->__('Ship to Last name'),
+                'header' => Mage::helper('udropship')->__('Ship to Last name'),
                 'index' => 'shipping_lastname',
             ));
         }
 
         $this->addColumn('total_qty', array(
-            'header' => Mage::helper('sales')->__('Total Qty'),
+            'header' => Mage::helper('udropship')->__('Total Qty'),
             'index' => 'total_qty',
             'filter_index' => !$flat ? null : 'main_table.total_qty',
             'type'  => 'number',
         ));
 
         $this->addColumn('shipping_amount', array(
-            'header' => Mage::helper('sales')->__('Shipping Price'),
+            'header' => Mage::helper('udropship')->__('Shipping Price'),
             'index' => 'shipping_amount',
             'type'  => 'number',
             'type'  => 'price',
@@ -154,13 +154,13 @@ class Unirgy_Dropship_Block_Adminhtml_Shipment_Grid
 
         $this->addColumn('action',
             array(
-                'header'    => Mage::helper('sales')->__('Action'),
+                'header'    => Mage::helper('udropship')->__('Action'),
                 'width'     => '50px',
                 'type'      => 'action',
                 'getter'     => 'getId',
                 'actions'   => array(
                     array(
-                        'caption' => Mage::helper('sales')->__('View'),
+                        'caption' => Mage::helper('udropship')->__('View'),
                         'url'     => array('base'=>'*/*/view'),
                         'field'   => 'shipment_id'
                     )
@@ -179,8 +179,8 @@ class Unirgy_Dropship_Block_Adminhtml_Shipment_Grid
 
         if (!Mage::helper('udropship')->isUdpoActive()) {
             $this->getMassactionBlock()->addItem('resendPo', array(
-                 'label'=> Mage::helper('sales')->__('Resend PO Notifications'),
-                 'url'  => $this->getUrl('udropshipadmin/adminhtml_shipment/resendPo'),
+                 'label'=> Mage::helper('udropship')->__('Resend PO Notifications'),
+                 'url'  => $this->getUrl('adminhtml/udropshipadmin_shipment/resendPo'),
             ));
         }
 

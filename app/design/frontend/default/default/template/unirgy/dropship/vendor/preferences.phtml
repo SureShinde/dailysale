@@ -91,7 +91,7 @@ $_v = Mage::getSingleton('udropship/session')->getVendor();
     <?php foreach ($this->getFieldsets() as $_fieldset): if (empty($_fieldset['fields'])) continue; ?>
 
         <fieldset class="generic-box">
-            <legend><?php echo htmlspecialchars($_hlp->__($_fieldset['legend'])) ?></legend>
+            <legend><?php echo htmlspecialchars(Mage::helper('udropship')->__($_fieldset['legend'])) ?></legend>
 
             <table><tbody>
                 <?php foreach ($_fieldset['fields'] as $_k=>$_f):
@@ -99,7 +99,7 @@ $_v = Mage::getSingleton('udropship/session')->getVendor();
                     $_escaped = is_scalar($_value) ? htmlspecialchars($_value) : $_value;
                     $_class = !empty($_f['class']) ? $_f['class'] : '';
                     ?><tr>
-                    <th><label for="<?php echo $_k ?>"><?php echo htmlspecialchars($_hlp->__($_f['label'])) ?></label></th>
+                    <th><label for="<?php echo $_k ?>"><?php echo htmlspecialchars(Mage::helper('udropship')->__($_f['label'])) ?></label></th>
                     <td>
                         <?php switch ($_f['type']): case 'text': case 'password': ?>
                         <input type="<?php echo $_f['type'] ?>" class="input-text <?php echo $_class ?>" id="<?php echo $_k ?>" name="<?php echo $_f['name'] ?>" value="<?php echo $_escaped ?>" />
@@ -109,22 +109,22 @@ $_v = Mage::getSingleton('udropship/session')->getVendor();
 
                         <?php break; case 'wysiwyg': ?>
                             <textarea class="textarea <?php echo $_class ?>" id="<?php echo $_k ?>" name="<?php echo $_f['name'] ?>"><?php echo $_escaped ?></textarea>
-                        <br><button type="button" class="form-button" onclick="uVendorWysiwygEditor.open('<?php echo $this->getUrl('*/*/wysiwyg') ?>', '<?php echo $_k ?>'); return false;"><span>WYSIWYG Editor</span></button>
+                        <br><button type="button" class="form-button" onclick="uVendorWysiwygEditor.open('<?php echo Mage::helper('udropship')->getVendorPortalJsUrl('*/*/wysiwyg') ?>', '<?php echo $_k ?>'); return false;"><span>WYSIWYG Editor</span></button>
 
                         <?php break; case 'multiselect': $_class .= ' multiselect'; $_f['name'] .= '[]'; case 'select': ?>
                             <select class="select <?php echo $_class ?>" id="<?php echo $_k ?>" name="<?php echo $_f['name'] ?>" <?php if ($_f['type']=='multiselect'):?>multiple="multiple"<?php endif ?>>
                                 <?php if (!empty($_f['options'])) foreach ($_f['options'] as $_o): ?>
                                     <?php if (is_array($_o['value'])): ?>
-                                        <optgroup label="<?php echo htmlspecialchars($_hlp->__($_o['label'])) ?>">
+                                        <optgroup label="<?php echo htmlspecialchars(Mage::helper('udropship')->__($_o['label'])) ?>">
                                             <?php foreach ($_o['value'] as $_o1): $_selected = is_array($_value) && in_array($_o1['value'], $_value) || $_value==$_o1['value']; ?>
                                                 <option value="<?php echo $_o1['value']?>" <?php if ($_selected):?>selected="selected"<?php endif ?>>
-                                                    <?php echo htmlspecialchars($_hlp->__($_o1['label'])) ?>
+                                                    <?php echo htmlspecialchars(Mage::helper('udropship')->__($_o1['label'])) ?>
                                                 </option>
                                             <?php endforeach ?>
                                         </optgroup>
                                     <?php else: $_selected = is_array($_value) && in_array($_o['value'], $_value) || $_value==$_o['value']; ?>
                                         <option value="<?php echo $_o['value']?>" <?php if ($_selected):?>selected="selected"<?php endif ?>>
-                                            <?php echo htmlspecialchars($_hlp->__($_o['label'])) ?>
+                                            <?php echo htmlspecialchars(Mage::helper('udropship')->__($_o['label'])) ?>
                                         </option>
                                     <?php endif ?>
                                 <?php endforeach ?>
@@ -172,7 +172,7 @@ $_v = Mage::getSingleton('udropship/session')->getVendor();
                         <input type="hidden" name="<?php echo $_k ?>[value]" value="<?php echo $_escaped ?>" />
                             <?php if ($_value): ?>
                         <br/><input type="checkbox" name="<?php echo $_f['name'] ?>[delete]" value="1" class="checkbox" id="image-delete-<?php echo $_k ?>" />
-                            <label for="image-delete-<?php echo $_k ?>" style="display:inline"><?php echo $_hlp->__('Delete') ?></label>
+                            <label for="image-delete-<?php echo $_k ?>" style="display:inline"><?php echo Mage::helper('udropship')->__('Delete') ?></label>
                         <?php endif ?>
 
                         <?php break; case 'date': case 'datetime': ?>
@@ -195,12 +195,12 @@ $_v = Mage::getSingleton('udropship/session')->getVendor();
                             </script>
 
                         <?php endswitch ?></td>
-                    <td><div class="note"><?php echo !empty($_f['note']) ? $_hlp->__($_f['note']) : '&nbsp;' ?></div></td>
+                    <td><div class="note"><?php echo !empty($_f['note']) ? Mage::helper('udropship')->__($_f['note']) : '&nbsp;' ?></div></td>
                     </tr><?php endforeach ?>
                 </tbody></table>
         </fieldset>
         <div class="a-right">
-            <button class="form-button" type="submit"><span><?php echo $_hlp->__('Save All Settings') ?></span></button>
+            <button class="form-button" type="submit"><span><?php echo Mage::helper('udropship')->__('Save All Settings') ?></span></button>
         </div>
     <?php endforeach ?>
 </form>

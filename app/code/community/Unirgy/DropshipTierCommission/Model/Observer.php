@@ -6,7 +6,7 @@ class Unirgy_DropshipTierCommission_Model_Observer
     {
         $block = $observer->getBlock();
         $block->addTab('udtiercom', array(
-            'label'     => Mage::helper('udtiercom')->__('Tier Commissions'),
+            'label'     => Mage::helper('udropship')->__('Tier Commissions'),
             'after'     => 'shipping_section',
             'content'   => Mage::app()->getLayout()->createBlock('udtiercom/adminhtml_vendorEditTab_comRates_form', 'vendor.tiercom.form')
                 ->toHtml()

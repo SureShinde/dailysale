@@ -413,7 +413,7 @@ class Unirgy_Dropship_Helper_Item extends Mage_Core_Helper_Abstract
         return $address;
     }
 
-    public function createClonedQuoteItem($item, $qty)
+    public function createClonedQuoteItem($item, $qty, $quote=null)
     {
         $product = Mage::getModel('catalog/product')
                 ->setStoreId(Mage::app()->getStore()->getId())
@@ -426,7 +426,9 @@ class Unirgy_Dropship_Helper_Item extends Mage_Core_Helper_Abstract
         $info = new Varien_Object(unserialize($info));
         $info->setQty($qty);
 
-        $item = $item->getQuote()->addProduct($product, $info);
+        if (!$quote) $quote = $item->getQuote();
+
+        $item = $quote->addProduct($product, $info);
         return $item;
     }
 
@@ -467,6 +469,33 @@ class Unirgy_Dropship_Helper_Item extends Mage_Core_Helper_Abstract
             }
             $this->saveAdditionalOptions($item, $addOptions);
         }
+    }
+
+    public function attachOrderItemVendorSkuInfo($item, $oItem)
+    {
+        $optKey = 'vendorsku_info';
+        $optVal = $item->getVendorSku() ? $item->getVendorSku() : $item->getSku();
+        $addOptions = $this->getAdditionalOptions($oItem);
+        if (!empty($addOptions) && is_string($addOptions)) {
+            $addOptions = unserialize($addOptions);
+        }
+        if (!is_array($addOptions)) {
+            $addOptions = array();
+        }
+        foreach ($addOptions as $idx => $option) {
+            if (@$option[$optKey] == $optVal) {
+                $vendorOptionIdx = $idx;
+                break;
+            }
+        }
+        $vendorOption['label'] = Mage::helper('udropship')->__('Vendor SKU:');
+        $vendorOption['value'] = $optVal;
+        if (isset($vendorOptionIdx)) {
+            $addOptions[$vendorOptionIdx] = $vendorOption;
+        } else {
+            $addOptions[] = $vendorOption;
+        }
+        $this->saveAdditionalOptions($oItem, $addOptions);
     }
 
     public function getItemVendor($item, $fallback=false)
@@ -720,40 +749,40 @@ class Unirgy_Dropship_Helper_Item extends Mage_Core_Helper_Abstract
             $tLabel = false;
             switch ($tKey) {
                 case 'subtotal':
-                    $tLabel = $hlp->__('Subtotal');
+                    $tLabel = Mage::helper('udropship')->__('Subtotal');
                     break;
                 case 'com_percent':
                     if (!$isTierCom) {
-                        $tLabel = $hlp->__('Commission Percent');
+                        $tLabel = Mage::helper('udropship')->__('Commission Percent');
                     }
                     break;
                 case 'trans_fee':
-                    $tLabel = $hlp->__('Transaction Fee');
+                    $tLabel = Mage::helper('udropship')->__('Transaction Fee');
                     break;
                 case 'com_amount':
-                    $tLabel = $hlp->__('Commission Amount');
+                    $tLabel = Mage::helper('udropship')->__('Commission Amount');
                     break;
                 case 'adj_amount':
                     if ($tValue>0) {
-                        $tLabel = $hlp->__('Adjustment');
+                        $tLabel = Mage::helper('udropship')->__('Adjustment');
                     }
                     break;
                 case 'total_payout':
-                    $tLabel = $hlp->__('Total Payout');
+                    $tLabel = Mage::helper('udropship')->__('Total Payout');
                     break;
                 case 'tax':
                     if (in_array($vendor->getStatementTaxInPayout(), array('', 'include'))) {
-                        $tLabel = $hlp->__('Tax Amount');
+                        $tLabel = Mage::helper('udropship')->__('Tax Amount');
                     }
                     break;
                 case 'discount':
                     if (in_array($vendor->getStatementDiscountInPayout(), array('', 'include'))) {
-                        $tLabel = $hlp->__('Discount');
+                        $tLabel = Mage::helper('udropship')->__('Discount');
                     }
                     break;
                 case 'shipping':
                     if (in_array($vendor->getStatementShippingInPayout(), array('', 'include'))) {
-                        $tLabel = $hlp->__('Shipping');
+                        $tLabel = Mage::helper('udropship')->__('Shipping');
                     }
                     break;
             }
@@ -777,23 +806,23 @@ class Unirgy_Dropship_Helper_Item extends Mage_Core_Helper_Abstract
             $itemAmounts['row_total'] = $item->getBasePrice()*$poItem->getQty();
             if ($vendor->getStatementSubtotalBase() == 'cost') {
                 $addOptions[] = array(
-                    'label' => $hlp->__('Cost'),
+                    'label' => Mage::helper('udropship')->__('Cost'),
                     'value' => $this->formatBasePrice($order, $poItem->getBaseCost())
                 );
                 if ($poItem->getQty()>1) {
                     $addOptions[] = array(
-                        'label' => $hlp->__('Row Cost'),
+                        'label' => Mage::helper('udropship')->__('Row Cost'),
                         'value' => $this->formatBasePrice($order, $poItem->getBaseCost()*$poItem->getQty())
                     );
                 }
             } else {
                 $addOptions[] = array(
-                    'label' => $hlp->__('Price'),
+                    'label' => Mage::helper('udropship')->__('Price'),
                     'value' => $this->formatBasePrice($order, $item->getBasePrice())
                 );
                 if ($poItem->getQty()>1) {
                     $addOptions[] = array(
-                        'label' => $hlp->__('Row Total'),
+                        'label' => Mage::helper('udropship')->__('Row Total'),
                         'value' => $this->formatBasePrice($order, $item->getBasePrice()*$poItem->getQty())
                     );
                 }
@@ -803,7 +832,7 @@ class Unirgy_Dropship_Helper_Item extends Mage_Core_Helper_Abstract
             $itemAmounts['tax'] = $iTax;
             if ($item->getBaseTaxAmount() && in_array($vendor->getStatementTaxInPayout(), array('', 'include'))) {
                 $addOptions[] = array(
-                    'label' => $hlp->__('Tax Amount'),
+                    'label' => Mage::helper('udropship')->__('Tax Amount'),
                     'value' => $this->formatBasePrice($order, $iTax)
                 );
             }
@@ -812,7 +841,7 @@ class Unirgy_Dropship_Helper_Item extends Mage_Core_Helper_Abstract
             $itemAmounts['discount'] = $iDiscount;
             if ($item->getBaseDiscountAmount() && in_array($vendor->getStatementDiscountInPayout(), array('', 'include'))) {
                 $addOptions[] = array(
-                    'label' => $hlp->__('Discount'),
+                    'label' => Mage::helper('udropship')->__('Discount'),
                     'value' => $this->formatBasePrice($order, $iDiscount)
                 );
             }
@@ -821,12 +850,12 @@ class Unirgy_Dropship_Helper_Item extends Mage_Core_Helper_Abstract
                 $itemAmounts['com_amount'] = $stOrders[$poItem->getId()]['amounts']['com_amount'];
                 if ($isTierCom && isset($stOrders[$poItem->getId()]['com_percent']) && $stOrders[$poItem->getId()]['com_percent']>0) {
                     $addOptions[] = array(
-                        'label' => $hlp->__('Commission Percent'),
+                        'label' => Mage::helper('udropship')->__('Commission Percent'),
                         'value' => sprintf('%s%%', $stOrders[$poItem->getId()]['com_percent'])
                     );
                     if (isset($stOrders[$poItem->getId()]['amounts']['com_amount'])) {
                     $addOptions[] = array(
-                        'label' => $hlp->__('Commission Amount'),
+                        'label' => Mage::helper('udropship')->__('Commission Amount'),
                         'value' => $this->formatBasePrice($order, $stOrders[$poItem->getId()]['amounts']['com_amount'])
                     );
                     }

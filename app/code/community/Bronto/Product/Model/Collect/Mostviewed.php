@@ -12,7 +12,8 @@ class Bronto_Product_Model_Collect_Mostviewed extends Bronto_Product_Model_Colle
         $mostViewed = Mage::getResourceModel('reports/report_product_viewed_collection')
             ->addStoreFilter(array($this->getStoreId()))
             ->setDateRange(date('Y-m-d', strtotime('-' . self::DAYS_THRESHOLD . ' days')), date('Y-m-d'))
-            ->setPageSize($this->getRemainingCount());
+            ->setPageSize($this->getRemainingCount())
+            ->setOrder('views_num', 'DESC');
 
         // Add Status and visibility filters
         return $this->_fillProducts($mostViewed);

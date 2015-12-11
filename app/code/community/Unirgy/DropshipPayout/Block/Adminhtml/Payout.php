@@ -22,8 +22,8 @@ class Unirgy_DropshipPayout_Block_Adminhtml_Payout extends Mage_Adminhtml_Block_
     {
         $this->_blockGroup = 'udpayout';
         $this->_controller = 'adminhtml_payout';
-        $this->_headerText = Mage::helper('udpayout')->__('Vendor Payouts');
-        $this->_addButtonLabel = Mage::helper('udpayout')->__('Generate Payouts');
+        $this->_headerText = Mage::helper('udropship')->__('Vendor Payouts');
+        $this->_addButtonLabel = Mage::helper('udropship')->__('Generate Payouts');
         parent::__construct();
     }
 

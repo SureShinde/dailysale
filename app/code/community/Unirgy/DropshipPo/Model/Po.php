@@ -236,7 +236,7 @@ class Unirgy_DropshipPo_Model_Po extends Mage_Sales_Model_Abstract
             ->setParentId($this->getId())
             ->setStoreId($this->getStoreId());
         if (!$comment->getId()) {
-            $this->getOrder()->addStatusHistoryComment(Mage::helper('udpo')->__("Purchase Order # %s: (%s)\n%s", 
+            $this->getOrder()->addStatusHistoryComment(Mage::helper('udropship')->__("Purchase Order # %s: (%s)\n%s",
                 $this->getIncrementId(), $this->getUdropshipStatusName(), $comment->getComment()
             ));
             $this->getCommentsCollection()->addItem($comment);
@@ -403,7 +403,7 @@ class Unirgy_DropshipPo_Model_Po extends Mage_Sales_Model_Abstract
     {
         if ((!$this->getId() || null !== $this->_items) && !count($this->getAllItems())) {
             Mage::throwException(
-                Mage::helper('sales')->__('Cannot create an empty purchase order.')
+                Mage::helper('udropship')->__('Cannot create an empty purchase order.')
             );
         }
 

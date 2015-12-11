@@ -8,8 +8,8 @@ $_session = Mage::getSingleton('udropship/session');
 
 
 	<div class="page-title">
-		<h1><?php echo $_sHlp->__('Become a Vendor') ?></h1>
-		<span class="required"><?php echo $this->__('* Indicated Required Fields') ?></span>
+		<h1><?php echo Mage::helper('udropship')->__('Become a Vendor') ?></h1>
+		<span class="required"><?php echo Mage::helper('udropship')->__('* Indicated Required Fields') ?></span>
 	</div>
 
 <form action="<?php echo $this->getUrl('umicrosite/vendor/registerPost')?>" enctype="multipart/form-data" method="post" id="umicrosite-registration-form">
@@ -22,10 +22,10 @@ $_session = Mage::getSingleton('udropship/session');
 </ul>
 
 <div class="buttons-set">
-    <button class="form-button" type="button" onclick="udRegForm.submit()" name="send"><span><?php echo $this->__('Register') ?></span></button>
+    <button class="form-button" type="button" onclick="udRegForm.submit()" name="send"><span><?php echo Mage::helper('udropship')->__('Register') ?></span></button>
     <div class="clearer"></div>
     <ul class="links">
-    	<li><a href="<?php echo $this->getUrl('udropship/vendor')?>">&laquo; <?php echo $this->__('Return to log in')?></a></li>
+    	<li><a href="<?php echo $this->getUrl('udropship/vendor')?>">&laquo; <?php echo Mage::helper('udropship')->__('Return to log in')?></a></li>
     </ul>
 </div>
 </form>

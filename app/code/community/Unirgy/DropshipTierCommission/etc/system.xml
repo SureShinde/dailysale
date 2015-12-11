@@ -38,7 +38,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </fallback_lookup>
-                        <comm_attribute translate="label">
+                        <comm_attribute translate="label comment">
                             <label>Product attribute code for "Commission percent"</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>30</sort_order>
@@ -47,7 +47,7 @@
                             <show_in_store>0</show_in_store>
                             <comment>Used to set per product commission percent (instead of tier commission percent)</comment>
                         </comm_attribute>
-                        <fixed_rate_attribute translate="label">
+                        <fixed_rate_attribute translate="label comment">
                             <label>Product attribute code for "Tier Fixed Rate (per item)"</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>32</sort_order>
@@ -56,7 +56,7 @@
                             <show_in_store>0</show_in_store>
                             <comment>Used to set per product fixed rate (instead of tier fixed rate)</comment>
                         </fixed_rate_attribute>
-                        <commission_percent>
+                        <commission_percent translate="label">
                             <label>Default Commission Percent</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>34</sort_order>
@@ -100,7 +100,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </fixed_rule>
-                        <fixed_rates translate="label">
+                        <fixed_rates translate="label comment">
                             <label>Rule Based Fixed Rates</label>
                             <frontend_type>select</frontend_type>
                             <frontend_model>udtiercom/adminhtml_systemConfigField_fixedRates</frontend_model>

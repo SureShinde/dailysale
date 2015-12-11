@@ -93,7 +93,7 @@ class MageWorx_Adminhtml_Block_System_Config_Form_Fieldset_Mageworx_Support
 
     protected function _getFooterHtml($element)
     {
-        $ajaxUrl = $this->getUrl('mageworx/support');
+        $ajaxUrl = $this->getUrl('admin/adminhtml_mageworx/support');
         $html = parent::_getFooterHtml($element);
         $html = '<h4>'.$this->__('Contact MageWorx Support Team or visit <a href="%s">%s</a> for additional information', 'http://www.mageworx.com/', 'MageWorx.com').'</h4>' . $html;
         $html .= Mage::helper('adminhtml/js')->getScript("
