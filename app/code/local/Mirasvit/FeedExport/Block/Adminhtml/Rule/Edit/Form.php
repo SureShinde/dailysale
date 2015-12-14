@@ -22,7 +22,8 @@ class Mirasvit_FeedExport_Block_Adminhtml_Rule_Edit_Form extends Mage_Adminhtml_
         $form = new Varien_Data_Form(
             array(
                 'id'      => 'edit_form',
-                'action'  => $this->getData('action'),
+                //'action'  => $this->getData('action'),
+                'action' => $this->getUrl('*/*/save', array('id' => $this->getRequest()->getParam('id'))),
                 'method'  => 'post',
                 'enctype' => 'multipart/form-data'
             )
