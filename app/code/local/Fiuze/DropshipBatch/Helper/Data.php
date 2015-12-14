@@ -19,7 +19,8 @@ class Fiuze_DropshipBatch_Helper_Data extends Unirgy_DropshipBatch_Helper_Data
         $errors = false;
         switch ($r->getParam('batch_type')) {
             case 'import_orders':
-                if (!empty($_FILES['import_orders_upload']['tmp_name'])) {
+                $importContent = $r->getParam('import_orders_textarea');
+                if (!empty($_FILES['import_orders_upload']['tmp_name']) && !empty($importContent)) {
                     $filename = Mage::getConfig()->getVarDir('udbatch') . '/' . $_FILES['import_orders_upload']['name'];
                     @move_uploaded_file($_FILES['import_orders_upload']['tmp_name'], $filename);
                     try {
@@ -72,6 +73,9 @@ class Fiuze_DropshipBatch_Helper_Data extends Unirgy_DropshipBatch_Helper_Data
 
                 if ($errors) {
                     Mage::throwException($this->__('Errors during importing, please see individual batches for details'));
+                }
+                if(empty($importContent)){
+                    Mage::throwException($this->__('Error, empty Import Content field'));
                 }
                 break;
 

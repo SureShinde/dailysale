@@ -31,3 +31,18 @@ $_hlp = Mage::helper('udropship');
     </div>
 </fieldset>
 </form>
+<script>
+    jQuery(document).ready(function(){
+        jQuery('#filter-search').attr('disabled',true);
+
+        jQuery('#import_orders_textarea').keyup(function(){
+            if(jQuery(this).val().length !=0){
+                jQuery('#filter-search').attr('disabled', false);
+            }
+            else
+            {
+                jQuery('#filter-search').attr('disabled', true);
+            }
+        })
+    });
+</script>
