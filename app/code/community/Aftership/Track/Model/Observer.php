@@ -382,10 +382,10 @@ class Aftership_Track_Model_Observer {
     }
 
     /**
-    * Sending email with Invoice data
-    *
-    * @return Mage_Sales_Model_Order_Invoice
-    */
+     * Sending email with Invoice data
+     *
+     * @return Mage_Sales_Model_Order_Invoice
+     */
     public function sendTrackingNotificationEmail($tracks)
     {
         if(!is_null($this->_trackingNumbersContent)) {
@@ -519,12 +519,15 @@ class Aftership_Track_Model_Observer {
     public function adminSystemConfigChangedSectionAftership(Varien_Event_Observer $observer)
     {
         $post_data = Mage::app()->getRequest()->getPost();
+
         if (
             !isset($post_data['groups']['messages']['fields']['api_key']['inherit']) ||
             $post_data['groups']['messages']['fields']['api_key']['inherit'] != 1
         ) {
             $api_key = $post_data['groups']['messages']['fields']['api_key']['value'];
+
             $http_status = $this->_callApiAuthenticate($api_key);
+
             if ($http_status == '401') {
                 Mage::throwException(Mage::helper('adminhtml')->__('Incorrect API Key'));
             }
@@ -564,6 +567,7 @@ class Aftership_Track_Model_Observer {
      * @param $api_key
      * @return HTTP status code
      */
+
 
     /**
      * @param Mage_Sales_Model_Order $order
@@ -618,10 +622,8 @@ class Aftership_Track_Model_Observer {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, self::ENDPOINT_TRACKING);
         curl_setopt($ch, CURLOPT_POST, true);
-
         curl_setopt($ch, CURLOPT_POSTFIELDS, $json_params);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
@@ -649,6 +651,7 @@ class Aftership_Track_Model_Observer {
             'aftership-api-key: ' . $api_key,
             'Content-Type: application/json',
         );
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, self::ENDPOINT_AUTHENTICATE);
         curl_setopt($ch, CURLOPT_POST, false);
@@ -657,15 +660,19 @@ class Aftership_Track_Model_Observer {
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+
         //handle SSL certificate problem: unable to get local issuer certificate issue
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0); //the SSL is not correct
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0); //the SSL is not correct
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
         $response = curl_exec($ch);
         $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
+
         return $http_status;
     }
+
     /**
      * @param Mage_Sales_Model_Order $order
      * @return mixed
