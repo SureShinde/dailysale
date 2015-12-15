@@ -386,9 +386,6 @@ class Unirgy_DropshipPo_VendorController extends Unirgy_Dropship_VendorControlle
                 }
                // $shipment->delete();
                 $po->save();
-                foreach($udpo->getShipmentsCollection() as $item){
-                    $item->delete();
-                }
                 Mage::app()->setCurrentStore($store);
             }
             $session->addError($e->getMessage());

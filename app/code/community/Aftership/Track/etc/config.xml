@@ -26,9 +26,9 @@
 					<track>
 						<table>as_track</table>
 					</track>
-<!--                    <schedule>
+                    <schedule>
                         <table>schedule_aftership</table>
-                    </schedule>-->
+                    </schedule>
 					<!--<user>
 						<table>as_user</table>
 					</user>-->
@@ -107,6 +107,16 @@
                 </run>
             </three_cron>
         </jobs>
+		<events>
+			<default>
+				<observers>
+					<cron_observer_helper>
+						<class>aftershiptrackcron/cronObserver</class>
+						<method>runCronAftership</method>
+					</cron_observer_helper>
+				</observers>
+			</default>
+		</events>
     </crontab>
 
 	<frontend>

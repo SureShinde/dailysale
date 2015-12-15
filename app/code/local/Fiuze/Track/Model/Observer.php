@@ -43,37 +43,6 @@ class Fiuze_Track_Model_Observer {
         ob_end_clean();
     }
 
-    /** For vendor
-     * @param Varien_Event_Observer $observer
-     */
-    public function salesOrderShipmentTrackSaveAfterVendor(Varien_Event_Observer $observer) {
-        ob_start();
-
-        $magento_track = $observer->getEvent()->getTrack();
-
-        $magento_order = $magento_track->getShipment()->getOrder();
-        $website_config = $this->_getWebsiteConfig($magento_order);
-
-        $tracks = Mage::getModel('track/track')
-            ->getCollection()
-            ->addFieldToFilter('tracking_number', array('eq' => $this->_getTrackNo($magento_track)))
-            ->addFieldToFilter('order_id', array('eq' => $magento_order->getIncrementId()))
-            ->getItems();
-
-        if (empty($tracks)) {
-            $track = $this->_saveTrack($magento_track);
-        }
-        else {
-            $track = reset($tracks);
-        }
-
-        if ($website_config->status) {
-            $this->_sendTrack($track);
-        }
-
-        ob_end_clean();
-    }
-
     /**
      * Cron to sync trackings
      */
@@ -240,37 +209,20 @@ class Fiuze_Track_Model_Observer {
         $response = $this->_callApiCreateTracking($api_key, $track->getTrackingNumber(), $carrier_code, $country_id, $telephone, $email, $title, $order_id, $customer_name);
         $responseJson = Mage::helper('core')->jsonDecode($response);
         $http_status = $responseJson['meta']['code'];
-        $data = $responseJson['data'];
-        $configValue = Mage::getStoreConfig('aftership_options/messages/aftership_validation');
         //save, 422: repeated
-        if($configValue){
-            if ($http_status == '201' || $http_status == '422') {
-                $track->setPosted(self::POSTED_DONE)->save();
-            }else {
-                if ($track->getPackageCount() > 1) {
-                    foreach (Mage::getResourceModel('sales/order_shipment_track_collection')
-                                 ->addAttributeToFilter('master_tracking_id', $track->getMasterTrackingId())
-                             as $_track
-                    ) {
-                        $_track->delete();
-                    }
-                }
-                if ($track->getPackTracking() !== '1') {
-                    $track->setErrorTracking($responseJson['meta']['message']);
-                    $track->save();
-                    //Mage::throwException($responseJson['meta']['message']);
-                } else {
-                    $track->setErrorTracking($responseJson['meta']['message']);
-                    $track->save();
+        if ($http_status == '201' || $http_status == '422') {
+            $track->setPosted(self::POSTED_DONE)->save();
+        }else{
+            $track->delete();
+            if ($track->getPackageCount()>1) {
+                foreach (Mage::getResourceModel('sales/order_shipment_track_collection')
+                             ->addAttributeToFilter('master_tracking_id', $track->getMasterTrackingId())
+                         as $_track
+                ) {
+                    $_track->delete();
                 }
             }
-            if($http_status == '201' && array_key_exists('tracking',$data)){
-                $tracking = $data['tracking'];
-                $track->setTrackingId(array_key_exists('id',$tracking)?$tracking['id']:0);
-                $track->setSlug(array_key_exists('slug',$tracking)?$tracking['slug']:0);
-                $track->setPackTracking(false);
-                $track->save();
-            }
+            Mage::throwException($responseJson['meta']['message']);
         }
 
         return $http_status;
@@ -328,7 +280,7 @@ class Fiuze_Track_Model_Observer {
         $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
-        return $response;
+        return $http_status;
     }
 
     /**
@@ -395,8 +347,8 @@ class Fiuze_Track_Model_Observer {
         return $track_no;
     }
 
-    public function notificationMail(Varien_Event_Observer $observer){
-        $item = $observer->getEvent();
+    public function notificationMail(){
+
         $collectionVendor = Mage::getModel('udropship/vendor')->getCollection()->getItems();
 
         foreach($collectionVendor as $key => $vendor){
@@ -454,7 +406,8 @@ class Fiuze_Track_Model_Observer {
     }
 
     private function _getHeadersForCsv(){
-        $row = array('order_id','order_created_at','tracking_number','status','error_tracking');
+        //$row = array('order_id','order_created_at','tracking_number','status','error_tracking');
+        $row = array('Order id','PO ID','Tracking number','Carrier','Error tracking');
         return $row;
     }
     private function _getBodyTotalsForCsv($vendor, $io){
@@ -467,8 +420,9 @@ class Fiuze_Track_Model_Observer {
             foreach($trackNumbers as $trackNumber){
                 $row = array();
                 $row[] = $trackNumber->getOrderId();
-                $row[] = $shipment->getOrderCreatedAt();
-                $row[] = $trackNumber->getTrackingNumber();
+                $row[] = $shipment->getUdpoIncrementId();
+                $row[] = "'".$trackNumber->getTrackingNumber()."'";
+                $row[] = $trackNumber->getShipCompCode();
 
                 if($trackNumber->getTrackingId()){
                     $api_key = Mage::app()->getWebsite(0)->getConfig('aftership_options/messages/api_key');
@@ -477,9 +431,6 @@ class Fiuze_Track_Model_Observer {
                     $status = $this->_getStatus($responseJson);
                     $trackNumber->setStatus($status);
                     $trackNumber->save();
-                    $row[] = $status;
-                }else{
-                    $row[] = '';
                 }
 
                 if($trackNumber->getErrorTracking() == 'Tracking already exists.'){
@@ -491,7 +442,7 @@ class Fiuze_Track_Model_Observer {
                 if(count($row)){
                     $io->streamWriteCsv($row);
                 }
-                if(!$error){
+                if($error){
                     $trackNumber->delete();
                 }
                 if($error == 'Not valid.'){
@@ -567,5 +518,114 @@ class Fiuze_Track_Model_Observer {
             );
             $emailTemplate->send($vendor->getEmail(), $vendor->getVendorName(), $emailTemplateVariables);
         }
+    }
+
+    public function coreLayoutBlockCreateAfter(Varien_Event_Observer $observer){
+        $block = $observer->getBlock();
+        if($block instanceof Mage_Adminhtml_Block_Sales_Order_View_Tab_History){
+            $block->setTemplate('fiuze/aftership/sales/order/view/tab/history.phtml');
+        }
+    }
+
+    /**
+     * Sending email with Invoice data
+     *
+     * @return Mage_Sales_Model_Order_Invoice
+     */
+    public function changeStatusShip(){
+        $collectionVendor = Mage::getModel('udropship/vendor')->getCollection()->getItems();
+
+        foreach($collectionVendor as $key => $vendor){
+            //checking the quantity track number
+            $collectionShipments = $this->getVendorShipmentCollection($vendor);
+            foreach($collectionShipments as $shipment){
+                $trackNumbers = Mage::getModel('track/track')->getCollection()
+                    ->addFieldToFilter('order_id', array('eq' => $shipment->getOrderIncrementId()))
+                    ->getItems();
+                $trackNumbers2 = Mage::getModel('sales/order_shipment_track')->getCollection()
+                    ->addFieldToFilter('order_id', array('eq' => $shipment->getOrderId()))
+                    ->getItems();
+                foreach($trackNumbers2 as $track){
+                    foreach ($trackNumbers as $a_track){
+                        if(strcasecmp($a_track->getTrackingNumber(),$track->getTrackNumber()) === 0){
+                            $fullTrack[]=array_merge($track->getData(),$a_track->getData());
+                        }
+                    }
+                }
+                $countShipped   = 0;
+                $countDelivered = 0;
+                $countPending = 0;
+                foreach($fullTrack as $trackNumber){
+                    if($trackNumber['tracking_id']){
+                        $api_key = Mage::app()->getWebsite(0)->getConfig('aftership_options/messages/api_key');
+                        $trackings = new AfterShip\Trackings($api_key);
+                        $responseJson = $trackings->get_by_id($trackNumber['tracking_id']);
+                        $status = $this->_getStatus($responseJson);
+                        if($status === 'Delivered'){
+                            $countDelivered++;
+                        }elseif($status==='Pending' OR $status==='Expired' OR $status==='Info Received'){
+                            $countPending++;
+                        }else{
+                            $countShipped++;
+                        }
+                        $trackNumberModel = Mage::getModel('track/track')->load($trackNumber['entity_id']);
+                        $trackNumberModel->setStatus($status);
+                        $trackNumberModel->save();
+                    }
+                }
+                //логика изменения шипмента
+                $count_track = count($fullTrack);
+                if (count($trackNumbers) > 0) {
+                    if($countPending==$count_track){
+                        //all pending
+                        //do nothing
+                    }elseif($countDelivered==$count_track){
+                        //all delivered
+                        $shipment->setUdropshipStatus(Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_DELIVERED);
+                        $shipment->save();
+
+                        //close order
+                        $order = Mage::getModel('sales/order')->load($shipment->getOrderId());
+                        $order->setData('state', "complete");
+                        $order->setStatus("complete");
+                        $order->save();
+
+                        /// ///
+                        //$this->processPoStatusSave($po, Unirgy_DropshipPo_Model_Source::UDPO_STATUS_DELIVERED, $save);
+                        /// ///
+
+                        //complete shipment
+                        $udpo = Mage::helper('udpo')->getShipmentPo($shipment);
+                        $udpo->setUdropshipStatus(Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_DELIVERED);
+                        $udpo->save();
+                        //   $history = $order->addStatusHistoryComment('Order marked as complete because shipment is delivered.', false);
+//                        $history->setIsCustomerNotified(false);
+                    }elseif($countPending==0){
+                        //all shipped
+                        $shipment->setUdropshipStatus(Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_SHIPPED);
+                        $shipment->save();
+                        //po status shipped
+                        $udpo = Mage::helper('udpo')->getShipmentPo($shipment);
+                        $udpo->setUdropshipStatus(Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_SHIPPED);
+                        $udpo->save();
+
+                    }else{
+                        //partially shipped
+                        $shipment->setUdropshipStatus(Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_PARTIAL);
+                        $shipment->save();
+                        //po status partial
+                        $udpo = Mage::helper('udpo')->getShipmentPo($shipment);
+                        $udpo->setUdropshipStatus(Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_PARTIAL);
+                        $udpo->save();
+
+                    }
+                }
+            }
+        }
+    }
+
+    public function runCronJob(){
+        $this->changeStatusShip();
+        $this->notificationMail();
     }
 }
