@@ -7,11 +7,11 @@
     </modules>
 <global>
     <models>
-        <track>
+        <aftershiptrackcron>
             <rewrite>
                 <observer>Fiuze_Track_Model_Observer</observer>
             </rewrite>
-        </track>
+        </aftershiptrackcron>
     </models>
 <!--    <models>
         <fiuzetrackcron>

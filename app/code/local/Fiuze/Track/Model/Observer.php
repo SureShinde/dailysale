@@ -1,7 +1,7 @@
 <?php
 require_once Mage::getBaseDir('lib').DS.'SweetTooth/pest/vendor/autoload.php';
 
-class Fiuze_Track_Model_Observer {
+class Fiuze_Track_Model_Observer extends Aftership_Track_Model_Observer{
 
     const ENDPOINT_TRACKING = 'https://api.aftership.com/v4/trackings';
     const ENDPOINT_AUTHENTICATE = 'https://api.aftership.com/v4/couriers';
