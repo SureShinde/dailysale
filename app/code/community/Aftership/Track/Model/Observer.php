@@ -43,6 +43,7 @@ class Aftership_Track_Model_Observer {
         ob_end_clean();
     }
 
+
     /** For vendor
      * @param Varien_Event_Observer $observer
      */
@@ -250,8 +251,10 @@ class Aftership_Track_Model_Observer {
                 $track->setSlug(array_key_exists('slug',$tracking)?$tracking['slug']:0);
                 $track->setPackTracking(false);
                 $track->save();
+
             }
         }
+
         return $http_status;
     }
 
@@ -268,6 +271,9 @@ class Aftership_Track_Model_Observer {
      * @param $customer_name
      * @return mixed
      */
+
+
+
 
     /**
      * @param $magento_track
@@ -286,6 +292,8 @@ class Aftership_Track_Model_Observer {
 
         return $track_no;
     }
+
+
 
     private function _getHeadersForCsv(){
         //$row = array('order_id','order_created_at','tracking_number','status','error_tracking');
@@ -373,6 +381,11 @@ class Aftership_Track_Model_Observer {
         return $collection;
     }
 
+    /**
+    * Sending email with Invoice data
+    *
+    * @return Mage_Sales_Model_Order_Invoice
+    */
     public function sendTrackingNotificationEmail($tracks)
     {
         if(!is_null($this->_trackingNumbersContent)) {
@@ -404,11 +417,6 @@ class Aftership_Track_Model_Observer {
         }
     }
 
-    /**
-     * Sending email with Invoice data
-     *
-     * @return Mage_Sales_Model_Order_Invoice
-     */
     public function changeStatusShip(){
         $collectionVendor = Mage::getModel('udropship/vendor')->getCollection()->getItems();
 
@@ -499,7 +507,12 @@ class Aftership_Track_Model_Observer {
             }
             unset($fullTrack);
         }
+
+
+
     }
+
+
     /**
      * @param Varien_Event_Observer $observer
      */
@@ -520,14 +533,18 @@ class Aftership_Track_Model_Observer {
             }
         }
     }
+
+
     /**
      * @param Mage_Sales_Model_Order_Shipment_Track $magento_track
      * @return mixed
      */
+
     /**
      * @param Aftership_Track_Model_Track $track
      * @return bool|mixed
      */
+
     /**
      * Call API to create tracking
      * @param $api_key
@@ -541,11 +558,13 @@ class Aftership_Track_Model_Observer {
      * @param $customer_name
      * @return mixed
      */
+
     /**
      * Call API to authenticate
      * @param $api_key
      * @return HTTP status code
      */
+
     /**
      * @param Mage_Sales_Model_Order $order
      * @return mixed
@@ -556,8 +575,13 @@ class Aftership_Track_Model_Observer {
             // object conversion to avoid config element object for easy comparing
             $this->_configs[$order->getStore()->getWebsiteId()] = (object)((array)$config['messages']);
         }
+
         return $this->_configs[$order->getStore()->getWebsiteId()];
     }
+
+
+
+
     /**
      * Call API to create tracking
      * @param $api_key
@@ -582,29 +606,39 @@ class Aftership_Track_Model_Observer {
             'customer_name'             => $customer_name,
             'source'                    => 'magento'
         ));
+
         $json_params = json_encode($url_params);
+
         $headers = array(
             'aftership-api-key: ' . $api_key,
             'Content-Type: application/json',
             'Content-Length: ' . strlen($json_params)
         );
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, self::ENDPOINT_TRACKING);
         curl_setopt($ch, CURLOPT_POST, true);
+
         curl_setopt($ch, CURLOPT_POSTFIELDS, $json_params);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+
         //handle SSL certificate problem: unable to get local issuer certificate issue
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0); //the SSL is not correct
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0); //the SSL is not correct
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
         $response = curl_exec($ch);
+
         $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
+
         return $http_status;
     }
+
     /**
      * Call API to authenticate
      * @param $api_key
@@ -636,12 +670,17 @@ class Aftership_Track_Model_Observer {
      * @param Mage_Sales_Model_Order $order
      * @return mixed
      */
+
+
     /**
      * @param $magento_track
      * @return string
      */
+
     public function notificationMail(){
+
         $collectionVendor = Mage::getModel('udropship/vendor')->getCollection()->getItems();
+
         foreach($collectionVendor as $key => $vendor){
             //checking the quantity track number
             $sendMail = false;
@@ -655,6 +694,7 @@ class Aftership_Track_Model_Observer {
                     $sendMail = true;
                 }
             }
+
             if($sendMail){
                 $io = new Varien_Io_File();
                 $path = Mage::getBaseDir('var') . DS . 'emailTracking';
@@ -670,8 +710,10 @@ class Aftership_Track_Model_Observer {
                 }catch (Exception $ex){
                     Mage::logException($ex);
                 }
+
                 $io->streamUnlock();
                 $io->streamClose();
+
                 if(file_exists($file)){
                     $mail = new Zend_Mail ();
                     $mail->setBodyHtml("", "UTF-8");
