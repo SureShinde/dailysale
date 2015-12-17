@@ -533,6 +533,7 @@ class Fiuze_Track_Model_Observer extends Aftership_Track_Model_Observer{
      * @return Mage_Sales_Model_Order_Invoice
      */
     public function changeStatusShip(){
+        Mage::log('Begin Fiuze_Track_Model_Observer::chageStatusShip', null, 'aftership-debug.log', true);
         $collectionVendor = Mage::getModel('udropship/vendor')->getCollection()->getItems();
 
         foreach($collectionVendor as $key => $vendor){
@@ -556,11 +557,14 @@ class Fiuze_Track_Model_Observer extends Aftership_Track_Model_Observer{
                 $countDelivered = 0;
                 $countPending = 0;
                 foreach($fullTrack as $trackNumber){
+                    Mage::log('$trackNumber: ' . print_r($trackNumber, null), null, 'aftership-debug.log', true);
                     if($trackNumber['tracking_id']){
                         $api_key = Mage::app()->getWebsite(0)->getConfig('aftership_options/messages/api_key');
                         $trackings = new AfterShip\Trackings($api_key);
                         $responseJson = $trackings->get_by_id($trackNumber['tracking_id']);
+                        Mage::log('$responseJson: ' . print_r($responseJson, true), null, 'aftership-debug.log', true);
                         $status = $this->_getStatus($responseJson);
+                        Mage::log('$status: ' . print_r($status, true), null, 'aftership-debug.log', true);
                         if($status === 'Delivered'){
                             $countDelivered++;
                         }elseif($status==='Pending' OR $status==='Expired' OR $status==='Info Received'){
@@ -575,6 +579,10 @@ class Fiuze_Track_Model_Observer extends Aftership_Track_Model_Observer{
                 }
                 //логика изменения шипмента
                 $count_track = count($fullTrack);
+                Mage::log('$countDelivered: ' . print_r($countDelivered, true), null, 'aftership-debug.log', true);
+                Mage::log('$countShipped: ' . print_r($countShipped, true), null, 'aftership-debug.log', true);
+                Mage::log('$countPending: ' . print_r($countPending, true), null, 'aftership-debug.log', true);
+                Mage::log('$count_track: ' . print_r($count_track, true), null, 'aftership-debug.log', true);
                 if (count($trackNumbers) > 0) {
                     if($countPending==$count_track){
                         //all pending
