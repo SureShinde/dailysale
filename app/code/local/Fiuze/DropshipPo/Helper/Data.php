@@ -25,6 +25,7 @@ class Fiuze_DropshipPo_Helper_Data extends Unirgy_DropshipPo_Helper_Data
             $collection = Mage::getModel('udpo/po')->getCollection();
 
             $orderTableQted = $collection->getResource()->getReadConnection()->quoteIdentifier('sales/order');
+            $orderTable = $collection->getResource()->getReadConnection()->getTableName('sales/order');
             $collection->join('sales/order', "$orderTableQted.entity_id=main_table.order_id", array(
                 'order_increment_id' => 'increment_id',
                 'order_created_at' => 'created_at',
@@ -37,24 +38,24 @@ class Fiuze_DropshipPo_Helper_Data extends Unirgy_DropshipPo_Helper_Data
 
             if(!$full) {
                 if (($v = $r->getParam('filter_order_id_from'))) {
-                    $collection->addAttributeToFilter("$orderTableQted.increment_id", array('gteq' => $v));
+                    $collection->addAttributeToFilter("$orderTable.increment_id", array('gteq' => $v));
                 }
                 if (($v = $r->getParam('filter_order_id_to'))) {
-                    $collection->addAttributeToFilter("$orderTableQted.increment_id", array('lteq' => $v));
+                    $collection->addAttributeToFilter("$orderTable.increment_id", array('lteq' => $v));
                 }
 
                 if (($v = $r->getParam('filter_order_date_from'))) {
                     $_filterDate = Mage::app()->getLocale()->date();
                     $_filterDate->set($v, Mage::app()->getLocale()->getDateFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT));
                     $_filterDate->setTimezone(Mage_Core_Model_Locale::DEFAULT_TIMEZONE);
-                    $collection->addAttributeToFilter("$orderTableQted.created_at", array('gteq' => $_filterDate->toString(Varien_Date::DATETIME_INTERNAL_FORMAT)));
+                    $collection->addAttributeToFilter("$orderTable.created_at", array('gteq' => $_filterDate->toString(Varien_Date::DATETIME_INTERNAL_FORMAT)));
                 }
                 if (($v = $r->getParam('filter_order_date_to'))) {
                     $_filterDate = Mage::app()->getLocale()->date();
                     $_filterDate->set($v, Mage::app()->getLocale()->getDateFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT));
                     $_filterDate->addDay(1);
                     $_filterDate->setTimezone(Mage_Core_Model_Locale::DEFAULT_TIMEZONE);
-                    $collection->addAttributeToFilter("$orderTableQted.created_at", array('lteq' => $_filterDate->toString(Varien_Date::DATETIME_INTERNAL_FORMAT)));
+                    $collection->addAttributeToFilter("$orderTable.created_at", array('lteq' => $_filterDate->toString(Varien_Date::DATETIME_INTERNAL_FORMAT)));
                 }
 
                 if (($v = $r->getParam('filter_po_id_from'))) {
