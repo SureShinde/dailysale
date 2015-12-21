@@ -14,6 +14,7 @@
  * @copyright  Copyright (c) 2008-2009 Unirgy LLC (http://www.unirgy.com)
  * @license    http:///www.unirgy.com/LICENSE-M1.txt
  */
+require_once Mage::getBaseDir('lib').DS.'SweetTooth/pest/vendor/autoload.php';
 
 class Fiuze_DropshipPo_Helper_Data extends Unirgy_DropshipPo_Helper_Data
 {
@@ -331,47 +332,65 @@ class Fiuze_DropshipPo_Helper_Data extends Unirgy_DropshipPo_Helper_Data
 
         if (empty($shipments)) return false;
 
+        $trackingNumber = Mage::app()->getRequest()->getParam('tracking_id');
+        if(!$trackingNumber)
+            $trackingNumber = end(explode( ';', Mage::app()->getRequest()->getParam('import_orders_textarea')));
         Mage::dispatchEvent('udpo_po_shipment_save_before', array('order'=>$order, 'udpo'=>$udpo, 'shipments'=>$shipments));
-
-        $udpoSplitWeights = array();
-        foreach ($shipments as $_vUdpoKey => $_vUdpo) {
-            if (empty($udpoSplitWeights[$_vUdpo->getUdropshipVendor().'-'])) {
-                $udpoSplitWeights[$_vUdpo->getUdropshipVendor().'-']['weights'] = array();
-                $udpoSplitWeights[$_vUdpo->getUdropshipVendor().'-']['total_weight'] = 0;
-            }
-            $weight = $_vUdpo->getTotalWeight()>0 ? $_vUdpo->getTotalWeight() : .001;
-            $udpoSplitWeights[$_vUdpo->getUdropshipVendor().'-']['weights'][$_vUdpoKey] = $weight;
-            $udpoSplitWeights[$_vUdpo->getUdropshipVendor().'-']['total_weight'] += $weight;
+        $tracks = Mage::getModel('track/track')
+            ->getCollection()
+            ->addFieldToFilter('tracking_number', array('eq' => $trackingNumber))
+            //->addFieldToFilter('order_id', array('eq' => $orderId))
+            ->getItems();
+        $trackId = reset($tracks);
+        $aftershipStatus = '';
+        if (!empty($trackId)) {
+            $api_key = Mage::app()->getWebsite(0)->getConfig('aftership_options/messages/api_key');
+            $trackings = new AfterShip\Trackings($api_key);
+            $responseJson = $trackings->get_by_id($trackId);
+            $aftershipStatus = $responseJson['data']['tracking']['tag'];
         }
 
-        $transaction = Mage::getModel('core/resource_transaction');
-        foreach ($shipments as $shipment) {
-            Mage::helper('udropship')->addVendorSkus($shipment);
-            $shipment->setNoInvoiceFlag($noInvoiceFlag);
-            if (empty($udpoNoSplitWeights[$shipment->getUdropshipVendor().'-'])
-                && !empty($udpoSplitWeights[$shipment->getUdropshipVendor().'-']['weights'][$udpoKey])
-                && count($udpoSplitWeights[$shipment->getUdropshipVendor().'-']['weights'])>1
-            ) {
-                $_splitWeight = $udpoSplitWeights[$shipment->getUdropshipVendor().'-']['weights'][$udpoKey];
-                $_totalWeight = $udpoSplitWeights[$shipment->getUdropshipVendor().'-']['total_weight'];
-                $shipment->setShippingAmount($shipment->getShippingAmount()*$_splitWeight/$_totalWeight);
-                $shipment->setBaseShippingAmount($shipment->getBaseShippingAmount()*$_splitWeight/$_totalWeight);
-                $shipment->setShippingAmountIncl($shipment->getShippingAmountIncl()*$_splitWeight/$_totalWeight);
-                $shipment->setBaseShippingAmountIncl($shipment->getBaseShippingAmountIncl()*$_splitWeight/$_totalWeight);
-                $shipment->setShippingTax($shipment->getShippingTax()*$_splitWeight/$_totalWeight);
-                $shipment->setBaseShippingTax($shipment->getBaseShippingTax()*$_splitWeight/$_totalWeight);
+        if ($aftershipStatus != 'Pending' && $aftershipStatus != 'Info Received' && $aftershipStatus != 'Expired' && $aftershipStatus != '') {
+            $udpoSplitWeights = array();
+            foreach ($shipments as $_vUdpoKey => $_vUdpo) {
+                if (empty($udpoSplitWeights[$_vUdpo->getUdropshipVendor() . '-'])) {
+                    $udpoSplitWeights[$_vUdpo->getUdropshipVendor() . '-']['weights'] = array();
+                    $udpoSplitWeights[$_vUdpo->getUdropshipVendor() . '-']['total_weight'] = 0;
+                }
+                $weight = $_vUdpo->getTotalWeight() > 0 ? $_vUdpo->getTotalWeight() : .001;
+                $udpoSplitWeights[$_vUdpo->getUdropshipVendor() . '-']['weights'][$_vUdpoKey] = $weight;
+                $udpoSplitWeights[$_vUdpo->getUdropshipVendor() . '-']['total_weight'] += $weight;
             }
-            $order->getShipmentsCollection()->addItem($shipment);
-            $udpo->getShipmentsCollection()->addItem($shipment);
-            $transaction->addObject($shipment);
-        }
-        $transaction->addObject($order->setIsInProcess(true))->addObject($udpo->setData('___dummy',1))->save();
 
-        $shipped = count($shipments);
-        foreach ($shipments as $shipment) {
-            if (!in_array($shipment->getUdropshipStatus(), array(Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_SHIPPED,Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_DELIVERED))) {
-                $shipped = false;
-                break;
+            $transaction = Mage::getModel('core/resource_transaction');
+            foreach ($shipments as $shipment) {
+                Mage::helper('udropship')->addVendorSkus($shipment);
+                $shipment->setNoInvoiceFlag($noInvoiceFlag);
+                if (empty($udpoNoSplitWeights[$shipment->getUdropshipVendor() . '-'])
+                    && !empty($udpoSplitWeights[$shipment->getUdropshipVendor() . '-']['weights'][$udpoKey])
+                    && count($udpoSplitWeights[$shipment->getUdropshipVendor() . '-']['weights']) > 1
+                ) {
+                    $_splitWeight = $udpoSplitWeights[$shipment->getUdropshipVendor() . '-']['weights'][$udpoKey];
+                    $_totalWeight = $udpoSplitWeights[$shipment->getUdropshipVendor() . '-']['total_weight'];
+                    $shipment->setShippingAmount($shipment->getShippingAmount() * $_splitWeight / $_totalWeight);
+                    $shipment->setBaseShippingAmount($shipment->getBaseShippingAmount() * $_splitWeight / $_totalWeight);
+                    $shipment->setShippingAmountIncl($shipment->getShippingAmountIncl() * $_splitWeight / $_totalWeight);
+                    $shipment->setBaseShippingAmountIncl($shipment->getBaseShippingAmountIncl() * $_splitWeight / $_totalWeight);
+                    $shipment->setShippingTax($shipment->getShippingTax() * $_splitWeight / $_totalWeight);
+                    $shipment->setBaseShippingTax($shipment->getBaseShippingTax() * $_splitWeight / $_totalWeight);
+                }
+                $order->getShipmentsCollection()->addItem($shipment);
+                $udpo->getShipmentsCollection()->addItem($shipment);
+                $transaction->addObject($shipment);
+            }
+            $transaction->addObject($order->setIsInProcess(true))->addObject($udpo->setData('___dummy', 1))->save();
+
+            $shipped = count($shipments);
+            foreach ($shipments as $shipment) {
+                if (!in_array($shipment->getUdropshipStatus(), array(Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_SHIPPED, Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_DELIVERED))) {
+                    $shipped = false;
+                    break;
+                }
             }
         }
         //        if ($shipped) {

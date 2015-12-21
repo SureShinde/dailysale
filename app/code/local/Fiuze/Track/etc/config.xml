@@ -12,6 +12,11 @@
                 <observer>Fiuze_Track_Model_Observer</observer>
             </rewrite>
         </aftershiptrackcron>
+<!--        <track>
+            <rewrite>
+                <observer>Fiuze_Track_Model</observer>
+            </rewrite>
+        </track>-->
     </models>
 <!--    <models>
         <fiuzetrackcron>
@@ -31,13 +36,22 @@
         </track_mysql4>
     </models>-->
     <events>
-        <sales_order_shipment_track_save_after>
+<!--        <sales_order_shipment_track_save_after>
             <observers>
                 <fishpig_save_product_data_vendor>
                     <type>singleton</type>
                     <class>track/observer</class>
                     <method>salesOrderShipmentTrackSaveAfterVendor</method>
                 </fishpig_save_product_data_vendor>
+            </observers>
+        </sales_order_shipment_track_save_after>-->
+        <sales_order_shipment_track_save_after>
+            <observers>
+                <fishpig_save_product_data>
+                    <type>singleton</type>
+                    <class>aftershiptrackcron/observer</class>
+                    <method>salesOrderShipmentTrackSaveAfter</method>
+                </fishpig_save_product_data>
             </observers>
         </sales_order_shipment_track_save_after>
     </events>

@@ -5,6 +5,15 @@
             <version>2.2.34</version>
         </Fiuze_Dropship>
     </modules>
+    <global>
+        <helpers>
+            <udropship>
+                <rewrite>
+                    <data>Fiuze_Dropship_Helper_Data</data>
+                </rewrite>
+            </udropship>
+        </helpers>
+    </global>
     <frontend>
         <layout>
             <updates>
