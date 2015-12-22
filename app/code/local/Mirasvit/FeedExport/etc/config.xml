@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Mirasvit_FeedExport>
-            <version>0.0.7.4</version>
+            <version>0.0.7.6</version>
         </Mirasvit_FeedExport>
     </modules>
     <global>
@@ -176,7 +176,7 @@
             <adminhtml>
 				<args>
 					<modules>
-						<feedexport before="Mage_Adminhtml">Mirasvit_FeedExport_Adminhtml</feedexport>
+						<feedexport after="Mage_Adminhtml">Mirasvit_FeedExport_Adminhtml</feedexport>
 					</modules>
 				</args>
 			</adminhtml>
@@ -193,10 +193,10 @@
         <events>
             <adminhtml_catalog_product_grid_prepare_massaction>
                 <observers>
-                    <adminhtml_catalog_product_grid_prepare_massaction>
+                    <adminhtml_feedexport_catalog_product_grid_prepare_massaction>
                         <class>feedexport/observer</class>
                         <method>onAdminhtmlCatalogProductGridPrepareMassaction</method>
-                    </adminhtml_catalog_product_grid_prepare_massaction>
+                    </adminhtml_feedexport_catalog_product_grid_prepare_massaction>
                 </observers>
             </adminhtml_catalog_product_grid_prepare_massaction>
         </events>
