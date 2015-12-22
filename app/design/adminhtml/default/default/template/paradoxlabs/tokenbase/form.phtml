@@ -75,7 +75,7 @@
 		<li <?php if( $this->haveStoredCards() ): ?>style="display:none"<?php endif; ?> class="<?php echo $newClass; ?>">
 			<label>&nbsp;</label>
 			<input type="hidden" name="payment[save]" value="0" />
-			<input type="checkbox" name="payment[save]" id="<?php echo $this->getMethodCode(); ?>_save" value="1" checked="checked" autocomplete="on" /> 
+			<input type="checkbox" name="payment[save]" id="<?php echo $this->getMethodCode(); ?>_save" value="1" <?php if( $this->getMethod()->getConfigData('savecard_opt_out') ): ?>checked="checked" <?php endif; ?>autocomplete="on" /> 
 			<label for="<?php echo $this->getMethodCode(); ?>_save" style="float:none;font-weight:normal;"><?php echo $this->__('Save for next time'); ?></label>
 		</li>
 	<?php else: /* Guests are not given any choice or warning, because the card can never be reused. */ ?>

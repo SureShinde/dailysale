@@ -2,7 +2,7 @@
 <config>
 	<modules>
 		<ParadoxLabs_AuthorizeNetCim>
-			<version>2.1.0.20150415</version>
+			<version>2.2.2.20151125</version>
 		</ParadoxLabs_AuthorizeNetCim>
 	</modules>
 	<global>
@@ -113,8 +113,11 @@
 				<allow_unsaved>1</allow_unsaved>
 				<show_branding>0</show_branding>
 				<require_ccv>0</require_ccv>
-				<send_shipping_address>0</send_shipping_address>
+				<send_shipping_address>1</send_shipping_address>
 				<send_line_items>1</send_line_items>
+				<reauthorize_partial_invoice>1</reauthorize_partial_invoice>
+				<savecard_opt_out>1</savecard_opt_out>
+				<verify_ssl>1</verify_ssl>
 			</authnetcim>
 			<authnetcim_ach>
 				<active>0</active>
@@ -130,8 +133,11 @@
 				<currency>USD</currency>
 				<allow_unsaved>1</allow_unsaved>
 				<show_branding>0</show_branding>
-				<send_shipping_address>0</send_shipping_address>
+				<send_shipping_address>1</send_shipping_address>
 				<send_line_items>1</send_line_items>
+				<reauthorize_partial_invoice>1</reauthorize_partial_invoice>
+				<savecard_opt_out>1</savecard_opt_out>
+				<verify_ssl>1</verify_ssl>
 			</authnetcim_ach>
 		 </payment>
 	</default>

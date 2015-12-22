@@ -27,6 +27,7 @@ abstract class ParadoxLabs_TokenBase_Model_Gateway extends Mage_Core_Model_Abstr
 	protected $_endpoint;
 	protected $_secretKey;
 	protected $_testMode;
+	protected $_verifySsl;
 	
 	/**
 	 * $_fields sets validation for each input.
@@ -64,14 +65,15 @@ abstract class ParadoxLabs_TokenBase_Model_Gateway extends Mage_Core_Model_Abstr
 	{
 		$this->_secretKey	= isset( $parameters['secret_key'] ) ? $parameters['secret_key'] : '';
 		$this->_testMode	= isset( $parameters['test_mode'] ) ? (bool)$parameters['test_mode'] : false;
+		$this->_verifySsl	= isset( $parameters['verify_ssl'] ) ? (bool)$parameters['verify_ssl'] : true;
 		
 		$this->_defaults 	= array(
 			'login'		=> $parameters['login'],
 			'password'	=> $parameters['password']
 		);
 		
-		if( isset( $parameters['_endpoint'] ) ) {
-			$this->_endpoint = $parameters['_endpoint'];
+		if( isset( $parameters['endpoint'] ) ) {
+			$this->_endpoint = $parameters['endpoint'];
 		}
 		else {
 			$this->_endpoint = ( $this->_testMode === true ? $this->_endpointTest : $this->_endpointLive );

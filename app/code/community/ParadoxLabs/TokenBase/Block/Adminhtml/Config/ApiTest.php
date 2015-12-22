@@ -25,6 +25,56 @@ abstract class ParadoxLabs_TokenBase_Block_Adminhtml_Config_ApiTest extends Mage
 	
 	public function render( Varien_Data_Form_Element_Abstract $element )
 	{
+		/**
+		 * Self-healing: Fix common setup problems. Convenient spot.
+		 */
+		if( Mage::registry('tokenbase_self_healed') !== 1 ) {
+			try {
+				$setup = Mage::getResourceModel( 'core/setup', 'core_setup' );
+				
+				/**
+				 * Hash column
+				 */
+				$table = $setup->getTable('tokenbase/card');
+				if( $setup->getConnection()->tableColumnExists( $table, 'hash' ) !== true ) {
+					$setup->run("ALTER TABLE {$table} 
+						CHANGE `method` `method` VARCHAR(32),
+						ADD `hash` VARCHAR(40) NULL COMMENT 'Unique Hash',
+						ADD UNIQUE (`hash`);");
+					$setup->run("UPDATE {$table} SET `hash`=SHA1( CONCAT('tokenbase', customer_id, customer_email, method, profile_id, payment_id) ) WHERE `hash` IS NULL;");
+				}
+				
+				/**
+				 * Payment columns
+				 */
+				$table = $setup->getTable('sales/quote_payment');
+				if( $setup->getConnection()->tableColumnExists( $table, 'tokenbase_id' ) !== true ) {
+					$setup->getConnection()->addColumn(
+						$table,
+						'tokenbase_id',
+						"INT(11) UNSIGNED NULL COMMENT 'ParadoxLabs_TokenBase Card ID'"
+					);
+				}
+				
+				$table = $setup->getTable('sales/order_payment');
+				if( $setup->getConnection()->tableColumnExists( $table, 'tokenbase_id' ) !== true ) {
+					$setup->getConnection()->addColumn(
+						$table,
+						'tokenbase_id',
+						"INT(11) UNSIGNED NULL COMMENT 'ParadoxLabs_TokenBase Card ID'"
+					);
+				}
+				
+				Mage::register( 'tokenbase_self_healed', 1 );
+			}
+			catch( Exception $e ) {
+				Mage::helper('tokenbase')->log( $this->_code, (string)$e );
+			}
+		}
+		
+		/**
+		 * Test the API creds
+		 */
 		$test = $this->_testApi();
 		
 		if( $test !== false ) {

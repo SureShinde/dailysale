@@ -25,6 +25,65 @@ class ParadoxLabs_AuthorizeNetCim_Block_Adminhtml_Config_ApiTester extends Parad
 	 * Test the API connection and report common errors.
 	 */
 	protected function _testApi() {
+		/**
+		 * Self-healing: Fix common setup problems. Convenient spot.
+		 */
+		if( Mage::registry('authnetcim_self_healed') !== 1 ) {
+			try {
+				$setup = Mage::getModel( 'eav/entity_setup', 'core_setup' );
+				
+				/**
+				 * authnetcim_profile_id customer attribute
+				 */
+				if( $setup->getAttributeId('customer', 'authnetcim_profile_id') === false ) {
+					$setup->addAttribute(
+						'customer',
+						'authnetcim_profile_id',
+						array(
+							'label'				=> 'Authorize.Net CIM: Profile ID',
+							'type'				=> 'varchar',
+							'input'				=> 'text',
+							'default'			=> '',
+							'position'			=> 70,
+							'visible'			=> true,
+							'required'			=> false,
+							'user_defined'		=> true,
+							'visible_on_front'	=> false,
+						)
+					);
+				}
+				
+				/**
+				 * authnetcim_profile_version customer attribute
+				 */
+				if( $setup->getAttributeId('customer', 'authnetcim_profile_version') === false ) {
+					$setup->addAttribute(
+						'customer',
+						'authnetcim_profile_version',
+						array(
+							'label'				=> 'Authorize.Net CIM: Profile version (for updating legacy data)',
+							'type'				=> 'int',
+							'input'				=> 'text',
+							'default'			=> '100',
+							'position'			=> 71,
+							'visible'			=> true,
+							'required'			=> false,
+							'user_defined'		=> true,
+							'visible_on_front'	=> false,
+						)
+					);
+				}
+				
+				Mage::register( 'authnetcim_self_healed', 1 );
+			}
+			catch( Exception $e ) {
+				Mage::helper('tokenbase')->log( $this->_code, (string)$e );
+			}
+		}
+		
+		/**
+		 * Test the API connection.
+		 */
 		$method = Mage::helper('payment')->getMethodInstance( $this->_code );
 		$method->setStore( $this->_getStoreId() );
 		

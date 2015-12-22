@@ -58,20 +58,20 @@
 	</li>
 	<li <?php if( $this->haveStoredCards() ): ?>style="display:none"<?php endif; ?> class="<?php echo $newClass; ?>">
 		<label for="<?php echo $this->getMethodCode(); ?>_echeck_account_type" class="required"><em>*</em><?php echo $this->__('Account Type') ?></label>
-		<div class="input-box">
-			<?php $typeValue = ( $this->getInfoData('echeck_account_type') != '' ) ? $this->getInfoData('echeck_account_type') : 'checking'; ?>
-			<?php foreach( Mage::helper('authnetcim_ach')->getAchAccountTypes() as $k => $v ): ?>
-				<input type="radio" name="payment[echeck_account_type]" id="<?php echo $this->getMethodCode(); ?>_echeck_account_type_<?php echo $k; ?>" value="<?php echo $k; ?>" <?php if( $k == $typeValue ): ?>checked="checked"<?php endif ?> class="validate-one-required-by-name" />
-				<label for="<?php echo $this->getMethodCode(); ?>_echeck_account_type_<?php echo $k; ?>"><?php echo $v; ?></label><br />
-			<?php endforeach ?>
-		</div>
+		<?php $typeValue = ( $this->getInfoData('echeck_account_type') != '' ) ? $this->getInfoData('echeck_account_type') : 'checking'; ?>
+		<?php foreach( Mage::helper('authnetcim_ach')->getAchAccountTypes() as $k => $v ): ?>
+			<div class="input-box">
+				<input type="radio" name="payment[echeck_account_type]" id="<?php echo $this->getMethodCode(); ?>_echeck_account_type_<?php echo $k; ?>" value="<?php echo $k; ?>" <?php if( $k == $typeValue ): ?>checked="checked"<?php endif ?> class="validate-one-required-by-name left" />
+				<label for="<?php echo $this->getMethodCode(); ?>_echeck_account_type_<?php echo $k; ?>"><?php echo $v; ?></label>
+			</div>
+		<?php endforeach ?>
 	</li>
 	<?php echo $this->getChildHtml(); ?>
 	<?php if( !$this->isNominalCheckout() && !$this->isGuestCheckout() && $this->getMethod()->getConfigData('allow_unsaved') ): ?>
 		<li <?php if( $this->haveStoredCards() ): ?>style="display:none"<?php endif; ?> class="<?php echo $newClass; ?>">
 			<label>&nbsp;</label>
 			<input type="hidden" name="payment[save]" value="0" />
-			<input type="checkbox" name="payment[save]" id="<?php echo $this->getMethodCode(); ?>_save" value="1" checked="checked" autocomplete="on" /> 
+			<input type="checkbox" name="payment[save]" id="<?php echo $this->getMethodCode(); ?>_save" value="1" <?php if( $this->getMethod()->getConfigData('savecard_opt_out') ): ?>checked="checked" <?php endif; ?>autocomplete="on" /> 
 			<label for="<?php echo $this->getMethodCode(); ?>_save" style="float:none;font-weight:normal;"><?php echo $this->__('Save for next time'); ?></label>
 		</li>
 	<?php elseif( $this->isNominalCheckout() || !$this->isGuestCheckout() ): ?>
@@ -81,9 +81,9 @@
 	<?php else: /* Guests are not given any choice or warning, because the card can never be reused. */ ?>
 	<?php endif; ?>
 </ul>
-<?php if( $this->haveStoredCards() ): ?>
-	<script type="text/javascript">
-	//<![CDATA[
+<script type="text/javascript">
+//<![CDATA[
+	<?php if( $this->haveStoredCards() ): ?>
 		$('<?php echo $this->getMethodCode(); ?>_add_new').observe( 'click', function(e) {
 			e.preventDefault();
 			
@@ -96,14 +96,6 @@
 			});
 			
 			$('<?php echo $this->getMethodCode(); ?>_card_id').setValue(0);
-			
-			return false;
-		});
-		
-		$('<?php echo $this->getMethodCode(); ?>_check_expln').observe( 'click', function(e) {
-			e.preventDefault();
-			
-			$('<?php echo $this->getMethodCode(); ?>_check_expln_contents').toggle();
 			
 			return false;
 		});
@@ -123,6 +115,14 @@
 			
 			return false;
 		});
-	//]]>
-	</script>
-<?php endif; ?>
+	<?php endif; ?>
+	
+	$('<?php echo $this->getMethodCode(); ?>_check_expln').observe( 'click', function(e) {
+		e.preventDefault();
+		
+		$('<?php echo $this->getMethodCode(); ?>_check_expln_contents').toggle();
+		
+		return false;
+	});
+//]]>
+</script>

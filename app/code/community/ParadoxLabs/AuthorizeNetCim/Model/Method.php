@@ -59,46 +59,21 @@ class ParadoxLabs_AuthorizeNetCim_Model_Method extends ParadoxLabs_TokenBase_Mod
 	/**
 	 * Create shipping address record before running the transaction.
 	 */
-	protected function _createShippingAddress( Varien_Object $payment )
+	protected function _handleShippingAddress( Varien_Object $payment )
 	{
 		if( $this->getAdvancedConfigData('send_shipping_address') && $payment->getOrder()->getIsVirtual() == false ) {
 			$address = $payment->getOrder()->getShippingAddress();
 			
-			if( $address->getCustomerAddressId() != '' ) {
-				$customerAddress = Mage::getModel('customer/address')->load( $address->getCustomerAddressId() );
-				
-				if( $customerAddress && $customerAddress->getId() == $address->getCustomerAddressId() && $customerAddress->getStreet(1) != '' ) {
-					$address = $customerAddress;
-				}
-			}
-			
-			if( $address->getAuthnetcimShippingId() == '' && $address->getStreet(1) != '' ) {
-				$this->_log( sprintf( '_createShippingAddress(%s %s)', get_class( $address ), $address->getId() ) );
-				
-				$this->gateway()->setParameter( 'customerProfileId', $this->getCard()->getProfileId() );
-				
-				$this->gateway()->setParameter( 'shipToFirstName', $address->getFirstname() );
-				$this->gateway()->setParameter( 'shipToLastName', $address->getLastname() );
-				$this->gateway()->setParameter( 'shipToCompany', $address->getCompany() );
-				$this->gateway()->setParameter( 'shipToAddress', $address->getStreet(1) );
-				$this->gateway()->setParameter( 'shipToCity', $address->getCity() );
-				$this->gateway()->setParameter( 'shipToState', $address->getRegion() );
-				$this->gateway()->setParameter( 'shipToZip', $address->getPostcode() );
-				$this->gateway()->setParameter( 'shipToCountry', $address->getCountry() );
-				$this->gateway()->setParameter( 'shipToPhoneNumber', $address->getTelephone() );
-				$this->gateway()->setParameter( 'shipToFaxNumber', $address->getFax() );
-				
-				$shippingId = $this->gateway()->createCustomerShippingAddress();
-				
-				$address->setAuthnetcimShippingId( $shippingId )->save();
-			}
-			else {
-				$shippingId = $address->getAuthnetcimShippingId();
-			}
-			
-			if( !empty( $shippingId ) ) {
-				$this->gateway()->setParameter( 'customerShippingAddressId', $shippingId );
-			}
+			$this->gateway()->setParameter( 'shipToFirstName', $address->getFirstname() );
+			$this->gateway()->setParameter( 'shipToLastName', $address->getLastname() );
+			$this->gateway()->setParameter( 'shipToCompany', $address->getCompany() );
+			$this->gateway()->setParameter( 'shipToAddress', $address->getStreetFull() );
+			$this->gateway()->setParameter( 'shipToCity', $address->getCity() );
+			$this->gateway()->setParameter( 'shipToState', $address->getRegion() );
+			$this->gateway()->setParameter( 'shipToZip', $address->getPostcode() );
+			$this->gateway()->setParameter( 'shipToCountry', $address->getCountry() );
+			$this->gateway()->setParameter( 'shipToPhoneNumber', $address->getTelephone() );
+			$this->gateway()->setParameter( 'shipToFaxNumber', $address->getFax() );
 		}
 		
 		return $this;
@@ -109,7 +84,7 @@ class ParadoxLabs_AuthorizeNetCim_Model_Method extends ParadoxLabs_TokenBase_Mod
 	 */
 	protected function _beforeAuthorize( Varien_Object $payment, $amount )
 	{
-		$this->_createShippingAddress( $payment );
+		$this->_handleShippingAddress( $payment );
 		
 		return parent::_beforeAuthorize( $payment, $amount );
 	}
@@ -120,6 +95,7 @@ class ParadoxLabs_AuthorizeNetCim_Model_Method extends ParadoxLabs_TokenBase_Mod
 	protected function _afterAuthorize( Varien_Object $payment, $amount, Varien_Object $response )
 	{
 		$payment = $this->_fixLegacyCcType( $payment, $response );
+		$payment = $this->_storeTransactionStatuses( $payment, $response );
 		
 		return parent::_afterAuthorize( $payment, $amount, $response );
 	}
@@ -129,7 +105,7 @@ class ParadoxLabs_AuthorizeNetCim_Model_Method extends ParadoxLabs_TokenBase_Mod
 	 */
 	protected function _beforeCapture( Varien_Object $payment, $amount )
 	{
-		$this->_createShippingAddress( $payment );
+		$this->_handleShippingAddress( $payment );
 		
 		return parent::_beforeCapture( $payment, $amount );
 	}
@@ -145,20 +121,39 @@ class ParadoxLabs_AuthorizeNetCim_Model_Method extends ParadoxLabs_TokenBase_Mod
 		 * If this is a pre-auth capture for less than the total value of the order,
 		 * try to reauthorize any remaining balance. So we have it.
 		 */
-		if( $this->gateway()->getHaveAuthorized() && $this->getConfigData('advanced/require_ccv') !== true && $outstanding > 0 ) {
+		if( $this->gateway()->getHaveAuthorized()
+			&& $this->getConfigData('reauthorize_partial_invoice') == 1
+			&& $outstanding > 0 ) {
 			try {
 				$this->_log( sprintf( '_afterCapture(): Reauthorizing for %s', $outstanding ) );
 				
-				$shippingId		= $this->gateway()->getParameter('customerShippingAddressId');
-				
 				$this->gateway()->clearParameters();
 				$this->gateway()->setCard( $this->gateway()->getCard() );
-				$this->gateway()->setParameter( 'customerShippingAddressId', $shippingId );
 				$this->gateway()->setIsReauthorize( true );
 				
 				$authResponse	= $this->gateway()->authorize( $payment, $outstanding );
 				
 				$payment->getOrder()->setExtOrderId( sprintf( '%s:%s', $authResponse->getTransactionId(), $authResponse->getAuthCode() ) );
+				
+				$wasTransId = $payment->getTransactionId();
+				
+				$payment->setTransactionId( $this->_getValidTransactionId( $payment, $authResponse->getTransactionId() ) );
+				$payment->setIsTransactionClosed(0);
+				$payment->setTransactionAdditionalInfo( Mage_Sales_Model_Order_Payment_Transaction::RAW_DETAILS, $authResponse->getData() );
+				
+				$message = Mage::helper('tokenbase')->__(
+					'Reauthorized outstanding amount of %s.',
+					$payment->getOrder()->getBaseCurrency()->formatTxt( $outstanding, array( 'currency' => $this->getConfigData('currency') ) )
+				);
+				
+				$payment->addTransaction(
+					Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH,
+					$payment->getOrder(),
+					false,
+					$message
+				);
+				
+				$payment->setTransactionId( $wasTransId );
 			}
 			catch( Exception $e ) {
 				$payment->getOrder()->setExtOrderId( sprintf( '%s:', $response->getTransactionId() ) );
@@ -169,6 +164,7 @@ class ParadoxLabs_AuthorizeNetCim_Model_Method extends ParadoxLabs_TokenBase_Mod
 		}
 		
 		$payment = $this->_fixLegacyCcType( $payment, $response );
+		$payment = $this->_storeTransactionStatuses( $payment, $response );
 		
 		return parent::_afterCapture( $payment, $amount, $response );
 	}
@@ -188,6 +184,26 @@ class ParadoxLabs_AuthorizeNetCim_Model_Method extends ParadoxLabs_TokenBase_Mod
 				
 				$payment->getOrder()->getPayment()->setCcType( $ccType );
 			}
+		}
+		
+		return $payment;
+	}
+	
+	/**
+	 * Store response statuses persistently.
+	 */
+	protected function _storeTransactionStatuses( $payment, $response )
+	{
+		if( $payment->getData('cc_avs_status') == '' && $response->getData('avs_result_code') != '' ) {
+			$payment->setData( 'cc_avs_status', $response->getData('avs_result_code') );
+		}
+		
+		if( $payment->getData('cc_cid_status') == '' && $response->getData('card_code_response_code') != '' ) {
+			$payment->setData( 'cc_cid_status', $response->getData('card_code_response_code') );
+		}
+		
+		if( $payment->getData('cc_status') == '' && $response->getData('cavv_response_code') != '' ) {
+			$payment->setData( 'cc_status', $response->getData('cavv_response_code') );
 		}
 		
 		return $payment;

@@ -82,6 +82,8 @@ class ParadoxLabs_TokenBase_Model_Card extends Mage_Core_Model_Abstract
 		
 		Mage::helper('tokenbase')->cleanupArray( $addressData );
 		
+		$this->_address = null;
+		
 		return parent::setAddress( serialize( $addressData ) );
 	}
 	
@@ -374,20 +376,10 @@ class ParadoxLabs_TokenBase_Model_Card extends Mage_Core_Model_Abstract
 							->getFirstItem();
 			
 			/**
-			 * If we find a duplicate, switch to that one, but retain the current customer and active state.
+			 * If we find a duplicate, switch to that one, but retain the current info otherwise.
 			 */
 			if( $dupe && $dupe->getId() > 0 && $dupe->getId() != $this->getId() ) {
-				Mage::helper('tokenbase')->log( $this->getMethod(), sprintf( 'Merging duplicate payment data into card %s', $dupe->getId() ) );
-				
-				$customerId		= $this->getCustomerId();
-				$customerEmail	= $this->getCustomerEmail();
-				$active			= !is_null( $this->getActive() ) ? $this->getActive() : 1;
-				
-				$this->setData( $dupe->getData() )
-					 ->setCustomerId( $customerId )
-					 ->setCustomerEmail( $customerEmail )
-					 ->setActive( intval( $active ) )
-					 ->isObjectNew( false );
+				$this->_mergeCardOnto( $dupe );
 			}
 		}
 		
@@ -425,5 +417,23 @@ class ParadoxLabs_TokenBase_Model_Card extends Mage_Core_Model_Abstract
 	protected function _beforeDelete()
 	{
 		return parent::_beforeDelete();
+	}
+	
+	/**
+	 * Merge the current card info over the given one. Retain the given card's ID.
+	 * 
+	 * It is assumed that the current card and the one given have the same gateway reference.
+	 *
+	 * @param  ParadoxLabs_TokenBase_Model_Card $card Card to merge current data onto.
+	 * @return $this
+	 */
+	protected function _mergeCardOnto( ParadoxLabs_TokenBase_Model_Card $card )
+	{
+		Mage::helper('tokenbase')->log( $this->getMethod(), sprintf( 'Merging duplicate payment data into card %s', $card->getId() ) );
+		
+		$this->setId( $card->getId() );
+		$this->isObjectNew( false );
+		
+		return $this;
 	}
 }

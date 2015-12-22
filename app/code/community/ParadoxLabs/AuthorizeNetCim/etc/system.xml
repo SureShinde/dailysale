@@ -104,7 +104,7 @@
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>0</show_in_store>
-							<comment>'Live' to run a test transaction when storing new cards (highly recommended). This will incur an extra txn fee.</comment>
+							<comment>'Live' to validate cards before storing in CIM. This will incur an extra txn fee.</comment>
 						</validation_mode>
 						<cctypes translate="label">
 							<label>Credit Card Types</label>
@@ -224,7 +224,7 @@
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>0</show_in_store>
-							<comment>If yes, shipping address will be sent with each transaction. Required for some fraud filters, but it will add an extra API request and slow down checkout.</comment>
+							<comment>If yes, shipping address will be sent with each transaction. Required for some fraud filters.</comment>
 						</send_shipping_address>
 						<send_line_items translate="label">
 							<label>Send Line Items</label>
@@ -236,6 +236,38 @@
 							<show_in_store>0</show_in_store>
 							<comment>If yes, the items will be included with each transaction. May not be desired for some accounting integrations.</comment>
 						</send_line_items>
+						<reauthorize_partial_invoice translate="label">
+							<label>Reauthorize on Partial Invoice</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>540</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+							<comment>If yes, when you create a partial invoice, we will reauthorize any outstanding balance on the order. This helps guarantee funds, but can cause multiple holds on the card until transactions settle.</comment>
+							<depends><payment_action>authorize</payment_action></depends>
+						</reauthorize_partial_invoice>
+						<savecard_opt_out translate="label">
+							<label>Auto-select 'save for next time'</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>550</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+							<comment>If yes, will be selected by default during checkout.</comment>
+							<depends><allow_unsaved>1</allow_unsaved></depends>
+						</savecard_opt_out>
+						<verify_ssl translate="label">
+							<label>Verify SSL</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>560</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+							<comment>Strongly recommended. Do not disable unless you get SSL errors and your host is unable to fix them.</comment>
+						</verify_ssl>
 					</fields>
 				</authnetcim>
 				<authnetcim_ach translate="label" module="authnetcim_ach">
@@ -339,17 +371,17 @@
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>0</show_in_store>
-							<comment>'Live' to run a test transaction when storing new cards (highly recommended). This will incur an extra txn fee.</comment>
+							<comment>'Live' to validate info before storing in CIM. This will incur an extra txn fee.</comment>
 						</validation_mode>
 						<allow_unsaved translate="label">
-							<label>Allow cards to not be stored</label>
+							<label>Allow info to not be stored</label>
 							<frontend_type>select</frontend_type>
 							<source_model>adminhtml/system_config_source_yesno</source_model>
 							<sort_order>95</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>0</show_in_store>
-							<comment>If yes, customers can choose whether to save their credit card during checkout.</comment>
+							<comment>If yes, customers can choose whether to save their payment info during checkout.</comment>
 						</allow_unsaved>
 						<show_branding translate="label">
 							<label>Show Authorize.Net logo</label>
@@ -429,7 +461,7 @@
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>0</show_in_store>
-							<comment>If yes, shipping address will be sent with each transaction. Required for some fraud filters, but it will add an extra API request and slow down checkout.</comment>
+							<comment>If yes, shipping address will be sent with each transaction. Required for some fraud filters.</comment>
 						</send_shipping_address>
 						<send_line_items translate="label">
 							<label>Send Line Items</label>
@@ -441,6 +473,38 @@
 							<show_in_store>0</show_in_store>
 							<comment>If yes, the items will be included with each transaction. May not be desired for some accounting integrations.</comment>
 						</send_line_items>
+						<reauthorize_partial_invoice translate="label">
+							<label>Reauthorize on Partial Invoice</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>540</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+							<comment>If yes, when you create a partial invoice, we will reauthorize any outstanding balance on the order.</comment>
+							<depends><payment_action>authorize</payment_action></depends>
+						</reauthorize_partial_invoice>
+						<savecard_opt_out translate="label">
+							<label>Auto-select 'save for next time'</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>550</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+							<comment>If yes, will be selected by default during checkout.</comment>
+							<depends><allow_unsaved>1</allow_unsaved></depends>
+						</savecard_opt_out>
+						<verify_ssl translate="label">
+							<label>Verify SSL</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>560</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+							<comment>Strongly recommended. Do not disable unless you get SSL errors and your host is unable to fix them.</comment>
+						</verify_ssl>
 					</fields>
 				</authnetcim_ach>
 			</groups>

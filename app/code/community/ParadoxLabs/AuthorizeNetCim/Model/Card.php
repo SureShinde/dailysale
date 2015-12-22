@@ -24,9 +24,12 @@ class ParadoxLabs_AuthorizeNetCim_Model_Card extends ParadoxLabs_TokenBase_Model
 	 */
 	public function importLegacyData( Varien_Object $payment )
 	{
-		// Customer ID -- pull from customer if possible, otherwise go to Authorize.Net.
+		// Customer ID -- pull from customer or payment if possible, otherwise go to Authorize.Net.
 		if( intval( $this->getCustomer()->getAuthnetcimProfileId() ) > 0 ) {
 			$this->setProfileId( $this->getCustomer()->getAuthnetcimProfileId() );
+		}
+		elseif( intval( $payment->getAdditionalInformation('profile_id') ) > 0 ) {
+			$this->setProfileId( intval( $payment->getAdditionalInformation('profile_id') ) );
 		}
 		else {
 			$this->_createCustomerProfile();
@@ -169,7 +172,7 @@ class ParadoxLabs_AuthorizeNetCim_Model_Card extends ParadoxLabs_TokenBase_Model
 			$gateway->setParameter( 'billToFirstName', $address->getFirstname() );
 			$gateway->setParameter( 'billToLastName', $address->getLastname() );
 			$gateway->setParameter( 'billToCompany', $address->getCompany() );
-			$gateway->setParameter( 'billToAddress', $address->getStreet(1) );
+			$gateway->setParameter( 'billToAddress', $address->getStreetFull() );
 			$gateway->setParameter( 'billToCity', $address->getCity() );
 			$gateway->setParameter( 'billToState', $address->getRegion() );
 			$gateway->setParameter( 'billToZip', $address->getPostcode() );
@@ -195,13 +198,17 @@ class ParadoxLabs_AuthorizeNetCim_Model_Card extends ParadoxLabs_TokenBase_Model
 			$gateway->setParameter( 'billToFirstName', $address->getFirstname() );
 			$gateway->setParameter( 'billToLastName', $address->getLastname() );
 			$gateway->setParameter( 'billToCompany', $address->getCompany() );
-			$gateway->setParameter( 'billToAddress', $address->getStreet(1) );
+			$gateway->setParameter( 'billToAddress', $address->getStreetFull() );
 			$gateway->setParameter( 'billToCity', $address->getCity() );
 			$gateway->setParameter( 'billToState', $address->getRegion() );
 			$gateway->setParameter( 'billToZip', $address->getPostcode() );
 			$gateway->setParameter( 'billToCountry', $address->getCountry() );
 			$gateway->setParameter( 'billToPhoneNumber', $address->getTelephone() );
 			$gateway->setParameter( 'billToFaxNumber', $address->getFax() );
+			
+			if( Mage::helper('tokenbase')->getIsCheckout() !== true ) {
+				$gateway->setParameter( 'validationMode', $this->getMethodInstance()->getConfigData('validation_mode') );
+			}
 			
 			$this->_setPaymentInfoOnUpdate( $gateway );
 			
@@ -225,8 +232,20 @@ class ParadoxLabs_AuthorizeNetCim_Model_Card extends ParadoxLabs_TokenBase_Model
 			
 			return $this->_createCustomerPaymentProfile( false );
 		}
+		elseif( $response['messages']['resultCode'] != 'Ok' && ( $response['messages']['message']['code'] != 'E00039' || empty( $paymentId ) ) ) {
+			$errorCode	= $response['messages']['message']['code'];
+			$errorText	= $response['messages']['message']['text'];
+			
+			Mage::helper('tokenbase')->log( $this->getMethod(), sprintf( "API error: %s: %s", $errorCode, $errorText ) );
+			$gateway->logLogs();
+			
+			Mage::throwException( Mage::helper('tokenbase')->__( sprintf( 'Authorize.Net CIM Gateway: %s', $errorText ) ) );
+		}
 		
 		if( !empty( $paymentId ) ) {
+			/**
+			 * Prevent data from being updated multiple times in one request.
+			 */
 			$this->setPaymentId( $paymentId );
 			$this->setNoSync( true );
 		}
