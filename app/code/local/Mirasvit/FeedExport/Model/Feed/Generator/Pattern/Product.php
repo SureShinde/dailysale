@@ -469,7 +469,8 @@ class Mirasvit_FeedExport_Model_Feed_Generator_Pattern_Product
         $category = null;
         $currentPosition = null;
 
-        $collection = Mage::getModel('catalog/category')->getCollection();
+        $collection = Mage::getModel('catalog/category')->getCollection()
+        ->addAttributeToFilter('entity_id', array('in' => array(44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,67,68,69,70,71,72,73,74,76)));
         $collection->getSelect()
             ->joinInner(
                 array('category_product' => $collection->getTable('catalog/category_product')),
