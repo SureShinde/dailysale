@@ -57,6 +57,7 @@
         <reference name="head">
             <action method="setTitle"><title>Dropship Vendor Interface</title></action>
             <action method="addCss"><stylesheet>css/udropship.css</stylesheet></action>
+            <action method="removeItem"><type>skin_js</type><name>iwd/signin/signin.js</name></action>
         </reference>
         <reference name="header">
             <action method="setTemplate"><template>unirgy/dropship/vendor/header.phtml</template></action>
