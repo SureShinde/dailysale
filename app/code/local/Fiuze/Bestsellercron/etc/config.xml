@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Fiuze_Bestsellercron>
-            <version>0.3.2</version>
+            <version>0.3.3</version>
         </Fiuze_Bestsellercron>
     </modules>
     <global>
