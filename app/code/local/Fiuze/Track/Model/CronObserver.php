@@ -1,4 +1,10 @@
 <?php
+/**
+ * @author Fiuze Team
+ * @category Fiuze
+ * @package Fiuze_Track
+ * @copyright Copyright (c) 2016 Fiuze
+ */
 
 class Fiuze_Track_Model_CronObserver {
 

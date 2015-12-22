@@ -1,4 +1,10 @@
 <?php
+/**
+ * @author Fiuze Team
+ * @category Fiuze
+ * @package Fiuze_Track
+ * @copyright Copyright (c) 2016 Fiuze
+ */
 
 //require_once 'Mage/Adminhtml/Block/Sales/Order/Shipment/View/Tracking.php';
 

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Module configuration
+ *
+ * @author Fiuze Team
+ * @category Fiuze
+ * @package Fiuze_DropshipPo
+ * @copyright Copyright (c) 2016 Fiuze
+ */
+-->
+<layout>
+    <adminhtml_sales_order_shipment_new>
+        <reference name="form">
+            <block type="aftership_track/adminhtml_sales_order_shipment_view_tracking" name="shipment_tracking" template="udpo/custom/trackingAjax.phtml"></block>
+        </reference>
+    </adminhtml_sales_order_shipment_new>
+</layout>

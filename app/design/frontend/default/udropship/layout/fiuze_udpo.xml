@@ -1,4 +1,14 @@
 <?xml version="1.0"?>
+<!--
+/**
+ * Module template overrides
+ *
+ * @author Fiuze Team
+ * @category Fiuze
+ * @package Fiuze_DropshipPo
+ * @copyright Copyright (c) 2016 Fiuze
+ */
+-->
 <layout>
     <udpo_vendor_index>
         <reference name="udpo.grid">

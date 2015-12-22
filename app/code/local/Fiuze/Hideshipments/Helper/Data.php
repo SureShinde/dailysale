@@ -1,9 +1,9 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: alex
- * Date: 17.08.15
- * Time: 11:30
+ * @author Fiuze Team
+ * @category Fiuze
+ * @package Fiuze_Hideshipments
+ * @copyright Copyright (c) 2016 Fiuze
  */ 
 class Fiuze_Hideshipments_Helper_Data extends Mage_Core_Helper_Abstract {
 

@@ -1,63 +1,40 @@
 <?xml version="1.0"?>
+<!--
+/**
+ * Module configuration
+ *
+ * @author Fiuze Team
+ * @category Fiuze
+ * @package Fiuze_Track
+ * @copyright Copyright (c) 2016 Fiuze
+ */
+-->
 <config>
     <modules>
         <Fiuze_Track>
             <version>0.3.4</version>
         </Fiuze_Track>
     </modules>
-<global>
-    <models>
-        <aftershiptrackcron>
-            <rewrite>
-                <observer>Fiuze_Track_Model_Observer</observer>
-            </rewrite>
-        </aftershiptrackcron>
-<!--        <track>
-            <rewrite>
-                <observer>Fiuze_Track_Model</observer>
-            </rewrite>
-        </track>-->
-    </models>
-<!--    <models>
-        <fiuzetrackcron>
-            <class>Fiuze_Track_Model</class>
-        </fiuzetrackcron>
-        <track>
-            <class>Fiuze_Track_Model</class>
-            <resourceModel>track_mysql4</resourceModel>
-        </track>
-        <track_mysql4>
-            <class>Fiuze_Track_Model_Resource</class>
-            <entities>
-                <schedule>
-                    <table>schedule_aftership</table>
-                </schedule>
-            </entities>
-        </track_mysql4>
-    </models>-->
-    <events>
-<!--        <sales_order_shipment_track_save_after>
-            <observers>
-                <fishpig_save_product_data_vendor>
-                    <type>singleton</type>
-                    <class>track/observer</class>
-                    <method>salesOrderShipmentTrackSaveAfterVendor</method>
-                </fishpig_save_product_data_vendor>
-            </observers>
-        </sales_order_shipment_track_save_after>-->
-        <sales_order_shipment_track_save_after>
-            <observers>
-                <fishpig_save_product_data>
-                    <type>singleton</type>
-                    <class>aftershiptrackcron/observer</class>
-                    <method>salesOrderShipmentTrackSaveAfter</method>
-                </fishpig_save_product_data>
-            </observers>
-        </sales_order_shipment_track_save_after>
-    </events>
-</global>
-
-
+    <global>
+        <models>
+            <aftershiptrackcron>
+                <rewrite>
+                    <observer>Fiuze_Track_Model_Observer</observer>
+                </rewrite>
+            </aftershiptrackcron>
+        </models>
+        <events>
+            <sales_order_shipment_track_save_after>
+                <observers>
+                    <fishpig_save_product_data>
+                        <type>singleton</type>
+                        <class>aftershiptrackcron/observer</class>
+                        <method>salesOrderShipmentTrackSaveAfter</method>
+                    </fishpig_save_product_data>
+                </observers>
+            </sales_order_shipment_track_save_after>
+        </events>
+    </global>
     <adminhtml>
         <events>
             <sales_order_shipment_track_save_after>

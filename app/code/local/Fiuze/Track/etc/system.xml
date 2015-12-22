@@ -1,4 +1,14 @@
 <config>
+    <!--
+/**
+ * Module system configuration
+ *
+ * @author Fiuze Team
+ * @category Fiuze
+ * @package Fiuze_Track
+ * @copyright Copyright (c) 2016 Fiuze
+ */
+-->
     <tabs>
         <aftershipconfig translate="label" module="aftership">
             <label>Aftership</label>

@@ -1,4 +1,14 @@
 <?xml version="1.0"?>
+<!--
+/**
+ * Module declaration
+ *
+ * @author Fiuze Team
+ * @category Fiuze
+ * @package Fiuze_DropshipBatch
+ * @copyright Copyright (c) 2016 Fiuze
+ */
+-->
 <config>
     <modules>
         <Fiuze_DropshipBatch>

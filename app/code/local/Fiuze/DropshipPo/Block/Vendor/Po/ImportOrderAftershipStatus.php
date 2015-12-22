@@ -1,4 +1,11 @@
 <?php
+/**
+ * @author Fiuze Team
+ * @category Fiuze
+ * @package Fiuze_DropshipPo
+ * @copyright Copyright (c) 2016 Fiuze
+ */
+
 require_once Mage::getBaseDir('lib').DS.'SweetTooth/pest/vendor/autoload.php';
 
 class Fiuze_DropshipPo_Block_Vendor_Po_ImportOrderAftershipStatus extends Mage_Core_Block_Template

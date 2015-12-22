@@ -1,4 +1,11 @@
 <?php
+/**
+ * @author Fiuze Team
+ * @category Fiuze
+ * @package Fiuze_Track
+ * @copyright Copyright (c) 2016 Fiuze
+ */
+
 require_once Mage::getBaseDir('lib').DS.'SweetTooth/pest/vendor/autoload.php';
 
 class Fiuze_Track_Model_Observer extends Aftership_Track_Model_Observer{

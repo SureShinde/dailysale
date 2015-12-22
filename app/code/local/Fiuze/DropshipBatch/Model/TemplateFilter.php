@@ -1,4 +1,10 @@
 <?php
+/**
+ * @author Fiuze Team
+ * @category Fiuze
+ * @package Fiuze_DropshipBatch
+ * @copyright Copyright (c) 2016 Fiuze
+ */
 
 class Fiuze_DropshipBatch_Model_TemplateFilter extends Unirgy_DropshipBatch_Model_TemplateFilter
 {

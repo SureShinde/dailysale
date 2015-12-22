@@ -1,4 +1,14 @@
 <?xml version="1.0"?>
+<!--
+/**
+ * Header override
+ *
+ * @author Fiuze Team
+ * @category Fiuze
+ * @package Fiuze_Dropship
+ * @copyright Copyright (c) 2016 Fiuze
+ */
+-->
 <layout>
     <udropship_vendor>
         <reference name="header">

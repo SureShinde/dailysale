@@ -1,4 +1,10 @@
 <?php
+/**
+ * @author Fiuze Team
+ * @category Fiuze
+ * @package Fiuze_Track
+ * @copyright Copyright (c) 2016 Fiuze
+ */
 
 $installer = $this;
 $installer->startSetup();

@@ -37,4 +37,13 @@
             </updates>
         </layout>
     </frontend>
+    <adminhtml>
+        <layout>
+            <updates>
+                <Fiuze_dropshippo>
+                    <file>fiuze_dropshippo.xml</file>
+                </Fiuze_dropshippo>
+            </updates>
+        </layout>
+    </adminhtml>
 </config>

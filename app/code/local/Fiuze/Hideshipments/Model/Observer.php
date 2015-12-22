@@ -1,4 +1,10 @@
 <?php
+/**
+ * @author Fiuze Team
+ * @category Fiuze
+ * @package Fiuze_Hideshipments
+ * @copyright Copyright (c) 2016 Fiuze
+ */
 
 class Fiuze_Hideshipments_Model_Observer
 {
