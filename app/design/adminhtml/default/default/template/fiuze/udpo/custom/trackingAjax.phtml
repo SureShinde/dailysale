@@ -78,12 +78,12 @@
                     <?php $vendor_id = $vendor_id['0']['udropship_vendor']; ?>
                     <?php $carrier_code = Mage::getModel('udropship/vendor')->load($vendor_id)->getCarrierCode(); ?>
                     <?php foreach ($this->getCarriers() as $_code=>$_name): ?>
-                        <?php   if($carrier_code==$_code){?>
+                        <?php   if($carrier_code==$_code):?>
                             <option selected value="<?php echo $_code ?>"><?php echo $this->escapeHtml($_name) ?></option>
                             <?php $_name_vendor = $_name; ?>
-                        <?php }else{ ?>
+                        <?php else: ?>
                             <option value="<?php echo $_code ?>"><?php echo $this->escapeHtml($_name) ?></option>
-                        <?php } ?>
+                        <?php endif; ?>
                     <?php endforeach; ?>
                 </select>
             </td>

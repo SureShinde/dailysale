@@ -27,6 +27,7 @@
             <action method="setTemplate"><template>fiuze/udpo/vendor/po/info.phtml</template></action>
         </reference>
     </udpo_vendor_udpoinfo>
+
     <udbatch_vendor_batch_importorders>
         <update handle="udropship_vendor" />
         <reference name="udbatch_importstock">

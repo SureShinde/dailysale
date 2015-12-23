@@ -133,17 +133,9 @@ $_dateFormat = Varien_Date::convertZendToStrFtime(Mage::app()->getLocale()->getD
                 <select id="submit_action" name="submit_action">
                     <option value=""><?php echo $_hlp->__('* No action')?></option>
                     <option value="udpoMultiPdf"><?php echo $_hlp->__('Download Packing Slips')?></option>
-<!--                    <option value="packingSlips">--><?php //echo $_hlp->__('Download Packing Slips')?><!--</option>-->
-<?php //if ($_vendor->getLabelType()): ?>
-<!--                    <option value="udpoLabelBatch">--><?php //echo $_hlp->__('Create and Download Labels Batch')?><!--</option>-->
-<!--                    <option value="existingLabelBatch">--><?php //echo $_hlp->__('Download Existing Labels Batch')?><!--</option>-->
-<?php //endif ?>
-<!--                    <option value="updateUdpoStatus">--><?php //echo $_hlp->__('Update Status')?><!--</option>-->
                     <?php if ($_hlp->isModuleActive('Unirgy_DropshipBatch')): ?>
                     <option value="udbatchExport"><?php echo $_hlp->__('Export Orders')?></option>
                     <?php endif ?>
-<!--                    <option value="createShipment">--><?php //echo $_hlp->__('Create Shipments')?><!--</option>-->
-<!--                    <option value="createShipmentAndEmail">--><?php //echo $_hlp->__('Create Shipments and Send Customer Notifications')?><!--</option>-->
                 </select>
                 <select id="batch_update_status" name="update_status">
                     <option value=""><?php echo $_hlp->__('* Automatic') ?></option>
@@ -224,6 +216,7 @@ $_dateFormat = Varien_Date::convertZendToStrFtime(Mage::app()->getLocale()->getD
 </div>
 
 <script type="text/javascript">
+    //<![CDATA[
 var dateFields = ['filter-order_date-from', 'filter-order_date-to', 'filter-po_date-from', 'filter-po_date-to'];
 
 for (var i=0, l=dateFields.length; i<l; i++) {
@@ -341,7 +334,7 @@ function validateSearch(form) {
                 +'" style="display:none" onload="afterDownloadSubmit(\''+ifrId+'\')"></iframe>'
             })
         }
-    } 
+    }
     return false;
 }
 
@@ -436,7 +429,7 @@ function initUdpoForm(id) {
             var idx = el.id.match(/[0-9]+/);
             var qtyCanceled = '';
             try {
-                qtyCanceled = poItemsJson[id][idx]['qty_canceled']; 
+                qtyCanceled = poItemsJson[id][idx]['qty_canceled'];
             } catch (e) {}
             $(el).insert({bottom:'<td class="a-center">'+qtyCanceled+'</td>'});
         });
@@ -459,7 +452,7 @@ function initUdpoForm(id) {
             onComplete: function (transport) { initUdpoForm.defer(id); }
         });
     });
-    
+
     $('addcomment-'+id) && $('addcomment-'+id).observe('click', function () {
         if (!validatePoSubmit(id)) {
             return;
@@ -920,7 +913,7 @@ function syncUseCustomWeight(el, poId)
         }
     }
 }
-
+//]]>
 </script>
 
 <iframe id="download_iframe" name="download_iframe" src="<?php echo
