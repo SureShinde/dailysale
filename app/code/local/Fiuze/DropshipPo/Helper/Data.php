@@ -30,7 +30,7 @@ class Fiuze_DropshipPo_Helper_Data extends Unirgy_DropshipPo_Helper_Data
 
             $r = Mage::app()->getRequest();
 
-            if(!$full) {
+            if (!$full) {
                 if (($v = $r->getParam('filter_order_id_from'))) {
                     $collection->addAttributeToFilter("$orderTable.increment_id", array('gteq' => $v));
                 }
@@ -42,14 +42,18 @@ class Fiuze_DropshipPo_Helper_Data extends Unirgy_DropshipPo_Helper_Data
                     $_filterDate = Mage::app()->getLocale()->date();
                     $_filterDate->set($v, Mage::app()->getLocale()->getDateFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT));
                     $_filterDate->setTimezone(Mage_Core_Model_Locale::DEFAULT_TIMEZONE);
-                    $collection->addAttributeToFilter("$orderTable.created_at", array('gteq' => $_filterDate->toString(Varien_Date::DATETIME_INTERNAL_FORMAT)));
+                    $collection->addAttributeToFilter("$orderTable.created_at",
+                        array('gteq' => $_filterDate->toString(Varien_Date::DATETIME_INTERNAL_FORMAT))
+                    );
                 }
                 if (($v = $r->getParam('filter_order_date_to'))) {
                     $_filterDate = Mage::app()->getLocale()->date();
                     $_filterDate->set($v, Mage::app()->getLocale()->getDateFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT));
                     $_filterDate->addDay(1);
                     $_filterDate->setTimezone(Mage_Core_Model_Locale::DEFAULT_TIMEZONE);
-                    $collection->addAttributeToFilter("$orderTable.created_at", array('lteq' => $_filterDate->toString(Varien_Date::DATETIME_INTERNAL_FORMAT)));
+                    $collection->addAttributeToFilter("$orderTable.created_at",
+                        array('lteq' => $_filterDate->toString(Varien_Date::DATETIME_INTERNAL_FORMAT))
+                    );
                 }
 
                 if (($v = $r->getParam('filter_po_id_from'))) {
@@ -63,14 +67,18 @@ class Fiuze_DropshipPo_Helper_Data extends Unirgy_DropshipPo_Helper_Data
                     $_filterDate = Mage::app()->getLocale()->date();
                     $_filterDate->set($v, Mage::app()->getLocale()->getDateFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT));
                     $_filterDate->setTimezone(Mage_Core_Model_Locale::DEFAULT_TIMEZONE);
-                    $collection->addAttributeToFilter('main_table.created_at', array('gteq' => $_filterDate->toString(Varien_Date::DATETIME_INTERNAL_FORMAT)));
+                    $collection->addAttributeToFilter('main_table.created_at',
+                        array('gteq' => $_filterDate->toString(Varien_Date::DATETIME_INTERNAL_FORMAT))
+                    );
                 }
                 if (($v = $r->getParam('filter_po_date_to'))) {
                     $_filterDate = Mage::app()->getLocale()->date();
                     $_filterDate->set($v, Mage::app()->getLocale()->getDateFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT));
                     $_filterDate->addDay(1);
                     $_filterDate->setTimezone(Mage_Core_Model_Locale::DEFAULT_TIMEZONE);
-                    $collection->addAttributeToFilter('main_table.created_at', array('lteq' => $_filterDate->toString(Varien_Date::DATETIME_INTERNAL_FORMAT)));
+                    $collection->addAttributeToFilter('main_table.created_at',
+                        array('lteq' => $_filterDate->toString(Varien_Date::DATETIME_INTERNAL_FORMAT))
+                    );
                 }
 
                 if (($v = $r->getParam('filter_method'))) {
@@ -108,6 +116,7 @@ class Fiuze_DropshipPo_Helper_Data extends Unirgy_DropshipPo_Helper_Data
 
             $this->_vendorPoCollection = $collection;
         }
+
         return $this->_vendorPoCollection;
     }
 
@@ -320,22 +329,26 @@ class Fiuze_DropshipPo_Helper_Data extends Unirgy_DropshipPo_Helper_Data
 
         if (!$save) {
             reset($shipments);
+
             return count($shipments)>0 ? ($this->createReturnAllShipments ? $shipments : current($shipments)) : false;
         }
 
         if (empty($shipments)) return false;
 
         $trackingNumber = Mage::app()->getRequest()->getParam('tracking_id');
-        if(!$trackingNumber)
-            $trackingNumber = end(explode( ';', Mage::app()->getRequest()->getParam('import_orders_textarea')));
+        if (!$trackingNumber) {
+            $trackingNumber = end(explode(';', Mage::app()->getRequest()->getParam('import_orders_textarea')));
+        }
+
         Mage::dispatchEvent('udpo_po_shipment_save_before', array('order'=>$order, 'udpo'=>$udpo, 'shipments'=>$shipments));
+
         $tracks = Mage::getModel('track/track')
             ->getCollection()
             ->addFieldToFilter('tracking_number', array('eq' => $trackingNumber))
-            //->addFieldToFilter('order_id', array('eq' => $orderId))
             ->getItems();
         $trackId = reset($tracks);
         $aftershipStatus = '';
+
         if (!empty($trackId)) {
             $api_key = Mage::app()->getWebsite(0)->getConfig('aftership_options/messages/api_key');
             $trackings = new AfterShip\Trackings($api_key);

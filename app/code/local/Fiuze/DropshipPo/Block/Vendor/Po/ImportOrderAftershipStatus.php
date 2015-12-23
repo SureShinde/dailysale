@@ -21,6 +21,7 @@ class Fiuze_DropshipPo_Block_Vendor_Po_ImportOrderAftershipStatus extends Mage_C
 
         parent::_prepareLayout();
         $this->setResultStatus($this->checkStatusTrackNumber());
+
         return $this;
     }
 
@@ -28,9 +29,10 @@ class Fiuze_DropshipPo_Block_Vendor_Po_ImportOrderAftershipStatus extends Mage_C
         $resultStutus = array();
         $this->_trackingNumbersContent = Mage::getSingleton('core/session')->getTrackingNumbersContent();
 
-        if(!is_null($this->_trackingNumbersContent)){
+        if (!is_null($this->_trackingNumbersContent)) {
             $messageMail = array();
-            foreach($this->_trackingNumbersContent as $itemRow){
+
+            foreach ($this->_trackingNumbersContent as $itemRow) {
                 Mage::getSingleton('core/session')->unsTrackingNumbersContent();
                 $api_key = Mage::app()->getWebsite(0)->getConfig('aftership_options/messages/api_key');
 
@@ -42,13 +44,13 @@ class Fiuze_DropshipPo_Block_Vendor_Po_ImportOrderAftershipStatus extends Mage_C
                     ->addFieldToFilter('order_id', array('eq' => $orderId))
                     ->getItems();
                 $track = reset($tracks);
-                if($track){
+                if ($track) {
                     $trackingId = $track->getTrackingId();
                     $message = $track->getErrorTracking();
-                    if($trackingId){
+                    if ($trackingId) {
                         $trackings = new AfterShip\Trackings($api_key);
                         $responseJson = $trackings->get_by_id($trackingId);
-                        if(!$message){
+                        if (!$message) {
                             $message = 'sent successfully';
                         }
                         $resultStutus[$itemRow] = $message.'&#13;&#10;'.'Status --->'.$this->_getStatus($responseJson);
@@ -70,10 +72,12 @@ class Fiuze_DropshipPo_Block_Vendor_Po_ImportOrderAftershipStatus extends Mage_C
     protected function _getStatus($responseJson){
         $http_status = $responseJson['meta']['code'];
         $data = $responseJson['data'];
-        if($http_status == '200' && array_key_exists('tracking',$data)){
+        if ($http_status == '200' && array_key_exists('tracking',$data)) {
             $tracking = $data['tracking'];
+
             return array_key_exists('tag',$tracking)?$tracking['tag']:'';
         }
+
         return '';
     }
 
@@ -84,8 +88,10 @@ class Fiuze_DropshipPo_Block_Vendor_Po_ImportOrderAftershipStatus extends Mage_C
      */
     public function sendTrackingNotificationEmail($tracks)
     {
-        if(!is_null($this->_trackingNumbersContent)) {
+        if (!is_null($this->_trackingNumbersContent)) {
+
             return 'All tracking IDs have been uploaded. We will e-mail you the results within 24 hours';
+
             $emailTemplate = Mage::getModel('core/email_template')
                 ->loadDefault('aftership_tracking_email');
             $emailTemplateVariables = array();

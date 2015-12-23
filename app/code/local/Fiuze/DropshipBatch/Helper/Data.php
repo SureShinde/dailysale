@@ -17,6 +17,7 @@ class Fiuze_DropshipBatch_Helper_Data extends Unirgy_DropshipBatch_Helper_Data
         }
         $notes = $r->getParam('batch_notes');
         $errors = false;
+
         switch ($r->getParam('batch_type')) {
             case 'import_orders':
                 $importContent = $r->getParam('import_orders_textarea');
@@ -238,8 +239,6 @@ class Fiuze_DropshipBatch_Helper_Data extends Unirgy_DropshipBatch_Helper_Data
                 */
                 break;
 
-
-
             case 'import_inventory':
                 if (!empty($_FILES['import_inventory_upload']['tmp_name'])) {
                     $filename = Mage::getConfig()->getVarDir('udbatch').'/'.$_FILES['import_inventory_upload']['name'];
@@ -309,7 +308,6 @@ class Fiuze_DropshipBatch_Helper_Data extends Unirgy_DropshipBatch_Helper_Data
                 }
                 break;
 
-
             default:
                 Mage::throwException($this->__('Invalid batch type'));
         }
@@ -330,11 +328,10 @@ class Fiuze_DropshipBatch_Helper_Data extends Unirgy_DropshipBatch_Helper_Data
             }
             $currentOrderId = $currentRow[0];
             $currentTrackingNumber = $currentRow[1];
+
             foreach ($_udpos as $keyPo => $item) {
                 $orderId = $item->getOrderIncrementId();
                 if ($orderId == $currentOrderId) {
-                    //$_session = Mage::getSingleton('udropship/session');
-                    //$_vendor = $_session->getVendor();
                     $hlp = Mage::helper('udropship');
                     $udpoHlp = Mage::helper('udpo');
                     $po = Mage::getModel('udpo/po')->load($keyPo);
@@ -342,11 +339,13 @@ class Fiuze_DropshipBatch_Helper_Data extends Unirgy_DropshipBatch_Helper_Data
 
                     $carrierInstances = Mage::getSingleton('shipping/config')->getAllCarriers();
                     $carriers['custom'] = Mage::helper('sales')->__('Custom Value');
+
                     foreach ($carrierInstances as $code => $carrier) {
                         if ($carrier->isTrackingAvailable()) {
                             $carriers[$code] = $carrier->getConfigData('title');
                         }
                     }
+
                     $method = explode('_', $po->getUdropshipMethod(), 2);
                     if (array_key_exists($vendor->getCarrierCode(), $carriers)) {
                         $carrier = $vendor->getCarrierCode();
@@ -395,7 +394,8 @@ class Fiuze_DropshipBatch_Helper_Data extends Unirgy_DropshipBatch_Helper_Data
                             );
                             Mage::helper('udropship')->processTrackStatus($track, true, true);
                             //$shipment->setData('__dummy', 1)->save();
-                        }else{//remove track number
+                        }else{
+                            //remove track number
                             $tracks = Mage::getModel('sales/order_shipment_track')
                                 ->getCollection()
                                 ->addFieldToFilter('track_number', array('eq' => $trackingNumber))
@@ -417,13 +417,14 @@ class Fiuze_DropshipBatch_Helper_Data extends Unirgy_DropshipBatch_Helper_Data
         $response = $courier->detect($trackingNumber);
         $data = $response['data'];
         $data['total']? $result = true: $result = false;
-        if(!$result){
+        if (!$result) {
             $track = Mage::getModel('track/track');
             $track->setTrackingNumber($trackingNumber);
             $track->setOrderId($orderId);
             $track->setErrorTracking('Not valid.');
             $track->save();
         }
+
         return $result;
     }
 }

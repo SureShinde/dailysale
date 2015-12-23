@@ -37,6 +37,7 @@ class Fiuze_DropshipBatch_Model_Batch extends Unirgy_DropshipPo_Model_Batch
 
         $success = false;
         $error = false;
+
         foreach ($this->getDistsCollection() as $d) {
             try {
                 $d->setDistStatus('exporting')->save();
@@ -52,6 +53,7 @@ class Fiuze_DropshipBatch_Model_Batch extends Unirgy_DropshipPo_Model_Batch
                     $mSubject = isset($p['subject']) ? $p['subject'] : $defaultEmailSubject;
                     $mBody = isset($p['body']) ? $p['body'] : $defaultEmailBody;
                     if ($filename==='' || $filename==='-') {
+
                         foreach ($contentArr as $poId => $content) {
                             $content = !empty($header) ? $header."\n".$content : $content;
                             Mage::dispatchEvent(
@@ -75,6 +77,7 @@ class Fiuze_DropshipBatch_Model_Batch extends Unirgy_DropshipPo_Model_Batch
                             $mail->setBodyText($content);
                             Mage::helper('udropship')->addToQueue($mail)->processQueue();
                         }
+
                     } else {
                         $mail = new Zend_Mail('utf-8');
                         $mail->addTo($m[1]);
@@ -97,7 +100,12 @@ class Fiuze_DropshipBatch_Model_Batch extends Unirgy_DropshipPo_Model_Batch
                                 "udbatch_{$type}_dist_before",
                                 array('batch'=>$this, 'vars'=>array('content'=>&$content))
                             );
-                            $mail->createAttachment($content, Zend_Mime::TYPE_TEXT, Zend_Mime::DISPOSITION_ATTACHMENT, Zend_Mime::ENCODING_BASE64, $this->generatePoFilename($filename, $poId));
+                            $mail->createAttachment(
+                                $content, Zend_Mime::TYPE_TEXT,
+                                Zend_Mime::DISPOSITION_ATTACHMENT,
+                                Zend_Mime::ENCODING_BASE64,
+                                $this->generatePoFilename($filename, $poId)
+                            );
                         }
                         Mage::helper('udropship')->addToQueue($mail)->processQueue();
                     }
@@ -150,9 +158,10 @@ class Fiuze_DropshipBatch_Model_Batch extends Unirgy_DropshipPo_Model_Batch
         $this->_incToIdMap[$po->getIncrementId()] = $po->getId();
         $this->_incToOrderIdMap[$po->getIncrementId()] = $po->getOrder()->getId();
         $this->_incToOrderIncIdMap[$po->getIncrementId()] = $po->getOrder()->getIncrementId();
-        if($this->getAdapter()->addPO($po)){
+        if ($this->getAdapter()->addPO($po)) {
             $po->setUdropshipStatus('10');
         }
+
         return $this;
     }
     public function addStockPOToExport($po)
@@ -160,9 +169,10 @@ class Fiuze_DropshipBatch_Model_Batch extends Unirgy_DropshipPo_Model_Batch
         $this->_incToIdMap[$po->getIncrementId()] = $po->getId();
         $this->_incToOrderIdMap[$po->getIncrementId()] = $po->getOrder()->getId();
         $this->_incToOrderIncIdMap[$po->getIncrementId()] = $po->getOrder()->getIncrementId();
-        if($this->getAdapter()->addPO($po)){
+        if ($this->getAdapter()->addPO($po)) {
             $po->setUdropshipStatus('10');
         }
+
         return $this;
     }
 }

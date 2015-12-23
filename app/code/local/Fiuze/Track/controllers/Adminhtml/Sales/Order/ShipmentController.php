@@ -21,12 +21,12 @@ class Aftership_Track_Adminhtml_Sales_Order_ShipmentController extends Mage_Admi
             $carrierCheck = $this->asTrackNumber($obj['number']);
             $carrierInstances = Mage::getSingleton('shipping/config')->getAllCarriers();
 
-            if(!$carrierCheck){
+            if (!$carrierCheck) {
                 $response = array(
                     'error' => true,
                     'message' => $this->__('Tracking number is not valid.'),
                 );
-            }else{
+            } else {
                 $carriers = array();
                 foreach ($carrierInstances as $code => $carrier) {
                     if ($carrier->isTrackingAvailable()) {
@@ -38,12 +38,12 @@ class Aftership_Track_Adminhtml_Sales_Order_ShipmentController extends Mage_Admi
                 $obj['carrier_code']= $key;
             }
 
-        } catch(Mage_Core_Exception $e){
+        } catch (Mage_Core_Exception $e) {
             $response = array(
                 'error' => true,
                 'message' => $e->getMessage(),
             );
-        } catch(Exception $e){
+        } catch (Exception $e) {
             $response = array(
                 'error' => true,
                 'message' => $this->__('Cannot add tracking number.'),
@@ -68,7 +68,7 @@ class Aftership_Track_Adminhtml_Sales_Order_ShipmentController extends Mage_Admi
             }
             if (empty($number)) {
                 Mage::throwException($this->__('Tracking number cannot be empty.'));
-            }else{
+            } else {
                 $carrierCheck = $this->asTrackNumber($number);
                 $carrierInstances = Mage::getSingleton('shipping/config')->getAllCarriers();
                 $carriers = array();
@@ -81,9 +81,9 @@ class Aftership_Track_Adminhtml_Sales_Order_ShipmentController extends Mage_Admi
                 $title = $carriers[$key];
                 $carrier = $key;//FedEx
             }
-            if(!$carrierCheck){
+            if (!$carrierCheck) {
                 Mage::throwException($this->__('Tracking number is not valid.'));
-            }else{
+            } else {
 
             }
 

@@ -40,11 +40,11 @@ class Fiuze_Dropship_Helper_Data extends Unirgy_Dropship_Helper_Data
             $saveTrack = false;
 
             // is the track ready to be marked as shipped
-            $trackReady = $track->getUdropshipStatus()===Unirgy_Dropship_Model_Source::TRACK_STATUS_READY;
+            $trackReady = $track->getUdropshipStatus() == Unirgy_Dropship_Model_Source::TRACK_STATUS_READY;
             // is the track shipped
-            $shipped = $track->getUdropshipStatus()==Unirgy_Dropship_Model_Source::TRACK_STATUS_SHIPPED;
+            $shipped = $track->getUdropshipStatus() == Unirgy_Dropship_Model_Source::TRACK_STATUS_SHIPPED;
             // is the track delivered
-            $delivered = $track->getUdropshipStatus()===Unirgy_Dropship_Model_Source::TRACK_STATUS_DELIVERED;
+            $delivered = $track->getUdropshipStatus() == Unirgy_Dropship_Model_Source::TRACK_STATUS_DELIVERED;
 
             // actions that need to be done if the track is not marked as shipped yet
             if (!$shipped) {
@@ -109,12 +109,14 @@ class Fiuze_Dropship_Helper_Data extends Unirgy_Dropship_Helper_Data
             }
         }
 
-        if ($shipment->getUdropshipStatus()==Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_SHIPPED || $shipment->getUdropshipStatus()==Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_DELIVERED) {
+        if ($shipment->getUdropshipStatus() == Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_SHIPPED
+            || $shipment->getUdropshipStatus() == Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_DELIVERED) {
             if ($delivered && $shipment->getUdropshipStatus()!=Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_DELIVERED) {
                 $this->processShipmentStatusSave(
                     $shipment, Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_DELIVERED);
                 $this->completeUdpoIfShipped($shipment, true);
             }
+
             return;
         }
 
@@ -124,15 +126,24 @@ class Fiuze_Dropship_Helper_Data extends Unirgy_Dropship_Helper_Data
                     case Unirgy_Dropship_Model_Source::AUTO_SHIPMENT_COMPLETE_ANY:
                         $pickedUpTracks = Mage::getModel('sales/order_shipment_track')->getCollection()
                             ->setShipmentFilter($shipment->getId())
-                            ->addAttributeToFilter('udropship_status', array('in'=>array(Unirgy_Dropship_Model_Source::TRACK_STATUS_SHIPPED, Unirgy_Dropship_Model_Source::TRACK_STATUS_DELIVERED)))
-                        ;
+                            ->addAttributeToFilter('udropship_status',
+                                array(
+                                    'in'=>array(
+                                        Unirgy_Dropship_Model_Source::TRACK_STATUS_SHIPPED, Unirgy_Dropship_Model_Source::TRACK_STATUS_DELIVERED
+                                    )
+                                )
+                            );
                         $complete = $pickedUpTracks->count()>0;
                         break;
                     default:
                         $pendingTracks = Mage::getModel('sales/order_shipment_track')->getCollection()
                             ->setShipmentFilter($shipment->getId())
-                            ->addAttributeToFilter('udropship_status', array('nin'=>array(Unirgy_Dropship_Model_Source::TRACK_STATUS_SHIPPED, Unirgy_Dropship_Model_Source::TRACK_STATUS_DELIVERED)))
-                        ;
+                            ->addAttributeToFilter('udropship_status',
+                                array(
+                                    'nin'=>array(
+                                        Unirgy_Dropship_Model_Source::TRACK_STATUS_SHIPPED, Unirgy_Dropship_Model_Source::TRACK_STATUS_DELIVERED)
+                                )
+                            );
                         $complete = !$pendingTracks->count();
                         break;
                 }
@@ -145,24 +156,26 @@ class Fiuze_Dropship_Helper_Data extends Unirgy_Dropship_Helper_Data
             $this->completeShipment($shipment, $save, $delivered);
             $saveShipment = true;
         } elseif ($shipment->getUdropshipStatus()!=Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_PARTIAL) {
-
             $shipment->setUdropshipStatus(Unirgy_Dropship_Model_Source::SHIPMENT_STATUS_PARTIAL);
             $saveShipment = true;
         }
         $trackingNumber = $track->getNumber();
         $orderId = $order->getIncrementId();
 
-        ///////////TRACKING API
+        //Aftership api tracking id check
         $tracks = Mage::getModel('track/track')
             ->getCollection()
             ->addFieldToFilter('tracking_number', array('eq' => $trackingNumber))
             ->addFieldToFilter('order_id', array('eq' => $orderId))
             ->getItems();
+
         $trackId = reset($tracks)->getTrackingId();
         $api_key = Mage::app()->getWebsite(0)->getConfig('aftership_options/messages/api_key');
         $trackings = new AfterShip\Trackings($api_key);
         $responseJson = $trackings->get_by_id($trackId);
         $aftershipStatus = $responseJson['data']['tracking']['tag'];
+
+        //Check order aftership status before saving
         if ($aftershipStatus != 'Pending' && $aftershipStatus != 'Info Received' && $aftershipStatus != 'Expired' && $aftershipStatus != '') {
             if ($saveShipment) {
                 foreach ($shipment->getAllTracks() as $t) {

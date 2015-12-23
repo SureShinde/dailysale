@@ -12,8 +12,8 @@ class Fiuze_DropshipBatch_Model_TemplateFilter extends Unirgy_DropshipBatch_Mode
     {
         $value = parent::varDirective($construction);
         $value = str_replace('"', '""', $value);
-        foreach($construction as $item){
-            if($item ==  ' order.created_at'){
+        foreach ($construction as $item) {
+            if ($item ==  ' order.created_at') {
                 $date = new Zend_Date($value);
                 $timezone = Mage::getStoreConfig('general/locale/timezone');
                 $date->setTimezone($timezone);
