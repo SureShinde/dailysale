@@ -24,27 +24,14 @@
  * @license    http://ecommerce.aheadworks.com/AW-LICENSE.txt
  */
 
-class AW_All_Block_System_Config_Form_Fieldset_Awall_Additional extends Mage_Adminhtml_Block_System_Config_Form_Fieldset
+class AW_All_AdditionalController extends Mage_Adminhtml_Controller_Action
 {
-    public function render(Varien_Data_Form_Element_Abstract $element)
+    public function indexAction()
     {
-        $html = $this->_getHeaderHtml($element);
-
-        foreach ($element->getElements() as $field) {
-            $html .= $field->toHtml();
-        }
-
-        $html .= "<tr>
-            <td class=\"label\"></td>
-            <td class=\"value\">
-            <button class=\"scalable\" onclick=\"window.location='" . Mage::getSingleton('adminhtml/url')->getUrl('awall_admin/additional/index') . "'\" type=\"button\">
-                <span>View Additional info</span>
-            </button
-            </td>
-         </tr>
-         ";
-        $html .= $this->_getFooterHtml($element);
-
-        return $html;
+        $this
+            ->loadLayout()
+            ->_title($this->__('aheadWorks - Additional Info View'))
+            ->renderLayout()
+        ;
     }
 }

@@ -92,13 +92,13 @@
     </global>
     <admin>
         <routers>
-            <adminhtml>
-				<args>
-					<modules>
-						<awautorelated_admin before="Mage_Adminhtml">AW_Autorelated_Adminhtml</awautorelated_admin>
-					</modules>
-				</args>
-			</adminhtml>
+            <awautorelated_admin>
+                <use>admin</use>
+                <args>
+                    <module>AW_Autorelated</module>
+                    <frontName>admin_awautorelated</frontName>
+                </args>
+            </awautorelated_admin>
         </routers>
     </admin>
     <adminhtml>
@@ -112,12 +112,12 @@
                             <new module="awautorelated">
                                 <title>Add Block</title>
                                 <sort_order>10</sort_order>
-                                <action>adminhtml/blocksgrid/new</action>
+                                <action>awautorelated_admin/adminhtml_blocksgrid/new</action>
                             </new>
                             <manage module="awautorelated">
                                 <title>Manage Blocks</title>
                                 <sort_order>20</sort_order>
-                                <action>adminhtml/blocksgrid/list</action>
+                                <action>awautorelated_admin/adminhtml_blocksgrid/list</action>
                             </manage>
                             <settings module="awautorelated">
                                 <title>Configuration</title>
