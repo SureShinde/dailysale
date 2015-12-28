@@ -37,7 +37,7 @@ $_isTierShip = $_session->getVendor()->getAllowTiershipModify();
             <?php
         }
         ?>
-
+        <li class="first <?php if ($_active=='dashboard'): ?>active<?php endif ?>"><a href="<?php echo $_dashboardUrl?>"><?php echo Mage::helper('udropship')->__('Orders')?></a></li>
         <?php if ($_isUrmaActive): ?>
             <li <?php if ($_active=='urmas'): ?>class="active"<?php endif ?>><a href="<?php echo $this->getUrl('urma/vendor/') ?>"><?php echo Mage::helper('udropship')->__('Returns')?></a></li>
         <?php endif ?>

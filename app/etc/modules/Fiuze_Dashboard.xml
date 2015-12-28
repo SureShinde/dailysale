@@ -4,6 +4,10 @@
         <Fiuze_Dashboard>
             <active>true</active>
             <codePool>local</codePool>
+            <depends>
+                <Unirgy_Dropship/>
+                <Unirgy_DropshipPo />
+            </depends>
         </Fiuze_Dashboard>
     </modules>
 </config>
