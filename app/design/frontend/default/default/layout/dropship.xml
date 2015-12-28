@@ -11,6 +11,10 @@
 -->
 <layout>
     <udropship_vendor>
+        <reference name="head">
+            <action method="removeItem"><type>skin_js</type><name>iwd/signin/signin.js</name></action>
+        </reference>
+
         <reference name="header">
             <action method="setTemplate"><template>fiuze/dropship/vendor/header.phtml</template></action>
         </reference>
