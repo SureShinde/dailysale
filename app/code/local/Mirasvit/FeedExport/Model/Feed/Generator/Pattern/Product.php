@@ -126,6 +126,37 @@ class Mirasvit_FeedExport_Model_Feed_Generator_Pattern_Product
 
                 break;
 
+            case 'parent_qty':
+                $total_qty = 0;
+                if ($product->getTypeId() == 'configurable') {
+                    $childIds = array();
+                    $childIds = Mage::getModel('catalog/product_type_configurable')
+                        ->getChildrenIds($product->getId());                    
+                    if (isset($childIds[0])) {
+                        $childs = Mage::getModel('catalog/product')->getCollection()
+                            ->addFieldToFilter('entity_id', array('in' => $childIds[0]))
+                            ->joinField(
+                                'qty',
+                                'cataloginventory/stock_item',
+                                'qty',
+                                'product_id = entity_id',
+                                '{{table}}.stock_id = 1',
+                                'left'
+                            );
+                        foreach ($childs as $child) {
+                            if ($child->getIsSalable()==1) {
+                                $total_qty += $child->getQty();
+                            }
+                        }
+                    }
+                    $value = $total_qty;
+                } else {
+                    $value = 0;
+                }
+                $value = intval($value);
+                
+                break;
+
             case 'is_in_stock':
                 $stockItem = $product->getStockItem();
                 if (!($stockItem && $stockItem->getData('item_id'))) {
@@ -175,10 +206,39 @@ class Mirasvit_FeedExport_Model_Feed_Generator_Pattern_Product
                 $value = $product->getCategoryPath();
                 break;
 
-            case 'position_in_category':
+            /*case 'position_in_category':
                 $this->_prepareProductCategory($product);
                 // $category = $product->getCategoryModel();
                 $value = $product->getPositionInCategory();
+                break;*/
+
+            case 'position_in_category':
+
+                $this->_prepareProductCategory($product);
+                $value = $product->getPositionInCategory();
+
+                $current_day =  Mage::getSingleton('core/date')->date('d');
+                $categories = Mage::getResourceModel('catalog/category_collection')
+                    ->addAttributeToSelect('name')
+                    ->addFieldToFilter('entity_id', array('in' => $product->getCategoryIds()));
+
+                
+                foreach ($categories as $category) {
+                    $categoryName       = $category->getName();
+                    $productPosition    = $category->getProductsPosition();
+                    $categoryNames[]    = $category->getName();
+                    $productPositions[] = array($categoryName => $productPosition);
+                    
+                }
+                
+                if (isset ($categoryNames)) {
+                    for ($i = 0; $i < count($categoryNames); $i++) {
+                        if ($current_day == $categoryNames[$i]) {
+                            $value = $productPositions[$i][$current_day][$product->getEntityId()];
+                        } 
+                    }     
+                }
+
                 break;
 
             case 'category_paths':
@@ -265,7 +325,8 @@ class Mirasvit_FeedExport_Model_Feed_Generator_Pattern_Product
                 break;
 
             case 'current_day':
-                $value = date('d');
+                //$value = date('d');
+                $value = Mage::getSingleton('core/date')->date('d');
                 break;
 
             default:
@@ -469,8 +530,7 @@ class Mirasvit_FeedExport_Model_Feed_Generator_Pattern_Product
         $category = null;
         $currentPosition = null;
 
-        $collection = Mage::getModel('catalog/category')->getCollection()
-        ->addAttributeToFilter('entity_id', array('in' => array(44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,67,68,69,70,71,72,73,74,76)));
+        $collection = Mage::getModel('catalog/category')->getCollection();
         $collection->getSelect()
             ->joinInner(
                 array('category_product' => $collection->getTable('catalog/category_product')),
