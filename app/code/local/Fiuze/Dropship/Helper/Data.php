@@ -172,11 +172,14 @@ class Fiuze_Dropship_Helper_Data extends Unirgy_Dropship_Helper_Data
         $trackId = reset($tracks)->getTrackingId();
         $api_key = Mage::app()->getWebsite(0)->getConfig('aftership_options/messages/api_key');
         $trackings = new AfterShip\Trackings($api_key);
+        if($trackId == '')
+            throw new \Exception("Tracking ID already exists.");
+
         $responseJson = $trackings->get_by_id($trackId);
         $aftershipStatus = $responseJson['data']['tracking']['tag'];
 
         //Check order aftership status before saving
-        if ($aftershipStatus != 'Pending' && $aftershipStatus != 'Info Received' && $aftershipStatus != 'Expired' && $aftershipStatus != '') {
+        if ($aftershipStatus != 'Pending' && $aftershipStatus != 'InfoReceived' && $aftershipStatus != 'Expired' && $aftershipStatus != '') {
             if ($saveShipment) {
                 foreach ($shipment->getAllTracks() as $t) {
                     foreach ($tracks as $_t) {

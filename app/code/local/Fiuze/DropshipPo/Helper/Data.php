@@ -357,7 +357,7 @@ class Fiuze_DropshipPo_Helper_Data extends Unirgy_DropshipPo_Helper_Data
             $aftershipStatus = $responseJson['data']['tracking']['tag'];
         }
 
-        if ($aftershipStatus != 'Pending' && $aftershipStatus != 'Info Received' && $aftershipStatus != 'Expired' && $aftershipStatus != '') {
+        if ($aftershipStatus != 'Pending' && $aftershipStatus != 'InfoReceived' && $aftershipStatus != 'Expired' && $aftershipStatus != '') {
             $udpoSplitWeights = array();
             foreach ($shipments as $_vUdpoKey => $_vUdpo) {
                 if (empty($udpoSplitWeights[$_vUdpo->getUdropshipVendor() . '-'])) {
