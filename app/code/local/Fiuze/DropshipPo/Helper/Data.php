@@ -352,7 +352,8 @@ class Fiuze_DropshipPo_Helper_Data extends Unirgy_DropshipPo_Helper_Data
         if (!empty($trackId)) {
             $api_key = Mage::app()->getWebsite(0)->getConfig('aftership_options/messages/api_key');
             $trackings = new AfterShip\Trackings($api_key);
-            $responseJson = $trackings->get_by_id($trackId);
+            $trackingId = $trackId->getTrackingId();
+            $responseJson = $trackings->get_by_id($trackingId);
             $aftershipStatus = $responseJson['data']['tracking']['tag'];
         }
 

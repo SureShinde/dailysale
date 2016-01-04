@@ -41,7 +41,7 @@ class Fiuze_Track_Model_Observer extends Aftership_Track_Model_Observer {
             $track = reset($tracks);
         }
 
-        if ($website_config->status) {
+        if ($website_config->status && !is_null($track)) {
             $this->_sendTrack($track);
         }
     }
@@ -154,6 +154,8 @@ class Fiuze_Track_Model_Observer extends Aftership_Track_Model_Observer {
     {
         $magento_track_data = $magento_track->getData();
         $magento_order_data = $magento_track->getShipment()->getOrder()->getData();
+        if(count($magento_order_data) == 0)
+            return;
         $magento_shipping_address_data = $magento_track->getShipment()->getOrder()->getShippingAddress()->getData();
 
         $track = Mage::getModel('track/track');
