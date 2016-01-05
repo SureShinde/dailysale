@@ -28,6 +28,8 @@ class Fiuze_Notifylowstock_Model_Cron extends Mage_Core_Model_Abstract
                     ->addFieldToFilter('qty', array('lt' => $quantuty))
                     ->addAttributeToSelect('qty')
                     ->addAttributeToSelect('name')
+                    ->addAttributeToSelect('fiuze_lowstock_flag')
+                    ->addAttributeToSelect('fiuze_lowstock_qty')
                     //->addAttributeToSelect('status')
                     //->addFieldToFilter('status', array('eq' => '1'))
                     ->addFieldToFilter('type_id', array('neq' => 'configurable'));
@@ -79,7 +81,7 @@ class Fiuze_Notifylowstock_Model_Cron extends Mage_Core_Model_Abstract
                     Mage::app()->getStore()->getId()
                 );
 
-                if((int)$product->getQty()<$ls AND $fiuze_notif == 0){
+                if((int)$product->getQty()<$ls && $fiuze_notif === 0){
                     $customLsArray[]=$product;
                     $product->setFiuzeLowstockNotif('1')->save();
                 }

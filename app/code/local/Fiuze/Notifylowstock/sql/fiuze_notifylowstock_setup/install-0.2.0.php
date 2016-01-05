@@ -14,7 +14,7 @@ $installer->addAttribute('catalog_product', 'fiuze_lowstock_flag', array(
     #'is_configurable'   => 0,
     #'unique'            => 0,
     'type'     => 'int',
-    'label'    => 'Notify on lowstock qty',
+    'label'    => 'Low Stock Email Notification',
     'input'    => 'select',
     'source'   => 'fiuze_notifylowstock/link',
     'global'   => Mage_Catalog_Model_Resource_Eav_Attribute::SCOPE_STORE,
@@ -23,6 +23,7 @@ $installer->addAttribute('catalog_product', 'fiuze_lowstock_flag', array(
     'visible'           => 1,
     #'visible_on_front'  => 1
 ));
+
 $installer->addAttribute('catalog_product', 'fiuze_lowstock_notif', array(
     #'position'          => 1,
     #'user_defined'      => 1,
@@ -39,10 +40,14 @@ $installer->addAttribute('catalog_product', 'fiuze_lowstock_notif', array(
     'source'   => 'fiuze_notifylowstock/link',
     'global'   => Mage_Catalog_Model_Resource_Eav_Attribute::SCOPE_STORE,
     'required' => false,
-    'default'  => 0,
+    'default'  => 1,
     'visible'           => 0,
     'visible_on_front'  => 0
 ));
+
+$installer->updateAttribute('catalog_product', 'fiuze_lowstock_notif', 'is_visible', '1');
+//$installer->updateAttribute('catalog_product', 'fiuze_lowstock_notif', 'value', '0');
+
 $installer->addAttribute('catalog_product', 'fiuze_lowstock_qty', array(
     #'position'          => 1,
     #'user_defined'      => 1,
@@ -54,7 +59,7 @@ $installer->addAttribute('catalog_product', 'fiuze_lowstock_qty', array(
     #'is_configurable'   => 0,
     #'unique'            => 0,
     'type'     => 'int',
-    'label'    => 'Low stock qty',
+    'label'    => 'Low Stock Qty',
     'input'    => 'text',
     #'frontend' => 'adminhtml/system_config_source_yesno',
     'global'   => Mage_Catalog_Model_Resource_Eav_Attribute::SCOPE_STORE,
