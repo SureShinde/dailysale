@@ -206,39 +206,9 @@ class Mirasvit_FeedExport_Model_Feed_Generator_Pattern_Product
                 $value = $product->getCategoryPath();
                 break;
 
-            /*case 'position_in_category':
-                $this->_prepareProductCategory($product);
-                // $category = $product->getCategoryModel();
-                $value = $product->getPositionInCategory();
-                break;*/
-
             case 'position_in_category':
-
                 $this->_prepareProductCategory($product);
                 $value = $product->getPositionInCategory();
-
-                $current_day =  Mage::getSingleton('core/date')->date('d');
-                $categories = Mage::getResourceModel('catalog/category_collection')
-                    ->addAttributeToSelect('name')
-                    ->addFieldToFilter('entity_id', array('in' => $product->getCategoryIds()));
-
-                
-                foreach ($categories as $category) {
-                    $categoryName       = $category->getName();
-                    $productPosition    = $category->getProductsPosition();
-                    $categoryNames[]    = $category->getName();
-                    $productPositions[] = array($categoryName => $productPosition);
-                    
-                }
-                
-                if (isset ($categoryNames)) {
-                    for ($i = 0; $i < count($categoryNames); $i++) {
-                        if ($current_day == $categoryNames[$i]) {
-                            $value = $productPositions[$i][$current_day][$product->getEntityId()];
-                        } 
-                    }     
-                }
-
                 break;
 
             case 'category_paths':
@@ -530,7 +500,8 @@ class Mirasvit_FeedExport_Model_Feed_Generator_Pattern_Product
         $category = null;
         $currentPosition = null;
 
-        $collection = Mage::getModel('catalog/category')->getCollection();
+        $collection = Mage::getModel('catalog/category')->getCollection()
+        ->addAttributeToFilter('entity_id', array('in' => array(44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,67,68,69,70,71,72,73,74,76)));
         $collection->getSelect()
             ->joinInner(
                 array('category_product' => $collection->getTable('catalog/category_product')),
