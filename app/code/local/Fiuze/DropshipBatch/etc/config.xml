@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * DropshipBatch
+ *
+ * @author      Fiuze Team
+ * @category    Fiuze
+ * @package     DropshipBatch
+ * @copyright   Copyright (c) 2016 Fiuze
+ */
+-->
+<config>
+    <modules>
+        <Fiuze_DropshipBatch>
+            <version>1.0.0</version>
+        </Fiuze_DropshipBatch>
+    </modules>
+    <models>
+        <fiuze_dropshipbatch>
+            <class>Fiuze_DropshipBatch_Model</class>
+        </fiuze_dropshipbatch>
+        <udbatch>
+            <rewrite>
+                <batch>Fiuze_DropshipBatch_Model_Batch</batch>
+            </rewrite>
+        </udbatch>
+        <udpo>
+            <rewrite>
+                <batch>Fiuze_DropshipBatch_Model_Batch</batch>
+            </rewrite>
+        </udpo>
+    </models>
+    <crontab>
+        <jobs>
+            <udbatch_process_standard>
+                <schedule><cron_expr>* * * * *</cron_expr></schedule>
+                <run><model>fiuze_dropshipbatch/observer::processStandard</model></run>
+            </udbatch_process_standard>
+        </jobs>
+    </crontab>
+</config>
