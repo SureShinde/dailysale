@@ -225,7 +225,7 @@ $showVsku = $_hlp->isShowVendorSkuColumnInProductsTab() && (Mage::helper('udrops
                 <?php if ($_p->getData('fiuze_lowstock_flag')):?>
                     <?php echo $this->htmlEscape($_p->getAttributeText('fiuze_lowstock_flag')) ?>
                 <?php else: ?>
-                    <?php echo  $this->__('Not Specified') ?>
+                    <?php echo  $this->__('Default') ?>
                 <?php endif ?>
             </td>
             <td>
