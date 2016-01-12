@@ -101,7 +101,7 @@ class Turnto_Admin_IndexController extends Mage_Core_Controller_Front_Action
                     echo "\t";
                     //CATEGORY
                     $ids = $product->getCategoryIds();
-                    echo(isset($ids[0]) ? $ids[0] : '');
+                    echo(isset($ids[0]) ? 'mag_category_'.$ids[0] : '');
                     echo "\t";
                     // KEYWORDS
                     echo "\t";
@@ -124,11 +124,8 @@ class Turnto_Admin_IndexController extends Mage_Core_Controller_Front_Action
             $categories = Mage::getModel('catalog/category')->setStoreId($storeId)->getCollection()->addAttributeToSelect('*');
             if ($categories) {
                 foreach ($categories as $category) {
-                    if ($category->getId() == 1) {
-                        continue;
-                    }
                     $category->setStoreId($storeId);
-                    echo $category->getId();
+                    echo 'mag_category_'.$category->getId();
                     echo "\t";
                     //IMAGEURL
                     echo "\t";
@@ -146,7 +143,7 @@ class Turnto_Admin_IndexController extends Mage_Core_Controller_Front_Action
                     echo $category->getUrl();
                     echo "\t";
                     //CATEGORY
-                    echo $category->getParentCategory()->getId();
+                    echo $category->getParentCategory()->getId() ? 'mag_category_'.$category->getParentCategory()->getId() : '';
                     echo "\t";
                     //KEYWORDS
                     echo "\t";
