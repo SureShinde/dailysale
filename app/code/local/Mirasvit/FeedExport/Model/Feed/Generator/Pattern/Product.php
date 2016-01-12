@@ -126,6 +126,37 @@ class Mirasvit_FeedExport_Model_Feed_Generator_Pattern_Product
 
                 break;
 
+            case 'parent_qty':
+                $total_qty = 0;
+                if ($product->getTypeId() == 'configurable') {
+                    $childIds = array();
+                    $childIds = Mage::getModel('catalog/product_type_configurable')
+                        ->getChildrenIds($product->getId());                    
+                    if (isset($childIds[0])) {
+                        $childs = Mage::getModel('catalog/product')->getCollection()
+                            ->addFieldToFilter('entity_id', array('in' => $childIds[0]))
+                            ->joinField(
+                                'qty',
+                                'cataloginventory/stock_item',
+                                'qty',
+                                'product_id = entity_id',
+                                '{{table}}.stock_id = 1',
+                                'left'
+                            );
+                        foreach ($childs as $child) {
+                            if ($child->getIsSalable()==1) {
+                                $total_qty += $child->getQty();
+                            }
+                        }
+                    }
+                    $value = $total_qty;
+                } else {
+                    $value = 0;
+                }
+                $value = intval($value);
+                
+                break;
+
             case 'is_in_stock':
                 $stockItem = $product->getStockItem();
                 if (!($stockItem && $stockItem->getData('item_id'))) {
@@ -177,7 +208,6 @@ class Mirasvit_FeedExport_Model_Feed_Generator_Pattern_Product
 
             case 'position_in_category':
                 $this->_prepareProductCategory($product);
-                // $category = $product->getCategoryModel();
                 $value = $product->getPositionInCategory();
                 break;
 
@@ -265,7 +295,8 @@ class Mirasvit_FeedExport_Model_Feed_Generator_Pattern_Product
                 break;
 
             case 'current_day':
-                $value = date('d');
+                //$value = date('d');
+                $value = Mage::getSingleton('core/date')->date('d');
                 break;
 
             default:
