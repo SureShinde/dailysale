@@ -40,13 +40,10 @@ $installer->addAttribute('catalog_product', 'fiuze_lowstock_notif', array(
     'source'   => 'fiuze_notifylowstock/link',
     'global'   => Mage_Catalog_Model_Resource_Eav_Attribute::SCOPE_STORE,
     'required' => false,
-    'default'  => 1,
+    'default'  => 0,
     'visible'           => 0,
     'visible_on_front'  => 0
 ));
-
-$installer->updateAttribute('catalog_product', 'fiuze_lowstock_notif', 'is_visible', '1');
-//$installer->updateAttribute('catalog_product', 'fiuze_lowstock_notif', 'value', '0');
 
 $installer->addAttribute('catalog_product', 'fiuze_lowstock_qty', array(
     #'position'          => 1,

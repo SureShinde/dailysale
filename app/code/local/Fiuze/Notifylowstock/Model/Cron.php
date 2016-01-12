@@ -81,7 +81,7 @@ class Fiuze_Notifylowstock_Model_Cron extends Mage_Core_Model_Abstract
                     Mage::app()->getStore()->getId()
                 );
 
-                if((int)$product->getQty()<$ls && $fiuze_notif === 0){
+                if((int)$product->getQty()<$ls && $fiuze_notif == 0){
                     $customLsArray[]=$product;
                     $product->setFiuzeLowstockNotif('1')->save();
                 }
