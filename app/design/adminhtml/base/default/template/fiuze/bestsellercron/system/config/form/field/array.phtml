@@ -81,19 +81,28 @@ $_colspan = $_colspan > 1 ? 'colspan="' . $_colspan . '"' : '';
     <?php if($logs):
         $split_logs = array_chunk($logs, 10);?>
         <?php foreach($split_logs as $logs):?>
-        <table style=" border-collapse: collapse; display: inline-block;" class="log_table">
-        <?php foreach($logs as $log): ?>
+        <table style=" border-collapse: collapse; display: inline-block; margin-right: 5px;" class="log_table" border="1">
+        <thead border="1">
             <tr>
-                <td  class="log_td">
-                    <?php echo $log['date'];?>
-                </td>
-                <td  class="log_td">
-                    <?php echo $log['time'];?>
-                </td>
-                <td  class="log_td">
-                    <?php echo $log['cronname'];?>
-                </td>
+                <td>Date</td>
+                <td>Time</td>
+                <td>Category</td>
             </tr>
+        </thead>
+        <?php foreach($logs as $log): ?>
+            <tbody>
+                <tr>
+                    <td  class="log_td">
+                        <?php echo $log['date'];?>
+                    </td>
+                    <td  class="log_td">
+                        <?php echo $log['time'];?>
+                    </td>
+                    <td  class="log_td">
+                        <?php echo $log['cronname'];?>
+                    </td>
+                </tr>
+            </tbody>
         <?php endforeach; endforeach; ?>
         </table>
 

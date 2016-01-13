@@ -18,7 +18,7 @@ class Fiuze_Bestsellercron_Model_Customcron  extends Mage_Core_Model_Abstract{
                 if(time()>=$task_data['current_timestamp']){
                     Mage::getModel('bestsellercron/taskLogs')
                         ->setDate($current_data['mday'].'-'.$current_data['mon'].'-'.$current_data['year'])
-                        ->setTime($current_data['hours'].':'.$current_data['minutes'])
+                        ->setTime(date("g:i a", strtotime($current_data['hours'].':'.$current_data['minutes'])))
                         ->setType('Simple')
                         ->setInternalId($task->getTaskId())
                         ->setCronname($cronName)
@@ -32,7 +32,7 @@ class Fiuze_Bestsellercron_Model_Customcron  extends Mage_Core_Model_Abstract{
                 if(time()>=$task_data['current_timestamp']){
                     Mage::getModel('bestsellercron/taskLogs')
                         ->setDate($current_data['mday'].'-'.$current_data['mon'].'-'.$current_data['year'])
-                        ->setTime($current_data['hours'].':'.$current_data['minutes'])
+                        ->setTime(date("g:i a", strtotime($current_data['hours'].':'.$current_data['minutes'])))
                         ->setType('Configurable')
                         ->setInternalId($task->getTaskId())
                         ->setCronname($cronName)
