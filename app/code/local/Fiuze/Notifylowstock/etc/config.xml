@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Fiuze_Notifylowstock>
-            <version>0.2.0</version>
+            <version>0.2.1</version>
         </Fiuze_Notifylowstock>
     </modules>
     <global>
