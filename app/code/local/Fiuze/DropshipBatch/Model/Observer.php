@@ -20,8 +20,10 @@ class Fiuze_DropshipBatch_Model_Observer extends Unirgy_DropshipBatch_Model_Obse
         ini_set('memory_limit','8192M');
         ob_implicit_flush();
 
+        /** @var $batchModel Fiuze_DropshipBatch_Model_Batch */
+        $batchModel = Mage::getModel('udbatch/batch');
         /** @var $batches Unirgy_DropshipBatch_Model_Mysql4_Batch_Collection */
-        $batches = Mage::getModel('udbatch/batch')->getCollection();
+        $batches = $batchModel->getCollection();
 
         // dispatch scheduled batches
         $batches->loadScheduledBatches();

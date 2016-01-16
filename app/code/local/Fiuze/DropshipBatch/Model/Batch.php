@@ -13,7 +13,7 @@ class Fiuze_DropshipBatch_Model_Batch extends Unirgy_DropshipBatch_Model_Batch
      * @param string $type
      * @return Fiuze_DropshipBatch_Model_Batch
      */
-    protected function _exportOrders($type='export_orders')
+    protected function _exportOrders($type = 'export_orders')
     {
         if (!$this->getData('rows_log') && !$this->getRowsText()) {
             $this->setData('batch_status', 'empty');
@@ -180,12 +180,17 @@ class Fiuze_DropshipBatch_Model_Batch extends Unirgy_DropshipBatch_Model_Batch
         /** @var $distCollection Unirgy_DropshipBatch_Model_Mysql4_Batch_Dist_Collection */
         $distCollection = $this->getDistsCollection();
         foreach ($distCollection as $d) {
+            /** @var $d Unirgy_DropshipBatch_Model_Batch_Dist */
             $oldRowsText = $this->getRowsText();
             try {
-                $d->setDistStatus('importing')->save();
-                $l = $d->getLocation();
-                if ($io = Mage::getSingleton('udbatch/io')->get($l, $this)) {
-                    $text = $io->read($io->getUdbatchGrep());
+                $d->setData('dist_status', 'importing');
+                $d->save();
+                $l = $d->getData('location');
+                /** @var $batchIoModel Unirgy_DropshipBatch_Model_Io  */
+                $batchIoModel = Mage::getSingleton('udbatch/io');
+                if ($ioAdapter = $batchIoModel->get($l, $this)) {
+                    /** @var $ioAdapter Unirgy_DropshipBatch_Model_Io_File */
+                    $text = $ioAdapter->read($ioAdapter->getUdbatchGrep());
                 } else {
                     $text = @file_get_contents($l);
                 }
@@ -193,25 +198,37 @@ class Fiuze_DropshipBatch_Model_Batch extends Unirgy_DropshipBatch_Model_Batch
                     Mage::throwException(Mage::helper('udropship')->__("Could not read from file '%s'", $l));
                 }
                 if ($text=='') {
-                    $d->setDistStatus('empty')->save();
+                    $d->setData('dist_status', 'empty');
+                    $d->save();
                     continue;
                 }
 
-                Mage::dispatchEvent("udbatch_{$type}_dist_after", array('batch'=>$this, 'dist'=>$d, 'vars'=>array('content'=>&$text)));
+                Mage::dispatchEvent(
+                    "udbatch_{$type}_dist_after",
+                    array(
+                        'batch' => $this,
+                        'dist'  => $d,
+                        'vars'  => array('content' => &$text)
+                    )
+                );
 
                 $this->getAdapter()->import($text);
+                if ($ioAdapter) {
+                    $this->_performFileAction($ioAdapter, "batch_{$type}");
+                }
+                $this->setData('rows_text', (!empty($oldRowsText) ? $oldRowsText."\n" : $oldRowsText) . $text);
+                $this->save();
 
-                if ($io) $this->_performFileAction($io, "batch_{$type}");
-
-                $this->setRowsText((!empty($oldRowsText) ? $oldRowsText."\n" : $oldRowsText) . $text)->save();
-
-                $d->setDistStatus('success')->setErrorInfo(null)->save();
+                $d->setData('dist_status', 'success');
+                $d->setData('error_info', null);
+                $d->save();
                 $success = true;
                 $empty = false;
             } catch (Exception $e) {
-
-                $this->setRowsText($oldRowsText);
-                $d->setDistStatus('error')->setErrorInfo($e->getMessage())->save();
+                $this->setData('rows_text', $oldRowsText);
+                $d->setData('dist_status', 'error');
+                $d->setData('error_info', $e->getMessage());
+                $d->save();
                 $error = true;
                 $empty = false;
             }
@@ -219,14 +236,39 @@ class Fiuze_DropshipBatch_Model_Batch extends Unirgy_DropshipBatch_Model_Batch
 
         $status = $empty ? 'empty' : ($success && !$error ? 'success' : (!$success && $error ? 'error' : 'partial'));
         if (!$error) {
-            $this->setErrorInfo(null);
+            $this->setData('error_info', null);
         }
-        $this->setBatchStatus($status)->save();
-
+        $this->setData('batch_status', $status);
+        $this->save();
         $this->importUpdatePOsStatus();
-
         $this->importUpdateVendorTs();
 
+        return $this;
+    }
+
+    /**
+     * @param $po
+     * @return Fiuze_DropshipBatch_Model_Batch
+     */
+    public function addPOToExport($po)
+    {
+        $this->_incToIdMap[$po->getIncrementId()] = $po->getId();
+        $this->_incToOrderIdMap[$po->getIncrementId()] = $po->getOrder()->getId();
+        $this->_incToOrderIncIdMap[$po->getIncrementId()] = $po->getOrder()->getIncrementId();
+        $this->getAdapter()->addPO($po);
+        return $this;
+    }
+
+    /**
+     * @param $po
+     * @return Fiuze_DropshipBatch_Model_Batch
+     */
+    public function addStockPOToExport($po)
+    {
+        $this->_incToIdMap[$po->getIncrementId()] = $po->getId();
+        $this->_incToOrderIdMap[$po->getIncrementId()] = $po->getOrder()->getId();
+        $this->_incToOrderIncIdMap[$po->getIncrementId()] = $po->getOrder()->getIncrementId();
+        $this->getAdapter()->addPO($po);
         return $this;
     }
 }
