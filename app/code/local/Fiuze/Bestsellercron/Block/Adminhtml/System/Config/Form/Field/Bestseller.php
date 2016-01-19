@@ -309,7 +309,7 @@ class Fiuze_Bestsellercron_Block_Adminhtml_System_Config_Form_Field_Bestseller e
         $collection = Mage::getResourceModel('bestsellercron/taskLogs_collection')->getData();
         if(count($collection)>40){
             foreach ($collection as $item){
-                if($item['fiuze_task_logs_id']<$collection[count($collection)-1]['fiuze_task_logs_id']-41){
+                if($item['fiuze_task_logs_id']<$collection[count($collection)-1]['fiuze_task_logs_id']-39){
                     Mage::getModel('bestsellercron/taskLogs')->load($item['fiuze_task_logs_id'])->delete();
                 }
             }
