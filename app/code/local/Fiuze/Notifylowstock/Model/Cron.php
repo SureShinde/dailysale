@@ -30,6 +30,7 @@ class Fiuze_Notifylowstock_Model_Cron extends Mage_Core_Model_Abstract
                     ->addAttributeToSelect('name')
                     ->addAttributeToSelect('fiuze_lowstock_flag')
                     ->addAttributeToSelect('fiuze_lowstock_qty')
+                    //->addAttributeToSelect('udropship_vendor')
                     //->addAttributeToSelect('status')
                     //->addFieldToFilter('status', array('eq' => '1'))
                     ->addFieldToFilter('type_id', array('neq' => 'configurable'));
@@ -72,8 +73,15 @@ class Fiuze_Notifylowstock_Model_Cron extends Mage_Core_Model_Abstract
             foreach($result as $product){
                 if($product->getFiuzeLowstockFlag()==1){
                     $ls = $product->getFiuzeLowstockQty();
-                }else{
-                    $ls = Mage::helper('fiuze_notifylowstock')->getQuantity();
+                } else {
+                    if ($product->getUdropshipVendor()) {
+                        $vendor = Mage::getModel('udropship/vendor')->load($product->getUdropshipVendor());
+                        if ($vendor->getNotifyLowstock() == 1 && $vendor->getNotifyLowstockQty()) {
+                            $ls = $vendor->getNotifyLowstockQty();
+                        }
+                    }else {
+                        $ls = Mage::helper('fiuze_notifylowstock')->getQuantity();
+                    }
                 }
                 $fiuze_notif = Mage::getResourceModel('catalog/product')->getAttributeRawValue(
                     $product->getId(),

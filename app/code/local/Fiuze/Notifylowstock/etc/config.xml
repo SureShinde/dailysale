@@ -57,7 +57,7 @@
                     </cataloginventory_stock_item_save_after_handler>
                 </observers>
             </cataloginventory_stock_item_save_after>
-            <udropship_vendor_preferences_save_before>
+            <!--<udropship_vendor_preferences_save_before>
                 <observers>
                     <udropship_vendor_preferences_save_before_handler>
                         <type>model</type>
@@ -74,7 +74,7 @@
                         <method>admin_system_config_changed_section_notifylowstock_handler</method>
                     </admin_system_config_changed_section_notifylowstock_handler>
                 </observers>
-            </admin_system_config_changed_section_notifylowstock>
+            </admin_system_config_changed_section_notifylowstock>-->
         </events>
     </global>
     <frontend>
