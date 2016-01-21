@@ -57,24 +57,6 @@
                     </cataloginventory_stock_item_save_after_handler>
                 </observers>
             </cataloginventory_stock_item_save_after>
-            <!--<udropship_vendor_preferences_save_before>
-                <observers>
-                    <udropship_vendor_preferences_save_before_handler>
-                        <type>model</type>
-                        <class>fiuze_notifylowstock/observer</class>
-                        <method>udropship_vendor_preferences_save_before_handler</method>
-                    </udropship_vendor_preferences_save_before_handler>
-                </observers>
-            </udropship_vendor_preferences_save_before>
-            <admin_system_config_changed_section_notifylowstock>
-                <observers>
-                    <admin_system_config_changed_section_notifylowstock_handler>
-                        <type>model</type>
-                        <class>fiuze_notifylowstock/observer</class>
-                        <method>admin_system_config_changed_section_notifylowstock_handler</method>
-                    </admin_system_config_changed_section_notifylowstock_handler>
-                </observers>
-            </admin_system_config_changed_section_notifylowstock>-->
         </events>
     </global>
     <frontend>
