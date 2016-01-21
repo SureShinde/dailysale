@@ -31,7 +31,7 @@ class Fiuze_Dashboard_Model_Dashboard extends Mage_Core_Model_Abstract
             $days = time() - $date;
             $days = $days / 86400;
             $days = (int)$days;
-            $result[$days]+=$curr_track['qty_udpo'];
+            $result[$days]+=$curr_track['qty_ordered'];
 
         }
 
