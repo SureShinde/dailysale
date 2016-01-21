@@ -46,7 +46,7 @@ class ProxiBlue_DynCatProd_Model_Resource_Category
         mage::helper('dyncatprod')->debug(__FUNCTION__ . " in " . __FILE__ . " at " . __LINE__, 20);
         $categoryId = $category->getId();
         $productIds = $category->getDynamicProducts();
-        mage::helper('dyncatprod')->debug("Product Ids : " . print_r($productIds, true) . " with category " . $categoryId, 20);
+        //mage::helper('dyncatprod')->debug("Product Ids : " . print_r($productIds, true) . " with category " . $categoryId, 20);
         if (is_array($productIds)) {
 
             $adapter = $this->_getWriteAdapter();
@@ -56,9 +56,9 @@ class ProxiBlue_DynCatProd_Model_Resource_Category
             );
             $bind = array('is_dynamic' => 1);
             $adapter->update($this->_categoryProductTable, $bind, $where);
-            mage::helper('dyncatprod')->debug("update table : " . $this->_categoryProductTable, 20);
-            mage::helper('dyncatprod')->debug("update bind : " . print_r($bind,true), 20);
-            mage::helper('dyncatprod')->debug("update where : " . print_r($where,true), 20);
+            #mage::helper('dyncatprod')->debug("update table : " . $this->_categoryProductTable, 20);
+            #mage::helper('dyncatprod')->debug("update bind : " . print_r($bind,true), 20);
+            #mage::helper('dyncatprod')->debug("update where : " . print_r($where,true), 20);
         }
 
         return $this;

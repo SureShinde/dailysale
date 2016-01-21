@@ -53,7 +53,7 @@ class ProxiBlue_DynCatProd_Model_Rule_Condition_Combine
                 array(
                     'value' => 'dyncatprod/rule_condition_additional_conditions_transformations',
                     'label' => Mage::helper('dyncatprod')->__(
-                        'Product Transformations'
+                        'Additional Result Filters'
                     )),
                 array(
                     'value' => 'dyncatprod/rule_condition_additional_conditions_sorter',
@@ -62,6 +62,11 @@ class ProxiBlue_DynCatProd_Model_Rule_Condition_Combine
                     'value' => 'dyncatprod/rule_condition_category_control',
                     'label' => Mage::helper('dyncatprod')->__(
                         'Category Control Combination'
+                    )),
+                array(
+                    'value' => 'dyncatprod/rule_condition_product_update',
+                    'label' => Mage::helper('dyncatprod')->__(
+                        'Product Attribute Updates'
                     )),
             )
         );
