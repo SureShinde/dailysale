@@ -2,7 +2,7 @@
 class Fiuze_Bestsellercron_Model_Customcron  extends Mage_Core_Model_Abstract{
     public function runCustomCron(){
         $collection = Mage::getResourceModel('bestsellercron/tasks_collection');
-        $current_data =getdate();
+        $current_data = getdate(Mage::getModel('core/date')->timestamp(time()));
         if(strlen($current_data['minutes'])==1){
             $current_data['minutes']='0'.$current_data['minutes'];
         }
