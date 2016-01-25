@@ -31,11 +31,22 @@
  * @see Mage_Review_Block_Product_View
  */
 ?>
+
+<!-- stitcher fb view event -->
+
 <?php $_helper = $this->helper('catalog/output'); ?>
 <?php $_product = $this->getProduct(); ?>
+<script>
+fbq('track', 'ViewContent', {
+ content_ids: ['<?php echo $this->getProduct()->getId(); ?>'],
+ content_type: 'product'
+});
+</script>
+<!-- end stitcher fb -->
 <script type="text/javascript">
     var optionsPrice = new Product.OptionsPrice(<?php echo $this->getJsonConfig() ?>);
 </script>
+
 <div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
 <div class="product-view">
     <div class="product-essential">
