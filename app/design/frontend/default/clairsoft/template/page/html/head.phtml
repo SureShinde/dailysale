@@ -43,52 +43,6 @@
 <?php echo $this->getChildHtml() ?>
 <?php echo $this->helper('core/js')->getTranslatorScript() ?>
 
-<?php if((strpos($_SERVER['REQUEST_URI'],'success')==true)): ?>
-	<?php //Get Order Number & Order Total
-		$order = Mage::getModel('sales/order')->loadByIncrementId(Mage::getSingleton('checkout/session')->getLastRealOrderId());
-		$amount = number_format($order->getGrandTotal(),2);
-	?>
-
-	<!-- Facebook Conversion Code for DailySale Checkout -->
-	<script>(function() {
-	  var _fbq = window._fbq || (window._fbq = []);
-	  if (!_fbq.loaded) {
-	    var fbds = document.createElement('script');
-	    fbds.async = true;
-	    fbds.src = '//connect.facebook.net/en_US/fbds.js';
-	    var s = document.getElementsByTagName('script')[0];
-	    s.parentNode.insertBefore(fbds, s);
-	    _fbq.loaded = true;
-	  }
-	})();
-	window._fbq = window._fbq || [];
-	window._fbq.push(['track', '6019180810815', {'value': <?php echo $amount; ?>,'currency':'USD'}]);
-	console.log(<?php echo $amount?>);
-	</script>
-	<noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?ev=6019180810815&amp;cd[value]=<?php echo $amount; ?>&amp;cd[currency]=USD&amp;noscript=1" /></noscript>
-
-<?php endif; ?>
-
-<!-- Facebook custom audience pixel -->
-
-<script>(function() {
-var _fbq = window._fbq || (window._fbq = []);
-if (!_fbq.loaded) {
-var fbds = document.createElement('script');
-fbds.async = true;
-fbds.src = '//connect.facebook.net/en_US/fbds.js';
-var s = document.getElementsByTagName('script')[0];
-s.parentNode.insertBefore(fbds, s);
-_fbq.loaded = true;
-}
-_fbq.push(['addPixelId', '663833153700547']);
-_fbq.push(['track',<?php echo ("'".$order."'"); ?>,{'value':<?php echo ("'".$subtotal."'"); ?>,'currency':'USD'}]);
-})();
-window._fbq = window._fbq || [];
-window._fbq.push(['track', 'PixelInitialized', {}]);
-</script>
-<noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?id=663833153700547&amp;ev=PixelInitialized" /></noscript>
-
 <!-- google tracking pixel -->
 
 <script>
