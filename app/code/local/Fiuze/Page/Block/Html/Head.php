@@ -22,7 +22,7 @@ class Fiuze_Page_Block_Html_Head extends WIC_All_Block_Html_Head
             if ($product instanceof Mage_Catalog_Model_Product && $product->getData('name')) {
                 $title = htmlspecialchars(html_entity_decode(trim($product->getData('name')), ENT_QUOTES, 'UTF-8'));
                 if (!empty($title)) {
-                    return $title;
+                    return $title . ' - DailySale';
                 }
             }
         }
