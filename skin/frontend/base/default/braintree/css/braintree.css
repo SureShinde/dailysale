@@ -1,0 +1,43 @@
+/**
+* Braintree Payments Extension
+*
+* This source file is subject to the Braintree Payment System Agreement (https://www.braintreepayments.com/legal)
+*
+* DISCLAIMER
+* This file will not be supported if it is modified.
+*
+* @copyright   Copyright (c) 2015 Braintree. (https://www.braintreepayments.com/)
+*/
+.uni-wrapperIn .braintree select {width: 210px;}
+#payment_form_braintree #cc_type_auto_row .payment-type-image {float: left;}
+#payment_form_braintree .disabled-payment-method {opacity: 0.2;}
+.braintree-3dsecure .payment-type-image-3dsecure {float: left; padding-right: 15px;}
+#onestepcheckout-form #payment_form_braintree .cvv-what-is-this {float: left;}
+#onestepcheckout-form #payment_form_braintree .payment-type-image-3dsecure {padding-top: 10px;}
+#paypal-container_bottom .paypal-button-content img,
+#paypal-container_top .paypal-button-content img,
+#paypal-container_minicart .paypal-button-content img,
+#braintree-paypal-container .paypal-button-content img,
+#paypal-container .paypal-button-content img {vertical-align: middle;}
+.opc-col-right .braintree-3dsecure .input-box {
+    clear: both;
+    padding: 0px;
+    margin: 0px;
+    overflow: hidden;
+}
+@media only screen {
+    .opc-col-right .braintree-3dsecure .payment-type-image-3dsecure {
+        width: 32.2%;
+        display: block;
+        float: left;
+        margin: 1% 0 1% 1.6%;
+    }
+    .opc-col-right .braintree-3dsecure .payment-type-image-3dsecure:first-child {
+        margin-left: 0;
+    }
+    .opc-col-right .braintree-3dsecure .payment-type-image-3dsecure img {
+        width: 100%;
+    }
+}
+.opc-col-right .braintree-paypal p {padding: 0;}
+.onestepcheckout-threecolumns .braintree-paypal p {padding: 0;}
