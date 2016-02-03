@@ -97,8 +97,12 @@ class Fiuze_Bestsellercron_Model_Cron extends Mage_Core_Model_Abstract{
      * @throws Exception
      */
     protected function _sortCategoryConfig($bestSellers, $currentConfig){
-        $flipped_arr = array_flip($bestSellers);
-        $maxValue = max($flipped_arr) + 1;
+        if(is_array($bestSellers)){
+            $flipped_arr = array_flip($bestSellers);
+            $maxValue = max($flipped_arr) + 1;
+        }else{
+            return false;
+        }
         $category = Mage::getModel('catalog/category')->setStoreId(Mage_Core_Model_App::ADMIN_STORE_ID)->load($currentConfig['category']);
 
         $productCollection = Mage::getResourceModel('catalog/product_collection')
