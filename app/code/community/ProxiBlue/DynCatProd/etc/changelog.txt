@@ -186,3 +186,5 @@
 4.22.0  : Ability to update product attributes after pulled into category
 4.22.1  : Adjust category copy list to ajax in, decrease load time on category
 4.23.0  : Best/Least sellers by profit
+4.23.1  : Trap multiselect attribute not having any values selected in rule
+4.23.2  : place cli run behind a debug block. Must have debug enabled to see cli output

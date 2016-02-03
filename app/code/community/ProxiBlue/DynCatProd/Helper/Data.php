@@ -578,15 +578,15 @@ class ProxiBlue_DynCatProd_Helper_Data
                 'dyncatprod.log',
                 false
             );
-        }
-        if (mage::registry('is_shell')
-            && strpos(
-                $message,
-                'SELECT'
-            ) === false
-            && Mage::getStoreConfig('dyncatprod/debug/level') >= $level
-        ) {
-            echo $message . "\n";
+
+            if (mage::registry('is_shell')
+                && strpos(
+                    $message,
+                    'SELECT'
+                ) === false
+            ) {
+                echo $message . "\n";
+            }
         }
     }
 
