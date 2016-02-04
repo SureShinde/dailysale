@@ -1,0 +1,66 @@
+<?php
+/**
+ * @author      Fiuze Magento Team
+ * @category    Fiuze
+ * @package     design
+ * @copyright   Copyright (c) 2016 Fiuze
+ */
+?>
+<?php
+$requestUrl = $this->getRequest()->getRequestString();
+$error = $this->getRequest()->getParam('error', false);
+?>
+<?php echo $this->getMessagesBlock()->getGroupedHtml(); ?>
+<div style="text-align: center;">
+    <button onclick="iCart.close();" class="button"
+            title="<?php echo $this->__('Continue Shopping'); ?>"
+            type="button"><?php echo $this->__('Continue Shopping'); ?></button>&nbsp;&nbsp;
+    <?php if (strpos($requestUrl, '/addToWishlist/')): ?>
+        <button onclick="location.href='<?php echo $this->getUrl('wishlist/'); ?>'" class="button"
+                title="<?php echo $this->__('Go to Wishlist'); ?>" type="button">
+            <span><span><?php echo $this->__('Go to Wishlist'); ?></span></span>
+        </button>
+    <?php elseif (strpos($requestUrl, '/addToCompare/')): ?>
+        <?php if ($this->helper('catalog/product_compare')->getItemCount() > 1): ?>
+            <button type="button" title="<?php echo $this->__('Compare'); ?>" class="button"
+                    onclick="popWin('<?php echo $this->helper('catalog/product_compare')->getListUrl(); ?>', 'compare', 'top:0,left:0,width=820,height=600,resizable=yes,scrollbars=yes');">
+                <span><span><?php echo $this->__('Compare'); ?></span></span>
+            </button>
+        <?php endif; ?>
+    <?php elseif (strpos($requestUrl, '/add/')): ?>
+        <?php echo $this->getChildHtml('displayoption'); ?>
+    <?php endif; ?>
+</div>
+<?php if ($this->helper('icart')->getShowProductsBlock() == 'static-block' && $this->helper('icart')->getShowStaticBlock()): ?>
+    <?php echo $this->getCmsBlockHtml(); ?>
+<?php endif; ?>
+<?php if (!strpos($requestUrl, '/edit/') && $this->helper('icart')->getShowProductsBlock()): ?>
+    <div class="icart-collaterals">
+        <?php echo $this->getChildHtml('crosssell'); ?>
+    </div>
+<?php endif ?>
+<script type="text/javascript">
+//<![CDATA[
+    iCart.autoClose(<?php echo (int)Mage::getStoreConfig('mageworx_customers/icart/auto_hide') ?>);
+    <?php if (!$error): ?>
+        <?php if (strpos($requestUrl, '/addToWishlist/')): ?>
+            iCart.updateBlock($$('a.top-link-wishlist'), <?php echo Zend_Json::encode($this->getTopLinkWishlist()); ?>);
+                <?php Mage::unregister('wishlist'); Mage::unregister('shared_wishlist'); ?>
+            iCart.placeBlock($$('div.block-wishlist', 'div.mini-wishlist'), <?php echo Zend_Json::encode($this->getChildHtml('wishlist_sidebar'))?>, $$('div.block-cart', 'div.mini-cart'));
+        <?php elseif (strpos($requestUrl, '/addToCompare/')): ?>
+            iCart.replaceBlock($$('div.block-compare', 'div.mini-compare'), <?php echo Zend_Json::encode($this->getChildHtml('catalog.compare.sidebar'))?>);
+         <?php else: ?>
+            iCart.updateBlock($$('a.top-link-cart'), <?php echo Zend_Json::encode($this->getTopLinkCart()); ?>);
+            <?php if (preg_match('~/checkout/cart/~', $this->getRequest()->getServer('HTTP_REFERER'))): ?>
+                iCart.updateBlock($$('div.cart', 'div.layout-1column'), <?php echo Zend_Json::encode($this->getChildHtml('checkout.cart')); ?>);
+            <?php else: ?>
+                iCart.replaceBlock($$('div.block-cart', 'div.mini-cart'), <?php echo Zend_Json::encode($this->getChildHtml('cart_sidebar')); ?>);
+            <?php endif ?>
+        <?php endif; ?>
+        iCart.updateLinks();
+        <?php if (strpos($requestUrl, '/edit/')): ?>
+            iCart.close();
+        <?php endif; ?>
+    <?php endif; ?>
+//]]>
+</script>
