@@ -1150,5 +1150,4 @@ class Unirgy_Dropship_Model_Vendor extends Mage_Core_Model_Abstract
     {
         return Mage::helper('udropship')->isModuleActive('udtiership') && Mage::getStoreConfig('carriers/udtiership/allow_vendor_modify');
     }
-
 }

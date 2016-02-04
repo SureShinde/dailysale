@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<layout>
+    <udropship_vendor>
+        <reference name="header">
+            <action method="setTemplate"><file>fiuze/dashboard/head.phtml</file>
+            </action>
+        </reference>
+    </udropship_vendor>
+
+    <udpo_vendor_dash>
+        <update handle="udropship_vendor"/>
+        <reference name="head">
+            <action method="addCss">
+                <stylesheet>css/fiuze_dash.css</stylesheet>
+            </action>
+        </reference>
+        <reference name="header">
+            <action method="setTemplate"><file>fiuze/dashboard/head.phtml</file>
+            </action>
+        </reference>
+        <!--<reference name="content">
+            <action method="setTemplate"><file>fiuze/dashboard/dash.phtml</file>
+            </action>
+        </reference>-->
+    </udpo_vendor_dash>
+
+    <udpo_vendor_dash>
+        <update handle="udropship_vendor" />
+        <reference name="head">
+            <action method="addCss"><stylesheet>css/fiuze_dash.css</stylesheet></action>
+        </reference>
+        <reference name="content">
+            <!--<block type="core/html_calendar" name="head.udropship.calendar" as="udropship.calendar" template="unirgy/dropship/calendar.phtml"></block>-->
+            <block type="core/template" template="fiuze/dashboard/dash.phtml" name="dash">
+                <!--<block type="udpo/vendor_po_pager" name="udpo.grid.toolbar">-->
+                <!--<action method="checkCompat"/>-->
+                <!--</block>-->
+                <!--<block type="udpo/vendor_po_grid" template="unirgy/udpo/vendor/po/grid.phtml" name="udpo.grid" as="udpos"/>-->
+            </block>
+        </reference>
+    </udpo_vendor_dash>
+</layout>
