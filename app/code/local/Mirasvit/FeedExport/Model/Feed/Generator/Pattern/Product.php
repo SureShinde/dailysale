@@ -207,7 +207,7 @@ class Mirasvit_FeedExport_Model_Feed_Generator_Pattern_Product
                 break;
 
             case 'position_in_category':
-                $this->_prepareProductCategory($product);
+                $this->_prepareProductCategoryPosition($product);
                 $value = $product->getPositionInCategory();
                 break;
 
@@ -495,7 +495,7 @@ class Mirasvit_FeedExport_Model_Feed_Generator_Pattern_Product
         return $collection;
     }
 
-    protected function _prepareProductCategory(&$product)
+    protected function _prepareProductCategoryPosition(&$product)
     {
         $category = null;
         $currentPosition = null;
@@ -551,7 +551,7 @@ class Mirasvit_FeedExport_Model_Feed_Generator_Pattern_Product
         }
     }
 
-    /*protected function _prepareProductCategory(&$product)
+    protected function _prepareProductCategory(&$product)
     {
         $category = null;
         $currentPosition = null;
@@ -611,7 +611,7 @@ class Mirasvit_FeedExport_Model_Feed_Generator_Pattern_Product
             $product->setCategory('');
             $product->setCategorySubcategory('');
         }
-    }*/
+    }
 
     protected function _prepareProductCategories(&$product)
     {
