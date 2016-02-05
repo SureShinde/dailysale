@@ -1,30 +1,26 @@
 <?php
 /**
- * @author		Sashas
-* @category    Sashas
-* @package     Sashas_OrderSuccessPage
-* @copyright   Copyright (c) 2013 Sashas IT Support Inc. (http://www.sashas.org)
-* @license     http://opensource.org/licenses/GPL-3.0  GNU General Public License, version 3 (GPL-3.0)
-*/
+ * @author      Fiuze Magento Team
+ * @category    Fiuze
+ * @package     design
+ * @copyright   Copyright (c) 2016 Fiuze
+ */
 ?>
 <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
 <h2 class="sub-title"><?php echo $this->__('Thank you for your purchase!') ?></h2>
-
 <?php
-
 $orderId = $this->getOrderId();
 $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
 $total = $order->getGrandTotal();
 $subtotal = $order->getSubtotal();
 $discount = $order->getDiscountAmount();
 $affiliateTotal = ($subtotal + $discount);
-
 $ordered_items = $order->getAllVisibileItems();
 $skulist = ''; //setup skulist param
 $pricelist = ''; //setup pricelist param
 $quantitylist = ''; //setup quantitylist param
 
-foreach($ordered_items as $item){
+foreach($ordered_items as $item) {
 	$skulist .= $item->getSku() . ',';
     $quantitylist .= $item->getQtyOrdered() . ',';
     $pricelist .= $item->getProduct()->getFinalPrice() . ',';
@@ -35,10 +31,9 @@ $quantitylist = substr($quantitylist, 0, -1);
 $pricelist = substr($pricelist, 0, -1);
 //Magento has only one couponcode allowed, so no comma-separated list to make
 $couponcodes = $order->getCouponCode();
-
 $newcustomer = ''; //setup newcustomer param
 $customer = $order->getCustomerId();
-if($customer){
+if ($customer) {
 	$_orders = Mage::getModel('sales/order')->getCollection()->addFieldToFilter('customer_id', $customer);
 	$_orderCnt = $_orders->count(); //orders count
 	//if customer has more than an order, they're not new
@@ -48,36 +43,28 @@ if($customer){
 $currency = $order->getOrderCurrencyCode();
 ?>
 <img src="https://shareasale.com/sale.cfm?tracking=<?php echo $orderId ?>&amount=<?php echo $affiliateTotal ?>&transtype=sale&merchantID=51523&couponcode=<?php echo $couponcodes ?>&skulist=<?php echo $skulist ?>&quantitylist=<?php echo $quantitylist ?>&pricelist=<?php echo $pricelist ?>&newcustomer=<?php echo $newcustomer ?>&currency=<?php echo $currency ?>" width="1" height="1">
-
 <?php if ($this->getOrderId()):?>
-    <p><?php echo $this->__('You will receive an order confirmation email with details of your order and a link to track its progress.') ?>
-       <?php //echo $this->__('Click <a href="%s" onclick="this.target=\'_blank\'">here to print</a> a copy of your order confirmation.', $this->getUrl('ordersuccesspage/ordersuccesspage/print',array('id',Mage::registry('current_order')->getId()))) ?>
-    </p>
-
+    <p><?php echo $this->__('You will receive an order confirmation email with details of your order and a link to track its progress.') ?></p>
 <?php endif;?>
-
 <?php if ($this->getAgreementRefId()): ?>
     <p><?php echo $this->__('Your billing agreement # is: %s.', sprintf('<a href="%s">%s</a>', $this->escapeHtml($this->getAgreementUrl()), $this->escapeHtml($this->getAgreementRefId())))?></p>
 <?php endif;?>
-
 <?php if ($profiles = $this->getRecurringProfiles()):?>
-<p><?php echo $this->__('Your recurring payment profiles:'); ?></p>
-<ul class="disc">
-<?php foreach($profiles as $profile):?>
-<?php $profileIdHtml = ($this->getCanViewProfiles() ? sprintf('<a href="%s">%s</a>', $this->escapeHtml($this->getProfileUrl($profile)), $this->escapeHtml($this->getObjectData($profile, 'reference_id'))) : $this->escapeHtml($this->getObjectData($profile, 'reference_id')));?>
-    <li><?php echo $this->__('Payment profile # %s: "%s".', $profileIdHtml, $this->escapeHtml($this->getObjectData($profile, 'schedule_description')))?></li>
-<?php endforeach;?>
-</ul>
+    <p><?php echo $this->__('Your recurring payment profiles:'); ?></p>
+    <ul class="disc">
+        <?php foreach($profiles as $profile):?>
+            <?php $profileIdHtml = ($this->getCanViewProfiles() ? sprintf('<a href="%s">%s</a>', $this->escapeHtml($this->getProfileUrl($profile)), $this->escapeHtml($this->getObjectData($profile, 'reference_id'))) : $this->escapeHtml($this->getObjectData($profile, 'reference_id')));?>
+            <li><?php echo $this->__('Payment profile # %s: "%s".', $profileIdHtml, $this->escapeHtml($this->getObjectData($profile, 'schedule_description')))?></li>
+        <?php endforeach;?>
+    </ul>
 <?php endif;?>
 <?php if ($this->getOrderId()):?>
-<?php
-$orderObj = Mage::getModel('sales/order')->loadByIncrementId($this->getOrderId());
-?>
-<!-- ROKT widget -->
-<div id="317cda8b64814ff8862c8c5ebd538d0f-b"></div>
-<!-- End ROKT widget -->
-<?php echo $this->getLayout()->createBlock('sales/order_info')->setTemplate('ordersuccesspage/info.phtml')->toHtml();?>
-<?php echo $this->getLayout()->createBlock('sales/order_items')->setTemplate('ordersuccesspage/items.phtml')->toHtml();?>
+    <?php $orderObj = Mage::getModel('sales/order')->loadByIncrementId($this->getOrderId()); ?>
+    <!-- ROKT widget -->
+    <div id="317cda8b64814ff8862c8c5ebd538d0f-b"></div>
+    <!-- End ROKT widget -->
+    <?php echo $this->getLayout()->createBlock('sales/order_info')->setTemplate('ordersuccesspage/info.phtml')->toHtml();?>
+    <?php echo $this->getLayout()->createBlock('sales/order_items')->setTemplate('ordersuccesspage/items.phtml')->toHtml();?>
 <?php endif;?>
 <div class="buttons-set">
     <button type="button" class="button" title="<?php echo $this->__('Continue Shopping') ?>" onclick="window.location='<?php echo $this->getUrl() ?>'"><?php echo $this->__('Continue Shopping') ?></button>
@@ -96,53 +83,48 @@ $orderObj = Mage::getModel('sales/order')->loadByIncrementId($this->getOrderId()
     var p = document.getElementsByTagName("script")[0]; p.parentNode.insertBefore(js, p);
 </script>
 <!-- End ROKT -->
-<!-- conversion value for Adroll smart pixel -->
 
+<!-- conversion value for Adroll smart pixel -->
 <script type="text/javascript">
   adroll_conversion_value_in_dollars = <?php echo($subtotal); ?>;
   adroll_custom_data = {"ORDER_ID": <?php echo($this->getOrderId()); ?>};
 </script>
 
 <!-- BEGIN OF FLEXOFFERS.COM TRACKING CODE -->
-
 <img src="http://track.flexlinks.com/tracker.aspx?AID=b6c1c199-5003-49c0-bcb1-87f1839155cf&AMT=<?php echo($subtotal); ?>&CMM=&UID=<?php echo($this->getOrderId()); ?>" width="1" height="1" alt=""/>
-
 <!-- END OF FLEXOFFERS.COM TRACKING CODE -->
 
 <!-- set google remarketing ecomm value -->
-
-<?php if (!empty($subtotal)){ ?>
+<?php if (!empty($subtotal)): ?>
   <script type="text/javascript">
-  var google_tag_params = {
-  ecomm_totalvalue: <?php echo($subtotal); ?>
-  };
+      var google_tag_params = {
+        ecomm_totalvalue: <?php echo($subtotal); ?>
+      };
   </script>
-<?php } ?>
+<?php endif; ?>
 
 <!-- Google Code for Daily Sale Conversion Conversion Page -->
 <script type="text/javascript">
 /* <![CDATA[ */
-var google_conversion_id = 1003172301;
-var google_conversion_language = "en";
-var google_conversion_format = "2";
-var google_conversion_color = "ffffff";
-var google_conversion_label = "xLwaCJCAtFgQzeOs3gM";
-var google_conversion_value = 1.00;
-var google_conversion_currency = "USD";
-var google_remarketing_only = false;
+    var google_conversion_id = 1003172301;
+    var google_conversion_language = "en";
+    var google_conversion_format = "2";
+    var google_conversion_color = "ffffff";
+    var google_conversion_label = "xLwaCJCAtFgQzeOs3gM";
+    var google_conversion_value = 1.00;
+    var google_conversion_currency = "USD";
+    var google_remarketing_only = false;
 /* ]]> */
 </script>
-<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
-</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js"></script>
 <noscript>
-<div style="display:inline;">
-<img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/1003172301/?value=1.00&amp;currency_code=USD&amp;label=xLwaCJCAtFgQzeOs3gM&amp;guid=ON&amp;script=0"/>
-</div>
+    <div style="display:inline;">
+        <img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/1003172301/?value=1.00&amp;currency_code=USD&amp;label=xLwaCJCAtFgQzeOs3gM&amp;guid=ON&amp;script=0"/>
+    </div>
 </noscript>
 
 <!-- START Google Trusted Stores Order -->
 <div id="gts-order" style="display:none;" translate="no">
-
   <!-- start order and merchant information -->
   <span id="gts-o-id">MERCHANT_ORDER_ID</span>
   <span id="gts-o-domain">MERCHANT_ORDER_DOMAIN</span>
@@ -157,10 +139,6 @@ var google_remarketing_only = false;
   <span id="gts-o-est-delivery-date">ORDER_EST_DELIVERY_DATE</span>
   <span id="gts-o-has-preorder">HAS_BACKORDER_PREORDER</span>
   <span id="gts-o-has-digital">HAS_DIGITAL_GOODS</span>
-  <!-- end order and merchant information -->
-
-  <!-- start repeated item specific information -->
-  <!-- item example: this area repeated for each item in the order -->
   <span class="gts-item">
     <span class="gts-i-name">ITEM_NAME</span>
     <span class="gts-i-price">ITEM_PRICE</span>
@@ -170,23 +148,17 @@ var google_remarketing_only = false;
     <span class="gts-i-prodsearch-country">ITEM_GOOGLE_SHOPPING_COUNTRY</span>
     <span class="gts-i-prodsearch-language">ITEM_GOOGLE_SHOPPING_LANGUAGE</span>
   </span>
-  <!-- end item 1 example -->
-  <!-- end repeated item specific information -->
-
 </div>
 <!-- END Google Trusted Stores Order -->
 
 <!-- Experiment Engine tracking -->
-
 <script>
-window.EEngine = window.EEngine || [];
-EEngine.trackRevenue('dailysale_purchase', <?php echo($subtotal * 100); ?>);
+    window.EEngine = window.EEngine || [];
+    EEngine.trackRevenue('dailysale_purchase', <?php echo($subtotal * 100); ?>);
 </script>
-
 <!-- End EEngine tracking -->
 
 <!-- Upsellit tracking -->
-
 <script type="text/javascript">
   var USI_orderID = <?php echo($this->getOrderId()); ?>;
   var USI_orderAmt = <?php echo($subtotal); ?>;
@@ -200,11 +172,40 @@ EEngine.trackRevenue('dailysale_purchase', <?php echo($subtotal * 100); ?>);
   USI_dynScript2.src = 'http'+ (document.location.protocol=='https:'?'s://www':'://www')+ '.upsellit.com/hound/sale.jsp?orderID='+escape(USI_orderID)+'&orderAmt='+escape(USI_orderAmt);
   USI_headID.appendChild(USI_dynScript2);
 </script>
-
 <!-- end upsellit tracking -->
 
-<!-- Traffic Vance Tracking -->
+<!-- Sidecar tracking -->
+<script type="text/javascript">
+//<![CDATA[
+    var sidecar = sidecar || {};
+    sidecar.transactions = {
+        add: true,
+        data: {
+            order_id: '<?php echo $orderId; ?>',
+            subtotal: '<?php echo $subtotal; ?>',
+            tax: '<?php echo $order->getTaxAmount(); ?>',
+            shipping: '<?php echo $order->getShippingInclTax(); ?>',
+            total: '<?php echo $total; ?>'
+        },
+        items:[
+            <?php
+                $items = $order->getAllVisibleItems();
+                foreach ($items as $item) {
+                    $sidecarItems .= "{";
+                    $sidecarItems .= "product_id:'".$item->getSku()."', ";
+                    $sidecarItems .= "unit_price:'".$item->getPrice()."', ";
+                    $sidecarItems .= "quantity:'".$item->getQtyOrdered()."'";
+                    $sidecarItems .= "},";
+                }
+                echo substr($sidecarItems, 0, -1);
+            ?>
+        ]
+    };
+//]]>
+</script>
+<!-- end sidecar -->
 
+<!-- Traffic Vance Tracking -->
 <script type="text/javascript" src="https://tracking.trafficvance.com/?id=1G5CC7G7EADG46C661FF&fetch=0&value=<?php echo($subtotal); ?>">
 </script>
 <noscript>
@@ -212,38 +213,35 @@ EEngine.trackRevenue('dailysale_purchase', <?php echo($subtotal * 100); ?>);
         <img height="1" width="1" style="border-style: none;" alt="" src="https://tracking.trafficvance.com/?id=1G5CC7G7EADG46C661FF&fetch=1&value=<?php echo($subtotal); ?>" />
     </div>
 </noscript>
-
 <!-- End traffic vance -->
 
 <!-- BounceX conversion tracking -->
-
 <script>
-   window.bxAsyncInit = function(){
-     bouncex.report_conversion({
+    window.bxAsyncInit = function(){
+        bouncex.report_conversion({
            order_id: <?php echo($this->getOrderId()); ?>,
            amount:<?php echo($subtotal); ?>,
            email:"<?php echo ($order->getCustomerEmail());?>",
-           goal:"",
-     });
-}; </script>
-
+           goal:""
+        });
+    };
+</script>
 <!-- End BounceX -->
 
 <!--SteelHouse Conversion Pixel-->
 <script type="text/javascript">
-(function(){var x=null,p,q,m,
-o="11837",
-l= <?php echo($this->getOrderId()); ?>,
-i= <?php echo($subtotal); ?>,
-c="",
-k="",
-g="",
-j="",
-u="",
-shadditional="";
-try{p=top.document.referer!==""?encodeURIComponent(top.document.referrer.substring(0,512)):""}catch(n){p=document.referrer!==null?document.referrer.toString().substring(0,512):""}try{q=window&&window.top&&document.location&&window.top.location===document.location?document.location:window&&window.top&&window.top.location&&""!==window.top.location?window.top.location:document.location}catch(b){q=document.location}try{m=parent.location.href!==""?encodeURIComponent(parent.location.href.toString().substring(0,512)):""}catch(z){try{m=q!==null?encodeURIComponent(q.toString().substring(0,512)):""}catch(h){m=""}}var A,y=document.createElement("script"),w=null,v=document.getElementsByTagName("script"),t=Number(v.length)-1,r=document.getElementsByTagName("script")[t];if(typeof A==="undefined"){A=Math.floor(Math.random()*100000000000000000)}w="dx.steelhousemedia.com/spx?conv=1&shaid="+o+"&tdr="+p+"&plh="+m+"&cb="+A+"&shoid="+l+"&shoamt="+i+"&shocur="+c+"&shopid="+k+"&shoq="+g+"&shoup="+j+"&shpil="+u+shadditional;y.type="text/javascript";y.src=("https:"===document.location.protocol?"https://":"http://")+w;r.parentNode.insertBefore(y,r)}());
+    (function(){var x=null,p,q,m,
+    o="11837",
+    l= <?php echo($this->getOrderId()); ?>,
+    i= <?php echo($subtotal); ?>,
+    c="",
+    k="",
+    g="",
+    j="",
+    u="",
+    shadditional="";
+    try{p=top.document.referer!==""?encodeURIComponent(top.document.referrer.substring(0,512)):""}catch(n){p=document.referrer!==null?document.referrer.toString().substring(0,512):""}try{q=window&&window.top&&document.location&&window.top.location===document.location?document.location:window&&window.top&&window.top.location&&""!==window.top.location?window.top.location:document.location}catch(b){q=document.location}try{m=parent.location.href!==""?encodeURIComponent(parent.location.href.toString().substring(0,512)):""}catch(z){try{m=q!==null?encodeURIComponent(q.toString().substring(0,512)):""}catch(h){m=""}}var A,y=document.createElement("script"),w=null,v=document.getElementsByTagName("script"),t=Number(v.length)-1,r=document.getElementsByTagName("script")[t];if(typeof A==="undefined"){A=Math.floor(Math.random()*100000000000000000)}w="dx.steelhousemedia.com/spx?conv=1&shaid="+o+"&tdr="+p+"&plh="+m+"&cb="+A+"&shoid="+l+"&shoamt="+i+"&shocur="+c+"&shopid="+k+"&shoq="+g+"&shoup="+j+"&shpil="+u+shadditional;y.type="text/javascript";y.src=("https:"===document.location.protocol?"https://":"http://")+w;r.parentNode.insertBefore(y,r)}());
 </script>
-
 <!-- end steelhouse -->
 
 <!-- SLI Conversion Tracking -->
@@ -251,17 +249,18 @@ try{p=top.document.referer!==""?encodeURIComponent(top.document.referrer.substri
 $sliOrderId = Mage::getSingleton('checkout/session')->getLastOrderId(); $sliOrder = Mage::getSingleton('sales/order'); $sliOrder->load($sliOrderId);
 $sliAmount = number_format($subtotal,2);
 if(Mage::getSingleton('customer/session')->isLoggedIn()) { $sliCustomer = Mage::getSingleton('customer/session')->getCustomerId(); } else {
-$sliCustomer = "1";
+    $sliCustomer = "1";
 }
 ?>
 <script type="text/javascript">
-var sliSparkJsHost = (("https:" == document.location.protocol) ? "https://" : "http://" );
-document.write(unescape("%3Cscript src='" + sliSparkJsHost + "b.sli-spark.com/sli-spark.js' type='text/javascript'%3E%3C/script%3E"));
+    var sliSparkJsHost = (("https:" == document.location.protocol) ? "https://" : "http://" );
+    document.write(unescape("%3Cscript src='" + sliSparkJsHost + "b.sli-spark.com/sli-spark.js' type='text/javascript'%3E%3C/script%3E"));
 </script>
 <script language="javascript" type="text/javascript">
-var spark= new SliSpark("2848", "1"); spark.setPageType("checkout-confirmation");
-spark.addTransaction("<?php echo $this->getOrderId(); ?>","<?php echo $sliCustomer; ?>","<?php echo $sliAmount; ?>","<?php echo $sliOrder->getShippingInclTax(); ?>","<?php echo $sliOrder->getTaxAmount(); ?>");
-<?php foreach($sliOrder->getAllItems() as $sliItem): ?> <?php if($sliItem->getParentItem()) continue; ?>
-spark.addItem("<?php echo $sliItem->getProductId() ?>","<?php echo (int) $sliItem->getQtyOrdered() ?>","<?php echo $sliItem->getPrice() ?>");
-<?php endforeach;?> spark.writeTrackCode(); spark.writeTransactionCode(); </script>
+    var spark= new SliSpark("2848", "1"); spark.setPageType("checkout-confirmation");
+    spark.addTransaction("<?php echo $this->getOrderId(); ?>","<?php echo $sliCustomer; ?>","<?php echo $sliAmount; ?>","<?php echo $sliOrder->getShippingInclTax(); ?>","<?php echo $sliOrder->getTaxAmount(); ?>");
+    <?php foreach($sliOrder->getAllItems() as $sliItem): ?> <?php if($sliItem->getParentItem()) continue; ?>
+    spark.addItem("<?php echo $sliItem->getProductId() ?>","<?php echo (int) $sliItem->getQtyOrdered() ?>","<?php echo $sliItem->getPrice() ?>");
+    <?php endforeach;?> spark.writeTrackCode(); spark.writeTransactionCode();
+</script>
 <!-- SLI Conversion Tracking -->
