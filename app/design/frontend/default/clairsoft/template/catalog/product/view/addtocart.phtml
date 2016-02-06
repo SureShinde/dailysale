@@ -39,7 +39,7 @@
         </select>
         <input name="qty" type="text" id="otherqty" class="hidden" />
         <?php endif; ?>
-        <button type="button" title="<?php echo $buttonTitle ?>" class="addtocartbtn" onclick="productAddToCartForm.submit(this)"><?php echo $buttonTitle ?></button>
+        <button type="button" title="<?php echo $buttonTitle ?>" class="addtocartbtn" onclick="productAddToCartForm.submit(this);_fbq('track', 'AddToCart', { content_ids: ['<?php echo $this->getProduct()->getId(); ?>'], content_type: 'product'});"><?php echo $buttonTitle ?></button>
         <?php echo $this->getChildHtml('', true, true) ?>
     </div>
 <?php endif; ?>

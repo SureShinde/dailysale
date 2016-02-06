@@ -244,6 +244,25 @@ $currency = $order->getOrderCurrencyCode();
 </script>
 <!-- end steelhouse -->
 
+<!-- Stitcher purchase event -->
+<?php
+
+$productIds = array();
+$items = $order->getAllVisibleItems();
+foreach($items as $item) {
+   $idList .= "'".$productIds[] = $item->getProductId()."',";
+}
+
+$idList = substr($idList, 0, -1);
+?>
+<script>
+fbq('track', 'Purchase', {
+content_ids: [<?php echo $idList; ?>],
+content_type: 'product'
+}); 
+</script>
+<!-- end stitcher purchase event -->
+
 <!-- SLI Conversion Tracking -->
 <?php
 $sliOrderId = Mage::getSingleton('checkout/session')->getLastOrderId(); $sliOrder = Mage::getSingleton('sales/order'); $sliOrder->load($sliOrderId);
@@ -264,3 +283,5 @@ if(Mage::getSingleton('customer/session')->isLoggedIn()) { $sliCustomer = Mage::
     <?php endforeach;?> spark.writeTrackCode(); spark.writeTransactionCode();
 </script>
 <!-- SLI Conversion Tracking -->
+
+
