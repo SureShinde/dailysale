@@ -34,6 +34,7 @@
 class Mage_Admin_Model_Observer
 {
     const FLAG_NO_LOGIN = 'no-login';
+
     /**
      * Handler for controller_action_predispatch event
      *
@@ -42,12 +43,13 @@ class Mage_Admin_Model_Observer
      */
     public function actionPreDispatchAdmin($observer)
     {
-        $session = Mage::getSingleton('admin/session');
         /** @var $session Mage_Admin_Model_Session */
+        $session = Mage::getSingleton('admin/session');
         $request = Mage::app()->getRequest();
         $user = $session->getUser();
 
-        $requestedActionName = $request->getActionName();
+        /** @var $request Mage_Core_Controller_Request_Http */
+        $requestedActionName = strtolower($request->getActionName());
         $openActions = array(
             'forgotpassword',
             'resetpassword',
@@ -63,11 +65,26 @@ class Mage_Admin_Model_Observer
             }
             if (!$user || !$user->getId()) {
                 if ($request->getPost('login')) {
-                    $postLogin  = $request->getPost('login');
-                    $username   = isset($postLogin['username']) ? $postLogin['username'] : '';
-                    $password   = isset($postLogin['password']) ? $postLogin['password'] : '';
-                    $session->login($username, $password, $request);
-                    $request->setPost('login', null);
+
+                    /** @var Mage_Core_Model_Session $coreSession */
+                    $coreSession = Mage::getSingleton('core/session');
+
+                    if ($coreSession->validateFormKey($request->getPost("form_key"))) {
+                        $postLogin = $request->getPost('login');
+                        $username = isset($postLogin['username']) ? $postLogin['username'] : '';
+                        $password = isset($postLogin['password']) ? $postLogin['password'] : '';
+                        $session->login($username, $password, $request);
+                        $request->setPost('login', null);
+                    } else {
+                        if ($request && !$request->getParam('messageSent')) {
+                            Mage::getSingleton('adminhtml/session')->addError(
+                                Mage::helper('adminhtml')->__('Invalid Form Key. Please refresh the page.')
+                            );
+                            $request->setParam('messageSent', true);
+                        }
+                    }
+
+                    $coreSession->renewFormKey();
                 }
                 if (!$request->getParam('forwarded')) {
                     if ($request->getParam('isIframe')) {
