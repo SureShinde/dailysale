@@ -20,7 +20,7 @@ class Mirasvit_Fpc_Model_Observer extends Varien_Debug
 {
     //1 - only primary tags
     //2 - all tags
-    protected $_cacheTagsLevel = 2;
+    protected $_cacheTagsLevel = 1;
 
     protected $_registerModelTagCalls = 0;
 
@@ -97,30 +97,56 @@ class Mirasvit_Fpc_Model_Observer extends Varien_Debug
             return $this;
         }
 
-        if ($this->_cacheTagsLevel == 1 && $this->_registerModelTagCalls > 0) {
-            return $this;
+        $object = $observer->getEvent()->getObject();
+
+        if ($this->_cacheTagsLevel == 1
+            && $this->_registerModelTagCalls < 2
+            && $object && $object->getId()
+            && ($tags = $object->getCacheIdTags())
+        ) {
+            foreach ($tags as $tagKey => $tagValue) {
+                if ($this->checkIgnoredTags($tagValue)) {
+                    unset($tags[$tagKey]);
+                }
+            }
+            $this->_processor->addRequestTag($tags);
+            $this->_registerModelTagCalls++;
         }
 
-        $object = $observer->getEvent()->getObject();
-        if ($object && $object->getId()) {
-            $tags = $object->getCacheIdTags();
-            if ($tags) {
-                if ($this->_cacheTagsLevel == 1) {
-                    if (count($tags) > 0) {
-                        $tags = array($tags[0]);
-                    }
+
+        if ($this->_cacheTagsLevel == 2
+            && $object
+            && $object->getId()
+            && ($tags = $object->getCacheIdTags())
+        ) {
+            if ($this->_cacheTagsLevel == 1) {
+                if (count($tags) > 0) {
+                    $tags = array($tags[0]);
                 }
-                foreach ($tags as $tagKey => $tagValue) {
-                    if (strpos($tagValue, 'quote') !== false) {
-                        unset($tags[$tagKey]);
-                    }
-                }
-                $this->_processor->addRequestTag($tags);
-                $this->_registerModelTagCalls++;
             }
+            foreach ($tags as $tagKey => $tagValue) {
+                if ($this->checkIgnoredTags($tagValue)) {
+                    unset($tags[$tagKey]);
+                }
+            }
+            $this->_processor->addRequestTag($tags);
+            $this->_registerModelTagCalls++;
         }
 
         return $this;
+    }
+
+    protected function checkIgnoredTags($tagValue)
+    {
+        $tagValue = strtolower($tagValue);
+        $ignoredTags = array('quote', 'customer', 'eav_attribute', 'cms_block', 'all4coding_core_extension');
+        foreach ($ignoredTags as $tag) {
+            if (strpos($tagValue, $tag) !== false) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function registerProductTags($observer)
@@ -185,6 +211,83 @@ class Mirasvit_Fpc_Model_Observer extends Varien_Debug
                 if ($cronStatus !== true) {
                     Mage::getSingleton('adminhtml/session')->addError($cronStatus);
                 }
+        }
+    }
+
+    /**
+     * Flush cache of dependent pages after save product (need if product isn't in cache we don't flush category by tags)
+     */
+    public function updateDependingCache($e)
+    {
+        $product = $e->getProduct();
+        if (is_object($product) && ($productId = $product->getId())) {
+            $tags = array();
+            $tags[] = 'CATALOG_PRODUCT_' . $productId;
+            $tags = $this->getCategoryTags($product, $tags);
+
+            if ($product->getTypeId() == "simple") {
+                $parentIds = Mage::getModel('catalog/product_type_grouped')->getParentIdsByChild($productId);
+                if (!$parentIds) {
+                    $parentIds = Mage::getModel('catalog/product_type_configurable')->getParentIdsByChild($productId);
+                }
+            }
+            if ($parentIds) {
+                foreach ($parentIds as $parentId) {
+                    $tags[] = 'CATALOG_PRODUCT_' . $parentId;
+                    $parenProduct = Mage::getModel('catalog/product')->load($parentId);
+                    $tags = $this->getCategoryTags($parenProduct, $tags);
+                }
+            }
+
+            if ($tags) {
+                $tags = array_unique($tags);
+                Mage::app()->getCache()->clean('matchingAnyTag', $tags);
+            }
+        }
+    }
+
+    protected function getCategoryTags($product, $tags)
+    {
+        if (!is_object($product)) {
+            return $tags;
+        }
+        $categoryIds = $product->getCategoryIds();
+        foreach ($categoryIds as $categoryId) {
+            $tags[] = 'CATALOG_CATEGORY_' . $categoryId;
+        }
+        return $tags;
+    }
+
+
+    public function getConfig()
+    {
+        return Mage::getSingleton('fpc/config');
+    }
+
+    public function onOrderPlaceAfter($observer)
+    {
+        $order = $observer->getEvent()->getOrder();
+
+        if (!$order) {
+            return $this;
+        }
+
+        foreach ($order->getItemsCollection() as $item) {
+            $productId = $item->getProductId();
+            $tags = array();
+            $tags[] = 'CATALOG_PRODUCT_' . $productId;
+            $product = Mage::getModel('catalog/product')->load($productId);
+            $stockStatus = Mage::getModel('cataloginventory/stock_item')
+                     ->loadByProduct($product)
+                     ->getIsInStock();
+            if (!$stockStatus) {
+                 $tags = $this->getCategoryTags($product, $tags);
+            }
+
+            if ($tags) {
+                $tags = array_unique($tags);
+                Mage::app()->getCache()->clean('matchingAnyTag', $tags);
+            }
         }
     }
 }
