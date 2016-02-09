@@ -22,7 +22,7 @@ class ProxiBlue_DynCatProd_Model_Rule_Condition_Product
     {
         parent::__construct();
         $this->setType('dyncatprod/rule_condition_product')
-            ->setProcessingOrder('any');
+            ->setProcessingOrder('first');
     }
 
     /**

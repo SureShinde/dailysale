@@ -72,8 +72,9 @@ class ProxiBlue_DynCatProd_Block_Adminhtml_Help
                 . '<p class="tooltip-close">'
                 . $this->__('click tooltip to hide')
                 . '</p></div></span>
-                <script>new Tooltip("trigger-' . $this->getInputType() . $random
-                . '", "tooltip-' . $this->getInputType() . $random . '")</script>
+                <script>
+                if(typeof Tooltip != "undefined") { new Tooltip("trigger-' . $this->getInputType() . $random
+                . '", "tooltip-' . $this->getInputType() . $random . '"); }</script>
                 ';
         }
 

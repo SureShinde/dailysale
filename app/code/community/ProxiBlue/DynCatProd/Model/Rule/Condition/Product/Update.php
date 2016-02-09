@@ -10,55 +10,42 @@
  * @license   http://www.proxiblue.com.au/eula EULA
  * @link      http://www.proxiblue.com.au
  */
-class ProxiBlue_DynCatProd_Model_Rule_Condition_Category_Control
+class ProxiBlue_DynCatProd_Model_Rule_Condition_Product_Update
     extends ProxiBlue_DynCatProd_Model_Rule_Condition_Backport
 {
 
     public function __construct($args)
     {
         parent::__construct($args);
-        $this->setType('dyncatprod/rule_condition_category_control')
-            ->setProcessingOrder('9999999' . rand(200, 500))
-            ->setValue('current')
-            ->setAggregator('any');
+        $this->setType('dyncatprod/rule_condition_product_update')
+            ->setProcessingOrder('999999999999' . rand(200, 500))
+            ->setValue('')
+            ->setAggregator('');
     }
 
-    public function loadAggregatorOptions()
+
+    public function loadOperatorOptions()
     {
-        $this->setAggregatorOption(
-            array(
-                'none' => Mage::helper('rule')->__('NONE'),
-                'any'  => Mage::helper('rule')->__('ANY'),
-            )
+        $valueOption = ProxiBlue_DynCatProd_Model_Rule_Condition_Product_Abstract::_websiteOptionsList(true);
+        $result = array();
+        foreach($valueOption as $website => $id) {
+            $result[$id] = $website;
+        }
+        $this->setOperatorOption(
+            $result
         );
 
         return $this;
     }
 
-    public function loadValueOptions()
-    {
-        $this->setValueOption(
-            array(
-                'current' => Mage::helper('rule')->__('CURRENT'),
-                'parent'  => Mage::helper('rule')->__('PARENT'),
-            )
-        );
-
-        return $this;
-    }
 
     public function asHtml()
     {
-        if (!$this->getValue()) {
-            // fix legacy rules to have a default value set.
-            $this->setValue('current');
-        }
         $html
             =
             $this->getTypeElement()->getHtml() . Mage::helper('dyncatprod')->__(
-                "Set the following category attribute values, if there are %s items found in the %s category.",
-                $this->getAggregatorElement()->getHtml(),
-                $this->getValueElement()->getHtml()
+                "Update any product(s) found, to have the following attribute values, in the website %s",
+                $this->getOperatorElement()->getHtml()
             );
         if ($this->getId() != '1') {
             $html .= $this->getRemoveLinkHtml();
@@ -71,9 +58,7 @@ class ProxiBlue_DynCatProd_Model_Rule_Condition_Category_Control
     {
         $str
             = Mage::helper('dyncatprod')->__(
-            "Set the following category attribute values, if there are <strong>%s</strong> items found in the <strong>%s</strong> category.",
-            $this->getAggregatorName(),
-            $this->getValueName()
+            "Update any products found, to have the following attribute values"
         );
 
         return $str;
@@ -81,16 +66,16 @@ class ProxiBlue_DynCatProd_Model_Rule_Condition_Category_Control
 
     public function getNewChildSelectOptions()
     {
-        $categoryCondition = Mage::getModel(
-            'dyncatprod/rule_condition_category_conditions_category'
+        $productCondition = Mage::getModel(
+            'dyncatprod/rule_condition_product_conditions_update'
         );
-        $categoryAttributes = $categoryCondition->loadAttributeOptions()
+        $productAttributes = $productCondition->loadAttributeOptions()
             ->getAttributeOption();
         $pAttributes = array();
-        foreach ($categoryAttributes as $code => $label) {
+        foreach ($productAttributes as $code => $label) {
             if (strpos($code, 'quote_item_') !== 0) {
                 $pAttributes[] = array('value' =>
-                                           'dyncatprod/rule_condition_category_conditions_category|'
+                                           'dyncatprod/rule_condition_product_conditions_update|'
                                            . $code,
                                        'label' => $label);
             }
@@ -99,8 +84,8 @@ class ProxiBlue_DynCatProd_Model_Rule_Condition_Category_Control
         $conditions = parent::getNewChildSelectOptions();
         $conditions = array_merge_recursive(
             $conditions, array(
-                array('label' => Mage::helper('catalog')->__(
-                    'Category Attribute'
+                array('label' => Mage::helper('dyncatprod')->__(
+                    'Product Attributes'
                 ), 'value'    => $pAttributes),
             )
         );
@@ -113,9 +98,10 @@ class ProxiBlue_DynCatProd_Model_Rule_Condition_Category_Control
         if (!$this->getConditions()) {
             return true;
         }
-        mage::Helper('dyncatprod')->addCategoryControl(
-            $this, $object->getCollection()
-        );
+        $object->getCollection()->setFlag(
+        'attributes_update',
+        $this
+    );
 
         return true;
     }

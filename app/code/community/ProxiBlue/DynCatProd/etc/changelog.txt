@@ -170,3 +170,21 @@
 4.16.1  : Adjust to strip cat_index tables outside websites clauses
 4.16.2  : Ensure cron rebuild uses admin store
 4.17.0  : Sorting Rules
+4.18.0  : Final Price transformation
+4.19.0  : Rename transformations to filter
+        : In Stock Filter
+4.19.1  : Rework Filters to be more efficient.
+        : Ability to run filters on existing products, if no results in rules/or any rules.
+4.19.2  : Fix page size bug in filters
+4.19.3  : Add grid views for build tables. Limit the rebuild to 5 records at a time
+4.19.4  : Adjust Cron to work with the forced parent build option
+4.19.5  : Add ability to do best/least sellers, based on revenue
+        : Fix bug in rule ordering.
+4.20.0  : Ability to copy rules between categories
+4.20.1  : Fix PHP version compatibility with using empty()
+4.21.0  : Import / export
+4.22.0  : Ability to update product attributes after pulled into category
+4.22.1  : Adjust category copy list to ajax in, decrease load time on category
+4.23.0  : Best/Least sellers by profit
+4.23.1  : Trap multiselect attribute not having any values selected in rule
+4.23.2  : place cli run behind a debug block. Must have debug enabled to see cli output

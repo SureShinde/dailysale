@@ -32,8 +32,17 @@ class ProxiBlue_DynCatProd_Model_Adminhtml_Observer
             Mage::app()->getLayout()->getBlock('head')->addJs(
                 'dyncatprod/ext-rules.js'
             );
-
-
+            Mage::app()->getLayout()->getBlock('head')->addCss(
+                'dyncatprod/adminhtml.css'
+            );
+            Mage::app()->getLayout()->getBlock('head')->addJs(
+                'dyncatprod/adminhtml.js'
+            );
+            if (Mage::getStoreConfig('dyncatprod/debug/enabled') && mage::getIsDeveloperMode()) {
+                Mage::app()->getLayout()->getBlock('head')->addJs(
+                    'dyncatprod/debug.js'
+                );
+            }
             if (mage::getStoreConfig('dyncatprod/ept/tooltips')) {
                 Mage::app()->getLayout()->getBlock('head')->addJs(
                     'dyncatprod/tooltip-v0.js'
@@ -271,6 +280,7 @@ class ProxiBlue_DynCatProd_Model_Adminhtml_Observer
                             mage::helper('dyncatprod')->rebuildCategory(
                                 $event->getCategory()
                             );
+
                             $event->getCategory()->setDynamicRebuildDatetime(now());
                             mage::helper('dyncatprod')->debug(
                                 "end rebuild category routine",
@@ -413,9 +423,6 @@ class ProxiBlue_DynCatProd_Model_Adminhtml_Observer
 
             $category = $observer->getCategory();
             if ($category->getIsDynamic()) {
-                // was any data transformations requested?
-                // check transformations
-                $this->testTransforms($category);
                 if (!Mage::getStoreConfig(
                     'dyncatprod/rebuild/force_indexer'
                 )
@@ -454,7 +461,7 @@ class ProxiBlue_DynCatProd_Model_Adminhtml_Observer
                             $categories = Mage::getModel('catalog/category')->getCollection()
                                 ->addAttributeToSelect('*')
                                 ->addFieldToFilter(
-                                    'entity_id', array('IN' => $allChildren)
+                                    'entity_id', array('in' => $allChildren)
                                 );
                             $categories->load();
                             $rebuilt = array();
@@ -551,47 +558,4 @@ class ProxiBlue_DynCatProd_Model_Adminhtml_Observer
 
         return $this;
     }
-
-    /**
-     * Test transformation rules to run
-     * Each transformation rule must have it's own registry entry to allow
-     * the rules to be used at the same time.
-     * LVSTODO: Investigate usage of an array rather than single entry for each, allowing for more dynamic code
-     *
-     * @param $category
-     */
-
-    private function testTransforms($category)
-    {
-        if ($transformParents = mage::registry('transform_parents')) {
-            mage::unregister('transform_parents');
-            if (is_object($transformParents) && method_exists($transformParents, 'validateLater')) {
-                $transformParents->validateLater($category);
-            }
-        }
-        if ($transformSimples = mage::registry('transform_simples')) {
-            mage::unregister('transform_simples');
-            if (is_object($transformSimples) && method_exists($transformSimples, 'validateLater')) {
-                $transformSimples->validateLater($category);
-            }
-        }
-        if ($transform = mage::registry('transform_by_count')) {
-            mage::unregister('transform_by_count');
-            if (is_object($transform) && method_exists($transform, 'validateLater')) {
-                $transform->validateLater($category);
-            }
-        }
-
-        if($category->getDoPostedProducts() || $category->getRemoveAllDynamic()) {
-            $resourceModel = Mage::getResourceModel('dyncatprod/category');
-            $resourceModel->removeDynamicProducts($category);
-        }
-        if($category->getDoPostedProducts()) {
-            // link the transformed product data
-            mage::getModel('dyncatprod/subselect')
-                ->setCategory($category)
-                ->setPostedProducts(true);
-        }
-    }
-
 }

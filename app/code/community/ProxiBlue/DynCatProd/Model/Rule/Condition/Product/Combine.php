@@ -44,7 +44,7 @@ class ProxiBlue_DynCatProd_Model_Rule_Condition_Product_Combine
             $conditions, array(
                 array('label' => Mage::helper('catalog')->__(
                     'Special Conditions'
-                ), 'value'    => array(
+                ), 'value' => array(
                     array('value' => 'dyncatprod/rule_condition_additional_conditions_discount',
                           'label' => Mage::helper('dyncatprod')->__(
                               'Discounts given'
@@ -60,14 +60,14 @@ class ProxiBlue_DynCatProd_Model_Rule_Condition_Product_Combine
                 )),
                 array('label' => Mage::helper('catalog')->__(
                     'Special Attributes'
-                ), 'value'    => $pAttributes['special']),
+                ), 'value' => $pAttributes['special']),
                 array('label' => Mage::helper('catalog')->__(
                     'Date Range Attributes'
                 ),
                       'value' => $pAttributes['date_range']),
                 array('label' => Mage::helper('catalog')->__(
                     'Product Attribute'
-                ), 'value'    => $pAttributes['normal']),
+                ), 'value' => $pAttributes['normal']),
             )
         );
 
@@ -157,7 +157,9 @@ class ProxiBlue_DynCatProd_Model_Rule_Condition_Product_Combine
             );
             $condition->setProcessingOrder(rand(200, 500));
         }
-        if ($condition->getProcessingOrder() == 'any') {
+        if ($condition->getProcessingOrder() == 'first') {
+            array_unshift($conditions,$condition);
+        } elseif ($condition->getProcessingOrder() == 'any') {
             $conditions[] = $condition;
         } else {
             if (array_key_exists(

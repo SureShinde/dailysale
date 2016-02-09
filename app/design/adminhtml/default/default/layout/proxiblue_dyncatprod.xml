@@ -6,4 +6,23 @@
             </block>
         </reference>
     </adminhtml_catalog_category_edit>
+
+    <adminhtml_tools_info_index>
+        <reference name="content">
+            <block type="dyncatprod/adminhtml_tools_info" name="proxiblue_info"/>
+        </reference>
+    </adminhtml_tools_info_index>
+
+    <adminhtml_tools_info_type>
+        <reference name="content">
+            <block type="dyncatprod/adminhtml_tools_info" name="proxiblue_info"/>
+        </reference>
+    </adminhtml_tools_info_type>
+
+
+    <adminhtml_tools_info_grid>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="dyncatprod/adminhtml_tools_info_grid" name="proxiblue_info.grid"/>
+        </block>
+    </adminhtml_tools_info_grid>
 </layout>
