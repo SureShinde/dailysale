@@ -116,6 +116,15 @@
             </updates>
         </layout>
         <events>
+             <sales_order_place_after>
+                <observers>
+                    <mirasvit_fpc>
+                        <type>singleton</type>
+                        <class>fpc/observer</class>
+                        <method>onOrderPlaceAfter</method>
+                    </mirasvit_fpc>
+                </observers>
+            </sales_order_place_after>
             <controller_action_predispatch>
                 <observers>
                     <mirasvit_fpc>
@@ -174,6 +183,14 @@
             </updates>
         </layout>
         <events>
+            <catalog_product_save_after>
+                <observers>
+                    <mirasvit_fpc>
+                        <class>fpc/observer</class>
+                        <method>updateDependingCache</method>
+                    </mirasvit_fpc>
+                </observers>
+            </catalog_product_save_after>
             <clean_media_cache_after>
                 <observers>
                     <mirasvit_fpc>
