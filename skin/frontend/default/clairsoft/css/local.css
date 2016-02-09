@@ -2560,6 +2560,30 @@ input:not([type=submit]):not([type=checkbox]):not([type=radio]) {
   text-shadow: none;
 }
 
+/* Experiment Engine Bigger Search */
+
+#top-wrapper .top-container .welcome-msg{
+    margin-top: 14px;
+}
+#top-wrapper .top-container .form-search input#search {
+  font-size: 18px;
+  height: 52px;
+  padding-left: 12px;
+}
+
+#top-wrapper .top-container .form-search {
+  width: 50%;
+}
+
+#top-wrapper .top-container .top-links-container {
+  margin-top: 14px;
+}
+
+#top-wrapper .top-container .form-search button {
+  margin-top: -7px;
+  height: 50px;
+}
+
 /* Experiment Engine Adaptive Homepage*/
 
 .toolbar-bottom {
