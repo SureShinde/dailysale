@@ -78,27 +78,35 @@ $_colspan = $_colspan > 1 ? 'colspan="' . $_colspan . '"' : '';
     }
 </script>
 <div class="log_cron" style="width:100%; height:auto; display:none">
-    <?php if($logs){?>
-    <table style=" border-collapse: collapse;" class="log_table">
-        <?php foreach($logs as $log){ ?>
+    <?php if($logs):
+        $split_logs = array_chunk($logs, 10);?>
+        <?php foreach($split_logs as $logs):?>
+        <table style=" border-collapse: collapse; display: inline-block; margin-right: 5px;" class="log_table" border="1">
+        <thead border="1">
             <tr>
-                <td  class="log_td">
-                    <?php echo $log['date'];?>
-                </td>
-                <td  class="log_td">
-                    <?php echo $log['time'];?>
-                </td>
-                <td  class="log_td">
-                    <?php echo $log['type'];?>
-                </td>
-                <td  class="log_td">
-                    <?php echo $log['cronname'];?>
-                </td>
+                <td>Date</td>
+                <td>Time</td>
+                <td>Category</td>
             </tr>
-        <?php } ?>
+        </thead>
+        <?php foreach($logs as $log): ?>
+            <tbody>
+                <tr>
+                    <td  class="log_td">
+                        <?php echo $log['date'];?>
+                    </td>
+                    <td  class="log_td">
+                        <?php echo $log['time'];?>
+                    </td>
+                    <td  class="log_td">
+                        <?php echo $log['cronname'];?>
+                    </td>
+                </tr>
+            </tbody>
+        <?php endforeach; endforeach; ?>
+        </table>
 
-    </table>
-    <?php }else{ echo 'log is empty'; }?>
+    <?php else: echo 'log is empty'; endif;?>
 </div>
 <style type="text/css">
     .log_td {

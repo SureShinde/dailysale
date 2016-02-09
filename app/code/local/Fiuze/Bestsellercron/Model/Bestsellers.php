@@ -266,7 +266,8 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
      */
     protected function _getIdProductForCategory($idCategory = false, $panch_flag=false) {
         if(!$idCategory){
-            if(!$this->idProductForCategory["false"]){
+            $id_product = null;
+            if(!in_array(false, $this->idProductForCategory)){
 //                $productCollection = Mage::getResourceModel('catalog/product_collection')
 //                    ->setStoreId(Mage_Core_Model_App::ADMIN_STORE_ID);
 //                $this->idProductForCategory["false"] = array_keys ($productCollection->getItems());
@@ -305,8 +306,11 @@ class Fiuze_Bestsellercron_Model_Bestsellers extends Mage_Core_Model_Abstract {
                 }
 
             }
-
-            return $id_product;
+            if (!is_null($id_product)) {
+                return $id_product;
+            }else {
+                return false;
+            }
         }
 
         if(!$this->idProductForCategory[$idCategory]){
