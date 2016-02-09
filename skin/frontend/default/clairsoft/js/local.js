@@ -2,6 +2,14 @@ var $j = jQuery.noConflict();
 
 $j(document).ready(function(){
 
+	$j(".aw-arp-block-content").slick({
+		infinite: true,
+		slidesToShow: 5,
+		slidesToScroll: 1,
+		arrows: true
+		// variableWidth: true
+	});
+
 	//sticky stuff
 
 	var stickyTop = $j('.wrapper').offset().top + 380; // returns number

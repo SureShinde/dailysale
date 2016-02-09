@@ -46,7 +46,7 @@
     <div class="block-content">
         <!-- <p class="block-subtitle"><?php //echo $this->__('Check items to add to the cart or') ?>&nbsp;<a href="#" onclick="selectAllRelated(this); return false;"><?php //echo $this->__('select all') ?></a></p> -->
         <ol class="mini-products-list" id="block-related">
-        <?php $i=0; foreach($this->getItems() as $_item): if(++$i > 4) break;?>
+        <?php $i=0; foreach($this->getItems() as $_item): if(++$i > 0) break;?>
 
             <div class="single-xsell-container">
                 <a href="<?php echo $_item->getProductUrl() ?>">

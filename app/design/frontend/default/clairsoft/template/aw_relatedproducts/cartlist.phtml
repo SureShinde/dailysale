@@ -1,0 +1,52 @@
+<?php
+/**
+ * aheadWorks Co.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://ecommerce.aheadworks.com/AW-LICENSE.txt
+ *
+ * =================================================================
+ *                 MAGENTO EDITION USAGE NOTICE
+ * =================================================================
+ * This software is designed to work with Magento community edition and
+ * its use on an edition other than specified is prohibited. aheadWorks does not
+ * provide extension support in case of incorrect edition use.
+ * =================================================================
+ *
+ * @category   AW
+ * @package    AW_Relatedproducts
+ * @version    1.4.4
+ * @copyright  Copyright (c) 2010-2012 aheadWorks Co. (http://www.aheadworks.com)
+ * @license    http://ecommerce.aheadworks.com/AW-LICENSE.txt
+ */
+?><?php if($this->getEnabled() && count($this->getRelatedProductsCollection())): ?>
+<div class="aw-who-also-bought-block">
+    <div class="head">
+        <h4><?php echo $this->__('Customers Also Purchased') ?></h4>
+    </div>
+    <div <?php if (Mage::helper('relatedproducts')->checkVersion('1.4.1.0')) { echo "id=\"after1400\""; }?>>
+            <?php
+                $i = 0;
+                foreach($this->getRelatedProductsCollection() as $_item){ 
+                    if(++$i > 3) break;
+            ?>
+            <div class="aw-alsobought-item">
+
+                    <a href="<?php echo $_item->getProductUrl() ?>"><img src="<?php echo $this->helper('catalog/image')->init($_item, 'thumbnail')->resize(85) ?>" alt="<?php echo $this->htmlEscape($_item->getName()) ?>" width="85" height="85" /></a>
+                <div class="aw-alsobought-details">
+                    <a class="aw-alsobought-product-link" href="<?php echo $_item->getProductUrl() ?>"><?php echo $this->htmlEscape($_item->getName()) ?></a>
+                    <?php echo $this->getPriceHtml($_item, true); ?>
+                    <?php if ($this->helper('wishlist')->isAllow()) : ?>
+                    <a href="<?php echo $this->getAddToWishlistUrl($_item) ?>" class="aw-link-cart"><?php echo $this->__('Add to Wishlist') ?></a>
+                    <?php endif; ?>
+                        <a class="aw-link-cart" href="#" onclick="setLocation('<?php echo $this->getAddToCartUrl($_item) ?>'); return false;"><?php echo $this->__('Add to Cart') ?></a>
+                </div>
+            </div>
+            <?php } ?>
+    </div>
+</div>
+<?php endif ?>

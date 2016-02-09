@@ -18,33 +18,29 @@
  * =================================================================
  *
  * @category   AW
- * @package    AW_Autorelated
- * @version    2.4.8
+ * @package    AW_Relatedproducts
+ * @version    1.4.4
  * @copyright  Copyright (c) 2010-2012 aheadWorks Co. (http://www.aheadworks.com)
  * @license    http://ecommerce.aheadworks.com/AW-LICENSE.txt
  */
 
-class AW_All_Block_System_Config_Form_Fieldset_Awall_Additional extends Mage_Adminhtml_Block_System_Config_Form_Fieldset
+
+class AW_Relatedproducts_Model_Relatedproducts extends Mage_Core_Model_Abstract
 {
-    public function render(Varien_Data_Form_Element_Abstract $element)
+    public function _construct()
     {
-        $html = $this->_getHeaderHtml($element);
+        parent::_construct();
+        $this->_init('relatedproducts/relatedproducts', 'product_id');
+    }
 
-        foreach ($element->getElements() as $field) {
-            $html .= $field->toHtml();
+    public function getRelatedArray()
+    {
+        $relatedArray = $this->getData('related_array');
+        if ($relatedArray && is_string($relatedArray)) {
+            $relatedArray = unserialize($relatedArray);
+        } else {
+            $relatedArray = array();
         }
-
-        $html .= "<tr>
-            <td class=\"label\"></td>
-            <td class=\"value\">
-            <button class=\"scalable\" onclick=\"window.location='" . Mage::getSingleton('adminhtml/url')->getUrl('awall_admin/additional/index') . "'\" type=\"button\">
-                <span>View Additional info</span>
-            </button
-            </td>
-         </tr>
-         ";
-        $html .= $this->_getFooterHtml($element);
-
-        return $html;
+        return $relatedArray;
     }
 }

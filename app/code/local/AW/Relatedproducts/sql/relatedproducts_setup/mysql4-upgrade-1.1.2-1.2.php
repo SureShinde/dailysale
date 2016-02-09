@@ -18,33 +18,20 @@
  * =================================================================
  *
  * @category   AW
- * @package    AW_Autorelated
- * @version    2.4.8
+ * @package    AW_Relatedproducts
+ * @version    1.4.4
  * @copyright  Copyright (c) 2010-2012 aheadWorks Co. (http://www.aheadworks.com)
  * @license    http://ecommerce.aheadworks.com/AW-LICENSE.txt
  */
 
-class AW_All_Block_System_Config_Form_Fieldset_Awall_Additional extends Mage_Adminhtml_Block_System_Config_Form_Fieldset
-{
-    public function render(Varien_Data_Form_Element_Abstract $element)
-    {
-        $html = $this->_getHeaderHtml($element);
 
-        foreach ($element->getElements() as $field) {
-            $html .= $field->toHtml();
-        }
+$installer = $this;
+$installer->startSetup();
 
-        $html .= "<tr>
-            <td class=\"label\"></td>
-            <td class=\"value\">
-            <button class=\"scalable\" onclick=\"window.location='" . Mage::getSingleton('adminhtml/url')->getUrl('awall_admin/additional/index') . "'\" type=\"button\">
-                <span>View Additional info</span>
-            </button
-            </td>
-         </tr>
-         ";
-        $html .= $this->_getFooterHtml($element);
-
-        return $html;
-    }
-}
+$installer->run("
+DELETE FROM {$this->getTable('relatedproducts/relatedproducts')};
+ALTER TABLE {$this->getTable('relatedproducts/relatedproducts')} ADD COLUMN `store_id` SMALLINT(5) UNSIGNED DEFAULT '0' NOT NULL AFTER `product_id`;
+ALTER TABLE {$this->getTable('relatedproducts/relatedproducts')} ADD KEY `FK_WBTAB_INT_STORE_ID` (`store_id`);
+ALTER TABLE {$this->getTable('relatedproducts/relatedproducts')} ADD CONSTRAINT `FK_WBTAB_INT_STORE_ID` FOREIGN KEY (`store_id`) REFERENCES `{$this->getTable('core_store')}` (`store_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+");
+$installer->endSetup();

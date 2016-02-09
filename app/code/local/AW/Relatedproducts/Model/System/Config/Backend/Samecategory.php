@@ -18,33 +18,25 @@
  * =================================================================
  *
  * @category   AW
- * @package    AW_Autorelated
- * @version    2.4.8
+ * @package    AW_Relatedproducts
+ * @version    1.4.4
  * @copyright  Copyright (c) 2010-2012 aheadWorks Co. (http://www.aheadworks.com)
  * @license    http://ecommerce.aheadworks.com/AW-LICENSE.txt
  */
 
-class AW_All_Block_System_Config_Form_Fieldset_Awall_Additional extends Mage_Adminhtml_Block_System_Config_Form_Fieldset
+
+class AW_Relatedproducts_Model_System_Config_Backend_Samecategory extends Mage_Core_Model_Config_Data
 {
-    public function render(Varien_Data_Form_Element_Abstract $element)
+    /**
+     * Processing object before save data
+     *
+     * @return Mage_Core_Model_Abstract
+     */
+    protected function _beforeSave()
     {
-        $html = $this->_getHeaderHtml($element);
-
-        foreach ($element->getElements() as $field) {
-            $html .= $field->toHtml();
+        if ($this->isValueChanged()) {
+            Mage::getModel('relatedproducts/relatedproducts')->getResource()->resetStatistics();
         }
-
-        $html .= "<tr>
-            <td class=\"label\"></td>
-            <td class=\"value\">
-            <button class=\"scalable\" onclick=\"window.location='" . Mage::getSingleton('adminhtml/url')->getUrl('awall_admin/additional/index') . "'\" type=\"button\">
-                <span>View Additional info</span>
-            </button
-            </td>
-         </tr>
-         ";
-        $html .= $this->_getFooterHtml($element);
-
-        return $html;
+        return $this;
     }
 }

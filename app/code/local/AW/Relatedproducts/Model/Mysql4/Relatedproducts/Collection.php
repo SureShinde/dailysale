@@ -18,33 +18,37 @@
  * =================================================================
  *
  * @category   AW
- * @package    AW_Autorelated
- * @version    2.4.8
+ * @package    AW_Relatedproducts
+ * @version    1.4.4
  * @copyright  Copyright (c) 2010-2012 aheadWorks Co. (http://www.aheadworks.com)
  * @license    http://ecommerce.aheadworks.com/AW-LICENSE.txt
  */
 
-class AW_All_Block_System_Config_Form_Fieldset_Awall_Additional extends Mage_Adminhtml_Block_System_Config_Form_Fieldset
+
+class AW_Relatedproducts_Model_Mysql4_Relatedproducts_Collection extends Mage_Core_Model_Mysql4_Collection_Abstract
 {
-    public function render(Varien_Data_Form_Element_Abstract $element)
+    public function _construct()
     {
-        $html = $this->_getHeaderHtml($element);
+        parent::_construct();
+        $this->_table = Mage::getSingleton('core/resource')->getTableName('relatedproducts/relatedproducts');
+        $this->_init('relatedproducts/relatedproducts');
+    }
 
-        foreach ($element->getElements() as $field) {
-            $html .= $field->toHtml();
+    public function addProductFilter($productIds)
+    {
+        if (!is_array($productIds)) {
+            $productIds = array($productIds);
         }
+        $this->addFieldToFilter('product_id', array('in' => $productIds));
+        return $this;
+    }
 
-        $html .= "<tr>
-            <td class=\"label\"></td>
-            <td class=\"value\">
-            <button class=\"scalable\" onclick=\"window.location='" . Mage::getSingleton('adminhtml/url')->getUrl('awall_admin/additional/index') . "'\" type=\"button\">
-                <span>View Additional info</span>
-            </button
-            </td>
-         </tr>
-         ";
-        $html .= $this->_getFooterHtml($element);
-
-        return $html;
+    public function addStoreFilter($storeId = null)
+    {
+        if ($storeId === null) {
+            $storeId = Mage::app()->getStore()->getId();
+        }
+        $this->addFieldToFilter('store_id', array('eq' => $storeId));
+        return $this;
     }
 }

@@ -10,12 +10,12 @@
                         <new module="awautorelated">
                             <title>Add Block</title>
                             <sort_order>10</sort_order>
-                            <action>adminhtml/blocksgrid/new</action>
+                            <action>awautorelated_admin/adminhtml_blocksgrid/new</action>
                         </new>
                         <manage module="awautorelated">
                             <title>Manage Blocks</title>
                             <sort_order>20</sort_order>
-                            <action>adminhtml/blocksgrid/list</action>
+                            <action>awautorelated_admin/adminhtml_blocksgrid/list</action>
                         </manage>
                         <settings module="awautorelated">
                             <title>Configuration</title>
