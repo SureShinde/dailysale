@@ -257,9 +257,11 @@ $idList = substr($idList, 0, -1);
 ?>
 <script>
 fbq('track', 'Purchase', {
-content_ids: [<?php echo $idList; ?>],
-content_type: 'product'
-}); 
+	value: '<?php echo($subtotal); ?>',
+	currency: 'USD',
+	content_ids: [<?php echo $idList; ?>],
+	content_type: 'product'
+});
 </script>
 <!-- end stitcher purchase event -->
 
@@ -283,5 +285,3 @@ if(Mage::getSingleton('customer/session')->isLoggedIn()) { $sliCustomer = Mage::
     <?php endforeach;?> spark.writeTrackCode(); spark.writeTransactionCode();
 </script>
 <!-- SLI Conversion Tracking -->
-
-
