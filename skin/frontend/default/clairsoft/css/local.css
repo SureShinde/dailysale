@@ -719,6 +719,16 @@ body a:visited {
   .onestepcheckout-index-index .cvv-what-is-this {
     font-size: 12px;
   }
+
+  .onestepcheckout-index-index #top-wrapper,
+  .onestepcheckout-index-index footer{
+    display: none;
+  }
+
+  .onestepcheckout-index-index .page{
+    margin-top: 0;
+    padding-bottom: 100px !important;
+  }
 }
 
 /**

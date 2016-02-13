@@ -5,7 +5,13 @@ $j(document).ready(function(){
 	//sticky stuff
 
 	var stickyTop = $j('.wrapper').offset().top + 380; // returns number
-	$j('#backtotop').hide();
+	
+	if (window.location.href.indexOf('onestepcheckout') > -1) {
+		$j('#backtotop').remove();
+	} else {
+		$j('#backtotop').hide();
+	}
+	
 	$j(window).scroll(function(){ // scroll event
 		var windowTop = $j(window).scrollTop(); // returns number
 
