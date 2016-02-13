@@ -4,6 +4,9 @@
         <Fiuze_Notifylowstock>
             <active>true</active>
             <codePool>local</codePool>
+            <depends>
+                <Unirgy_DropshipVendorProduct />
+            </depends>
         </Fiuze_Notifylowstock>
     </modules>
 </config>

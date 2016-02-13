@@ -3,4 +3,10 @@
     <fiuze_notifylowstock_template>
         <block type='core/template' name='parent' template='fiuze/notifylowstock/email/notifylowstockblock.phtml'/>
     </fiuze_notifylowstock_template>
+
+    <udprod_vendor_products>
+        <reference name="udprod.product.grid">
+            <action method="setTemplate"><template>fiuze/notifylowstock/udprod/vendor/products/grid.phtml</template></action>
+        </reference>
+    </udprod_vendor_products>
 </layout>
