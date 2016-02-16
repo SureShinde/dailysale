@@ -2,16 +2,22 @@ var $j = jQuery.noConflict();
 
 $j(document).ready(function(){
 
+	if( $j(window).width() <= 414 ){
+		$j('.onestepcheckout-index-index .logo').click(function(e){
+			e.preventDefault();
+		});
+	}
+
 	//sticky stuff
 
 	var stickyTop = $j('.wrapper').offset().top + 380; // returns number
-	
+
 	if (window.location.href.indexOf('onestepcheckout') > -1) {
 		$j('#backtotop').remove();
 	} else {
 		$j('#backtotop').hide();
 	}
-	
+
 	$j(window).scroll(function(){ // scroll event
 		var windowTop = $j(window).scrollTop(); // returns number
 
@@ -55,7 +61,7 @@ $j(document).ready(function(){
 	$j('.products-grid li.item').hover(borderEnter, borderLeave);
 
 	//remove html tags from customer credit cart section
-	
+
 	function removeAllHtmlInsideElement(){
 		$j(".credit-payment button").html($j(".credit-payment button").text());
 	}
