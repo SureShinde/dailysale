@@ -24,15 +24,14 @@
 <script type="text/javascript">
 //<![CDATA[
     var sidecar = sidecar || {};
-    <?php if ($_product->isConfigurable()): ?>
         sidecar.product_info = {
-            group_id: '<?php echo $_product["sku"]; ?>'
+            group_id: '<?php
+                if ($_product->isConfigurable()) {
+                    echo $_product["sku"];
+                } else {
+                    echo $_product->getId();
+                } ?>'
         };
-    <?php else: ?>
-        sidecar.product_info = {
-            product_id: '<?php echo $_product->getId(); ?>'
-        };
-    <?php endif; ?>
 //]]>
 </script>
 <div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
