@@ -64,8 +64,10 @@
             _fbq.loaded = true;
         }
         _fbq.push(['addPixelId', '663833153700547']);
-        _fbq.push(['track',<?php echo isset($order) ? ("'" . $order . "'") : ''; ?>,{'value':<?php echo isset($subtotal) ? ("'" . $subtotal . "'") : ''; ?>,'currency':'USD'}]);
-    })();
+				<?php if(isset($order)) { ?>
+        	_fbq.push(['track', '<?php echo $order->increment_id;?>', {'value': '<?php echo $order->subtotal;?>' ,'currency':'USD'}]);
+				<?php } ?>
+		})();
     window._fbq = window._fbq || [];
     window._fbq.push(['track', 'PixelInitialized', {}]);
 </script>
