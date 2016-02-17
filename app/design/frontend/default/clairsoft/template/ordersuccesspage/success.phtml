@@ -103,7 +103,7 @@ $currency = $order->getOrderCurrencyCode();
   </script>
 <?php endif; ?>
 
-<!-- Google Code for Daily Sale Conversion Conversion Page -->
+<!-- Google Code for Daily Sale Conversion Page -->
 <script type="text/javascript">
 /* <![CDATA[ */
     var google_conversion_id = 1003172301;
@@ -111,7 +111,7 @@ $currency = $order->getOrderCurrencyCode();
     var google_conversion_format = "2";
     var google_conversion_color = "ffffff";
     var google_conversion_label = "xLwaCJCAtFgQzeOs3gM";
-    var google_conversion_value = 1.00;
+    var google_conversion_value = <?php echo($subtotal); ?>;
     var google_conversion_currency = "USD";
     var google_remarketing_only = false;
 /* ]]> */
@@ -119,7 +119,7 @@ $currency = $order->getOrderCurrencyCode();
 <script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js"></script>
 <noscript>
     <div style="display:inline;">
-        <img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/1003172301/?value=1.00&amp;currency_code=USD&amp;label=xLwaCJCAtFgQzeOs3gM&amp;guid=ON&amp;script=0"/>
+        <img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/1003172301/?value=<?php echo($subtotal); ?>&amp;currency_code=USD&amp;label=xLwaCJCAtFgQzeOs3gM&amp;guid=ON&amp;script=0"/>
     </div>
 </noscript>
 
@@ -259,7 +259,7 @@ $idList = substr($idList, 0, -1);
 fbq('track', 'Purchase', {
 content_ids: [<?php echo $idList; ?>],
 content_type: 'product'
-}); 
+});
 </script>
 <!-- end stitcher purchase event -->
 
@@ -283,5 +283,3 @@ if(Mage::getSingleton('customer/session')->isLoggedIn()) { $sliCustomer = Mage::
     <?php endforeach;?> spark.writeTrackCode(); spark.writeTransactionCode();
 </script>
 <!-- SLI Conversion Tracking -->
-
-
