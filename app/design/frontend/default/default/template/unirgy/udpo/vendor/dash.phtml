@@ -1,0 +1,64 @@
+<?php
+
+$dashboard_data = Mage::getModel('fiuze_dashboard/dashboard')->getShipmentsCurrentVendor();
+
+$count = $dashboard_data['-1'];
+unset($dashboard_data['-1']);
+?>
+<div class="div-head-for-table"><b>Your Orders</b></div>
+<div class="dash-back" >
+    <div class="dash-left" >
+        <table class="dash-table" >
+            <tr class="dash-top">
+                <td colspan="13" class="table-unshipped">
+                    <b>Unshipped Items:</b>
+                </td>
+            </tr>
+            <tr>
+                <td rowspan="2" class="table-unshipped unsh-count">
+                    <b><?php echo $count ?></b>
+                </td>
+                <td class="bottom-border-show">
+                    <b>Days Outstanding</b>
+                </td>
+                <?php
+                for($i=0;$i<11;$i++){
+                    ?><td class="table-row-numeric bottom-border-show"><b><?php
+                        if($i==10){
+                            echo '10+:';
+                        }else{
+                            echo $i.':';
+                        }
+                    ?></b></td><?php
+                }
+                ?>
+            </tr>
+            <tr>
+                <td>
+                    <b>Count</b>
+                </td>
+                <?php
+                for($i=0;$i<11;$i++){
+                    ?><td class=""><?php
+
+                    if($dashboard_data[$i]!=null){
+                        if($i==10){
+                            echo '<span style="color:red">'.$dashboard_data[$i].'</span>';
+                        }else{
+                            echo $dashboard_data[$i];
+                        }
+                    }else{
+                        echo '0';
+                    }
+                        ?></td><?php
+                }
+                ?>
+            </tr>
+        </table>
+    </div>
+    <div class="dash-right">
+        <a href="<?php echo Mage::getBaseUrl(),'udbatch/vendor_batch/importOrders/' ?>" ><button class="form-button dash-button">
+            Upload Tracking CSV
+        </button></a>
+    </div>
+</div>

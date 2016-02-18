@@ -103,6 +103,17 @@ class ProxiBlue_DynCatProd_Helper_Data
                 $products,
                 'is_numeric'
             );
+
+            $category->setDynamicProducts($products);
+
+            // was any data transformations requested?
+            // check transformations
+            // moved here so it transforms BEFORE save
+
+            $this->testTransforms($category);
+
+            $products = $category->getDynamicProducts();
+
             // fail-safe, to prevent integrity constraint
             // Make sue the products actually exist.
             // Some rules could be using sales
@@ -118,7 +129,7 @@ class ProxiBlue_DynCatProd_Helper_Data
                     ->addFieldToFilter(
                         'entity_id',
                         array(
-                            'IN' => $products)
+                            'in' => $products)
                     );
                 $this->debug(
                     "Testing if products are still valid",
@@ -137,6 +148,9 @@ class ProxiBlue_DynCatProd_Helper_Data
                 $safeCollection->setPageSize($pagesize);
                 $select->setPart(Zend_Db_Select::GROUP, $group);
                 $select->setPart(Zend_Db_Select::DISTINCT, $distinct);
+                $this->debug(
+                    "SAFE COLLECTION:" . $safeCollection->getSelect()
+                );
                 do {
                     $this->debug(
                         "Valid Check: Processing page "
@@ -175,7 +189,9 @@ class ProxiBlue_DynCatProd_Helper_Data
                 );
                 $products = array_flip($products);
             }
+
             $category->setDynamicProducts($products);
+
             if (!Mage::getStoreConfig('dyncatprod/rebuild/max_exec')) {
                 ini_set(
                     'max_execution_time',
@@ -229,29 +245,50 @@ class ProxiBlue_DynCatProd_Helper_Data
                     }
                 }
             }
-            $this->debug(
-                "concat non dynamic and dynamic ",
-                4
-            );
 
-            $productsToAdd = $products + $nonDynamicProducts;
+            $productsToAdd = $category->getDynamicProducts() + $nonDynamicProducts;
+
             $this->debug(
                 "set posted products " . count($productsToAdd) . " on category " . $category->getId(),
                 4
             );
+
             if (Mage::getStoreConfig('dyncatprod/global_rule/keep_manually')) {
                 $dynamicProducts = $category->getDynamicProducts();
                 $keepManuallyAssigned = array_diff_key($dynamicProducts, $nonDynamicProducts);
                 $category->setDynamicProducts($keepManuallyAssigned);
             }
+
             $category->setPostedProducts($productsToAdd);
+
             $category->setIsDynamic(true);
         } else {
             // remove all the dynamic products from this category
             $category->setRemoveAllDynamic(true);
         }
 
+        if (Mage::getStoreConfig('dyncatprod/rebuild/force_filters')) {
+            $this->debug(
+                "***** running filters on existing products *****  on category " . $category->getId(),
+                4
+            );
+            $collection = $category->getProductCollection();
+            $currentProducts = $collection->getAllIds();
+            $category->setDynamicProducts($currentProducts);
+            $this->testTransforms($category);
+            $products = array_flip($category->getDynamicProducts());
+            $currentProducts = array_flip($currentProducts);
+            $dynamicProducts = array_diff_key(
+                $products,
+                $currentProducts
+            );
+            $category->setPostedProducts($products);
+            $category->setDynamicProducts($dynamicProducts);
+            $category->setIsDynamic(true);
+        }
+
         $this->categoryControl($category, $productsToAdd);
+        $this->attributesUpdate($category, $productsToAdd);
         $this->notification($isCron, $category);
 
     }
@@ -368,12 +405,14 @@ class ProxiBlue_DynCatProd_Helper_Data
                                  * Temporarily set the store to that of the selected store in rule (via website)
                                  */
                                 $website = Mage::getModel('core/website')->load($saleableData['website_id']);
-                                $store = Mage::getModel('core/store')->load($website->getDefaultGroup()->getDefaultStoreId());
+                                $store = Mage::getModel('core/store')->load(
+                                    $website->getDefaultGroup()->getDefaultStoreId()
+                                );
                                 $currentStore = mage::app()->getStore();
                                 mage::app()->setCurrentStore($store);
                                 $productStockItem = Mage::getModel('cataloginventory/stock_item');
                                 $productStockItem->assignProduct($product);
-                                $operator = ($saleableData['operator'] == '==')?false:true;
+                                $operator = ($saleableData['operator'] == '==') ? false : true;
                                 if ($product->isSaleable() == $operator) {
                                     $this->debug(
                                         "Skipping product {$product->getId()} due to isSaleable check",
@@ -398,12 +437,16 @@ class ProxiBlue_DynCatProd_Helper_Data
                         $collection->clear();
                     } while ($currentPage <= $pages);
                     if (!is_null($limitOffset)) {
-                        $mainCollectionIds = array_slice($mainCollectionIds,$limitOffset,$limiter);
+                        $mainCollectionIds = array_slice($mainCollectionIds, $limitOffset, $limiter);
                     }
                 }
 
                 $category->setCategoryControl(
                     $collection->getFlag('category_control')
+                );
+
+                $category->setAttributesUpdate(
+                    $collection->getFlag('attributes_update')
                 );
 
 
@@ -467,6 +510,12 @@ class ProxiBlue_DynCatProd_Helper_Data
     public function getParentConditionCategories($category)
     {
         $parents = array();
+        if (mage::getStoreConfig('dyncatprod/rebuild/ignore_parents')
+            && $category->getParentDynamicAttributes() == false
+            && $category->getDynamicAttributes() == false
+        ) {
+            return array();
+        }
         if ($category->getIgnoreParentDynamic()) {
             return $parents;
         }
@@ -479,10 +528,10 @@ class ProxiBlue_DynCatProd_Helper_Data
                     $categories = Mage::getModel('catalog/category')->getCollection()
                         ->addAttributeToSelect('*')
                         ->addFieldToFilter(
-                            'entity_id', array('IN' => $parentPathArray)
+                            'entity_id', array('in' => $parentPathArray)
                         );
                     $this->debug(
-                        'Categories Collection: ' . $categories->getSelect(), 10
+                        'Categories Collection: ' . $categories->getSelect(), 100
                     );
                     foreach ($categories as $key => $parentCategory) {
                         if ($parentCategory->getParentDynamicAttributes()
@@ -515,7 +564,7 @@ class ProxiBlue_DynCatProd_Helper_Data
     /**
      * Common debugger helper
      *
-     * @param string  $message
+     * @param string $message
      * @param integer $level
      */
     public function debug($message, $level = 1)
@@ -529,22 +578,22 @@ class ProxiBlue_DynCatProd_Helper_Data
                 'dyncatprod.log',
                 false
             );
-        }
-        if (mage::registry('is_shell')
-            && strpos(
-                $message,
-                'SELECT'
-            ) === false
-            && Mage::getStoreConfig('dyncatprod/debug/level') >= $level
-        ) {
-            echo $message . "\n";
+
+            if (mage::registry('is_shell')
+                && strpos(
+                    $message,
+                    'SELECT'
+                ) === false
+            ) {
+                echo $message . "\n";
+            }
         }
     }
 
     /**
      * Remove selective parts of the collection linking to tables
      *
-     * @param  type   $collection
+     * @param  type $collection
      * @param  string $partName
      *
      * @return type
@@ -595,6 +644,23 @@ class ProxiBlue_DynCatProd_Helper_Data
         );
 
         return $collection;
+    }
+
+
+    /**
+     * Attribute Updates
+     *
+     * @param $category
+     *
+     * @throws Exception
+     */
+    private function attributesUpdate($category, $productsToAdd)
+    {
+        if($updates = $category->getAttributesUpdate()){
+            foreach ($updates->getConditions() as $cond) {
+                $cond->validate($category, $updates, $productsToAdd);
+            }
+        }
     }
 
     /**
@@ -823,5 +889,55 @@ class ProxiBlue_DynCatProd_Helper_Data
 
         return false;
     }
+
+
+    /**
+     * Test transformation rules to run
+     * Each transformation rule must have it's own registry entry to allow
+     * the rules to be used at the same time.
+     * LVSTODO: Investigate usage of an array rather than single entry for each, allowing for more dynamic code
+     *
+     * @param $category
+     */
+
+    private function testTransforms($category)
+    {
+        if ($transformParents = mage::registry('transform_parents')) {
+            mage::unregister('transform_parents');
+            if (is_object($transformParents) && method_exists($transformParents, 'validateLater')) {
+                $transformParents->validateLater($category);
+            }
+        }
+        if ($transformSimples = mage::registry('transform_simples')) {
+            mage::unregister('transform_simples');
+            if (is_object($transformSimples) && method_exists($transformSimples, 'validateLater')) {
+                $transformSimples->validateLater($category);
+            }
+        }
+        if ($transform = mage::registry('transform_by_count')) {
+            mage::unregister('transform_by_count');
+            if (is_object($transform) && method_exists($transform, 'validateLater')) {
+                $transform->validateLater($category);
+            }
+        }
+        if ($transform = mage::registry('transform_by_final_price')) {
+            mage::unregister('transform_by_final_price');
+            if (is_object($transform) && method_exists($transform, 'validateLater')) {
+                $transform->validateLater($category);
+            }
+        }
+
+        if ($category->getDoPostedProducts() || $category->getRemoveAllDynamic()) {
+            $resourceModel = Mage::getResourceModel('dyncatprod/category');
+            $resourceModel->removeDynamicProducts($category);
+        }
+        if ($category->getDoPostedProducts()) {
+            // link the transformed product data
+            mage::getModel('dyncatprod/subselect')
+                ->setCategory($category)
+                ->setPostedProducts(true);
+        }
+    }
+
 
 }

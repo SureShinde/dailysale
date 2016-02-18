@@ -1,25 +1,89 @@
 <?php
 $_element = $this->getElement();
+$_category = $_element->getForm()->getCategory();
 ?>
 <div class="rule-tree">
     <div class="entry-edit-head">
         <h4 class="icon-head head-edit-form fieldset-legend"><?php echo $_element->getLegend() ?></h4>
-        <h5 style="float: right;">Last Rebuild: <?php echo $_element->getContainer()->getCategory()->getDynamicRebuildDatetime(); ?></h5>
+        <h5 style="float: right;">Last Rebuild: <?php echo $_element->getContainer()->getCategory()
+                ->getDynamicRebuildDatetime(); ?></h5>
     </div>
     <fieldset id="<?php echo $_element->getHtmlId() ?>" <?php echo $_element->serialize(array('class')) ?>>
-
-	<?php if ($_element->getComment()): ?>
-    	<p class="comment"><?php echo $this->escapeHtml($_element->getComment()) ?></p>
-	<?php endif; ?>
-	<?php echo $_element->getChildrenHtml() ?>
+        <?php if ($_element->getComment()): ?>
+            <p class="comment"><?php echo $this->escapeHtml($_element->getComment()) ?></p>
+        <?php endif; ?>
+        <?php echo $_element->getChildrenHtml() ?>
+        <?php if ($_category->getId()): ?>
+            <img data-fieldset="<?php echo $_element->getHtmlId() ?>" class="expand-raw-rule-view raw-rule-view"
+                 src="<?php echo $this->getSkinUrl('dyncatprod/toggle_expand.png') ?>" title="Expand Raw Rule View"
+                 alt="Expand Raw Rule View"/>
+            <img style="display:none;" data-fieldset="<?php echo $_element->getHtmlId() ?>"
+                 class="collapse-raw-rule-view raw-rule-view"
+                 src="<?php echo $this->getSkinUrl('dyncatprod/toggle_collapse.png') ?>" title="Colapse Raw Rule View"
+                 alt="Colapse Raw Rule View"/>
+        <?php endif; ?>
+        <?php if ($this->getDebugMode() && mage::getIsDeveloperMode()): ?>
+            <img data-fieldset="<?php echo $_element->getHtmlId() ?>_debug" class="expand-debug-rule-view raw-rule-view"
+                 src="<?php echo $this->getSkinUrl('dyncatprod/debug-icon.png') ?>" title="Expand Debug Rule View"
+                 alt="Expand Debug Rule View"/>
+            <img style="display:none;" data-fieldset="<?php echo $_element->getHtmlId() ?>_debug"
+                 class="collapse-debug-rule-view raw-rule-view"
+                 src="<?php echo $this->getSkinUrl('dyncatprod/debug-icon.png') ?>"
+                 title="Colapse Debug Rule View" alt="Colapse Debug Rule View"/>
+        <?php endif; ?>
     </fieldset>
+    <?php if ($_category->getId()): ?>
+        <fieldset style="display:none" id="<?php echo $_element->getHtmlId() ?>_copy" class="raw-rule-fieldset">
+            <legend>Copy Rules From Other Category</legend>
+            <div class="debug">
+                <select id="<?php echo $_element->getHtmlId() ?>_categories" style="width:50%;">
+                    <option value="---">--- Please Select ---</option>
+                </select>
+            </div>
+            <button id="<?php echo $_element->getHtmlId() ?>_update" title="Copy Rule" type="button"
+                    class="scalable save"
+                    onclick="copyDynamicCategoryRule('<?php echo mage::getUrl(
+                        '*/catalog_category/copyrules'
+                    ); ?>', <?php echo $_category->getId(); ?>,'dynamic_attributes')" style="">
+                <span><span><span>Copy Rule</span></span></span></button>
+        </fieldset>
+        <fieldset style="display:none" id="<?php echo $_element->getHtmlId() ?>_raw" class="raw-rule-fieldset">
+            <legend>View or Replace Rules Using Raw Data</legend>
+            <div class="debug"><textarea id="ruleupdatefordynamic_attributes" style="width:100%;"
+                                         rows="5"><?php echo $this->getRawRuleData(); ?></textarea>
+            </div>
+            <button id="<?php echo $_element->getHtmlId() ?>_update" title="Copy Rule" type="button"
+                    class="scalable save"
+                    onclick="updateDynamicCategoryRule('<?php echo mage::getUrl(
+                        '*/catalog_category/updaterules'
+                    ); ?>', <?php echo $_category->getId(); ?>,'dynamic_attributes')" style="">
+                <span><span><span>Update Rule</span></span></span></button>
+        </fieldset>
+    <?php endif; ?>
+    <?php if ($this->getDebugMode() && mage::getIsDeveloperMode()): ?>
+        <fieldset style="display:none" id="<?php echo $_element->getHtmlId() ?>_debug" class="raw-rule-fieldset">
+            <legend>Debug Rule Data</legend>
+            <div class="debug"><?php Zend_Debug::dump(
+                    unserialize($this->getRawRuleData()), 'RAW RULE DATA', true
+                ); ?></div>
+        </fieldset>
+    <?php endif; ?>
 </div>
 <script type="text/javascript">
-//<![CDATA[
-<?php echo $_element->getHtmlId() ?> = new VarienRulesForm('<?php echo $_element->getHtmlId() ?>', '<?php echo $this->getNewChildUrl() ?>');
-//]]>
+    //<![CDATA[
+    <?php echo $_element->getHtmlId() ?>
+    = new VarienRulesForm('<?php echo $_element->getHtmlId() ?>', '<?php echo $this->getNewChildUrl() ?>');
+    //]]>
+
+    function populateCategories(element) {
+        new Ajax.Request('<?php echo $this->getCategoryListUrl() ?>',{
+            onSuccess:function(transport){
+                var res = transport.responseText.evalJSON();
+                cleanListBox(element, true);
+                fillListBox(element, res.content);
+            },
+            onFailure:function(transport){ alert(transport.responseText); }
+        });
+    }
+
 </script>
-<?php if ($this->getDebugMode() && mage::getIsDeveloperMode()): ?>
-    <div class="debug"><?php Zend_Debug::dump(unserialize(trim($this->getRawRuleData())), 'RAW RULE DATA', true); ?></div>
-    <div class="debug"><textarea style="width:100%;" rows="5"><?php echo $this->getRawRuleData(); ?></textarea></div>
-<?php endif; ?>

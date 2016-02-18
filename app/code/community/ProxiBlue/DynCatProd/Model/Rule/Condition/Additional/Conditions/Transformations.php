@@ -55,7 +55,7 @@ class ProxiBlue_DynCatProd_Model_Rule_Condition_Additional_Conditions_Transforma
     public function asHtml()
     {
         $html = $this->getTypeElement()->getHtml() . $this->getHelper()->__(
-                "Transform the resulting data using the following rules:"
+                "Filter the resulting data using the following rules:"
             );
         if ($this->getId() != '1') {
             $html .= $this->getRemoveLinkHtml();
@@ -76,7 +76,7 @@ class ProxiBlue_DynCatProd_Model_Rule_Condition_Additional_Conditions_Transforma
     public function asString($format = '')
     {
         $str = $this->getHelper()->__(
-            "Transform the resulting data using the following rules:"
+            "Filter the resulting data using the following rules:"
         );
 
         return $str;
@@ -122,7 +122,12 @@ class ProxiBlue_DynCatProd_Model_Rule_Condition_Additional_Conditions_Transforma
                 array('value' => 'dyncatprod/rule_condition_additional_conditions_transformations_childrencount',
                       'label'
                               => $this->getHelper()->__(
-                          'If a complex product has X children products, then...'
+                          'Child product STOCK filter'
+                      )),
+                array('value' => 'dyncatprod/rule_condition_additional_conditions_transformations_finalprice',
+                      'label'
+                      => $this->getHelper()->__(
+                          'Calculate a product final price...'
                       )),
             )
         );

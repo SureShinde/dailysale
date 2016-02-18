@@ -2,13 +2,14 @@
 class Fiuze_Bestsellercron_Model_Customcron  extends Mage_Core_Model_Abstract{
     public function runCustomCron(){
         $collection = Mage::getResourceModel('bestsellercron/tasks_collection');
-        $current_data =getdate();
+        $current_data = getdate(Mage::getModel('core/date')->timestamp(time()));
         if(strlen($current_data['minutes'])==1){
             $current_data['minutes']='0'.$current_data['minutes'];
         }
         foreach($collection as $task){
             $task_data=$task->getData();
-            if(!$step_data=unserialize($task_data['step_timestamp'])){
+            $step_data = $task_data['step_timestamp'];
+            if(!empty($step_data)){
                 $cronName = Mage::getModel('bestsellercron/tasks')
                     ->getCollection()
                     ->addFieldToFilter('task_id', $task->getTaskId())
@@ -17,8 +18,8 @@ class Fiuze_Bestsellercron_Model_Customcron  extends Mage_Core_Model_Abstract{
 
                 if(time()>=$task_data['current_timestamp']){
                     Mage::getModel('bestsellercron/taskLogs')
-                        ->setDate($current_data['mday'].'-'.$current_data['mon'].'-'.$current_data['year'])
-                        ->setTime($current_data['hours'].':'.$current_data['minutes'])
+                        ->setDate(date('m/d/Y',$current_data[0]))
+                        ->setTime(date("h:i A", $current_data[0]))
                         ->setType('Simple')
                         ->setInternalId($task->getTaskId())
                         ->setCronname($cronName)
@@ -31,8 +32,8 @@ class Fiuze_Bestsellercron_Model_Customcron  extends Mage_Core_Model_Abstract{
             }else{
                 if(time()>=$task_data['current_timestamp']){
                     Mage::getModel('bestsellercron/taskLogs')
-                        ->setDate($current_data['mday'].'-'.$current_data['mon'].'-'.$current_data['year'])
-                        ->setTime($current_data['hours'].':'.$current_data['minutes'])
+                        ->setDate(date('m/d/Y',$current_data[0]))
+                        ->setTime(date("h:i A", $current_data[0]))
                         ->setType('Configurable')
                         ->setInternalId($task->getTaskId())
                         ->setCronname($cronName)

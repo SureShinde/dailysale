@@ -51,7 +51,12 @@ class ProxiBlue_DynCatProd_Block_Adminhtml_Catalog_Category_Tab_Dyncatprod_Rules
                     '*/promo_rules/newCustomConditionHtml/form/rule_conditions_fieldset/prefix/'
                     . $this->_conditions
                 )
+            )->setCategoryListUrl(
+                $this->getUrl(
+                    '*/catalog_category/categoryList'
+                )
             );
+
         $fieldSet = $form->addFieldset(
             $this->_conditions . '_fieldset',
             array(
@@ -76,5 +81,4 @@ class ProxiBlue_DynCatProd_Block_Adminhtml_Catalog_Category_Tab_Dyncatprod_Rules
 
         $this->setForm($form);
     }
-
 }

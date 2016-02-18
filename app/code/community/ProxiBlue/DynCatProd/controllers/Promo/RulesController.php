@@ -22,8 +22,7 @@ class ProxiBlue_DynCatProd_Promo_RulesController
             '|', str_replace('-', '/', $this->getRequest()->getParam('type'))
         );
         $type = $typeArr[0];
-        $prefix = ($this->getRequest()->getParam('prefix')) ? $this->getRequest(
-        )->getParam('prefix') : 'conditions';
+        $prefix = ($this->getRequest()->getParam('prefix')) ? $this->getRequest()->getParam('prefix') : 'conditions';
 
         $model = Mage::getModel($type, array('prefix' => $prefix))
             ->setId($id)
@@ -55,5 +54,23 @@ class ProxiBlue_DynCatProd_Promo_RulesController
             'catalog/categories'
         );
     }
+
+    public function copyrulesAction()
+    {
+        $params['_current'] = true;
+        $category = mage::getModel('catalog/category')->load($this->getRequest()->getParam('currentCat'));
+
+        if (!$category->getId()) {
+            return;
+        }
+
+        $copyFrom = mage::getModel('catalog/category')->load($this->getRequest()->getParam('copyFrom'));
+        $category->setDynamicAttributes($copyFrom->getDynamicAttributes());
+        $category->save();
+
+
+
+    }
+
 
 }

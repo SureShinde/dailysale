@@ -34,7 +34,7 @@ class ProxiBlue_DynCatProd_Model_Subselect
     {
         $this->_preDumpData[] = array(
             'category_id' => (int)$this->getCategory()->getId(),
-            'product_id'  => (int)$itemId);
+            'product_id' => (int)$itemId);
         if (count($this->_preDumpData) == self::DUMP_TO_DB_COUNT) {
             mage::helper('dyncatprod')->debug(
                 "Writing data to db",
@@ -48,7 +48,7 @@ class ProxiBlue_DynCatProd_Model_Subselect
 
     public function dumpDataToDb()
     {
-        if(count($this->getPreDumpData()) == 0) {
+        if (count($this->getPreDumpData()) == 0) {
             $this->getCategory()->setRemoveAllDynamic(true);
             return;
         }
@@ -76,7 +76,7 @@ class ProxiBlue_DynCatProd_Model_Subselect
             );
             $collection->setPageSize($pagesize);
             $collection->getSelect()->distinct(true);
-            $totalItemsInserted  = $collection->getSize();
+            $totalItemsInserted = $collection->getSize();
             $pages = $collection->getLastPageNumber();
 
             $currentPage = 1;
@@ -137,6 +137,41 @@ class ProxiBlue_DynCatProd_Model_Subselect
         $this->_getResource()->deleteSubselect($this->getCategory());
 
         return $this;
+    }
+
+    public function getAllData()
+    {
+        $productIds = array();
+        $collection = $this->getCollection()
+            ->addFieldToSelect('product_id')
+            ->addFieldToFilter(
+                'category_id',
+                $this->getCategory()->getId()
+            );
+        $pagesize = mage::getStoreConfig(
+            'dyncatprod/rebuild/collection_pagesize'
+        );
+        $collection->setPageSize($pagesize);
+        $pages = $collection->getLastPageNumber();
+        $currentPage = 1;
+        do {
+            Mage::helper('dyncatprod')->debug(
+                "Extracting results form subselect system: Processing page "
+                . "{$currentPage} / {$pages} "
+                . "using batch size of {$pagesize}",
+                10
+            );
+            //Tell the collection which page to load.
+            $collection->setCurPage($currentPage);
+            $collection->load();
+            foreach($collection as $row) {
+                $productIds[] = $row->getProductId();
+            }
+            $currentPage++;
+            $collection->clear();
+        } while ($currentPage <= $pages);
+        $this->clear();
+        return $productIds;
     }
 
 }

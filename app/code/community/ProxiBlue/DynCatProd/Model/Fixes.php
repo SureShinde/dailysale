@@ -34,7 +34,7 @@ class ProxiBlue_DynCatProd_Model_Fixes
                 || strlen(trim($category->getParentDynamicAttributes())) > 0
             ) {
                 $data = unserialize($category->getParentDynamicAttributes());
-                if (count($data) == 1) {
+                if (is_array($data) && count($data) == 1) {
                     $category->setParentDynamicAttributes(null);
                     $changed = true;
                 }
@@ -45,7 +45,7 @@ class ProxiBlue_DynCatProd_Model_Fixes
                 || strlen(trim($category->getDynamicAttributes())) > 0
             ) {
                 $data = unserialize($category->getDynamicAttributes());
-                if (count($data) == 1) {
+                if (is_array($data) && count($data) == 1) {
                     $category->setDynamicAttributes(null);
                     $changed = true;
                 }

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Page
+ *
+ * @author      Fiuze Team
+ * @category    Fiuze
+ * @package     Page
+ * @copyright   Copyright (c) 2016 Fiuze
+ */
+-->
+<config>
+    <modules>
+        <Fiuze_Page>
+            <version>1.0.0</version>
+        </Fiuze_Page>
+    </modules>
+    <global>
+        <blocks>
+            <page>
+                <rewrite>
+                    <html_head>Fiuze_Page_Block_Html_Head</html_head>
+                </rewrite>
+            </page>
+        </blocks>
+    </global>
+</config>

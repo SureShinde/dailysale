@@ -12,16 +12,8 @@
  */
 class ProxiBlue_DynCatProd_Model_Rule_Condition_Additional_Conditions_Transformations_Simples
     extends
-    ProxiBlue_DynCatProd_Model_Rule_Condition_Additional_Conditions_Abstract
+    ProxiBlue_DynCatProd_Model_Rule_Condition_Additional_Conditions_Transformations_Abstract
 {
-    /**
-     * Internal cached helper object
-     *
-     * @var object
-     */
-    protected $_helper = null;
-    protected $_inputType = 'select';
-    protected $_subselectObject;
 
     /**
      * Constructor
@@ -75,15 +67,6 @@ class ProxiBlue_DynCatProd_Model_Rule_Condition_Additional_Conditions_Transforma
         return $html;
     }
 
-    public function getHelper()
-    {
-        if ($this->_helper == null) {
-            $this->_helper = mage::helper('dyncatprod');
-        }
-
-        return $this->_helper;
-    }
-
     public function asString($format = '')
     {
         $str = Mage::helper('dyncatprod')->__(
@@ -111,88 +94,13 @@ class ProxiBlue_DynCatProd_Model_Rule_Condition_Additional_Conditions_Transforma
     }
 
     /**
-     * validateLater
-     *
-     * Iterate all products found, and if a complex product type
-     * add in the products associated with it
-     *
-     * @param  Varien_Object $object Quote
-     *
-     * @return boolean
-     */
-    public function validateLater($category)
-    {
-        /**
-         * Array storage of data just don't work when we have massive catalogs to works with
-         * Instead store the found id's in the new subselect model for later use
-         */
-        $this->_subselectObject = mage::getModel('dyncatprod/subselect')
-            ->setCategory($category)
-            ->clear();
-        $pagesize = mage::getStoreConfig(
-            'dyncatprod/rebuild/collection_pagesize'
-        );
-
-        $collection = $category->getProductCollection();
-        // remove GROUP and DISTINCT from collection, else page count will be 1.
-        $countCollection = clone $collection;
-        $countSelect = $countCollection->getSelect();
-        $countSelect->reset(Zend_Db_Select::GROUP);
-        $countSelect->reset(Zend_Db_Select::DISTINCT);
-        $collection->setPageSize($pagesize);
-        $pages = $countCollection->getLastPageNumber();
-        $currentPage = 1;
-        if (Mage::getStoreConfig('dyncatprod/debug/enabled')
-            && Mage::getStoreConfig('dyncatprod/debug/level') >= 10
-        ) {
-            // debugging this is hell, so limit the number of pages to pull
-            $this->getHelper()->debug(
-                "In debug mode with level 10. Only doing last page to speed up debugging."
-                . $collection->getSelect(),
-                5
-            );
-            $currentPage = $pages;
-        }
-        $this->getHelper()->debug(
-            "Product collection before transformation of parents: "
-            . $collection->getSelect(),
-            5
-        );
-        $collection->setPageSize($pagesize);
-        do {
-            $memory = memory_get_peak_usage(true);
-            $this->getHelper()->debug(
-                "Transformations: Processing page {$currentPage} / {$pages} using batch size of {$pagesize} with memory at {$memory}",
-                5
-            );
-            //Tell the collection which page to load.
-            $collection->setCurPage($currentPage);
-            $collection->load();
-            foreach ($collection as $product) {
-                $this->getChildData($product);
-            }
-            $currentPage++;
-            //make the collection unload the data in memory so it will pick up the next page when load() is called.
-            $collection->clear();
-            $this->_subselectObject->dumpDataToDb();
-        } while ($currentPage <= $pages);
-
-        $this->getHelper()->debug(
-            "End of product transformation loop",
-            4
-        );
-
-        return true;
-    }
-
-    /**
      * Get the child data of the given product object
      *
      * @param object $product
      *
      * @return array
      */
-    private function getChildData($product)
+    protected function getChildData($product)
     {
         try {
             if (is_object($product)) {

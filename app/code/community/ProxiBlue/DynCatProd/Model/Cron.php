@@ -113,7 +113,7 @@ class ProxiBlue_DynCatProd_Model_Cron
         foreach ($categories as $category) {
             try {
                 $ruleData = mage::helper('dyncatprod')->loadRuleData($category);
-                if (count($ruleData) > 0) {
+                if (count($ruleData) > 0 || Mage::getStoreConfig('dyncatprod/rebuild/force_filters')) {
                     self::getHelper()->debug(
                         "rebuilding :" . $category->getName() . ' '
                         . $category->getPath()
@@ -131,6 +131,8 @@ class ProxiBlue_DynCatProd_Model_Cron
                     );
                     $category->save();
                     Mage::helper('dyncatprod')->reIndex();
+                } else {
+
                 }
             } catch (Exception $e) {
                 self::getHelper()->debug(
@@ -168,6 +170,7 @@ class ProxiBlue_DynCatProd_Model_Cron
 
                     $rebuildCollection = Mage::getModel('dyncatprod/rebuild')
                         ->getCollection();
+                    $rebuildCollection->getSelect()->limit(5);
                     $changed = array();
                     foreach ($rebuildCollection as $rebuild) {
                         $changed[] = array(
@@ -237,9 +240,11 @@ class ProxiBlue_DynCatProd_Model_Cron
 
                     $rebuildCollection = Mage::getModel('dyncatprod/delaybuild')
                         ->getCollection();
+                    $rebuildCollection->getSelect()->limit(5); // impose a limit
                     $delayed = array();
                     foreach ($rebuildCollection as $rebuild) {
                         $delayed[] = $rebuild->getCategoryId();
+                        $rebuild->delete();
                     }
                     if (count($delayed) > 0) {
                         $categories = Mage::getModel('catalog/category')
@@ -248,7 +253,7 @@ class ProxiBlue_DynCatProd_Model_Cron
                             ->addAttributeToFilter(
                                 'entity_id',
                                 array(
-                                    'IN' => $delayed)
+                                    'in' => $delayed)
                             );
                         self::rebuildCategories($categories);
                     }

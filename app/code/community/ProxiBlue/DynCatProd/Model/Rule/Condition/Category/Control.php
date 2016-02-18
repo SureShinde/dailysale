@@ -140,10 +140,6 @@ class ProxiBlue_DynCatProd_Model_Rule_Condition_Category_Control
         if (array_key_exists(
             $this->getProcessingOrder($condition), $conditions
         )) {
-            mage::helper('dyncatprod')->debug(
-                'Rule ' . get_class($condition)
-                . ' appear to have the same processing order than another rule. This can result in unexpected rules behaviour. Contact sales@proxiblue.com.au to correct this. The rule order process was increased by 1 to try and allow the system to continue.'
-            );
             $condition->setProcessingOrder(
                 $this->getProcessingOrder($condition) + 1
             );

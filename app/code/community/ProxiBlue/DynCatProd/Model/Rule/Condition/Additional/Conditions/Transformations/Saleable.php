@@ -50,10 +50,10 @@ class ProxiBlue_DynCatProd_Model_Rule_Condition_Additional_Conditions_Transforma
 
     public function getValueSelectOptions()
     {
-        $valueOption = $opt = ProxiBlue_DynCatProd_Model_Rule_Condition_Product_Abstract::_websiteOptionsList(false);
-
+        $valueOption = ProxiBlue_DynCatProd_Model_Rule_Condition_Product_Abstract::_websiteOptionsList(false);
+        $opt = array();
         foreach ($valueOption as $k => $v) {
-            $opt[] = array('value' => $k, 'label' => $v);
+            $opt[] = array('value' => $v['value'], 'label' => $v['label']);
         }
 
         return $opt;
@@ -68,7 +68,7 @@ class ProxiBlue_DynCatProd_Model_Rule_Condition_Additional_Conditions_Transforma
     public function asHtml()
     {
         $html = $this->getTypeElement()->getHtml() .
-            $this->getDisplayHtml($this->getOperatorElement()->getHtml(),$this->getValueElement()->getHtml());
+            $this->getDisplayHtml($this->getOperatorElement()->getHtml(), $this->getValueElement()->getHtml());
         if ($this->getId() != '1') {
             $html .= $this->getRemoveLinkHtml();
         }

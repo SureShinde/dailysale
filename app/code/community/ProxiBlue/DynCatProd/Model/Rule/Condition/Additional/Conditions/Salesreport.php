@@ -76,9 +76,25 @@ class ProxiBlue_DynCatProd_Model_Rule_Condition_Additional_Conditions_Salesrepor
                       'label' => Mage::helper('dyncatprod')->__(
                           'Best Sellers'
                       )),
+                array('value' => 'dyncatprod/rule_condition_additional_conditions_salesreport_bestsellersbyrevenue',
+                      'label' => Mage::helper('dyncatprod')->__(
+                          'Best Sellers by Revenue'
+                      )),
+                array('value' => 'dyncatprod/rule_condition_additional_conditions_salesreport_bestsellersbyprofit',
+                      'label' => Mage::helper('dyncatprod')->__(
+                          'Best Sellers by Profit'
+                      )),
                 array('value' => 'dyncatprod/rule_condition_additional_conditions_salesreport_leastsellers',
                       'label' => Mage::helper('dyncatprod')->__(
                           'Least Sellers'
+                      )),
+                array('value' => 'dyncatprod/rule_condition_additional_conditions_salesreport_leastsellersbyrevenue',
+                      'label' => Mage::helper('dyncatprod')->__(
+                          'Least Sellers by Revenue'
+                      )),
+                array('value' => 'dyncatprod/rule_condition_additional_conditions_salesreport_leastsellersbyprofit',
+                      'label' => Mage::helper('dyncatprod')->__(
+                          'Least Sellers by Profit'
                       )),
                 array('value' => 'dyncatprod/rule_condition_additional_conditions_salesreport_mostviewed',
                       'label' => Mage::helper('dyncatprod')->__('Most Viewed')),

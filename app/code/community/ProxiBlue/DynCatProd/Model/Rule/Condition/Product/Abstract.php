@@ -843,12 +843,18 @@ class ProxiBlue_DynCatProd_Model_Rule_Condition_Product_Abstract
                     }
                     switch ($attribute->getFrontendInput()) {
                         case 'multiselect':
-                            $this->buildMultiSelect(
-                                $operator,
-                                $value,
-                                $attrCode,
-                                $collection
-                            );
+                            if(!is_array($value)) {
+                                mage::log('Multiselect attribute has no selected values in dynamic rule for category '
+                                    . $object->getCategory()->getId() . ' ' . $object->getCategory()->getName());
+
+                            } else {
+                                $this->buildMultiSelect(
+                                    $operator,
+                                    $value,
+                                    $attrCode,
+                                    $collection
+                                );
+                            }
                             break;
                         case 'select':
                             $this->buildSelect(

@@ -1,0 +1,48 @@
+.dash-left{
+  float:left;
+  width:74%;
+  height:300px;
+}
+.dash-table{
+  text-align: center;
+  margin: 40px 0 0 25px;
+  padding: 0;
+  height: 100px;
+  width: 96%;
+}
+.table-unshipped{
+  width: 157px;
+  padding: 2px 0px 0px 6px;
+  height: 27px;
+}
+.table-row-numeric{
+  width:34px;
+}
+.dash-back{
+  background:white;
+  height:300px;
+}
+.dash-top{
+  background:#E8E9E8;
+}
+.unsh-count{
+  font-size:44px;
+  color:red;
+}
+.div-head-for-table{
+  font-size:44px;
+  color:black;
+}
+.bottom-border-show{
+  border-bottom: 1px solid #E0E0E0;
+}
+.dash-button{
+  width: 230px;
+  height: 32px;
+  margin-bottom: 5px;
+  font-size:10px;
+}
+.dash-right{
+  padding: 38px 0 0 717px;
+
+}

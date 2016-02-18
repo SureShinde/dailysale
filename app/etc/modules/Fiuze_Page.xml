@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Page
+ *
+ * @author      Fiuze Team
+ * @category    Fiuze
+ * @package     Page
+ * @copyright   Copyright (c) 2016 Fiuze
+ */
+-->
+<config>
+    <modules>
+        <Fiuze_Page>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <WIC_All />
+            </depends>
+        </Fiuze_Page>
+    </modules>
+</config>
