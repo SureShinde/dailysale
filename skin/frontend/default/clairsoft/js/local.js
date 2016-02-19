@@ -158,14 +158,18 @@ $j(document).ready(function(){
         });
 
         totalSavings.percent = totalSavings.absolute / totalSavings.original;
-        return totalSavings;
+
+				var coupon = parseFloat($j('#checkout-review-table tfoot tr:eq(2) span.price').text().replace('$',''));
+				if (coupon < 0){　totalSavings.coupon = coupon;　} else {　totalSavings.coupon = 0;}
+
+				return totalSavings;
     }
 
 
 // Formatting Functions
     function formatSavings(savingsData, format) {
         if (format === 'absolute') {
-            return '$' + Math.round(savingsData.absolute * 100) / 100;
+            return '$' + Math.round((savingsData.absolute - savingsData.coupon) * 100) / 100;
         } else if (format === 'percent') {
             return Math.round(100*percent) + '%';
         } else {
