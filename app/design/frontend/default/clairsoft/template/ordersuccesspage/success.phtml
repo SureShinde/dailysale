@@ -205,6 +205,16 @@ $currency = $order->getOrderCurrencyCode();
 </script>
 <!-- end sidecar -->
 
+<!-- Bluecore Purchase Pixel -->
+<?php
+		foreach ($items as $item) {
+				$bcItems .= $item->getProductId().",";
+		}
+?>
+	<img id="bluecore_purchase_pixel" src="https://www.bluecore.com/api/track/purchase_pixel?token=daily_sale&email=<?php echo ($order->getCustomerEmail());?>&total=<?php echo $total; ?>&order_id=<?php echo $orderId; ?>&product_ids=[<?php echo substr($bcItems, 0, -1); ?>]" />
+
+<!-- End Bluecore Purchase Pixel -->
+
 <!-- Traffic Vance Tracking -->
 <script type="text/javascript" src="https://tracking.trafficvance.com/?id=1G5CC7G7EADG46C661FF&fetch=0&value=<?php echo($subtotal); ?>">
 </script>
