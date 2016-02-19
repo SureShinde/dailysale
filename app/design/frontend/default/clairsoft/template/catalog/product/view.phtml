@@ -47,6 +47,9 @@
                 <div class="product-name">
                     <h1><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></h1>
                 </div>
+                <div id="category-container" style="display:none;">
+                  <?php echo $this->getChildHtml('categories') ?>
+                </div>
                 <div class="availability-container">
                     <?php if ($this->displayProductStockStatus()): ?>
                         <?php if ($_product->isAvailable()): ?>
