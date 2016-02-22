@@ -18,7 +18,9 @@
     <global>
         <models>
             <udpo_mysql4>
-                <class>Fiuze_DropshipPo_Model_Mysql4</class>
+                <rewrite>
+                    <po_collection>Fiuze_DropshipPo_Model_Mysql4_Po_Collection</po_collection>
+                </rewrite>
             </udpo_mysql4>
         </models>
     </global>

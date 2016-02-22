@@ -31,6 +31,20 @@
                 </rewrite>
             </udpo>
         </models>
+        <blocks>
+            <udbatch>
+                <rewrite>
+                    <adminhtml_dist_grid>Fiuze_DropshipBatch_Block_Adminhtml_Dist_Grid</adminhtml_dist_grid>
+                </rewrite>
+            </udbatch>
+        </blocks>
+        <helpers>
+            <udbatch>
+                <rewrite>
+                    <data>Fiuze_DropshipBatch_Helper_Data</data>
+                </rewrite>
+            </udbatch>
+        </helpers>
     </global>
     <crontab>
         <jobs>

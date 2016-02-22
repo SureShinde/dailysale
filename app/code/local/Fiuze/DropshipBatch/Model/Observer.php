@@ -17,7 +17,7 @@ class Fiuze_DropshipBatch_Model_Observer extends Unirgy_DropshipBatch_Model_Obse
         session_write_close();
         ignore_user_abort(true);
         set_time_limit(0);
-        ini_set('memory_limit','8192M');
+        ini_set('memory_limit','2048M');
         ob_implicit_flush();
 
         /** @var $batchModel Fiuze_DropshipBatch_Model_Batch */
