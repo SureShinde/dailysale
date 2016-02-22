@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * DropshipBatch
+ *
+ * @author      Fiuze Team
+ * @category    Fiuze
+ * @package     DropshipBatch
+ * @copyright   Copyright (c) 2016 Fiuze
+ */
+-->
+<config>
+    <modules>
+        <Fiuze_DropshipBatch>
+            <version>1.0.0</version>
+        </Fiuze_DropshipBatch>
+    </modules>
+    <global>
+        <models>
+            <fiuze_dropshipbatch>
+                <class>Fiuze_DropshipBatch_Model</class>
+            </fiuze_dropshipbatch>
+            <udbatch>
+                <rewrite>
+                    <batch>Fiuze_DropshipBatch_Model_Batch</batch>
+                </rewrite>
+            </udbatch>
+            <udpo>
+                <rewrite>
+                    <batch>Fiuze_DropshipBatch_Model_Batch</batch>
+                </rewrite>
+            </udpo>
+        </models>
+        <blocks>
+            <udbatch>
+                <rewrite>
+                    <adminhtml_dist_grid>Fiuze_DropshipBatch_Block_Adminhtml_Dist_Grid</adminhtml_dist_grid>
+                </rewrite>
+            </udbatch>
+        </blocks>
+        <helpers>
+            <udbatch>
+                <rewrite>
+                    <data>Fiuze_DropshipBatch_Helper_Data</data>
+                </rewrite>
+            </udbatch>
+        </helpers>
+    </global>
+    <crontab>
+        <jobs>
+            <udbatch_process_standard>
+                <schedule><cron_expr>* * * * *</cron_expr></schedule>
+                <run><model>fiuze_dropshipbatch/observer::processStandard</model></run>
+            </udbatch_process_standard>
+        </jobs>
+    </crontab>
+</config>
