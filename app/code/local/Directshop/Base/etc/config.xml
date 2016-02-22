@@ -57,7 +57,7 @@
 				</admin>
 			</resources>
 		</acl>
-		<events>
+		<!--<events>
 			<controller_action_predispatch>
                 <observers>
                     <directshop_base_notification>
@@ -66,7 +66,7 @@
                     </directshop_base_notification>
                 </observers>
             </controller_action_predispatch>
-		</events>
+		</events>-->
 	</adminhtml>
 	
 	<default>
