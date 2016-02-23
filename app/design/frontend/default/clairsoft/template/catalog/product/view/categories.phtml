@@ -1,9 +1,12 @@
 <?php
   $_product = $this->getProduct();
   $category_ids = $_product->getCategoryIds();
-  foreach ($category_ids as $category_id) {
-    $category = Mage::getModel('catalog/category')->load($category_id) ;
-    $categories .= $category->getName() . ",";
-  }
-  echo substr($categories, 0, -1);
+
+  $names = Mage::getModel('catalog/category')->getCollection()
+  ->addAttributeToFilter('entity_id', array('in' => $category_ids))
+  ->addAttributeToSelect('name')
+  ->getColumnValues('name');
+
+  echo $categories = implode(', ', $names);
+
 ?>
