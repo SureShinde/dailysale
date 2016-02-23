@@ -2,6 +2,12 @@ var $j = jQuery.noConflict();
 
 $j(document).ready(function(){
 
+	if( $j(window).width() <= 414 ){
+		$j('.onestepcheckout-index-index .logo').click(function(e){
+			e.preventDefault();
+		});
+	}
+
 	//sticky stuff
 
 	var stickyTop = $j('.wrapper').offset().top + 380; // returns number
