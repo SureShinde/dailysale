@@ -7,7 +7,6 @@
   ->addAttributeToSelect('name')
   ->getColumnValues('name');
 
-  $categories = implode(', ', $names);
+  echo $categories = implode(', ', $names);
 
-  echo substr($categories, 0, -1);
 ?>
