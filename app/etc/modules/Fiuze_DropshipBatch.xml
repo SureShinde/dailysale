@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * DropshipBatch
+ *
+ * @author      Fiuze Team
+ * @category    Fiuze
+ * @package     DropshipBatch
+ * @copyright   Copyright (c) 2016 Fiuze
+ */
+-->
+<config>
+    <modules>
+        <Fiuze_DropshipBatch>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <Unirgy_DropshipBatch />
+                <Unirgy_DropshipPo />
+            </depends>
+        </Fiuze_DropshipBatch>
+    </modules>
+</config>

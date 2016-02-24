@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * DropshipPo
+ *
+ * @author      Fiuze Team
+ * @category    Fiuze
+ * @package     DropshipPo
+ * @copyright   Copyright (c) 2016 Fiuze
+ */
+-->
+<config>
+    <modules>
+        <Fiuze_DropshipPo>
+            <version>1.0.0</version>
+        </Fiuze_DropshipPo>
+    </modules>
+    <global>
+        <models>
+            <udpo_mysql4>
+                <rewrite>
+                    <po_collection>Fiuze_DropshipPo_Model_Mysql4_Po_Collection</po_collection>
+                </rewrite>
+            </udpo_mysql4>
+        </models>
+    </global>
+</config>

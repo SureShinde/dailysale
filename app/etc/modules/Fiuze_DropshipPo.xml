@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * DropshipPo
+ *
+ * @author      Fiuze Team
+ * @category    Fiuze
+ * @package     DropshipPo
+ * @copyright   Copyright (c) 2016 Fiuze
+ */
+-->
+<config>
+    <modules>
+        <Fiuze_DropshipPo>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <Unirgy_DropshipPo />
+            </depends>
+        </Fiuze_DropshipPo>
+    </modules>
+</config>
