@@ -1,0 +1,12 @@
+<?php
+  $_product = $this->getProduct();
+  $category_ids = $_product->getCategoryIds();
+
+  $names = Mage::getModel('catalog/category')->getCollection()
+  ->addAttributeToFilter('entity_id', array('in' => $category_ids))
+  ->addAttributeToSelect('name')
+  ->getColumnValues('name');
+
+  echo $categories = implode(', ', $names);
+
+?>
