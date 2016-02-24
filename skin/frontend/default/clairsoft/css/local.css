@@ -22,7 +22,7 @@ color pallete
 10) Register + Login
 11) Local Styles & Overrides
 
-**************************/ 
+**************************/
 
 /**
 *
@@ -694,7 +694,7 @@ body a:visited {
 
 @media screen and (max-width: 960px) {
   .onestepcheckout-index-index .nav-container {
-    display: none; 
+    display: none;
   }
 
   .onestepcheckout-index-index div.header {
@@ -2350,7 +2350,7 @@ ul.tabs li a:focus {
 
 /**
 *
-* 11) Local Styles & Overrides 
+* 11) Local Styles & Overrides
 *
 **/
 
@@ -2569,6 +2569,15 @@ input:not([type=submit]):not([type=checkbox]):not([type=radio]) {
   color: #eee;
   text-shadow: none;
 }
+
+/*Experiment Engine Savings banner*/
+
+div.ee-item-title { padding-left: 36px; line-height: 24px;}
+.savings { color: green; font-size: 14px; line-height: 24px; white-space: nowrap; }
+#one-step-checkout-form .checkout-review-load .data-table td h2 { margin-left: 0; }
+.data-table tfoot { position: relative; }
+.data-table tfoot
+.savings { line-height: inherit; font-weight: bold; }
 
 /* Experiment Engine Bigger Search */
 
