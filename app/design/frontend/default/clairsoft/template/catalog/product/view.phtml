@@ -25,12 +25,7 @@
 //<![CDATA[
     var sidecar = sidecar || {};
         sidecar.product_info = {
-            group_id: '<?php
-                if ($_product->isConfigurable()) {
-                    echo $_product["sku"];
-                } else {
-                    echo $_product->getId();
-                } ?>'
+            group_id: '<?php echo $_product["sku"]; ?>'
         };
 //]]>
 </script>
