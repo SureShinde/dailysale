@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * StoreFront Consulting Kount Magento Extension
+ *
+ * PHP version 5
+ *
+ * @category  SFC
+ * @package   SFC_Kount
+ * @copyright 2009-2015 StoreFront Consulting, Inc. All Rights Reserved.
+ *
+ */
+ -->
+<layout version="1.0.0">
+	<checkout_multishipping_overview translate="label">
+		<label>Kount Data Collector</label>
+		<reference name="content">
+			<block type="core/template" name="datacollector" template="kount/checkout/datacollector.phtml"/>
+		</reference>
+	</checkout_multishipping_overview>
+	<checkout_onepage_review translate="label">
+		<label>Kount Data Collector</label>
+		<reference name="checkout.onepage.review.info.items.after">
+			<block type="core/template" name="datacollector" template="kount/checkout/datacollector.phtml"/>
+		</reference>
+	</checkout_onepage_review>
+    <onestepcheckout_index_index>
+        <label>Kount Data Collector</label>
+        <reference name="content">
+            <block type="core/template" name="datacollector" template="kount/checkout/datacollector.phtml"/>
+        </reference>
+    </onestepcheckout_index_index>
+    <paypal_express_review>
+        <label>Kount Data Collector</label>
+        <reference name="content">
+            <block type="core/template" name="datacollector" template="kount/checkout/datacollector.phtml"/>
+        </reference>
+    </paypal_express_review>
+</layout>
