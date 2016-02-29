@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * StoreFront Consulting Kount Magento Extension
+ *
+ * PHP version 5
+ *
+ * @category  SFC
+ * @package   SFC_Kount
+ * @copyright 2009-2015 StoreFront Consulting, Inc. All Rights Reserved.
+ *
+ */
+-->
+<config>
+    <tabs>
+        <kount translate="label">
+            <label>Kount Integration</label>
+            <sort_order>99999</sort_order>
+        </kount>
+    </tabs>
+    <sections>
+        <kount translate="label">
+            <label>Kount Integration Options</label>
+            <tab>kount</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>1000</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>0</show_in_store>
+            <groups>
+                <account translate="label">
+                    <label>Account Information</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>0</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <enabled>
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Enable or disable the module store wide.</comment>
+                        </enabled>
+                        <merchantnum>
+                            <label>Merchant Number</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Your 6 digit merchant number you wish to use from AWC.</comment>
+                        </merchantnum>
+                        <website>
+                            <label>Website ID</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>The Website ID from AWC, exactly as it appears.</comment>
+                        </website>
+                        <test>
+                            <label>Environment</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>kount/source_environment</source_model>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Whether the extension server will run in test mode.</comment>
+                        </test>
+                        <api_key>
+                            <label>API Key</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>API authentication token.</comment>
+                        </api_key>
+                    </fields>
+                </account>
+<!--
+                <servers translate="label">
+                    <label>Url's</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>2</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <ris>
+                            <label>RIS</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>The Ris Url to use.</comment>
+                        </ris>
+                        <datacollector>
+                            <label>Data Collector</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>The Data Collector Url to use.</comment>
+                        </datacollector>
+                        <awc>
+                            <label>AWC</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>The AWC Url to use.</comment>
+                        </awc>
+                    </fields>
+                </servers>
+-->
+                <workflow translate="label">
+                    <label>Payment Review Workflow</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>2</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <workflow_mode>
+                            <label>Payment Review Workflow Mode</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>kount/source_workflowMode</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </workflow_mode>
+                        <decline_action>
+                            <label>Decline Action</label>
+                            <comment>Cancel should be used with payment method in Authorize Only mode.  Refund should be used with payment method in Authorize and Capture mode.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>kount/source_declineAction</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </decline_action>
+                        <notify_processor_decline>
+                            <label>Notify Kount RIS of Processor Decline</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>For Post Auth transactions only.</comment>
+                        </notify_processor_decline>
+                    </fields>
+                </workflow>
+                <paymentmethods translate="label">
+                    <label>Disable Payment Methods</label>
+                    <comment>Kount RIS inquiry is not performed for payment methods which are disabled here.</comment>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>3</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <disable_methods>
+                            <label>Disable Payment Method Codes</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>kount/source_paymentMethods</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Select payment methods to disable.</comment>
+                        </disable_methods>
+                    </fields>
+                </paymentmethods>
+                <phonetoweb translate="label">
+                    <label>Phone To Web</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>4</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <enable>
+                            <label>Enable</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Enable Phone-to-Web orders.</comment>
+                        </enable>
+                        <ipaddresses>
+                            <label>IP Address Exclude</label>
+                            <frontend_type>textarea</frontend_type>
+                            <frontend_model>SFC_Kount_Block_Adminhtml_System_Config_Form_Field_IPAddress</frontend_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>The IP Addresses you wish to exclude for Phone-to-Web orders. Enter one IP Address per line.
+                            </comment>
+                        </ipaddresses>
+                    </fields>
+                </phonetoweb>
+                <ens translate="label">
+                    <label>Event Notifications</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>5</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <did_where>
+                            <label>Url</label>
+                            <frontend_type>button</frontend_type>
+                            <frontend_model>SFC_Kount_Block_Adminhtml_System_Config_Form_Field_Ens</frontend_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </did_where>
+                    </fields>
+                </ens>
+                <log translate="label">
+                    <label>Logging</label>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <enable>
+                            <label>Enable Kount SDK Logging</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </enable>
+                    </fields>
+                </log>
+                <admin translate="label">
+                    <label>Admin Ordering</label>
+                    <sort_order>15</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <enable>
+                            <label>Use Kount for Admin Ordering</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </enable>
+                    </fields>
+                </admin>
+            </groups>
+        </kount>
+    </sections>
+</config>

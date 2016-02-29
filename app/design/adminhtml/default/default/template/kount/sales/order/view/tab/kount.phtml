@@ -1,0 +1,77 @@
+<?php
+/**
+ * StoreFront Consulting Kount Magento Extension
+ *
+ * PHP version 5
+ *
+ * @category  SFC
+ * @package   SFC_Kount
+ * @copyright 2009-2015 StoreFront Consulting, Inc. All Rights Reserved.
+ *
+ */
+
+$risInfo = $this->getAdditionalRisInformation();
+?>
+<div class="entry-edit">
+    <div class="entry-edit-head">
+        <h4><?php echo $this->__('Kount'); ?></h4>
+    </div>
+    <div class="fieldset fieldset-wide">
+        <div class="fieldset">
+            <table cellspacing="0" class="form-list">
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('kount')->__('RIS Score') ?></label></td>
+                    <td class="value"><strong><?php echo(($this->getOrder()->getData('kount_ris_score')) ? $this->getOrder()->getData('kount_ris_score') : 'N/A'); ?></strong></td>
+                </tr>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('kount')->__('RIS Response') ?></label></td>
+                    <td class="value"><strong><?php echo(($this->getOrder()->getData('kount_ris_response')) ? $this->getOrder()->getData('kount_ris_response') : 'N/A'); ?></strong></td>
+                </tr>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('kount')->__('RIS Response Reason') ?></label></td>
+                    <td class="value"><strong><?php echo(($this->getOrder()->getData('kount_ris_description')) ? $this->getOrder()->getData('kount_ris_description') : 'N/A'); ?></strong></td>
+                </tr>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('kount')->__('RIS Rules Triggered') ?></label></td>
+                    <td class="value"><strong><?php echo(($this->getOrder()->getData('kount_ris_rule')) ? nl2br($this->getOrder()->getData('kount_ris_rule')) : 'N/A'); ?></strong></td>
+                </tr>
+            </table>
+        </div>
+        <div class="fieldset">
+            <table cellspacing="0" class="form-list">
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('kount')->__('Transaction ID (TRAN)') ?></label></td>
+                    <td class="value">
+                        <?php if (isset($risInfo['TRAN'])): ?>
+                        <strong><a href="<?php echo $this->getAWCUrl() ?>" target="_blank"><?php echo $risInfo['TRAN'] ?></a></strong>
+                        <?php endif; ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('kount')->__('Persona Country (GEOX)') ?></label></td>
+                    <td class="value"><strong><?php echo(isset($risInfo['GEOX']) ? $risInfo['GEOX'] : ''); ?></strong></td>
+                </tr>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('kount')->__('Device Country (DVCC)') ?></label></td>
+                    <td class="value"><strong><?php echo(isset($risInfo['DVCC']) ? $risInfo['DVCC'] : ''); ?></strong></td>
+                </tr>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('kount')->__('Data Collector Present (KAPT)') ?></label></td>
+                    <td class="value"><strong><?php echo(isset($risInfo['KAPT']) ? $risInfo['KAPT'] : ''); ?></strong></td>
+                </tr>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('kount')->__('Cards associated with Persona (CARDS)') ?></label></td>
+                    <td class="value"><strong><?php echo(isset($risInfo['CARDS']) ? $risInfo['CARDS'] : ''); ?></strong></td>
+                </tr>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('kount')->__('Emails associated with Persona (EMAILS)') ?></label></td>
+                    <td class="value"><strong><?php echo(isset($risInfo['EMAILS']) ? $risInfo['EMAILS'] : ''); ?></strong></td>
+                </tr>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('kount')->__('Devices associated with Persona (DEVICES)') ?></label></td>
+                    <td class="value"><strong><?php echo(isset($risInfo['DEVICES']) ? $risInfo['DEVICES'] : ''); ?></strong></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

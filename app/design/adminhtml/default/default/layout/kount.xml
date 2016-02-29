@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * StoreFront Consulting Kount Magento Extension
+ *
+ * PHP version 5
+ *
+ * @category  SFC
+ * @package   SFC_Kount
+ * @copyright 2009-2015 StoreFront Consulting, Inc. All Rights Reserved.
+ *
+ */
+ -->
+<layout>
+    <adminhtml_sales_order_view>
+        <reference name="sales_order_tabs">
+            <action method="addTab">
+                <name>order_kount</name>
+                <block>kount/adminhtml_sales_order_view_tab_kount</block>
+            </action>
+        </reference>
+    </adminhtml_sales_order_view>
+</layout>

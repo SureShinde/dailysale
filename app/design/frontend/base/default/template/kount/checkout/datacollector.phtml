@@ -1,0 +1,26 @@
+<?php
+/**
+ * StoreFront Consulting Kount Magento Extension
+ *
+ * PHP version 5
+ *
+ * @category  SFC
+ * @package   SFC_Kount
+ * @copyright 2009-2015 StoreFront Consulting, Inc. All Rights Reserved.
+ *
+ */
+
+$bEnabled = Mage::getStoreConfig('kount/account/enabled');
+$bTestMode = Mage::getStoreConfig('kount/account/test');
+$bHttps = Mage::app()->getStore()->isCurrentlySecure();
+?>
+<?php if ($bEnabled) : ?>
+    <iframe width="<?php echo(SFC_Kount_Helper_Data::RIS_DATACOLLECTOR_WIDTH); ?>"
+            height="<?php echo(SFC_Kount_Helper_Data::RIS_DATACOLLECTOR_HEIGHT); ?>" frameborder="0" scrolling="no"
+            src="<?php echo($this->getUrl('kount/datacollector/iframe', array('_forced_secure' => $bHttps))); ?>"
+            <?php if ($bTestMode): ?>style="border: 2px solid blue;"<?php endif; ?>>
+        <img width="<?php echo(SFC_Kount_Helper_Data::RIS_DATACOLLECTOR_WIDTH); ?>"
+             height="<?php echo(SFC_Kount_Helper_Data::RIS_DATACOLLECTOR_HEIGHT); ?>"
+             src="<?php echo($this->getUrl('kount/datacollector/gif', array('_forced_secure' => $bHttps))); ?>" alt="" title=""/>
+    </iframe>
+<?php endif; ?>
