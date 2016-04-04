@@ -141,7 +141,7 @@ IWD.Signin = {
 				
 			});
 			
-			$j(document).on('click', '.account-create-signin .back-link, .account-forgotpassword .back-link', function(e){
+			$j(document).on('click', '.account-create-signin .back-link, .account-forgotpassword .back-link, #back-to-login', function(e){
 				e.preventDefault();
 				$j("html, body").animate({ scrollTop: 0 }, "slow");	
 				IWD.Signin.insertLoader();
