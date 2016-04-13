@@ -1,6 +1,16 @@
 var $j = jQuery.noConflict();
 
 $j(document).ready(function(){
+    // Lazy loading of imagery
+    $j('[data-src]').unveil(200, function() {
+        var $this = $j(this);
+
+
+        $this.load(function() {
+            $this.addClass('loaded');
+        });
+    });
+
 
 	if( $j(window).width() <= 414 ){
 		$j('.onestepcheckout-index-index .logo').click(function(e){
@@ -213,6 +223,16 @@ $j(document).ready(function(){
 	        originalReviewShow();
 	    }
 
-	}　// End checkout wrapper
+	}
+
+	// End checkout wrapper
 
 });
+
+!function($) {
+
+    // Readied
+    $(function () {
+
+    });
+}(window.jQuery);

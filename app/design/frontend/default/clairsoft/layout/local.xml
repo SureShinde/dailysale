@@ -20,6 +20,7 @@
             <action method="addItem"><type>skin_js</type><script>js/jquery-1.10.1.min.js</script></action>
             <action method="addItem"><type>skin_js</type><script>js/jquery-ui.min.js</script></action>
             <action method="addItem"><type>skin_js</type><script>js/jquery.cookie.js</script></action>
+            <action method="addItem"><type>skin_js</type><script>js/gorilla/unveil.min.js</script></action>
             <action method="addItem"><type>skin_js</type><script>js/local.js</script></action>
         </reference>
         <reference name="subscribepop">
