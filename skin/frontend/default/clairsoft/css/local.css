@@ -991,9 +991,29 @@ footer #footer-container #footer-content-right {
   height: 100%;
   padding-left: 40px;
 }
-footer #footer-container #footer-content-right .socialicons {
-  display: inline-block;
-  padding: 5px 10px 0 0;
+#footer-content-right .socialicons {
+    display: inline-block;
+    margin: 5px 10px 0 0;
+    background: url(../images/sprite_navicons.png) no-repeat left -315px;
+    height: 30px;
+    width: 30px;
+}
+#footer-content-right .socialicons.plus-google {
+    background-position: -30px -315px;
+}
+#footer-content-right .socialicons.twitter {
+    background-position: -60px -315px;
+}
+#footer-content-right .socialicons.pinterest {
+    background-position: 0px -345px;
+
+}
+#footer-content-right .socialicons.youtube {
+    background-position: -30px -345px;
+}
+#footer-content-right .socialicons.instagram {
+    background-position: -60px -345px;
+
 }
 footer #copyright {
   width: 100%;
@@ -1080,11 +1100,11 @@ footer #copyright a {
   margin-left: 8px;
 }
 #top-wrapper .top-container .top-links-container a[title="Log In"] {
-  background: url(../images/loginlock.png) no-repeat 0 0;
+  background: url(../images/sprite_navicons.png) no-repeat -68px 0;
   padding-left: 18px !important;
 }
 #top-wrapper .top-container .top-links-container a[title="My Account"] {
-  background: url(../images/glyph_crown.png) no-repeat 0 0;
+  background: url(../images/sprite_navicons.png) no-repeat -67px -20px;
   padding-left: 18px !important;
 }
 #top-wrapper .top-container .form-search {
@@ -1108,7 +1128,7 @@ footer #copyright a {
   margin-top: -6px;
   width: 32px;
   height: 18px;
-  background: url(../images/glyph_search.png) no-repeat 50% 50%;
+  background: url(../images/sprite_navicons.png) no-repeat -56px -27px;
   border-left: 1px solid #ccc !important;
 }
 #top-wrapper .top-container .welcome-msg {
@@ -2599,7 +2619,6 @@ div.ee-item-title { padding-left: 36px; line-height: 24px;}
 }
 
 #top-wrapper .top-container .form-search button {
-  margin-top: -7px;
   height: 50px;
 }
 

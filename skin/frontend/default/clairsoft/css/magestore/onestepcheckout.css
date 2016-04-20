@@ -286,7 +286,7 @@ button.onestepcheckout-btn-checkout{
 .ajax-loader1{
     width:32px;
     height:12px;
-    background:url(../../images/onestepcheckout/loading.gif) top left no-repeat;
+    background:url(../../../../base/default/images/onestepcheckout/loading.gif) top left no-repeat;
     z-index:999;
     clear:both;
     margin:18px 0 0 16px !important;
@@ -298,7 +298,7 @@ button.onestepcheckout-btn-checkout{
 .ajax-loader2{
     width:32px;
     height:12px;
-    background:url(../../images/onestepcheckout/loading.gif) top left no-repeat;
+    background:url(../../../../base/default/images/onestepcheckout/loading.gif) top left no-repeat;
     z-index:999;
     clear:both;
     margin:18px 0 0 16px !important;
@@ -310,7 +310,7 @@ button.onestepcheckout-btn-checkout{
 .ajax-loader3{
     width:32px;
     height:12px;
-    background:url(../../images/onestepcheckout/loading.gif) top left no-repeat;
+    background:url(../../../../base/default/images/onestepcheckout/loading.gif) top left no-repeat;
     z-index:999;
     clear:both;
     margin:18px 0 0 16px !important;
@@ -343,32 +343,32 @@ label span.required{color:#F00;}
 }
 .one-step-checkout #billing_step_header,.one-step-checkout #shipping_step_header
 {
-    background:url(../../images/onestepcheckout/billing_title.png) center left no-repeat;
+    background: url(../../images/sprite_navicons.png) no-repeat left -120px;
 
 }
 
 .one-step-checkout .shipping-method #shipping_method_step_header
 {
-    background:url(../../images/onestepcheckout/method_title.png) center left no-repeat;
+    background: url(../../images/sprite_navicons.png) no-repeat left -168px;
 }
 
 .one-step-checkout #payment_method_step_header
 {
-    background:url(../../images/onestepcheckout/payment_title.png) center left no-repeat;
+    background: url(../../images/sprite_navicons.png) no-repeat left -216px;
 }
 
 .one-step-checkout #review_step_header
 {
-    background:url(../../images/onestepcheckout/order_title.png) center left no-repeat;
+    background: url(../../images/sprite_navicons.png) no-repeat left -264px;
 }
 
 .one-step-checkout #time_of_delivery_header
 {
-    background:url(../../images/onestepcheckout/time_title.png) center left no-repeat;
+    background:url(../../../../base/default/images/onestepcheckout/time_title.png) center left no-repeat;
 }
 
 #onestepcheckout-login-loading {
-    background: url(../../images/onestepcheckout/preload.gif) center center no-repeat;
+    background: url(../../../../base/default/images/onestepcheckout/preload.gif) center center no-repeat;
     height:35px;
     float:left;
     width:100%;
@@ -382,7 +382,7 @@ label span.required{color:#F00;}
 }
 
 #onestepcheckout-password-loading {
-    background: url(../../images/onestepcheckout/preload.gif) center center no-repeat;
+    background: url(../../../../base/default/images/onestepcheckout/preload.gif) center center no-repeat;
     height:35px;
 }
 
@@ -561,7 +561,7 @@ label span.required{color:#F00;}
 div.loading-ajax, div.loading-ajax-login {
     height: 50px;
     text-align: center;
-    background:url(../../images/onestepcheckout/ajax-loader.gif) center center no-repeat;
+    background:url(../../../../base/default/images/onestepcheckout/ajax-loader.gif) center center no-repeat;
     background-repeat: no-repeat;
     background-position: center center;
     float:left;
@@ -674,7 +674,7 @@ div.loading-ajax, div.loading-ajax-login {
     line-height: 18px;
 }
 #onestepcheckout-forgot-table li.last p a span{
-    background: url(../../images/onestepcheckout/arrow-r.png) no-repeat center center;
+    background: url(../../../../base/default/images/onestepcheckout/arrow-r.png) no-repeat center center;
     background-color: #39C;
     width: 10px;
     height: 10px;
@@ -696,7 +696,7 @@ p.forgot-link a{
     line-height: 18px;
 }
 p.forgot-link a span{
-    background: url(../../images/onestepcheckout/arrow-r.png) no-repeat center center;
+    background: url(../../../../base/default/images/onestepcheckout/arrow-r.png) no-repeat center center;
     background-color: #39C;
     width: 10px;
     height: 10px;
@@ -783,7 +783,7 @@ p.forgot-link a span{
 }*/
 
 .onestepcheckout-popup-footer{
-    background-image:  url(../../images/onestepcheckout/onestepcheckout-popup-footer.png);
+    background-image:  url(../../../../base/default/images/onestepcheckout/onestepcheckout-popup-footer.png);
     background-repeat: no-repeat;
     height: 13px;
 }
@@ -803,7 +803,7 @@ p.forgot-link a span{
 }
 
 .onestepcheckout-popup-wrapper h1 {
-    background:url(../../images/onestepcheckout/login_title.png) no-repeat left center;
+    background:url(../../../../base/default/images/onestepcheckout/login_title.png) no-repeat left center;
     text-indent: 85px;
     padding: 15px 0px;
     float: left;
@@ -841,7 +841,7 @@ p.forgot-link a span{
 }
 .onestepcheckout-login-link a:hover{text-decoration:underline;}
 .onestepcheckout-login-link a span{
-    background:url(../../images/onestepcheckout/arrow-r.png) no-repeat center center;
+    background:url(../../../../base/default/images/onestepcheckout/arrow-r.png) no-repeat center center;
     background-color:#3399cc;
     width:10px;
     height:10px;
@@ -1031,7 +1031,7 @@ div.form-paypal{
 }
 
 #onestepcheckout-toc-popup h1{	
-	background: url(../../images/onestepcheckout/term_title.png) no-repeat left center;
+	background: url(../../../../base/default/images/onestepcheckout/term_title.png) no-repeat left center;
 	text-indent: 85px;
 	padding: 15px 0px;
 	float: left;
