@@ -24,7 +24,18 @@
  * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 ?>
-<?php foreach ($this->getChildHtmlList() as $_html): ?>
+<div id="socialmedia-facebook">
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.6";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+    <div class="fb-like" data-href="<?php echo Mage::helper('core/url')->getCurrentUrl(); ?>" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div>
+    </div>
     <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('social_media_share')->toHtml(); ?>
-    <?php echo $_html ?>
-<?php endforeach; ?>
+    <?php foreach ($this->getChildHtmlList() as $_html): ?>
+        <?php echo $_html ?>
+    <?php endforeach; ?>

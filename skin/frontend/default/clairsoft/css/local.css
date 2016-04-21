@@ -1558,7 +1558,10 @@ footer #copyright a {
   border: 1px solid #ccc;
   margin-bottom: 10px;
 }
-
+#socialmedia-facebook {
+    float: left;
+    margin-right: 12px;
+}
 ul.tabs {
   margin: 15px 0px;
   overflow: hidden;
@@ -1596,7 +1599,6 @@ ul.tabs li:last-child {
 }
 ul.tabs li.active {
   position: relative;
-  z-index: 5;
   border-top: 1px solid #ccc;
   border-right: 1px solid #ccc;
   border-left: 1px solid #ccc;
